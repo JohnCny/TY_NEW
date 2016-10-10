@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	default-autowire="byName" default-init-method="init" default-destroy-method="depose"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+	<!-- 此service发送邮件 可配置 是否记录数据记录 -->
+	<bean id="mailService" class="com.wicresoft.jrad.modules.mail.service.MailService">
+		<property name="mailHelper" ref="mailHelper"/>
+		<!-- 值为true 记录发送记录到数据库 -->
+		<property name="saveSendRecord" value="true"/> 
+	</bean>
+	 
+	<bean id="mailTemplateConfigCache" class="com.wicresoft.jrad.modules.mail.service.MailTemplateConfigCache"
+		init-method="init" lazy-init="true" />
+
+<!-- 
+	<bean id="MailReSendQuartz" class="com.wicresoft.jrad.modules.mail.quartz.MailReSendQuartz"></bean>
+ -->
+</beans>

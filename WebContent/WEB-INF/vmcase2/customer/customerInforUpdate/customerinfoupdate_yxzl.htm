@@ -1,0 +1,103 @@
+#parse ("common/iframe_page_header.htm")
+<script src="${contextPath}/common/js/common/jquery.form.js"></script>
+<script src='${contextPath}/js/customerInforUpdate/customerinfoupdate_yxzl.js'></script>
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+       <div class="place">
+       <div class="title">客户维护信息>影像资料</div>
+      </div>
+      	<div class="tabplace">
+           <ul class="com-tab" >
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/changewh.page?id=${customerId}">基本信息</a></li>
+            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_zyxx.page?id=${customerId}">职业信息</a></li>
+            <li class="tab " ><a href="${contextPath}/customer/basiccustomerinforUpdate/create_mbxx.page?id=${customerId}">陌拜信息</a></li>
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_zcfz.page?id=${customerId}">资产负债</a></li>
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_syb.page?id=${customerId}">损益</a></li>
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_xjl.page?id=${customerId}">现金流量</a></li>
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_jcjy.page?id=${customerId}">交叉检验</a></li>
+			<li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_swpg.page?id=${customerId}">四维评估</a></li>
+			<li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_sxpg.page?id=${customerId}">授信评估</a></li>
+            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_wjdc.page?id=${customerId}">问卷调查</a></li>
+            <li class="tab" ><a href="${contextPath}/customer/basiccustomerinforUpdate/create_khtz.page?id=${customerId}">台账信息</a></li>
+            <li class="tab activeTab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_yxzl.page?id=${customerId}">影像资料</a></li>  
+         </ul>
+         </div>
+
+          <form id="myForm" action="${contextPath}/customer/basiccustomerinforUpdate/saveYxzl.json" enctype="multipart/form-data" method="post">
+          <div class="form-bd" id="formsId" style="border: 0px; padding-top:10px;">
+          <table class="form-bd-info" >
+						<tr>
+							<td width="5%"></td>
+							<td width="40%"><label>影像文件:</label><input type="file" name="file" id="file"/><input type="hidden" name="customerId" value="${customerId}"/></td>
+							<td width="5%"><label for="name">备注:</label></td>
+							<td width="40%"><textarea name="remark" clos="300px" rows="2" style="width:300px;"></textarea></td>
+							<td width="10%" class="search_button"><input type="button" value="提交" class="search_button_inquiry" title="提交" style="height: 26px; line-height: 24px;" onclick="mySave('${contextPath}/customer/basiccustomerinforUpdate/create_yxzl.page?id=${customerId}');"/></td>
+							
+						</tr>
+		  </table>
+          </div>
+          
+  
+      <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%">
+              <col width="20%">
+              <col width="15%">
+              <col width="35%">
+              <col width="25%">
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">资料名称</th>
+              <th nowrap="nowrap">创建时间</th>
+              <th nowrap="nowrap">备注</th>
+              <th nowrap="nowrap">查看图片</th>
+            </tr>
+            </table>
+            </div>
+       #if (${result.items}&&!${result.items.isEmpty()})
+      <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+          	<colgroup>
+              <col width="5%">
+              <col width="20%">
+              <col width="15%">
+              <col width="35%">
+              <col width="25%">
+            </colgroup>
+            #foreach ($!{video} in $!{result.items})
+            <tr>
+            <td class="checkbox"><input type="radio" name="checkbox" value="$!{video.id}"/></td>
+            <td>$!{video.fileName}</td>
+            <td>$!date.format('yyyy-MM-dd HH:mm:ss ',$!{video.createdTime})</td>
+            <td>$!{video.remark}</td>
+            <td><a href="javascript:void(0)" onclick="viewOidPicture('${contextPath}/customer/basiccustomerinforUpdate/viewPicture.page?id=$!{video.id}&flag=true')"><img src="${contextPath}/customer/basiccustomerinforUpdate/viewPicture.page?id=$!{video.id}&flag=false"/></a></td>
+            </tr>
+            #end
+           #else 
+            <tr>
+            <td colspan='5'>没有数据</td>
+            </tr>
+           #end
+          </table>
+      </div>
+     </form>
+     #parse ("common/pagination.htm")
+      <div class="submit">
+          <a class="btn_g" href="javascript:void(0);" title="删除" onclick="deleteVideo('${contextPath}/customer/basiccustomerinforUpdate/deleteYxzl.json','${contextPath}/customer/basiccustomerinforUpdate/create_yxzl.page?id=${customerId}')">删除</a>
+          <a class="btn_g" href="javascript:void(0);" title="下载" onclick="downLoadVideo('${contextPath}/customer/basiccustomerinforUpdate/downLoadYxzl.json')">下载</a>
+      </div>
+      
+
+  </div>
+  </div>
+  
+  <script type="text/javascript">
+    var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

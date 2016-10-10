@@ -1,0 +1,102 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户原始信息>家庭财产信息</div>
+      </div>
+        <div class="tabplace">
+            <ul class="com-tab" >
+            <li class="tab"><a href="${contextPath}/customer/firsthend/iframe_1.page?id=${customerNm}">基本信息</a></li>
+            <li class="tab "><a href="${contextPath}/customer/firsthend/iframe_2.page?id=${customerNm}">信用信息</a></li>
+            <li class="tab " ><a href="${contextPath}/customer/firsthend/iframe_3.page?id=${customerNm}">其他信息</a></li>
+            <li class="tab "><a href="${contextPath}/customer/firsthend/iframe_4.page?id=${customerNm}">家庭成员信息</a></li>
+            <li class="tab "><a href="${contextPath}/customer/firsthend/iframe_5.page?id=${customerNm}">社会成员信息</a></li>
+            <li class="tab activeTab"><a href="${contextPath}/customer/firsthend/iframe_6.page?id=${customerNm}">家庭财产信息</a></li>
+            <li class="tab"><a href="${contextPath}/customer/firsthend/iframe_7.page?id=${customerNm}">生产经营状况</a></li>
+			<li class="tab"><a href="${contextPath}/customer/firsthend/iframe_8.page?id=${customerNm}">学习履历情况</a></li>
+			<li class="tab"><a href="${contextPath}/customer/firsthend/iframe_9.page?id=${customerNm}">工作履历</a></li>
+            <li class="tab"><a href="${contextPath}/customer/firsthend/iframe_10.page?id=${customerNm}">入保信息</a></li>
+
+         </ul>
+         </div>
+<!-------------- 信息显示 ------------------------------------->        
+        <div id="topDiv" class="inquiry_list inquiry_top">
+         <table>
+            <colgroup>
+            	<col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+             <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+            </colgroup>
+            <tr class="title">
+            <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">权证/特征号</th>
+              <th nowrap="nowrap">财产种类</th>
+              <th nowrap="nowrap">财产名称</th>
+              <th nowrap="nowrap">数量</th>
+              <th nowrap="nowrap">单位</th>
+              <th nowrap="nowrap">购置日期</th>
+              <th nowrap="nowrap">资产原值</th>
+              <th nowrap="nowrap">评估价值</th>
+              <th nowrap="nowrap">评估日期</th>
+              <th nowrap="nowrap">质量</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+       			<col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+             <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+            </colgroup>
+            #foreach ($customer in $result)
+            <tr>
+            <td nowrap="nowrap"></td>
+              <td nowrap="nowrap">$!customer.tzh</td>
+              <td nowrap="nowrap">$!customer.cczl</td>
+              <td nowrap="nowrap">$!customer.ccmc</td>
+              <td nowrap="nowrap">$!customer.sl</td>
+              <td nowrap="nowrap">$!customer.dw</td>
+              <td nowrap="nowrap">$!customer.gzrq</td>
+              <td nowrap="nowrap">$!customer.zcyz</td>
+              <td nowrap="nowrap">$!customer.pgjz</td>
+              <td nowrap="nowrap">$!customer.pgrq</td>
+              <td nowrap="nowrap">$!customer.zl</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="submit">
+          <input type="button" onclick="returnClick();" value="返回" />
+        </div>
+
+        <div class="clear"></div>
+      </div>
+    </div>
+<script type="text/javascript">
+	function returnClick(){
+		 window.location.href= contextPath + "/customer/firsthend/browse.page" ;
+	}
+  </script>
+</body>

@@ -1,0 +1,1200 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+<script src="${contextPath}/common/js/common/jquery.form.js"></script>
+<script src="${contextPath}/js/intopieces/intopieces.js"></script>
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      	<div class="place">
+      		<div>信息主表新增</div>
+      	</div>
+ 
+        <div id="topDiv" >
+        <form id="allInfoForm" action="${contextPath}/intopieces/applyintopiecewait/save.json" enctype="multipart/form-data" method="post">
+		 
+        
+<div class="forms" id="allForm">
+            <table class="rule" id="customerBaseInfo" border="1" bordercolor="#CCCCCC">
+            <caption>基本资料</caption>
+            <colgroup>
+              <col width="10%">
+              <col width="40%">
+              <col width="10%">
+              <col width="40%">
+            </colgroup>
+            <tr>
+            <td><label>中文姓名:</label></td>
+            <td>
+               <input type="text" name="chineseName" value="$!{customer.chineseName}" >
+               <input type="hidden" name="customerId" value="$!{customer.id}">
+            </td>
+            <td><label>国籍:</label></td>
+            <td>
+
+             <select name="nationality"   >
+               <option value="">--请选择--</option>
+                #customerInfo($request.getAttribute("nationalityList"),$!{customer.nationality})
+             </select>
+            </td>
+            </tr>
+            
+            <tr>
+            <td><label>性别</label></td>
+            <td>
+               #if($!{customer.sex}=='Male')
+               <input type="radio" name="sex" value="Male" checked />男&nbsp;&nbsp;
+               <input type="radio" name="sex" value="Female" />女
+               #else 
+               <input type="radio" name="sex" value="Male" />男&nbsp;&nbsp;
+               <input type="radio" name="sex" value="Female" checked />女
+               #end
+            </td>
+            <td><label>拼音或英文姓名(姓与名中间请以空格隔开)</label></td>
+            <td>
+               <input type="text" name="pinyinenglishName" value="$!{customer.pinyinenglishName}" >
+            </td>
+            </tr>
+            
+
+            <tr >
+            <td><label>出生日期</label></td>
+            <td><input type="text" name="birthday" value="$!{customer.birthday}" onmouseover="_calendar({format:'yyyy-MM-dd'})" ></td>
+            <td><label>身份证件</label></td>
+            <td>
+               <select name="cardType"   >
+                 <option value="">--请选择--</option>
+                 #customerInfo($request.getAttribute("cardTypeList"),$!{customer.cardType})
+               </select>
+            </td>
+            </tr>
+            
+
+            <tr >
+            <td><label>证件号码</label></td>
+            <td><input type="text" name="cardId" value="$!{customer.cardId}" ></td>
+           
+            <td><label>住宅地址</label></td>
+            <td><input type="text" name="residentialAddress" value="$!{customer.residentialAddress}" ></td>
+			</tr>
+            
+
+            <tr >
+            <td><label>邮政编码</label></td>
+            <td><input type="text" name="customerZipCode" value="$!{customer.zipCode}" ></td>
+         
+            <td><label>住宅电话(请填写区号)</label></td>
+            <td><input type="text" name="homePhone" value="$!{customer.homePhone}" ></td>
+     		</tr>
+
+            <tr >
+            <td><label>手机</label></td>
+            <td><input type="text" name="telephone" value="$!{customer.telephone}" ></td>
+            
+            <td><label>E-mail</label></td>
+            <td><input type="text" name="mail" value="$!{customer.mail}" ></td>
+			</tr>
+            
+            <tr >
+            <td><label>住宅性质</label></td>
+            <td>
+               <select name="residentialPropertie"  >
+               <option value="">--请选择--</option>
+                #customerInfo($request.getAttribute("residentialPropertieList"),$!{customer.residentialPropertie})
+               </select>
+            </td>
+            
+            <td><label>婚姻状况</label></td>
+            <td>
+               <select name="maritalStatus"  >
+                <option value="">--请选择--</option>
+                #customerInfo($request.getAttribute("maritalStatusList"),$!{customer.maritalStatus})
+               </select>
+            </td>
+            </tr>
+            
+
+            <tr >
+            <td><label>教育程度</label></td>
+            <td>
+              <select name="degreeEducation">
+                <option value="">--请选择--</option>
+                #customerInfo($request.getAttribute("degreeeducationList"),$!{customer.degreeEducation})
+            </select>
+            <td><label>户籍地址</label></td>
+            <td><input type="text" name="householdAddress" value="$!{customer.householdAddress}" ></td>
+			</tr>
+
+            <tr >
+            <td><label>邮政编码(户籍地址)</label></td>
+            <td><input type="text" name="zipCodeAddress" value="$!{customer.zipCodeAddress}" ></td>
+            
+            <td><label>客户商业类型</label></td>
+            <td>
+              #set( $creditCardList = {"Type01" : "散件", "Type02" : "存量","Type03":"商圈","Type04":"专案"}) ## Map
+              #customerInfoAccountData($creditCardList,$!{customer.customerBusinessType},'customerBusinessType',$null)
+            </td>
+            </tr>
+            
+            <tr id="lastTr">
+            <td><label>邮政编码(户籍地址)</label></td>
+            <td>
+             #set( $creditCardList = {"local" : "本地户籍无房", "house" : "有房","protect":"担保进件","quality":"优质行业","ext":"其他"}) ## Map
+             #customerInfoAccountData($creditCardList,$!{customer.customerBusinessAptitude},'customerBusinessAptitude',$null)
+            </td>
+            <td>&nbsp;
+            </td>
+            <td>&nbsp;
+            </td>
+            </tr>
+          </table>
+
+       
+            <table class="rule" id="customerCareersInfo" border="1" bordercolor="#CCCCCC">
+            <caption>职业资料表</caption>
+            <colgroup>
+              <col width="10%">
+              <col width="40%">
+              <col width="10%">
+              <col width="40%">
+            </colgroup>
+            <tr>
+            <td><label>单位名称</label></td>
+            <td>
+              <input type="text" name="nameUnit" value="$!{customerCareers.nameUnit}" >
+              <input type="hidden" name="customerCareersId" value="$!{customerCareers.id}">
+            </td>
+
+            <td><label>部门名称</label></td>
+            <td><input type="text" name="departmentName" value="$!{customerCareers.departmentName}" ></td>
+        
+            </tr>
+            
+
+            <tr >
+            <td><label>单位地址</label></td>
+            <td>
+            <input type="text" name="unitAddress" value="$!{customerCareers.unitAddress}" >
+            </td>
+           
+            <td><label>邮政编码</label></td>
+            <td>
+               <input type="text" name="zipCode" value="$!{customerCareers.zipCode}" >
+            </td>
+            </tr>
+            
+
+            <tr >
+            <td><label>单位电话</label></td>
+            <td><input type="text" name="unitPhone" value="$!{customerCareers.unitPhone}" ></td>
+           
+            <td><label>单位性质</label></td>
+            <td>
+            <select name="unitNature"  >
+                <option value="">--请选择--</option>
+                #customerInfo($request.getAttribute("unitPropertisList"),$!{customerCareers.unitNature})
+            </select>
+            </td>
+            </tr>
+            
+
+            <tr >
+            <td><label>行业类别</label></td>
+            <td>
+            <select name="industryType"  >
+                <option value="">--请选择--</option>
+                #customerInfo($request.getAttribute("industryTypeList"),$!{customerCareers.industryType})
+            </select>
+            </td>
+           
+            <td><label>职务</label></td>
+            <td>
+            <select name="positio"  >
+                <option value="">--请选择--</option>
+                #customerInfo($request.getAttribute("positioList"),$!{customerCareers.positio})
+            </select>
+            </td>
+            </tr>
+            
+
+            <tr >
+            <td><label>职称</label></td>
+            <td>
+            <select name="title"  >
+                <option value="">--请选择--</option>
+                #customerInfo($request.getAttribute("titleList"),$!{customerCareers.title})
+            </select>
+            </td>
+            
+            <td><label>年收入(税前)</label></td>
+            <td><input type="text" name="annualIncome" value="$!{customerCareers.annualIncome}" ></td>
+
+            </tr>
+            
+
+            <tr >
+            <td><label>现工作年限:</label></td>
+            <td><input type="text" name="yearWorkUnit" value="$!{customerCareers.yearWorkUnit}" ></td>
+           
+            <td><label>前单位名称:</label></td>
+            <td><input type="text" name="beforeNameUnit"  value="$!{customerCareers.beforeNameUnit}" ></td>
+
+            </tr>
+            
+            <tr >
+            <td><label>前工作年限</label></td>
+            <td>
+               <input type="text" name="beforeYearWorkUnit" value="$!{customerCareers.beforeYearWorkUnit}" >
+            </td>
+
+            <td><label>参加工作时间</label></td>
+            <td><input type="text" name="workTime"  value="$!{customerCareers.workTime}" ></td>
+
+            </tr>
+          </table>
+            
+
+         <table class="rule" id="customerInfo" border="1" bordercolor="#CCCCCC">
+            <caption>还款方式</caption>
+            <colgroup>
+              <col width="10%">
+              <col width="40%">
+              <col width="10%">
+              <col width="40%">
+            </colgroup>
+            <tr>
+            <td><label>产品</label></td>
+            <td>
+            <select name="productId" id="productId" onchange="selectCustomerChange('${contextPath}/intopieces/intopiecesquery/selectProductAppendix.json',this.value,'$!{customerApplicationInfo.id}')">
+                #customerInfo($!{productAttributeMap},$!{customerApplicationInfo.productId})
+            </select>
+              <input type="hidden" name="customerApplicationInfoId" value = "$!{customerApplicationInfo.id}">
+              <input name="actualQuote" value = "$!{customerApplicationInfo.actualQuote}" type="hidden">
+              <input name="temporaryQuota" value = "$!{customerApplicationInfo.temporaryQuota}" type="hidden">
+              <input name="cashAdvanceProportion" value = "$!{customerApplicationInfo.cashAdvanceProportion}" type="hidden">
+              <input name="cardStatus" value = "$!{customerApplicationInfo.cardStatus}" type="hidden">
+              <input name="accountStatus" value = "$!{customerApplicationInfo.accountStatus}" type="hidden">
+              <input  name="billingDate" value = "$!{customerApplicationInfo.billingDate}" type="hidden">
+              <input  name="repaymentAgreement" value = "$!{customerApplicationInfo.repaymentAgreement}" type="hidden">
+              <input name="aging" value = "$!{customerApplicationInfo.aging}" type="hidden">
+              <input name="customerRiskRating" value = "$!{customerApplicationInfo.customerRiskRating}" type="hidden">
+              <input name="finalApproval" value = "$!{customerApplicationInfo.finalApproval}" type="hidden">
+            </td>
+            
+            <td><label>申请额度:</label></td>
+            <td><input type="text" name="applyQuota" value = "$!{customerApplicationInfo.applyQuota}"></td>
+            </tr>
+            
+            <tr >
+            <td>
+               <label>是否自动扣款:</label>
+            </td>
+            <td>#if($!{customerApplicationInfo.isAutoPay}=='1')
+                <input type="radio" name="isAutoPay" value="1" checked/>是&nbsp;&nbsp;
+                <input type="radio" name="isAutoPay" value="0" />否
+                #else 
+                <input type="radio" name="isAutoPay" value="1" />是&nbsp;&nbsp;
+                <input type="radio" name="isAutoPay" value="0" checked/>否
+                #end
+            </td>
+            </tr>
+            
+            <tr id="payTypeTr">
+            <td><label>扣款方式</label></td>
+            <td>
+               <select name="debitWay" id="debitWay">
+                 #if($!{customerApplicationInfo.debitWay}=='0')
+	                <option value="0" selected="selected">最小额度还款</option>
+	                <option value="1">全额度还款</option>
+	             #else 
+	                <option value="0">最小额度还款</option>
+	                <option value="1" selected="selected">全额度还款</option>
+	             #end 
+               </select>
+            </td>
+            <td>
+               <label>还款借记卡卡号</label>
+            </td>
+            <td>
+	          <input name="repaymentCardNumber" id="repaymentCardNumber" value = "$!{customerApplicationInfo.repaymentCardNumber}"/>
+	        </td>
+            </tr>
+            
+            <!--  
+            <tr>
+            <td><label>产品</label></td>
+            <td>
+            <select name="productId" onchange="selectCustomerChange('${contextPath}/intopieces/intopiecesquery/selectProductAppendix.json',this.value,'$!{customerApplicationInfo.id}')">
+               <option value="">--请选择--</option>
+                #if($!{customerApplicationInfo.productId})
+                #customerInfo($!{productAttributeMap},$!{customerApplicationInfo.productId})
+                #else
+                #customerInfo($!{productAttributeMap},'402880124a382bee014a385088ae0003')
+                #end
+            </select>
+              <input type="hidden" name="customerApplicationInfoId" value = "$!{customerApplicationInfo.id}">
+            </td>
+            
+            <td><label>申请额度:</label></td>
+            <td><input type="text" name="applyQuota" value = "$!{customerApplicationInfo.applyQuota}"></td>
+            </tr>
+            
+            <tr>
+            <td ><label>最终审批有效期(银联):</label></td>
+            <td>
+               <input type="text" name="finalApproval" value = "$!{customerApplicationInfo.finalApproval}" disabled="disabled">
+            </td>
+            <td>
+               <label>是否自动扣款:</label>
+            </td>
+            <td>#if($!{customerApplicationInfo.isAutoPay}=='1')
+                <input type="radio" name="isAutoPay" value="1" checked/>是&nbsp;&nbsp;
+                <input type="radio" name="isAutoPay" value="0" />否
+                #else 
+                <input type="radio" name="isAutoPay" value="1" />是&nbsp;&nbsp;
+                <input type="radio" name="isAutoPay" value="0" checked/>否
+                #end
+            </td>
+            </tr>
+            
+            <tr id="payTypeTr">
+            <td><label>扣款方式</label></td>
+            <td>
+               <select name="debitWay" id="debitWay">
+                 #if($!{customerApplicationInfo.debitWay}=='0')
+	                <option value="0" selected="selected">最小额度还款</option>
+	                <option value="1">全额度还款</option>
+	             #else 
+	                <option value="0">最小额度还款</option>
+	                <option value="1" selected="selected">全额度还款</option>
+	             #end 
+               </select>
+            </td>
+            <td>
+               <label>还款借记卡卡号</label>
+            </td>
+            <td>
+	          <input name="repaymentCardNumber" id="repaymentCardNumber" value = "$!{customerApplicationInfo.repaymentCardNumber}"/>
+	        </td>
+            </tr>
+            
+            
+            <tr >
+            <td><label>实际额度(信管):</label></td>
+            <td><input type="text" name="actualQuote" value = "$!{customerApplicationInfo.actualQuote}" disabled="disabled"></td>
+            
+            <td><label>临时额度(银联):</label></td>
+            <td><input type="text" name="temporaryQuota" value = "$!{customerApplicationInfo.temporaryQuota}" disabled="disabled"></td>
+            </tr>
+            
+            <tr >
+            <td><label>预借现金比例:</label></td>
+            <td><input type="text" name="cashAdvanceProportion" value = "$!{customerApplicationInfo.cashAdvanceProportion}" disabled="disabled"></td>
+            
+            <td><label>卡片状态:</label></td>
+            <td><input type="text" name="cardStatus" value = "$!{customerApplicationInfo.cardStatus}" disabled="disabled"></td>
+            </tr>
+            
+            <tr >
+            <td><label>账户状态:</label></td>
+            <td><input type="text" name="accountStatus" value = "$!{customerApplicationInfo.accountStatus}" disabled="disabled"></td>
+            
+            <td><label>账单日(每月_号):</label></td>
+            <td><input type="text" name="billingDate" value = "$!{customerApplicationInfo.billingDate}" disabled="disabled"></td>
+            </tr>
+            
+            <tr >
+            <td><label>还款约定(最小还款额)(万)</label></td>
+            <td><input type="text" name="repaymentAgreement" value = "$!{customerApplicationInfo.repaymentAgreement}" disabled="disabled"></td>
+            
+            </tr>
+            
+            <tr >
+            <td><label>客户风险等级</label></td>
+            <td>
+               <select name="customerRiskRating" style="width:125px;" disabled="disabled">
+               <option value="">--请选择--</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+               </select>
+            </td>
+            
+            <td><label>账龄</label></td>
+            <td><input type="text" name="aging" value = "$!{customerApplicationInfo.aging}" disabled="disabled"></td>
+            </tr>
+            -->
+          </table>
+          
+<!--联系人 Start-->   
+            <table class="rule" id="contactHead" >
+            <caption>联系人</caption>
+            <tr >
+            <td colspan="4">
+            <a class="btn_g" onclick="dynamicAdd('contact')">增加</a>
+            <a class="btn_gr" onclick="dynamicDelete('contact')">删除</a>
+            </td>
+            </tr>
+            </table>
+           #if (!${customerApplicationContactList} || $!{customerApplicationContactList.size()}==0)
+            <table class="rule" id="contact" border="1" bordercolor="#CCCCCC">
+            <colgroup>
+              <col width="10%">
+              <col width="40%">
+          
+              <col width="10%">
+              <col width="40%">
+            </colgroup>
+            <tr>
+            <td><label>联系人姓名:</label></td>
+            <td><input type="text" name="contactName"></td>
+          
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            </tr>
+            
+            <tr >
+            <td><label>性别:</label></td>
+            <td>
+            <input type="radio" name="contactSex0" value="Male" checked/>男&nbsp;&nbsp;
+            <input type="radio" name="contactSex0" value="Female" />女
+            </td>
+            
+            <td><label>与申请人关系:</label></td>
+            <td><input type="text" name="contactRelationshipWithApplicant"></td>
+            </tr>
+            
+            <tr >
+            <td><label>单位名称:</label></td>
+            <td><input type="text" name="contactUnitName"></td>
+           
+            <td><label>部门:</label></td>
+            <td><input type="text" name="contactDepartment"></td>
+            </tr>
+            
+            <tr >
+            <td><label>联系电话:</label></td>
+            <td><input type="text" name="contactPhone"></td>
+         
+            <td><label>手机:</label></td>
+            <td><input type="text" name="cellPhone"></td>
+            </tr>
+          </table>
+            
+          #else 
+            #if($!{customerApplicationContactList.size()}==1)
+            <table class="rule" id="contact"  border="1" bordercolor="#CCCCCC">
+            <colgroup>
+              <col width="10%">
+              <col width="40%">
+          
+              <col width="10%">
+              <col width="40%">
+            </colgroup>
+             <tr>
+            <td><label>联系人姓名</label></td>
+            <td>
+                <input type="text" name="contactName" value="$!{customerApplicationContactList.get(0).contactName}">
+                <input type="hidden" name="contactId" value="$!{customerApplicationContactList.get(0).id}">
+            </td>
+           
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            </tr>
+            
+            <tr >
+            <td><label>性别</label></td>
+            <td>
+            #if($!{customerApplicationContactList.get(0).sex}=='Male')
+             <input type="radio" name="contactSex0" value="Male" checked/>男&nbsp;&nbsp;
+             <input type="radio" name="contactSex0" value="Female" />女
+            #else 
+             <input type="radio" name="contactSex0" value="Male" />男&nbsp;&nbsp;
+             <input type="radio" name="contactSex0" value="Female" checked/>女
+            #end
+            </td>
+            
+            <td><label>与申请人关系</label></td>
+            <td><input type="text" name="contactRelationshipWithApplicant" value="$!{customerApplicationContactList.get(0).relationshipWithApplicant}"></td>
+            </tr>
+            
+            <tr >
+            <td><label>单位名称</label></td>
+            <td><input type="text" name="contactUnitName" value="$!{customerApplicationContactList.get(0).unitName}"></td>
+            
+            <td><label>部门</label></td>
+            <td><input type="text" name="contactDepartment" value="$!{customerApplicationContactList.get(0).department}"></td>
+            </tr>
+            
+            <tr >
+            <td><label>联系电话</label></td>
+            <td><input type="text" name="contactPhone"  value="$!{customerApplicationContactList.get(0).contactPhone}"></td>
+           
+            <td><label>手机</label></td>
+            <td><input type="text" name="cellPhone"  value="$!{customerApplicationContactList.get(0).cellPhone}"></td>
+            </tr>
+          </table>
+            #else 
+            #foreach ($!{contact} in $!{customerApplicationContactList})
+            #if ($!{velocityCount} == 1)
+            <table class="rule" id="contact"  border="1" bordercolor="#CCCCCC">
+            <colgroup>
+              <col width="10%">
+              <col width="40%">
+          
+              <col width="10%">
+              <col width="40%">
+            </colgroup>
+            <tr>
+            <td><label>联系人姓名</label></td>
+            <td>
+               <input type="text" name="contactName" value="$!{contact.contactName}">
+               <input type="hidden" name="contactId" value="$!{contact.id}">
+            </td>
+            
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            </tr>
+            
+            <tr >
+            <td><label>性别</label></td>
+            <td>
+            #if($!{contact.sex}=='Male')
+              <input type="radio" name="contactSex0" value="Male" checked/>男&nbsp;&nbsp;
+              <input type="radio" name="contactSex0" value="Female" />女
+            #else 
+              <input type="radio" name="contactSex0" value="Male"/>男&nbsp;&nbsp;
+              <input type="radio" name="contactSex0" value="Female" checked/>女
+            #end 
+            </td>
+           
+            <td><label>与申请人关系</label></td>
+            <td><input type="text" name="contactRelationshipWithApplicant" value="$!{contact.relationshipWithApplicant}"></td>
+            </tr>
+            
+            <tr >
+            <td><label>单位名称</label></td>
+            <td><input type="text" name="contactUnitName" value="$!{contact.unitName}"></td>
+            
+            <td><label>部门</label></td>
+            <td><input type="text" name="contactDepartment" value="$!{contact.department}"></td>
+            </tr>
+            
+            <tr >
+            <td><label>联系电话</label></td>
+            <td><input type="text" name="contactPhone"  value="$!{contact.contactPhone}"></td>
+            
+            <td><label>手机</label></td>
+            <td><input type="text" name="cellPhone"  value="$!{contact.cellPhone}"></td>
+            </tr>
+          </table>
+            #else 
+             #set($size=$velocityCount - 1)
+            <table class="rule" id="contactAdd$!size" border="1" bordercolor="#CCCCCC">
+            <colgroup>
+              <col width="10%">
+              <col width="40%">
+          
+              <col width="10%">
+              <col width="40%">
+            </colgroup>
+            <tr>
+            <td><label>联系人姓名</label></td>
+            <td>
+               <input type="text" name="contactName" value="$!{contact.contactName}">
+               <input type="hidden" name="contactId" value="$!{contact.id}">
+            </td>
+           
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            </tr>
+            
+            <tr >
+            <td><label>性别</label></td>
+            <td>
+            #if($!{contact.sex}=='Male')
+              <input type="radio" name="contactSex$!size" value="Male" checked/>男&nbsp;&nbsp;
+              <input type="radio" name="contactSex$!size" value="Female" />女
+            #else 
+              <input type="radio" name="contactSex$!size" value="Male"/>男&nbsp;&nbsp;
+              <input type="radio" name="contactSex$!size" value="Female" checked/>女
+            #end 
+            </td>
+          
+            <td><label>与申请人关系</label></td>
+            <td><input type="text" name="contactRelationshipWithApplicant" value="$!{contact.relationshipWithApplicant}"></td>
+            </tr>
+            
+            <tr >
+            <td><label>单位名称</label></td>
+            <td><input type="text" name="contactUnitName" value="$!{contact.unitName}"></td>
+           
+            <td><label>部门</label></td>
+            <td><input type="text" name="contactDepartment" value="$!{contact.department}"></td>
+            </tr>
+            
+            <tr >
+            <td><label>联系电话</label></td>
+            <td><input type="text" name="contactPhone"  value="$!{contact.contactPhone}"></td>
+            
+            <td><label>手机</label></td>
+            <td><input type="text" name="cellPhone"  value="$!{contact.cellPhone}"></td>
+            </tr>
+           </table>
+           #end
+          #end 
+         #end 
+        #end
+  <!--联系人End-->         
+  
+  <!--担保人 Start-->
+            <table class="rule" id="guarantorHead">
+             <caption>担保人</caption>
+            <tr >
+            <td colspan="4">
+            <a class="btn_g" onclick="dynamicAdd('guarantor')">增加</a>
+            <a class="btn_gr" onclick="dynamicDelete('guarantor')">删除</a>
+            </td>
+            </tr>
+            </table>
+            #if (!${customerApplicationGuarantorList} || $!{customerApplicationGuarantorList.size()}==0)
+            <table class="rule" id="guarantor" border="1" bordercolor="#CCCCCC">
+            <colgroup>
+              <col width="10%">
+              <col width="40%">
+              <col width="10%">
+              <col width="40%">
+            </colgroup>
+            <tr>
+            <td><label>保证人/抵押人/质压人姓名</label></td>
+            <td><input type="text" name="guarantorMortgagorPledge"></td>
+           
+           <td><label>证件号码</label></td>
+            <td><input type="text" name="documentNumber"></td>
+            </tr>
+            
+            <tr >
+            <td><label>性别</label></td>
+            <td>
+            <input type="radio" name="guarantorSex0" value="Male" checked/>男&nbsp;&nbsp;
+            <input type="radio" name="guarantorSex0" value="Female" />女
+            </td>
+            
+            <td><label>与申请人关系</label></td>
+            <td><input type="text" name="guarantorRelationshipWithApplicant"></td>
+            </tr>
+            
+            <tr >
+            <td><label>单位名称</label></td>
+            <td><input type="text" name="unitName"></td>
+            
+            <td><label>部门</label></td>
+            <td><input type="text" name="department"></td>
+            </tr>
+            
+            <tr >
+            <td><label>联系电话</label></td>
+            <td><input type="text" name="guarantorContactPhone"></td>
+          
+            <td><label>手机</label></td>
+            <td><input type="text" name="guarantorCellPhone"></td>
+
+          </table>
+          #else 
+             #if($!{customerApplicationGuarantorList.size()}==1)
+             <table class="rule" id="guarantor"  border="1" bordercolor="#CCCCCC">
+             <colgroup>
+              <col width="10%">
+              <col width="40%">
+              <col width="10%">
+              <col width="40%">
+            </colgroup>
+            <tr>
+            <td><label>保证人/抵押人/质压人姓名</label></td>
+            <td>
+               <input type="text" name="guarantorMortgagorPledge" value="$!{customerApplicationGuarantorList.get(0).guarantorMortgagorPledge}">
+               <input type="hidden" name="guarantorId" value="$!{customerApplicationGuarantorList.get(0).id}">
+            </td>
+            
+            <td><label>证件号码</label></td>
+            <td><input type="text" name="documentNumber" value="$!{customerApplicationGuarantorList.get(0).documentNumber}"></td>
+            </tr>
+            
+            <tr >
+            <td><label>性别</label></td>
+            <td>
+            #if($!{customerApplicationGuarantorList.get(0).sex}=='Male')
+               <input type="radio" name="guarantorSex0" value="Male" checked/>男&nbsp;&nbsp;
+               <input type="radio" name="guarantorSex0" value="Female" />女
+            #else 
+               <input type="radio" name="guarantorSex0" value="Male" />男&nbsp;&nbsp;
+               <input type="radio" name="guarantorSex0" value="Female" checked/>女
+            #end 
+            </td>
+            
+            <td><label>与申请人关系</label></td>
+            <td><input type="text" name="guarantorRelationshipWithApplicant" value="$!{customerApplicationGuarantorList.get(0).relationshipWithApplicant}"></td>
+            </tr>
+            
+            <tr >
+            <td><label>单位名称</label></td>
+            <td><input type="text" name="unitName" value="$!{customerApplicationGuarantorList.get(0).unitName}"></td>
+            
+            <td><label>部门</label></td>
+            <td><input type="text" name="department" value="$!{customerApplicationGuarantorList.get(0).department}"></td>
+            </tr>
+            
+            <tr >
+            <td><label>联系电话</label></td>
+            <td><input type="text" name="guarantorContactPhone" value="$!{customerApplicationGuarantorList.get(0).contactPhone}"></td>
+            
+            <td><label>手机</label></td>
+            <td><input type="text" name="guarantorCellPhone" value="$!{customerApplicationGuarantorList.get(0).cellPhone}"></td>
+
+          </table>
+          #else 
+          #foreach ($!{guarantor} in $!{customerApplicationGuarantorList})
+            #if ($!{velocityCount} == 1)
+           <table class="rule" id="guarantor"  border="1" bordercolor="#CCCCCC">
+           <colgroup>
+              <col width="10%">
+              <col width="40%">
+              <col width="10%">
+              <col width="40%">
+            </colgroup>
+            <tr>
+            <td><label>保证人/抵押人/质压人姓名</label></td>
+            <td>
+                <input type="text" name="guarantorMortgagorPledge" value="$!{guarantor.guarantorMortgagorPledge}">
+                <input type="hidden" name="guarantorId" value="$!{guarantor.id}">
+            </td>
+          
+            <td><label>证件号码</label></td>
+            <td><input type="text" name="documentNumber" value="$!{guarantor.documentNumber}"></td>
+            </tr>
+            
+            <tr >
+            <td><label>性别</label></td>
+            <td>
+            #if($!{guarantor.sex}=='Male')
+              <input type="radio" name="guarantorSex0" value="Male" checked/>男&nbsp;&nbsp;
+              <input type="radio" name="guarantorSex0" value="Female" />女 
+            #else 
+              <input type="radio" name="guarantorSex0" value="Male" />男&nbsp;&nbsp;
+              <input type="radio" name="guarantorSex0" value="Female" checked/>女 
+            #end
+            </td>
+          
+            <td><label>与申请人关系</label></td>
+            <td><input type="text" name="guarantorRelationshipWithApplicant" value="$!{guarantor.relationshipWithApplicant}"></td>
+            </tr>
+            
+            <tr >
+            <td><label>单位名称</label></td>
+            <td><input type="text" name="unitName" value="$!{guarantor.unitName}"></td>
+            
+            <td><label>部门</label></td>
+            <td><input type="text" name="department" value="$!{guarantor.department}"></td>
+            </tr>
+            
+            <tr >
+            <td><label>联系电话</label></td>
+            <td><input type="text" name="guarantorContactPhone" value="$!{guarantor.contactPhone}"></td>
+           
+            <td><label>手机</label></td>
+            <td><input type="text" name="guarantorCellPhone" value="$!{guarantor.cellPhone}"></td>
+            
+          </table>
+          #else 
+            #set($size=$velocityCount - 1)
+            <table class="rule" id="guarantorAdd$!size"  border="1" bordercolor="#CCCCCC">
+            <colgroup>
+              <col width="10%">
+              <col width="40%">
+              <col width="10%">
+              <col width="40%">
+            </colgroup>
+            <tr>
+            <td><label>保证人/抵押人/质压人姓名</label></td>
+            <td>
+                <input type="text" name="guarantorMortgagorPledge" value="$!{guarantor.guarantorMortgagorPledge}">
+                <input type="hidden" name="guarantorId" value="$!{guarantor.id}">
+            </td>
+            
+            <td><label>证件号码</label></td>
+            <td><input type="text" name="documentNumber" value="$!{guarantor.documentNumber}"></td>
+            </tr>
+            
+            <tr >
+            <td><label>性别</label></td>
+            <td>
+            #if($!{guarantor.sex}=='Male')
+              <input type="radio" name="guarantorSex$!size" value="Male" checked/>男&nbsp;&nbsp;
+              <input type="radio" name="guarantorSex$!size" value="Female" />女 
+            #else 
+              <input type="radio" name="guarantorSex$!size" value="Male" />男&nbsp;&nbsp;
+              <input type="radio" name="guarantorSex$!size" value="Female" checked/>女 
+            #end
+            </td>
+            
+            <td><label>与申请人关系</label></td>
+            <td><input type="text" name="guarantorRelationshipWithApplicant" value="$!{guarantor.relationshipWithApplicant}"></td>
+            </tr>
+            
+            <tr >
+            <td><label>单位名称</label></td>
+            <td><input type="text" name="unitName" value="$!{guarantor.unitName}"></td>
+          
+            <td><label>部门</label></td>
+            <td><input type="text" name="department" value="$!{guarantor.department}"></td>
+            </tr>
+            
+            <tr >
+            <td><label>联系电话</label></td>
+            <td><input type="text" name="guarantorContactPhone" value="$!{guarantor.contactPhone}"></td>
+         
+            <td><label>手机</label></td>
+            <td><input type="text" name="guarantorCellPhone" value="$!{guarantor.cellPhone}"></td>
+
+          </table>
+           #end
+          #end 
+         #end 
+        #end
+<!--担保人 End-->
+
+<!--推荐人 Start--> 
+            <table class="rule" id="recommendHead">
+            <caption>推荐人</caption>
+            <tr >
+            <td colspan="4">
+            <a class="btn_g" onclick="dynamicAdd('recommend')">增加</a>
+            <a class="btn_gr" onclick="dynamicDelete('recommend')">删除</a>
+            </td>
+            </tr>
+            </table>
+            #if (!${customerApplicationRecomList} || $!{customerApplicationRecomList.size()}==0)
+            <table class="rule" id="recommend" border="1" bordercolor="#CCCCCC">
+            <colgroup>
+              <col width="10%">
+              <col width="40%">
+              <col width="10%">
+              <col width="40%">
+            </colgroup>
+            <tr>
+            <td><label>姓名</label></td>
+            <td><input type="text" name="name"></td>
+       
+            <td><label>推荐人身份证号码</label></td>
+            <td><input type="text" name="recommendedIdentityCardNumb"></td>
+            </tr>
+            
+            <tr >
+            <td><label>网点</label></td>
+            <td><input type="text" name="outlet"></td>
+            
+            <td><label>联系电话</label></td>
+            <td><input type="text" name="recommendedContactPhone"></td>
+            </tr>
+           
+          </table>
+          
+          #else 
+           #if($!{customerApplicationRecomList.size()}==1)
+           <table class="rule" id="recommend" border="1" bordercolor="#CCCCCC">
+           <colgroup>
+              <col width="10%">
+              <col width="40%">
+              <col width="10%">
+              <col width="40%">
+            </colgroup>
+           <tr>
+            <td><label>姓名</label></td>
+            <td><input type="text" name="name" value="$!{customerApplicationRecomList.get(0).name}">
+                <input type="hidden" name="recommendId" value="$!{customerApplicationRecomList.get(0).id}">
+            </td>
+            <td><label>推荐人身份证号码</label></td>
+            <td><input type="text" name="recommendedIdentityCardNumb" value="$!{customerApplicationRecomList.get(0).recommendedIdentityCardNumb}"></td>
+            </tr>
+            
+            <tr >
+            <td><label>网点</label></td>
+            <td><input type="text" name="outlet" value="$!{customerApplicationRecomList.get(0).outlet}"></td>
+            <td><label>联系电话</label></td>
+            <td><input type="text" name="recommendedContactPhone" value="$!{customerApplicationRecomList.get(0).contactPhone}"></td>
+            </tr>
+           
+          </table>
+          #else
+            #foreach ($!{recom} in $!{customerApplicationRecomList})
+            #if($!{velocityCount}==1)
+            <table class="rule" id="recommend" border="1" bordercolor="#CCCCCC">
+            <colgroup>
+              <col width="10%">
+              <col width="40%">
+              <col width="10%">
+              <col width="40%">
+            </colgroup>
+            <tr>
+            <td><label>姓名</label></td>
+            <td>
+              <input type="text" name="name" value="$!{recom.name}">
+              <input type="hidden" name="recommendId" value="$!{recom.id}">
+            </td>
+            
+            <td><label>推荐人身份证号码</label></td>
+            <td><input type="text" name="recommendedIdentityCardNumb" value="$!{recom.recommendedIdentityCardNumb}"></td>
+            </tr>
+            
+            <tr >
+            <td><label>网点</label></td>
+            <td><input type="text" name="outlet" value="$!{recom.outlet}"></td>
+            
+            <td><label>联系电话</label></td>
+            <td><input type="text" name="recommendedContactPhone" value="$!{recom.contactPhone}"></td>
+            </tr>
+            
+            
+          </table>
+            #else 
+            #set($size=$velocityCount - 1)
+            <table class="rule" id="recommendAdd$!size" border="1" bordercolor="#CCCCCC">
+            <colgroup>
+              <col width="10%">
+              <col width="40%">
+              <col width="10%">
+              <col width="40%">
+            </colgroup>
+            <tr>
+            <td><label>姓名</label></td>
+            <td>
+              <input type="text" name="name" value="$!{recom.name}">
+              <input type="hidden" name="recommendId" value="$!{recom.id}">
+            </td>
+            <td><label>推荐人身份证号码</label></td>
+            <td><input type="text" name="recommendedIdentityCardNumb" value="$!{recom.recommendedIdentityCardNumb}"></td>
+            </tr>
+            <tr>
+            <td><label>网点</label></td>
+            <td><input type="text" name="outlet" value="$!{recom.outlet}"></td>
+            <td><label>联系电话</label></td>
+            <td><input type="text" name="recommendedContactPhone" value="$!{recom.contactPhone}"></td>
+            </tr>
+            </table>
+           #end
+          #end 
+         #end 
+       #end
+<!--推荐人 End--> 
+          
+          <table class="rule" id="other" border="1" bordercolor="#CCCCCC">
+           	<caption>其他资料</caption>
+           	<colgroup>
+              <col width="10%">
+              <col width="40%">
+              <col width="10%">
+              <col width="40%">
+            </colgroup>
+            <tr>
+            <td><label>账单寄送方式</label></td>
+            <td>
+               <select name="billingMethod" id="billingMethod">
+                 #dict("BillingMethod", $!{customerApplicationOther.billingMethod})
+               </select>
+               <input type="hidden" name="customerApplicationOtherId" value="$!{customerApplicationOther.id}">
+            </td>
+          
+            <td><label>纸质账单/寄送地址</label></td>
+            <td><input type="text" name="paperBillingShippingAddress" value="$!{customerApplicationOther.paperBillingShippingAddress}"></td>
+            </tr>
+            <tr >
+            <td><label>领卡方式</label></td>
+            <td>
+            <select name="collarCardMode" id="collarCardMode">
+                 #dict("CollarCardMode", $!{customerApplicationOther.collarCardMode})
+            </select>
+            </td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            </tr>
+            
+            <tr>
+            <td><label>境内消费是否使用密码</label></td>
+            <td>
+            #if($!{customerApplicationOther.consumptionUsePassword}=='1')
+              <input type="radio" name="consumptionUsePassword" value="1" checked/>是&nbsp;&nbsp;
+              <input type="radio" name="consumptionUsePassword" value="0" />否
+            #else 
+              <input type="radio" name="consumptionUsePassword" value="1" />是&nbsp;&nbsp;
+              <input type="radio" name="consumptionUsePassword" value="0" checked/>否
+            #end
+            </td>
+            
+            <td><label>交易短信开通</label></td>
+            <td>
+            #if($!{customerApplicationOther.smsOpeningTrading}=='1')
+              <input type="radio" name="smsOpeningTrading" value="1" checked/>是&nbsp;&nbsp;
+              <input type="radio" name="smsOpeningTrading" value="0" />否
+            #else
+              <input type="radio" name="smsOpeningTrading" value="1" />是&nbsp;&nbsp;
+              <input type="radio" name="smsOpeningTrading" value="0" checked/>否
+            #end
+            </td>
+            </tr>
+          </table>
+          
+          
+          <table class="rule" id="customerAccountData" border="1" bordercolor="#CCCCCC">
+            <caption>账户资料</caption>
+           	<colgroup>
+              <col width="10%">
+              <col width="40%">
+              <col width="10%">
+              <col width="40%">
+            </colgroup>
+            <tr>
+            <td><label>在我行开立账户情况</label></td>
+            <td colspan='3'>
+              #set( $oaccountMybankList = {"1" : "个人贷款户", "2" : "对公客户","3":"大额储蓄客户(10万元以上)","4":"无"}) ## Map
+              #customerInfoAccountData($oaccountMybankList,$!{customerAccountData.oaccountMybank},'oaccountMybank',$null)
+              <!-- #customerInfoAccountData($request.getAttribute("oaccountMybankList"),$!{customerAccountData.oaccountMybank},'oaccountMybank') -->
+              <input type="hidden" name="customerAccountDataId" value="$!{customerAccountData.id}">
+            </td>
+
+            </tr>
+            
+            <tr >
+            <td><label>持信用卡情况</label></td>
+            <td colspan='3'>
+            #set( $creditCardList = {"1" : "无信用卡", "2" : "持有我行信用卡","3":"持有他行信用卡"}) ## Map
+            #customerInfoAccountData($creditCardList,$!{customerAccountData.creditCard},'creditCard',$null)
+            <!-- #customerInfoAccountData($request.getAttribute("creditCardList"),$!{customerAccountData.creditCard},'creditCard') -->
+                               持有<input type="text" name="howManyCard" value="$!{customerAccountData.howManyCard}" style="width:50px;" readonly="readonly">张信用卡,现有信用卡最高额度
+            <input type="text" name="maximumAmount" value="$!{customerAccountData.maximumAmount}" style="width:100px;" readonly="readonly">元
+            </td>
+            </tr>
+            
+            <tr >
+            <td><label>在我行代发工资情况</label></td>
+            <td colspan='3'>
+            #set( $creditCardList = {"1" : "代发工资", "2" : "不代发工资"}) ## Map
+            #customerInfoAccountData($creditCardList,$!{customerAccountData.payMybank},'payMybank',$null)
+           <!--  #customerInfoAccountData($request.getAttribute("creditCardList"),$!{customerAccountData.payMybank},'payMybank') -->
+            </td>
+            </tr>
+          </table>
+          
+          <table class="rule" id="specialColumn" border="1" bordercolor="#CCCCCC">
+            <caption>行社专栏</caption>
+           	<colgroup>
+              <col width="10%">
+              <col width="40%">
+              <col width="10%">
+              <col width="40%">
+            </colgroup>
+            <tr>
+            <td><label>推广方式</label></td>
+            <td>
+              <input type="text" name="promoteWay" value="$!{customerApplicationCom.promoteWay}">
+              <input type="hidden" name="customerApplicationComId" value="$!{customerApplicationCom.id}">
+            </td>
+            
+            <td><label>其他说明</label></td>
+            <td><input type="text" name="otherNote" value="$!{customerApplicationCom.otherNote}">
+            </td>
+            </tr>
+            
+            <tr >
+            <td><label>进件来源</label></td>
+            <td><input type="text" name="numberPiecesSource" value="$!{customerApplicationCom.numberPiecesSource}"></td>
+            
+            <td><label>与申请人关系</label></td>
+            <td><input type="text" name="relationshipWithApplicant" value="$!{customerApplicationCom.relationshipWithApplicant}"></td>
+            </tr>
+
+          </table>
+          
+          #if (${appendixDictList}&&!${appendixDictList.isEmpty()})
+          <table class="rule" id="appendix" border="1" bordercolor="#CCCCCC">
+          <caption>产品附件</caption>
+         	<colgroup>
+              <col width="10%">
+              <col width="40%">
+              <col width="10%">
+              <col width="40%">
+            </colgroup>
+            #foreach ($!{appendixDict} in $!{appendixDictList})
+            <tr>
+            <td><label>文件名称</label></td>
+            <td>
+                <input type="text" name="productAccessoryName" value="$!{appendixDict.typeName}" readonly="readonly" style="width: 260px;">
+                <input type="hidden" name="appendixTypeCode" value="$!{appendixDict.typeCode}">
+                #if(${addressAccessoriesList})
+                   #foreach ($!{addressAccessories} in $!{addressAccessoriesList})
+                     #if(($!{appendixDict.typeCode} == $!{addressAccessories.appendixTypeCode})&&$!{addressAccessories.productAccessoriesUrl})
+                     <font color='red'>已上传资料</font>
+                     #end
+                     #if($!{appendixDict.typeCode} == $!{addressAccessories.appendixTypeCode})
+                      <input type="hidden" name="addressAccessoriesId" value="$!{addressAccessories.id}">
+                     #end
+                   #end
+                #end
+            </td>
+         
+            <td><label>产品附件</label></td>
+            <td>
+               <input type="file" name="file_$!{appendixDict.typeCode}">
+            </td>
+            </tr>
+            #end
+          </table>
+          #end
+</div>
+        </form>
+        </div>
+        <div class="controlbtn" style="padding-left:15px;">
+			<a class="btn_g" href="javascript:void(0);" onclick="mySave()">保存</a>
+			<a class="btn_g"  onclick="javascript:history.go(-1);">取消</a>
+		</div>  
+
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+	$(document).ready(function() {
+	        $("#list input[type='checkbox']").click(function() {
+	            if (jQuery(this).attr("checked") == true) {
+	                jQuery("#list input[type='checkbox']").attr("checked", false);
+	                jQuery(this).attr("checked", true);
+	            }
+	        });
+	});
+	function mySave() {
+		save();
+	}
+	function save(){
+		$('#allInfoForm').ajaxSubmit({
+			dataType : 'json',
+			type : "post",
+			data:{"applicationId":'$!applicationId'},
+			success : function(data) {
+				if (data.success) {
+					Dialog.message(data.message,"提示", function() {
+					 self.location.href=contextPath+"/intopieces/applyintopiecewait/change.page?applicationId="+'$!applicationId'+"&customerId="+'$!customerId'+"&applyQuota="+'$!applyQuota'+"&serialNumber="+'$!serialNumber';
+					 });
+				} else {
+					Dialog.message(data.message);
+					return false;
+				}
+			},
+			error : function(data) {
+				Dialog.closeLoad();
+				Dialog.message("操作失败");
+				return false;
+			}
+		});
+	}
+</script>
+#parse ("common/iframe_page_footer.htm")

@@ -1,0 +1,124 @@
+#parse ("common/iframe_page_header.htm")
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+       <div class="place">
+       <div class="title">客户经理晋降级规则配置</div>
+      </div>
+       #parse ("common/place_tab_jlcj.htm")
+      <form id="id_module_form" action="${contextPath}/manager/managerPromotionRule/insertOrUpdatejjgz.page" method="post">
+        <div class="form-bd" id="formsId" style="padding-top: 0px;">
+        
+          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%">
+            <colgroup>
+              <col width="15%" />
+              <col width="15%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+            </colgroup>
+            <tr>
+	            <td class="titlec" >经理级别</td>
+	            <td class="titlec" >季度日均用信余额</td>
+	            <td class="titlec" >管户数（户）</td>
+	            <td class="titlec" >逾期贷款率</td>
+	            <td class="titlec" >月均KPI得分</td>
+            </tr>
+           </table>
+            #if($managerPromotionRulelist.size()!=0)
+             <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%">
+            <colgroup>
+              <col width="15%" />
+              <col width="15%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+            </colgroup>
+             #foreach($managerPromotionRule in $!managerPromotionRulelist)
+            <tr>
+              <td class="titlefc3">
+                 <input type="hidden" name="id" value="$!managerPromotionRule.id">
+                 <input type="hidden" name="initialLevel" value="$!managerPromotionRule.initialLevel">#dictVal('CUSTOMERMANAGERLEVEL',$!managerPromotionRule.initialLevel)
+              </td>
+              <td>
+                 <input class="rinpsty" type="text" id="quarterAverageCreditBalance" name="quarterAverageCreditBalance" value="$!managerPromotionRule.quarterAverageCreditBalance" />
+              </td>
+              <td>
+              	 <input  type="text" class="rinpstynum" id="tubeNumber" name="tubeNumber" value="$!managerPromotionRule.tubeNumber" />
+              </td>
+              <td>
+                 <input class="rinpsty" type="text" id="overLoanRatio" name="overLoanRatio" value="$!managerPromotionRule.overLoanRatio" style="width: 70%"/>
+              </td>
+               <td>
+                 <input class="rinpsty" type="text" id="kpiScore" name="kpiScore" value="$!managerPromotionRule.kpiScore" style="width: 70%"/>
+              </td>
+            </tr>
+            #end
+          </table>
+          #else
+          
+            <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%">
+            <colgroup>
+              <col width="15%" />
+              <col width="15%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+            </colgroup>
+             #foreach($managerPromotionRulelval in $!managerPromotionRulel)
+            <tr>
+             <td class="titlefc3">
+                 <input type="hidden" name="id" value="$!managerPromotionRulelval.id">
+                 <input type="hidden" name="initialLevel" value="$!managerPromotionRulelval.initialLevel">#dictVal('CUSTOMERMANAGERLEVEL',$!managerPromotionRulelval.initialLevel)
+              </td>
+              <td>
+                 <input class="rinpsty" type="text" id="quarterAverageCreditBalance" name="quarterAverageCreditBalance" value="$!managerPromotionRulelval.quarterAverageCreditBalance" />
+              </td>
+              <td>
+              	 <input  type="text" class="rinpstynum" id="tubeNumber" name="tubeNumber" value="$!managerPromotionRulelval.tubeNumber" />
+              </td>
+              <td>
+                 <input class="rinpsty" type="text" id="overLoanRatio" name="overLoanRatio" value="$!managerPromotionRulelval.overLoanRatio" style="width: 70%"/>
+              </td>
+               <td>
+                 <input class="rinpsty" type="text" id="kpiScore" name="kpiScore" value="$!managerPromotionRulelval.kpiScore" style="width: 70%"/>
+              </td>
+            </tr>
+            #end
+          </table>
+          #end
+        </div>
+      </form>
+
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n('button.cancel')" />
+      </div>
+    </div>
+  </div>
+   <script src='${contextPath}/js/maintenanceAccountManager/maintenanceAccountManager.js'></script> 
+  <script type="text/javascript">
+  
+	var layout=new FormsLayout("formsId");			
+	window.top.currentWindow.setLayout(layout);
+			
+	#set ($formName = "'#id_module_form'")
+	$(document).ready(function() {	
+		
+
+		$("li").removeClass("activeTab");
+		$("li:eq(0)").addClass("activeTab");
+	     $("#id_save_button").click(function() {
+	    	var leng = 0;
+	    	 leng = $(".error").length;
+	    	if(leng > 0){
+	    		return;
+	    	}else{
+			  $("#id_module_form").submit();  
+	    	}
+	       });
+
+	});
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

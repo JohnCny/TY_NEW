@@ -1,0 +1,140 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+       <div class="title">客户维护信息>职业信息</div>
+      </div>
+     <div class="tabplace">
+            <ul class="com-tab" >
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/changewh.page?id=${customerId}">基本信息</a></li>
+            <li class="tab activeTab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_zyxx.page?id=${customerId}">职业信息</a></li>
+            <li class="tab " ><a href="${contextPath}/customer/basiccustomerinforUpdate/create_mbxx.page?id=${customerId}">陌拜信息</a></li>
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_zcfz.page?id=${customerId}">资产负债</a></li>
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_syb.page?id=${customerId}">损益</a></li>
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_xjl.page?id=${customerId}">现金流量</a></li>
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_jcjy.page?id=${customerId}">交叉检验</a></li>
+			<li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_swpg.page?id=${customerId}">四维评估</a></li>
+			<li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_sxpg.page?id=${customerId}">授信评估</a></li>
+            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_wjdc.page?id=${customerId}">问卷调查</a></li>
+            <li class="tab" ><a href="${contextPath}/customer/basiccustomerinforUpdate/create_khtz.page?id=${customerId}">台账信息</a></li>
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_yxzl.page?id=${customerId}">影像资料</a></li>  
+         </ul>
+         </div>
+      <form id="id_module_form" action="${contextPath}/customer/basiccustomerinforUpdate/updatezyxx.json" >
+        <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
+          <input type="hidden" name="customerId" value="$!{customerId}"/>
+          <input type="hidden" name="id" value="$!careers.id"/>
+          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%" >
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="30%" />
+
+            </colgroup>
+             <tr><td class="titlec" colspan="4" style="text-align: center;">职业信息</td></tr>
+            <tr>
+              <td class="titlefc3">客户名称:</td>
+              <td><input class="rinpsty" type="text" 
+              #if($!careers.customerName)
+              value="$!careers.customerName"
+              #else value="$!customerName" 
+              #end disabled="disabled"/></td>
+              <td class="titlefc3">单位名称:</td>
+             <td><input class="rinpsty" type="text" name="nameUnit" id="nameUnit"  value="$!careers.nameUnit"/></td>
+            </tr>
+               <tr>
+              <td class="titlefc3">部门名称:</td>
+              <td ><input class="rinpsty" type="text" id="departmentName" name="departmentName" value="$!careers.departmentName" /></td>
+              <td class="titlefc3">单位地址:</td>
+              <td><input class="rinpsty" type="text" id="unitAddress" name="unitAddress" value="$!careers.unitAddress" /></td>
+            </tr>
+            <tr>
+              <td class="titlefc3">邮政编码:</td>
+              <td><input class="rinpsty" type="text" id="zipCode" name="zipCode" value="$!careers.zipCode"/></td>
+                <td class="titlefc3">单位电话:</td>
+                <td><input class="rinpsty" type="text" name="unitPhone" value="$!careers.unitPhone" /></td>
+            </tr>
+            <tr>
+              <td class="titlefc3">行业类型:</td>
+              <td><select id="industryType" name="industryType" class="rinpsty">
+                  #dict('HYLB_',$!careers.industryType)
+              </select></td>
+               <td class="titlefc3">单位性质:</td>
+              <td><select id="unitNature" name="unitNature" class="rinpsty">
+              #customerInfo($request.getAttribute("unitPropertisList"),$!careers.unitNature)
+              </select></td>
+            </tr>
+            <tr>
+              <td class="titlefc3">职务:</td>
+               <td><select id="positio" name="positio" class="rinpsty">
+               #customerInfo($request.getAttribute("positioList"),$!careers.positio)
+               </select></td>
+              <td class="titlefc3">职称:</td>
+                <td><select name="title" id="title" class="rinpsty">
+               #customerInfo($request.getAttribute("titleList"),$!careers.title)
+                </select></td>
+            </tr>
+                <tr>
+              <td class="titlefc3">年收入(税前):</td>
+              <td><input class="rinpsty" type="text" name="annualIncome" value="$!careers.annualIncome"/></td>
+              <td class="titlefc3">现工作单位年限:</td>
+             <td><input class="rinpsty" type="text" name="yearWorkUnit" id="yearWorkUnit"  value="$!careers.yearWorkUnit" /></td>
+
+            </tr>
+             <tr>
+              <td class="titlefc3">前单位名称:</td>
+              <td><input class="rinpsty" type="text" name="beforeNameUnit" value="$!careers.beforeNameUnit"/></td>
+              <td class="titlefc3">前工作单位年限:</td>
+             <td><input class="rinpsty" type="text" name="beforeYearWorkUnit" id="beforeYearWorkUnit"  value="$!careers.beforeYearWorkUnit" /></td>
+
+            </tr>
+             <tr>
+              <td class="titlefc3">参加工作时间:</td>
+              <td><input class="rinpsty" type="text" name="workTime" value="$!careers.workTime"/></td>
+            </tr>
+          </table>
+        </div>
+      </form>
+
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
+        <input type="button" onclick=" returnClick();" value="#i18n('button.cancel')" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");			
+	window.top.currentWindow.setLayout(layout);
+			
+	#set ($formName = "'#id_module_form'")
+	#validator($formName)
+	$(document).ready(function() {		
+		$("#id_save_button").click(function() {
+			Dialog.load();
+	        if ($($formName).valid()) {
+	          var formjson = $($formName).serialize();
+	          $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
+	        	  Dialog.closeLoad();
+	            var url = "${contextPath}/customer/basiccustomerinforUpdate/create_zyxx.page?id=${customerId}";
+	        	  if (data.success) {
+	            	Dialog.message(data.message);
+	            }else{
+	            	Dialog.message(data.message);
+	            }
+	        	  navigateTo(url);
+	          });
+	        }
+	      });
+		#parse("common/part_create.js")
+	});
+	function returnClick(){
+		
+		 window.location.href= contextPath + "/customer/basiccustomerinforUpdate/browse.page" ;
+	}
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

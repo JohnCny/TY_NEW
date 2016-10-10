@@ -1,0 +1,73 @@
+#parse ("common/iframe_page_header.htm")
+
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">新增信息员</div>
+      </div>
+      <form id="id_module_form" action="${modulePath}/insert.json">
+        <div class="forms" id="formsId">
+          <table class="rule" border="1" bordercolor="#CCCCCC">
+            <caption>信息员</caption>
+            <colgroup>
+              <col width="10%" />
+              <col width="40%" />
+              <col width="10%" />
+              <col width="40%" />
+            </colgroup>
+            <tr>
+              <td><label for="name">姓名:</label></td>
+              <td><input type="text" id="name" name="name" value="" /></td>
+              
+              <td><label for="telephone">电话:</label></td>
+              <td><input type="text" id="telephone" name="telephone" value="" /></td>
+            </tr>
+            <tr>
+              <td><label for="idCardNumber">身份证号码:</label></td>
+              <td><input type="text" id="idCardNumber" name="idCardNumber" value="" /></td>
+                
+                <td><label for="address">住址:</label></td>
+                <td><input type="text" id="address" name="address" value="" /></td>
+            </tr>
+            <tr>
+              <td><label for="workUnit">工作单位:</label></td>
+              <td><input type="text" name="workUnit" id="workUnit"  value=""/></td>
+              
+              <td><label for="jobDuty">工作职务:</label></td>
+              <td><input type="text" name="jobDuty" id="jobDuty"  value=""/></td>
+            </tr>
+            <tr>
+              <td><label for="infoMaintenanceArea">维护范围:</label></td>
+              <td><input type="text" name="infoMaintenanceArea" id="infoMaintenanceArea"  value=""/></td>
+              
+              <td><label for="infoOfficerJob">工作方式:</label></td>
+              <td><input type="text" name="infoOfficerJob" id="infoOfficerJob"  value=""/></td>
+            </tr>
+            <tr>
+              <td><label for="researcherFeedbackWay">反馈方式:</label></td>
+              <td><input type="text" name="researcherFeedbackWay" id="researcherFeedbackWay"  value=""/></td>
+              
+              <td><label for="researcherPay">酬劳:</label></td>
+              <td><input type="text" name="researcherPay" id="researcherPay"  value=""/></td>
+            </tr>
+          </table>
+        </div>
+      </form>
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n("button.save")" class="current" />
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n("button.cancel")" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");	
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	#validator($formName)
+	$(document).ready(function() {	
+		#parse("common/part_create.js")
+	});
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

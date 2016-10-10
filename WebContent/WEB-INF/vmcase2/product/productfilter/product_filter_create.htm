@@ -1,0 +1,110 @@
+#parse ("common/iframe_page_header.htm")
+
+<body>
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+				<div class="title">产品筛选规则创建</div>
+			</div>
+			<form id="id_module_form"
+				action="${contextPath}/product/productfilter/insert.json">
+				<div class="forms" id="formsId">
+					<input type="hidden" name="id" value="" />
+					<table class="rule">
+						<colgroup>
+							<col width="10%" />
+							<col width="30%" />
+							<col width="10%" />
+							<col width="10%" />
+							<col width="30%" />
+
+						</colgroup>
+						<tr>
+							<td>表名:</td>
+							<td><select id="tableName" name="tableName" onchange="tableChange();">
+							<option value='0'>请选择..</option>
+									#dict("tableName", '')
+							</select></td>
+							<td>&nbsp;</td>
+							<td>字段名:</td>
+							<td><select id="columnName" name="columnName" onchange="columnChange();">
+									
+							</select></td>
+							</td>
+						</tr>
+						<tr>
+							<td>操作:</td>
+							<td><select id="operate" name="operate" value="">
+							<option value='0'>请选择..</option>
+									 #dict("operateName", '')
+							</select></td>
+							<td>&nbsp;</td>
+							<td>值:</td>
+							<td><select id="value" name="value" value="">
+							</select></td>
+						</tr>
+
+					</table>
+				</div>
+			</form>
+			<div class="submit">
+				<input id="id_save_button" type="button" value="#i18n("button.save")" class="current" /> 
+				<input type="button" onclick="javascript:history.go(-1);" value="#i18n("button.cancel")" />
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	var layout=new FormsLayout("formsId");	
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	#validator($formName)
+	$(document).ready(function() {	
+		#parse("common/part_create.js")
+	});
+	
+	/*
+	* 改变筛选表
+	*/
+     function tableChange() {
+		
+    		var tableName = $("#formsId select[name='tableName'] option:selected").val();
+    		$.post(contextPath+"/product/productfilter/findColumnNameByTableName.json",{"tableName": tableName},function(data){
+    			$("#formsId select[name='columnName'] option").remove();
+    			$("#formsId select[name='columnName']").append("<option value='0'>请选择..</option>");
+    		    $.each(data.results,function(index, ele){
+    		    	$("#formsId select[name='columnName']").append("<option value="+ele.name+">" +ele.title + "</option>");
+    		    });
+    		},"json");
+    		
+    		//columnChange();
+    		
+	}
+	
+     /*
+ 	* 改变筛选字段
+ 	*/
+      function columnChange() {
+ 		
+     		var columnName = $("#formsId select[name='columnName'] option:selected").val();
+     		if (columnName=="YEAR_WORK_UNIT") {
+     			$("#value").replaceWith("<input id='value' type='text' name='value' value=''/>"); 
+     			
+     		}else if(columnName=="WORK_TIME")
+     			$("#value").replaceWith("<input id='value' readonly='readonly' type='text' onmouseover='_calendar()' value='' name='value'>"); 
+     		else{
+     			$("#value").replaceWith("<select id='value' name='value' value=''></select>"); 
+     		$.post(contextPath+"/product/productfilter/findValueByColumnName.json",{"columnName": columnName},function(data){
+     			
+     			$("#formsId select[name='value'] option").remove();
+     			$("#formsId select[name='value']").append("<option value=''>请选择..</option>");
+     		    $.each(data.results,function(index, ele){
+     		    	
+				  $("#formsId select[name='value']").append("<option value="+ele.name+">" +ele.title + "</option>");
+     		    	
+     		    });
+     		},"json");
+     		}
+ 	}
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

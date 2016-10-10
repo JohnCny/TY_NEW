@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="GBK"?>
+<resultMap>
+   	<result column="ID" 			jdbcType="VARCHAR" index="1" />  
+	<result column="LOGINNAME" 		jdbcType="VARCHAR" index="2" />  
+	<result column="PASSWORD" 		jdbcType="VARCHAR" index="3" />  
+	<result column="NAME" 			jdbcType="VARCHAR" index="4" />  
+	<result column="GROUPID" 		jdbcType="VARCHAR" index="5" />  
+	<result column="DESCRIPTION" 	jdbcType="VARCHAR" index="6" />  
+	<result column="TYPE" 			jdbcType="VARCHAR" index="7" />  
+	<result column="VALID" 			jdbcType="VARCHAR" index="8" />  
+	<result column="LOCKED" 		jdbcType="VARCHAR" index="9" />  
+	<result column="MODIFIEDTIME" 	jdbcType="VARCHAR" index="10"/>  
+	<result column="CREATEDTIME" 	jdbcType="VARCHAR" index="11"/>  
+	<result column="CREATEDUSERID" 	jdbcType="VARCHAR" index="12"/>  
+	<result column="MODIFIEDUSERID" jdbcType="VARCHAR" index="13"/>  
+	<result column="COMMITTEE" 		jdbcType="VARCHAR" index="14"/>  
+	<result column="IDCARDNO" 		jdbcType="VARCHAR" index="15"/>  
+	<result column="GROUPMODIFIEDDATE"  jdbcType="VARCHAR" index="16"/>  
+	<result column="PWDMODIFIEDDATE" 	jdbcType="VARCHAR" index="17"/>
+	<result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/> 
+</resultMap>

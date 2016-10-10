@@ -1,0 +1,706 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">进件新增>调查信息</div>
+      </div>
+        <div class="tabplace">
+            <ul class="com-tab" >
+            <li class="tab activeTab"><a href="${contextPath}/intopieces/addIntopieces/changewh.page?customerId=$!customerId&productId=$!productId">建议</a></li>
+            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/findJbzk.page?customerId=$!customerId&productId=$!productId">基本状况</a></li>
+	        <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/findJyzt.page?customerId=$!customerId&productId=$!productId">经营状态</a></li>
+	        <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/findSczt.page?customerId=$!customerId&productId=$!productId">生存状态</a></li>
+	        <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/findDdpz.page?customerId=$!customerId&productId=$!productId">道德品质</a></li>
+	        <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_zcfz.page?customerId=$!customerId&productId=$!productId">资产负债</a></li>
+	        <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_lrjb.page?customerId=$!customerId&productId=$!productId">利润简表</a></li>
+	        <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_bzlr.page?customerId=$!customerId&productId=$!productId">标准利润表</a></li>
+	        <li class="tab "><a href="${contextPath}/intopieces/addIntopieces/create_xjl.page?customerId=$!customerId&productId=$!productId">现金流量</a></li>
+			<li class="tab "><a href="${contextPath}/intopieces/addIntopieces/create_jcjy.page?customerId=$!customerId&productId=$!productId">交叉检验</a></li>
+	        <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_dhd.page?customerId=$!customerId&productId=$!productId">点货单</a></li>
+            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_gdzc.page?customerId=$!customerId&productId=$!productId">固定资产清单</a></li>
+            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_yfys.page?customerId=$!customerId&productId=$!productId">应付预收</a></li>
+            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_ysyf.page?customerId=$!customerId&productId=$!productId">应收预付</a></li>
+            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_lsfx.page?customerId=$!customerId&productId=$!productId">流水分析</a></li>
+         </ul>
+         </div>
+         <div class="tabplace"></div>
+			<form id="id_module_form">
+			<input type="hidden" id="customerId" name="customerId" value="$!customerId" />
+			<input type="hidden" id="productId" name="productId" value="$!productId" />
+				<div class="form-bd" id="formsId"
+					style="margin-top: 0px; padding-top: 0px;">
+					<table id='MyTable' style='border-collapse: collapse;' width='130%'>
+						<tr>
+							<td colspan='10' name='A2' align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2688px; background-color: #135AA4; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>贷款申请信息</td>
+						</tr>
+						<tr>
+							<td name='A3' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2688px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>申请人姓名</td>
+							<td rowspan='1' colspan='2' name='B3'
+								align='left' valign='center' 
+								style='font-weight: 400; font-size: 90%; width: 1056px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"   type="text" id="B3" name="B3" value="$!dzjy.sqrxm" />&nbsp;
+						    </td>
+							<td name='D3' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2720px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>申请金额</td>
+							<td name='E3'  align='left'
+								 valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2688px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="E3" name="E3" value="$!dzjy.sqje" />&nbsp;
+							</td>
+							<td name='F3' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2560px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>贷款用途</td>
+							<td colspan='4' name='G3'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3232px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="G3" name="G3" value="$!dzjy.dkyt" />&nbsp;
+						    </td>
+						</tr>
+						<tr>
+							<td name='A4' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2688px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>申请期限</td>
+							<td rowspan='1' colspan='2' name='B4'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 1056px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="B4" name="B4" value="$!dzjy.sqqx" />
+							&nbsp;</td>
+							<td name='D4' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2720px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>项目投入总额</td>
+							<td name='E4'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2688px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"   type="text" id="E4" name="E4" value="$!dzjy.xmzje" />&nbsp;
+							</td>
+							<td name='F4' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2560px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>自有资金</td>
+							<td name='G4' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3232px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="G4" name="G4" value="$!dzjy.zyzj" />
+							&nbsp;</td>
+							<td name='H4' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2464px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>自有资金来源</td>
+							<td rowspan='1' colspan='2' name='I4'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+							<input class="rinpsty"   type="text" id="I4" name="I4" value="$!dzjy.zyzjly" />
+						    &nbsp;</td>
+						</tr>
+<!------------------------- 贷款建议 ------------------------------------------>
+						<tr>
+							<td rowspan='1' colspan='10' name='A5' align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2688px; background-color: #135AA4; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>贷款建议</td>
+						</tr>
+						<tr>
+							<td rowspan='1' colspan='2' name='A6' align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2688px; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>对自上次本行贷款以来发生的变化</td>
+							<td rowspan='1' colspan='8' name='C6'
+								 align='left' valign='top'
+								style='font-weight: 400; font-size: 90%; width: 2336px; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<textarea  placeholder="备注：营业额，毛利，成本，人数，经营地址，家庭状况等" id="C6" name="C6" cols="50"  >$!dzjy.change</textarea></td>
+						</tr>
+						<tr>
+							<td rowspan='2' colspan='2' name='A7' align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2688px; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #d0d7e5 1px; border-left: solid #000000 1px;'>风险分析（对客户优劣势分析、贷款用途分析和潜在风险防范手段的建议）</td>
+							<td rowspan='1' colspan='4' name='C7'
+								align='left' valign='top'
+								style='font-weight: 400; font-size: 90%; width: 2336px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								优势:<textarea  cols="50" id="C7" name="C7 "  >$!dzjy.fxfx_ys</textarea></td>
+							<td rowspan='1' colspan='4' name='G7' align='left' valign='top'
+								 style='font-weight: 400; font-size: 90%; width: 3232px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								劣势:<textarea cols="50" id="G7" name="G7"  >$!dzjy.fxfx_ns</textarea></td>
+						</tr>
+						<tr>
+							<td name='C8' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2336px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>综合分析及贷款用途合理性分析</td>
+							<td rowspan='1' colspan='7' name='D8'
+								 align='left' valign='top'
+								style='font-weight: 400; font-size: 90%; width: 2720px; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<textarea placeholder="调查期间对客户的印象、贷款用途合理性、客户还款能力、还款意愿等方面" id="D8" name="D8" cols="50"  >$!dzjy.fxfx_lxfx</textarea></td>
+						</tr>
+						<tr>
+							<td rowspan='1' colspan='2' name='A9' align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2688px; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>客户经理建议</td>
+							<td rowspan='1' colspan='8' name='C9'
+								align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2336px; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input type="checkbox" name="khjljy" value="1" style="width: 25px;height: 14px;"
+								#if($!dzjy.khjljy !=0 )checked="checked" #end>&nbsp;建议通过 &nbsp;&nbsp;&nbsp;
+					  			<input type="checkbox" name="khjljy" style="width: 25px;height: 14px;"
+								#if($!dzjy.khjljy == 0)checked="checked" #end value="0">&nbsp;建议拒绝，原因： <input type="text" id="reason1" style="width: 150px;height: 14px;" value ="$!dzjy.reason1"></td>
+						</tr>
+						<tr>
+							<td rowspan='3' colspan='2' name='A10' align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2688px; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #d0d7e5 1px; border-left: solid #000000 1px;'>建议通过内容</td>
+							<td name='C10' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2336px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>金额</td>
+							<td name='D10'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2720px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="D10" name="D10" value="$!dzjy.jytg_je" />&nbsp;</td>
+							<td name='E10' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2688px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>期限</td>
+							<td name='F10'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2560px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="F10" name="F10" value="$!dzjy.jytg_qx" />&nbsp;</td>
+							<td name='G10' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3232px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>适用产品</td>
+							<td name='H10'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2464px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="H10" name="H10" value="$!dzjy.jytg_cp" />&nbsp;</td>
+							<td name='I10' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>利率</td>
+							<td name='J10'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2816px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="J10" name="J10" value="$!dzjy.jytg_lv" />&nbsp;</td>
+						</tr>
+						<tr>
+							<td name='C11' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2336px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>每月还款额</td>
+							<td name='D11'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2720px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="D11" name="D11" value="$!dzjy.jytg_myhk" />&nbsp;</td>
+							<td name='E11' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2688px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>月还款占月可支比例</td>
+							<td name='F11' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2560px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="F11" name="F11" value="$!dzjy.jytg_bl" />&nbsp;</td>
+							<td name='G11' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3232px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>建议共同借款人</td>
+							<td name='H11' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="H11" name="H11" value="$!dzjy.jytg_jkr" />&nbsp;</td>
+							<td name='I11' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>与客户的关系</td>
+							<td name='J11'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2816px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="J11" name="J11" value="$!dzjy.jytg_khgx" />&nbsp;</td>
+						</tr>
+						<tr>
+							<td name='C12' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2336px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>建议担保人</td>
+							<td name='D12'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2720px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="D12" name="D12" value="$!dzjy.jytg_dbr" />&nbsp;</td>
+							<td name='E12' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2688px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>与客户的关系</td>
+							<td name='F12'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2560px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="F12" name="F12" value="$!dzjy.jytg_dbrgx" />&nbsp;</td>
+							<td name='G12' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3232px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>建议抵质押物</td>
+							<td name='H12'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="H12" name="H12" value="$!dzjy.jytg_dy" />&nbsp;</td>
+							<td name='I12' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>物权人</td>
+							<td name='J12'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2816px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="J12" name="J12" value="$!dzjy.jytg_wq" />&nbsp;</td>
+						</tr>
+						<tr>
+							<td rowspan='1' colspan='2' name='A13' align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2688px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>主办客户经理签字</td>
+							<td rowspan='1' colspan='3' name='C13'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2336px; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="C13" name="C13" value="$!dzjy.zbkhjl_sign" />&nbsp;</td>
+							<td name='F13' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2560px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>协办客户经理签字</td>
+							<td rowspan='1' colspan='2' name='G13'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3232px; color: #000000; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="G13" name="G13" value="$!dzjy.xbkhjl_sign" />&nbsp;</td>
+							<td name='I13' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2592px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>日
+								期</td>
+							<td name='J13'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2816px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="J13" name="J13" value="$!dzjy.rq" />&nbsp;</td>
+						</tr>
+	<!---------------------------------------------个人信息------------------- -->
+						<tr>
+							<td rowspan='1' colspan='10' name='A14' align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2688px; background-color: #C0C0C0; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #d0d7e5 1px; border-left: solid #000000 1px;'>申请人生存状况——个人信息</td>
+						</tr>
+						<tr>
+							<td  name='A15' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2688px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>申请人姓名</td>
+							<td rowspan='1' colspan='2' name='B15'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 1056px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"   type="text" id="B15" name="B15" value="$!dzjy.sqr_xm" /></td>
+							<td name='D15' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2720px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>性别</td>
+							<td name='E15'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2688px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+							<input class="rinpsty"  type="text" id="E15" name="E15" value="$!dzjy.sqr_sex" />&nbsp;</td>
+							<td name='F15' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2560px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>身份证号码</td>
+							<td rowspan='1' colspan='2' name='G15'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3232px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="G15" name="G15" value="$!dzjy.sqr_zjhm" /></td>
+							<td name='I15' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>婚姻状况</td>
+							<td name='J15'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2816px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+							<input class="rinpsty"   type="text" id="J15" name="J15" value="$!dzjy.sqr_hy" />&nbsp;</td>
+						</tr>
+						<tr>
+							<td name='A16' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2688px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>户籍所在地</td>
+							<td rowspan='1' colspan='2' name='B16'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 1056px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+							<input class="rinpsty"  type="text" id="B16" name="B16" value="$!dzjy.sqr_hjd" />&nbsp;</td>
+							<td name='D16' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2720px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>户籍详细地址</td>
+							<td rowspan='1' colspan='6' name='E16'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2688px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<textarea  id="E16" name="E16"  cols="50">$!dzjy.sqr_hjxx</textarea>&nbsp;</td>
+						</tr>
+						<tr>
+							<td name='A17' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2688px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>最高学位学历</td>
+							<td rowspan='1' colspan='2' name='B17'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 1056px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="B17" name="B17" value="$!dzjy.sqr_xl" />&nbsp;</td>
+							<td name='D17' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2720px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>移动电话</td>
+							<td name='E17'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2688px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"   type="text" id="E17" name="E17" value="$!dzjy.sqr_mobile" />&nbsp;</td>
+							<td name='F17' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2560px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>家庭地址</td>
+							<td rowspan='1' colspan='4' name='G17'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3232px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<textarea  id="G17" name="G17"  cols="50">$!dzjy.sqr_address</textarea>&nbsp;</td>
+						</tr>
+						<tr>
+							<td rowspan='3' colspan='1' name='A18' align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2688px; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>居住环境</td>
+							<td name='B18' align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 1056px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>类型</td>
+							<td name='C18'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2336px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"   type="text" id="C18" name="C18" value="$!dzjy.jzhj_type" />&nbsp;</td>
+							<td rowspan='1' colspan='3' name='D18'
+								align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2720px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input type="checkbox" name="jzhj_type_select" value="1" style="width: 25px;height: 14px;"
+								#if($!dzjy.jzhj_type_select == 1)checked="checked" #end>&nbsp;1.自有&nbsp;&nbsp;&nbsp;
+					  			<input type="checkbox" name="jzhj_type_select" style="width: 25px;height: 14px;"
+								#if($!dzjy.jzhj_type_select == 2)checked="checked" #end value="2">&nbsp;2.自建房
+								<input type="checkbox" name="jzhj_type_select" style="width: 25px;height: 14px;"
+								#if($!dzjy.jzhj_type_select == 3)checked="checked" #end value="3">&nbsp;3.住经营场所
+								<input type="checkbox" name="jzhj_type_select" style="width: 25px;height: 14px;"
+								#if($!dzjy.jzhj_type_select == 4)checked="checked" #end value="4">&nbsp;4.租住（合同期限
+								<input type="text" id ="jzhj_type4_qx" name="jzhj_type4_qx" style="width: 25px;height: 14px;" value ="$!dzjy.jzhj_type4_qx">租金
+								<input type="text" id ="jzhj_type4_zj" name="demandCredit" style="width: 25px;height: 14px;" value ="$!dzjy.jzhj_type4_zj">元）
+								<input type="checkbox" name="jzhj_type_select" style="width: 25px;height: 14px;"
+								#if($!dzjy.jzhj_type_select == 5)checked="checked" #end value="5">&nbsp;5.其他<input type="text" id = "jzhj_type_other" name="jzhj_type_other" style="width: 50px;height: 14px;" value ="$!dzjy.jzhj_type_other"></td>
+							<td name='G18' align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3232px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>住房面积</td>
+							<td name='H18'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2464px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="H18" name="H18" value="$!dzjy.jzhj_mj1" />&nbsp;</td>
+							<td name='I18'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="I18" name="I18" value="$!dzjy.jzhj_mj2" />&nbsp;</td>
+							<td name='J18'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2816px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="J18" name="J18" value="$!dzjy.jzhj_mj3" />&nbsp;</td>
+						</tr>
+						<tr>
+							<td rowspan='1' colspan='2' name='B19' align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 1056px; border-top: solid #d0d7e5 1px; border-right: solid #000000 1px; border-bottom: solid #d0d7e5 1px; border-left: solid #000000 1px;'>住房装修情况</td>
+							<td name='D19'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2720px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #d0d7e5 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="D19" name="D19" value="$!dzjy.jzhj_zf" />&nbsp;</td>
+							<td rowspan='1' colspan='2' name='E19'
+								align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2688px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #d0d7e5 1px; border-left: solid #000000 1px;'>
+								<input type="checkbox" name="jzhj_zf_select" value="1" style="width: 25px;height: 14px;"
+								#if($!dzjy.jzhj_zf_select == 1)checked="checked" #end>&nbsp;1.好&nbsp;&nbsp;&nbsp;
+					  			<input type="checkbox" name="jzhj_zf_select" style="width: 25px;height: 14px;"
+								#if($!dzjy.jzhj_zf_select == 2)checked="checked" #end value="2">&nbsp;2.中
+								<input type="checkbox" name="jzhj_zf_select" style="width: 25px;height: 14px;"
+								#if($!dzjy.jzhj_zf_select == 3)checked="checked" #end value="3">&nbsp;3.差
+								<input type="checkbox" name="jzhj_zf_select" style="width: 25px;height: 14px;"
+								#if($!dzjy.jzhj_zf_select == 4)checked="checked" #end value="4">&nbsp;4.其他</td>
+							<td name='G19' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3232px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #d0d7e5 1px; border-left: solid #000000 1px;'>房间格局</td>
+							<td rowspan='1' colspan='3' name='H19'
+								align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2464px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #d0d7e5 1px; border-left: solid #000000 1px;'>
+								<input type="text" id ="jzhj_gj_room" name="jzhj_gj_room" style="width: 50px;height: 14px;" value="$!dzjy.jzhj_gj_room" >室<input type="text" id ="jzhj_gj_ting" name="jzhj_gj_ting" value="$!dzjy.jzhj_gj_ting" style="width: 50px;height: 14px;">厅</td>
+						</tr>
+						<tr>
+							<td rowspan='1' colspan='2' name='B20' align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 1056px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>居住起始年月</td>
+							<td rowspan='1' colspan='3' name='D20'
+								align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2720px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="D20" name="D20" value="$!dzjy.jzhj_jzrq" />&nbsp;</td>
+							<td name='G20' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3232px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>居住场所<br>调查方式
+							</td>
+							<td name='H20'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2464px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="H20" name="H20" value="$!dzjy.jzhj_dzfs" />&nbsp;</td>
+							<td rowspan='1' colspan='2' name='I20' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input type="checkbox" name="jzhj_select" value="1" style="width: 25px;height: 14px;"
+								#if($!dzjy.jzhj_select ==1 )checked="checked" #end>&nbsp;1.现场调查&nbsp;&nbsp;&nbsp;
+					  			<input type="checkbox" name="jzhj_select" style="width: 25px;height: 14px;"
+								#if($!dzjy.jzhj_select == 2)checked="checked" #end value="2">&nbsp;2.外围调查
+								<input type="checkbox" name="jzhj_select" style="width: 25px;height: 14px;"
+								#if($!dzjy.jzhj_select == 3)checked="checked" #end value="3">&nbsp;3.未调查
+							</td>
+						</tr>
+						<tr>
+							<td name='A21' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2688px; border-top: solid #d0d7e5 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>自有房产数量</td>
+							<td name='B21'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 1056px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="B21" name="B21" value="$!dzjy.zyfc_num" />&nbsp;</td>
+							<td name='C21' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2336px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>按揭数量</td>
+							<td name='D21'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2720px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="D21" name="D21" value="$!dzjy.aj_num" />&nbsp;</td>
+							<td name='E21' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2688px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>房产购买日期</td>
+							<td name='F21'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2560px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="F21" name="F21" value="$!dzjy.fcgmrq" />&nbsp;</td>
+							<td name='G21' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3232px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>购买价格</td>
+							<td name='H21'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2464px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="H21" name="H21" value="$!dzjy.fcgmjg" />&nbsp;</td>
+							<td name='I21' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>面积</td>
+							<td name='J21'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2816px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="J21" name="J21" value="$!dzjy.fcmj" />&nbsp;</td>
+						</tr>
+						<tr>
+							<td name='A22' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2688px; border-top: solid #d0d7e5 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>按揭贷款余额</td>
+							<td rowspan='1' colspan='2' name='B22'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 1056px; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="A22" name="A22" value="$!dzjy.ajdkye" />&nbsp;</td>
+							<td name='D22' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2720px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>地址</td>
+							<td rowspan='1' colspan='6' name='E22'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2688px; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<textarea  id="D22" name="D22"  cols="50">$!dzjy.address</textarea>&nbsp;</td>
+						</tr>
+						<tr>
+							<td name='A23' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2688px; border-top: solid #d0d7e5 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>自有车辆数量</td>
+							<td name='B23'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 1056px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="B23" name="B23" value="$!dzjy.zycl_num" />&nbsp;</td>
+							<td name='C23' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2336px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>贷款数量</td>
+							<td name='D23'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2720px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="D23" name="D23" value="$!dzjy.dk_num" />&nbsp;</td>
+							<td name='E23' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2688px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>购买日期</td>
+							<td name='F23'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2560px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="F23" name="F23" value="$!dzjy.gmrq" />&nbsp;</td>
+							<td name='G23' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3232px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>购买价格</td>
+							<td name='H23' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2464px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="H23" name="H23" value="$!dzjy.gmjg" />&nbsp;</td>
+							<td name='I23' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>车型/车牌</td>
+							<td name='J23'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2816px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="J23" name="J23" value="$!dzjy.cp" />&nbsp;</td>
+						</tr>
+						<tr>
+							<td name='A24' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2688px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>除经营生意外有否其他工作</td>
+							<td name='B24'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 1056px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="B24" name="B24" value="$!dzjy.other_work" />&nbsp;</td>
+							<td name='C24' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2336px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>其他工作年收入</td>
+							<td name='D24'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2720px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="D24" name="D24" value="$!dzjy.other_income" />&nbsp;</td>
+							<td name='E24' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2688px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>配偶姓名</td>
+							<td name='F24'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2560px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="F24" name="F24" value="$!dzjy.po_name" />&nbsp;</td>
+							<td name='G24' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3232px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>配偶身份证号码</td>
+							<td rowspan='1' colspan='3' name='H24'
+								align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2464px; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="H24" name="H24" value="$!dzjy.po_code" />&nbsp;</td>
+						</tr>
+						<tr>
+							<td name='A25' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2688px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>配偶移动电话</td>
+							<td rowspan='1' colspan='2' name='B25'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 1056px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="B25" name="B25" value="$!dzjy.po_mobile" />&nbsp;</td>
+							<td name='D25' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2720px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>配偶年收入</td>
+							<td name='E25'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2688px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="E25" name="E25" value="$!dzjy.po_yicome" />&nbsp;</td>
+							<td name='F25' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2560px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>配偶工作单位及地址</td>
+							<td rowspan='1' colspan='4' name='G25'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3232px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<textarea  id="G25" name="G25"  cols="50">$!dzjy.po_unit</textarea>&nbsp;</td>
+						</tr>
+						<tr>
+							<td rowspan='2' colspan='1' name='A26' align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2688px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>个人银行账户数</td>
+							<td rowspan='2' colspan='1' name='B26'
+								align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 1056px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input type="text" id="B26" name="B26" value="$!dzjy.p_bank_numm" />&nbsp;</td>
+							<td name='C26' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2336px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>开户行1</td>
+							<td rowspan='1' colspan='2' name='D26'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2720px; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="D26" name="D26" value="$!dzjy.khh_1" />&nbsp;</td>
+							<td name='F26' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2560px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>账号</td>
+							<td rowspan='1' colspan='2' name='G26'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3232px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="G26" name="G26" value="$!dzjy.zh1" />&nbsp;</td>&nbsp;</td>
+							<td name='I26' align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>非经营总资产</td>
+							<td name='J26'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2816px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="J26" name="J26" value="$!dzjy.fzc" />&nbsp;</td>
+						</tr>
+						<tr>
+							<td name='C27' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2336px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>开户行2</td>
+							<td rowspan='1' colspan='2' name='D27'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2720px; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="D27" name="D27" value="$!dzjy.khh_2" />&nbsp;</td>
+							<td name='F27' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2560px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>账号</td>
+							<td rowspan='1' colspan='2' name='G27'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3232px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="G27" name="G27" value="$!dzjy.zh2" />&nbsp;</td>
+							<td name='I27' align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>非经营总负债</td>
+							<td name='J27' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2816px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty"  type="text" id="J27" name="J27" value="$!dzjy.fzfz" />&nbsp;</td>
+						</tr>
+					</table>
+				</div>
+			</form>
+			<div class="submit">
+        <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
+        <input type="button" onclick="returnClick();" value="#i18n('button.cancel')" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout = new FormsLayout("formsId");
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	#parse ("customer/customerInforInsert/customerInforCreate_validation.js")
+	
+	$(document).ready(function() {
+		//save
+		$("#id_save_button").click(function() {
+			//申请人姓名
+			var url = "${modulePath}/addJy.json";
+			$.ajax({
+				url : url,
+				type : "get",
+				data : {
+					"sqrxm" : $("#B3").val(),//申请人姓名
+					"sqje"  : $("#E3").val(),
+					"dkyt"  : $("#G3").val(),
+					"sqqx"  : $("#B4").val(),
+					"xmzje" : $("#E4").val(),
+					"zyzj"  : $("#G4").val(),
+					"zyzjly": $("#I4").val(),
+					
+					"change": $("#C6").val(),
+					"fxfx_ys": $("#C7").val(),
+					"fxfx_ns": $("#G7").val(),
+					"fxfx_lxfx": $("#D8").val(),
+					"khjljy": $('input[name="khjljy"]:checked').val(), //建议通过或拒绝
+					"reason1": $('#reason1').val(), //原因
+					
+					"jytg_je": $("#D10").val(), //建议通过内容
+					"jytg_qx": $("#F10").val(), //
+					"jytg_cp": $("#H10").val(), //
+					"jytg_lv": $("#J10").val(), //
+					"jytg_myhk": $("#D11").val(), //
+					"jytg_bl": $("#F11").val(), //
+					"jytg_jkr": $("#H11").val(), //
+					"jytg_khgx": $("#J11").val(), //
+					"jytg_dbr": $("#D12").val(), //
+					"jytg_dbrgx": $("#F12").val(), //
+					"jytg_dy": $("#H12").val(), //
+					"jytg_wq": $("#J12").val(), //
+					
+					"zbkhjl_sign": $("#C13").val(),//主办客户经理签字
+					"xbkhjl_sign": $("#G13").val(),
+					"rq": $("#J13").val(),
+					
+					"sqr_xm": $("#B15").val(),
+					"sqr_sex": $("#E15").val(),
+					"sqr_zjhm": $("#G15").val(),
+					"sqr_hy": $("#J15").val(),
+					"sqr_hjd": $("#B16").val(),
+					"sqr_hjxx": $("#E16").val(),
+					"sqr_xl": $("#B17").val(),
+					"sqr_mobile": $("#E17").val(),
+					"sqr_address": $("#G17").val(),//家庭地址
+					
+					
+					"jzhj_type": $("#C18").val(),//类型
+					"jzhj_type4_qx": $("#jzhj_type4_qx").val(),//
+					"jzhj_type4_zj": $("#jzhj_type4_zj").val(),
+					"jzhj_type_other": $("#jzhj_type_other").val(),//
+					"jzhj_mj1": $("#H18").val(),//
+					"jzhj_mj2": $("#I18").val(),//
+					"jzhj_mj3": $("#J18").val(),//
+					"jzhj_zf": $("#D19").val(),//
+					"jzhj_zf_select": $('input[name="jzhj_zf_select"]:checked').val(),//
+					"jzhj_gj": "",//
+					"jzhj_gj_room": $('#jzhj_gj_room').val(),
+					"jzhj_gj_ting": $('#jzhj_gj_ting').val(),
+					"jzhj_jzrq": $("#D20").val(),
+					"jzhj_dzfs": $("#H20").val(),
+					"jzhj_select": $('input[name="jzhj_select"]:checked').val(),
+					
+					"zyfc_num": $("#B21").val(), //
+					"aj_num": $("#D21").val(), //
+					"fcgmrq": $("#F21").val(), //
+					"fcgmjg": $("#H21").val(), //
+					"fcmj": $("#J21").val(), //    
+					"ajdkye": $("#A22").val(), //
+					"address": $("#D22").val(), //
+					"zycl_num": $("#B23").val(), //
+					"dk_num": $("#D23").val(), //
+					"gmrq": $("#F23").val(), //
+					"gmjg": $("#H23").val(), //
+					"cp": $("#J23").val(), //
+					"other_work": $("#B24").val(), //  		
+					"other_income": $("#D24").val(), //
+					"po_name": $("# F24").val(), //
+					"po_code": $("#H24").val(), //
+					"po_mobile": $("#B25").val(), //
+					"po_yicome": $("#E25").val(), //
+					"po_unit": $("#G25").val(), //
+					"p_bank_numm": $("#B26").val(), //
+					"khh_1": $("#D26").val(), //
+					"zh1": $("#G26").val(), //
+					"fzc": $("#J26").val(), //
+					"khh_2": $("#D27").val(), //
+					"zh2": $("#G27").val(), //   
+					"fzfz": $("#J27").val(),
+					"customerId": $("#customerId").val(),
+					"productId": $("#productId").val(),
+					"jzhj_type_select" :$('input[name="jzhj_type_select"]:checked').val()
+				      },
+				success : function(data) {
+					if (data.success) {
+						topWin.Dialog.message("保存成功！");
+					} else {
+						topWin.Dialog.message(data.message);
+					}
+				}
+			});
+		});
+		
+	});
+	
+	//取消
+	function returnClick(){
+		 window.location.href= contextPath + "/customer/basiccustomerinforUpdate/browse.page" ;
+	}
+  </script>
+   <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
+  
+</body>
+#parse ("common/iframe_page_footer.htm")

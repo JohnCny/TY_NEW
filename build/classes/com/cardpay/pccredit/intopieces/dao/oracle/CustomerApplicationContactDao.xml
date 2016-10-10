@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.intopieces.dao.CustomerApplicationContactDao" >
+  <resultMap id="BaseResultMap" type="com.cardpay.pccredit.intopieces.model.CustomerApplicationContact" >
+    <id column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="MAIN_APPLICATION_FORM_ID" property="mainApplicationFormId" jdbcType="DECIMAL" />
+    <result column="CONTACT_NAME" property="contactName" jdbcType="VARCHAR" />
+    <result column="SEX" property="sex" jdbcType="VARCHAR" />
+    <result column="RELATIONSHIP_WITH_APPLICANT" property="relationshipWithApplicant" jdbcType="VARCHAR" />
+    <result column="UNIT_NAME" property="unitName" jdbcType="VARCHAR" />
+    <result column="DEPARTMENT" property="department" jdbcType="VARCHAR" />
+    <result column="CONTACT_PHONE" property="contactPhone" jdbcType="VARCHAR" />
+    <result column="CELL_PHONE" property="cellPhone" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, MAIN_APPLICATION_FORM_ID, CONTACT_NAME, SEX, RELATIONSHIP_WITH_APPLICANT, UNIT_NAME, 
+    DEPARTMENT, CONTACT_PHONE, CELL_PHONE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from CUSTOMER_APPLICATION_CONTACT
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from CUSTOMER_APPLICATION_CONTACT
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="com.cardpay.pccredit.intopieces.model.CustomerApplicationContact" >
+    insert into CUSTOMER_APPLICATION_CONTACT (ID, MAIN_APPLICATION_FORM_ID, CONTACT_NAME, 
+      SEX, RELATIONSHIP_WITH_APPLICANT, UNIT_NAME, 
+      DEPARTMENT, CONTACT_PHONE, CELL_PHONE
+      )
+    values (#{id,jdbcType=DECIMAL}, #{mainApplicationFormId,jdbcType=DECIMAL}, #{contactName,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=VARCHAR}, #{relationshipWithApplicant,jdbcType=VARCHAR}, #{unitName,jdbcType=VARCHAR}, 
+      #{department,jdbcType=VARCHAR}, #{contactPhone,jdbcType=VARCHAR}, #{cellPhone,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cardpay.pccredit.intopieces.model.CustomerApplicationContact" >
+    insert into CUSTOMER_APPLICATION_CONTACT
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="mainApplicationFormId != null" >
+        MAIN_APPLICATION_FORM_ID,
+      </if>
+      <if test="contactName != null" >
+        CONTACT_NAME,
+      </if>
+      <if test="sex != null" >
+        SEX,
+      </if>
+      <if test="relationshipWithApplicant != null" >
+        RELATIONSHIP_WITH_APPLICANT,
+      </if>
+      <if test="unitName != null" >
+        UNIT_NAME,
+      </if>
+      <if test="department != null" >
+        DEPARTMENT,
+      </if>
+      <if test="contactPhone != null" >
+        CONTACT_PHONE,
+      </if>
+      <if test="cellPhone != null" >
+        CELL_PHONE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=DECIMAL},
+      </if>
+      <if test="mainApplicationFormId != null" >
+        #{mainApplicationFormId,jdbcType=DECIMAL},
+      </if>
+      <if test="contactName != null" >
+        #{contactName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="relationshipWithApplicant != null" >
+        #{relationshipWithApplicant,jdbcType=VARCHAR},
+      </if>
+      <if test="unitName != null" >
+        #{unitName,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="contactPhone != null" >
+        #{contactPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="cellPhone != null" >
+        #{cellPhone,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cardpay.pccredit.intopieces.model.CustomerApplicationContact" >
+    update CUSTOMER_APPLICATION_CONTACT
+    <set >
+      <if test="mainApplicationFormId != null" >
+        MAIN_APPLICATION_FORM_ID = #{mainApplicationFormId,jdbcType=DECIMAL},
+      </if>
+      <if test="contactName != null" >
+        CONTACT_NAME = #{contactName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        SEX = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="relationshipWithApplicant != null" >
+        RELATIONSHIP_WITH_APPLICANT = #{relationshipWithApplicant,jdbcType=VARCHAR},
+      </if>
+      <if test="unitName != null" >
+        UNIT_NAME = #{unitName,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        DEPARTMENT = #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="contactPhone != null" >
+        CONTACT_PHONE = #{contactPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="cellPhone != null" >
+        CELL_PHONE = #{cellPhone,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cardpay.pccredit.intopieces.model.CustomerApplicationContact" >
+    update CUSTOMER_APPLICATION_CONTACT
+    set MAIN_APPLICATION_FORM_ID = #{mainApplicationFormId,jdbcType=DECIMAL},
+      CONTACT_NAME = #{contactName,jdbcType=VARCHAR},
+      SEX = #{sex,jdbcType=VARCHAR},
+      RELATIONSHIP_WITH_APPLICANT = #{relationshipWithApplicant,jdbcType=VARCHAR},
+      UNIT_NAME = #{unitName,jdbcType=VARCHAR},
+      DEPARTMENT = #{department,jdbcType=VARCHAR},
+      CONTACT_PHONE = #{contactPhone,jdbcType=VARCHAR},
+      CELL_PHONE = #{cellPhone,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+</mapper>

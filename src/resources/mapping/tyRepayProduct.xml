@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="GBK"?>
+
+<resultMap>
+    <!-- <result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/> -->
+	<result column="productCode" jdbcType="VARCHAR" index="2" />
+
+	<result column="productName" jdbcType="VARCHAR" index="1" />
+
+</resultMap>

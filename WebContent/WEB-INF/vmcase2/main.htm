@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0040)http://172.17.0.27:8080/sample/main.page -->
+<html xmlns="http://www.w3.org/1999/xhtml" class="hb-loaded">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/css.css" />
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/jquery-ui-1.10.3.custom.css" />
+<script type="text/javascript" src="${contextPath}/common/js/common/json2.js"></script>
+<script src='${contextPath}/common/js/common/jquery.min.js'></script>
+<script src="${contextPath}/common/js/common/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="${contextPath}/common/js/common/common.js"></script>
+<script src="${contextPath}/common/js/common/dialog.js"></script>
+<script src='${contextPath}/common/js/common/lhgcalendar.js'></script>
+<script type="text/javascript" src="${uicasePath}/js/common/windowInfo.js"></script>
+<script type="text/javascript" src="${uicasePath}/js/common/menu.js"></script>
+<title>#i18n("window.title")</title>
+</head>
+#parse ("common/main_header.htm")
+
+<div class="content" style="background-color: #f5f5f5;">
+  #set ($menuList = $session.getAttribute("menuList")) 
+  #set($num=0)
+  <div class="left_nav" id="leftNav" style="height: 500px;overflow:auto"> 
+    <div class="sidebar">
+      <ul class="sidelist">
+        #foreach($menu in $!menuList) 
+	        #if($menu.layer==2 && $menu.url && $menu.url != "" )
+	        #if($menu.id == "020000" )
+        <li class="category1 select">
+        <a href="${contextPath}$menu.url" target="backStageManagement" style="*padding-left: 0px; font-size: 14px;">
+          <span class=""><img src="${uicasePath}/$menu.img" />
+         $menu.title</span></a>
+        </li>
+           #else
+         <li class="category1">
+         <a href="${contextPath}$menu.url" target="backStageManagement" style="*padding-left: 0px; font-size: 14px;">
+          <span class=""><img src="${uicasePath}/$menu.img" />
+         $menu.title</span></a>
+        </li>
+          #end  
+	        #elseif($menu.layer==2) 
+		        #if($num==1)
+			      </ul>
+			      </li>
+			      #set($num=0) 
+		        #end
+		        <li class="category">
+		        <span class="list">$menu.title</span> 
+		        #if($num==0)
+		        <ul>
+		        <div>
+		          #set($num=1) 
+		          #end 
+	          #else
+		          <li class="sub">
+		            <a href="${contextPath}$menu.url" target="backStageManagement" title='$menu.title'>$menu.title</a>
+		          </li>
+	          #end 
+          #end 
+          
+         #if($num==1)
+         </div>
+	        </ul>
+	        #set($num=0) 
+        #end
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="content_main" style="background-color: #fff;">
+    <div class="contentinner_ifram">
+      <iframe id="backStageManagement" width="100%" height="556" frameborder="0" marginheight="0" marginwidth="0"
+        src="${contextPath}/home.page" name="backStageManagement" allowtransparency="true"
+        onload="this.height=this.contentWindow.document.body.scrollHeight"
+        style="height: 510px; width: 1146px; overflow: visible;"></iframe>
+    </div>
+  </div>
+</div>
+
+#parse ("common/footer.htm")
+
+<script type="text/javascript">
+	var menu = new ULMenu("#leftNav");
+	var currentWindow = new WindowInfo(menu);
+	$(document).ready(function() {
+		currentWindow.init();
+		var weekDate = new Date();
+		var weekDayTextStr = "星期";
+		weekDayTextStr += "天一二三四五六".charAt(weekDate.getDay());
+		document.getElementById("weekDayText").innerHTML = weekDayTextStr;
+
+		showDate();
+	
+	})
+</script>
+
+</body>
+</html>

@@ -1,0 +1,201 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户经理“灵活金”透支情况统计（单位：万元）</div>
+      </div>
+      
+      <div class="inquiry">
+<!-----------搜索------------------------------------------->  
+  
+        <div class="search_tag"></div>
+        <div class="search">
+          <form id="submitForm">
+            <ul>
+              <li>
+                <span>产品：<select id="productId" name="productId">
+	                   <option value="">请选择...</option>
+	                   #foreach($!product in $!result.items)
+							<option value="$!product.id" #if($!product.id== $!filter.productId) selected #end>
+								$!product.productName
+							</option>
+						#end
+	                </select>
+				</span>
+              </li>
+              <li>
+                <span>基准日期：<input type="text" name="basicDate" value='$!date.format("yyyy-MM-dd",$!filter.basicDate)' onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span>
+              </li>
+              <li>
+                <span>报表日期：<input type="text" name="reportDate" value='$!date.format("yyyy-MM-dd",$!filter.reportDate)' onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span>
+              </li>
+              
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="筛选" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
+       
+		<!-------------- 信息显示 ------------------------------------->      
+		<div id="topDiv" class="inquiry_list inquiry_top">
+           <table> 
+            <colgroup>
+              <col width="60"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+            </colgroup>
+            <tr class="title" align="center">
+              <th nowrap="nowrap">序号</th>
+              <th nowrap="nowrap">客户经理</th>
+              
+              <th nowrap="nowrap">基准日期</th>
+              <th nowrap="nowrap">授信总额度</th>
+              <th nowrap="nowrap">激活卡总授信额度</th>
+              <th nowrap="nowrap">透支本金余额</th>
+              <th nowrap="nowrap">透支总余额</th>
+              <th nowrap="nowrap">年日均透支本金</th>
+              <th nowrap="nowrap">年日均透支总余额</th>
+              <th nowrap="nowrap">不良透支本金</th>
+              <th nowrap="nowrap">不良率</th>
+              
+              <th nowrap="nowrap">报表日期</th>
+              <th nowrap="nowrap">授信总额度</th>
+              <th nowrap="nowrap">激活卡总授信额度</th>
+              <th nowrap="nowrap">透支本金余额</th>
+              <th nowrap="nowrap">透支总余额</th>
+              <th nowrap="nowrap">年日均透支本金</th>
+              <th nowrap="nowrap">年日均透支总余额</th>
+              <th nowrap="nowrap">不良透支本金</th>
+              <th nowrap="nowrap">不良率</th>
+              
+              <th nowrap="nowrap">授信总额度净增</th>
+              <th nowrap="nowrap">激活卡总授信额度净增</th>
+              <th nowrap="nowrap">透支本金余额净增</th>
+              <th nowrap="nowrap">透支总余额净增</th>
+              <th nowrap="nowrap">年日均透支本金净增</th>
+              <th nowrap="nowrap">年日均透支总余额净增</th>
+              <th nowrap="nowrap">不良透支本金净增</th>
+              <th nowrap="nowrap">不良率变动</th>
+            </tr>
+          </table>
+        </div>
+        
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="60"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="110"/>
+            </colgroup>
+            #foreach ($acctStatistical in $list)
+            	<tr id="$!acctStatistical.id">
+	              <td nowrap="nowrap">$!acctStatistical.rowIndex</td>
+	              <td nowrap="nowrap">$!acctStatistical.name</td>
+	              
+	              <td nowrap="nowrap">$!date.format("yyyy-MM-dd",$!filter.basicDate)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!acctStatistical.bCreditExtensionAmount)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!acctStatistical.bActivateExtensionAmount)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!acctStatistical.bOverdraftPrincipal)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!acctStatistical.bOverdraftAmount)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!acctStatistical.bOverdraftPrincipalAvg)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!acctStatistical.bOverdraftAmountAvg)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!acctStatistical.bBadOverdraftPrincipal)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!acctStatistical.bBadRate)%</td>
+	              
+	              <td nowrap="nowrap">$!date.format("yyyy-MM-dd",$!filter.reportDate)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!acctStatistical.rCreditExtensionAmount)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!acctStatistical.rActivateExtensionAmount)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!acctStatistical.rOverdraftPrincipal)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!acctStatistical.rOverdraftAmount)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!acctStatistical.rOverdraftPrincipalAvg)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!acctStatistical.rOverdraftAmountAvg)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!acctStatistical.rBadOverdraftPrincipal)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!acctStatistical.rBadRate)%</td>
+	              
+	              <td nowrap="nowrap">$format.formatNumber(2, $!acctStatistical.addCreditExtensionAmount)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!acctStatistical.addActivateExtensionAmount)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!acctStatistical.addOverdraftPrincipal)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!acctStatistical.addOverdraftAmount)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!acctStatistical.addOverdraftPrincipalAvg)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!acctStatistical.addOverdraftAmountAvg)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!acctStatistical.addBadOverdraftPrincipal)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!acctStatistical.addBadRate)%</td>
+	            </tr>
+            #end
+          </table>
+        </div>  
+      </div>		
+        <div class="clear"></div>
+      </div>
+    </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.createUrl = "${modulePath}/create.page";
+		opsObj.changeUrl = "${modulePath}/change.page";
+		opsObj.displayUrl = "${modulePath}/display.page";
+		opsObj.browseUrl = "${modulePath}/browse.page";
+
+		prepareOperations(opsObj);
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="GBK"?>
+
+<resultMap>
+    <!-- <result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/> -->
+	<result column="YWBH" jdbcType="VARCHAR" index="1" />
+
+	<result column="KHH" jdbcType="VARCHAR" index="2" />
+
+	<result column="ZHTBH" jdbcType="VARCHAR" index="3" />
+
+	<result column="JJH" jdbcType="VARCHAR" index="4" />
+
+	<result column="JZLL" jdbcType="VARCHAR" index="5" />
+
+	<result column="SFBL" jdbcType="VARCHAR" index="6" />
+
+	<result column="HTLL" jdbcType="VARCHAR" index="7" />
+
+	<result column="TKBH" jdbcType="VARCHAR" index="8" />
+
+	<result column="FFJE" jdbcType="VARCHAR" index="9" />
+
+	<result column="TKYT" jdbcType="VARCHAR" index="10" />
+
+	<result column="JKRQ" jdbcType="VARCHAR" index="11" />
+
+	<result column="DQRQ" jdbcType="VARCHAR" index="12" />
+
+	<result column="DKKM" jdbcType="VARCHAR" index="13" />
+
+	<result column="XGRY" jdbcType="VARCHAR" index="14" />
+
+	<result column="XGSJ" jdbcType="VARCHAR" index="15" />
+
+	<result column="DKQX" jdbcType="VARCHAR" index="17" />
+
+	<result column="ZQDQR" jdbcType="VARCHAR" index="18" />
+
+	<result column="SFZQ" jdbcType="VARCHAR" index="19" />
+
+	<result column="SFJQ" jdbcType="VARCHAR" index="20" />
+
+	<result column="DKZL" jdbcType="VARCHAR" index="21" />
+
+	<result column="DKFS" jdbcType="VARCHAR" index="22" />
+
+	<result column="BLJG" jdbcType="VARCHAR" index="23" />
+
+	<result column="SFZF" jdbcType="VARCHAR" index="24" />
+	
+	<result column="KHJL" jdbcType="VARCHAR" index="25" />
+	
+	<result column="ZQHTH" jdbcType="VARCHAR" index="26" />
+
+	<result column="DKZH" jdbcType="VARCHAR" index="27" />
+	<result column="SFJZ" jdbcType="VARCHAR" index="28" />
+	<result column="DKFL" jdbcType="VARCHAR" index="29" />
+	<result column="DKLX" jdbcType="VARCHAR" index="30" />
+	<result column="JJBH" jdbcType="VARCHAR" index="31" />
+	<result column="CPMC" jdbcType="VARCHAR" index="32" />
+	<result column="DKXZ" jdbcType="VARCHAR" index="33" />
+	<result column="DKYT" jdbcType="VARCHAR" index="34" />
+	<result column="DKTX" jdbcType="VARCHAR" index="35" />
+	<result column="LLZL" jdbcType="VARCHAR" index="36" />
+	<result column="JXFS" jdbcType="VARCHAR" index="37" />
+	<result column="HKLY" jdbcType="VARCHAR" index="38" />
+	<result column="HKFS" jdbcType="VARCHAR" index="39" />
+	<result column="JQRQ" jdbcType="VARCHAR" index="40" />
+	<result column="YWLX" jdbcType="VARCHAR" index="41" />
+	<result column="ZQRQ" jdbcType="VARCHAR" index="42" />
+	<result column="HBZL" jdbcType="VARCHAR" index="43" />
+	<result column="YTMX" jdbcType="VARCHAR" index="44" />
+	<result column="SFXEDK" jdbcType="VARCHAR" index="45" />
+	<result column="YQSF" jdbcType="VARCHAR" index="46" />
+	<result column="SHYJ" jdbcType="VARCHAR" index="47" />
+	<result column="SHRY" jdbcType="VARCHAR" index="48" />
+	<result column="SHSJ" jdbcType="VARCHAR" index="49" />
+	<result column="TXLX" jdbcType="VARCHAR" index="50" />
+	<result column="YQLL" jdbcType="VARCHAR" index="51" />
+	<result column="SFTXJE" jdbcType="VARCHAR" index="52" />
+	<result column="NYJFBL" jdbcType="VARCHAR" index="53" />
+	<result column="BLRY" jdbcType="VARCHAR" index="54" />
+	<result column="YJJH" jdbcType="VARCHAR" index="55" />
+	<result column="SFSTDK" jdbcType="VARCHAR" index="56" />
+	<result column="YSTXYH" jdbcType="VARCHAR" index="57" />
+	<result column="SFYXDK" jdbcType="VARCHAR" index="58" />
+	<result column="YXR" jdbcType="VARCHAR" index="59" />
+	<result column="FLCORZLC" jdbcType="VARCHAR" index="60" />
+</resultMap>

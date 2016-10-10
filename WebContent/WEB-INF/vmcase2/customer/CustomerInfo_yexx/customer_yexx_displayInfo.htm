@@ -1,0 +1,84 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/customerInfor.htm")
+
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">流水记录列表</div>
+      </div>
+      
+      <div class="inquiry">
+<!-----------搜索------------------------------------------->  
+  <div class="search_tag">#i18n("label.browse.filter")</div>
+<!-------------- 信息显示 ------------------------------------->        
+        <div id="topDiv" class="inquiry_list inquiry_top">
+        <input type="hidden" id="appId" value="$!appId"/>
+          <table>
+            <colgroup>
+             <!--  <col width="5%" /> -->
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" /> 
+              <col width="10%" />
+              <col width="10%" />
+            </colgroup>
+            <tr class="title">
+              <!-- <th nowrap="nowrap"></th> -->
+              <th nowrap="nowrap">流水号</th>
+              <th nowrap="nowrap">记账日期</th>
+              <th nowrap="nowrap">摘要</th>
+              <th nowrap="nowrap">借方金额</th>
+              <th nowrap="nowrap">贷方金额</th>
+              <th nowrap="nowrap">更新时间</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <!-- <col width="5%" /> -->
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" /> 
+              <col width="10%" />
+              <col width="10%" />
+            </colgroup>
+            #foreach ($customer in $result.items)
+            <tr >
+              <!-- <td class="checkbox"><input type="radio" name="checkbox" value=""/> -->
+              <td nowrap="nowrap">$!customer.lsh</td>
+              <td nowrap="nowrap">$!customer.jzrq</td>
+              <td nowrap="nowrap">$!customer.zy</td>
+              <td nowrap="nowrap">$!customer.jf</td>
+              <td nowrap="nowrap">$!customer.df</td>
+              <td nowrap="nowrap">$!customer.createTime</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+          #btnpriv("change")<a  class="btn_gr" onclick="toBrowse();"  value="#i18n('button.back')" >返回</a>#end
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+	
+	//返回
+	function toBrowse(){
+		var url = "${modulePath}/browse.page?";
+		navigateTo(url);
+	}
+	
+</script>
+#parse ("common/iframe_page_footer.htm")

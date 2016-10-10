@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.manager.dao.StatisticsManagerDao">
+	
+	<select id="findCustomerApplyQuota" parameterType="map" resultType="integer">
+		select nvl(sum(to_Number(t.actual_quote)), 0) as applyQuotaSum
+  from customer_application_info t, basic_customer_information b
+ where t.customer_id = b.id and t.status='succeed' 
+ <if test="startTime!=null and startTime!=''">
+ and t.modified_time>to_date(#{startTime},'yyyy-mm-dd hh24:mi:ss') 
+ </if>
+ <if test="endTime!=null and endTime!=''">
+      <![CDATA[and t.modified_time<to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss')]]>
+ </if>
+       and b.user_id = #{customerManagerId}
+	</select>
+
+	<select id="findCountCustomer" resultType="integer">
+		select count(1) as countNumber
+  from customer_application_info t, basic_customer_information b
+ where t.customer_id = b.id and t.status='succeed' 
+       and t.modified_time>to_date(#{startTime},'yyyy-mm-dd hh24:mi:ss') 
+      <![CDATA[	  and t.modified_time<to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss') ]]>
+       and b.user_id = #{customerManagerId}
+	</select>
+	
+	<select id="findVisitCustomerActionCount" resultType="map">
+	<![CDATA[	
+		select '1' as numType, count(1) as visitCount from collection_plan t,collection_plans_action p where t.id=p.collection_plan_id and p.collection_start_time>to_date(#{startTime},'yyyy-mm-dd hh24:mi:ss') and p.collection_start_time<to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss') and t.customer_manager_id=#{customerManagerId}
+		union 
+		select '2' as numType, count(1) as visitCount from marketing_plan m,marketing_plans_action a where m.id=a.marketing_plan_id and a.marketing_start_time>to_date(#{startTime},'yyyy-mm-dd hh24:mi:ss') and a.marketing_start_time<to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss') and m.customer_manager_id=#{customerManagerId}
+		union 
+		select '3' as numType, count(1) as visitCount from maintenance_plan mp,maintenance_plans_action mpa where mp.id=mpa.maintenance_plan_id and mpa.maintenance_start_time>to_date(#{startTime},'yyyy-mm-dd hh24:mi:ss') and mpa.maintenance_start_time<to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss') and mp.customer_manager_id=#{customerManagerId}
+	]]>
+	</select>
+	
+	<select id="findCountVisitCustomer" resultType="integer">
+	<![CDATA[	
+	select count(1) from (select t.customer_id from collection_plan t,collection_plans_action p where t.id=p.collection_plan_id and p.collection_start_time>to_date(#{startTime},'yyyy-mm-dd hh24:mi:ss') and p.collection_start_time<to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss') and t.customer_manager_id=#{customerManagerId}
+		union 
+		select m.customer_id from marketing_plan m,marketing_plans_action a where m.id=a.marketing_plan_id and a.marketing_start_time>to_date(#{startTime},'yyyy-mm-dd hh24:mi:ss') and a.marketing_start_time<to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss') and m.customer_manager_id=#{customerManagerId}
+		union 
+		select mp.customer_id from maintenance_plan mp,maintenance_plans_action mpa where mp.id=mpa.maintenance_plan_id and mpa.maintenance_start_time>to_date(#{startTime},'yyyy-mm-dd hh24:mi:ss') and mpa.maintenance_start_time<to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss') and mp.customer_manager_id=#{customerManagerId}
+	) tt
+	]]>
+	</select>
+	
+	<select id="findCountVisitCustomerYw" resultType="integer">
+	<![CDATA[	
+	select count(1) from (select m.customer_id from marketing_plan m,marketing_plans_action a where m.id=a.marketing_plan_id and a.marketing_start_time>to_date(#{startTime},'yyyy-mm-dd hh24:mi:ss') and a.marketing_start_time<to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss') and m.customer_manager_id=#{customerManagerId}
+		union 
+		select mp.customer_id from maintenance_plan mp,maintenance_plans_action mpa where mp.id=mpa.maintenance_plan_id and mpa.maintenance_start_time>to_date(#{startTime},'yyyy-mm-dd hh24:mi:ss') and mpa.maintenance_start_time<to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss') and mp.customer_manager_id=#{customerManagerId}
+	) tt group by tt.customer_id
+	]]>
+	</select>
+	
+	<select id="findRiskWarningByManagerId" resultType="int">
+		select count(1) from  manager_risk_warning t where t.customer_manager_id=#{customerManagerId} and return_receipt='0'
+	</select>
+	
+	<select id="findAccountabilityRecordByManagerId" resultType="integer">
+		select count(1) from ACCOUNTABILITY_RECORD t where t.customer_manager_id=#{customerManagerId} and t.Audit_status='notaudit'
+	</select>
+	
+	<select id="findProductByManagerId" resultType="integer">
+		select count(1) from product_attribute t where t.created_by=#{customerManagerId} and t.status='unpublished'
+	</select>
+	
+</mapper>

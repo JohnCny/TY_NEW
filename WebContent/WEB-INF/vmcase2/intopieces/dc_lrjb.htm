@@ -1,0 +1,938 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">进件新增>利润简表</div>
+      </div>
+        <div class="tabplace">
+            <ul class="com-tab" >
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/changewh.page?customerId=$!customerId&productId=$!productId">建议</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/findJbzk.page?customerId=$!customerId&productId=$!productId">基本状况</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/findJyzt.page?customerId=$!customerId&productId=$!productId">经营状态</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/findSczt.page?customerId=$!customerId&productId=$!productId">生存状态</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/findDdpz.page?customerId=$!customerId&productId=$!productId">道德品质</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_zcfz.page?customerId=$!customerId&productId=$!productId">资产负债</a></li>
+	            <li class="tab activeTab"><a href="${contextPath}/intopieces/addIntopieces/create_lrjb.page?customerId=$!customerId&productId=$!productId">利润简表</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_bzlr.page?customerId=$!customerId&productId=$!productId">标准利润表</a></li>
+	            <li class="tab "><a href="${contextPath}/intopieces/addIntopieces/create_xjl.page?customerId=$!customerId&productId=$!productId">现金流量</a></li>
+				<li class="tab "><a href="${contextPath}/intopieces/addIntopieces/create_jcjy.page?customerId=$!customerId&productId=$!productId">交叉检验</a></li>
+				<li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_dhd.page?customerId=$!customerId&productId=$!productId">点货单</a></li>
+				<li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_gdzc.page?customerId=$!customerId&productId=$!productId">固定资产清单</a></li>
+				<li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_yfys.page?customerId=$!customerId&productId=$!productId">应付预收</a></li>
+				<li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_ysyf.page?customerId=$!customerId&productId=$!productId">应收预付</a></li>
+				<li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_lsfx.page?customerId=$!customerId&productId=$!productId">流水分析</a></li>
+           </ul>
+         </div>
+         <div class="tabplace"></div>
+			<form id="id_module_form">
+			 <input type="hidden" id="customer_id" name="customer_id" value="$!customerId">
+             <input type="hidden" id="product_id" name="product_id" value="$!productId">
+				<div class="form-bd" id="formsId"
+					style="margin-top: 0px; padding-top: 0px;">
+					<table id='MyTable' style='border-collapse: collapse;' width='100%'>
+						<tr>
+							<td rowspan='1' colspan='8' name='A1' align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 140%; width: 2336px; color: #000000; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #d0d7e5 1px; border-left: solid #000000 1px;'>利润表</td>
+						</tr>
+						<tr>
+							<td name='A2' align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2336px; color: #000000; border-top: solid #d0d7e5 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #d0d7e5 1px;'>报表日期：</td>
+							<td name='B2' align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 4256px; color: #000000; border-top: solid #d0d7e5 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #d0d7e5 1px;'>&nbsp;</td>
+							<td name='C2' align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #d0d7e5 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #d0d7e5 1px;'>&nbsp;</td>
+							<td name='D2' align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #d0d7e5 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #d0d7e5 1px;'>&nbsp;</td>
+							<td name='E2' align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #d0d7e5 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #d0d7e5 1px;'>&nbsp;</td>
+							<td name='F2' align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2848px; color: #000000; border-top: solid #d0d7e5 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #d0d7e5 1px;'>&nbsp;</td>
+							<td rowspan='1' colspan='2' name='G2' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3232px; color: #000000; border-top: solid #d0d7e5 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #d0d7e5 1px;'>单位：
+							</td>
+						</tr>
+						<tr>
+							<td rowspan='3' colspan='1' name='A3' align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2336px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>项
+								目</td>
+							<td name='B3' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 4256px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>分类</td>
+							<td name='C3' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>淡季月份</td>
+							<td name='D3' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>一般月份</td>
+							<td name='E3' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>旺季月份</td>
+							<td name='F3'  align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2848px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="a1" name="a1" value="$!lrjb.a1" />
+							</td>
+							<td rowspan='3' colspan='1' name='G3' align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3232px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>总计</td>
+							<td rowspan='3' colspan='1' name='H3' align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2656px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>月平均</td>
+						</tr>
+						<tr>
+							<td name='B4' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 4256px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>月份</td>
+							<td name='C4'  align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a2" name="a2" value="$!lrjb.a2"/></td>
+							<td name='D4'  align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a3" name="a3" value="$!lrjb.a3" /></td>
+							<td name='E4'  align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a4" name="a4" value="$!lrjb.a4" /></td>
+							<td name='F4'  align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2848px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a5" name="a5" value="$!lrjb.a5" /></td>
+						</tr>
+						<tr>
+							<td name='B5' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 4256px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>月数</td>
+							<td name='C5'  align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a6" name="a6" value="$!lrjb.a6" onchange="countlrjb()"/></td>
+							<td name='D5'  align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a7" name="a7" value="$!lrjb.a7" onchange="countlrjb()"/></td>
+							<td name='E5'  align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a8" name="a8" value="$!lrjb.a8" onchange="countlrjb()"/></td>
+							<td name='F5'  align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2848px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a10" name="a10" value="$!lrjb.a10" onchange="countlrjb()"/></td>
+						</tr>
+						<tr>
+							<td rowspan='1' colspan='2' name='A6' align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2336px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>月主营业务收入（1）</td>
+							<td name='C6'  align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a11" name="a11" value="$!lrjb.a11" onchange="countlrjb()"/></td>
+							<td name='D6'  align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a12" name="a12" value="$!lrjb.a12" onchange="countlrjb()"/></td>
+							<td name='E6'  align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a13" name="a13" value="$!lrjb.a13" onchange="countlrjb()"/></td>
+							<td name='F6'  align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2848px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a14" name="a14" value="$!lrjb.a14" onchange="countlrjb()"/></td>
+							<td name='G6' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3232px; color: #FF0000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a15" name="a15" value="$!lrjb.a15" readonly="readonly"/></td>
+							<td name='H6' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2656px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a16" name="a16" value="$!lrjb.a16"  readonly="readonly"/></td>
+						</tr>
+						<tr>
+							<td rowspan='1' colspan='2' name='A7' align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2336px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>可变成本（成本率
+								）（2）</td>
+							<td name='C7'  align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a17" name="a17" value="$!lrjb.a17" onchange="countlrjb()"/></td>
+							<td name='D7'  align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a18" name="a18" value="$!lrjb.a18" onchange="countlrjb()"/></td>
+							<td name='E7'  align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a19" name="a19" value="$!lrjb.a19" onchange="countlrjb()"/></td>
+							<td name='F7'  align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2848px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a20" name="a20" value="$!lrjb.a20" onchange="countlrjb()"/></td>
+							<td name='G7' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3232px; color: #FF0000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a21" name="a21" value="$!lrjb.a21" readonly="readonly"/></td>
+							<td name='H7' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2656px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a22" name="a22" value="$!lrjb.a22" readonly="readonly"/></td>
+						</tr>
+						<tr>
+							<td rowspan='1' colspan='2' name='A8' align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2336px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>毛利=
+								(1)-(2)</td>
+							<td name='C8' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3040px; color: #000000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a23" name="a23" value="$!lrjb.a23" readonly="readonly"/></td>
+							<td name='D8' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3040px; color: #000000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a24" name="a24" value="$!lrjb.a24" readonly="readonly"/></td>
+							<td name='E8' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3040px; color: #000000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a25" name="a25" value="$!lrjb.a25" readonly="readonly"/></td>
+							<td name='F8' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2848px; color: #000000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a26" name="a26" value="$!lrjb.a26" readonly="readonly"/></td>
+							<td name='G8' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3232px; color: #FF0000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a27" name="a27" value="$!lrjb.a27" readonly="readonly"/></td>
+							<td name='H8' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2656px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a28" name="a28" value="$!lrjb.a28" readonly="readonly"/></td>
+						</tr>
+						<tr>
+							<td rowspan='15' colspan='1' name='A9' align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2336px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>营业费用</td>
+							<td name='B9'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 4256px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="a29" name="a29" value="$!lrjb.a29" /></td>
+							<td name='C9'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a30" name="a30" value="$!lrjb.a30" onchange="countlrjb()"/></td>
+							<td name='D9'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a31" name="a31" value="$!lrjb.a31" onchange="countlrjb()"/></td>
+							<td name='E9'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a32" name="a32" value="$!lrjb.a32" onchange="countlrjb()"/></td>
+							<td name='F9'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2848px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a33" name="a33" value="$!lrjb.a33" onchange="countlrjb()"/></td>
+							<td name='G9' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3232px; color: #FF0000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a34" name="a34" value="$!lrjb.a34" readonly="readonly"/></td>
+							<td name='H9' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2656px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a35" name="a35" value="$!lrjb.a35" readonly="readonly"/></td>
+						</tr>
+						<tr>
+							<td name='B10'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 4256px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="a36" name="a36" value="$!lrjb.a36" /></td>
+							<td name='C10'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a37" name="a37" value="$!lrjb.a37" onchange="countlrjb()"/></td>
+							<td name='D10'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a38" name="a38" value="$!lrjb.a38" onchange="countlrjb()"/></td>
+							<td name='E10'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a39" name="a39" value="$!lrjb.a39" onchange="countlrjb()"/></td>
+							<td name='F10'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2848px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a40" name="a40" value="$!lrjb.a40" onchange="countlrjb()"/></td>
+							<td name='G10' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3232px; color: #FF0000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a41" name="a41" value="$!lrjb.a41" readonly="readonly"/></td>
+							<td name='H10' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2656px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a42" name="a42" value="$!lrjb.a42" readonly="readonly" /></td>
+						</tr>
+						<tr>
+							<td name='B11'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 4256px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="a43" name="a43" value="$!lrjb.a43" /></td>
+							<td name='C11'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a44" name="a44" value="$!lrjb.a44" onchange="countlrjb()"/></td>
+							<td name='D11'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a45" name="a45" value="$!lrjb.a45" onchange="countlrjb()"/></td>
+							<td name='E11'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a46" name="a46" value="$!lrjb.a46" onchange="countlrjb()"/></td>
+							<td name='F11'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2848px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a47" name="a47" value="$!lrjb.a47" onchange="countlrjb()"/></td>
+							<td name='G11' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3232px; color: #FF0000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a48" name="a48" value="$!lrjb.a48" readonly="readonly"/></td>
+							<td name='H11' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2656px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a49" name="a49" value="$!lrjb.a49" readonly="readonly"/></td>
+						</tr>
+						<tr>
+							<td name='B12'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 4256px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="a50" name="a50" value="$!lrjb.a50" /></td>
+							<td name='C12'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a51" name="a51" value="$!lrjb.a51" onchange="countlrjb()"/></td>
+							<td name='D12'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a52" name="a52" value="$!lrjb.a52" onchange="countlrjb()"/></td>
+							<td name='E12'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a53" name="a53" value="$!lrjb.a53" onchange="countlrjb()"/></td>
+							<td name='F12'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2848px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a54" name="a54" value="$!lrjb.a54" onchange="countlrjb()"/></td>
+							<td name='G12' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3232px; color: #FF0000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a55" name="a55" value="$!lrjb.a55" readonly="readonly"/></td>
+							<td name='H12' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2656px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a56" name="a56" value="$!lrjb.a56" readonly="readonly"/></td>
+						</tr>
+						<tr>
+							<td name='B13'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 4256px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="a57" name="a57" value="$!lrjb.a57" /></td>
+							<td name='C13'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a58" name="a58" value="$!lrjb.a58" onchange="countlrjb()"/></td>
+							<td name='D13'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a59" name="a59" value="$!lrjb.a59" onchange="countlrjb()"/></td>
+							<td name='E13'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a60" name="a60" value="$!lrjb.a60" onchange="countlrjb()"/></td>
+							<td name='F13'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2848px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a61" name="a61" value="$!lrjb.a61" onchange="countlrjb()"/></td>
+							<td name='G13' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3232px; color: #FF0000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a62" name="a62" value="$!lrjb.a62" readonly="readonly"/></td>
+							<td name='H13' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2656px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a63" name="a63" value="$!lrjb.a63" readonly="readonly"/></td>
+						</tr>
+						<tr>
+							<td name='B14'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 4256px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="a64" name="a64" value="$!lrjb.a64" /></td>
+							<td name='C14'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a65" name="a65" value="$!lrjb.a65" onchange="countlrjb()"/></td>
+							<td name='D14'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a66" name="a66" value="$!lrjb.a66" onchange="countlrjb()"/></td>
+							<td name='E14'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a67" name="a67" value="$!lrjb.a67" onchange="countlrjb()"/></td>
+							<td name='F14'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2848px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a68" name="a68" value="$!lrjb.a68" onchange="countlrjb()"/></td>
+							<td name='G14' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3232px; color: #FF0000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a69" name="a69" value="$!lrjb.a69" readonly="readonly"/></td>
+							<td name='H14' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2656px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a70" name="a70" value="$!lrjb.a70" readonly="readonly"/></td>
+						</tr>
+						<tr>
+							<td name='B15'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 4256px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="a71" name="a71" value="$!lrjb.a71" /></td>
+							<td name='C15'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a72" name="a72" value="$!lrjb.a72" onchange="countlrjb()"/></td>
+							<td name='D15'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a73" name="a73" value="$!lrjb.a73" onchange="countlrjb()"/></td>
+							<td name='E15'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a74" name="a74" value="$!lrjb.a74" onchange="countlrjb()"/></td>
+							<td name='F15'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2848px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a75" name="a75" value="$!lrjb.a75" onchange="countlrjb()"/></td>
+							<td name='G15' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3232px; color: #FF0000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a76" name="a76" value="$!lrjb.a76" readonly="readonly"/></td>
+							<td name='H15' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2656px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a77" name="a77" value="$!lrjb.a77" readonly="readonly"/></td>
+						</tr>
+						<tr>
+							<td name='B16'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 4256px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="a78" name="a78" value="$!lrjb.a78" /></td>
+							<td name='C16'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a79" name="a79" value="$!lrjb.a79" onchange="countlrjb()"/></td>
+							<td name='D16'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a80" name="a80" value="$!lrjb.a80" onchange="countlrjb()"/></td>
+							<td name='E16'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a81" name="a81" value="$!lrjb.a81" onchange="countlrjb()"/></td>
+							<td name='F16'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2848px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a82" name="a82" value="$!lrjb.a82" onchange="countlrjb()"/></td>
+							<td name='G16' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3232px; color: #FF0000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a83" name="a83" value="$!lrjb.a83" readonly="readonly"/></td>
+							<td name='H16' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2656px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a84" name="a84" value="$!lrjb.a84" readonly="readonly" /></td>
+						</tr>
+						<tr>
+							<td name='B17'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 4256px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="a85" name="a85" value="$!lrjb.a85" /></td>
+							<td name='C17'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a86" name="a86" value="$!lrjb.a86" onchange="countlrjb()"/></td>
+							<td name='D17'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a87" name="a87" value="$!lrjb.a87" onchange="countlrjb()"/></td>
+							<td name='E17'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a88" name="a88" value="$!lrjb.a88" onchange="countlrjb()"/></td>
+							<td name='F17'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2848px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a89" name="a89" value="$!lrjb.a89" onchange="countlrjb()"/></td>
+							<td name='G17' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3232px; color: #FF0000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a90" name="a90" value="$!lrjb.a90" readonly="readonly"/></td>
+							<td name='H17' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2656px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a91" name="a91" value="$!lrjb.a91" readonly="readonly"/></td>
+						</tr>
+						<tr>
+							<td name='B18'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 4256px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="a92" name="a92" value="$!lrjb.a92" /></td>
+							<td name='C18'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a93" name="a93" value="$!lrjb.a93" onchange="countlrjb()"/></td>
+							<td name='D18'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a94" name="a94" value="$!lrjb.a94" onchange="countlrjb()"/></td>
+							<td name='E18'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a95" name="a95" value="$!lrjb.a95" onchange="countlrjb()"/></td>
+							<td name='F18'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2848px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a96" name="a96" value="$!lrjb.a96" onchange="countlrjb()"/></td>
+							<td name='G18' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3232px; color: #FF0000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a97" name="a97" value="$!lrjb.a97" readonly="readonly"/></td>
+							<td name='H18' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2656px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a98" name="a98" value="$!lrjb.a98" readonly="readonly"/></td>
+						</tr>
+						<tr>
+							<td name='B19'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 4256px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="a99" name="a99" value="$!lrjb.a99" /></td>
+							<td name='C19'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a100" name="a100" value="$!lrjb.a100" onchange="countlrjb()"/></td>
+							<td name='D19'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a101" name="a101" value="$!lrjb.a101" onchange="countlrjb()"/></td>
+							<td name='E19'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a102" name="a102" value="$!lrjb.a102" onchange="countlrjb()"/></td>
+							<td name='F19'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2848px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a103" name="a103" value="$!lrjb.a103" onchange="countlrjb()"/></td>
+							<td name='G19' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3232px; color: #FF0000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a104" name="a104" value="$!lrjb.a104" readonly="readonly"/></td>
+							<td name='H19' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2656px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a105" name="a105" value="$!lrjb.a105" readonly="readonly"/></td>
+						</tr>
+						<tr>
+							<td name='B20'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 4256px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="a106" name="a106" value="$!lrjb.a106" /></td>
+							<td name='C20'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a107" name="a107" value="$!lrjb.a107" onchange="countlrjb()"/></td>
+							<td name='D20'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a108" name="a108" value="$!lrjb.a108" onchange="countlrjb()"/></td>
+							<td name='E20'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a109" name="a109" value="$!lrjb.a109" onchange="countlrjb()"/></td>
+							<td name='F20'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2848px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a110" name="a110" value="$!lrjb.a110" onchange="countlrjb()"/></td>
+							<td name='G20' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3232px; color: #FF0000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a111" name="a111" value="$!lrjb.a111" readonly="readonly"/></td>
+							<td name='H20' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2656px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a112" name="a112" value="$!lrjb.a112" readonly="readonly"/></td>
+						</tr>
+						<tr>
+							<td name='B21'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 4256px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="a113" name="a113" value="$!lrjb.a113" /></td>
+							<td name='C21'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a114" name="a114" value="$!lrjb.a114" onchange="countlrjb()"/></td>
+							<td name='D21'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a115" name="a115" value="$!lrjb.a115" onchange="countlrjb()"/></td>
+							<td name='E21'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a116" name="a116" value="$!lrjb.a116" onchange="countlrjb()"/></td>
+							<td name='F21'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2848px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a117" name="a117" value="$!lrjb.a117" onchange="countlrjb()"/></td>
+							<td name='G21' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3232px; color: #FF0000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a118" name="a118" value="$!lrjb.a118" readonly="readonly"/></td>
+							<td name='H21' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2656px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a119" name="a119" value="$!lrjb.a119" readonly="readonly"/></td>
+						</tr>
+						<tr>
+							<td name='B22'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 4256px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="a120" name="a120" value="$!lrjb.a120" /></td>
+							<td name='C22'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a121" name="a121" value="$!lrjb.a121" onchange="countlrjb()"/></td>
+							<td name='D22'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a122" name="a122" value="$!lrjb.a122" onchange="countlrjb()"/></td>
+							<td name='E22'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a123" name="a123" value="$!lrjb.a123" onchange="countlrjb()"/></td>
+							<td name='F22'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2848px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a124" name="a124" value="$!lrjb.a124" onchange="countlrjb()"/></td>
+							<td name='G22' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3232px; color: #FF0000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a125" name="a125" value="$!lrjb.a125" readonly="readonly"/></td>
+							<td name='H22' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2656px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a126" name="a126" value="$!lrjb.a126" readonly="readonly"/></td>
+						</tr>
+						<tr>
+							<td name='B23'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 4256px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="a127" name="a127" value="$!lrjb.a127" /></td>
+							<td name='C23'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a128" name="a128" value="$!lrjb.a128" onchange="countlrjb()"/></td>
+							<td name='D23'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a129" name="a129" value="$!lrjb.a129" onchange="countlrjb()"/></td>
+							<td name='E23'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a130" name="a130" value="$!lrjb.a130" onchange="countlrjb()"/></td>
+							<td name='F23'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2848px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a131" name="a131" value="$!lrjb.a131" onchange="countlrjb()"/></td>
+							<td name='G23' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3232px; color: #FF0000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a132" name="a132" value="$!lrjb.a132" readonly="readonly"/></td>
+							<td name='H23' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2656px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a133" name="a133" value="$!lrjb.a133" readonly="readonly"/></td>
+						</tr>
+						<tr>
+							<td rowspan='1' colspan='2' name='A24' align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2336px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>营业费用小计(3)</td>
+							<td name='C24' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3040px; color: #000000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a134" name="a134" value="$!lrjb.a134" readonly="readonly" onchange="countlrjb()"/></td>
+							<td name='D24' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3040px; color: #000000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a135" name="a135" value="$!lrjb.a135" readonly="readonly" onchange="countlrjb()"/></td>
+							<td name='E24' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3040px; color: #000000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a136" name="a136" value="$!lrjb.a136" readonly="readonly" onchange="countlrjb()"/></td>
+							<td name='F24' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2848px; color: #000000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a137" name="a137" value="$!lrjb.a137" readonly="readonly" onchange="countlrjb()"/></td>
+							<td name='G24' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3232px; color: #FF0000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a138" name="a138" value="$!lrjb.a138" readonly="readonly"/></td>
+							<td name='H24' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2656px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a139" name="a139" value="$!lrjb.a139" readonly="readonly"/></td>
+						</tr>
+						<tr>
+							<td rowspan='1' colspan='2' name='A25' align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2336px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>分期还款（经营）(4)</td>
+							<td name='C25'  align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a140" name="a140" value="$!lrjb.a140" onchange="countlrjb()"/></td>
+							<td name='D25'  align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a141" name="a141" value="$!lrjb.a141" onchange="countlrjb()"/></td>
+							<td name='E25'  align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a142" name="a142" value="$!lrjb.a142" onchange="countlrjb()"/></td>
+							<td name='F25'  align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2848px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a143" name="a143" value="$!lrjb.a143" onchange="countlrjb()"/></td>
+							<td name='G25' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3232px; color: #FF0000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a144" name="a144" value="$!lrjb.a144" readonly="readonly"/></td>
+							<td name='H25' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2656px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a145" name="a145" value="$!lrjb.a145" readonly="readonly"/></td>
+						</tr>
+						<tr>
+							<td rowspan='1' colspan='2' name='A26' align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2336px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>净利润=(1)-(2)-(3)-(4)</td>
+							<td name='C26' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3040px; color: #000000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a146" name="a146" value="$!lrjb.a146" readonly="readonly" onchange="countlrjb()"/></td>
+							<td name='D26' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3040px; color: #000000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a147" name="a147" value="$!lrjb.a147" readonly="readonly" onchange="countlrjb()"/></td>
+							<td name='E26' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3040px; color: #000000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a148" name="a148" value="$!lrjb.a148" readonly="readonly" onchange="countlrjb()"/></td>
+							<td name='F26' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2848px; color: #000000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a149" name="a149" value="$!lrjb.a149" readonly="readonly" onchange="countlrjb()"/></td>
+							<td name='G26' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3232px; color: #FF0000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a150" name="a150" value="$!lrjb.a150" readonly="readonly"/></td>
+							<td name='H26' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2656px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a151" name="a151" value="$!lrjb.a151" readonly="readonly"/></td>
+						</tr>
+						<tr>
+							<td rowspan='4' colspan='1' name='A27' align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2336px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>其他</td>
+							<td name='B27' align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 4256px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>1
+								家庭开支-</td>
+							<td name='C27'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a152" name="a152" value="$!lrjb.a152"  onchange="countlrjb()"/></td>
+							<td name='D27'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a153" name="a153" value="$!lrjb.a153"  onchange="countlrjb()"/></td>
+							<td name='E27'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a154" name="a154" value="$!lrjb.a154" onchange="countlrjb()"/></td>
+							<td name='F27'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2848px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a155" name="a155" value="$!lrjb.a155" onchange="countlrjb()"/></td>
+							<td name='G27' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3232px; color: #FF0000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a156" name="a156" value="$!lrjb.a156" readonly="readonly"/></td>
+							<td name='H27' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2656px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a157" name="a157" value="$!lrjb.a157" readonly="readonly"/></td>
+						</tr>
+						<tr>
+							<td name='B28' align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 4256px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>2
+								分期付款(私人用途)-</td>
+							<td name='C28'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a158" name="a158" value="$!lrjb.a158" onchange="countlrjb()"/></td>
+							<td name='D28'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a159" name="a159" value="$!lrjb.a159" onchange="countlrjb()"/></td>
+							<td name='E28'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a160" name="a160" value="$!lrjb.a160" onchange="countlrjb()"/></td>
+							<td name='F28'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2848px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a161" name="a161" value="$!lrjb.a161" onchange="countlrjb()"/></td>
+							<td name='G28' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3232px; color: #FF0000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a162" name="a162" value="$!lrjb.a162" readonly="readonly"/></td>
+							<td name='H28' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2656px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a163" name="a163" value="$!lrjb.a163" readonly="readonly"/></td>
+						</tr>
+						<tr>
+							<td name='B29' align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 4256px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>3
+								其它开支-</td>
+							<td name='C29'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a164" name="a164" value="$!lrjb.a164" onchange="countlrjb()"/></td>
+							<td name='D29'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a165" name="a165" value="$!lrjb.a165" onchange="countlrjb()"/></td>
+							<td name='E29'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a166" name="a166" value="$!lrjb.a166" onchange="countlrjb()"/></td>
+							<td name='F29'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2848px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a167" name="a167" value="$!lrjb.a167" onchange="countlrjb()"/></td>
+							<td name='G29' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3232px; color: #FF0000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a168" name="a168" value="$!lrjb.a168" readonly="readonly"/></td>
+							<td name='H29' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2656px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a169" name="a169" value="$!lrjb.a169" readonly="readonly"/></td>
+						</tr>
+						<tr>
+							<td name='B30' align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 4256px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>4
+								其它收入+</td>
+							<td name='C30'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a170" name="a170" value="$!lrjb.a170" onchange="countlrjb()" onchange="countlrjb()"/></td>
+							<td name='D30'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a171" name="a171" value="$!lrjb.a171" onchange="countlrjb()" onchange="countlrjb()"/></td>
+							<td name='E30'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a172" name="a172" value="$!lrjb.a172" onchange="countlrjb()" onchange="countlrjb()"/></td>
+							<td name='F30'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2848px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a173" name="a173" value="$!lrjb.a173" onchange="countlrjb()" onchange="countlrjb()"/></td>
+							<td name='G30' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3232px; color: #FF0000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a174" name="a174" value="$!lrjb.a174" readonly="readonly"/></td>
+							<td name='H30' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2656px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a175" name="a175" value="$!lrjb.a175" readonly="readonly"/></td>
+						</tr>
+						<tr>
+							<td rowspan='1' colspan='2' name='A31' align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2336px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>每月可支配资金</td>
+							<td name='C31' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3040px; color: #000000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a176" name="a176" value="$!lrjb.a176" readonly="readonly" onchange="countlrjb()"/></td>
+							<td name='D31' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3040px; color: #000000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a177" name="a177" value="$!lrjb.a177" readonly="readonly" onchange="countlrjb()"/></td>
+							<td name='E31' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3040px; color: #000000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a178" name="a178" value="$!lrjb.a178" readonly="readonly" onchange="countlrjb()"/></td>
+							<td name='F31' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2848px; color: #000000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a179" name="a179" value="$!lrjb.a179" readonly="readonly" onchange="countlrjb()"/></td>
+							<td name='G31' align='center' valign='center'
+								style='font-weight: 700; font-size: 90%; width: 3232px; color: #FF0000; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a180" name="a180" value="$!lrjb.a180" readonly="readonly" /></td>
+							<td name='H31' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2656px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="inpl" style="width: 100px;height: 14px;" type="text" id="a181" name="a181" value="$!lrjb.a181" readonly="readonly"/></td>
+						</tr>
+						<tr>
+							<td rowspan='1' colspan='2' name='A32' align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2336px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>其它影响现金流的因素、
+								未来12个月的支出/收入计划:</td>
+							<td rowspan='1' colspan='6' name='C32'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 110%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<textarea row ="3" cols="50" id ="srjh" name ="srjh">$!lrjb.srjh</textarea></td>
+						</tr>
+						<tr>
+							<td name='A33' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2336px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>主营业务收入详述</td>
+							<td rowspan='1' colspan='3' name='B33'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 4256px; color: #000000; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 30px;" type="text" id="srxs" name="srxs" value="$!lrjb.srxs" /></td>
+							<td name='E33' align='center' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>可变成本详述</td>
+							<td rowspan='1' colspan='3' name='F33'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 110%; width: 2848px; color: #000000; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 30px;" type="text" id="kbcbxs" name="kbcbxs" value="$!lrjb.kbcbxs" /></td>
+						</tr>
+						<tr>
+							<td name='A34' align='center' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2336px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>其他收入分析</td>
+							<td name='B34'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 4256px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 30px;" type="text" id="qtsrfx" name="qtsrfx" value="$!lrjb.qtsrfx" />
+								</td>
+							<td name='C34' align='center' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>家庭开支及其他开支详情</td>
+							<td rowspan='1' colspan='2' name='D34'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3040px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 30px;" type="text" id="kz" name="kz" value="$!lrjb.kz" />
+								</td>
+							<td name='F34' align='center' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2848px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>利润表其他介绍</td>
+							<td rowspan='1' colspan='2' name='G34'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 110%; width: 3232px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 30px;" type="text" id="lrjs" name="lrjs" value="$!lrjb.lrjs" />
+								</td>
+						</tr>
+						<tr>
+							<td name='A35' align='center' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2336px; color: #000000; border-top: solid #d0d7e5 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #d0d7e5 1px; border-left: solid #d0d7e5 1px;'>备注</td>
+							<td rowspan='1' colspan='7' name='B35' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 4256px; color: #000000; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #d0d7e5 1px; border-left: solid #d0d7e5 1px;'>费用项目：1
+								工资（标注支付日）2 经营性房租（标注支付日）3 水、电费4 设备、材料损耗5 伙食费6 电话费7 公关费8 维修费9
+								机器维修费10 广告费11 交通费12 物业管理费13 保险费14
+								税费等，客户没有的费用可以不填入费用项，有的项目按照如上顺序填写，客户特殊的费用在以上费用填制完成后向后排列</td>
+						</tr>
+					</table>
+				</div>
+			</form>
+
+
+
+			<div class="submit">
+        <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
+        <input type="button" onclick="returnClick();" value="#i18n('button.cancel')" />
+      </div>
+    </div>
+  </div>
+  <script src='${contextPath}/js/customerInforUpdate/dc_lrjb.js'></script>
+  <script type="text/javascript">
+	var layout = new FormsLayout("formsId");
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	#parse ("customer/customerInforInsert/customerInforCreate_validation.js")
+	
+	$(document).ready(function() {
+		//save
+		$("#id_save_button").click(function() {
+			var url = "${modulePath}/addlrjb.json";
+			var formjson = $($formName).serialize();
+			$.ajax({
+				url : url,
+				type : "get",
+				data : formjson,
+				success : function(data) {
+					if (data.success) {
+						topWin.Dialog.message("保存成功！");
+					} else {
+						topWin.Dialog.message(data.message);
+					}
+				}
+			});
+		});
+		
+	});
+	
+	//取消
+	function returnClick(){
+		 window.location.href= contextPath + "/customer/basiccustomerinforUpdate/browse.page" ;
+	}
+  </script>
+   <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
+  
+</body>
+#parse ("common/iframe_page_footer.htm")

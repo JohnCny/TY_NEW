@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.riskControl.dao.AgrCrdXykCunegDao">
+  <resultMap id="ResultMap" type="com.cardpay.pccredit.riskControl.model.AgrCrdXykCuneg" >
+    <result column="BANK" property="bank" jdbcType="VARCHAR" />
+    <result column="FILE_TYPE" property="fileType" jdbcType="VARCHAR" />
+    <result column="CUNEG_STS" property="cunegSts" jdbcType="VARCHAR" />
+    <result column="CUSTR_NBR" property="custrNbr" jdbcType="VARCHAR" />
+    <result column="NAME_EXTND" property="nameExtnd" jdbcType="VARCHAR" />
+    <result column="CUSTR_REF" property="custrRef" jdbcType="VARCHAR" />
+    <result column="APPLNREF" property="applnref" jdbcType="VARCHAR" />
+    <result column="PRODUCT" property="product" jdbcType="VARCHAR" />
+    <result column="REASN_CODE" property="reasnCode" jdbcType="VARCHAR" />
+    <result column="REASN_DESC" property="reasnDesc" jdbcType="VARCHAR" />
+    <result column="INP_SOURCE" property="inpSource" jdbcType="VARCHAR" />
+    <result column="SCOR_NOTE" property="scorNote" jdbcType="VARCHAR" />
+    <result column="CHG_DAY" property="chgDay" jdbcType="VARCHAR" />
+    <result column="CHG_TIME" property="chgTime" jdbcType="VARCHAR" />
+    <result column="CHG_EMPLOY" property="chgEmploy" jdbcType="VARCHAR" />
+    <result column="INST_NO" property="instNo" jdbcType="VARCHAR" />
+    <result column="CREATED_TIME" property="createdTime" jdbcType="VARCHAR" />
+  </resultMap>
+  
+	<select id="findAgrCrdXykCunegsByFilter" resultMap="ResultMap" 
+			parameterType="com.cardpay.pccredit.riskControl.filter.AgrCrdXykCunegFilter">
+		SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					SELECT risk.*,info.khmc
+					 FROM f_agr_crd_xyk_cuneg risk
+					  left join ty_customer_base info on 1=1 and info.khnm=risk.khnm 
+					 <if test="custrNbr != null and custrNbr != '' ">
+						AND risk.custr_nbr like '%${custrNbr}%'
+					 </if>
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	
+	<select id="findAgrCrdXykCunegsCountByFilter" resultType="int"
+			parameterType="com.cardpay.pccredit.riskControl.filter.AgrCrdXykCunegFilter">
+		SELECT count(*)
+		   FROM f_agr_crd_xyk_cuneg risk
+		  WHERE 1=1
+		 <if test="custrNbr != null and custrNbr != '' ">
+			AND risk.custr_nbr like '%${custrNbr}%'
+		 </if>
+	</select>
+</mapper>

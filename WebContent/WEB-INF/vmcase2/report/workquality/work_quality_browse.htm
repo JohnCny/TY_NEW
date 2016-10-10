@@ -1,0 +1,122 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">信用卡中心辅助岗位人员工作质量检测报告</div>
+      </div>
+      
+      <div class="inquiry">
+<!-----------搜索------------------------------------------->  
+  
+        <div class="search_tag"></div>
+        <div class="search">
+          <form id="submitForm">
+            <ul>
+              <li>
+                <span>产品：<select id="productId" name="productId">
+	                   <option value="">请选择...</option>
+	                   #foreach($!product in $!result.items)
+							<option value="$!product.id" #if($!product.id== $!filter.productId) selected #end>
+								$!product.productName
+							</option>
+						#end
+	                </select>
+				</span>
+              </li>
+              <li>
+                <span>开始日期：<input type="text" name="startDate" value='$!date.format("yyyy-MM-dd",$!filter.startDate)' onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span>
+              </li>
+              <li>
+                <span>结束日期：<input type="text" name="endDate" value='$!date.format("yyyy-MM-dd",$!filter.endDate)' onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span>
+              </li>
+              
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="筛选" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
+       
+		<!-------------- 信息显示 ------------------------------------->      
+		<div id="topDiv" class="inquiry_list inquiry_top">
+           <table>
+            <colgroup>
+              
+              <col width="10%"/>
+              <col width="10%"/>
+              <col width="10%"/>
+              <col width="10%"/>
+              <col width="10%"/>
+              <col width="10%"/>
+              <col width="10%"/>
+              <col width="10%"/>
+               <col width="10%"/>
+            </colgroup>
+            <tr class="title" align="center">
+              <th nowrap="nowrap">序号</th>
+           
+              <th nowrap="nowrap">客户姓名</th>
+              <th nowrap="nowrap">证件号码</th>
+                 <th nowrap="nowrap">申请件序号</th>
+              <th nowrap="nowrap">录入人员</th>
+              <th nowrap="nowrap">审核人员</th>
+              <th nowrap="nowrap">证件号码修改次数</th>
+              <th nowrap="nowrap">姓名修改次数</th>
+              <th nowrap="nowrap">手机号修改次数</th>
+            </tr>
+          </table>
+        </div>  
+        
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+               <col width="10%"/>
+              <col width="10%"/>
+              <col width="10%"/>
+              <col width="10%"/>
+              <col width="10%"/>
+              <col width="10%"/>
+              <col width="10%"/>
+              <col width="10%"/>
+               <col width="10%"/>
+            </colgroup>
+            #foreach ($workquality in $list)
+            	<tr id="$!cardStatistical.id">
+	              <td nowrap="nowrap">$velocityCount </td>
+	              <td nowrap="nowrap">$!workquality.chineseName</td>
+	              <td nowrap="nowrap">$!workquality.cardId</td>
+	               <td nowrap="nowrap">$!workquality.applicationId</td>
+	               <td nowrap="nowrap">$!workquality.writeName</td>
+	                <td nowrap="nowrap">$!workquality.approvedName</td>
+	                 <td nowrap="nowrap">$!workquality.cardIdNum</td>
+	                  <td nowrap="nowrap">$!workquality.chineseNameNum</td> 
+	                  <td nowrap="nowrap">$!workquality.telephoneNum</td>
+	                  
+	            </tr>
+            #end
+          </table>
+        </div>
+      </div>		
+        <div class="clear"></div>
+      </div>
+    </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.createUrl = "${modulePath}/create.page";
+		opsObj.changeUrl = "${modulePath}/change.page";
+		opsObj.displayUrl = "${modulePath}/display.page";
+		opsObj.browseUrl = "${modulePath}/browse.page";
+
+		prepareOperations(opsObj);
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validators>
+	<validator id="manager.assessmentscore">
+		<control name="creditUtilizationScore">
+			<entry type="required" value="true" />
+			
+		</control>
+		<control name="numbererestRecoveryScore">
+			<entry type="required" value="true" />
+			
+		</control>
+		<control name="overdueScore">
+			<entry type="required" value="true" />
+			
+		</control>
+		<control name="lateRecoveryScore">
+			<entry type="required" value="true" />
+			
+		</control>
+		<control name="overdueBalanceScore">
+			<entry type="required" value="true" />
+			
+		</control>
+		<control name="defectiveLoansScore">
+			<entry type="required" value="true" />
+			
+		</control>
+		<control name="customerPotentialValue">
+			<entry type="required" value="true" />
+			
+		</control>
+		<control name="selfTrainingAbility">
+			<entry type="required" value="true" />
+			
+		</control>
+		<control name="teamCooperationAbility">
+			<entry type="required" value="true" />
+			
+		</control>
+		<control name="customerManagementAbility">
+			<entry type="required" value="true" />
+			
+		</control>
+		<control name="orgaCoordinationAbility">
+			<entry type="required" value="true" />
+			
+		</control>
+		
+	</validator>
+</validators>

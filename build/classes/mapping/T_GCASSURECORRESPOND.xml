@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="GBK"?>
+
+<resultMap>
+    <result column="KEYCODE"   	  jdbcType="VARCHAR" index="1" />
+    <result column="KEYTYPE"   	  jdbcType="VARCHAR" index="2" />
+    <result column="GCBUSINESSLEVEL"   	  jdbcType="VARCHAR" index="3" />
+    <result column="GCSYSLEVEL"   	  jdbcType="VARCHAR" index="4" />
+    <result column="UPKEYCODE"   	  jdbcType="VARCHAR" index="5" />
+    <result column="UPKEYTYPE"   	  jdbcType="VARCHAR" index="6" />
+    <result column="UPGCBUSINESSLEVEL"   	  jdbcType="VARCHAR" index="7" />
+    <result column="UPGCSYSLEVEL"   	  jdbcType="VARCHAR" index="8" />
+    <result column="SEQUENCENO"   	  jdbcType="VARCHAR" index="9" />
+    <result column="ACONTKEYCODE"   	  jdbcType="VARCHAR" index="10" />
+    <result column="ACONTKEYTYPE"   	  jdbcType="VARCHAR" index="11" />
+    <result column="ACONTGCBUSINESSLEVEL"   	  jdbcType="VARCHAR" index="12" />
+    <result column="ACONTGCSYSLEVEL"   	  jdbcType="VARCHAR" index="13" />
+    <result column="CONFIRMMETHOD"   	  jdbcType="VARCHAR" index="14" />
+    <result column="USEASSUREMONEY"   	  jdbcType="VARCHAR" index="15" />
+    <result column="USEASSUREMONEYCUR"   	  jdbcType="VARCHAR" index="16" />
+    <result column="KEYEFFECTEDSTATE"   	  jdbcType="VARCHAR" index="17" />
+    <result column="KEYDATESTATE"   	  jdbcType="VARCHAR" index="18" />
+    <result column="EDITIONNO"   	  jdbcType="VARCHAR" index="19" />
+    <result column="INSTCITYCODE"   	  jdbcType="VARCHAR" index="20" />
+    <result column="OPERDATETIME"   	  jdbcType="VARCHAR" index="21" />
+    <result column="ISTRANS"   	  jdbcType="VARCHAR" index="22" />
+    <result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/>
+</resultMap>

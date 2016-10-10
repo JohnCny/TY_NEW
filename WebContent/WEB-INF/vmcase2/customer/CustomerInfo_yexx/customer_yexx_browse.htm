@@ -1,0 +1,133 @@
+#parse ("common/iframe_page_header.htm")
+<script src="${contextPath}/js/intopieces/intopieces.js" charset="utf-8"></script>
+<script type="text/javascript">
+</script>
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户余额信息</div>
+      </div>
+      <div class="inquiry">
+       <div class="search_tag">客户余额信息</div>
+        <div class="search">
+          <form id="queryForm" action="${contextPath}/customer/customerInfor_yexx/browse.page">
+          <ul>
+              <li>
+                <span>客户名称：<input type="text" id="chineseName" name="chineseName" value="$!result.filter.chineseName" /></span>
+              </li>
+               <li>
+                <span>证件号码：<input type="text" id="cardId" name="cardId" value="$!result.filter.cardId" /></span>
+              </li>
+              
+              <li class="search_button">
+                <input type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" onclick="javascript:this.form.submit();"/>
+              </li>
+          </ul>
+          </form>
+        </div>
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              
+              <col width="9%" />
+              <col width="9%"/>
+              <col width="15%"/>
+              <col width="18%"/>
+              <col width="9%"/>
+              
+              <col width="7%"/>
+              <col width="7%" />
+              <col width="7%"/>
+              <col width="7%"/>
+              <col width="7%"/>
+              <col />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              
+              <th nowrap="nowrap">客户名称</th>
+              <th nowrap="nowrap">证件类型</th>
+              <th nowrap="nowrap">证件号码</th>
+              <th nowrap="nowrap">借据号</th>
+              <th nowrap="nowrap">借款金额</th>
+              
+              <th nowrap="nowrap">起息日期</th>
+              <th nowrap="nowrap">贷款余额</th>
+              <th nowrap="nowrap">最后还款日</th>
+              <th nowrap="nowrap">本期利率</th>
+              <th nowrap="nowrap">更新时间</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              
+              <col width="9%" />
+              <col width="9%"/>
+              <col width="15%"/>
+              <col width="18%"/>
+              <col width="9%"/>
+              
+              <col width="7%"/>
+              <col width="7%" />
+              <col width="7%"/>
+              <col width="7%"/>
+              <col width="7%"/>
+              <col />
+            </colgroup>
+            #foreach ($intoPieces in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!intoPieces.jjh"/></td>
+              <td nowrap="nowrap">$!intoPieces.khmc</td>
+              <td nowrap="nowrap">$!intoPieces.zjlx</td>
+              <td nowrap="nowrap">$!intoPieces.zjhm</td>
+              <td nowrap="nowrap">$!intoPieces.jjh</td>
+              <td nowrap="nowrap">$!intoPieces.jkje</td>
+              
+              <td nowrap="nowrap">$!intoPieces.qxrq</td>
+              <td nowrap="nowrap">$!intoPieces.dkye</td>
+              <td nowrap="nowrap">$!intoPieces.zhhkr</td>
+              <td nowrap="nowrap">$!intoPieces.bqll</td>
+              <td nowrap="nowrap">$!intoPieces.createTime</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+           <a id="id_base_local_button" class="btn_g" href="javascript:void(0);" title="基本信息">流水信息</a>
+         </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+	
+	$(document).ready(function() {
+		var opsObj = new Object();
+		prepareOperations(opsObj); 
+		
+		//流水信息
+		$("#id_base_local_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var rowid = $("input[name='checkbox']:checked").val();
+				var url = "${modulePath}/displayInfo.page?id=" + rowid;
+				window.location.href = url;
+			}else{
+			   topWin.Dialog.message("请选择记录！");
+			}
+		});
+	});
+	
+</script>
+#parse ("common/iframe_page_footer.htm")

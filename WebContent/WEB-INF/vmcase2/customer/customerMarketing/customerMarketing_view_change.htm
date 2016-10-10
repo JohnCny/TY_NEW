@@ -1,0 +1,80 @@
+#parse ("common/iframe_page_header.htm")
+
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">修改营销实施记录</div>
+      </div>
+      <form id="id_module_form" action="${modulePath}/update.json">
+      <input type="hidden" name="id" value="$!marketingPlan.id"/>
+      <input type="hidden" name="marketingPlanId" value="$!marketingPlan.marketingPlanId"/>
+        <div class="forms" id="formsId">
+          <table class="rule">
+            <colgroup>
+              <col width="12%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="12%" />
+              <col width="30%" />
+            </colgroup>
+            <tr>
+              <td><label for="marketing">营销方式:</label></td>
+              <td><input type="text" id="marketing" name="marketing" value="$!marketingPlan.marketing" /></td>
+              <td>&nbsp;</td>
+              <td><label for=marketingResult>营销结果:</label></td>
+              <td><input type="text" id="marketingResult" name="marketingResult" value="$!marketingPlan.marketingResult" /></td>
+            </tr>
+            <tr>
+                <td>营销开始时间:</td>
+                <td><input type="text" id="marketingStartTime" name="marketingStartTime" value="$!date.format('yyyy-MM-dd HH:mm:ss',$!marketingPlan.marketingStartTime)" onmouseover="_calendar({format:'yyyy-MM-dd HH:mm:ss'})"/>
+                <td>&nbsp;</td>
+				<td>营销结束时间:</td>
+                <td><input type="text" id="marketingEndTime" name="marketingEndTime" value="$!date.format('yyyy-MM-dd HH:mm:ss',$!marketingPlan.marketingEndTime)" onmouseover="_calendar({format:'yyyy-MM-dd HH:mm:ss'})"/>
+            </tr>
+            <tr>
+              <td><label for="whetherImplement">是否实施:</label></td>
+              <td><select name="whetherImplement" id="whetherImplement">
+              #dict("SystemRole","$!marketingPlan.whetherImplement")
+              <td>&nbsp;</td>
+              <td>最终结果:</td>
+              <td><select name="endResult" >
+              #dict("MarketingEndResult","")
+              </select></td>
+            </tr>
+          </table>
+        </div>
+      </form>
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n("button.save")" class="current" />
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n("button.cancel")" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");	
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	#validator($formName)
+	$(document).ready(function() {	
+	     $("#id_save_button").click(function() {
+	         if ($($formName).valid()) {
+	           var formjson = $($formName).serialize();
+	           $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
+	             if (data.success){
+	            	 if(data.message =='marketing'){
+		            	 window.location.href = "${modulePath}/viewDisplay.page?id=$!marketingPlan.marketingPlanId";
+	            	 }else{
+		            	 window.location.href = "${modulePath}/browse.page?recordId=$!marketingPlan.marketingPlanId";
+	            	 }	             
+	            	 }else{
+	            		 Dialog.message(data.message);
+	            	 }
+	           });
+	         }
+	       });
+	       
+	});
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

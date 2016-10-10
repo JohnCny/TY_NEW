@@ -1,0 +1,78 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户账户信息</div>
+      </div>
+ 	  <div class="inquiry">
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">客户名称</th>
+              <th nowrap="nowrap">卡号</th>
+              <th nowrap="nowrap">账户状态</th>
+              <th nowrap="nowrap">信用额度</th>
+              <th nowrap="nowrap">逾期金额</th>
+              <th nowrap="nowrap">核销标志</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col />
+            </colgroup>
+            #foreach ($accountInfo in $customerAccountInfoForms)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!accountInfo.id"
+                  #if ($!request.getParameter("recordId") == $accountInfo.id) checked="checked" #end /></td>
+              <td nowrap="nowrap">$!accountInfo.customerName</td>
+              <td nowrap="nowrap">$!accountInfo.cardNumber</td>
+              <td nowrap="nowrap">#dictVal("ACCOUNTSTATUS","$!accountInfo.accountStatus")</td>
+              <td nowrap="nowrap">$!accountInfo.creditAmount</td>
+              <td nowrap="nowrap">$!accountInfo.overdueAmount</td>
+              <td nowrap="nowrap">$!accountInfo.chargeLogo</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+         	<a class="btn_g" onclick="javascript:history.go(-1);" href="javascript:void(0);" >返回</a>
+         	<a id="id_display_button" class="btn_gr" href="javascript:void(0);" >显示</a> 
+        </div>
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.displayUrl = "${contextPath}/customer/basiccustomerinfor/displayaccountinfo.page";
+		prepareOperations(opsObj);
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")

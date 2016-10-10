@@ -1,0 +1,188 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/customerInfor.htm")
+
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户维护计划列表</div>
+      </div>
+      
+      <div class="inquiry">
+<!-----------搜索------------------------------------------->  
+  <div class="search_tag">#i18n("label.browse.filter")</div>
+<!-------------- 信息显示 ------------------------------------->        
+        <div id="topDiv" class="inquiry_list inquiry_top">
+        <input type="hidden" id="appId" value="$!appId"/>
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="15%" />
+              <col width="10%" />
+              <col width="30%" /> 
+              <col width="10%" />
+              <col width="10%" />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">客户名称</th>
+              <th nowrap="nowrap">证件号码</th>
+              <th nowrap="nowrap">产品名称</th>
+              <th nowrap="nowrap">计划维护时间</th>
+              <th nowrap="nowrap">所属客户经理</th>
+              <th nowrap="nowrap">维护计划最终状态</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="15%" />
+              <col width="10%" />
+              <col width="30%" /> 
+              <col width="10%" />
+              <col width="10%" />
+            </colgroup>
+            #foreach ($customer in $result.items)
+            <tr >
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!customer.id/$!customer.appId/$!date.format("yyyy-MM-dd HH:mm:dd",$!customer.endDay)/$!customer.customerManagerId"/>
+              <td nowrap="nowrap">$!customer.chineseName</td>
+              <td nowrap="nowrap">$!customer.cardId</td>
+              <td nowrap="nowrap">$!customer.productName</td>
+              <td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:dd",$!customer.startDay)-$!date.format("yyyy-MM-dd HH:mm:dd",$!customer.endDay)</td>
+              <td nowrap="nowrap">$!customer.userName</td>
+              <td nowrap="nowrap">$!customer.endResult</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+          #btnpriv("change")<a id="id_change_button" class="btn_g" href="javascript:void(0);" title="修改">修改</a>#end
+          #btnpriv("display")<a id="id_display_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.display.hint')">#i18n("button.display")</a>#end
+          #btnpriv("change")<a  class="btn_gr" onclick="toBrowse();"  value="#i18n('button.back')" >返回</a>#end
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+	url = "${modulePath}/browse.page";
+	
+	function toBrowse(){
+		var url = "${modulePath}/browse.page?recordId=$!maintenance.id";
+		navigateTo(url);
+	}
+	
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.displayUrl = "${modulePath}/display.page";
+	    opsObj.changeUrl = "${modulePath}/change.page";
+		opsObj.browseUrl = "${modulePath}/browse.page";
+		
+		//修改
+		if (opsObj.changeUrl) {
+	        $("#id_change_button").click(function() {
+	         if ($(".checkbox :checked").length == 1) {
+	        	    var rowid = $($(".checkbox :checked")[0]).attr("value");
+		  			var time = rowid.split("/")[2];//计划时间
+		  			var currentdate = new Date();//系统时间
+		  			var now = currentdate.toLocaleDateString()+" "+currentdate.toLocaleTimeString();
+		  			now = now.replace("年","-").replace("月","-").replace("日",""); 
+		  		    now = new Date(now.replace(/-/g,"/")); 
+		  		    time = new Date(time.replace(/-/g,"/"));
+		  			if(time==null || Date.parse(time) - Date.parse(now) < 0){
+		  				Dialog.message("不能修改已过期的维护计划！");
+		  				return;
+		  			}
+	        	    $("#id_change_button").unbind();
+	                var url ="";
+	                if(opsObj.changeUrl.indexOf("?")>=0){
+	                	url = opsObj.changeUrl + "&id=" + rowid;
+	                }else{
+	                	url = opsObj.changeUrl + "?id=" + rowid;
+	                }
+	        	 
+	            if (opsObj.formObj) {
+	                // 回调URL
+	                var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
+	                if (callBackUrlObj) {
+	                	if(url.indexOf("?")>=0){
+	                		url += "&" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}else{
+		                    url += "?" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}
+	                }
+	            }
+	            window.location.href = url;
+	         } else {
+	                Dialog.message("请选择一行");
+	         } 
+	        });
+	    }
+		
+		
+		//显示
+		if (opsObj.displayUrl) {
+			 $("#id_display_button").click(function() {
+		         if ($(".checkbox :checked").length == 1) {
+		        	    var rowid = $($(".checkbox :checked")[0]).attr("value");
+		        	    $("#id_display_button").unbind();
+		                var url ="";
+		                if(opsObj.displayUrl.indexOf("?")>=0){
+		                	url = opsObj.displayUrl + "&id=" + rowid;
+		                }else{
+		                	url = opsObj.displayUrl + "?id=" + rowid;
+		                }
+		        	 
+		            if (opsObj.formObj) {
+		                // 回调URL
+		                var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
+		                if (callBackUrlObj) {
+		                	if(url.indexOf("?")>=0){
+		                		url += "&" + $.param({
+			                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+			                    });
+		                	}else{
+			                    url += "?" + $.param({
+			                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+			                    });
+		                	}
+		                }
+		            }
+		            window.location.href = url;
+		         } else {
+		                Dialog.message("请选择一行");
+		         } 
+		        });
+		}
+		
+		//browe
+		if (opsObj.browseUrl) {
+			 $("#id_browse_button").click(function() {
+		            var url = opsObj.browseUrl;
+		            if (opsObj.formObj) {
+		                opsObj.formObj.action = opsObj.browseUrl;
+		                opsObj.formObj.submit();
+		            }
+		        });
+		}
+	});
+	 initClickEvent();
+	
+	
+</script>
+#parse ("common/iframe_page_footer.htm")

@@ -1,0 +1,382 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/customerInfor.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
+<body>
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+				  <div class="dvTab">
+            <ul class="com-tab">
+         <li class="tab"><a href="${contextPath}/product/productinformation/display.page?id=${productId}">产品属性</a></li>
+            <li class="tab"><a href="${contextPath}/product/productinformation/display_cpfjqd.page?id=${productId}">附件清单</a></li>
+            <li class="tab"><a href="${contextPath}/product/productinformation/display_cpgz.page?id=${productId}">产品规则</a></li>
+            <li class="tab activeTab"  ><a href="${contextPath}/product/productinformation/display_csgz.page?id=${productId}">催收规则</a></li>
+<!--             <li class="tab"><a href="${contextPath}/product/productinformation/display_cpsxgz.page?id=${productId}">筛选规则</a></li>
+ -->         </ul>
+        </div>
+			</div>
+			<form id="id_module_form" action="">
+				<div class="forms" id="formsId">
+				<input type="hidden" name="id" value="$!productId" />
+					<div>
+                     <label for="">催收类型:</label>
+				     #if($!collectionType == "age")
+				 	 <input id="AccountAge" value="age" type="radio" name="reminderClass" onclick="age()" checked/>账龄
+				 	 #end
+					 #if($!collectionType == "date")
+                     <input id="OutOfDate" value="date" type="radio" name="reminderClass" onclick="date()" checked/>逾期天数
+                     #end
+                    </div>
+					<table id="age" class="table-bd" bordercolor="#CCCCCC" border="1" style="width: 100%; display:none;">
+						<colgroup>
+							<col width="5%" />
+							<col width="10%" />
+							<col width="10%" />
+							<col width="10%" />
+							<col width="10%" />
+                            <col width="10%" />
+							<col width="10%" />     
+						</colgroup>
+			     	<caption>催收规则</caption>
+
+						<tr class="" id="">
+							<th><label for="">期数/天数</label></th>
+                            <th><label for="">逾期金额</label></th>
+							<th><label for="">催收时间（<=逾期金额）</label></th>
+							<th><label for="">催收方式</label></th>
+							<th><label for="">催收时间（>逾期金额）</label></th>
+							<th><label for="">催收方式</label></th>
+						</tr>
+						
+						<tr class="accountAge" id="no1">
+							<td><label for="">第一期</label></td>
+							 <input type="hidden" value="1" name="aging1"/>
+						    <input type="hidden" value="<=" name="operation1"/>
+							<td><input type="text" value="$!pcrf.money1" name="money1" /></td>
+							<td><input type="text" value="$!pcrf.collectionTime1" name="collectionTime1" /></td>
+							<td><select id="collectionWay" name="collectionWay1">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay1)</select></td>
+							<input type="hidden" value=">" name="operation11"/>
+							<td><input type="text" value="$!pcrf.collectionTime11" name="collectionTime11"/> </td>
+                            <td><select id="collectionWay" name="collectionWay11">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay11)</select></td>
+						</tr>
+                        <tr class="accountAge" id="no2">
+							<td><label for="">第二期</label></td>
+						    <input type="hidden" value="2" name="aging2"/>
+						    <input type="hidden" value="<=" name="operation2"/>
+							<td><input type="text" value="$!pcrf.money2" name="money2" /></td>
+							<td><input type="text" value="$!pcrf.collectionTime2" name="collectionTime2" /></td>
+							<td><select id="collectionWay" name="collectionWay2">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay2)</select></td>
+							<td><input type="text" value="$!pcrf.collectionTime22" name="collectionTime22"/> </td>
+							<input type="hidden" value=">" name="operation22"/>
+                            <td><select id="collectionWay" name="collectionWay22">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay22)</select></td>
+						</tr>
+                        <tr class="accountAge" id="no3">
+							<td><label for="">第三期</label></td>
+							<input type="hidden" value="3" name="aging3"/>
+							<input type="hidden" value="<=" name="operation3"/>
+							<td><input type="text" value="$!pcrf.money3" name="money3" /></td>
+							<td><input type="text" value="$!pcrf.collectionTime3" name="collectionTime3" /></td>
+							<td><select id="collectionWay" name="collectionWay3">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay3)</select></td>
+							<input type="hidden" value=">" name="operation33"/>
+							<td><input type="text" value="$!pcrf.collectionTime33" name="collectionTime33"/> </td>
+                            <td><select id="collectionWay" name="collectionWay33">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay33)</select></td>
+						</tr>
+                        <tr class="accountAge" id="no4">
+							<td><label for="">第四期</label></td>
+							<input type="hidden" value="4" name="aging4"/>
+							<input type="hidden" value="<=" name="operation4"/>
+							<td><input type="text" value="$!pcrf.money4" name="money4" /></td>
+							<td><input type="text" value="$!pcrf.collectionTime4" name="collectionTime4" /></td>
+							<td><select id="collectionWay" name="collectionWay4">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay4)</select></td>
+							<td><input type="text" value="$!pcrf.collectionTime44" name="collectionTime44"/> </td>
+							<input type="hidden" value=">" name="operation44"/>
+                            <td><select id="collectionWay" name="collectionWay44">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay44)</select></td>
+						</tr>
+                        <tr class="accountAge" id="no5">
+							<td><label for="">第五期</label></td>
+							<input type="hidden" value="5" name="aging5"/>
+							<input type="hidden" value="<=" name="operation5"/>
+							<td><input type="text" value="$!pcrf.money5" name="money5" /></td>
+							<td><input type="text" value="$!pcrf.collectionTime5" name="collectionTime5" /></td>
+							<td><select id="collectionWay" name="collectionWay5">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay5)</select></td>
+							<td><input type="text" value="$!pcrf.collectionTime55" name="collectionTime55"/> </td>
+							<input type="hidden" value=">" name="operation55"/>
+                            <td><select id="collectionWay" name="collectionWay55">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay55)</select></td>
+						</tr>
+                        <tr class="accountAge" id="no6">
+							<td><label for="">第六期</label></td>
+							<input type="hidden" value="6" name="aging6"/>
+							<input type="hidden" value="<=" name="operation6"/>
+							<td><input type="text" value="$!pcrf.money6" name="money6" /></td>
+							<td><input type="text" value="$!pcrf.collectionTime6" name="collectionTime6" /></td>
+							<td><select id="collectionWay" name="collectionWay6">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay6)</select></td>
+							<td><input type="text" value="$!pcrf.collectionTime66" name="collectionTime66"/> </td>
+							<input type="hidden" value=">" name="operation66"/>
+                            <td><select id="collectionWay" name="collectionWay66">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay66)</select></td>
+						</tr><tr class="accountAge" id="no7">
+							<td><label for="">第七期</label></td>
+							<input type="hidden" value="7" name="aging7"/>
+							<input type="hidden" value="<=" name="operation7"/>
+							<td><input type="text" value="$!pcrf.money7" name="money7" /></td>
+							<td><input type="text" value="$!pcrf.collectionTime7" name="collectionTime7" /></td>
+							<td><select id="collectionWay" name="collectionWay7">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay7)</select></td>
+							<td><input type="text" value="$!pcrf.collectionTime77" name="collectionTime77"/> </td>
+							<input type="hidden" value=">" name="operation77"/>
+                            <td><select id="collectionWay" name="collectionWay77">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay77)</select></td>
+						</tr><tr class="accountAge" id="no8">
+							<td><label for="">第八期</label></td>
+							<input type="hidden" value="8" name="aging8"/>
+							<input type="hidden" value="<=" name="operation8"/>
+							<td><input type="text" value="$!pcrf.money8" name="money8" /></td>
+							<td><input type="text" value="$!pcrf.collectionTime8" name="collectionTime8" /></td>
+							<td><select id="collectionWay" name="collectionWay8">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay8)</select></td>
+							<td><input type="text" value="$!pcrf.collectionTime88" name="collectionTime88"/> </td>
+							<input type="hidden" value=">" name="operation88"/>
+                            <td><select id="collectionWay" name="collectionWay88">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay88)</select></td>
+						</tr><tr class="accountAge" id="no9">
+							<td><label for="">第九期</label></td>
+							<input type="hidden" value="9" name="aging9"/>
+							<input type="hidden" value="<=" name="operation9"/>
+							<td><input type="text" value="$!pcrf.money9" name="money9" /></td>
+							<td><input type="text" value="$!pcrf.collectionTime9" name="collectionTime9" /></td>
+							<td><select id="collectionWay" name="collectionWay9">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay9)</select></td>
+							<td><input type="text" value="$!pcrf.collectionTime99" name="collectionTime99"/> </td>
+							<input type="hidden" value=">" name="operation99"/>
+                            <td><select id="collectionWay" name="collectionWay99">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay99)</select></td>
+						</tr>
+                        <tr class="accountAge" id="no10">
+							<td><label for="">第十~十二期</label></td>
+							<input type="hidden" value="10" name="aging10"/>
+							<input type="hidden" value="<=" name="operation10"/>
+							<td><input type="text" value="$!pcrf.money10" name="money10" /></td>
+							<td><input type="text" value="$!pcrf.collectionTime10" name="collectionTime10" /></td>
+							<td><select id="collectionWay" name="collectionWay10">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay10)</select></td>
+							<td><input type="text" value="$!pcrf.collectionTime110" name="collectionTime110"/> </td>
+							<input type="hidden" value=">" name="operation110"/>
+                            <td><select id="collectionWay" name="collectionWay110">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay110)</select></td>
+						</tr>
+                        <tr class="accountAge" id="no11">
+							<td><label for="">第十二期以上</label></td>
+							<input type="hidden" value="13" name="aging13"/>
+							<input type="hidden" value="<=" name="operation13"/>
+							<td><input type="text" value="$!pcrf.money13" name="money13" /></td>
+							<td><input type="text" value="$!pcrf.collectionTime13" name="collectionTime13" /></td>
+							<td><select id="collectionWay" name="collectionWay13">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay13)</select></td>
+							<td><input type="text" value="$!pcrf.collectionTime113" name="collectionTime113"/> </td>
+							<input type="hidden" value=">" name="operation113"/>
+                            <td><select id="collectionWay" name="collectionWay113">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay113)</select></td>
+						</tr>
+             
+                    </table>
+					
+                    <table id="date" class="table-bd" bordercolor="#CCCCCC" border="1" style="width: 100%;display:none;">
+						<colgroup>
+							<col width="5%" />
+							<col width="10%" />
+							<col width="10%" />
+							<col width="10%" />
+							<col width="10%" />
+                            <col width="10%" />
+							<col width="10%" />     
+						</colgroup>
+			     	<caption>催收规则</caption>
+
+						<tr class="" id="">
+							<th><label for="">期数/天数</label></th>
+                            <th><label for="">逾期金额</label></th>
+							<th><label for="">催收时间（<=逾期金额）</label></th>
+							<th><label for="">催收方式</label></th>
+							<th><label for="">催收时间（>逾期金额）</label></th>
+							<th><label for="">催收方式</label></th>
+						</tr>
+                    	
+                        <tr class="outofDate" id="day1">
+							<td><label for="">1~30天</label></td>
+							<input type="hidden" value="1" name="overdueDayStart1"/>
+							<input type="hidden" value="30" name="overdueDayEnd1"/>
+							<td><input type="text" value="$!pcrf.money1111" name="money1111"  /></td>
+							<input type="hidden" value="<=" name="operation1111"/>
+							<td><input type="text" value="$!pcrf.collectionTime1111" name="collectionTime1111" /></td>
+							<td><select id="collectionWay" name="collectionWay1111">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay1111)</select></td>
+							<input type="hidden" value=">" name="operation11111"/>
+							<td><input type="text" value="$!pcrf.collectionTime11111" name="collectionTime11111"  /> </td>
+                            <td><select id="collectionWay" name="collectionWay11111">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay11111)</select></td>
+						</tr>
+                        <tr class="outofDate" id="day2">
+							<td><label for="">31~60天</label></td>
+							<input type="hidden" value="31" name="overdueDayStart2"/>
+							<input type="hidden" value="60" name="overdueDayEnd2"/>
+							<td><input type="text" value="$!pcrf.money1112" name="money1112"  /></td>
+							<input type="hidden" value="<=" name="operation1112"/>
+							<td><input type="text" value="$!pcrf.collectionTime1112" name="collectionTime1112" /></td>
+							<td><select id="collectionWay" name="collectionWay1112">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay1112)</select></td>
+							<input type="hidden" value=">" name="operation11112"/>
+							<td><input type="text" value="$!pcrf.collectionTime11112" name="collectionTime11112"  /> </td>
+                            <td><select id="collectionWay" name="collectionWay11112">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay11112)</select></td>
+						</tr>
+                        <tr class="outofDate" id="day3">
+							<td><label for="">61~90天</label></td>
+							<input type="hidden" value="61" name="overdueDayStart3"/>
+							<input type="hidden" value="90" name="overdueDayEnd3"/>
+							<td><input type="text" value="$!pcrf.money1113" name="money1113"  /></td>
+							<input type="hidden" value="<=" name="operation1113"/>
+							<td><input type="text" value="$!pcrf.collectionTime1113" name="collectionTime1113" /></td>
+							<td><select id="collectionWay" name="collectionWay1113">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay1113)</select></td>
+							<input type="hidden" value=">" name="operation11113"/>
+							<td><input type="text" value="$!pcrf.collectionTime11113" name="collectionTime11113"  /> </td>
+                            <td><select id="collectionWay" name="collectionWay11113">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay11113)</select></td>
+						</tr>
+                        <tr class="outofDate" id="day4">
+							<td><label for="">91~120天</label></td>
+							<input type="hidden" value="91" name="overdueDayStart4"/>
+							<input type="hidden" value="120" name="overdueDayEnd4"/>
+							<td><input type="text" value="$!pcrf.money1114" name="money1114"  /></td>
+							<input type="hidden" value="<=" name="operation1114"/>
+							<td><input type="text" value="$!pcrf.collectionTime1114" name="collectionTime1114" /></td>
+							<td><select id="collectionWay" name="collectionWay1114">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay1114)</select></td>
+							<input type="hidden" value=">" name="operation11114"/>
+							<td><input type="text" value="$!pcrf.collectionTime11114" name="collectionTime11114"  /> </td>
+                            <td><select id="collectionWay" name="collectionWay11114">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay11114)</select></td>
+						</tr>
+                        <tr class="outofDate" id="day5">
+							<td><label for="">121~150天</label></td>
+							<input type="hidden" value="121" name="overdueDayStart5"/>
+							<input type="hidden" value="150" name="overdueDayEnd5"/>
+							<td><input type="text" value="$!pcrf.money1115" name="money1115"  /></td>
+							<input type="hidden" value="<=" name="operation1115"/>
+							<td><input type="text" value="$!pcrf.collectionTime1115" name="collectionTime1115" /></td>
+							<td><select id="collectionWay" name="collectionWay1115">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay1115)</select></td>
+							<input type="hidden" value=">" name="operation11115"/>
+							<td><input type="text" value="$!pcrf.collectionTime11115" name="collectionTime11115"  /> </td>
+                            <td><select id="collectionWay" name="collectionWay11115">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay11115)</select></td>
+						</tr>
+                        <tr class="outofDate" id="day6">
+							<td><label for="">151~180天</label></td>
+							<input type="hidden" value="151" name="overdueDayStart6"/>
+							<input type="hidden" value="180" name="overdueDayEnd6"/>
+							<td><input type="text" value="$!pcrf.money1116" name="money1116"  /></td>
+							<input type="hidden" value="<=" name="operation1116"/>
+							<td><input type="text" value="$!pcrf.collectionTime1116" name="collectionTime1116" /></td>
+							<td><select id="collectionWay" name="collectionWay1116">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay1116)</select></td>
+							<input type="hidden" value=">" name="operation11116"/>
+							<td><input type="text" value="$!pcrf.collectionTime11116" name="collectionTime11116"  /> </td>
+                            <td><select id="collectionWay" name="collectionWay11116">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay11116)</select></td>
+						</tr><tr class="outofDate" id="day7">
+							<td><label for="">181~210天</label></td>
+						<input type="hidden" value="181" name="overdueDayStart7"/>
+							<input type="hidden" value="210" name="overdueDayEnd7"/>
+							<td><input type="text" value="$!pcrf.money1117" name="money1117"  /></td>
+							<input type="hidden" value="<=" name="operation1117"/>
+							<td><input type="text" value="$!pcrf.collectionTime1117" name="collectionTime1117" /></td>
+							<td><select id="collectionWay" name="collectionWay1117">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay1117)</select></td>
+							<input type="hidden" value=">" name="operation11117"/>
+							<td><input type="text" value="$!pcrf.collectionTime11117" name="collectionTime11117"  /> </td>
+                            <td><select id="collectionWay" name="collectionWay11117">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay11117)</select></td>
+						</tr><tr class="outofDate" id="day8">
+							<td><label for="">211~240天</label></td>
+							<input type="hidden" value="211" name="overdueDayStart8"/>
+							<input type="hidden" value="240" name="overdueDayEnd8"/>
+							<td><input type="text" value="$!pcrf.money1118" name="money1118"  /></td>
+							<input type="hidden" value="<=" name="operation1118"/>
+							<td><input type="text" value="$!pcrf.collectionTime1118" name="collectionTime1118" /></td>
+							<td><select id="collectionWay" name="collectionWay1118">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay1118)</select></td>
+							<input type="hidden" value=">" name="operation11118"/>
+							<td><input type="text" value="$!pcrf.collectionTime11118" name="collectionTime11118"  /> </td>
+                            <td><select id="collectionWay" name="collectionWay11118">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay11118)</select></td>
+						</tr><tr class="outofDate" id="day9">
+							<td><label for="">241~270天</label></td>
+							<input type="hidden" value="241" name="overdueDayStart9"/>
+							<input type="hidden" value="270" name="overdueDayEnd9"/>
+							<td><input type="text" value="$!pcrf.money1119" name="money1119"  /></td>
+							<input type="hidden" value="<=" name="operation1119"/>
+							<td><input type="text" value="$!pcrf.collectionTime1119" name="collectionTime1119" /></td>
+							<td><select id="collectionWay" name="collectionWay1119">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay1119)</select></td>
+							<input type="hidden" value=">" name="operation11119"/>
+							<td><input type="text" value="$!pcrf.collectionTime11119" name="collectionTime11119"  /> </td>
+                            <td><select id="collectionWay" name="collectionWay11119">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay11119)</select></td>
+						</tr>
+                        <tr class="outofDate" id="day10">
+							<td><label for="">271~360天</label></td>
+							<input type="hidden" value="271" name="overdueDayStart10"/>
+							<input type="hidden" value="360" name="overdueDayEnd10"/>
+							<td><input type="text" value="$!pcrf.money11110" name="money11110"  /></td>
+							<input type="hidden" value="<=" name="operation11110"/>
+							<td><input type="text" value="$!pcrf.collectionTime11110" name="collectionTime11110" /></td>
+							<td><select id="collectionWay" name="collectionWay11110">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay11110)</select></td>
+							<input type="hidden" value=">" name="operation111110"/>
+							<td><input type="text" value="$!pcrf.collectionTime111110" name="collectionTime111110"  /> </td>
+                            <td><select id="collectionWay" name="collectionWay111110">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay111110)</select></td>
+						</tr>
+                        <tr class="outofDate" id="day11">
+							<td><label for="">大于360天</label></td>
+							<input type="hidden" value="360" name="overdueDayStart14"/>
+							<input type="hidden" value="" name="overdueDayEnd14"/>
+							<td><input type="text" value="$!pcrf.money111114" name="money111114"/></td>
+							<input type="hidden" value="<=" name="operation111114"/>
+							<td><input type="text" value="$!pcrf.collectionTime111114" name="collectionTime111114" /></td>
+							<td><select id="collectionWay" name="collectionWay111114">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay111114)</select></td>
+							<input type="hidden" value=">" name="operation1111114"/>
+							<td><input type="text" value="$!pcrf.collectionTime1111114" name="collectionTime1111114"  /> </td>
+                            <td><select id="collectionWay" name="collectionWay1111114">#customerInfo($request.getAttribute("collectionMethodList"),$!pcrf.collectionWay1111114)</select></td>
+						</tr>
+                    </table>
+				</div>
+			</form>
+		
+			<div class="submit">
+				<input class="current" type="button" onclick="javascript:history.go(-1);" value="#i18n('button.back')" />
+			</div>
+		</div>
+	</div>
+	 <script>
+/*     function age(){
+		document.getElementById("age").style.display="block";
+		document.getElementById("date").style.display="none";
+		}
+		
+	function date(){
+		document.getElementById("age").style.display="none";
+		document.getElementById("date").style.display="block";
+		} */
+    </script>
+	<script type="text/javascript">
+		var layout = new FormsLayout("formsId");
+		window.top.currentWindow.setLayout(layout);
+
+		#set ($formName = "'#id_module_form'")
+		#validator($formName)
+		 $(document).ready(function() {
+			      #if($!collectionType == "age")
+			    	document.getElementById("age").style.display="block";
+					document.getElementById("date").style.display="none";
+				  #elseif($!collectionType == "date")
+				  	document.getElementById("age").style.display="none";
+	             	document.getElementById("date").style.display="block";
+				  #end
+			 
+			 $("#id_save_button").click(function() {
+			        if ($($formName).valid()) {
+			         var accessorieIds = "";
+			     	 $("input[name='accessorieId']:checkbox").each(function(){
+			     		 if ($(this).attr("checked")){
+			     			accessorieIds+=$(this).val()+","; 
+			     		}
+			     	  }
+			         );
+			     	 
+			     	 $("#accessorieIds").val(accessorieIds);
+			     	 var formjson = $($formName).serialize();
+			          $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
+			            if (data.success) {
+			            
+			                navigateTo("${contextPath}/product/productinformation/browse.page");
+			              
+			            }
+			          });
+			        }
+			      });
+		});
+	</script>
+</body>
+
+</html>

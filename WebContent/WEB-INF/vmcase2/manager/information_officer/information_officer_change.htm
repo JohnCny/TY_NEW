@@ -1,0 +1,134 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">选客户</div>
+      </div>
+      <form id="id_module_form" action="${modulePath}/update.json">
+        <div class="forms" id="formsId">
+          <input type="hidden" name="messengerId" value="$!messengerId" />
+          <table class="rule">
+            <colgroup>
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+            </colgroup>
+            #set($total = $!unselected.size()/8)
+            #foreach($!index in [0 .. $total])
+            <tr>
+            #set($current = $!index *8)
+            #if($current<$!unselected.size())
+              <td><input type="checkbox" name="customerId" value="$!unselected.get($!current).TypeCode"/>$!unselected.get($!current).TypeName</td>
+            #end
+            #set($current = $!index *8+1)
+            #if($current<$!unselected.size())
+              <td><input type="checkbox" name="customerId" value="$!unselected.get($!current).TypeCode"/>$!unselected.get($!current).TypeName</td>
+            #end
+            #set($current = $!index *8+2)
+            #if($current<$!unselected.size())
+              <td><input type="checkbox" name="customerId" value="$!unselected.get($!current).TypeCode"/>$!unselected.get($!current).TypeName</td>
+            #end
+            #set($current = $!index *8+3)
+            #if($current<$!unselected.size())
+              <td><input type="checkbox" name="customerId" value="$!unselected.get($!current).TypeCode"/>$!unselected.get($!current).TypeName</td>
+            #end
+            #set($current = $!index *8+4)
+            #if($current<$!unselected.size())
+              <td><input type="checkbox" name="customerId" value="$!unselected.get($!current).TypeCode"/>$!unselected.get($!current).TypeName</td>
+            #end
+            #set($current = $!index *8+5)
+            #if($current<$!unselected.size())
+              <td><input type="checkbox" name="customerId" value="$!unselected.get($!current).TypeCode"/>$!unselected.get($!current).TypeName</td>
+            #end
+            #set($current = $!index *8+6)
+            #if($current<$!unselected.size())
+              <td><input type="checkbox" name="customerId" value="$!unselected.get($!current).TypeCode"/>$!unselected.get($!current).TypeName</td>
+            #end
+            #set($current = $!index *8+7)
+            #if($current<$!unselected.size())
+              <td><input type="checkbox" name="customerId" value="$!unselected.get($!current).TypeCode"/>$!unselected.get($!current).TypeName</td>
+            #end
+            </tr>
+            #end
+            #set($count = $!selected.size()/8)
+            #foreach($!index in [0 .. $count])
+            <tr>
+            #set($present = $!index *8)
+            #if($present<$!selected.size())
+              <td><input type="checkbox" name="customerId" value="$!selected.get($!present).TypeCode" checked="checked"/>$!selected.get($!present).TypeName</td>
+            #end
+            #set($present = $!index *8+1)
+            #if($present<$!selected.size())
+              <td><input type="checkbox" name="customerId" value="$!selected.get($!present).TypeCode" checked="checked"/>$!selected.get($!present).TypeName</td>
+            #end
+            #set($present = $!index *8+2)
+            #if($present<$!selected.size())
+              <td><input type="checkbox" name="customerId" value="$!selected.get($!present).TypeCode" checked="checked"/>$!selected.get($!present).TypeName</td>
+            #end
+            #set($present = $!index *8+3)
+            #if($present<$!selected.size())
+              <td><input type="checkbox" name="customerId" value="$!selected.get($!present).TypeCode" checked="checked"/>$!selected.get($!present).TypeName</td>
+            #end
+            #set($present = $!index *8+4)
+            #if($present<$!selected.size())
+              <td><input type="checkbox" name="customerId" value="$!selected.get($!present).TypeCode" checked="checked"/>$!selected.get($!present).TypeName</td>
+            #end
+            #set($present = $!index *8+5)
+            #if($present<$!selected.size())
+              <td><input type="checkbox" name="customerId" value="$!selected.get($!present).TypeCode" checked="checked"/>$!selected.get($!present).TypeName</td>
+            #end
+            #set($present = $!index *8+6)
+            #if($present<$!selected.size())
+              <td><input type="checkbox" name="customerId" value="$!selected.get($!present).TypeCode" checked="checked"/>$!selected.get($!present).TypeName</td>
+            #end
+            #set($present = $!index *8+7)
+            #if($present<$!selected.size())
+              <td><input type="checkbox" name="customerId" value="$!selected.get($!present).TypeCode" checked="checked"/>$!selected.get($!present).TypeName</td>
+            #end
+            </tr>
+            #end
+            
+          </table>
+        </div>
+      </form>
+
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n('button.cancel')" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");			
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	#validator($formName)
+	$(document).ready(function() {
+		$("#id_save_button").click(function(){
+		var form = $($formName);
+			Dialog.load();
+			$.ajax({
+				type:'GET',
+				url:form.attr('action'),
+				data:form.serialize(),
+				success:function(msg){
+					Dialog.closeLoad();
+					if(msg.success == true){
+						Dialog.message(msg.message);
+					}else{
+						Dialog.message(msg.message);
+					}
+					window.location.href="${modulePath}/display.page?id=$!messengerId";
+				}
+			});
+		});
+	});
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

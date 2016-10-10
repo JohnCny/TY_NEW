@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	default-autowire="byName" default-init-method="init" default-destroy-method="depose"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+	<import resource="beans-base.xml" />
+	<import resource="beans-utility.xml" />
+	<import resource="beans-database-oracle.xml" />
+	<import resource="beans-modules.xml" />
+</beans>

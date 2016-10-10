@@ -1,0 +1,251 @@
+#parse ("common/iframe_page_header.htm")
+<script src="${contextPath}/common/js/common/jquery.form.js"></script>
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
+<body>
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+				  <div class="dvTab">
+           <div class="title">客户管理>新增自然人台账</div>
+        </div>
+			</div>
+			<form id="id_module_form"
+				action="${contextPath}/customer/customer_parameter/addCustomerParameter.json"  method="post">
+				<div class="forms" id="formsId">
+					<table class="rule" border="1" bordercolor="#CCCCCC">
+					<caption>产品属性</caption>
+						<colgroup>
+             			<col width="10%" />
+              			<col width="40%" />
+             			<col width="10%" />
+              			<col width="40%" />
+						</colgroup>
+			#foreach ($pInfor in $pInfor)
+            <tr>
+              <td><label for="name">所属客户经理:</label></td>
+              <td><input type="text" id="chineseName" value="$!pInfor.customermanagerName" readonly="readonly"/></td>
+              
+              <td><label for="name">客户姓名:</label></td>
+              <td><input type="text" id="chineseName" name="customername" value="$!pInfor.customerName" readonly="readonly"/></td>
+            </tr>
+            
+            <tr>
+              <td><label for="name">身份证号:</label></td>
+              <td><input  type="text" id="chineseName" name="idcard" value="$!pInfor.idcard" readonly="readonly"/></td>
+              
+              <td><label for="name">产品名称:</label></td>
+              
+              <td>
+					<select id="type" name="productname">
+							   <option value="">-----请选择------</option>
+							   #foreach ($p in $product)
+                 			  <option value="$!p.productName">$!p.productName</option>
+                 			   #end
+                	</select>
+			 </td>
+   
+            </tr>
+            
+             <tr>
+              <td><label for="name">金额:</label></td>
+              <td><input type="text" id="chineseName" name="money" value="$!pInfor.money" readonly="readonly"/></td>
+              
+               <td><label for="name">期限:</label></td>
+              <td><input  type="text" id="chineseName" name="deadline" value="$!pInfor.deadlinec" readonly="readonly"/></td>
+            </tr>
+            
+            <tr>
+              <td><label for="name">利率:</label></td>
+              <td><input  type="text" id="chineseName" name="interstrate" value="$!pInfor.interstrate" readonly="readonly"/></td>
+             
+              <td><label for="name"> 贷款类型:</label></td>
+              <td>
+					<select id="type" name="loantype">
+							   <option value=""></option>
+                 			   <option value="信用">信用</option>
+                			   <option value="抵押">抵押</option>
+                			   <option value="担保">担保</option>
+                			   <option value="质押">质押</option>
+                	</select>
+			</td>
+            </tr>
+            
+			<tr>
+             	<td><label for="name">发放日期:</label></td>
+             	<td><input type="text" value="$!pInfor.providedate" name="providedate"
+						    		   readonly="readonly"/>
+				</td>
+				
+				<td><label for="name">到期日期:</label></td>
+				<td><input type="text" value="$!pInfor.expiredate" name="expiredate"
+						    		   readonly="readonly"/>
+				</td>
+            </tr>            
+            
+            <tr>
+              <td><label for="name">担保人:</label></td>
+              <td><input  type="text" id="chineseName" name="bondsman"/></td>
+              
+              <td><label for="name">行业分类:</label></td>
+              <td><input  type="text" id="chineseName" name="classification" value="$!pInfor.classification" readonly="readonly"/></td>
+            </tr>
+            
+            <tr>
+              <td><label for="name">经营内容:</label></td>
+              <td><input  type="text" id="chineseName" name="scopeoperation"/></td>
+              
+              <td><label for="name">经营地址:</label></td>
+              <td><input  type="text" id="chineseName" name="operationaddress" /></td>
+            </tr>
+            
+             <tr>
+              <td><label for="name">主调:</label></td>
+              <td><input  type="text" id="chineseName" name="principal" value="$!pInfor.customermanagerName" readonly="readonly"/></td>
+              
+              <td><label for="name">辅调:</label></td>
+               <td>
+					<select id="type" name="assist">
+							   <option value="">-----请选择------</option>
+							   #foreach ($m in $managers)
+                 			  <option value="$!m.displayName">$!m.displayName</option>
+                 			   #end
+                	</select>
+			 </td>
+            </tr>
+            
+             <tr>
+              <td><label for="name">组别:</label></td>
+              <td>
+					<select id="type" name="groupes">
+							   <option value=""></option>
+                 			   <option value="1组">1组</option>
+                			   <option value="2组">2组</option>
+                			   <option value="3组">3组</option>
+                			   <option value="4组">4组</option>
+                			   <option value="5组">5组</option>
+                			   <option value="6组">6组</option>
+                			   <option value="7组">7组</option>
+                			   <option value="8组">8组</option>
+                			   <option value="9组">9组</option>
+                			   <option value="10组">10组</option>
+                			   <option value="11组">11组</option>
+                			   <option value="12组">12组</option>
+                	</select>
+			</td>
+			
+			<td><label for="name">审贷会成员:</label></td>
+              <td>
+					<select id="type" name="members">
+							   <option value="">-----请选择------</option>
+							   #foreach ($m in $managers)
+                 			  <option value="$!m.displayName">$!m.displayName</option>
+                 			   #end
+                	</select>
+			 </td>
+            </tr>
+            
+            <tr>
+              <td><label for="name">贷款方式:</label></td>
+              <td>
+					<select id="type" name="patternslend">
+							   <option value=""></option>
+                 			   <option value="经营类">经营类</option>
+                			   <option value="消费类">消费类</option>
+                	</select>
+			</td>
+			
+			<td><label for="name">是否纳税:</label></td>
+              <td>
+					<select id="type" name="ratepaying">
+							   <option value=""></option>
+                 			   <option value="是">是</option>
+                			   <option value="否">否</option>
+                	</select>
+			</td>
+            </tr>
+            
+            <tr>
+              <td><label for="name">归还情况:</label></td>
+              <td><input class="rinpsty"  type="text" id="chineseName" name="giveback" value="$!pInfor.giveback" readonly="readonly"/></td>
+			
+			  <td><label for="name">是否批量:</label></td>
+              <td>
+					<select id="type" name="batchs">
+							   <option value=""></option>
+                 			   <option value="是">是</option>
+                			   <option value="否">否</option>
+                	</select>
+			</td>
+            </tr>
+            
+            <tr>
+              <td><label for="name">电话号码:</label></td>
+              <td><input  type="text" id="chineseName" name="phonenumber"/></td>
+			
+			  <td><label for="name">是否转贷:</label></td>
+              <td>
+					<select id="type" name="enlending">
+							   <option value=""></option>
+                 			   <option value="是">是</option>
+                			   <option value="否">否</option>
+                	</select>
+			</td>
+            </tr>
+         	
+         	<tr>
+              <td><label for="name">备注:</label></td>
+              <td><input type="text" id="chineseName" name="remark"/></td>
+              </tr>
+			#end		
+					</table>
+					
+				</div>
+			</form>
+
+			<div class="submit">
+				<input id="id_save_button" type="button"
+					value="保存" class="current"/> <input
+					type="button" onclick="javascript:history.go(-1);"
+					value="#i18n('button.cancel')" />
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	
+	function mySave() {
+		$('#id_module_form').ajaxSubmit({
+			dataType : 'json',
+			type : "post",
+			success : function(data) {
+				if (data.success) {
+					Dialog.message(data.message,"提示", function() {
+						/* navigateTo("${contextPath}/product/productinformation/create_cpfjqd.page"+"?productId=" +data.productId); */
+						navigateTo("${contextPath}/customer/customer_ZRRTZ/zrrtz.json");
+					 });
+				} else {
+					Dialog.message(data.errors.errors[0].message);
+					return false;
+				}
+			},
+			error : function(data) {
+				Dialog.closeLoad();
+				Dialog.message("操作失败");
+				return false;
+			}
+		});
+	}
+	var layout=new FormsLayout("formsId");			
+	window.top.currentWindow.setLayout(layout);
+
+	 #set ($formName = "'#id_module_form'")
+	 #parse ("product/product_create_validation.js")
+	 $(document).ready(function() {
+		 $("#id_save_button").click(function() {
+		        if ($($formName).valid()) {
+		        	mySave();
+		        }
+		      });
+	});  
+	</script>
+</body>
+</html>

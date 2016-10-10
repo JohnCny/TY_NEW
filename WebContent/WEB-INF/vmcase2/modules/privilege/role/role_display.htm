@@ -1,0 +1,67 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+				<div class="title">#mi18n("display")</div>
+			</div>
+			<form id="id_form_sample" action="${contextPath}/system/role/update.json">
+				<div class="forms" id="formsId">
+					<input type="hidden" name="id" value="$!role.id" />
+					<table class="rule">
+						<colgroup>
+							<col width="10%" />
+							<col width="30%" />
+							<col width="10%" />
+							<col width="10%" />
+							<col width="30%" />
+						</colgroup>
+						<!-- 
+						<tr>
+							<td>#mi18n("seqNo"):</td>
+							<td><input type="text" value="$!role.seqNo" disabled="true" /></td>
+							<td>&nbsp;</td>
+							<td>#mi18n("name"):</td>
+							<td><input type="text" value="$!role.name" disabled="true" /></td>
+						</tr>
+						 -->
+						<tr>
+							<td>#mi18n("name"):</td>
+							<td><input type="text" value="$!role.name" disabled="true" /></td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td>#mi18n("shortName"):</td>
+							<td><input type="text" value="$!role.shortName" disabled="true" /></td>
+							<td>&nbsp;</td>
+							<td>#mi18n("systemRole"):</td>
+							<td><input type="text" value=#mi18n("$!role.isSystem") disabled="true" /></td>
+						</tr>
+						<tr>
+							<td>#mi18n("createdTime"):</td>
+							<td><input type="text" value="$!date.format('yyyy-MM-dd', $!role.createdTime)" disabled="true" /></td>
+							<td>&nbsp;</td>
+							<td>#mi18n("modifiedTime"):</td>
+							<td><input type="text" value="$!date.format('yyyy-MM-dd', $!role.modifiedTime)" disabled="true" /></td>
+						</tr>
+						<tr>
+							<td>#mi18n("description"):</td>
+							<td colspan="4"><textarea rows="5" disabled="true">$!role.description</textarea></td>
+						</tr>
+					</table>
+				</div>
+			</form>
+			<div class="submit">
+				<input class="current" type="button" onclick="javascript:history.go(-1);" value="#i18n('button.back')" />
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		var layout = new FormsLayout("formsId");
+		window.top.currentWindow.setLayout(layout);
+	</script>
+</body>
+
+</html>

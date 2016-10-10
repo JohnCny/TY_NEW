@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.intopieces.dao.CashFlowDao" >
+  <resultMap id="BaseResultMap" type="com.cardpay.pccredit.intopieces.model.CashFlow" >
+    <id column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="LOAN_APPLY_ID" property="loanApplyId" jdbcType="DECIMAL" />
+    <result column="BUSINESS_TYPE" property="businessType" jdbcType="VARCHAR" />
+    <result column="MONTH" property="month" jdbcType="VARCHAR" />
+    <result column="EARLY_CASH" property="earlyCash" jdbcType="VARCHAR" />
+    <result column="CASH_SALE" property="cashSale" jdbcType="VARCHAR" />
+    <result column="ACCOUNTS_RECEIVABLE_RECOVERY" property="accountsReceivableRecovery" jdbcType="VARCHAR" />
+    <result column="CUSTOMER_PREPAYMENT" property="customerPrepayment" jdbcType="VARCHAR" />
+    <result column="TOTAL_CASH_INFLOW" property="totalCashInflow" jdbcType="VARCHAR" />
+    <result column="BUY_RAW_MATERIAL" property="buyRawMaterial" jdbcType="VARCHAR" />
+    <result column="PAYMENT_ACCOUNTS_PAYABLE" property="paymentAccountsPayable" jdbcType="VARCHAR" />
+    <result column="PURCHASES_ADVANCE" property="purchasesAdvance" jdbcType="VARCHAR" />
+    <result column="TOTAL_OPERATING_CASH_OUTFLOW" property="totalOperatingCashOutflow" jdbcType="VARCHAR" />
+    <result column="WAGE_LABOR" property="wageLabor" jdbcType="VARCHAR" />
+    <result column="TAX" property="tax" jdbcType="VARCHAR" />
+    <result column="TRANSPORTATION_COST" property="transportationCost" jdbcType="VARCHAR" />
+    <result column="RENT" property="rent" jdbcType="VARCHAR" />
+    <result column="MAINTENANCE_FEE" property="maintenanceFee" jdbcType="VARCHAR" />
+    <result column="WATER_POWER_COST" property="waterPowerCost" jdbcType="VARCHAR" />
+    <result column="ADVERTISING_COST" property="advertisingCost" jdbcType="VARCHAR" />
+    <result column="EXPENSE" property="expense" jdbcType="VARCHAR" />
+    <result column="FIXED_COST" property="fixedCost" jdbcType="VARCHAR" />
+    <result column="FIXED_ASSET_INVESTMENT" property="fixedAssetInvestment" jdbcType="VARCHAR" />
+    <result column="SALE_FIXED_ASSET" property="saleFixedAsset" jdbcType="VARCHAR" />
+    <result column="TOTAL_INVESTMENT_CASH_FLOW" property="totalInvestmentCashFlow" jdbcType="VARCHAR" />
+    <result column="BANK_LOAN" property="bankLoan" jdbcType="VARCHAR" />
+    <result column="REPAYMENT_PRINCIPAL_NUMBER" property="repaymentPrincipalNumber" jdbcType="VARCHAR" />
+    <result column="TOTAL_CASH_FLOW_FINANCING" property="totalCashFlowFinancing" jdbcType="VARCHAR" />
+    <result column="HOUSEHOLD_EXPENDITURE" property="householdExpenditure" jdbcType="VARCHAR" />
+    <result column="PRIVATE_FUND" property="privateFund" jdbcType="VARCHAR" />
+    <result column="PRIVATE_TOTAL_CASH_FLOW" property="privateTotalCashFlow" jdbcType="VARCHAR" />
+    <result column="CUATIVE_CASH" property="cuativeCash" jdbcType="VARCHAR" />
+    <result column="ENDING_CASH" property="endingCash" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, LOAN_APPLY_ID, BUSINESS_TYPE, MONTH, EARLY_CASH, CASH_SALE, ACCOUNTS_RECEIVABLE_RECOVERY, 
+    CUSTOMER_PREPAYMENT, TOTAL_CASH_INFLOW, BUY_RAW_MATERIAL, PAYMENT_ACCOUNTS_PAYABLE, 
+    PURCHASES_ADVANCE, TOTAL_OPERATING_CASH_OUTFLOW, WAGE_LABOR, TAX, TRANSPORTATION_COST, 
+    RENT, MAINTENANCE_FEE, WATER_POWER_COST, ADVERTISING_COST, EXPENSE, FIXED_COST, FIXED_ASSET_INVESTMENT, 
+    SALE_FIXED_ASSET, TOTAL_INVESTMENT_CASH_FLOW, BANK_LOAN, REPAYMENT_PRINCIPAL_NUMBER, 
+    TOTAL_CASH_FLOW_FINANCING, HOUSEHOLD_EXPENDITURE, PRIVATE_FUND, PRIVATE_TOTAL_CASH_FLOW, 
+    CUATIVE_CASH, ENDING_CASH
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from CASH_FLOW
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from CASH_FLOW
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="com.cardpay.pccredit.intopieces.model.CashFlow" >
+    insert into CASH_FLOW (ID, LOAN_APPLY_ID, BUSINESS_TYPE, 
+      MONTH, EARLY_CASH, CASH_SALE, 
+      ACCOUNTS_RECEIVABLE_RECOVERY, CUSTOMER_PREPAYMENT, 
+      TOTAL_CASH_INFLOW, BUY_RAW_MATERIAL, PAYMENT_ACCOUNTS_PAYABLE, 
+      PURCHASES_ADVANCE, TOTAL_OPERATING_CASH_OUTFLOW, 
+      WAGE_LABOR, TAX, TRANSPORTATION_COST, 
+      RENT, MAINTENANCE_FEE, WATER_POWER_COST, 
+      ADVERTISING_COST, EXPENSE, FIXED_COST, 
+      FIXED_ASSET_INVESTMENT, SALE_FIXED_ASSET, TOTAL_INVESTMENT_CASH_FLOW, 
+      BANK_LOAN, REPAYMENT_PRINCIPAL_NUMBER, TOTAL_CASH_FLOW_FINANCING, 
+      HOUSEHOLD_EXPENDITURE, PRIVATE_FUND, PRIVATE_TOTAL_CASH_FLOW, 
+      CUATIVE_CASH, ENDING_CASH)
+    values (#{id,jdbcType=DECIMAL}, #{loanApplyId,jdbcType=DECIMAL}, #{businessType,jdbcType=VARCHAR}, 
+      #{month,jdbcType=VARCHAR}, #{earlyCash,jdbcType=VARCHAR}, #{cashSale,jdbcType=VARCHAR}, 
+      #{accountsReceivableRecovery,jdbcType=VARCHAR}, #{customerPrepayment,jdbcType=VARCHAR}, 
+      #{totalCashInflow,jdbcType=VARCHAR}, #{buyRawMaterial,jdbcType=VARCHAR}, #{paymentAccountsPayable,jdbcType=VARCHAR}, 
+      #{purchasesAdvance,jdbcType=VARCHAR}, #{totalOperatingCashOutflow,jdbcType=VARCHAR}, 
+      #{wageLabor,jdbcType=VARCHAR}, #{tax,jdbcType=VARCHAR}, #{transportationCost,jdbcType=VARCHAR}, 
+      #{rent,jdbcType=VARCHAR}, #{maintenanceFee,jdbcType=VARCHAR}, #{waterPowerCost,jdbcType=VARCHAR}, 
+      #{advertisingCost,jdbcType=VARCHAR}, #{expense,jdbcType=VARCHAR}, #{fixedCost,jdbcType=VARCHAR}, 
+      #{fixedAssetInvestment,jdbcType=VARCHAR}, #{saleFixedAsset,jdbcType=VARCHAR}, #{totalInvestmentCashFlow,jdbcType=VARCHAR}, 
+      #{bankLoan,jdbcType=VARCHAR}, #{repaymentPrincipalNumber,jdbcType=VARCHAR}, #{totalCashFlowFinancing,jdbcType=VARCHAR}, 
+      #{householdExpenditure,jdbcType=VARCHAR}, #{privateFund,jdbcType=VARCHAR}, #{privateTotalCashFlow,jdbcType=VARCHAR}, 
+      #{cuativeCash,jdbcType=VARCHAR}, #{endingCash,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cardpay.pccredit.intopieces.model.CashFlow" >
+    insert into CASH_FLOW
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="loanApplyId != null" >
+        LOAN_APPLY_ID,
+      </if>
+      <if test="businessType != null" >
+        BUSINESS_TYPE,
+      </if>
+      <if test="month != null" >
+        MONTH,
+      </if>
+      <if test="earlyCash != null" >
+        EARLY_CASH,
+      </if>
+      <if test="cashSale != null" >
+        CASH_SALE,
+      </if>
+      <if test="accountsReceivableRecovery != null" >
+        ACCOUNTS_RECEIVABLE_RECOVERY,
+      </if>
+      <if test="customerPrepayment != null" >
+        CUSTOMER_PREPAYMENT,
+      </if>
+      <if test="totalCashInflow != null" >
+        TOTAL_CASH_INFLOW,
+      </if>
+      <if test="buyRawMaterial != null" >
+        BUY_RAW_MATERIAL,
+      </if>
+      <if test="paymentAccountsPayable != null" >
+        PAYMENT_ACCOUNTS_PAYABLE,
+      </if>
+      <if test="purchasesAdvance != null" >
+        PURCHASES_ADVANCE,
+      </if>
+      <if test="totalOperatingCashOutflow != null" >
+        TOTAL_OPERATING_CASH_OUTFLOW,
+      </if>
+      <if test="wageLabor != null" >
+        WAGE_LABOR,
+      </if>
+      <if test="tax != null" >
+        TAX,
+      </if>
+      <if test="transportationCost != null" >
+        TRANSPORTATION_COST,
+      </if>
+      <if test="rent != null" >
+        RENT,
+      </if>
+      <if test="maintenanceFee != null" >
+        MAINTENANCE_FEE,
+      </if>
+      <if test="waterPowerCost != null" >
+        WATER_POWER_COST,
+      </if>
+      <if test="advertisingCost != null" >
+        ADVERTISING_COST,
+      </if>
+      <if test="expense != null" >
+        EXPENSE,
+      </if>
+      <if test="fixedCost != null" >
+        FIXED_COST,
+      </if>
+      <if test="fixedAssetInvestment != null" >
+        FIXED_ASSET_INVESTMENT,
+      </if>
+      <if test="saleFixedAsset != null" >
+        SALE_FIXED_ASSET,
+      </if>
+      <if test="totalInvestmentCashFlow != null" >
+        TOTAL_INVESTMENT_CASH_FLOW,
+      </if>
+      <if test="bankLoan != null" >
+        BANK_LOAN,
+      </if>
+      <if test="repaymentPrincipalNumber != null" >
+        REPAYMENT_PRINCIPAL_NUMBER,
+      </if>
+      <if test="totalCashFlowFinancing != null" >
+        TOTAL_CASH_FLOW_FINANCING,
+      </if>
+      <if test="householdExpenditure != null" >
+        HOUSEHOLD_EXPENDITURE,
+      </if>
+      <if test="privateFund != null" >
+        PRIVATE_FUND,
+      </if>
+      <if test="privateTotalCashFlow != null" >
+        PRIVATE_TOTAL_CASH_FLOW,
+      </if>
+      <if test="cuativeCash != null" >
+        CUATIVE_CASH,
+      </if>
+      <if test="endingCash != null" >
+        ENDING_CASH,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=DECIMAL},
+      </if>
+      <if test="loanApplyId != null" >
+        #{loanApplyId,jdbcType=DECIMAL},
+      </if>
+      <if test="businessType != null" >
+        #{businessType,jdbcType=VARCHAR},
+      </if>
+      <if test="month != null" >
+        #{month,jdbcType=VARCHAR},
+      </if>
+      <if test="earlyCash != null" >
+        #{earlyCash,jdbcType=VARCHAR},
+      </if>
+      <if test="cashSale != null" >
+        #{cashSale,jdbcType=VARCHAR},
+      </if>
+      <if test="accountsReceivableRecovery != null" >
+        #{accountsReceivableRecovery,jdbcType=VARCHAR},
+      </if>
+      <if test="customerPrepayment != null" >
+        #{customerPrepayment,jdbcType=VARCHAR},
+      </if>
+      <if test="totalCashInflow != null" >
+        #{totalCashInflow,jdbcType=VARCHAR},
+      </if>
+      <if test="buyRawMaterial != null" >
+        #{buyRawMaterial,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentAccountsPayable != null" >
+        #{paymentAccountsPayable,jdbcType=VARCHAR},
+      </if>
+      <if test="purchasesAdvance != null" >
+        #{purchasesAdvance,jdbcType=VARCHAR},
+      </if>
+      <if test="totalOperatingCashOutflow != null" >
+        #{totalOperatingCashOutflow,jdbcType=VARCHAR},
+      </if>
+      <if test="wageLabor != null" >
+        #{wageLabor,jdbcType=VARCHAR},
+      </if>
+      <if test="tax != null" >
+        #{tax,jdbcType=VARCHAR},
+      </if>
+      <if test="transportationCost != null" >
+        #{transportationCost,jdbcType=VARCHAR},
+      </if>
+      <if test="rent != null" >
+        #{rent,jdbcType=VARCHAR},
+      </if>
+      <if test="maintenanceFee != null" >
+        #{maintenanceFee,jdbcType=VARCHAR},
+      </if>
+      <if test="waterPowerCost != null" >
+        #{waterPowerCost,jdbcType=VARCHAR},
+      </if>
+      <if test="advertisingCost != null" >
+        #{advertisingCost,jdbcType=VARCHAR},
+      </if>
+      <if test="expense != null" >
+        #{expense,jdbcType=VARCHAR},
+      </if>
+      <if test="fixedCost != null" >
+        #{fixedCost,jdbcType=VARCHAR},
+      </if>
+      <if test="fixedAssetInvestment != null" >
+        #{fixedAssetInvestment,jdbcType=VARCHAR},
+      </if>
+      <if test="saleFixedAsset != null" >
+        #{saleFixedAsset,jdbcType=VARCHAR},
+      </if>
+      <if test="totalInvestmentCashFlow != null" >
+        #{totalInvestmentCashFlow,jdbcType=VARCHAR},
+      </if>
+      <if test="bankLoan != null" >
+        #{bankLoan,jdbcType=VARCHAR},
+      </if>
+      <if test="repaymentPrincipalNumber != null" >
+        #{repaymentPrincipalNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="totalCashFlowFinancing != null" >
+        #{totalCashFlowFinancing,jdbcType=VARCHAR},
+      </if>
+      <if test="householdExpenditure != null" >
+        #{householdExpenditure,jdbcType=VARCHAR},
+      </if>
+      <if test="privateFund != null" >
+        #{privateFund,jdbcType=VARCHAR},
+      </if>
+      <if test="privateTotalCashFlow != null" >
+        #{privateTotalCashFlow,jdbcType=VARCHAR},
+      </if>
+      <if test="cuativeCash != null" >
+        #{cuativeCash,jdbcType=VARCHAR},
+      </if>
+      <if test="endingCash != null" >
+        #{endingCash,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cardpay.pccredit.intopieces.model.CashFlow" >
+    update CASH_FLOW
+    <set >
+      <if test="loanApplyId != null" >
+        LOAN_APPLY_ID = #{loanApplyId,jdbcType=DECIMAL},
+      </if>
+      <if test="businessType != null" >
+        BUSINESS_TYPE = #{businessType,jdbcType=VARCHAR},
+      </if>
+      <if test="month != null" >
+        MONTH = #{month,jdbcType=VARCHAR},
+      </if>
+      <if test="earlyCash != null" >
+        EARLY_CASH = #{earlyCash,jdbcType=VARCHAR},
+      </if>
+      <if test="cashSale != null" >
+        CASH_SALE = #{cashSale,jdbcType=VARCHAR},
+      </if>
+      <if test="accountsReceivableRecovery != null" >
+        ACCOUNTS_RECEIVABLE_RECOVERY = #{accountsReceivableRecovery,jdbcType=VARCHAR},
+      </if>
+      <if test="customerPrepayment != null" >
+        CUSTOMER_PREPAYMENT = #{customerPrepayment,jdbcType=VARCHAR},
+      </if>
+      <if test="totalCashInflow != null" >
+        TOTAL_CASH_INFLOW = #{totalCashInflow,jdbcType=VARCHAR},
+      </if>
+      <if test="buyRawMaterial != null" >
+        BUY_RAW_MATERIAL = #{buyRawMaterial,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentAccountsPayable != null" >
+        PAYMENT_ACCOUNTS_PAYABLE = #{paymentAccountsPayable,jdbcType=VARCHAR},
+      </if>
+      <if test="purchasesAdvance != null" >
+        PURCHASES_ADVANCE = #{purchasesAdvance,jdbcType=VARCHAR},
+      </if>
+      <if test="totalOperatingCashOutflow != null" >
+        TOTAL_OPERATING_CASH_OUTFLOW = #{totalOperatingCashOutflow,jdbcType=VARCHAR},
+      </if>
+      <if test="wageLabor != null" >
+        WAGE_LABOR = #{wageLabor,jdbcType=VARCHAR},
+      </if>
+      <if test="tax != null" >
+        TAX = #{tax,jdbcType=VARCHAR},
+      </if>
+      <if test="transportationCost != null" >
+        TRANSPORTATION_COST = #{transportationCost,jdbcType=VARCHAR},
+      </if>
+      <if test="rent != null" >
+        RENT = #{rent,jdbcType=VARCHAR},
+      </if>
+      <if test="maintenanceFee != null" >
+        MAINTENANCE_FEE = #{maintenanceFee,jdbcType=VARCHAR},
+      </if>
+      <if test="waterPowerCost != null" >
+        WATER_POWER_COST = #{waterPowerCost,jdbcType=VARCHAR},
+      </if>
+      <if test="advertisingCost != null" >
+        ADVERTISING_COST = #{advertisingCost,jdbcType=VARCHAR},
+      </if>
+      <if test="expense != null" >
+        EXPENSE = #{expense,jdbcType=VARCHAR},
+      </if>
+      <if test="fixedCost != null" >
+        FIXED_COST = #{fixedCost,jdbcType=VARCHAR},
+      </if>
+      <if test="fixedAssetInvestment != null" >
+        FIXED_ASSET_INVESTMENT = #{fixedAssetInvestment,jdbcType=VARCHAR},
+      </if>
+      <if test="saleFixedAsset != null" >
+        SALE_FIXED_ASSET = #{saleFixedAsset,jdbcType=VARCHAR},
+      </if>
+      <if test="totalInvestmentCashFlow != null" >
+        TOTAL_INVESTMENT_CASH_FLOW = #{totalInvestmentCashFlow,jdbcType=VARCHAR},
+      </if>
+      <if test="bankLoan != null" >
+        BANK_LOAN = #{bankLoan,jdbcType=VARCHAR},
+      </if>
+      <if test="repaymentPrincipalNumber != null" >
+        REPAYMENT_PRINCIPAL_NUMBER = #{repaymentPrincipalNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="totalCashFlowFinancing != null" >
+        TOTAL_CASH_FLOW_FINANCING = #{totalCashFlowFinancing,jdbcType=VARCHAR},
+      </if>
+      <if test="householdExpenditure != null" >
+        HOUSEHOLD_EXPENDITURE = #{householdExpenditure,jdbcType=VARCHAR},
+      </if>
+      <if test="privateFund != null" >
+        PRIVATE_FUND = #{privateFund,jdbcType=VARCHAR},
+      </if>
+      <if test="privateTotalCashFlow != null" >
+        PRIVATE_TOTAL_CASH_FLOW = #{privateTotalCashFlow,jdbcType=VARCHAR},
+      </if>
+      <if test="cuativeCash != null" >
+        CUATIVE_CASH = #{cuativeCash,jdbcType=VARCHAR},
+      </if>
+      <if test="endingCash != null" >
+        ENDING_CASH = #{endingCash,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cardpay.pccredit.intopieces.model.CashFlow" >
+    update CASH_FLOW
+    set LOAN_APPLY_ID = #{loanApplyId,jdbcType=DECIMAL},
+      BUSINESS_TYPE = #{businessType,jdbcType=VARCHAR},
+      MONTH = #{month,jdbcType=VARCHAR},
+      EARLY_CASH = #{earlyCash,jdbcType=VARCHAR},
+      CASH_SALE = #{cashSale,jdbcType=VARCHAR},
+      ACCOUNTS_RECEIVABLE_RECOVERY = #{accountsReceivableRecovery,jdbcType=VARCHAR},
+      CUSTOMER_PREPAYMENT = #{customerPrepayment,jdbcType=VARCHAR},
+      TOTAL_CASH_INFLOW = #{totalCashInflow,jdbcType=VARCHAR},
+      BUY_RAW_MATERIAL = #{buyRawMaterial,jdbcType=VARCHAR},
+      PAYMENT_ACCOUNTS_PAYABLE = #{paymentAccountsPayable,jdbcType=VARCHAR},
+      PURCHASES_ADVANCE = #{purchasesAdvance,jdbcType=VARCHAR},
+      TOTAL_OPERATING_CASH_OUTFLOW = #{totalOperatingCashOutflow,jdbcType=VARCHAR},
+      WAGE_LABOR = #{wageLabor,jdbcType=VARCHAR},
+      TAX = #{tax,jdbcType=VARCHAR},
+      TRANSPORTATION_COST = #{transportationCost,jdbcType=VARCHAR},
+      RENT = #{rent,jdbcType=VARCHAR},
+      MAINTENANCE_FEE = #{maintenanceFee,jdbcType=VARCHAR},
+      WATER_POWER_COST = #{waterPowerCost,jdbcType=VARCHAR},
+      ADVERTISING_COST = #{advertisingCost,jdbcType=VARCHAR},
+      EXPENSE = #{expense,jdbcType=VARCHAR},
+      FIXED_COST = #{fixedCost,jdbcType=VARCHAR},
+      FIXED_ASSET_INVESTMENT = #{fixedAssetInvestment,jdbcType=VARCHAR},
+      SALE_FIXED_ASSET = #{saleFixedAsset,jdbcType=VARCHAR},
+      TOTAL_INVESTMENT_CASH_FLOW = #{totalInvestmentCashFlow,jdbcType=VARCHAR},
+      BANK_LOAN = #{bankLoan,jdbcType=VARCHAR},
+      REPAYMENT_PRINCIPAL_NUMBER = #{repaymentPrincipalNumber,jdbcType=VARCHAR},
+      TOTAL_CASH_FLOW_FINANCING = #{totalCashFlowFinancing,jdbcType=VARCHAR},
+      HOUSEHOLD_EXPENDITURE = #{householdExpenditure,jdbcType=VARCHAR},
+      PRIVATE_FUND = #{privateFund,jdbcType=VARCHAR},
+      PRIVATE_TOTAL_CASH_FLOW = #{privateTotalCashFlow,jdbcType=VARCHAR},
+      CUATIVE_CASH = #{cuativeCash,jdbcType=VARCHAR},
+      ENDING_CASH = #{endingCash,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+</mapper>

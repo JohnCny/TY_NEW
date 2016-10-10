@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.customer.dao.CustomerCareersInformationDao" >
+  <resultMap id="BaseResultMap" type="com.cardpay.pccredit.customer.model.CustomerCareersInformation" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="CUSTOMER_ID" property="customerId" jdbcType="VARCHAR" />
+    <result column="NAME_UNIT" property="nameUnit" jdbcType="VARCHAR" />
+    <result column="DEPARTMENT_NAME" property="departmentName" jdbcType="VARCHAR" />
+    <result column="UNIT_ADDRESS" property="unitAddress" jdbcType="VARCHAR" />
+    <result column="ZIP_CODE" property="zipCode" jdbcType="VARCHAR" />
+    <result column="UNIT_PHONE" property="unitPhone" jdbcType="VARCHAR" />
+    <result column="UNIT_NATURE" property="unitNature" jdbcType="VARCHAR" />
+    <result column="INDUSTRY_TYPE" property="industryType" jdbcType="VARCHAR" />
+    <result column="POSITIO" property="positio" jdbcType="VARCHAR" />
+    <result column="TITLE" property="title" jdbcType="VARCHAR" />
+    <result column="ANNUAL_INCOME" property="annualIncome" jdbcType="VARCHAR" />
+    <result column="YEAR_WORK_UNIT" property="yearWorkUnit" jdbcType="VARCHAR" />
+    <result column="BEFORE_NAME_UNIT" property="beforeNameUnit" jdbcType="VARCHAR" />
+    <result column="BEFORE_YEAR_WORK_UNIT" property="beforeYearWorkUnit" jdbcType="VARCHAR" />
+    <result column="WORK_TIME" property="workTime" jdbcType="VARCHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_TIME" property="createdTime" jdbcType="DATE" />
+    <result column="MODIFIED_BY" property="modifiedBy" jdbcType="VARCHAR" />
+    <result column="MODIFIED_TIME" property="modifiedTime" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, CUSTOMER_ID, NAME_UNIT, DEPARTMENT_NAME, UNIT_ADDRESS, ZIP_CODE, UNIT_PHONE, 
+    UNIT_NATURE, INDUSTRY_TYPE, POSITIO, TITLE, ANNUAL_INCOME, YEAR_WORK_UNIT, BEFORE_NAME_UNIT, 
+    BEFORE_YEAR_WORK_UNIT, WORK_TIME, CREATED_BY, CREATED_TIME, MODIFIED_BY, MODIFIED_TIME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from CUSTOMER_CAREERS_INFORMATION
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from CUSTOMER_CAREERS_INFORMATION
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+ 
+ 
+ 
+  <sql id="Customer_Careers">
+  	c.id as id,b.chinese_name as customerName,c.name_unit as nameUnit,c.department_name as departmentName,
+  	c.unit_address as unitAddress,c.zip_code as zipCode,c.unit_phone as unitPhone,c.unit_nature as unitNature,
+  	c.industry_type as industryType,c.positio as positio,c.title as title,c.annual_income as annualIncome,
+  	c.year_work_unit as yearWorkUnit,c.before_name_unit as beforeNameUnit,c.before_year_work_unit as beforeYearWorkUnit,
+  	c.work_time as workTime
+  </sql>
+  <select id="getCustomerCareersByCustomerId" resultType="com.cardpay.pccredit.customer.model.CustomerCareersWeb">
+  	select 
+  	<include refid="Customer_Careers" />
+  	 from basic_customer_information b
+  	 left join CUSTOMER_CAREERS_INFORMATION c
+  	 on c.customer_id=b.id
+  	where c.customer_id=#{id}
+  </select>
+  
+  <select id="findCustomerCareersByAppId" resultType="com.cardpay.pccredit.customer.model.CustomerCareersWeb">
+    select 
+  	<include refid="Customer_Careers" />
+  	 from CUSTOMER_CAREERS_INFORMATION_S c
+  	 left join basic_customer_information b
+  	 on c.customer_id=b.id
+    where c.application_id = #{applicationId}
+  </select>
+  <select id="getCustomerCareersInformationByCustomerId" resultMap="BaseResultMap">
+  	select * 
+  	from CUSTOMER_CAREERS_INFORMATION c
+  	where c.customer_id=#{id}
+  </select>
+  
+  
+</mapper>

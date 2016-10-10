@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.riskControl.dao.NplsInfomationDao">
+	
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.riskControl.web.NplsInfomationForm">
+		<result property="id" column="id" />
+		<result property="customerId" column="CUSTOMER_ID" />
+		<result property="accountId" column="ACCOUNT_ID" />
+		<result property="reviewResults" column="REVIEW_RESULTS" />
+		<result property="createMethod" column="CREATE_METHOD" />
+		<result property="verificationTime" column="VERIFICATION_TIME" />
+		<result property="verificationStatus" column="VERIFICATION_STATUS" />
+		<result property="verificationType" column="VERIFICATION_TYPE" />
+		<result property="verificationAccount" column="VERIFICATION_ACCOUNT" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="createdTime" column="CREATED_TIME" />
+		<result property="modifiedBy" column="MODIFIED_BY" />
+		<result property="modifiedTime" column="MODIFIED_TIME" />
+		<result property="customerName" column="CHINESE_NAME" />
+		<result property="cardId" column="CARD_ID" />
+		<result property="cardNumber" column="CARD_NUMBER" />
+		<result property="accountStatus" column="ACCOUNT_STATUS" />
+		<result property="accountNumber" column="ACCOUNT_NUMBER" />
+		<result property="overdueAmount" column="OVERDUE_AMOUNT" />
+		<result property="overdueTime" column="OVERDUE_TIME" />
+	</resultMap>
+	
+	<select id="findNplsInfomationByFilter" resultMap="ResultMap" 
+		parameterType="com.cardpay.pccredit.riskControl.filter.NplsInfomationFilter">
+		SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					 SELECT npls.*,
+							c.chinese_name,
+							c.card_id,
+							cai.account_status,
+							cai.ACCOUNT_NUMBER,
+							cai.OVERDUE_AMOUNT,
+							cai.OVERDUE_TIME,
+							cai.CARD_NUMBER
+					 FROM  npls_information npls
+					 LEFT JOIN basic_customer_information c
+					    ON c.id = npls.customer_id
+					 LEFT JOIN customer_account_information cai
+					 	ON cai.id = npls.account_id
+					 WHERE 1=1
+					 <if test="customerName != null and customerName != '' ">
+						<![CDATA[ and c.CHINESE_NAME like '%'||#{customerName}||'%']]>
+					 </if>
+					 <if test="createMethod != null and createMethod != ''">
+						AND npls.CREATE_METHOD=#{createMethod}
+					 </if>
+					 <if test="verificationType != null and verificationType != '' ">
+						AND npls.VERIFICATION_TYPE = #{verificationType}
+					 </if>
+					 <if test="reviewResults != null and reviewResults != '' ">
+						AND npls.REVIEW_RESULTS=#{reviewResults}
+					 </if>
+					 <if test="verificationStatus != null and verificationStatus != '' ">
+						AND npls.VERIFICATION_STATUS = #{verificationStatus}
+					 </if>
+					 order by npls.created_time desc
+ 			<![CDATA[		
+					) ROW_
+				WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+			WHERE ROWNUM_ > #{limit}*#{page}
+			]]>
+	</select>
+	
+	<select id="findNplsInfomationCountByFilter" resultType="int" 
+		parameterType="com.cardpay.pccredit.riskControl.filter.NplsInfomationFilter">
+		SELECT count(*)
+		  FROM  npls_information npls
+		 LEFT JOIN basic_customer_information c
+		    ON c.id = npls.customer_id
+		  WHERE 1=1
+		 <if test="customerName != null and customerName != '' ">
+			<![CDATA[ and c.CHINESE_NAME like '%'||#{customerName}||'%']]>
+		 </if>
+		 <if test="createMethod != null and createMethod != ''">
+			AND npls.CREATE_METHOD=#{createMethod}
+		 </if>
+		 <if test="verificationType != null and verificationType != '' ">
+			AND npls.VERIFICATION_TYPE = #{verificationType}
+		 </if>
+		 <if test="reviewResults != null and reviewResults != '' ">
+			AND npls.REVIEW_RESULTS=#{reviewResults}
+		 </if>
+		 <if test="verificationStatus != null and verificationStatus != '' ">
+			AND npls.VERIFICATION_STATUS = #{verificationStatus}
+		 </if>
+	</select>
+	
+	<select id="findNplsInfomationById" resultMap="ResultMap">
+		 SELECT npls.*,
+				c.chinese_name,
+				c.card_id,
+				cai.account_status,
+				cai.ACCOUNT_NUMBER,
+				cai.OVERDUE_AMOUNT,
+				cai.OVERDUE_TIME,
+				cai.CARD_NUMBER
+		 FROM  npls_information npls
+		 LEFT JOIN basic_customer_information c
+		    ON c.id = npls.customer_id
+		 LEFT JOIN customer_account_information cai
+		 	ON cai.id = npls.account_id
+		 WHERE npls.id=#{id}
+	</select>
+	
+	<select id="findNplsInfomationCountBy" resultType="int" >
+		SELECT count(*)
+		  FROM  npls_information npls
+		  WHERE 
+		  customer_id = #{customerId} 
+		  and account_id = #{accountId}
+		  and review_results in ('new','confirm')
+	</select>
+	<select id="findNplsInformationCountById" resultType="int">
+		select count(*)
+		from npls_information npls
+		inner join 
+		basic_customer_information b
+		on npls.customer_id=b.id
+		where b.user_id=#{id}
+	</select>
+	
+	
+</mapper>

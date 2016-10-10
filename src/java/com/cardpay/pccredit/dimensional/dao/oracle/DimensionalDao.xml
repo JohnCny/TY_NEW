@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.dimensional.dao.DimensionalDao">
+	<resultMap id="ResultMap"
+		type="com.cardpay.pccredit.dimensional.model.Dimensional">
+		<result property="id" column="ID" />
+		<result property="customerId" column="CUSTOMER_ID" />
+		<result property="customerName" column="CUSTOMER_NAME" />
+		<result property="gender" column="GENDER" />
+		<result property="idCard" column="ID_CARD" />
+		<result property="annualNetIncome" column="ANNUAL_NET_INCOME" />
+		<result property="accountManagerSeries" column="ACCOUNT_MANAGER_SERIES" />
+		<result property="capacityT" column="CAPACITY_T" />
+		<result property="capacityFinal" column="CAPACITY_FINAL" />
+		<result property="registerValue" column="REGISTER_VALUE" />
+		<result property="registerWeight" column="REGISTER_WEIGHT" />
+		<result property="houseValue" column="HOUSE_VALUE" />
+		<result property="houseWeight" column="HOUSE_WEIGHT" />
+		<result property="marriageValue" column="MARRIAGE_VALUE" />
+		<result property="marriageWeight" column="MARRIAGE_WEIGHT" />
+		<result property="titleValue" column="TITLE_VALUE" />
+		<result property="titleWeight" column="TITLE_WEIGHT" />
+		<result property="livingCombinedValue" column="LIVING_COMBINED_VALUE" />
+		<result property="livingT" column="LIVING_T" />
+		<result property="livingFinal" column="LIVING_FINAL" />
+		<result property="industryRiskFactor" column="INDUSTRY_RISK_FACTOR" />
+		<result property="industryT" column="INDUSTRY_T" />
+		<result property="industryFinalValue" column="INDUSTRY_FINAL_VALUE" />
+		<result property="sixMonthsOverdueValue" column="SIX_MONTHS_OVERDUE_VALUE" />
+		<result property="sixMonthsOverdueWeight" column="SIX_MONTHS_OVERDUE_WEIGHT" />
+		<result property="successiveLateValue" column="SUCCESSIVE_LATE_VALUE" />
+		<result property="successiveLateWeight" column="SUCCESSIVE_LATE_WEIGHT" />
+		<result property="singleLateValue" column="SINGLE_LATE_VALUE" />
+		<result property="singleLateWeight" column="SINGLE_LATE_WEIGHT" />
+		<result property="allLateValue" column="ALL_LATE_VALUE" />
+		<result property="allLateWeight" column="ALL_LATE_WEIGHT" />
+		<result property="responsibleValue" column="RESPONSIBLE_VALUE" />
+		<result property="responsibleWeight" column="RESPONSIBLE_WEIGHT" />
+		<result property="homeJobChangeValue" column="HOME_JOB_CHANGE_VALUE" />
+		<result property="homeJobChangeWeight" column="HOME_JOB_CHANGE_WEIGHT" />
+		<result property="sixMonthsSucceValue" column="SIX_MONTHS_SUCCE_VALUE" />
+		<result property="sixMonthsSucceWeight" column="SIX_MONTHS_SUCCE_WEIGHT" />
+		<result property="charaterT" column="CHARATER_T" />
+		<result property="charaterAllValue" column="CHARATER_ALL_VALUE" />
+		<result property="charaterFinalValue" column="CHARATER_FINAL_VALUE" />
+		<result property="denialValue" column="DENIAL_VALUE" />
+		<result property="finalValue" column="FINAL_VALUE" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="createdTime" column="CREATED_TIME" />
+		<result property="modifiedBy" column="MODIFIED_BY" />
+		<result property="modifiedTime" column="MODIFIED_ITME" />
+	</resultMap>
+
+	<select id="findDimensionalByFilter" resultMap="ResultMap"
+		parameterType="map">
+		SELECT * from dimensional_model_credit 
+		WHERE 1=1
+		<if test="customerName != null and customerName != '' ">
+			AND CUSTOMER_NAME=#{customerName}
+		</if>
+
+	</select>
+	
+	<select id="findDimensionalByCustomerId" resultMap="ResultMap" parameterType="java.lang.String">
+		SELECT * from dimensional_model_credit
+			WHERE CUSTOMER_ID=#{customerId}
+	</select>
+	
+	<update id="updateDimensionalByCustomerId" parameterType="com.cardpay.pccredit.dimensional.model.Dimensional"> 
+		update dimensional_model_credit
+		<set>
+			<if test="annualNetIncome!=null and annualNetIncome != ''">
+				ANNUAL_NET_INCOME=#{annualNetIncome},
+			</if>
+			<if test="accountManagerSeries!=null and accountManagerSeries != ''">
+				ACCOUNT_MANAGER_SERIES=#{accountManagerSeries},
+			</if>
+			<if test="capacityT!=null and capacityT !=''">
+				CAPACITY_T=#{capacityT},
+			</if>
+			<if test="capacityFinal!=null and capacityFinal!= ''">
+				CAPACITY_FINAL=#{capacityFinal},
+			</if>
+			<if test="registerValue!=null and registerValue != ''">
+				REGISTER_VALUE=#{registerValue},
+			</if>
+			<if test="registerWeight!=null and registerWeight != ''">
+				REGISTER_WEIGHT=#{registerWeight},
+			</if>
+			<if test="houseValue!=null and houseValue != ''">
+				HOUSE_VALUE=#{houseValue},
+			</if>
+			<if test="houseWeight!=null and houseWeight != ''">
+				HOUSE_WEIGHT=#{houseWeight},
+			</if>
+			<if test="marriageValue!=null and marriageValue != ''">
+				MARRIAGE_VALUE=#{marriageValue},
+			</if>
+			<if test="marriageWeight!=null and marriageWeight != ''">
+				MARRIAGE_WEIGHT=#{marriageWeight},
+			</if>
+			<if test="titleValue!=null and titleValue != ''">
+				TITLE_VALUE=#{titleValue},
+			</if>
+			<if test="titleWeight!=null and titleWeight != ''">
+				TITLE_WEIGHT=#{titleWeight},
+			</if>
+			<if test="livingCombinedValue!=null and livingCombinedValue != ''">
+				LIVING_COMBINED_VALUE=#{livingCombinedValue},
+			</if>
+			<if test="livingT!=null and livingT != ''">
+				LIVING_T=#{livingT},
+			</if>
+			<if test="livingFinal!=null and livingFinal != ''">
+				LIVING_FINAL=#{livingFinal},
+			</if>
+			<if test="industryRiskFactor!=null and industryRiskFactor != ''">
+				INDUSTRY_RISK_FACTOR=#{industryRiskFactor},
+			</if>
+			<if test="industryT!=null and industryT != ''">
+				INDUSTRY_T=#{industryT},
+			</if>
+			<if test="industryFinalValue!=null and industryFinalValue != ''">
+				INDUSTRY_FINAL_VALUE=#{industryFinalValue},
+			</if>
+			<if test="sixMonthsOverdueValue!=null and sixMonthsOverdueValue != ''">
+				SIX_MONTHS_OVERDUE_VALUE=#{sixMonthsOverdueValue},
+			</if>
+			<if test="sixMonthsOverdueWeight!=null and sixMonthsOverdueWeight != ''">
+				SIX_MONTHS_OVERDUE_WEIGHT=#{sixMonthsOverdueWeight},
+			</if>
+			<if test="successiveLateValue!=null and successiveLateValue != ''">
+				SUCCESSIVE_LATE_VALUE=#{successiveLateValue},
+			</if>
+			<if test="successiveLateWeight!=null and successiveLateWeight != ''">
+				SUCCESSIVE_LATE_WEIGHT=#{successiveLateWeight},
+			</if>
+			<if test="singleLateValue!=null and singleLateValue != ''">
+				SINGLE_LATE_VALUE=#{singleLateValue},
+			</if>
+			<if test="singleLateWeight!=null and singleLateWeight != ''">
+				SINGLE_LATE_WEIGHT=#{singleLateWeight},
+			</if>
+			<if test="allLateValue!=null and allLateValue != ''">
+				ALL_LATE_VALUE=#{allLateValue},
+			</if>
+			<if test="allLateWeight!=null and allLateWeight != ''">
+				ALL_LATE_WEIGHT=#{allLateWeight},
+			</if>
+			<if test="responsibleValue!=null and responsibleValue != ''">
+				RESPONSIBLE_VALUE=#{responsibleValue},
+			</if>
+			<if test="responsibleWeight!=null and responsibleWeight != ''">
+				RESPONSIBLE_WEIGHT=#{responsibleWeight},
+			</if>
+			<if test="homeJobChangeValue!=null and homeJobChangeValue != ''">
+				HOME_JOB_CHANGE_VALUE=#{homeJobChangeValue},
+			</if>
+			<if test="homeJobChangeWeight!=null and homeJobChangeWeight != ''">
+				HOME_JOB_CHANGE_WEIGHT=#{homeJobChangeWeight},
+			</if>
+			<if test="sixMonthsSucceValue!=null and sixMonthsSucceValue != ''">
+				SIX_MONTHS_SUCCE_VALUE=#{sixMonthsSucceValue},
+			</if>
+			<if test="sixMonthsSucceWeight!=null and sixMonthsSucceWeight != ''">
+				SIX_MONTHS_SUCCE_WEIGHT=#{sixMonthsSucceWeight},
+			</if>
+			<if test="charaterT!=null and charaterT != ''">
+				CHARATER_T=#{charaterT},
+			</if>
+			<if test="charaterAllValue!=null and charaterAllValue != ''">
+				CHARATER_ALL_VALUE=#{charaterAllValue},
+			</if>
+			<if test="charaterFinalValue!=null and charaterFinalValue != ''">
+				CHARATER_FINAL_VALUE=#{charaterFinalValue},
+			</if>
+			<if test="denialValue!=null and denialValue != ''">
+				DENIAL_VALUE=#{denialValue},
+			</if>
+			<if test="finalValue!=null and finalValue != ''">
+				FINAL_VALUE=#{finalValue},
+			</if>
+			<if test="createdBy!=null and createdBy != ''">
+				CREATED_BY=#{createdBy},
+			</if>
+			<if test="createdTime!=null and createdTime != ''">
+				CREATED_TIME=#{createdTime},
+			</if>
+			<if test="modifiedBy!=null and modifiedBy != ''">
+				MODIFIED_BY=#{modifiedBy},
+			</if>
+			<if test="modifiedTime!=null and modifiedTime != ''">
+				MODIFIED_TIME=#{modifiedTime},
+			</if>
+		</set>
+		where CUSTOMER_ID = #{customerId}
+	</update>
+
+	<select id="findDimensionalByAppId" resultMap="ResultMap">
+		SELECT * from dimensional_model_credit_s where application_id = #{applicationId}
+	</select>
+	
+</mapper>

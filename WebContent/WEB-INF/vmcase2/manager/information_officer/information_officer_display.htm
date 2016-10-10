@@ -1,0 +1,120 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/customerInfor.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">信息员-客户信息</div>
+      </div>
+        <div class="forms" id="formsId">
+        <input type="hidden" id="id" value="$!officer.id"/>
+          <table class="rule" border="1" bordercolor="#CCCCCC">
+            <caption>信息员</caption>
+            <colgroup>
+              <col width="10%" />
+              <col width="40%" />
+              <col width="10%" />
+              <col width="40%" />
+            </colgroup>
+            <tr>
+              <td><label>姓名:</label></td>
+              <td><input type="text" value="$!officer.name" disabled="disabled"/></td>
+              
+              <td><label>电话:</label></td>
+              <td><input type="text" value="$!officer.telephone" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label>身份证号码:</label></td>
+              <td><input type="text" value="$!officer.idCardNumber" readonly="readonly"/></td>
+                
+                <td><label>住址:</label></td>
+                <td><input type="text" value="$!officer.address" readonly="readonly"/></td>
+            </tr>
+            <tr>
+              <td><label>工作单位:</label></td>
+              <td><input type="text"   value="$!officer.workUnit" readonly="readonly"/></td>
+              
+              <td><label>工作职务:</label></td>
+              <td><input type="text"   value="$!officer.jobDuty" readonly="readonly"/></td>
+            </tr>
+            <tr>
+              <td><label>维护范围:</label></td>
+              <td><input type="text"   value="$!officer.infoMaintenanceArea" readonly="readonly"/></td>
+              
+              <td><label>工作方式:</label></td>
+              <td><input type="text"   value="$!officer.infoOfficerJob" readonly="readonly"/></td>
+            </tr>
+            <tr>
+              <td><label>反馈方式:</label></td>
+              <td><input type="text"  value="$!officer.researcherFeedbackWay" readonly="readonly"/></td>
+              
+              <td><label>酬劳:</label></td>
+              <td><input type="text"  value="$!officer.researcherPay" readonly="readonly"/></td>
+            </tr>
+          </table>
+        </div>
+     <div class="inquiry">
+      <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="15%"/>
+              <col width="35%" />
+              <col width="12%"/>
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">中文姓名</th>
+              <th nowrap="nowrap">证件类型</th>
+              <th nowrap="nowrap">证件号码</th>
+              <th nowrap="nowrap">住宅地址</th>
+              <th nowrap="nowrap">手机</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="15%"/>
+              <col width="35%" />
+              <col width="12%"/>
+            </colgroup>
+            #foreach ($!customer in $result)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!customer.id"
+                  #if ($!request.getParameter("recordId") == $customer.id) checked="checked" #end />
+                  <input type="hidden" value="$!customer.divisionalStatus"/></td>
+              <td nowrap="nowrap">$!customer.chineseName</td>
+              <td nowrap="nowrap">#customerInfor($request.getAttribute("cardTypeList"),$!customer.cardType)</td>
+              <td nowrap="nowrap">$!customer.cardId</td>
+              <td nowrap="nowrap">$!customer.residentialAddress</td>
+              <td nowrap="nowrap">$!customer.telephone</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="submit">
+        <input id="id_change_button" class="current" type="button" value="选客户" />
+        <input class="btn_gr" type="button" onclick="location.href='${modulePath}/browse.page?recordId=$!officer.id'" value="#i18n('button.back')" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout = new FormsLayout("formsId");
+	window.top.currentWindow.setLayout(layout);
+	initClickEvent();
+	$(function(){
+		 $("#id_change_button").click(function() {
+			 var url = "${modulePath}/change.page?id=$!officer.id";
+             window.location.href = url;
+		 });
+	});
+  </script>
+</body>
+#parse ("common/iframe_page_footer.htm")

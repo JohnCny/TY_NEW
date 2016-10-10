@@ -1,0 +1,200 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">风险事项审核流程</div>
+      </div>
+      <div class="inquiry">
+        <div class="search_tag">#i18n("label.browse.filter")</div>
+        <div class="search">
+          <form id="submitForm">
+            <ul>
+              <li>
+                <span>上报客户经理：<input type="text" name="reportedManagerName" value="$!result.filter.reportedManagerName" /></span>
+              </li>
+              
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="15%" />
+              <col width="10%" />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">上报客户经理</th>
+              <th nowrap="nowrap">审核时间</th>
+              <th nowrap="nowrap">审核状态</th>
+              <th nowrap="nowrap">风险事项描述</th>
+              <th nowrap="nowrap">备注</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="15%" />
+              <col width="10%" />
+            </colgroup>
+            #foreach ($riskReviewProcess in $result.items)
+            <tr status="$!riskReviewProcess.resultsOfAudit">
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!riskReviewProcess.id" riskIssuesId="$!riskReviewProcess.riskIssuesId"
+                  #if ($!request.getParameter("recordId") == $!riskReviewProcess.id) checked="checked" #end /></td>
+              <td nowrap="nowrap">$!riskReviewProcess.reportedManagerName</td>
+              <td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:ss", $!riskReviewProcess.auditTime)</td>
+              <td nowrap="nowrap">#dictVal("RiskReviewProcessAuditResults", $!riskReviewProcess.resultsOfAudit)</td>
+              <td nowrap="nowrap">$!riskReviewProcess.riskIssuesDescribed</td>
+              <td nowrap="nowrap">$!riskReviewProcess.note</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+          #btnpriv("confirm") <a id="id_confirmed_btn" class=btn_g href="javascript:void(0);" title="确认">#i18n("operation.confirm")</a>#end
+          #btnpriv("refuse") <a id="id_reject_btn" class="btn_g" href="javascript:void(0);" title="拒绝">拒绝</a>#end
+           #btnpriv("published")<a id="id_publish_button" class="btn_g" href="javascript:void(0);" title="发布">#i18n("operation.published")</a>#end
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+  <div id="divRejectDialog" style="display:none;">
+  	<table class="rule" style="height:100%;width:480px;">
+            <colgroup>
+              <col width="20%" />
+              <col width="80%" />
+            </colgroup>
+            <tr>
+              <td>拒绝原因:</td>
+              <td>
+               <textarea id="description" name="description" rows="3" style='width:375px;height:115px;'></textarea>
+              </td>
+            </tr>
+     </table>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.browseUrl = "${modulePath}/browse.page";
+		prepareOperations(opsObj);
+		
+		$("#id_publish_button").click(function() {
+			var rowId = getCurrentRowId();
+			if (rowId != "" && rowId != null) {
+				var riskIssuesId = $($(".checkbox :checked")[0]).attr("riskIssuesId");
+				var url = "${contextPath}/riskcontrol/riskreviewprocess//publish.page?id=" + riskIssuesId;
+				window.location.href = url + "&callBackUrl=" + window.location.href;
+			}
+	    });
+	});
+	
+	$("#id_confirmed_btn").click(function() {
+		if($(this).attr("class") == "btn_g"){
+			// 确认
+			confirmed();
+		}
+     });
+	
+	$("#id_reject_btn").click(function() {
+		if($(this).attr("class") == "btn_g"){
+			// 拒绝
+			reject();
+		}
+     });
+	
+	$('input[name=checkbox]').bind("click", function(event, a){
+		$(this).parent().parent().trigger("click");
+	});
+	
+	$('#downDiv table tr').bind("click", function(){
+		var status = $(this).attr("status");
+		// 通过/驳回
+		if(status == "PASS" || status == "REJECT"){
+			// 不可点击
+			$("#id_confirmed_btn").attr("class","btn_gr");
+			$("#id_reject_btn").attr("class","btn_gr");
+		}else if(status == ""){
+			// 可点击
+			$("#id_confirmed_btn").attr("class","btn_g");
+			$("#id_reject_btn").attr("class","btn_g");
+		}
+	});
+	
+	/*
+	 * 确认
+	 */
+	function confirmed(){
+		var rowId = getCurrentRowId();
+		Dialog.load();
+		$.ajax({
+			type:'GET',
+			url:"${contextPath}/riskcontrol/riskreviewprocess/confirmed.json",
+			data:'id='+rowId,
+			success:function(msg){
+				Dialog.closeLoad();
+				if(msg.success == true){
+					Dialog.message(msg.message);
+				}else{
+					Dialog.message(msg.message);
+				}
+				window.location.href="${modulePath}/cardcenterbrowse.page";
+			}
+		});
+	}
+
+	var msg = '#i18n("validator.required")';
+	/*
+	 * 拒绝
+	 */
+	function reject(){
+		var rowId = getCurrentRowId();
+		Dialog.form("#divRejectDialog", "拒绝", function(){
+			var description = $(window.top.$("table textarea")[0]).val();
+			if($.trim(description) == ""){
+				Dialog.message(msg.replace("{0}",""));
+				return false;
+			}
+			Dialog.load();
+			$.ajax({
+				type:'GET',
+				url:"${contextPath}/riskcontrol/riskreviewprocess/reject.json",
+				data:{'id': rowId, "note": description},
+				success:function(msg){
+					Dialog.closeLoad();
+					if(msg.success == true){
+						Dialog.message(msg.message);
+					}else{
+						Dialog.message(msg.message);
+					}
+					window.location.href="${modulePath}/cardcenterbrowse.page";
+				}
+			});
+			return true;
+		}, null, 500, 150);
+	}
+	
+</script>
+#parse ("common/iframe_page_footer.htm")

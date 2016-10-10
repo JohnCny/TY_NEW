@@ -1,0 +1,24 @@
+<!-- 下拉框 -->
+#macro( customerInfo $paramValues $value)
+   #foreach($param in $paramValues.keySet())
+        #if($param==$value)  
+        <option value ="$param" selected="selected">$paramValues.get($param)</option>
+        #elseif($param=='402880124a382bee014a385088ae0003')
+        <option value ="$param" selected="selected">$paramValues.get($param)</option>
+        #else 
+        <option value ="$param">$paramValues.get($param)</option>
+        #end
+   #end  
+#end
+
+
+<!-- 单选按钮 -->
+#macro( customerInfoAccountData $paramValues $value $name $disabled)
+   #foreach($param in $paramValues.keySet())
+        #if($param==$value)  
+        <input type="radio" name="$name" value ="$param" checked #if($disabled) disabled='disabled' #end/>$paramValues.get($param)
+        #else 
+        <input type="radio" name="$name" value ="$param" #if($disabled) disabled='disabled' #end/>$paramValues.get($param)
+        #end
+   #end  
+#end

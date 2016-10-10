@@ -1,0 +1,197 @@
+#parse ("common/iframe_page_header.htm")
+<body class="whitebg">
+   <div class="content_main">
+    <div class="contentinner">
+     <div class="place">
+          <div class="title">进件新增>应付预收</div>
+      </div>
+      <div class="tabplace">
+           <ul class="com-tab" >
+            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/changewh.page?customerId=$!customerId&productId=$!productId">建议</a></li>
+            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/findJbzk.page?customerId=$!customerId&productId=$!productId">基本状况</a></li>
+	        <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/findJyzt.page?customerId=$!customerId&productId=$!productId">经营状态</a></li>
+	        <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/findSczt.page?customerId=$!customerId&productId=$!productId">生存状态</a></li>
+	        <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/findDdpz.page?customerId=$!customerId&productId=$!productId">道德品质</a></li>
+	        <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_zcfz.page?customerId=$!customerId&productId=$!productId">资产负债</a></li>
+	        <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_lrjb.page?customerId=$!customerId&productId=$!productId">利润简表</a></li>
+	        <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_bzlr.page?customerId=$!customerId&productId=$!productId">标准利润表</a></li>
+	        <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_xjl.page?customerId=$!customerId&productId=$!productId">现金流量</a></li>
+			<li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_jcjy.page?customerId=$!customerId&productId=$!productId">交叉检验</a></li>
+			<li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_dhd.page?customerId=$!customerId&productId=$!productId">点货单</a></li>
+			<li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_gdzc.page?customerId=$!customerId&productId=$!productId">固定资产清单</a></li>
+			<li class="tab activeTab"><a href="${contextPath}/intopieces/addIntopieces/create_yfys.page?customerId=$!customerId&productId=$!productId">应付预收</a></li>
+			<li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_ysyf.page?customerId=$!customerId&productId=$!productId">应收预付</a></li>
+			<li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_lsfx.page?customerId=$!customerId&productId=$!productId">流水分析</a></li>
+         </ul>
+         </div>
+            <div id="parenDiv" >
+		<div id='div1' class="div1" style="position:absolute;"> </div>
+		</div>
+		<div class="tabplace"></div>
+   <form id="id_module_form" action="${modulePath}/addYfys.page" method="post" style="height:100%">
+    <input type="hidden" id="customerId" name="customerId" value="$!customerId">
+    <input type="hidden" id="productId" name="productId" value="$!productId">
+    <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
+    #if($yfys.size()!=0)
+      <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc">
+	     <colgroup>
+			<col width="14%" />
+			<col width="14%" />
+			<col width="14%" />
+			<col width="14%" />
+			<col width="14%" />
+			<col width="14%" />
+			<col width="14%" />
+		 </colgroup>
+		 
+		  <tr id = "0">
+			<td style='width: 150px;'>
+			   <a href="#" class="delbtn"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtn"><img src="${contextPath}/images/add.png" /></a>
+			   <label class="labelstynb" >应付/预收对象</label>
+			</td>
+			<td class="titlefc" style='width: 150px;'>
+			 <label class="labelstynb"> 发生日期</label>
+			</td>
+			<td class="titlefc" style='width: 150px;'>
+			 <label class="labelstynb">  到期日期</label>
+			</td>
+			<td class="titlefc" style='width: 150px;'>
+			 <label class="labelstynb"> 应付/预收金额</label>
+			</td>
+			<td class="titlefc" style='width: 150px;'>
+			 <label class="labelstynb"> 原因</label>
+			</td>
+			<td class="titlefc" style='width: 150px;'>
+			 <label class="labelstynb"> 应付/预收对象联系方式</label>
+			</td>
+			<td class="titlefc" style='width: 150px;'>
+			 <label class="labelstynb"> 关系/生意模式</label>
+			</td>
+		 </tr>
+		 
+		 
+		 #foreach($balanceSheet in $yfys)
+         	#if($balanceSheet.loan_type==0)
+         
+          <tr id='0_1'>
+			<td style='width: 150px;'>
+			 <input  class="rinpstyname" type="text" name="items_name_0" value="$!{balanceSheet.names}" />
+			</td>
+		  	<td style='width: 150px;'><input  class="rinpstyname" type="text" id="" name="month_1_0" value="$!{balanceSheet.fsrq}"/></td>
+            <td style='width: 150px;'><input  class="rinpstyname" type="text" id="" name="month_2_0" value="$!{balanceSheet.dqrq}"/></td>
+            <td style='width: 150px;'><input  class="rinpsty" type="text" id="" name="month_3_0" value="$!{balanceSheet.je}" /></td>
+            <td style='width: 150px;'><input  class="rinpstyname" type="text" id="" name="month_4_0" value="$!{balanceSheet.reason}"/></td>
+            <td style='width: 150px;'><input  class="rinpstyname" type="text" id="" name="month_5_0" value="$!{balanceSheet.lxfs}"/></td>
+            <td style='width: 150px;'><input  class="rinpstyname" type="text" id="" name="month_6_0" value="$!{balanceSheet.syms}"/></td>
+		 </tr>
+		 	#end
+		 #end
+		<tr id ="1"></tr>
+	  </table>
+	  #else
+	  <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" >
+	     <colgroup>
+			<col width="25%" />
+			<col width="25%" />
+			<col width="25%" />
+			<col width="25%" />
+			<col width="25%" />
+		 </colgroup>
+		    
+		 <tr id = "0">
+			<td style='width: 150px;'>
+			   <a href="#" class="delbtn"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtn"><img src="${contextPath}/images/add.png" /></a>
+			   <label class="labelstynb" >应付/预收对象</label>
+			</td>
+			<td class="titlefc" style='width: 150px;'>
+			 <label class="labelstynb"> 发生日期</label>
+			</td>
+			<td class="titlefc" style='width: 150px;'>
+			 <label class="labelstynb">  到期日期</label>
+			</td>
+			<td class="titlefc" style='width: 150px;'>
+			 <label class="labelstynb"> 应付/预收金额</label>
+			</td>
+			<td class="titlefc" style='width: 150px;'>
+			 <label class="labelstynb"> 原因</label>
+			</td>
+			<td class="titlefc" style='width: 150px;'>
+			 <label class="labelstynb"> 应付/预收对象联系方式</label>
+			</td>
+			<td class="titlefc" style='width: 150px;'>
+			 <label class="labelstynb"> 关系/生意模式</label>
+			</td>
+		 </tr>
+		 
+		 <tr id ="1"></tr>
+		  
+		 <tr>
+		   <!--  <td class="titlefc">现金流分析及说明</td>
+			<td>
+			   <textarea name="month_1_39" onkeyup="cls(this,200)" oncontextmenu="cls(this,200)"></textarea>
+			</td> -->
+		 </tr>
+		  
+		 
+	  </table>
+	  #end
+   </div>
+
+   </form>
+  <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n("button.save")" class="current" />
+        <input type="button" onclick="returnClick();" value="#i18n("button.cancel")" />
+  </div>
+    </div>
+  </div>
+    <link rel="stylesheet" type="text/css" href="${contextPath}/css/selectMonth.css" />
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+  <script src='${contextPath}/js/customerInforUpdate/dc_yfys.js'></script>
+   <script src='${contextPath}/js/selectMonth.js'></script>
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");	
+	window.top.currentWindow.setLayout(layout);
+	function cls(obj,max,v){
+	    var reg=/[^x00-xff]/gm;
+	    var str=obj.value.replace(reg,'aa');//全换成单字节字符计算
+	    var message = "长度最大为"+ max ;
+	    $(obj).next("label").remove(); 
+	    if(str.length>max){
+	            var n=0,strr=[];
+	            for(var i=0;i<obj.value.length;i++){//得到50字节以内的字符
+	                    /[^x00-xff]/.test(obj.value.charAt(i))?n+=2:n+=1;
+	                    if(n>max)break;
+	                    strr.push(obj.value.charAt(i));
+	            }
+	            obj.value=strr.join('');
+	            var leng = $(obj).next("label").length;
+	            if(leng == 0)
+	            $(obj).after("<label class='error' generated='true' >" + message + "</label>");
+	    }else{
+	    	    $(obj).next("label").remove(); 
+	    	
+	    }
+	}
+	$(document).ready(function() {	
+	     $("#id_save_button").click(function() {
+			  var leng = 0;
+		    	 leng = $(".error").length;
+		    	if(leng > 0){
+		    		return;
+		    	}else{
+				  $("#id_module_form").submit();  
+		    	}
+	       });
+
+	});
+	function returnClick(){
+		
+		 window.location.href= contextPath + "/customer/basiccustomerinforUpdate/browse.page" ;
+	}
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")
+
+

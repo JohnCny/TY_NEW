@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.customer.dao.CustomerLoanDao">
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.customer.web.CustomerLoanForm">
+		<result property="customerId" column="id" />
+		<result property="chineseName" column="chinese_name" />
+		<result property="cardId" column="card_id" />
+		<result property="userId" column="user_id" />
+		<result property="userName" column="display_name" />
+
+	</resultMap>
+	<select id="queryCustomerLoanList" resultMap="ResultMap" 
+			parameterType="com.cardpay.pccredit.customer.filter.CustomerLoanFilter">
+			SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+			select a.id ,a.chinese_name,a.card_id,a.user_id,b.display_name 
+			 from basic_customer_information a,sys_user b where a.user_id=b.id
+			 and a.id in (select customer_id from customer_application_info where status='end')
+			<if test="custManagerIds != null and custManagerIds != '' ">
+				AND a.user_id in ${custManagerIds}
+			 </if>
+			<if test="cardId != null and cardId != '' ">
+				AND a.CARD_ID=#{cardId}
+			 </if>
+			 
+			 <if test="customerName != null and customerName != '' ">
+				AND a.CHINESE_NAME=#{customerName}
+			 </if>
+			 <if test="userId != null and userId != '' ">
+				AND a.user_id=#{userId}
+			 </if>
+			 order by a.user_id,a.id
+			 <![CDATA[		
+					) ROW_
+				WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+			WHERE ROWNUM_ > #{limit}*#{page}
+			]]>
+	</select>
+		<select id="queryCustomerLoanCountList" resultType="int" 
+			parameterType="com.cardpay.pccredit.customer.filter.CustomerLoanFilter">
+			select count(*)
+			 from basic_customer_information a,sys_user b where a.user_id=b.id
+			 and a.id in (select customer_id from customer_application_info where status='end')
+			<if test="custManagerIds != null and custManagerIds != '' ">
+				AND a.user_id in ${custManagerIds}
+			 </if>
+			<if test="cardId != null and cardId != '' ">
+				AND a.CARD_ID=#{cardId}
+			 </if>
+			 
+			 <if test="customerName != null and customerName != '' ">
+				AND a.CHINESE_NAME=#{customerName}
+			 </if>
+			 <if test="userId != null and userId != '' ">
+				AND a.user_id=#{userId}
+			 </if>
+	</select>
+	
+	<select id="queryNoCustomerLoanList" resultMap="ResultMap" 
+			parameterType="com.cardpay.pccredit.customer.filter.CustomerLoanFilter">
+			SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+			select a.id ,a.chinese_name,a.card_id,a.user_id,b.display_name 
+			 from basic_customer_information a,sys_user b where a.user_id=b.id
+			 and a.id not in (select customer_id from customer_application_info where status='end')
+			<if test="custManagerIds != null and custManagerIds != '' ">
+				AND a.user_id in ${custManagerIds}
+			 </if>
+			<if test="cardId != null and cardId != '' ">
+				AND a.CARD_ID=#{cardId}
+			 </if>
+			 
+			 <if test="customerName != null and customerName != '' ">
+				AND a.CHINESE_NAME=#{customerName}
+			 </if>
+			 <if test="userId != null and userId != '' ">
+				AND a.user_id=#{userId}
+			 </if>
+			 order by a.user_id,a.id
+			 <![CDATA[		
+					) ROW_
+				WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+			WHERE ROWNUM_ > #{limit}*#{page}
+			]]>
+	</select>
+		<select id="queryNoCustomerLoanCountList" resultType="int" 
+			parameterType="com.cardpay.pccredit.customer.filter.CustomerLoanFilter">
+			select count(*)
+			 from basic_customer_information a,sys_user b where a.user_id=b.id
+			 and a.id not in (select customer_id from customer_application_info where status='end')
+			<if test="custManagerIds != null and custManagerIds != '' ">
+				AND a.user_id in ${custManagerIds}
+			 </if>
+			<if test="cardId != null and cardId != '' ">
+				AND a.CARD_ID=#{cardId}
+			 </if>
+			 
+			 <if test="customerName != null and customerName != '' ">
+				AND a.CHINESE_NAME=#{customerName}
+			 </if>
+			 <if test="userId != null and userId != '' ">
+				AND a.user_id=#{userId}
+			 </if>
+	</select>
+</mapper>

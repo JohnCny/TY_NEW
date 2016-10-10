@@ -1,0 +1,57 @@
+#parse ("common/iframe_page_header5.htm")
+<script src="${contextPath}/js/startMove.js" charset="utf-8"></script>
+<style type="text/css">
+/* .btn_gr{ padding:0px 16px; height:24px;line-height:24px;margin:5px 10px 5px 0; background:url(../images/btn_2_n.png) repeat-x; color:#515151;  border:1px solid #b3b3b3; cursor:pointer;text-shadow:1px 1px 1px #fff; }
+.pagebar{ padding:5px;clear:both;margin:0px;padding-left:15px;padding-right:15px;}
+ */
+</style>
+<script type="text/javascript">
+	window.onload=function(){
+		var id ='$Id';
+		$("#hugeImages" + 1).attr({
+			src:"${contextPath}/customer/customerInfor_wh_ty/downLoadDh.json"+"?id="+id
+		});
+	
+	}
+	
+	$(document).ready(function() {
+		var batchId ='$!batchId';
+		//上一张
+		$("#id_beer_button").click(function() {
+			var currentPage = Number($!rowNum) - Number(1);
+			if(Number(currentPage)<0){
+			    	alert("已经是第一张");
+			    	return;
+			}
+			var url = "${contextPath}/postLoan/post/display_server.page?currentPage"+currentPage+"&batchId="+batchId;
+			window.location.href = url;s
+		});
+		
+		//下一张
+		$("#id_next_button").click(function() {
+		    var currentPage = Number($!rowNum) +Number(1);
+		    if(Number(currentPage)>=Number($!totalCount)){
+		    	alert("已经是最后一张");
+		    	return;
+		    }
+			var url = "${contextPath}/postLoan/post/display_server.page?currentPage="+currentPage+"&batchId="+batchId;
+			window.location.href = url;
+		});
+	});
+</script>
+
+<div id="box" style="text-align:center;">
+		 <li><a href="javascript:void();"><img id="hugeImages1" width="660" height="530"  alt="" /></a></li>
+		 <input type="hidden"  name=totalCount value="$!totalCount"/>
+      	 <input type="hidden"  name="rowNum" value="$!rowNum"/>
+      	 <input type="hidden"  name="batchId" value="$!batchId"/>
+</div>
+<div class="pagebar">
+	<div style="text-align:center;">
+	          <a id="id_beer_button" class="btn_gtr" href="javascript:void(0);" title="上一张">上一张</a>
+	          <a id="id_next_button" class="btn_gtr" href="javascript:void(0);" title="下一张">下一张</a>
+	</div>
+	<div style="text-align:center;">共<b>$!totalCount</b>张照片，当前第<b>$!rowNum1</b>页</div>
+</div>
+</body>
+#parse ("common/iframe_page_footer.htm")

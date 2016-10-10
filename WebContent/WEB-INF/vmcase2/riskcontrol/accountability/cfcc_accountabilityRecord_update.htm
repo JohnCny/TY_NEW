@@ -1,0 +1,116 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/customerInfor.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">问责记录审核</div>
+      </div>
+      <form id="id_module_form" action="${contextPath}/accountabilitycontrol/accountability/update.json">
+        <div class="forms" id="formsId">
+          <input type="hidden" name="id" value="$!accountabilityRecord.id" />
+          <table class="rule">
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="30%" />
+
+            </colgroup>
+            <tr>
+              <td>中文姓名:</td>
+              <td><input type="text" id="chineseName" name="chineseName" value="$!customer.chineseName" readonly="readonly"/></td>
+              <td>&nbsp;</td>
+              <td>经理名称:</td>
+              <td><input type="text" id="displayName" name="displayName" value="$!customerManager.displayName" readonly="readonly"/></td>
+
+            </tr>
+            <tr>
+              <td>证件类型:</td>
+               <td><select  disabled="disabled" id="cardType" name="cardType">
+	                   <option value="">请选择...</option>
+	                   #dict("CARDTYPE", $!customer.cardType)
+                  </select></td>
+                <td>&nbsp;</td>
+                <td>证件号码:</td>
+                <td><input type="text" id="cardId" name="cardId" value="$!customer.cardId" readonly="readonly"/></td>
+            </tr>
+             <tr>
+              <td>#mi18n("money"):</td>
+              <td><input type="text" id="money" name="money" value="$format.formatNumber($!accountabilityRecord.money,2,100)" /></td>
+              <td>&nbsp;</td>
+               <td>是否复议:</td>
+              <td><input type="radio" name="reconsideration" value="1"
+						#if($!accountabilityRecord.reconsideration == 1)checked="checked"  #end	disabled="disabled">&nbsp;是 
+								&nbsp;&nbsp;&nbsp;
+					<input type="radio" name="reconsideration"
+						#if($!accountabilityRecord.reconsideration == 0)checked="checked"  #end value="0" disabled="disabled">&nbsp;否 </td>
+            </tr>
+            
+             <tr>
+              <td>问责方式:</td>
+              <td><input type="text" id="createWay" name="createWay" value='#mi18n("$!accountabilityRecord.createWay")' readonly="readonly"/></td>
+              <td>&nbsp;</td>
+                <td></td>
+                <td></td>
+            </tr>
+              <tr>
+              <td>问责原因:</td>
+              <td colspan="4"><textarea id="createReason" name="createReason" rows="5" >$!accountabilityRecord.createReason</textarea></td>
+            </tr>
+            <tr>
+              <td>问责结论:</td>
+              <td colspan="4"><textarea id="accountabilityConclusion" name="accountabilityConclusion" rows="5">$!accountabilityRecord.accountabilityConclusion</textarea></td>
+            </tr>
+         
+          </table>
+        </div>
+      </form>
+
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
+         <input id="id_confirm_button" type="button" value="确认" class="current" />
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n('button.cancel')" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");			
+	window.top.currentWindow.setLayout(layout);
+			
+	#set ($formName = "'#id_module_form'")
+	#validator($formName)
+	$(document).ready(function() {		
+		$("#id_save_button").click(function() {
+	        if ($($formName).valid()) {
+	          var formjson = $($formName).serialize();
+	          $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
+	            if (data.success) {
+	            	Dialog.message("修改成功!");
+	            	window.location.href = contextPath+"/accountabilitycontrol/accountability/cfccbrowse.page";
+	            }
+	          });
+	        }
+	      });
+		
+		
+		
+		$("#id_confirm_button").click(function() {
+			if ($($formName).valid()) {
+				var formjson = $($formName).serialize();
+			Dialog.confirm("点击确认后，将不可更改","问责确认",function(){
+				
+				$.get(contextPath+"/accountabilitycontrol/accountability/update.json?auditStatus=cfccaudit", formjson, function(data, textStatus, jqXhr) {
+		            if (data.success) {
+		            	Dialog.message("确认成功!");
+		            	window.location.href = contextPath+"/accountabilitycontrol/accountability/cfccbrowse.page";
+		            }
+		          });
+			});
+	        }
+	      });
+	});
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

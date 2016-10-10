@@ -1,0 +1,159 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/customerInfor.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户转交审批</div>
+      </div>
+      
+      <div class="inquiry">
+<!-----------搜索------------------------------------------->  
+  
+        <div class="search_tag">#i18n("label.browse.filter")</div>
+        <div class="search">
+          <form id="submitForm" action="${contextPath}/customer/basiccustomerinforMove/examineBrowse.page">
+            <ul>
+              <li>
+                <span>客户名称：<input type="text" name="chineseName" value="$!result.filter.chineseName" /></span>
+              </li>
+              <li>
+                <span>证件号码：<input type="text" name="cardId" value="$!result.filter.cardId" /></span>
+              </li>
+              
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
+       
+<!-------------- 信息显示 ------------------------------------->        
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="20%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">客户姓名</th>
+              <th nowrap="nowrap">证件类型</th>
+              <th nowrap="nowrap">证件号码</th>
+              <th nowrap="nowrap">申请人工号</th>
+              <th nowrap="nowrap">申请人名称</th>
+              <th nowrap="nowrap">转交人工号</th>
+              <th nowrap="nowrap">转交人名称</th>
+              <th nowrap="nowrap">状态</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="20%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+            </colgroup>
+            #foreach ($!{customer} in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" id="checkbox" value="$!customer.receiveId"
+                   /></td>
+              <td nowrap="nowrap">$!customer.customerName</td>
+<!--               <td nowrap="nowrap">#customerInfor($request.getAttribute("cardTypeList"),$!customer.cardType)</td> -->
+			  <td nowrap="nowrap">#dictVal("CARDTYPEJN", $!customer.cardType)</td>
+              <td nowrap="nowrap">$!customer.cardId</td>
+              <td nowrap="nowrap">$!customer.approveGh</td>
+              <td nowrap="nowrap">$!customer.approveName</td>
+              <td nowrap="nowrap">$!customer.moveGh</td>
+              <td nowrap="nowrap">$!customer.moveName</td>
+              #if($!customer.status=='1')
+              	<td nowrap="nowrap">已申请</td>
+              #elseif($!customer.status=='2')
+              	<td nowrap="nowrap">审批通过</td>
+              #elseif($!customer.status=='3')
+              	<td nowrap="nowrap">审批未通过</td>
+              #else
+              	<td nowrap="nowrap">未申请</td>
+              #end
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+          <a id="id_yes_button" class="btn_g" href="javascript:void(0);" title="同意">同意</a>
+          <a id="id_no_button" class="btn_g" href="javascript:void(0);" title="不同意">不同意</a>
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+	url = "${modulePath}/examineBrowse.page";
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+
+		opsObj.displayUrl = "${modulePath}/display.page";
+		opsObj.changeUrl = "${modulePath}/change.page";
+		opsObj.deleteUrl = "${modulePath}/delete.json";
+		opsObj.browseUrl = "${modulePath}/examineBrowse.page";
+		prepareOperations(opsObj);
+		
+		$("#id_yes_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var value = $("input[name='checkbox']:checked").val();
+				save(value,2);
+			}else{
+				Dialog.message("请选择记录!");
+			}
+	    });
+		$("#id_no_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var value = $("input[name='checkbox']:checked").val();
+				save(value,3);
+			}else{
+				Dialog.message("请选择记录!");
+			}
+	    });
+	});
+	
+	function save(receiveId,type){
+		$.ajax({
+			url : "${modulePath}/yes.json?id="+receiveId+"&type="+type,
+			type : "get",
+			success : function(data) {
+				if (data.success) {
+					topWin.Dialog.message("审批成功!");
+					window.location.reload() ;
+				}
+				else{
+					topWin.Dialog.message("系统出现异常,请联系管理员");
+		    	}
+			}
+		});
+	}
+</script>
+   <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
+#parse ("common/iframe_page_footer.htm")

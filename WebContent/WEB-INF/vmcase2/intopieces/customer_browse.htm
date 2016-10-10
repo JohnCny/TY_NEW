@@ -1,0 +1,143 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/customerInfor.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">进件新增>选择客户</div>
+      </div>
+ <div class="inquiry">
+        <div class="search_tag">#i18n("label.browse.filter")</div>
+        <div class="search">
+          <form id="submitForm">
+          <input type="hidden" name="productId" id="productId" value="$!result.filter.productId" />
+            <ul>
+              <li>
+                <span>客户名称：<input type="text" name="chineseName" value="$!result.filter.chineseName" /></span>
+              </li>
+              <li>
+                <span>证件类型：
+                	<select id="type" name="cardType">
+	                   <option value="">请选择...</option>
+	                   #dict("CARDTYPE", $!result.filter.cardType)
+                  	</select>
+                  </span>
+              </li>
+              <li>
+                <span>证件号码：<input type="text" name="cardId" value="$!result.filter.cardId" /></span>
+              </li>
+              
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
+               <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="30%" />
+              <col width="30%" />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">中文姓名</th>
+              <th nowrap="nowrap">证件类型</th>
+              <th nowrap="nowrap">证件号码</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+               	<col width="10%" />
+              	<col width="30%" />
+              	<col width="30%" />
+              	<col width="30%" />
+            </colgroup>
+            #foreach ($customer in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!customer.id/$!customer.tyCustomerId"/></td>
+              <td nowrap="nowrap">$!customer.chineseName</td>
+              <td nowrap="nowrap">#dictVal("CARDTYPEJN", $!customer.cardType)</td>
+              <td nowrap="nowrap">$!customer.cardId</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+          <a id="id_pre_button" class="btn_g" href="javascript:history.back();" title="上一步">上一步</a>
+          <a id="id_next_button" class="btn_g" href="javascript:void(0);" title="下一步">下一步</a>
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.browseUrl = "${modulePath}/browseCustomer.page";
+        
+		prepareOperations(opsObj);
+		//导入调查模板方式
+		$("#id_next_button").click(function() {
+            if ($(".checkbox :checked").length == 1) {
+                var rowid = $($(".checkbox :checked")[0]).attr("value").split("/");
+                var productId = $("#productId").val();
+                
+                //当客户处于风险名单中时，无法进行新增进件操作
+                var isInRisk = false;
+  				$.ajax({
+						url : "${contextPath}/intopieces/addIntopieces/isInRiskList.json?id="+rowid[0],
+						type : "get",
+						async: false,
+						success : function(data) {
+							if (data.success) {
+								if(data.isInList){
+									isInRisk = true;
+								}
+							}else{
+								window.top.Dialog.message("系统出现异常,请联系管理员");
+					    	}
+						}
+			    });
+  				
+  				if(isInRisk){
+  				   window.top.Dialog.message("亲,该客户为风险客户,请重新选择!");
+  				   return;
+  				}
+                
+                var url = "${contextPath}/intopieces/addIntopieces/reportImport.page?customerId="+rowid[0]+"&productId="+productId;
+                window.location.href = url;
+            } else {
+                Dialog.message("请选择一行");
+            }
+        });
+        
+         //手工输入调查信息
+    /*     $("#id_next_button").click(function() {
+            if ($(".checkbox :checked").length == 1) {
+                var rowid = $($(".checkbox :checked")[0]).attr("value").split("/");
+                var productId = $("#productId").val();
+               // var url = "${contextPath}/intopieces/addIntopieces/reportImport.page?customerId="+rowid[0]+"&productId="+productId;
+                var url = "${contextPath}/intopieces/addIntopieces/changewh.page?customerId="+rowid[0]+"&productId="+productId;
+                window.location.href = url;
+            } else {
+                Dialog.message("请选择一行");
+            }
+        });  */
+	});
+</script>
+   <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
+#parse ("common/iframe_page_footer.htm")

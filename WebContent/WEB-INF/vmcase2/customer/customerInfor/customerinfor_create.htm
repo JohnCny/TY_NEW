@@ -1,0 +1,122 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户基本信息资料</div>
+      </div>
+      <form id="id_module_form" action="${modulePath}/insert.json">
+        <div class="forms" id="formsId">
+          <table class="rule" bordercolor="#CCCCCC" border="1">
+          <caption>客户基本信息资料</caption>
+            <colgroup>
+              <col width="10%" />
+              <col width="40%" />
+              <col width="10%" />
+              <col width="40%" />
+            </colgroup>
+            <tr>
+              <td><label for="chineseName">中文姓名:</label></td>
+              <td><input type="text" id="chineseName" name="chineseName" value="" /></td>
+              <td><label for="pinyinenglishName">拼音或英文姓名:</label></td>
+              <td><input type="text" id="pinyinenglishName" name="pinyinenglishName" value="" /></td>
+            </tr>
+            <tr>
+              <td><label for="nationality">国籍:</label></td>
+              <td><select id="nationality" name="nationality">
+                  <option value="">请选择...</option>
+                  #customerInfo($request.getAttribute("nationalityList"),$!{customer.nationality})
+                  </select></td>
+                <td><label>性别:</label></td>
+                <td><input type="radio" name="sex" value="Male" checked/>男
+				    &nbsp;&nbsp;&nbsp;
+				    <input type="radio" name="sex" value="Female"/>女</td>
+            </tr>
+            <tr>
+              <td><label for="birthday">出生日期:</label></td>
+              <td><input type="text" name="birthday" id="birthday"  value="" onmouseover="_calendar()"/></td>
+			  <td><label for="cardType">身份证件:</label></td>
+              <td><select id="cardType" name="cardType">
+                  <option value="">请选择...</option>
+                  #customerInfo($request.getAttribute("cardTypeList"),$!{customer.cardType})
+                  </select></td>
+            </tr>
+			<tr>
+              <td><label for="cardId">证件号码:</label></td>
+              <td><input type="text" name="cardId" id="cardId"  value="" /></td>
+			  <td><label for="telephone">手机:</label></td>
+              <td><input type="text" name="telephone" id="telephone"/></td>
+            </tr>
+			<tr>
+              <td><label for="homePhone">住宅电话:</label></td>
+              <td><input type="text" name="homePhone" id="homePhone"  value="" /></td>
+			  <td><label for="residentialAddress">住宅地址:</label></td>
+              <td><input type="text" name="residentialAddress" id="residentialAddress"/></td>
+            </tr>
+			<tr>
+              <td><label for="mail">E-mail:</label></td>
+              <td><input type="text" name="mail" id="mail"  value="" /></td>
+			  <td><label for="residentialPropertie">住宅性质:</label></td>
+              <td><select id="residentialPropertie" name="residentialPropertie">
+                  <option value="">请选择...</option>
+                 #customerInfo($request.getAttribute("residentialPropertieList"),$!{customer.residentialPropertie})
+                  </select></td>
+            </tr>
+			<tr>
+              <td><label>婚姻状况:</label></td>
+              <td><select id="maritalStatus" name="maritalStatus">
+                  <option value="">请选择...</option>
+                  #customerInfo($request.getAttribute("maritalStatusList"),$!{customer.maritalStatus})
+                  </select></td>
+			  <td><label for="degreeEducation">教育程度:</label></td>
+              <td><select name="degreeEducation" id="degreeEducation">
+              <option value="">请选择...</option>
+              #dict("degreeEducation","")
+              </select>
+              </td>
+            </tr>
+			<tr>
+              <td><label for="householdAddress">户籍地址:</label></td>
+              <td><input type="text" name="householdAddress" id="householdAddress"  value="" /></td>
+			  <td><label for="zipCodeAddress">邮政编码(户籍地址):</label></td>
+              <td><input type="text" name="zipCodeAddress" id="zipCodeAddress"/></td>
+            </tr>
+			<!-- <tr>
+              <td><label for="finalApproval">最终审批有效期(银联):</label></td>
+              <td><input type="text" name="finalApproval" id="finalApproval"  value="" /></td>
+			  <td><label for="applyCredit">申请额度:</label></td>
+              <td><input type="text" name="applyCredit" id="applyCredit"/></td>
+            </tr>
+			<tr>
+              <td><label for="actualAmount">实际额度(信誉):</label></td>
+              <td><input type="text" name="actualAmount" id="actualAmount"  value="" /></td>
+			  <td><label for="temporaryQuota">临时额度:</label></td>
+              <td><input type="text" name="temporaryQuota" id="temporaryQuota"/></td>
+            </tr>
+			<tr>
+              <td><label for="cashAdvanceRatio">预借现金比例:</label></td>
+              <td><input type="text" name="cashAdvanceRatio" id="cashAdvanceRatio"  value="" /></td>
+			  <td><label for="cardStatus">卡片状态:</label></td>
+              <td><input type="text" name="cardStatus" id="cardStatus"/></td>
+            </tr>-->
+          </table>
+        </div>
+      </form>
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n("button.save")" class="current" />
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n("button.cancel")" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");	
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	#validator($formName)
+	$(document).ready(function() {	
+		#parse("common/part_create.js")
+	});
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

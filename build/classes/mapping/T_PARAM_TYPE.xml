@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="GBK"?>
+<resultMap>
+    <result column="ID"  				jdbcType="VARCHAR" index="1" />   
+	<result column="PARENTID"  			jdbcType="VARCHAR" index="2" />   
+	<result column="NAME"  				jdbcType="VARCHAR" index="3" />   
+	<result column="DISPLAYNAME"  		jdbcType="VARCHAR" index="4" />   
+	<result column="DESCRIPTION"  		jdbcType="VARCHAR" index="5" />   
+	<result column="DISPLAYURI"  		jdbcType="VARCHAR" index="6" />   
+	<result column="CODEPOLICYMANAGER"  jdbcType="VARCHAR" index="7" />   
+	<result column="REPOSITORYTABLE"  	jdbcType="VARCHAR" index="8" />   
+	<result column="CREATEDUSER"  		jdbcType="VARCHAR" index="9" />   
+	<result column="CREATEDTIME"  		jdbcType="VARCHAR" index="10" />   
+	<result column="MODIFIEDUSER"  		jdbcType="VARCHAR" index="11" />   
+	<result column="MODIFIEDTIME"  		jdbcType="VARCHAR" index="12" />   
+	<result column="GROUPID"  			jdbcType="VARCHAR" index="13" />
+	<result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/>   
+</resultMap>

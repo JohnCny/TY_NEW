@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="GBK"?>
+
+<resultMap >
+	<!-- <result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/> -->
+	<result column="KHNM" jdbcType="VARCHAR" index="1" />
+
+	<result column="ZYYWMC" jdbcType="VARCHAR" index="2" />
+
+	<result column="JYGM" jdbcType="VARCHAR" index="3" />
+	
+	<result column="JYZK" jdbcType="VARCHAR" index="4" />
+
+	<result column="YJZSR" jdbcType="VARCHAR" index="5" />
+
+	<result column="YJCSR" jdbcType="VARCHAR" index="6" />
+
+</resultMap>

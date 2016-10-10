@@ -1,0 +1,86 @@
+#parse ("common/iframe_page_header.htm")
+<html>
+	<head>
+ 	<title>打印页面</title>
+		<style type="text/css">
+		
+			.STYLE2 {font-size: 14px;
+         		text-align:center;
+
+			}
+			#Layer1 {
+				position:absolute;
+				width:79px;
+				height:26px;
+				z-index:1;
+				left: 84px;
+				top: 93px;
+			}
+			.STYLE3 {font-size: 14px; font-weight: bold; }
+		
+		</style>
+	</head>
+	<body>
+	<script type="text/javascript">
+		function print(){
+			window.print();
+		}
+	</script>
+		<form id="form1" name="form1" method="post" action="">
+			<input type="button" class="btn80" value="打印" id="printBtn" name="printBtn" onclick="print();"/>
+			<p align="center" class="STYLE3">小微贷客户经理工资单 </p>
+			<table align="center" class="STYLE2" width="800" height="400" border="1" cellpadding="0" cellspacing="0" bordercolor="#000000">
+				<tr>
+					<td  height="450" colspan="4">
+						<table width="800" height="440" border="0" cellpadding="0" cellspacing="0">
+							<tr>
+								<td  width="800" height="30" >
+									<table>
+										<tr>
+											<td width="100" align="center">年份</td>
+											<td width="100" align="center">月份</td>
+											<td width="160" align="center">所属机构 </td>
+											<td width="160" align="center">客户经理</td>
+											<td width="160" align="center">基本工资(元)</td>
+											<td width="160" align="center">贷款业务绩效</td>
+											<td width="160" align="center">其他业务绩效 </td>
+											<td width="160" align="center">风险保证金</td>
+											<td width="160" align="center">补扣款项</td>
+											<td width="160" align="center"><span style="color:red">当月工资</span></td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							<tr>
+								<td width="800" height="330" >
+									<table>
+										#foreach ($managerSalary in $result.items)
+										<tr>		
+											<td width="100" align="center">$!managerSalary.year</td>
+											<td width="100" align="center">$!managerSalary.month</td>
+											<td width="160" align="center">$!managerSalary.instCode</td>
+											<td width="160" align="center">$!managerSalary.managerName</td>
+											<td width="160" align="center">$format.formatNumber(2, $!managerSalary.basePay)</td>
+											<td width="160" align="center">$!managerSalary.year</td>
+											<td width="160" align="center">$!managerSalary.year</td>
+											<td width="160" align="center">$!managerSalary.year</td>
+											<td width="160" align="center">$!managerSalary.year</td>
+											<td width="160" align="center">$!managerSalary.year</td>
+										</tr>
+										#end	
+										<tr>
+											<td width="800" height="270" colspan="7">
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</body>
+</html>
+
+#parse ("common/iframe_page_footer.htm")

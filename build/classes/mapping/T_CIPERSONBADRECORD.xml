@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="GBK"?>
+
+<resultMap>
+    <result column="ID"   	            jdbcType="VARCHAR" index="1" />
+    <result column="CUSTID"   	        jdbcType="VARCHAR" index="2" />
+    <result column="SUBJECT"   	        jdbcType="VARCHAR" index="3" />
+    <result column="RECORDDATE"   	    jdbcType="VARCHAR" index="4" />
+    <result column="BADDESCRIPTION"   	jdbcType="VARCHAR" index="5" />
+    <result column="OPERATOR"   	    jdbcType="VARCHAR" index="6" />
+    <result column="INSTCITYCODE"   	jdbcType="VARCHAR" index="7" />
+    <result column="REFERAOMUNT"   	    jdbcType="VARCHAR" index="8" />
+    <result column="OPERDATETIME"   	jdbcType="VARCHAR" index="9" />
+    <result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/>
+</resultMap>

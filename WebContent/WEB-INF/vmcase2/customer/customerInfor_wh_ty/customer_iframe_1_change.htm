@@ -1,0 +1,152 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户维护信息>基本信息</div>
+      </div>
+      <form id="id_module_form" action="${contextPath}/customer/customerInfor_wh_ty/saveTyLocal.json">
+         <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
+          <input type="hidden" name="id" value="$!customerInfor.id" />
+          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%">
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="30%" />
+            </colgroup>
+              <tr><td class="titlec" colspan="4" style="text-align: center;">基本信息</td></tr>
+            <tr>
+              <td class="titlefc3"><label for="khh">客户号:</label></td>
+              <td><input class="rinpsty"  type="text" id="khh" name="khh" value="$!customerInfor.khh" readonly/></td>
+              <td class="titlefc3"><label for="khmc">客户名称:</label></td>
+              <td><input class="rinpsty"  type="text" id="khmc" name="khmc" value="$!customerInfor.khmc" readonly/></td>
+            </tr>
+             <tr>
+              <td class="titlefc3"><label for="rh">是否入户:</label></td>
+              <td><select name="rh">#dict("rh", $!customerInfor.rh)</select></td>
+              <td class="titlefc3"><label for="khlx">客户类型:</label></td>
+              <td><select name="rh">#dict("khlx", $!customerInfor.khlx)</select></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="zjlx">证件类型:</label></td>
+              <td><select name="rh">#dict("zjlx", $!customerInfor.zjlx)</select></td>
+              <td class="titlefc3"><label for="zjhm">证件号码:</label></td>
+              <td><input class="rinpsty"  type="text" id="zjhm" name="zjhm" value="$!customerInfor.zjhm" /></td>
+            </tr>
+             <tr>
+              <td class="titlefc3"><label for="qfjg">签发机构:</label></td>
+              <td><input class="rinpsty"  type="text" id="qfjg" name="qfjg" value="$!customerInfor.qfjg" /></td>
+              <td class="titlefc3"><label for="sfcq">是否长期:</label></td>
+              <td><select name="rh">#dict("sfcq", $!customerInfor.sfcq)</select></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="qfrq">签发日期:</label></td>
+              <td><input class="rinpsty"  type="text" id="qfrq" name="qfrq" value="$!customerInfor.qfrq" onmouseover="_calendar({format:'yyyy-MM-dd'})" readonly/></td>
+              <td class="titlefc3"><label for="dqrq">到期日期:</label></td>
+              <td><input class="rinpsty"  type="text" id="dqrq" name="dqrq" value="$!customerInfor.dqrq" onmouseover="_calendar({format:'yyyy-MM-dd'})" readonly/></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="gltx">管理特征:</label></td>
+              <td><input class="rinpsty"  type="text" id="gltx" name="gltx" value="$!customerInfor.gltx" /></td>
+              <td class="titlefc3"><label for="pqdz">片区地址:</label></td>
+              <td><input class="rinpsty"  type="text" id="pqdz" name="pqdz" value="$!customerInfor.pqdz" /></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="csrq">出生日期:</label></td>
+              <td><input class="rinpsty"  type="text" id="csrq" name="csrq" value="$!customerInfor.csrq" onmouseover="_calendar({format:'yyyy-MM-dd'})" readonly/></td>
+              <td class="titlefc3"><label for="xb">性别:</label></td>
+              <td><select name="rh">#dict("xb", $!customerInfor.xb)</select></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="gtspmc">个体商铺名称:</label></td>
+              <td><input class="rinpsty"  type="text" id="gtspmc" name="gtspmc" value="$!customerInfor.gtspmc" /></td>
+              <td class="titlefc3"><label for="gtyyzzhm">个体营业执照号码:</label></td>
+              <td><input class="rinpsty"  type="text" id="gtyyzzhm" name="gtyyzzhm" value="$!customerInfor.gtyyzzhm" /></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="zxyzsj">最新验照时间:</label></td>
+              <td><input class="rinpsty"  type="text" id="zxyzsj" name="zxyzsj" value="$!customerInfor.zxyzsj" onmouseover="_calendar({format:'yyyy-MM-dd'})" readonly/></td>
+              <td class="titlefc3"><label for="yydz">营业地址:</label></td>
+              <td><input class="rinpsty"  type="text" id="yydz" name="yydz" value="$!customerInfor.yydz" /></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="xxdz">详细住址:</label></td>
+              <td><input class="rinpsty"  type="text" id="xxdz" name="xxdz" value="$!customerInfor.xxdz" /></td>
+              <td class="titlefc3"><label for="yzbm">邮政编码:</label></td>
+              <td><input class="rinpsty"  type="text" id="yzbm" name="yzbm" value="$!customerInfor.yzbm" /></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="hjdz">户籍地址:</label></td>
+              <td><input class="rinpsty"  type="text" id="hjdz" name="hjdz" value="$!customerInfor.hjdz" /></td>
+              <td class="titlefc3"><label for="jtdh">家庭电话:</label></td>
+              <td><input class="rinpsty"  type="text" id="jtdh" name="jtdh" value="$!customerInfor.jtdh" /></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="cz">传真:</label></td>
+              <td><input class="rinpsty"  type="text" id="cz" name="cz" value="$!customerInfor.cz" /></td>
+              <td class="titlefc3"><label for="sj">手机:</label></td>
+              <td><input class="rinpsty"  type="text" id="sj" name="sj" value="$!customerInfor.sj" /></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="dzyx">电子邮箱:</label></td>
+              <td><input class="rinpsty"  type="text" id="dzyx" name="dzyx" value="$!customerInfor.dzyx" /></td>
+              <td class="titlefc3"><label for="gj">国籍:</label></td>
+              <td><select name="rh">#dict("gj", $!customerInfor.gj)</select></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="mz">民族:</label></td>
+              <td><select name="rh">#dict("mz", $!customerInfor.mz)</select></td>
+              <td class="titlefc3"><label for="zzmm">政治面貌:</label></td>
+              <td><select name="rh">#dict("zzmm", $!customerInfor.zzmm)</select></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="xl">学历:</label></td>
+              <td><select name="rh">#dict("xl", $!customerInfor.xl)</select></td>
+              <td class="titlefc3"><label for="xw">学位:</label></td>
+              <td><select name="rh">#dict("xw", $!customerInfor.xw)</select></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="jkzk">健康状况:</label></td>
+              <td><select name="rh">#dict("jkzk", $!customerInfor.jkzk)</select></td>
+              <td class="titlefc3"><label for="hyzk">婚姻状况:</label></td>
+              <td><select name="rh">#dict("hyzk", $!customerInfor.hyzk)</select></td>
+            </tr>
+          
+          </table>
+        </div>
+      </form>
+      <div class="submit">
+      	#if(!$!lock)
+      		<input type="button" class="current" id="id_save_button" value="保存" />
+      	#end
+        <input type="button" onclick="javascript:history.back();" value="返回" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout = new FormsLayout("formsId");
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	#parse ("customer/customerInfor_wh_ty/customer_iframe_1_change_validation.js")
+	
+	$(document).ready(function() {		
+		$("#id_save_button").click(function() {
+			if ($($formName).valid()) {
+	   	          var formjson = $($formName).serialize();
+	   	          $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
+	   	            if (data.success) {
+	   	            	topWin.Dialog.message("保存成功!");
+	   	            	window.location.href= "${contextPath}/customer/customerInfor_wh_ty/showInfo.page?id=$!customerInforId" ;
+	   	            }
+	   	          });
+	   	        }
+	      });
+	});
+  </script>
+   <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
+  
+</body>
+#parse ("common/iframe_page_footer.htm")

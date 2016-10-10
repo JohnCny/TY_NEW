@@ -1,0 +1,103 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">修改维护实施计划</div>
+      </div>
+      <form id="id_module_form" action="${modulePath}/updateAction.json">
+        <div class="forms" id="formsId">
+          <input type="hidden" name="id" value="$!maintenanceAction.id" />
+          <input type="hidden" name="maintenancePlanId" value="$!maintenanceAction.maintenancePlanId"/>
+          <input type="hidden" name="appId" value="$!appId">
+          <table class="rule">
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="30%" />
+            </colgroup>
+            <tr>
+              <td>实施维护方式:</td>
+              <td><select id="maintenanceWay" name="maintenanceWay">
+              #customerInfo($request.getAttribute("collectionMethodList"),$!maintenanceAction.maintenanceWay)
+              </select>
+              </td>
+              <td>&nbsp;</td>
+              <td>实施维护结果描述:</td>
+              <td><textarea id="maintenanceResult" name="maintenanceResult" >$!maintenanceAction.maintenanceResult</textarea>
+              </td>
+            </tr>
+            <tr>
+              <td>实施维护开始时间:</td>
+              <td><input type="text" id="maintenanceStartTime" name="maintenanceStartTime" value="$!date.format('yyyy-MM-dd HH:mm:ss',$!maintenanceAction.maintenanceStartTime)" onmouseover="_calendar({format:'yyyy-MM-dd HH:mm:ss'})" readonly="readonly"/>
+              <td>&nbsp;</td>
+              <td>实施维护结束时间:</td>
+              <td><input type="text" id="maintenanceEndTime" name="maintenanceEndTime" value="$!date.format('yyyy-MM-dd HH:mm:ss',$!maintenanceAction.maintenanceEndTime)" onmouseover="_calendar({format:'yyyy-MM-dd HH:mm:ss'})" readonly="readonly"/></td>
+            </tr>
+            <!-- <tr>
+              <td>是否有客户信息表更:</td>
+              <td><input type="text" id="m" name=""/></td>
+              <td>&nbsp;</td>
+              <td>是否触发资信状况变更:</td>
+              <td><input type="text" id="n" name="n" /></td>
+            </tr> -->
+          </table>
+        </div>
+      </form>
+
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n('button.cancel')" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");			
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	#parse ("/customer/maintenance/maintenance_validation.js")
+	
+	
+	$("#id_save_button").click(function() {
+		if(submitFlag == 1){
+			alert("请勿重复提交!")
+			return;
+		}
+		var time1 = $("#maintenanceStartTime").val();
+		var time2 = $("#maintenanceEndTime").val();
+		var time3 = new Date(time1.replace(/-/g,"/")); 
+		var time4 = new Date(time2.replace(/-/g,"/"));
+		if(Date.parse(time4) - Date.parse(time3) < 0){
+			Dialog.message("开始时间:"+time1+"大于结束时间:"+time2);
+			return;
+		}
+		submitFlag = 1;
+		if ($($formName).valid()) {
+			var formjson = $($formName).serialize();
+   	       var url = "${modulePath}/updateAction.json";
+			$.ajax({
+				url : url,
+				type : "get",
+				data : formjson,
+				success : function(data) {
+					if (data.success) {
+		                window.location.href= contextPath+"/customer/maintenance/display.page?id="+data.id ;
+						topWin.Dialog.message("保存成功！");
+					}
+					else{
+						topWin.Dialog.message(data.message);
+				    }
+					submitFlag = 0;
+				}
+			});
+				
+		}else{
+			submitFlag = 0;
+		}
+    });
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

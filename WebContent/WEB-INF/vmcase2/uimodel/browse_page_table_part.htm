@@ -1,0 +1,46 @@
+        <div id="topDiv" class="inquiry_list inquiry_top" >                    
+          <table>
+            <colgroup>
+              <col width="5%" />
+            #foreach ($column in $uiModel.browseAction.table.columns)
+              #if ($column.width)
+              <col width="${column.width}%"/>
+              #else
+              <col />
+              #end
+            #end
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+            #foreach ($column in $uiModel.browseAction.table.columns)
+              #if ($column.sortable)
+              <th nowrap="nowrap">#orderby($column.name)</th>
+              #else
+              <th nowrap="nowrap">#mi18n($column.name)</th>
+              #end
+            #end
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+            #foreach ($column in $uiModel.browseAction.table.columns)
+              #if ($column.width)
+              <col width="${column.width}%"/>
+              #else
+              <col />
+              #end
+            #end
+            </colgroup>
+            #foreach ($item in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!item.id"#if ($!request.getParameter("recordId") == $item.id) checked="checked"#end/></td>
+              #foreach ($column in $uiModel.browseAction.table.columns)
+                <td nowrap="nowrap">#control($column, $item)</td>
+              #end
+            </tr>
+            #end
+          </table>
+        </div>

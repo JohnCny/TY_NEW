@@ -1,0 +1,123 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">信息员信息</div>
+      </div>
+      <div class="inquiry">
+<!--------------------搜索开始----------------------------->
+<!--------------------搜索结束----------------------------->
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%"/>
+              <col width="10%"/>
+              <col width="10%"/>
+              <col width="10%"/>
+              <col width="10%"/>
+              <col width="30%"/>
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">姓名</th>
+              <th nowrap="nowrap">电话</th>
+              <th nowrap="nowrap">身份证号码</th>
+              <th nowrap="nowrap">工作单位</th>
+              <th nowrap="nowrap">工作职务</th>
+              <th nowrap="nowrap">维护区域</th>
+              <th nowrap="nowrap">工作方式 </th>
+              <th nowrap="nowrap">关联客户数目</th>
+              <th nowrap="nowrap">住址</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%"/>
+              <col width="10%"/>
+              <col width="10%"/>
+              <col width="10%"/>
+              <col width="10%"/>
+              <col width="30%"/>
+            </colgroup>
+            #foreach ($!officer in $!result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!officer.id"
+                  #if ($!request.getParameter("recordId") == $officer.id) checked="checked" #end /></td>
+							<td nowrap="nowrap">$!officer.name</td>
+							<td nowrap="nowrap">$!officer.telephone</td>
+							<td nowrap="nowrap">$!officer.idCardNumber</td>
+							<td nowrap="nowrap">$!officer.workUnit</td>
+							<td nowrap="nowrap">$!officer.jobDuty</td>
+							<td nowrap="nowrap">$!officer.infoMaintenanceArea</td>
+							<td nowrap="nowrap">$!officer.infoOfficerJob</td>
+							<td nowrap="nowrap">$!officer.countNum</td>
+							<td nowrap="nowrap">$!officer.address</td>
+			</tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+          #btnpriv("create")<a id="id_create_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.create.hint')">#i18n("button.create")</a>#end 
+          #btnpriv("change")<a id="id_change_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.change.hint')" >#i18n("button.change")</a>#end 
+          #btnpriv("relevancecustomer")<a id="id_display_button" class="btn_gr" href="javascript:void(0);" title="#i18n('button.display.hint')">关联客户</a>#end
+          #btnpriv("assess")<a id="id_evaluate_button" class="btn_gr" href="javascript:void(0);" title="选中一个信息员进行评价">评价</a>#end
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.createUrl = "${modulePath}/create.page";
+		opsObj.displayUrl = "${modulePath}/display.page";
+		opsObj.changeUrl = "${modulePath}/changeInfor.page";
+		opsObj.browseUrl = "${modulePath}/browse.page";
+		opsObj.evaluateUrl = "${modulePath}/evaluate.page";
+		prepareOperations(opsObj);
+		
+		$("#id_evaluate_button").click(function() {
+            if ($(".checkbox :checked").length == 1) {
+                $("#id_evaluate_button").unbind();
+                var rowid = $($(".checkbox :checked")[0]).attr("value");
+                var url ="";
+                if(opsObj.evaluateUrl.indexOf("?")>=0){
+                	url = opsObj.evaluateUrl + "&id=" + rowid;
+                }else{
+                	url = opsObj.evaluateUrl + "?id=" + rowid;
+                }
+                if (opsObj.formObj) {
+                    // 回调URL
+                    var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
+                    if (callBackUrlObj) {
+                        url += "&" + $.param({
+                            'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+                        });
+                    }
+                }
+                navigateTo(url);
+            } else {
+                Dialog.message("请选择一行");
+            }
+        });
+	});
+	
+</script>
+#parse ("common/iframe_page_footer.htm")

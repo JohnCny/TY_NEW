@@ -1,0 +1,220 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">进件新增>道德品质</div>
+      </div>
+        <div class="tabplace">
+            <ul class="com-tab" >
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/changewh.page?customerId=$!customerId&productId=$!productId">建议</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/findJbzk.page?customerId=$!customerId&productId=$!productId">基本状况</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/findJyzt.page?customerId=$!customerId&productId=$!productId">经营状态</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/findSczt.page?customerId=$!customerId&productId=$!productId">生存状态</a></li>
+	            <li class="tab activeTab"><a href="${contextPath}/intopieces/addIntopieces/findDdpz.page?customerId=$!customerId&productId=$!productId">道德品质</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_zcfz.page?customerId=$!customerId&productId=$!productId">资产负债</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_lrjb.page?customerId=$!customerId&productId=$!productId">利润简表</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_bzlr.page?customerId=$!customerId&productId=$!productId">标准利润表</a></li>
+	            <li class="tab "><a href="${contextPath}/intopieces/addIntopieces/create_xjl.page?customerId=$!customerId&productId=$!productId">现金流量</a></li>
+				<li class="tab "><a href="${contextPath}/intopieces/addIntopieces/create_jcjy.page?customerId=$!customerId&productId=$!productId">交叉检验</a></li>
+				<li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_dhd.page?customerId=$!customerId&productId=$!productId">点货单</a></li>
+				<li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_gdzc.page?customerId=$!customerId&productId=$!productId">固定资产清单</a></li>
+				<li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_yfys.page?customerId=$!customerId&productId=$!productId">应付预收</a></li>
+				<li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_ysyf.page?customerId=$!customerId&productId=$!productId">应收预付</a></li>
+				<li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_lsfx.page?customerId=$!customerId&productId=$!productId">流水分析</a></li>
+	            <!-- <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/changewh.page?id=${customerId}">基本信息</a></li>
+	            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_zyxx.page?id=${customerId}">职业信息</a></li>
+	            <li class="tab " ><a href="${contextPath}/customer/basiccustomerinforUpdate/create_mbxx.page?id=${customerId}">陌拜信息</a></li>
+	            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_zcfz.page?id=${customerId}">资产负债</a></li>
+	            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_syb.page?id=${customerId}">损益</a></li>
+	            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_xjl.page?id=${customerId}">现金流量</a></li>
+	            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_jcjy.page?id=${customerId}">交叉检验</a></li>
+				<li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_swpg.page?id=${customerId}">四维评估</a></li>
+				<li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_sxpg.page?id=${customerId}">授信评估</a></li>
+	            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_wjdc.page?id=${customerId}">问卷调查</a></li>
+	            <li class="tab" ><a href="${contextPath}/customer/basiccustomerinforUpdate/create_khtz.page?id=${customerId}">台账信息</a></li>
+	            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_yxzl.page?id=${customerId}">影像资料</a></li>    -->
+           </ul>
+         </div>
+         <div class="tabplace"></div>
+			<form id="id_module_form">
+				<input type="hidden" id="customer_id" name="customer_id" value="$!customerId" />
+		    	<input type="hidden" id="product_id" name="product_id" value="$!productId" />
+				<div class="form-bd" id="formsId"
+					style="margin-top: 0px; padding-top: 0px;">
+					<table id='MyTable' style='border-collapse: collapse;' width='100%'>
+						<tr>
+							<td rowspan='1' colspan='3' name='A1' align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 120%; width: 2272px; background-color: #FFFFFF; border-top: solid #d0d7e5 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #d0d7e5 1px;'>申请人道德品质</td>
+						</tr>
+						<tr>
+							<td rowspan='5' colspan='1' name='A2' align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>素质评估</td>
+							<td name='B2' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 5536px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>公众形象</td>
+							<td name='C2'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 13600px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="szpg_gzxx" name="szpg_gzxx" value="$!ddpz.szpg_gzxx" /></td>
+						</tr>
+						<tr>
+							<td name='B3' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 5536px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>荣获奖励</td>
+							<td name='C3'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 13600px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="szpg_rhjl" name="szpg_rhjl" value="$!ddpz.szpg_rhjl" /></td>
+						</tr>
+						<tr>
+							<td name='B4' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 5536px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>赡养父母</td>
+							<td name='C4'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 13600px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="szpg_syfm" name="szpg_syfm" value="$!ddpz.szpg_syfm" /></td>
+						</tr>
+						<tr>
+							<td name='B5' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 5536px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>公益活动</td>
+							<td name='C5'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 13600px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="szpg_gyhd" name="szpg_gyhd" value="$!ddpz.szpg_gyhd" /></td>
+						</tr>
+						<tr>
+							<td name='B6' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 5536px; color: #FF0000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>不良嗜好</td>
+							<td name='C6'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 13600px; color: #FF0000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="szpg_blsh" name="szpg_blsh" value="$!ddpz.szpg_blsh" /></td>
+						</tr>
+						<tr>
+							<td rowspan='7' colspan='1' name='A7' align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>信用记录</td>
+							<td name='B7' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 5536px; color: #FF0000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>违法犯罪</td>
+							<td name='C7'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 13600px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="xyjl_wffz" name="xyjl_wffz" value="$!ddpz.xyjl_wffz" /></td>
+						</tr>
+						<tr>
+							<td name='B8' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 5536px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>征信报告</td>
+							<td name='C8'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 13600px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="xyjl_zxbg" name="xyjl_zxbg" value="$!ddpz.xyjl_zxbg" /></td>
+						</tr>
+						<tr>
+							<td name='B9' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 5536px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>拖欠水电煤气税费</td>
+							<td name='C9'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 13600px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="xyjl_tqfy" name="xyjl_tqfy" value="$!ddpz.xyjl_tqfy" /></td>
+						</tr>
+						<tr>
+							<td name='B10' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 5536px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>公共设施逃票</td>
+							<td name='C10'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 13600px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="xyjl_ggsstp" name="xyjl_ggsstp" value="$!ddpz.xyjl_ggsstp" /></td>
+						</tr>
+						<tr>
+							<td name='B11' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 5536px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>交通违章</td>
+							<td name='C11'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 13600px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="xyjl_jtwz" name="xyjl_jtwz" value="$!ddpz.xyjl_jtwz" /></td>
+						</tr>
+						<tr>
+							<td name='B12' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 5536px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>电话欠费</td>
+							<td name='C12'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 13600px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="xyjl_dhqf" name="xyjl_dhqf" value="$!ddpz.xyjl_dhqf" /></td>
+						</tr>
+						<tr>
+							<td name='B13' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 5536px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>签证拒签</td>
+							<td name='C13'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 13600px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="xyjl_qzjq" name="xyjl_qzjq" value="$!ddpz.xyjl_qzjq" /></td>
+						</tr>
+						<tr>
+							<td rowspan='2' colspan='1' name='A14' align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>宗教信仰</td>
+							<td name='B14' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 5536px; color: #FF0000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>佛教、基督教、伊斯兰教等合法宗教信仰</td>
+							<td name='C14'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 13600px; color: #FF0000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="zjxy_zczj" name="zjxy_zczj" value="$!ddpz.zjxy_zczj" /></td>
+						</tr>
+						<tr>
+							<td name='B15' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 5536px; color: #FF0000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>法轮功、邪教、ISIS、恐怖组织等非法宗教信仰</td>
+							<td name='C15'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 13600px; color: #FF0000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="zjxy_wfzj" name="zjxy_wfzj" value="$!ddpz.zjxy_wfzj" /></td>
+						</tr>
+					</table>
+				</div>
+			</form>
+
+
+			<div class="submit">
+        <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
+        <input type="button" onclick="returnClick();" value="#i18n('button.cancel')" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout = new FormsLayout("formsId");
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	#parse ("customer/customerInforInsert/customerInforCreate_validation.js")
+	
+	$(document).ready(function() {
+		//save
+		$("#id_save_button").click(function() {
+			var url = "${modulePath}/addDdpz.json";
+			var formjson = $($formName).serialize();
+			$.ajax({
+				url : url,
+				type : "get",
+				data : formjson,
+				success : function(data) {
+					if (data.success) {
+						topWin.Dialog.message("保存成功！");
+					} else {
+						topWin.Dialog.message(data.message);
+					}
+				}
+			});
+		});
+		
+	});
+	
+	//取消
+	function returnClick(){
+		 window.location.href= contextPath + "/customer/basiccustomerinforUpdate/browse.page" ;
+	}
+  </script>
+   <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
+  
+</body>
+#parse ("common/iframe_page_footer.htm")

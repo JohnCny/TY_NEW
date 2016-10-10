@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.customer.dao.CustomerMainManagerDao">
+	<resultMap id="ResultMap"
+		type="com.cardpay.pccredit.customer.model.CustomerMainManager">
+		<result property="id" column="ID" />
+		<result property="customerId" column="CUSTOMER_ID" />
+		<result property="manageException" column="MANAGE_EXCEPTION" />
+		<result property="unnormalBigaccountOut" column="UNNORMAL_BIGACCOUNT_OUT" />
+		<result property="managerImprove" column="MANAGER_IMPROVE" />
+		<result property="marriageCircs" column="MARRIAGE_CIRCS" />
+		<result property="assetsAndLiabilities" column="ASSETS_AND_LIABILITIES" />
+		<result property="personImprove" column="PERSON_IMPROVE" />
+		<result property="monthBackCircs" column="MONTH_BACK_CIRCS" />
+		<result property="exceptionDisplay" column="EXCEPTION_DISPLAY" />
+		<result property="industryRisk" column="INDUSTRY_RISK" />
+		<result property="familyCircs" column="FAMILY_CIRCS" />
+		<result property="childrenCircs" column="CHILDREN_CIRCS" />
+		<result property="personBehaviour" column="PERSON_BEHAVIOUR" />
+		<result property="loanAfterCircs" column="LOAN_AFTER_CIRCS" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="createdTime" column="CREATED_TIME" />
+		<result property="modifiedBy" column="MODIFIED_BY" />
+		<result property="modifiedTime" column="MODIFIED_TIME" />
+	</resultMap>
+	<select id="findCustomerMainManagerByCustomerId" resultMap="ResultMap"
+		parameterType="String">
+		SELECT
+		*
+		FROM
+		CUSTOMER_MAIN_MANAGER A
+		WHERE
+		A .CUSTOMER_ID
+		=#{customerId}
+	</select>
+	
+	<select id="findCustomerMainManagerByApplicationId" resultMap="ResultMap"
+		parameterType="String">
+		SELECT
+		*
+		FROM
+		CUSTOMER_MAIN_MANAGER_S A
+		WHERE
+		A .APPLICATION_ID
+		=#{applicationId}
+	</select>
+	<update id="updateCustomerManinManagerByCustomerId">
+		UPDATE
+		CUSTOMER_MAIN_MANAGER c
+		SET
+		c.MANAGE_EXCEPTION=#{manageException},
+		c.UNNORMAL_BIGACCOUNT_OUT=#{unnormalBigaccountOut},
+		c.MANAGER_IMPROVE=#{managerImprove},
+		c.MARRIAGE_CIRCS=#{marriageCircs},
+		c.ASSETS_AND_LIABILITIES=#{assetsAndLiabilities},
+		c.PERSON_IMPROVE=#{personImprove},
+		c.MONTH_BACK_CIRCS=#{monthBackCircs},
+		c.EXCEPTION_DISPLAY=#{exceptionDisplay},
+		c.INDUSTRY_RISK=#{industryRisk},
+		c.FAMILY_CIRCS=#{familyCircs},
+		c.CHILDREN_CIRCS=#{childrenCircs},
+		c.PERSON_BEHAVIOUR=#{personBehaviour},
+		c.LOAN_AFTER_CIRCS=#{loanAfterCircs}
+
+		where c.CUSTOMER_ID=#{customerId}
+
+
+	</update>
+</mapper>

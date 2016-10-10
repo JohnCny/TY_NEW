@@ -1,0 +1,145 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/customerInfor.htm")
+<script src="${contextPath}/common/js/common/jquery.form.js"></script>
+<script src="${contextPath}/js/intopieces/intopieces.js"></script>
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">进件新增>上传影像资料</div>
+      </div>
+ <div class="inquiry">
+        <div class="search_tag">#i18n("label.browse.filter")</div>
+        <div class="search">
+          <form id="excelForm" enctype="multipart/form-data" method="post" 
+          	action="${contextPath}/intopieces/addIntopieces/imageImport.json?excelId=$!result.filter.excelId&customerId=$!result.filter.customerId&productId=$!result.filter.productId">
+            <ul>
+              <li>
+                <span><b>选择影像文件:</b>&nbsp;&nbsp;<input type="file" id="file" name="file"/></span>
+              </li>
+              <li id="uploadTip" style="display:none;color:red">
+                <span><b>上传中，请稍后... ...</b></span>
+              </li>
+              <li class="search_button">
+              <input type="button" value="导入" class="search_button_inquiry" id="uploadButton" style="height: 26px; line-height: 24px;"
+              	onclick="importCustomer('${contextPath}/intopieces/addIntopieces/imageImport.page?excelId=$!result.filter.excelId&customerId=$!result.filter.customerId&productId=$!result.filter.productId')"/>
+              </li>
+            </ul>
+          </form>
+        </div>
+               <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="20%" />
+              <col width="20%" />
+              <col width="20%" />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">文件名</th>
+              <th nowrap="nowrap">客户名称</th>
+              <th nowrap="nowrap">产品名称</th>
+              <th nowrap="nowrap">上传时间</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+               	<col width="10%" />
+              	<col width="30%" />
+              	<col width="20%" />
+              	<col width="20%" />
+              	<col width="20%" />
+            </colgroup>
+            #foreach ($obj in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!obj.id"/></td>
+              <td nowrap="nowrap">$!obj.attachment</td>
+              <td nowrap="nowrap">$!obj.customerName</td>
+              <td nowrap="nowrap">$!obj.productName</td>
+              <td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:ss",$!obj.createdTime)</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+        	<a id="id_pre_button" class="btn_g" href="javascript:history.back();" title="上一步">上一步</a>
+        	<a id="id_del_button" class="btn_g" href="javascript:void(0);" title="删除">删除</a>
+        	<a id="id_next_button" class="btn_g" href="javascript:void(0);" title="提交进件">提交进件</a>
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		prepareOperations(opsObj);
+		
+		$("#id_del_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var rowid = $("input[name='checkbox']:checked").val();
+				var url = "${contextPath}/customer/customerInfor_wh_ty/deleteImage.json?id=" + rowid;
+				$.ajax({
+					 url : url,
+					 type : "get",
+					 success : function(data) {
+						 if (data.success) {
+							 topWin.Dialog.message("删除成功！");
+							 window.location.reload();
+						 }
+						 else{
+							 topWin.Dialog.message(data.message);
+						 }
+					 }
+				 });
+			}
+			else{
+				Dialog.message("请选择一行!");
+			}
+        });
+		
+		$("#id_next_button").click(function() {
+			if(submitFlag == 1){
+				topWin.Dialog.message("请勿重复提交！");
+				return;
+			}
+			if($result.totalCount==0){
+				topWin.Dialog.message("请先上传影像资料！");
+				return;
+			}
+			
+			var url = "${contextPath}/intopieces/addIntopieces/addIntopieces.json?excelId=$!result.filter.excelId&customerId=$!result.filter.customerId&productId=$!result.filter.productId";
+			Dialog.confirm("确定要提交进件吗？", "提示",
+	        function(){ 
+			    submitFlag = 1;
+				$.ajax({
+					 url : url,
+					 type : "get",
+					 success : function(data) {
+						 if (data.success) {
+							 topWin.Dialog.message("保存成功！");
+							 window.location.href="${contextPath}/intopieces/addIntopieces/browseProduct.page";
+						 }
+						 else{
+							 topWin.Dialog.message(data.message);
+						 }
+						 submitFlag = 0;
+					 }
+				    });
+			}); 
+        });
+	});
+</script>
+   <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
+#parse ("common/iframe_page_footer.htm")

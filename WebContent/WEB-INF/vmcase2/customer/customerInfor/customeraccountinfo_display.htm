@@ -1,0 +1,276 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户账户信息显示</div>
+      </div>
+      <form id="id_form_sample" action="">
+        <div class="forms" id="formsId">
+          <table class="rule" style="border: 1px solid #dcdcdc;margin-bottom: 10px;">
+            <colgroup>
+              <col width="12%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="12%" />
+              <col width="30%" />
+            </colgroup>
+            <caption>账户信息</caption>
+        
+            <tr>
+              <td><label for="customerName">客户名称:</label></td>
+              <td><input type="text" id="customerName" name="customerName" value="$!accountInfo.customerName" disabled="disabled"/></td>
+              <td>&nbsp;</td>
+              <td><label for="accountNumber">账号:</label></td>
+              <td><input type="text" id="accountNumber" name="accountNumber" value="$!accountInfo.accountNumber" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label for="cardNumber">卡号:</label></td>
+              <td><input type="text" id="cardNumber" name="cardNumber" value="$!accountInfo.cardNumber" disabled="disabled"/></td>
+              <td>&nbsp;</td>
+              <td><label for="accountStatus">账户状态:</label></td>
+              <td>
+              	<select id="accountStatus" name="accountStatus" disabled="disabled">
+                  #dict("ACCOUNTSTATUS", $!accountInfo.accountStatus)
+                </select>
+               </td>
+            </tr>
+			<tr>
+			  <td><label for="overdueAmount">逾期金额:</label></td>
+              <td><input type="text" name="overdueAmount" id="overdueAmount" value="$!accountInfo.overdueAmount" disabled="disabled"/></td>
+			  <td>&nbsp;</td>
+			  <td><label for="overdueTime">逾期天数:</label></td>
+              <td><input type="text" name="overdueTime" id="overdueTime" value="$!accountInfo.overdueTime" disabled="disabled"/></td>
+            </tr>
+			<tr>
+              <td><label for="prePeriodAccount">上期费用:</label></td>
+              <td><input type="text" name="prePeriodAccount" id="prePeriodAccount"  value="$!accountInfo.prePeriodAccount" disabled="disabled"/></td>
+			  <td>&nbsp;</td>
+			  <td><label for="currentPeriodPay">本期费用:</label></td>
+              <td><input type="text" name="currentPeriodPay" id="currentPeriodPay" value="$!accountInfo.currentPeriodPay" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label for="creditAmount">信用额度:</label></td>
+              <td><input type="text" name="creditAmount" id="creditAmount"  value="$!accountInfo.creditAmount" disabled="disabled"/></td>
+			  <td>&nbsp;</td>
+			  <td><label for="tableTurnPay">表内转表外费用:</label></td>
+              <td><input type="text" name="tableTurnPay" id="tableTurnPay" value="$!accountInfo.tableTurnPay" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label for="compoundAmount">复利余额:</label></td>
+              <td><input type="text" name="compoundAmount" id="compoundAmount"  value="$!accountInfo.compoundAmount" disabled="disabled"/></td>
+			  <td>&nbsp;</td>
+			  <td><label for="verificationCode">核销原因代码:</label></td>
+              <td><input type="text" name="verificationCode" id="verificationCode" value="$!accountInfo.verificationCode" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label for="currentPeriodAnnuity">本期年费金额:</label></td>
+              <td><input type="text" name="currentPeriodAnnuity" id="currentPeriodAnnuity"  value="$!accountInfo.currentPeriodAnnuity" disabled="disabled"/></td>
+			  <td>&nbsp;</td>
+			  <td><label for="currentPeriodOverduePay">本期预借现金费用总额:</label></td>
+              <td><input type="text" name="currentPeriodOverduePay" id="currentPeriodOverduePay" value="$!accountInfo.currentPeriodOverduePay" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label for="currentPeriodCash">本期预借现金总额:</label></td>
+              <td><input type="text" name="currentPeriodCash" id="currentPeriodCash"  value="$!accountInfo.currentPeriodCash" disabled="disabled"/></td>
+			  <td>&nbsp;</td>
+			  <td><label for="currentPeriodScale">帐户预借现金比例:</label></td>
+              <td><input type="text" name="currentPeriodScale" id="currentPeriodScale" value="$!accountInfo.currentPeriodScale" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label for="accountStatusDate">账户状态日期:</label></td>
+              <td><input type="text" name="accountStatusDate" id="accountStatusDate"  value="$!accountInfo.accountStatusDate" disabled="disabled"/></td>
+			  <td>&nbsp;</td>
+			  <td><label for="accountChargeAmount">本期贷记调帐金额:</label></td>
+              <td><input type="text" name="accountChargeAmount" id="accountChargeAmount" value="$!accountInfo.accountChargeAmount" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label for="amountProfitsInreturn">当期发生退货金额:</label></td>
+              <td><input type="text" name="amountProfitsInreturn" id="amountProfitsInreturn"  value="$!accountInfo.amountProfitsInreturn" disabled="disabled"/></td>
+			  <td>&nbsp;</td>
+			  <td><label for="reimbursementDeadline">还款截止日期:</label></td>
+              <td><input type="text" name="reimbursementDeadline" id="reimbursementDeadline" value="$!accountInfo.reimbursementDeadline" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label for="statementDate">帐单日:</label></td>
+              <td><input type="text" name="statementDate" id="statementDate"  value="$!accountInfo.statementDate" disabled="disabled"/></td>
+			  <td>&nbsp;</td>
+			  <td><label for="debitAmountAdjustment">本期借记调整金额:</label></td>
+              <td><input type="text" name="debitAmountAdjustment" id="debitAmountAdjustment" value="$!accountInfo.debitAmountAdjustment" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label for="consumptionLogo">消费免息标志:</label></td>
+              <td><input type="text" name="consumptionLogo" id="consumptionLogo"  value="$!accountInfo.consumptionLogo" disabled="disabled"/></td>
+			  <td>&nbsp;</td>
+			  <td><label for="compoundInterestReceivable">应收复利:</label></td>
+              <td><input type="text" name="compoundInterestReceivable" id="compoundInterestReceivable" value="$!accountInfo.compoundInterestReceivable" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label for="interestReceivable">应收利息:</label></td>
+              <td><input type="text" name="interestReceivable" id="interestReceivable"  value="$!accountInfo.interestReceivable" disabled="disabled"/></td>
+			  <td>&nbsp;</td>
+			  <td><label for="accruedInterestCompound">应计复利利息:</label></td>
+              <td><input type="text" name="accruedInterestCompound" id="accruedInterestCompound" value="$!accountInfo.accruedInterestCompound" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label for="currentPeriodAccrued">当期应计利息:</label></td>
+              <td><input type="text" name="currentPeriodAccrued" id="currentPeriodAccrued"  value="$!accountInfo.currentPeriodAccrued" disabled="disabled"/></td>
+			  <td>&nbsp;</td>
+			  <td><label for="currentShouldCompounded">当期应计复利:</label></td>
+              <td><input type="text" name="currentShouldCompounded" id="currentShouldCompounded" value="$!accountInfo.currentShouldCompounded" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label for="nextInterestReceivable">上期应计利息:</label></td>
+              <td><input type="text" name="nextInterestReceivable" id="nextInterestReceivable"  value="$!accountInfo.nextInterestReceivable" disabled="disabled"/></td>
+			  <td>&nbsp;</td>
+			  <td><label for="recentInterestDate">最近一次计息日期:</label></td>
+              <td><input type="text" name="recentInterestDate" id="recentInterestDate" value="$!accountInfo.recentInterestDate" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label for="lastPaymentDate">上次还款日期:</label></td>
+              <td><input type="text" name="lastPaymentDate" id="lastPaymentDate"  value="$!accountInfo.lastPaymentDate" disabled="disabled"/></td>
+			  <td>&nbsp;</td>
+			  <td><label for="amountInstallmentPayment">分期付款授权金额:</label></td>
+              <td><input type="text" name="amountInstallmentPayment" id="amountInstallmentPayment" value="$!accountInfo.amountInstallmentPayment" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label for="instalmentTotalAmount">分期付款剩余总额,包含利息、本金和费用:</label></td>
+              <td><input type="text" name="instalmentTotalAmount" id="instalmentTotalAmount"  value="$!accountInfo.instalmentTotalAmount" disabled="disabled"/></td>
+			  <td>&nbsp;</td>
+			  <td><label for="paymentInstallmentCredit">分期付款信用额度:</label></td>
+              <td><input type="text" name="paymentInstallmentCredit" id="paymentInstallmentCredit" value="$!accountInfo.paymentInstallmentCredit" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label for="stagingRemainingPrincipal">分期剩余本金:</label></td>
+              <td><input type="text" name="stagingRemainingPrincipal" id="stagingRemainingPrincipal"  value="$!accountInfo.stagingRemainingPrincipal" disabled="disabled"/></td>
+			  <td>&nbsp;</td>
+			  <td><label for="overdueTotalNumber">逾期最高期数:</label></td>
+              <td><input type="text" name="overdueTotalNumber" id="overdueTotalNumber" value="$!accountInfo.overdueTotalNumber" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label for="repaymentAccountPeriod">本帐期的还款笔数:</label></td>
+              <td><input type="text" name="repaymentAccountPeriod" id="repaymentAccountPeriod"  value="$!accountInfo.repaymentAccountPeriod" disabled="disabled"/></td>
+			  <td>&nbsp;</td>
+			  <td><label for="consumptionAccountPeriod">本帐期的一般消费笔数:</label></td>
+              <td><input type="text" name="consumptionAccountPeriod" id="consumptionAccountPeriod" value="$!accountInfo.consumptionAccountPeriod" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label for="transactionsAccount">本帐期的所有交易笔数:</label></td>
+              <td><input type="text" name="transactionsAccount" id="transactionsAccount"  value="$!accountInfo.transactionsAccount" disabled="disabled"/></td>
+			  <td>&nbsp;</td>
+			  <td><label for="accountQueueDate">帐户进入催收队列的日期:</label></td>
+              <td><input type="text" name="accountQueueDate" id="accountQueueDate" value="$!accountInfo.accountQueueDate" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label for="amountOtherCosts">本期其它费用的总额:</label></td>
+              <td><input type="text" name="amountOtherCosts" id="amountOtherCosts"  value="$!accountInfo.amountOtherCosts" disabled="disabled"/></td>
+			  <td>&nbsp;</td>
+			  <td><label for="amountControversy">争议金额:</label></td>
+              <td><input type="text" name="amountControversy" id="amountControversy" value="$!accountInfo.amountControversy" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label for="recentLowestBill">最近一期帐单的最低应缴款:</label></td>
+              <td><input type="text" name="recentLowestBill" id="recentLowestBill"  value="$!accountInfo.recentLowestBill" disabled="disabled"/></td>
+			  <td>&nbsp;</td>
+			  <td><label for="tempAmount">临时额度:</label></td>
+              <td><input type="text" name="tempAmount" id="tempAmount" value="$!accountInfo.tempAmount" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label for="tempStartDate">临时额度生效日期:</label></td>
+              <td><input type="text" name="tempStartDate" id="tempStartDate"  value="$!accountInfo.tempStartDate" disabled="disabled"/></td>
+			  <td>&nbsp;</td>
+			  <td><label for="tempLossDate">临时额度失效日期:</label></td>
+              <td><input type="text" name="tempLossDate" id="tempLossDate" value="$!accountInfo.tempLossDate" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label for="chargeLogo">核销标志:</label></td>
+              <td><input type="text" name="chargeLogo" id="chargeLogo"  value="$!accountInfo.chargeLogo" disabled="disabled"/></td>
+			  <td colspan="3">&nbsp;</td>
+            </tr>
+          </table>
+          <table class="rule" style="border: 1px solid #dcdcdc;margin-bottom: 10px;">
+            <colgroup>
+              <col width="12%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="12%" />
+              <col width="30%" />
+            </colgroup>
+            
+              <caption>卡片信息</caption>
+           
+            <tr>
+              <td><label for="productName">产品名称:</label></td>
+              <td><input type="text" id="productName" name="productName" value="$!cardInfo.productName" disabled="disabled"/></td>
+              <td>&nbsp;</td>
+              <td><label for="cardActivateDate">卡片激活日期:</label></td>
+              <td><input type="text" id="cardActivateDate" name="cardActivateDate" value="$!cardInfo.cardActivateDate" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label for="cardStatusCode">卡片状态代码:</label></td>
+              <td><input type="text" id="cardStatusCode" name="cardStatusCode" value="$!cardInfo.cardStatusCode" disabled="disabled"/></td>
+              <td>&nbsp;</td>
+              <td><label for="cardStatusDate">卡片状态日期:</label></td>
+              <td><input type="text" id="cardStatusDate" name="cardStatusDate" value="$!cardInfo.cardStatusDate" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label for="cardLogoutCode">卡片注销原因代码:</label></td>
+              <td><input type="text" id="cardLogoutCode" name="cardLogoutCode" value="$!cardInfo.cardLogoutCode" disabled="disabled"/></td>
+              <td>&nbsp;</td>
+              <td><label for="cashSuspendDate">卡片挂失时间:</label></td>
+              <td><input type="text" id="cashSuspendDate" name="cashSuspendDate" value="$!cardInfo.cashSuspendDate" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label for="cardAffiliated">附卡额度比例:</label></td>
+              <td><input type="text" id="cardAffiliated" name="cardAffiliated" value="$!cardInfo.cardAffiliated" disabled="disabled"/></td>
+              <td>&nbsp;</td>
+              <td><label for="idNumber">证件号码:</label></td>
+              <td><input type="text" id="idNumber" name="idNumber" value="$!cardInfo.idNumber" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label for="expireDate">到期日:</label></td>
+              <td><input type="text" id="expireDate" name="expireDate" value="$!cardInfo.expireDate" disabled="disabled"/></td>
+              <td>&nbsp;</td>
+              <td><label for="againExpireDate">重发卡的新到期日:</label></td>
+              <td><input type="text" id="againExpireDate" name="againExpireDate" value="$!cardInfo.againExpireDate" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label for="cardCost">卡片费用代码:</label></td>
+              <td><input type="text" id="cardCost" name="cardCost" value="$!cardInfo.cardCost" disabled="disabled"/></td>
+              <td>&nbsp;</td>
+              <td><label for="nextCostMonth">下次收年费月份:</label></td>
+              <td><input type="text" id="cardCost" name="cardCost" value="$!cardInfo.cardCost" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label for="cardMakeDate">发卡日期:</label></td>
+              <td><input type="text" id="cardMakeDate" name="cardMakeDate" value="$!cardInfo.cardMakeDate" disabled="disabled"/></td>
+              <td>&nbsp;</td>
+              <td><label for="cardMakeCode">发卡原因代码:</label></td>
+              <td><input type="text" id="cardMakeCode" name="cardMakeCode" value="$!cardInfo.cardMakeCode" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label for="cardAffiliatedScale">附卡单独设置额度比例:</label></td>
+              <td><input type="text" id="cardAffiliatedScale" name="cardAffiliatedScale" value="$!cardInfo.cardAffiliatedScale" disabled="disabled"/></td>
+              <td>&nbsp;</td>
+              <td><label for="cardLossDate">卡片遗失日期:</label></td>
+              <td><input type="text" id="cardLossDate" name="cardLossDate" value="$!cardInfo.cardLossDate" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label for="cashSuspendMode">挂失方式:</label></td>
+              <td><input type="text" id="cashSuspendMode" name="cashSuspendMode" value="$!cardInfo.cashSuspendMode" disabled="disabled"/></td>
+              <td colspan="3">&nbsp;</td>
+            </tr>
+          </table>
+        </div>
+      </form>
+      <div class="submit">
+        <input class="current" type="button" onclick="javascript:history.go(-1);" value="#i18n('button.back')" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout = new FormsLayout("formsId");
+	window.top.currentWindow.setLayout(layout);
+  </script>
+</body>
+#parse ("common/iframe_page_footer.htm")

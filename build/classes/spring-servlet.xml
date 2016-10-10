@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:p="http://www.springframework.org/schema/p"
+	default-autowire="byName" default-init-method="init" default-destroy-method="depose"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+        http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd ">
+
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+					<property name="objectMapper">
+						<bean class="org.codehaus.jackson.map.ObjectMapper">
+							<property name="dateFormat">
+								<bean class="java.text.SimpleDateFormat">
+									<constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss" />
+								</bean>
+							</property>
+						</bean>
+					</property>
+				</bean>
+				<bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
+				<bean class="org.springframework.http.converter.StringHttpMessageConverter"
+					p:writeAcceptCharset="false" />
+				<bean class="org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter" />
+			</list>
+		</property>
+	</bean>
+
+	<mvc:annotation-driven />
+
+	<!-- Velocity -->
+	<bean id="velocityConfigurer" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+		<property name="resourceLoaderPath">
+			<value>/WEB-INF/vmcase2/</value>
+		</property>
+		<property name="velocityProperties">
+			<props>
+				<prop key="input.encoding">UTF-8</prop>
+				<prop key="output.encoding">UTF-8</prop>
+				<prop key="userdirective">
+					com.wicresoft.jrad.base.velocity.directive.PrivilegeDirective,
+					com.wicresoft.jrad.base.velocity.directive.ButtonPrivilegeDirective,
+					com.wicresoft.jrad.base.velocity.directive.I18nDirective,
+					com.wicresoft.jrad.base.velocity.directive.ModuleI18nDirective,
+					com.wicresoft.jrad.base.velocity.directive.DictionaryDirective,
+					com.wicresoft.jrad.base.velocity.directive.DictionaryValueDirective,
+					com.wicresoft.jrad.base.velocity.directive.ValidatorDirective,
+					com.wicresoft.jrad.base.velocity.directive.OrderByDirective,
+					com.wicresoft.jrad.framework.directive.UiModelValidatorDirective,
+					com.wicresoft.jrad.framework.directive.FilterControlDirective,
+					com.wicresoft.jrad.framework.directive.WebControlDirective,
+					com.wicresoft.jrad.base.velocity.directive.ShowDictionaryDirective,
+				</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
+		<property name="suffix">
+			<value>.htm</value>
+		</property>
+		<property name="contentType">
+			<value>text/html;charset=utf-8</value>
+		</property>
+		<property name="exposeSessionAttributes">
+			<value>true</value>
+		</property>
+	</bean>
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+	    <property name="dataSource" ref="masterDataSource"/>
+	</bean>
+
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- 设置上传文件的最大尺寸为100MB -->
+		<property name="maxUploadSize">
+			<value>1048576000</value>
+		</property>
+		<property name="defaultEncoding">
+			<value>UTF-8</value>
+		</property>
+	</bean>
+
+	<!-- 对静态资源文件的访问 -->
+	<mvc:resources mapping="/images/**" location="/images/" cache-period="31556926" />
+	<mvc:resources mapping="/js/**" location="/js/" cache-period="31556926" />
+	<mvc:resources mapping="/css/**" location="/css/" cache-period="31556926" />
+
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**/*.page" />
+			<mvc:mapping path="/**/*.json" />
+			<bean class="com.wicresoft.jrad.base.web.interceptor.AuthInterceptor">
+				<property name="exclude"> <!-- 不需要验证的Url -->
+					<list>
+						<value>/login.json</value>
+					</list>
+				</property>
+				<property name="excludeContains">
+					<list> <!-- 不需要验证的匹配 -->
+						<value>/ipad/</value>
+					</list>
+				</property>
+				<property name="mainPage" value="/main.page" />
+				<property name="loginPage" value="/login.html" />
+				<property name="noAccessRightPage" value="/noaccessright.html" />
+			</bean>
+		</mvc:interceptor>
+		<!-- 配置Token拦截器，防止用户重复提交数据 -->
+       <mvc:interceptor>
+          <mvc:mapping path="/**"/>
+          <bean class="com.wicresoft.jrad.base.web.TokenInterceptor"/>
+       </mvc:interceptor>
+	</mvc:interceptors>
+	
+
+	<import resource="beans-base.xml" />
+	<import resource="beans-utility.xml" />
+	<import resource="beans-database-oracle.xml" />
+	<import resource="beans-modules.xml" />
+</beans>   

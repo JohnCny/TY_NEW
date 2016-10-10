@@ -1,0 +1,29 @@
+<script type="text/javascript"
+	src="${contextPath}/common/ckfinder/ckfinder.js"></script>
+<script type="text/javascript"
+	src="${contextPath}/common/ckeditor/ckeditor.js"></script>
+<script type="text/javascript">
+	var editor = CKEDITOR.replace('${ck}');
+	CKFinder.setupCKEditor(editor, {
+		basePath : "${contextPath}/"
+	});
+
+    function save(){
+       $("#$!{ck}").html(editor.getData().replace(/"/g,"&quot;"));       
+    }
+    
+    function resize(){
+       if (window['layout']) {
+		  layout.resizeLayout();
+		}
+    }
+	/**ckeditor加载完成后刷新layout，大小改变后也刷新layout*/
+	editor.on('instanceReady', function() {
+		$(".cke_button__save").removeAttr("onclick");
+		$(".cke_button__save").hide();
+		$("a.cke_button").click(save);
+		this.document.on("keyup",save);		
+		this.document.on("mousedown", resize);
+		resize();
+   });
+</script>

@@ -1,0 +1,436 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<!-- <title>上海乾康金融股份有限公司打分系统(在线自测)</title> -->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta content="上海乾康金融股份有限公司,在线打分,自估评分" name="keywords">
+<!-- <script type="text/javascript" src='jquery.min.js'></script>  -->
+<script src='${contextPath}/common/js/common/jquery.min.js'></script>
+
+<STYLE id=survey_style type=text/css>
+body,td,th {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+BODY {
+	MARGIN: 12pt auto 15pt;
+    COLOR: #000000;  
+	TEXT-ALIGN: center;
+	background-repeat: repeat; 
+	margin-top: 20pt;
+	/* background-color: #3366FF;  
+	background:#0166b4 url(bg-fade.jpg) 50% 0 no-repeat;  */
+}
+DIV {
+	BORDER-RIGHT: 0px; PADDING-RIGHT: 0px; BORDER-TOP: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; BORDER-LEFT: 0px; PADDING-TOP: 0px; BORDER-BOTTOM: 0px
+}
+FORM {
+	BORDER-RIGHT: 0px; PADDING-RIGHT: 0px; BORDER-TOP: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; BORDER-LEFT: 0px; PADDING-TOP: 0px; BORDER-BOTTOM: 0px
+}
+IMG {
+	BORDER-RIGHT: 0px; PADDING-RIGHT: 0px; BORDER-TOP: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; BORDER-LEFT: 0px; PADDING-TOP: 0px; BORDER-BOTTOM: 0px
+}
+UL {
+	BORDER-RIGHT: 0px; PADDING-RIGHT: 0px; BORDER-TOP: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; BORDER-LEFT: 0px; PADDING-TOP: 0px; BORDER-BOTTOM: 0px
+}
+OL {
+	BORDER-RIGHT: 0px; PADDING-RIGHT: 0px; BORDER-TOP: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; BORDER-LEFT: 0px; PADDING-TOP: 0px; BORDER-BOTTOM: 0px
+}
+LI {
+	BORDER-RIGHT: 0px; PADDING-RIGHT: 0px; BORDER-TOP: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; BORDER-LEFT: 0px; PADDING-TOP: 0px; BORDER-BOTTOM: 0px; list-style-type:none;
+}
+DL {
+	BORDER-RIGHT: 0px; PADDING-RIGHT: 0px; BORDER-TOP: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; BORDER-LEFT: 0px; PADDING-TOP: 0px; BORDER-BOTTOM: 0px
+}
+DT {
+	BORDER-RIGHT: 0px; PADDING-RIGHT: 0px; BORDER-TOP: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; BORDER-LEFT: 0px; PADDING-TOP: 0px; BORDER-BOTTOM: 0px
+}
+DD {
+	CLEAR: both; BORDER-RIGHT: 0px; PADDING-RIGHT: 0px; BORDER-TOP: 0px; PADDING-LEFT: 0px; FONT-SIZE: 12px; BACKGROUND: #ffffff; PADDING-BOTTOM: 0px; MARGIN: 4pt 0px; BORDER-LEFT: 0px; COLOR: red; PADDING-TOP: 0px; BORDER-BOTTOM: 0px; TEXT-ALIGN: left
+}
+DD A {
+	COLOR: #333333
+}
+DD A:visited {
+	COLOR: #999999
+}
+DD A:hover {
+	COLOR: #ff5800
+}
+H1 {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px
+}
+H2 {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px
+}
+H3 {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px
+}
+H4 {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px
+}
+H5 {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px
+}
+H6 {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px
+}
+.survey_set {
+	BORDER-RIGHT: #999 1px solid; PADDING-RIGHT: 0px; BORDER-TOP: #999 1px solid; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: auto; BORDER-LEFT: #999 1px solid; WIDTH: 714px; PADDING-TOP: 0px; BORDER-BOTTOM: #999 1px solid
+}
+.survey_question_answer {
+	BORDER-RIGHT: #d8e7fe 0px solid; PADDING-RIGHT: 4px; BORDER-TOP: #d8e7fe 0px solid; PADDING-LEFT: 4px; PADDING-BOTTOM: 4px; BORDER-LEFT: #d8e7fe 0px solid; WIDTH: 704px; PADDING-TOP: 4px; BORDER-BOTTOM: #d8e7fe 0px solid
+}
+.question {
+	PADDING-RIGHT: 5px; MARGIN-TOP: 0px; PADDING-LEFT: 5px; FONT-WEIGHT: bold; FONT-SIZE: 14px; BACKGROUND: url(title_bj_s.jpg); MARGIN-BOTTOM: 0px; PADDING-BOTTOM: 5px; WIDTH: 698px; COLOR: red; LINE-HEIGHT: 21px; PADDING-TOP: 5px; FONT-STYLE: normal; FONT-FAMILY: 宋体; LETTER-SPACING: 0px; TEXT-ALIGN: left; text-valign: middle
+}
+.question_exp {
+	CLEAR: both; BORDER-RIGHT: 0px; PADDING-RIGHT: 5px; BORDER-TOP: 0px; MARGIN-TOP: 0px; PADDING-LEFT: 5px; FONT-WEIGHT: normal; FONT-SIZE: 13px; BACKGROUND: #ffffff; MARGIN-BOTTOM: 0px; PADDING-BOTTOM: 5px; BORDER-LEFT: 0px; WIDTH: 698px; COLOR: #000000; LINE-HEIGHT: 20px; PADDING-TOP: 5px; BORDER-BOTTOM: 0px; FONT-STYLE: normal; FONT-FAMILY: 宋体; LETTER-SPACING: 0px; TEXT-ALIGN: left
+}
+.answer {
+	CLEAR: both; BORDER-RIGHT: 0px; PADDING-RIGHT: 5px; BORDER-TOP: 0px; MARGIN-TOP: 0px; PADDING-LEFT: 5px; FONT-WEIGHT: normal; FONT-SIZE: 13px; BACKGROUND: #ffffff; MARGIN-BOTTOM: 0px; PADDING-BOTTOM: 5px; BORDER-LEFT: 0px; WIDTH: 698px; COLOR: #000000; LINE-HEIGHT: 20px; PADDING-TOP: 5px; BORDER-BOTTOM: 0px; FONT-STYLE: normal; FONT-FAMILY: 宋体; LETTER-SPACING: 0px; TEXT-ALIGN: left
+}
+.info_title {
+	PADDING-RIGHT: 5px; PADDING-LEFT: 5px; FONT-WEIGHT: bold; FONT-SIZE: 14px; BACKGROUND: url(title_bj_s.jpg); PADDING-BOTTOM: 5px; WIDTH: 698px; COLOR: #000000; LINE-HEIGHT: 20px; PADDING-TOP: 5px; FONT-STYLE: normal; FONT-FAMILY: 宋体; LETTER-SPACING: 0px; TEXT-ALIGN: left; text-valign: middle
+}
+.info_exp {
+	CLEAR: both; BORDER-RIGHT: 0px; PADDING-RIGHT: 5px; BORDER-TOP: 0px; MARGIN-TOP: 0px; PADDING-LEFT: 5px; FONT-WEIGHT: normal; FONT-SIZE: 12px; BACKGROUND: #ffffff; MARGIN-BOTTOM: 0px; PADDING-BOTTOM: 5px; BORDER-LEFT: 0px; WIDTH: 698px; COLOR: #000000; LINE-HEIGHT: 20px; PADDING-TOP: 5px; BORDER-BOTTOM: 0px; FONT-STYLE: normal; FONT-FAMILY: 宋体; LETTER-SPACING: 0px; TEXT-ALIGN: left
+}
+.mouse {
+	COLOR: #fef6e7
+}
+.input_class {
+	BORDER-RIGHT: #999 0px solid; PADDING-RIGHT: 5px; BORDER-TOP: #999 0px solid; PADDING-LEFT: 5px; BACKGROUND: #d8e7fe; PADDING-BOTTOM: 3px; MARGIN: 0px auto; BORDER-LEFT: #999 0px solid; WIDTH: 714px; PADDING-TOP: 3px; BORDER-BOTTOM: #999 0px solid; HEIGHT: 25px; TEXT-ALIGN: center
+}
+.onMouse {
+	
+}
+#floater {
+	Z-INDEX: 10; LEFT: 500px; VISIBILITY: visible; WIDTH: 484px; POSITION: absolute; TOP: 146px
+}
+.STYLE1 {
+	color: #0000FF;
+	font-weight: bold;
+}
+.STYLE2 {color: #999}
+.STYLE3 {color: #FF0000}
+</STYLE>
+<script language="javascript" type="text/javascript">
+	//计算得分
+	function CalClick(){
+		var hj= $('input[name="hj"]:checked').val(); 
+		debugger;
+        if(typeof(hj) == 'undefined'){
+        	alert("请选择[户籍]!");	
+        	return;
+        }
+        
+		var nl= $('input[name="nl"]:checked').val();
+		if(typeof(nl) == 'undefined'){
+        	alert("请选择[年龄]!");	
+        	return;
+	    }
+		
+		var xl= $('input[name="xl"]:checked').val();
+		if(typeof(xl) == 'undefined'){
+        	alert("请选择[学历]!");	
+        	return;
+	    }
+		
+		var hyzk= $('input[name="hyzk"]:checked').val();
+		if(typeof(hyzk) == 'undefined'){
+        	alert("请选择[婚姻状况]!");	
+        	return;
+	    }
+		
+		var znvqk= $('input[name="znvqk"]:checked').val();
+		if(typeof(znvqk) == 'undefined'){
+        	alert("请选择[子女情况]!");	
+        	return;
+	    }
+		
+		var dwxz= $('input[name="dwxz"]:checked').val();
+		if(typeof(dwxz) == 'undefined'){
+        	alert("请选择[单位性质]!");	
+        	return;
+	    }
+		var fc= $('input[name="fc"]:checked').val();
+		if(typeof(fc) == 'undefined'){
+        	alert("请选择[房产]!");	
+        	return;
+	    }
+		var cfqk= $('input[name="cfqk"]:checked').val();
+		if(typeof(cfqk) == 'undefined'){
+        	alert("请选择[车产情况]!");	
+        	return;
+	    }
+		var jkxy= $('input[name="jkxy"]:checked').val();
+		if(typeof(jkxy) == 'undefined'){
+        	alert("请选择[借款人24个月信用情况]!");	
+        	return;
+	    }
+		var ywwl= $('input[name="ywwl"]:checked').val();
+		if(typeof(ywwl) == 'undefined'){
+        	alert("请选择[与我行业务往来]!");	
+        	return;
+	    }
+		var jynx= $('input[name="jynx"]:checked').val();
+		if(typeof(jynx) == 'undefined'){
+        	alert("请选择[经营年限]!");	
+        	return;
+	    }
+		
+		var zcfzl= $('input[name="zcfzl"]:checked').val();
+		if(typeof(zcfzl) == 'undefined'){
+        	alert("请选择[资产负债率]!!");	
+        	return;
+	    }
+		
+		var jtnsr= $('input[name="jtnsr"]:checked').val();
+		if(typeof(jtnsr) == 'undefined'){
+        	alert("请选择[家庭年收入]!");	
+        	return;
+	    } 
+		//cal
+		alert(Number(hj)+Number(nl)+Number(xl)+Number(hyzk)+Number(znvqk)
+		     +Number(dwxz)+Number(fc)+Number(cfqk)+Number(jkxy)+Number(ywwl)
+		     +Number(jynx)+Number(zcfzl)+Number(zcfzl)+"分"); 
+	}
+	
+	//重置
+	function ResetClick(){
+		$('input:radio[name=hj]').attr('checked',false);
+		$('input:radio[name=nl]').attr('checked',false);
+		$('input:radio[name=xl]').attr('checked',false);
+		$('input:radio[name=hyzk]').attr('checked',false);
+		$('input:radio[name=znvqk]').attr('checked',false);
+		
+		$('input:radio[name=dwxz]').attr('checked',false);
+		$('input:radio[name=fc]').attr('checked',false);
+		$('input:radio[name=cfqk]').attr('checked',false);
+		$('input:radio[name=jkxy]').attr('checked',false);
+		$('input:radio[name=ywwl]').attr('checked',false);
+		
+		$('input:radio[name=jynx]').attr('checked',false);
+		$('input:radio[name=zcfzl]').attr('checked',false);
+		$('input:radio[name=jtnsr]').attr('checked',false);
+	}
+</script>
+</head>
+<body>
+
+
+
+<DIV id=web_set style="BORDER-RIGHT: #f1f5ff 1px solid; PADDING-RIGHT: 0px; BORDER-TOP: #f1f5ff 1px solid; PADDING-LEFT: 0px; BACKGROUND: #fff; FILTER: shadow(color=gray, direction=80) alpha(opacity=88); PADDING-BOTTOM: 0px; MARGIN: auto; BORDER-LEFT: #f1f5ff 1px solid; WIDTH: 802px; PADDING-TOP: 0px; BORDER-BOTTOM: #f1f5ff 1px solid; opacity: 0.88; moz-opacity: 0.88">
+
+<TABLE style="MARGIN: auto auto 5pt; WIDTH: 100%" cellSpacing=0 cellPadding=0 border=0>
+  <TBODY>
+  <TR>
+<TD style="PADDING-RIGHT: 9px; PADDING-LEFT: 9px; FONT-WEIGHT: bold; FONT-SIZE: 29px; BACKGROUND: url(title-bg3.gif); PADDING-BOTTOM: 9px; COLOR: #000000; LINE-HEIGHT: 22px; PADDING-TOP: 20px; FONT-STYLE: normal; FONT-FAMILY: 黑体; LETTER-SPACING: 3px; HEIGHT: 55px; TEXT-ALIGN: center" vAlign=center>四维授信评估模型</TD>
+  </TR></TBODY></TABLE>
+<!-- <TABLE style="BORDER-RIGHT: #999 0px solid; BORDER-TOP: #999 0px solid; BACKGROUND: #d8e7fe; MARGIN: auto auto 8px; BORDER-LEFT: #999 0px solid; WIDTH: 714px; BORDER-BOTTOM: #999 0px solid; TEXT-ALIGN: center">
+  <TBODY>
+  <TR>
+    <TD
+    style="PADDING-RIGHT: 10px; PADDING-LEFT: 10px; FONT-WEIGHT: normal; FONT-SIZE: 14px; PADDING-BOTTOM: 10px; COLOR: #000000; LINE-HEIGHT: 20px; PADDING-TOP: 10px; FONT-STYLE: normal; FONT-FAMILY: 宋体; LETTER-SPACING: 0px; TEXT-ALIGN: left" 
+    align=left>
+      <P class=MsoNormal style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: 150%"><SPAN 
+      style="FONT-SIZE: 14px; LINE-HEIGHT: 150%; FONT-FAMILY: 宋体;">　　申请人可以根据自己的情况方便地做出计分。<a href="" target="_blank">使用说明&gt;&gt;</a> <br>
+	  &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:red;">(总分为100分)</span></SPAN></P>
+      <P align="right" class=MsoNormal STYLE4 style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: 150%"><span style="font-size:12px;color: #CC6600;">本页面最后更新时间:2016.08.05</span></P></TD>
+  </TR></TBODY></TABLE> -->
+
+<FORM name="form1">
+<DIV class=survey_set>
+
+<div align="left"><span style="PADDING-RIGHT: 9px; margin-left:7px; PADDING-LEFT: 0px; FONT-WEIGHT: bold; FONT-SIZE: 20px; PADDING-BOTTOM: 9px; COLOR: #000000; LINE-HEIGHT: 45px; PADDING-TOP: 20px; FONT-STYLE: normal; FONT-FAMILY: 黑体; LETTER-SPACING: 3px; HEIGHT: 55px; ">基本加分(单选)</span><br></div>
+  <DIV class=survey_question_answer>
+		<DIV class=question>一、户籍：</DIV>
+		<DIV class=answer >
+			<DIV class=div_table_radio_question>
+				<INPUT name="hj" type=radio  value=3> 外地人<span class="STYLE2"></span><br />
+				<INPUT name="hj" type=radio  value=6> 本地人 <span class="STYLE2"></span><br />
+				<INPUT name="hj" type=radio  value=10> 济南本地<span class="STYLE2"></span><br />
+			</DIV>
+		</DIV>
+  </DIV>
+<BR>
+
+<DIV class=survey_question_answer>
+		<DIV class=question>二、年龄：</DIV>
+		<DIV class=answer >
+			<DIV class=div_table_radio_question>
+				<INPUT name="nl" type=radio  value=2> 25岁以下<span class="STYLE2"></span><br />
+				<INPUT name="nl" type=radio  value=3> 25-30 <span class="STYLE2"></span><br />
+				<INPUT name="nl" type=radio  value=4> 30-35<span class="STYLE2"></span><br />
+				<INPUT name="nl" type=radio  value=5> 35-50<span class="STYLE2"></span><br />
+				<INPUT name="nl" type=radio  value=4> 50以上<span class="STYLE2"></span><br />
+			</DIV>
+		</DIV>
+  </DIV>
+<BR>
+
+<DIV class=survey_question_answer>
+		<DIV class=question>三、学历：</DIV>
+		<DIV class=answer >
+			<DIV class=div_table_radio_question>
+				<INPUT name="xl" type=radio  value=3> 专科以下<span class="STYLE2"></span><br />
+				<INPUT name="xl" type=radio  value=4> 专科 <span class="STYLE2"></span><br />
+				<INPUT name="xl" type=radio  value=5> 本科<span class="STYLE2"></span><br />
+				<INPUT name="xl" type=radio  value=5> 研究生以上<span class="STYLE2"></span><br />
+			</DIV>
+		</DIV>
+  </DIV>
+<BR>
+
+<DIV class=survey_question_answer>
+		<DIV class=question>四、婚姻状况：</DIV>
+		<DIV class=answer >
+			<DIV class=div_table_radio_question>
+				<INPUT name="hyzk" type=radio  value=3> 离异<span class="STYLE2"></span><br />
+				<INPUT name="hyzk" type=radio  value=5> 未婚<span class="STYLE2"></span><br />
+				<INPUT name="hyzk" type=radio  value=10> 已婚<span class="STYLE2"></span><br />
+			</DIV>
+		</DIV>
+  </DIV>
+<BR>
+
+<DIV class=survey_question_answer>
+		<DIV class=question>五、子女情况：</DIV>
+		<DIV class=answer >
+			<DIV class=div_table_radio_question>
+				<INPUT name="znvqk" type=radio  value=5> 无子女<span class="STYLE2"></span><br />
+				<INPUT name="znvqk" type=radio  value=10> 有未成年子女<span class="STYLE2"></span><br />
+				<INPUT name="znvqk" type=radio  value=8> 有成年子女<span class="STYLE2"></span><br />
+			</DIV>
+		</DIV>
+  </DIV>
+<BR>
+
+
+<DIV class=survey_question_answer>
+		<DIV class=question>六、单位性质：</DIV>
+		<DIV class=answer >
+			<DIV class=div_table_radio_question>
+				<INPUT name="dwxz" type=radio  value=5> 公务员及事业编<span class="STYLE2"></span><br />
+				<INPUT name="dwxz" type=radio  value=5> 央企、国企<span class="STYLE2"></span><br />
+				<INPUT name="dwxz" type=radio  value=5> 上市公司<span class="STYLE2"></span><br />
+				<INPUT name="dwxz" type=radio  value=5> 世界五百强企业<span class="STYLE2"></span><br />
+				<INPUT name="dwxz" type=radio  value=5> 公立学院、公立医院员工<span class="STYLE2"></span><br />
+				<INPUT name="dwxz" type=radio  value=5> 银行员工<span class="STYLE2"></span><br />
+				<INPUT name="dwxz" type=radio  value=5> 证券、保险非销售岗<span class="STYLE2"></span><br />
+				<INPUT name="dwxz" type=radio  value=3> 其他<span class="STYLE2"></span><br />
+			</DIV>
+		</DIV>
+  </DIV>
+<BR>
+  
+  
+  <DIV class=survey_question_answer>
+		<DIV class=question>七、房产：</DIV>
+		<DIV class=answer >
+			<DIV class=div_table_radio_question>
+				<INPUT name="fc" type=radio  value=5> 无房 <span class="STYLE2"></span><br />
+				<INPUT name="fc" type=radio  value=8> 有一套房 <span class="STYLE2"></span><br />
+				<INPUT name="fc" type=radio  value=10> 2套及以上 <span class="STYLE2"></span><br />
+			</DIV>
+		</DIV>
+  </DIV>
+<BR>
+
+<DIV class=survey_question_answer>
+	<DIV class=question>八、车产情况：</DIV>
+	<DIV class=answer >
+		<DIV class=div_table_radio_question>
+			<INPUT name="cfqk" type=radio value=3> 无车 <span class="STYLE2"></span><br />
+			<INPUT name="cfqk" type=radio  value=5> 无车<span class="STYLE2"></span><br />
+		</DIV>
+	</DIV>
+</DIV>
+<BR>
+
+<DIV class=survey_question_answer>
+	<DIV class=question>九、借款人24个月信用情况：</DIV>
+	<DIV class=answer >
+		<DIV class=div_table_radio_question>
+			<INPUT name="jkxy" type=radio value=10> 无逾期<span class="STYLE2"></span><br />
+			<INPUT name="jkxy" type=radio  value=5> 有逾期（次数） <span class="STYLE2"></span><br />
+		</DIV>
+	</DIV>
+</DIV>
+<BR>
+
+<DIV class=survey_question_answer>
+	<DIV class=question>十、与我行业务往来：</DIV>
+	<DIV class=answer >
+		<DIV class=div_table_radio_question>
+			<INPUT name="ywwl" type=radio value=0> 无<span class="STYLE2"></span><br />
+			<INPUT name="ywwl" type=radio  value=3> 有 <span class="STYLE2"></span><br />
+		</DIV>
+	</DIV>
+</DIV>
+<BR>
+
+
+<DIV class=survey_question_answer>
+	<DIV class=question>十一、经营年限：</DIV>
+	<DIV class=answer >
+		<DIV class=div_table_radio_question>
+			<INPUT name="jynx" type=radio value=5> 1年-3年<span class="STYLE2"></span><br />
+			<INPUT name="jynx" type=radio  value=10> 3年-5年 <span class="STYLE2"></span><br />
+			<INPUT name="jynx" type=radio  value=12> 5年以上 <span class="STYLE2"></span><br />
+		</DIV>
+	</DIV>
+</DIV>
+<BR>
+
+<DIV class=survey_question_answer>
+	<DIV class=question>十二、资产负债率：</DIV>
+	<DIV class=answer >
+		<DIV class=div_table_radio_question>
+			<INPUT name="zcfzl" type=radio value=6> 50%-70%<span class="STYLE2"></span><br />
+			<INPUT name="zcfzl" type=radio  value=10> 50%（含）以下 <span class="STYLE2"></span><br />
+		</DIV>
+	</DIV>
+</DIV>
+<BR>
+
+
+<DIV class=survey_question_answer>
+	<DIV class=question>十三、家庭年收入：</DIV>
+	<DIV class=answer >
+		<DIV class=div_table_radio_question>
+			<INPUT name="jtnsr" type=radio  value=2> 10万以下<span class="STYLE2"></span><br/>
+			<INPUT name="jtnsr" type=radio  value=4> 10-20万 <span class="STYLE2"></span><br/>
+			<INPUT name="jtnsr" type=radio  value=6> 20-30万 <span class="STYLE2"></span><br/>
+			<INPUT name="jtnsr" type=radio  value=8> 30-50万 <span class="STYLE2"></span><br/>
+			<INPUT name="jtnsr" type=radio  value=10> 50万 以上<span class="STYLE2"></span><br/>
+		</DIV>
+	</DIV>
+</DIV>
+<BR>
+
+
+</DIV>
+
+<BR>
+<DIV class=input_class>
+<!-- 	<INPUT  id ="id_browse_button"   value="计 算 得分">&nbsp;&nbsp;<INPUT type=reset value="重 置 Reset" name=Submit> -->
+ <input type="button" onclick="CalClick();"  value="计算得分" />
+ <input type="button" onclick="ResetClick();"  value="重 置 Reset" />
+</DIV>
+</FORM>
+<BR>
+
+<TABLE id=food cellSpacing=0 cellPadding=2 width="98%" align=center border=0>
+  <TBODY>
+  <TR>
+    <TD align=right width="96%"><SPAN class=smallthinlink>  <FONT 
+      color=#999999 size=2>本工具由 <a href="" target="_blank"><font color=#999999>上海乾康金融股份有限公司</font></a> 提供</FONT></SPAN>
+	  <div style="margin-top:4px;"><script src="" language="JavaScript"></script>
+ <script language="javascript" type="text/javascript" src=""></script>
+ <noscript><a href="" target="_blank" rel="nofollow"><img alt="&#x6211;&#x8981;&#x5566;&#x514D;&#x8D39;&#x7EDF;&#x8BA1;" src="" style="border:none" /></a></noscript></div>
+    </TD>
+    <TD vAlign=center align=left width="4%"></TD>
+  </TR></TBODY></TABLE><BR></DIV>
+</body>
+</html>

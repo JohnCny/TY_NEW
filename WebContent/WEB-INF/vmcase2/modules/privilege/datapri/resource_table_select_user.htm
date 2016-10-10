@@ -1,0 +1,209 @@
+#parse ("common/iframe_page_header.htm")
+
+<style>
+.orgRadioClass{
+
+}
+.deptRadioClass{
+
+}
+</style>
+
+<script type="text/javascript">
+
+var selectUserIdArr = new Array();
+var selectUserNameArr = new Array();
+var selectUserIds = "$!{selectUserIds}";
+var selectUserNames = "$!{selectUserNames}";
+if(selectUserIds.length > 0){
+	selectUserIdArr = selectUserIds.split(",");
+	selectUserNameArr = selectUserNames.split(",");
+}
+
+function  orgRadioClick(orgId){
+	$.ajax({
+		url : "${contextPath}/system/datapri/querydeptandusers.json",
+		type : "post",
+		data : {"orgId" : orgId},
+		success : function(sdata) {
+			if (sdata.success) {
+				$("#orgchangdeptlist").empty();
+				if(sdata.deptListStr.length > 0){
+					var arrays = sdata.deptListStr.split(":");
+					for(i = 0; i < arrays.length; i++){
+						var arrValue = arrays[i];
+						var arrValArrays = arrValue.split("_");
+						var deptHtml = "";
+						if(i == 0){
+							deptHtml = "<tr><td style='height: 22px; line-height: 22px'>" + arrValArrays[0] + "<input onclick=\"deptRadioClick('" + arrValArrays[1] + "')\"  type='radio' checked='checked' name='deptId' value='" + arrValArrays[1] + "_" + arrValArrays[2] + "'/>" + arrValArrays[2] + "</td></tr>";
+						} else {
+							deptHtml = "<tr><td style='height: 22px; line-height: 22px'>" + arrValArrays[0] + "<input onclick=\"deptRadioClick('" + arrValArrays[1] + "')\" type='radio' name='deptId' value='" + arrValArrays[1] + "_" + arrValArrays[2] + "'/>" + arrValArrays[2] + "</td></tr>";
+						}
+						$("#orgchangdeptlist").append(deptHtml);								
+					}
+				}
+				
+				$("#deptchanguserlist").empty();
+				if(sdata.userListStr.length > 0){
+					var arrays = sdata.userListStr.split(":");
+					for(i = 0; i < arrays.length; i++){
+						var arrValue = arrays[i];
+						var arrValArrays = arrValue.split("_");
+						var userHtml = "";
+						if($.inArray(arrValArrays[0], selectUserIdArr) >= 0){
+							userHtml = "<tr><td style='height: 22px; line-height: 22px'>&nbsp;&nbsp;&nbsp;<input onclick='checkUserClick(this)' checked='checked' type='checkbox' name='userId' value='" + arrValArrays[0] + "_" + arrValArrays[1] + "'/>" + arrValArrays[1] + "</td></tr>";
+						} else {
+							userHtml = "<tr><td style='height: 22px; line-height: 22px'>&nbsp;&nbsp;&nbsp;<input onclick='checkUserClick(this)' type='checkbox' name='userId' value='" + arrValArrays[0] + "_" + arrValArrays[1] + "'/>" + arrValArrays[1] + "</td></tr>";
+						}
+						$("#deptchanguserlist").append(userHtml);								
+					}
+				}
+			} else {
+				Dialog.message(sdata.message);
+			}
+		},
+		error : function(data, txtStatus, jqXhr) {
+			Dialog.message("加载错误！");
+		}
+	});
+}
+
+function deptRadioClick(deptSelectId){
+	$.ajax({
+		url : "${contextPath}/system/datapri/queryusers.json",
+		type : "post",
+		data : {"deptSelectId" : deptSelectId},
+		success : function(sdata) {
+			if (sdata.success) {
+				$("#deptchanguserlist").empty();
+				if(sdata.userListStr.length > 0){
+					var arrays = sdata.userListStr.split(":");
+					for(i = 0; i < arrays.length; i++){
+						var arrValue = arrays[i];
+						var arrValArrays = arrValue.split("_");
+						var userHtml = "";
+						if($.inArray(arrValArrays[0], selectUserIdArr) >= 0){
+							userHtml = "<tr><td style='height: 22px; line-height: 22px'>&nbsp;&nbsp;&nbsp;<input onclick='checkUserClick(this)' checked='checked' type='checkbox' name='userId' value='" + arrValArrays[0] + "_" + arrValArrays[1] + "'/>" + arrValArrays[1] + "</td></tr>";
+						} else {
+							userHtml = "<tr><td style='height: 22px; line-height: 22px'>&nbsp;&nbsp;&nbsp;<input onclick='checkUserClick(this)' type='checkbox' name='userId' value='" + arrValArrays[0] + "_" + arrValArrays[1] + "'/>" + arrValArrays[1] + "</td></tr>";
+						}
+						$("#deptchanguserlist").append(userHtml);								
+					}
+				}
+			} else {
+				Dialog.message(sdata.message);
+			}
+		},
+		error : function(data, txtStatus, jqXhr) {
+			Dialog.message("加载错误！");
+		}
+	});
+}
+
+function checkUserClick(obj){
+	var userCheckVal = $(obj).val();
+	var userCheckValArr = userCheckVal.split("_");
+	if($(obj).attr("checked") == "checked"){
+		if($.inArray(userCheckValArr[0],selectUserIdArr) < 0){
+			selectUserIdArr.push(userCheckValArr[0]);
+			selectUserNameArr.push(userCheckValArr[1]);				
+		}
+	} else {
+		selectUserIdArr.splice($.inArray(userCheckValArr[0],selectUserIdArr),1);
+		selectUserNameArr.splice($.inArray(userCheckValArr[1],selectUserNameArr),1);
+	}
+	if(selectUserIdArr.length > 0){
+		$("#selectUserIds").val(selectUserIdArr.toString());
+		$("#selectUserNames").val(selectUserNameArr.toString());				
+	} else {
+		$("#selectUserIds").val("");
+		$("#selectUserNames").val("");
+	}
+}
+
+</script>
+<body>
+	<div id="selectUserDialog">
+      <form id="selecUserForm">
+        <div class="forms">
+        <input id="selectUserIds" name="selectUserIds" type="hidden" value="$!{selectUserIds}">
+        <input id="selectUserNames" name="selectUserNames" type="hidden" value="$!{selectUserNames}">
+        <table  border="1" bordercolor="#cccccc" style="border: 1px solid #cccccc ;margin-bottom: 10px; ">
+        	<colgroup>
+				<col width="30%" />
+				<col width="30%" />
+				<col width="30%" />
+			</colgroup>
+			<tr style="height: 25px; line-height: 25px;">
+              <th nowrap="nowrap">机构</th>
+              <th nowrap="nowrap">部门</th>
+              <th nowrap="nowrap">人员</th>
+            </tr>
+        	<tr>
+        	<td>
+        		<table id="orgusertable" >
+				<colgroup>
+					<col width="90%" />
+				</colgroup>
+				#foreach ($item in $orgList)
+				 <tr>
+				 	  #set($bankStr="")
+				 	  #foreach($bc in [1..${item.seqNo}])
+				 	  	  #set($bankStr= $bankStr + "&nbsp;&nbsp;&nbsp;")
+				 	  #end
+				 	  #if(${velocityCount} == 1)
+				 	  	<td style="height: 22px; line-height: 22px">${bankStr}<input onclick="orgRadioClick('${item.id}')" checked="checked" type="radio" name="orgId" value="${item.id}_$item.name"/> $item.name</td>
+				 	  #else
+				 	  	<td style="height: 22px; line-height: 22px">${bankStr}<input onclick="orgRadioClick('${item.id}')" type="radio" name="orgId" value="${item.id}_$item.name"/> $item.name</td>
+				 	  #end
+			     </tr>
+			    #end
+			  </table>
+        	</td>
+        	<td>
+        		<table id="deptusertable" style="" >
+				<colgroup>
+					<col width="90%" />
+				</colgroup>
+				<tbody id="orgchangdeptlist">
+				#foreach ($item in $orgDeptTreeNodes)
+				 <tr>
+				 	  #set($bankStr="")
+				 	  #foreach($bc in [1..${item.level}])
+				 	  	  #set($bankStr= $bankStr + "&nbsp;&nbsp;&nbsp;")
+				 	  #end
+				 	  #if(${velocityCount} == 1)
+				 	  	<td style="height: 22px; line-height: 22px">${bankStr}<input onclick="deptRadioClick('${item.id}')" checked="checked" type="radio" name="deptId" value="${item.id}_$item.name"/> $item.name</td>
+				 	  #else
+				 	  	<td style="height: 22px; line-height: 22px">${bankStr}<input onclick="deptRadioClick('${item.id}')" type="radio" name="deptId" value="${item.id}_$item.name"/> $item.name</td>
+				 	  #end
+			     </tr>
+			    #end
+			    </tbody>
+			  </table>
+        	</td>
+        	<td>
+        		<table id="usertable" >
+				<colgroup>
+					<col width="90%" />
+				</colgroup>
+				<tbody id="deptchanguserlist">
+				#foreach ($item in $users)
+				 <tr>
+				  	#if($selectUserIds.contains(${item.id}))
+				  		<td style="height: 22px; line-height: 22px">&nbsp;&nbsp;&nbsp;<input onclick="checkUserClick(this)" checked="checked" type="checkbox" name="userId" value="${item.id}_$item.displayName"/> $item.displayName</td>
+				  	#else
+						<td style="height: 22px; line-height: 22px">&nbsp;&nbsp;&nbsp;<input onclick="checkUserClick(this)" type="checkbox" name="userId" value="${item.id}_$item.displayName"/> $item.displayName</td>				  	
+				  	#end
+			     </tr>
+			    #end
+			    </tbody>
+			  </table>
+        	</td>
+        	</tr>
+        </table>
+        </div>
+      </form>
+  </div>
+</body>
+#parse ("common/iframe_page_footer.htm")

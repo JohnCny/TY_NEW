@@ -1,0 +1,105 @@
+#parse ("common/iframe_page_header.htm")
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+       <div class="place">
+       <div class="title">客户经理绩效参数配置</div>
+      </div>
+       #parse ("common/place_tab_jlcj.htm")
+      <form id="id_module_form" action="${contextPath}/manager/managerPromotionRule/savePerformance.page" method="post">
+        <div class="form-bd" id="formsId" style="padding-top: 0px;">
+        
+          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%">
+            <colgroup>
+               <col width="10%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+			  <col width="10%" />
+			  <col width="10%" />
+			  <col width="10%" />
+            </colgroup>
+            <tr>
+            <td class="titlec" >客户经理级别</td>
+             <td class="titlec" >基本工资（元）</td>
+              <td class="titlec" >主调/每笔（元）</td>
+               <td class="titlec" >管户/每笔（元）</td>
+                <td class="titlec" >审批/每笔（元）</td>
+                <td class="titlec" >岗位绩效（元）</td>
+                <td class="titlec" >辅调/每笔（元）</td>
+                <td class="titlec" >每月目标笔数</td>
+            </tr>
+            </table>
+             <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%">
+            <colgroup>
+               <col width="10%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+			  <col width="10%" />
+			  <col width="10%" />
+			  <col width="10%" />
+            </colgroup>
+            #if($parmeters.size()!=0)
+	             #foreach($parmeter in $!parmeters)
+		            <tr>
+		              <td class="titlefc3"><input type="hidden" name="levelCode" value="$!parmeter.levelCode"><input type="hidden" name="managerLevel" value="$!parmeter.managerLevel">$parmeter.managerLevel</td>
+		              <td><input  type="text" class="rinpstynum" id="basicPerformance" name="basicPerformance" value="$!parmeter.basicPerformance" /></td>
+		              <td><input  type="text" class="rinpstynum" id="A" name="A" value="$!parmeter.A" /></td>
+		              <td><input  type="text" class="rinpstynum" id="B" name="B" value="$!parmeter.B" /></td>
+		              <td><input  type="text" class="rinpstynum" id="D" name="D" value="$!parmeter.D" /></td>
+		              <td><input  type="text" class="rinpstynum" id="E" name="E" value="$!parmeter.E" /></td>
+		              <td><input  type="text" class="rinpstynum" id="F" name="F" value="$!parmeter.F" /></td>
+		              <td><input  type="text" class="rinpstynum" id="objectCount" name="objectCount" value="$!parmeter.objectCount" /></td>
+		            </tr>
+	            #end
+            #else
+            	#foreach($dict in $!dictItems)
+		            <tr>
+		              <td class="titlefc3"><input type="hidden" name="levelCode" value="$!dict.name"><input type="hidden" name="managerLevel" value="$!dict.title">$!dict.title</td>
+		              <td><input  type="text" class="rinpstynum" id="basicPerformance" name="basicPerformance" value="" /></td>
+		              <td><input  type="text" class="rinpstynum" id="A" name="A" value="" /></td>
+		              <td><input  type="text" class="rinpstynum" id="B" name="B" value="" /></td>
+		              <td><input  type="text" class="rinpstynum" id="D" name="D" value="" /></td>
+		              <td><input  type="text" class="rinpstynum" id="E" name="E" value="" /></td>
+		              <td><input  type="text" class="rinpstynum" id="F" name="F" value="" /></td>
+		              <td><input  type="text" class="rinpstynum" id="objectCount" name="objectCount" value="" /></td>
+		            </tr>
+		         #end
+		    #end
+          </table>
+        </div>
+      </form>
+
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n('button.cancel')" />
+      </div>
+    </div>
+  </div>
+   <script src='${contextPath}/js/maintenanceAccountManager/maintenanceAccountManager.js'></script> 
+  <script type="text/javascript">
+  
+	var layout=new FormsLayout("formsId");			
+	window.top.currentWindow.setLayout(layout);
+			
+	#set ($formName = "'#id_module_form'")
+	$(document).ready(function() {	
+		$("li").removeClass("activeTab");
+		$("li:eq(0)").addClass("activeTab");
+	     $("#id_save_button").click(function() {
+	    	var leng = 0;
+	    	 leng = $(".error").length;
+	    	if(leng > 0){
+	    		return;
+	    	}else{
+			  $("#id_module_form").submit();  
+	    	}
+	       });
+
+	});
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

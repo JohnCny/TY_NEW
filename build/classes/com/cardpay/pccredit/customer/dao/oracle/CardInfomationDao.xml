@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.customer.dao.CardInfomationDao">
+	
+	<resultMap id="cardInfomationMap"
+		type="com.cardpay.pccredit.customer.web.CardInfomationFrom">
+		<result property="id" column="ID" />
+		<result property="customerId" column="CUSTOMER_ID" />
+		<result property="productId" column="PRODUCT_ID" />
+		<result property="cardNumber" column="CARD_NUMBER" />
+		<result property="cardActivateDate" column="CARD_ACTIVATE_DATE" />
+		<result property="cardStatusCode" column="CARD_STATUS_CODE" />
+		<result property="cardStatusDate" column="CARD_STATUS_DATE" />
+		<result property="cardLogoutCode" column="CARD_LOGOUT_CODE" />
+		<result property="cashSuspendDate" column="CASH_SUSPEND_DATE" />
+		<result property="cardAffiliated" column="CARD_AFFILIATED" />
+		<result property="idNumber" column="ID_NUMBER" />
+		<result property="expireDate" column="EXPIRE_DATE" />
+		<result property="againExpireDate" column="AGAIN_EXPIRE_DATE" />
+		<result property="cardCost" column="CARD_COST" />
+		<result property="nextCostMonth" column="NEXT_COST_MONTH" />
+		<result property="cardMakeDate" column="CARD_MAKE_DATE" />
+		<result property="cardMakeCode" column="CARD_MAKE_CODE" />
+		<result property="cardAffiliatedScale" column="CARD_AFFILIATED_SCALE" />
+		<result property="cardLossDate" column="CARD_LOSS_DATE" />
+		<result property="cashSuspendMode" column="CASH_SUSPEND_MODE" />
+		
+		<result property="customerName" column="CHINESE_NAME" />
+		<result property="productName" column="PRODUCT_NAME" />
+	</resultMap>
+
+	<select id="findCardsByCustomerId" resultMap="cardInfomationMap">
+		SELECT t.*, p.PRODUCT_NAME, c.CHINESE_NAME
+		FROM CARD_INFORMATION t 
+		left join PRODUCT_ATTRIBUTE p on t.PRODUCT_ID = p.ID
+		left join BASIC_CUSTOMER_INFORMATION c on c.ID = t.CUSTOMER_ID
+		WHERE t.CUSTOMER_ID = #{customerId}
+	</select>
+	
+	
+	<select id="findCardsByProductId" resultMap="cardInfomationMap">
+		SELECT t.*
+		FROM CARD_INFORMATION t 
+		WHERE t.PRODUCT_ID = #{productId}
+	</select>
+	
+	
+	<select id="findCardInfoId" resultMap="cardInfomationMap">
+		SELECT t.*, p.PRODUCT_NAME, c.CHINES_NAME
+		FROM CARD_INFORMATION t 
+		left join PRODUCT_ATTRIBUTE p on t.PRODUCT_ID = p.ID
+		left join BASIC_CUSTOMER_INFORMATION c on c.ID = t.CUSTOMER_ID
+		WHERE t.id = #{id}
+	</select>
+	
+	<select id="findCardInfoByCustomerIdAndCardNumber" resultMap="cardInfomationMap">
+		SELECT t.*, p.PRODUCT_NAME
+		FROM CARD_INFORMATION t 
+		left join PRODUCT_ATTRIBUTE p on t.PRODUCT_ID = p.ID
+		left join BASIC_CUSTOMER_INFORMATION c on c.ID = t.CUSTOMER_ID
+		WHERE t.CUSTOMER_ID = #{customerId}
+		and t.CARD_NUMBER=#{cardNumber}
+	</select>
+	
+</mapper>

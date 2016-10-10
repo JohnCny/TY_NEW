@@ -1,0 +1,231 @@
+#set ($pageTitle="权限管理-权限配置") 
+
+<script src='${contextPath}/common/js/common/jquery.min.js'></script>
+<script src='${contextPath}/common/js/common/JTimer_2.0.js'></script>
+<script src='${contextPath}/common/js/common/bm.jquery.validate.js'></script>
+<script src="${contextPath}/common/js/common/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="${contextPath}/common/js/common/common.js"></script>
+<script src="${contextPath}/common/js/common/dialog.js"></script>
+
+<script src="${uicasePath}/js/jquery.cookie.js" type="text/javascript"></script>
+<script src="${uicasePath}/js/jquery.dynatree.js" type="text/javascript"></script>
+
+#if ($request.getHeader("user-agent").indexOf("MSIE 6.0")!=-1 || $request.getHeader("user-agent").indexOf("MSIE 7.0")!=-1 || $request.getHeader("user-agent").indexOf("MSIE 8.0")!=-1)
+<script type="text/javascript" src="${contextPath}/common/js/common/json2.js"></script>
+#end
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/skin-vista/ui.dynatree.css">
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/competence.css" />
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/css.css" />
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/box.css" />
+<script type="text/javascript">
+var selectTreeNodes = "";
+$(function() {
+	$("#resourceTree a:eq(0)").live('focus.mise',function miseTree() {
+		if ($.browser.msie) {		
+			if ($.browser.version == "7.0" || $.browser.version == "6.0") {
+				if($("#resourceTree a").length>0){
+					$("#resourceTree a").each(function(){
+						var a=$(this).html()+"";
+						if(a.length>18){
+							$(this).attr("title",a);
+							$(this).html(a.substring(0,18)+"..");
+						}
+					});
+				}			
+			}
+		}
+	});
+	$("#roleTree a:eq(0)").live('focus.mise',function miseTree() {
+		if ($.browser.msie) {		
+			if ($.browser.version == "7.0" || $.browser.version == "6.0") {
+				if($("#roleTree a").length>0){
+					$("#roleTree a").each(function(){
+						var a=$(this).html()+"";
+						if(a.length>20){
+							$(this).attr("title",a);
+							$(this).html(a.substring(0,18)+"..");
+						}
+					});
+				}			
+			}
+		}
+	});
+	$("#resourceTree").empty();
+	$("#resourceTree").dynatree(
+					{
+						selectMode : 3,
+						checkbox : true,
+						autoFocus : true,
+						minExpandLevel : 4,
+						strings : {
+							loading : "Loading…",
+							loadError : "Load error!"
+						},
+						initAjax : {
+							url : "${contextPath}/system/resource/loadResourceTree.page",
+							type : "post",
+							dataType : "json"
+						},
+						onClick: function(node, event) { 
+				            if(node.getEventTargetType(event) == "title"){
+				            	if(node.isSelected())
+				            	{
+				            		node.select(false);
+				            	}else
+				            	{
+				            		node.select(true);
+				            	}
+				            } 
+				        }
+					});
+	$("#roleTree").empty();
+	$("#roleTree").dynatree(
+					{
+						selectMode : 1,
+						checkbox : true,
+						classNames: {checkbox: "dynatree-radio"},
+						autoFocus : true,
+						minExpandLevel : 1,
+						strings : {
+							loading : "Loading…",
+							loadError : "Load error!"
+						},
+						initAjax : {
+							url : "${contextPath}/system/resource/loadRoles.page",
+							type : "post",
+							dataType : "json"
+						},
+						onSelect: function(flag, node) { 
+				            if(flag){
+				            	if (node.tree.isUserEvent()) {
+				            		$("#resourceTree").dynatree("getRoot").visit(function(node){
+							        	node.select(false); 
+							        });
+				            		var selectedNodes = node.tree.getSelectedNodes(); 
+						            var selectedKeys = $.map(selectedNodes, function(node){ 
+						                return node.data.key; 
+						            });
+						            selectTreeNodes = selectedKeys.join(",");
+						            $.ajax({
+										url : "${contextPath}/system/resource/loadResourceByRoleId.json?roleId="+selectTreeNodes,
+										type : "post",
+										dataType : "json",
+										success : function(data) {
+										var array = jQuery.parseJSON(JSON.stringify(data));
+										$("#resourceTree").dynatree("getRoot").visit(function(node){
+												for(var j=0;j<array.length;j++){	
+													var value=array[j];
+													if(value.operationList.length!=0){
+														for(var i=0;i<value.operationList.length;i++){
+															if(node.data.key==(value.id+value.operationList[i])){
+																node.select(true); 
+															}
+														}
+													}else{
+														if(node.data.key==value.id){
+															node.select(true); 
+														}
+													}
+										        }
+								            });
+										},
+										error : function(data) {
+											Dialog.message("操作失败");
+											return false;
+										}
+									});
+				            	}
+						}else{
+							$("#resourceTree").dynatree("getRoot").visit(function(node){node.select(false);});
+						}
+				        },
+				        onClick: function(node, event) { 
+				            if(node.getEventTargetType(event) == "title"){
+				            	if(node.isSelected())
+				            	{
+				            		node.select(false);
+				            	}else
+				            	{
+				            		node.select(true);
+				            	}
+				            } 
+				        }
+					});
+	/*去掉树自带的虚线框样式 */
+	$(".dynatree-container").css("border","0 dotted #808080");
+});
+</script>
+<script type="text/javascript">
+function save()
+{
+	/* var parentKey=""; */
+	var selectedRoleNodes = $("#roleTree").dynatree("getTree").getRoot().tree.getSelectedNodes(); 
+    var selectedRoleKeys = $.map(selectedRoleNodes, function(node){ 
+        return node.data.key; 
+    });
+    selectRoleTreeNodes = selectedRoleKeys.join(",");
+    var selectedResourceNodes = $("#resourceTree").dynatree("getTree").getRoot().tree.getSelectedNodes(); 
+    var selectedResourceKeys = $.map(selectedResourceNodes, function(node){
+    	/* parentKey=node.getParent().data.key; */
+        return node.data.key; 
+    });
+    
+    selectResourceTreeNodes = selectedResourceKeys.join(",");
+    
+    if(selectRoleTreeNodes=="")
+    {
+    	Dialog.message("请选择角色!");
+		return false;
+    }
+    $.ajax({
+		url : "${contextPath}/system/resource/saveRolesAndResources.json",
+		type : "post",
+		dataType : "json",
+		data:{
+			roleId:selectRoleTreeNodes,
+			resourceId:selectResourceTreeNodes
+			/* parentKey:parentKey */
+		},
+		success : function(data) {
+			if (data.success) {
+				Dialog.message(data.message);
+			} else {
+				Dialog.message(data.message);
+				return false;
+			}
+		},
+		error : function(data) {
+			Dialog.message("保存失败!");
+			return false;
+		}
+	});
+	
+}
+
+
+</script>
+<body>
+<div class="competence">
+    <div class="place">
+
+    <div class="title">权限管理</div>
+
+	<div class="control">
+		<a href="javascript:void(0);" onClick="save()">保存</a>
+	</div>
+	</div>
+    
+    <div class="competence_content">
+      <div class="competence_PowerTree">
+            <div class="competence_PowerTree_title">角色菜单</div>
+            <div id="roleTree" style="height: 461px;">
+            </div>
+      </div>
+      <div class="competence_PowerTree">
+            <div class="competence_PowerTree_title" >资源菜单</div>
+            <div id="resourceTree" style="height: 400px;overflow:auto"></div>
+      </div>
+    </div>
+</div>
+</body>
+</html>

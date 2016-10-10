@@ -1,0 +1,53 @@
+#parse ("common/iframe_page_header.htm")
+
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">信息员评价</div>
+      </div>
+      <form id="id_module_form" action="${modulePath}/evaluate.json">
+      <input type="hidden" name="messengerId" value="$!officer.id"/>
+        <div class="forms" id="formsId">
+          <table class="rule" border="1" bordercolor="#CCCCCC">
+            <caption>信息员评价</caption>
+            <colgroup>
+              <col width="10%" />
+              <col width="40%" />
+              <col width="10%" />
+              <col width="40%" />
+            </colgroup>
+            <tr>
+              <td><label for="name">姓名:</label></td>
+              <td><input type="text"value="$!officer.messengerName" readonly="readonly"/></td>
+              
+              <td><label for="researcherAttitude">工作态度:</label></td>
+              <td><input type="text" id="researcherAttitude" name="researcherAttitude" value="$!officer.researcherAttitude" /></td>
+            </tr>
+            <tr>
+              <td><label for="researcherTimely">工作及时性:</label></td>
+              <td><input type="text" id="researcherTimely" name="researcherTimely" value="$!officer.researcherTimely" /></td>
+                
+                <td><label for="researcherAccuracy">工作准确性:</label></td>
+                <td><input type="text" id="researcherAccuracy" name="researcherAccuracy" value="$!officer.researcherAccuracy" /></td>
+            </tr>
+          </table>
+        </div>
+      </form>
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n("button.save")" class="current" />
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n("button.cancel")" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");	
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	#validator($formName)
+	$(document).ready(function() {	
+		#parse("common/part_create.js")
+	});
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

@@ -1,0 +1,110 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户经理指标数据</div>
+      </div> 
+      <div class="inquiry">
+        <div class="search_tag">筛选过滤条件</div>
+<!--         <div class="search"> -->
+<!--           <form id="submitForm"> -->
+<!--             <ul> -->
+<!--               <li> -->
+<!--                 <span>客户经理姓名：<input type="text" name="customerManagerName" value="$!result.filter.customerManagerName" maxlength="30" /></span> -->
+<!--               </li> -->
+<!--               <li class="search_button"> -->
+<!--                 <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry" -->
+<!--                   title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" /> -->
+<!--               </li> -->
+<!--             </ul> -->
+<!--           </form> -->
+<!--         </div> -->
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="3%" />
+              <col width="5%" />
+              <col width="5%" />
+              <col width="10%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="8%" />
+              <col />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">年份</th>
+              <th nowrap="nowrap">月份</th>
+              <th nowrap="nowrap">级别</th>
+              <th nowrap="nowrap">管户数</th>
+			  <th nowrap="nowrap">激活率</th>
+			  <th nowrap="nowrap">活跃率</th>
+              <th nowrap="nowrap">月度日均透支余额(万)</th>
+              <th nowrap="nowrap">团队月度日均透支余额(万)</th>
+              <th nowrap="nowrap">下属个数</th>
+              <th nowrap="nowrap">是否达标</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="3%" />
+              <col width="5%" />
+              <col width="5%" />
+              <col width="10%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="8%" />
+              <col />
+            </colgroup>
+            #foreach ($targetData in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!targetData.id"
+                  #if ($!request.getParameter("recordId") == $targetData.id) checked="checked" #end /></td>
+              <td nowrap="nowrap">$!{targetData.dataYear}</td>
+              <td nowrap="nowrap">$!{targetData.dataMonth}</td>
+              <td nowrap="nowrap">#dictVal("CUSTOMERMANAGERLEVEL", $!targetData.customerManagerLevel)</td>
+              <td nowrap="nowrap">$!{targetData.tubeNumber}</td>
+              <td nowrap="nowrap">$!{targetData.activationRate}</td>
+              <td nowrap="nowrap">$!{targetData.activeRate}</td>
+              <td nowrap="nowrap">$!{targetData.monthPerdayCreditline}</td>
+              <td nowrap="nowrap">$!{targetData.monthPerdayTeamCreditline}</td>
+              <td nowrap="nowrap">$!{targetData.subManangerCount}</td>
+              <td nowrap="nowrap">#dictVal("ifPassStandard", $!targetData.ifPassStandard)</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+         <a id="id_return_button" class="btn_gr" href="${modulePath}/browse.page" >返回</a>
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.browseUrl = "${modulePath}/display_assessment_browse.page?$!result.filter.customerManagerId";
+		
+		prepareOperations(opsObj);
+		
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="GBK"?>
+<resultMap>
+    <result column="ID" 				jdbcType="VARCHAR" index="1" />
+	<result column="PARENTID" 			jdbcType="VARCHAR" index="2" />
+	<result column="CODE" 				jdbcType="VARCHAR" index="3" />
+	<result column="NAME" 				jdbcType="VARCHAR" index="4" />
+	<result column="BRIEFNAME" 			jdbcType="VARCHAR" index="5" />
+	<result column="NODENAME" 			jdbcType="VARCHAR" index="6" />
+	<result column="DESCRIPTION" 		jdbcType="VARCHAR" index="7" />
+	<result column="TYPE" 				jdbcType="VARCHAR" index="8" />
+	<result column="VALID" 				jdbcType="VARCHAR" index="9" />
+	<result column="BIZPARENTID" 		jdbcType="VARCHAR" index="10" />
+	<result column="MODIFIEDUSERID" 	jdbcType="VARCHAR" index="11" />
+	<result column="CREATEDUSERID" 		jdbcType="VARCHAR" index="12" />
+	<result column="CREATEDTIME" 		jdbcType="VARCHAR" index="13" />
+	<result column="MODIFIEDTIME" 		jdbcType="VARCHAR" index="14" />
+	<result column="CANLOANCERT" 		jdbcType="VARCHAR" index="15" />
+	<result column="BRHFINGER" 			jdbcType="VARCHAR" index="16" />
+	<result column="IFCORPCREDIT" 		jdbcType="VARCHAR" index="17" />
+	<result column="ADDRESS" 			jdbcType="VARCHAR" index="18" />
+	<result column="TELEPHONE" 			jdbcType="VARCHAR" index="19" />
+	<result column="FAX" 				jdbcType="VARCHAR" index="20" />
+	<result column="ZIPCODE" 			jdbcType="VARCHAR" index="21" />
+	<result column="CONTACTPERSON" 		jdbcType="VARCHAR" index="22" />
+	<result column="DISTRICTCITY" 		jdbcType="VARCHAR" index="23" />
+	<result column="DISTRICTCOUNTY" 	jdbcType="VARCHAR" index="24" />
+	<result column="CITYCODE" 			jdbcType="VARCHAR" index="25" />
+	<result column="SORTTYPE" 			jdbcType="VARCHAR" index="26" />
+	<result column="GROUPLIMIT" 		jdbcType="VARCHAR" index="27" />
+	<result column="ISCOMBINE" 			jdbcType="VARCHAR" index="28" />
+	<result column="PAYMODELIMIT" 		jdbcType="VARCHAR" index="29" />
+	<result column="LOANCENTERCODE" 	jdbcType="VARCHAR" index="30" />
+	<result column="PRICIPAL" 			jdbcType="VARCHAR" index="31" />
+	<result column="GROUPSINGLELIMIT" 	jdbcType="VARCHAR" index="32" />
+	<result column="LCUNOINLIMIT" 		jdbcType="VARCHAR" index="33" />
+	<result column="FNONGLIMINT"       	jdbcType="VARCHAR" index="34" />
+	<result column="IFNSH" 			    jdbcType="VARCHAR" index="35" />
+	<result column="CALLILOGFLAG" 		jdbcType="VARCHAR" index="36" />
+	<result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/>
+</resultMap>

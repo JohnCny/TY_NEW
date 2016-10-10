@@ -1,0 +1,240 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">不良资产管理</div>
+      </div>
+      <div class="inquiry">
+        <div class="search_tag">#i18n("label.browse.filter")</div>
+        <div class="search">
+          <form id="submitForm">
+            <ul>
+              <li>
+                <span>客户名称：<input type="text" name="customerName" value="$!result.filter.customerName" /></span>
+              </li>
+              <li>
+                <span>创建方式：
+                	<select id="createMethod" name="createMethod">
+	                   <option value="">请选择...</option>
+	                   #dict("CreateMethod", $!result.filter.createMethod)
+                  	</select>
+                  </span>
+              </li>
+              <li>
+                <span>核销类型：
+                	<select id="verificationType" name="verificationType">
+	                   <option value="">请选择...</option>
+	                   #dict("VERIFICATIONTYPE", $!result.filter.verificationType)
+                  	</select>
+                  </span>
+              </li>
+              <li>
+                <span>审核状态：
+                	<select id="reviewResults" name="reviewResults">
+	                   <option value="">请选择...</option>
+	                   #dict("ReviewResults", $!result.filter.reviewResults)
+                  	</select>
+                  </span>
+              </li>
+              
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">客户名称</th>
+              <th nowrap="nowrap">创建方式</th>
+              <th nowrap="nowrap">核销类型</th>
+              <th nowrap="nowrap">审核状态</th>
+              <th nowrap="nowrap">操作</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col />
+            </colgroup>
+            #foreach ($nplsInfo in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!nplsInfo.id"
+                  #if ($!request.getParameter("recordId") == $!nplsInfo.id) checked="checked" #end /></td>
+              <td nowrap="nowrap">$!nplsInfo.customerName</td>
+              <td nowrap="nowrap">#dictVal("CreateMethod", $!nplsInfo.createMethod)</td>
+              <td nowrap="nowrap">#dictVal("VERIFICATIONTYPE", $!nplsInfo.verificationType)</td>
+              <td nowrap="nowrap">#dictVal("ReviewResults", $!nplsInfo.reviewResults)</td>
+              <td nowrap="nowrap">
+               #if($!nplsInfo.reviewResults == "new")
+			  	<a onclick="confirm('$!nplsInfo.id')" class="btn_g" href="javascript:void(0);" >确认</a>
+			  	<a onclick="refuse('$!nplsInfo.id')" class="btn_g" href="javascript:void(0);" >拒绝</a>
+			  	#else
+			  		&nbsp;
+			  	#end
+			  </td>
+			  <input type="hidden" id="$!{nplsInfo.id}_reviewResults" value="$!nplsInfo.reviewResults">
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+         #btnpriv("create")<a id="id_create_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.create.hint')">#i18n("button.create")</a>#end
+         #btnpriv("change")<a id="id_change_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.change.hint')">#i18n("button.change")</a>#end
+         #btnpriv("delete")<a id="id_delete_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.delete.hint')">#i18n("button.delete")</a>#end
+         #btnpriv("display")<a id="id_display_button" class="btn_gr" href="javascript:void(0);" title="#i18n('button.display.hint')">#i18n("button.display")</a>#end
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+  
+  <div id="inputAccountDialog" title="填写核销金额" style="display: none; resize: none; z-index: 2000">
+      <form id="inputAccountForm">
+        <div class="forms">
+           	核销金额:<input id="verificationAccountInput" type="text" value="">
+        </div>
+      </form>
+  </div>
+  
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.browseUrl = "${modulePath}/browse.page";
+		opsObj.createUrl = "${modulePath}/nplsaccountbrowse.page";
+		opsObj.displayUrl = "${modulePath}/display.page";
+
+		prepareOperations(opsObj);
+		
+		$("#id_change_button").click(function() {
+	          if ($(".checkbox :checked").length == 1) {
+	              var rowid = $($(".checkbox :checked")[0]).attr("value");
+	              var reviewResults = $("#" + rowid + "_reviewResults").val();
+	              if(reviewResults != "new"){
+	            	  Dialog.message("只能修改新建状态的数据");
+	              } else {
+	            	  var url =  "${modulePath}/change.page" + "?id=" + rowid;
+		              if (opsObj.formObj) {
+		                  // 回调URL
+		                  var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
+		                  if (callBackUrlObj) {
+		                      url += "&" + $.param({
+		                          'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                      });
+		                  }
+		              }
+		              window.location.href = url;
+	              }
+	          } else {
+	              Dialog.message("请选择一行");
+	          }
+	      });
+
+	      $("#id_delete_button").click(function() {
+	          if ($(".checkbox :checked").length == 1) {
+	              var rowid = $($(".checkbox :checked")[0]).attr("value");
+	              var reviewResults = $("#" + rowid + "_reviewResults").val();
+	              if(reviewResults != "new"){
+	            	  Dialog.message("只能删除新建状态的数据");
+	              } else {
+	            	  Dialog.confirm("确定删除所选行吗？", "提示",
+	        	              function() {
+	        	                  $.post("${modulePath}/delete.json", {
+	        	                      id: rowid
+	        	                  },
+	        	                  function(data, textStatus, jqXhr) {
+	        	                      if (data.success) {
+	        	                          window.location.reload(true);
+	        	                      } else {
+	        	                          //Dialog.message(data.message);
+	        	                      }
+	        	                  });
+	        	              });
+	              }
+	          } else {
+	              Dialog.message("请选择一行");
+	          }
+	      });
+	});
+	
+	function confirm(rowid){
+		$("#verificationAccountInput").val("");
+		Dialog.form("#inputAccountForm", "核销金额", function(){
+			var verificationAccount = window.top.$("#verificationAccountInput").val();
+			var tel = /^[0-9]+\.?[0-9]{0,2}$/;
+			if(verificationAccount == "" || verificationAccount.length == 0 || !tel.test(verificationAccount)){
+				Dialog.message("请填正确写核销金额，最多保留两位小数。");
+				return;
+			}
+			$.post("${modulePath}/confirm.json", {
+                id: rowid,
+                verificationAccount:verificationAccount
+            },
+            function(data, textStatus, jqXhr) {
+                if (data.success) {
+                    window.location.reload(true);
+                } else {
+                    //Dialog.message(data.message);
+                }
+            });
+			return true;
+		}, null, 400, 200);
+		
+// 		Dialog.confirm("确定不良资产已核销所选行吗？", "提示",
+//                 function() {
+//                     $.post("${modulePath}/confirm.json", {
+//                         id: rowid
+//                     },
+//                     function(data, textStatus, jqXhr) {
+//                         if (data.success) {
+//                             window.location.reload(true);
+//                         } else {
+//                             //Dialog.message(data.message);
+//                         }
+//                     });
+//                 });
+	}
+	
+	function refuse(rowid){
+		Dialog.confirm("确定拒绝不良资产已核销所选行吗？", "提示",
+                function() {
+                    $.post("${modulePath}/refuse.json", {
+                        id: rowid
+                    },
+                    function(data, textStatus, jqXhr) {
+                        if (data.success) {
+                            window.location.reload(true);
+                        } else {
+                            //Dialog.message(data.message);
+                        }
+                    });
+                });
+	}
+</script>
+#parse ("common/iframe_page_footer.htm")

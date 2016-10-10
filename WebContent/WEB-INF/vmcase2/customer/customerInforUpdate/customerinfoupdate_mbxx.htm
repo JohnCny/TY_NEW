@@ -1,0 +1,147 @@
+#parse ("common/iframe_page_header.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+       <div class="place">
+       <div class="title">客户维护信息>陌拜信息</div>
+      </div>
+     <div class="tabplace">
+           <ul class="com-tab" >
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/changewh.page?id=${customerId}">基本信息</a></li>
+            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_zyxx.page?id=${customerId}">职业信息</a></li>
+            <li class="tab activeTab" ><a href="${contextPath}/customer/basiccustomerinforUpdate/create_mbxx.page?id=${customerId}">陌拜信息</a></li>
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_zcfz.page?id=${customerId}">资产负债</a></li>
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_syb.page?id=${customerId}">损益</a></li>
+            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_xjl.page?id=${customerId}">现金流量</a></li>
+            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_jcjy.page?id=${customerId}">交叉检验</a></li>
+			<li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_swpg.page?id=${customerId}">四维评估</a></li>
+			<li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_sxpg.page?id=${customerId}">授信评估</a></li>
+            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_wjdc.page?id=${customerId}">问卷调查</a></li>
+            <li class="tab" ><a href="${contextPath}/customer/basiccustomerinforUpdate/create_khtz.page?id=${customerId}">台账信息</a></li>
+            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_yxzl.page?id=${customerId}">影像资料</a></li>  
+         </ul>
+         </div>
+      <form id="id_module_form" action="${contextPath}/customer/basiccustomerinforUpdate/updateWoeship.json" >
+        <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
+          <input type="hidden" name="customerId" value="${customerId}">
+          <input type="hidden" id="province" name="province" value="$!province" />
+          <input type="hidden" id="city" name="city" value="$!city" />
+          <input type="hidden" id="country" name="country" value="$!country" />
+          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%">
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="30%" />
+
+            </colgroup>
+            <tr><td class="titlec" colspan="4" style="text-align: center;">陌拜信息</td></tr>
+            <tr>
+              <td class="titlefc3">#mi18n("contactPhoneNumber"):</td>
+              <td><input class="rinpsty" type="text" id="contactPhoneNumber" name="contactPhoneNumber" value="$!customerinforUpdateWorship.contactPhoneNumber" /></td>
+              <td class="titlefc3">#mi18n("marketingTime"):</td>
+             <td><input class="rinpsty" type="text" name="marketingTime" id="marketingTime"  value="$!date.format("yyyy-MM-dd HH:mm:ss", $!customerinforUpdateWorship.marketingTime)" onmouseover="_calendar({format:'yyyy-MM-dd HH:mm:ss'})"/></td>
+
+            </tr>
+               <tr>
+              <td class="titlefc3">#mi18n("area"):</td>
+              <td >
+              <div >
+            <select style="width:100px; " id="Select1" name="Select1" runat="server" onChange="selectCity();">
+                <option value="" selected="true" >省/直辖市</option>
+            </select>
+            <select style="width:100px; " id="Select2" name="Select2" runat="server" onChange="selectcounty()">
+                <option value="" selected="true">请选择</option>
+            </select>
+            <select style="width:110px; " id="Select3" name="Select3" runat="server">
+                <option value="" selected="true">请选择</option>
+            </select>
+        </div>
+              
+              </td>
+              <td class="titlefc3">#mi18n("address"):</td>
+              <td><input class="rinpsty" type="text" id="address" name="address" value="$!customerinforUpdateWorship.address" /></td>
+            </tr>
+            <tr>
+              <td class="titlefc3">#mi18n("engagedIndustry"):</td>
+              <td><select id="engagedIndustry" name="engagedIndustry" value="$!customerinforUpdateWorship.engagedIndustry">
+                  #dict('HYLB_',$!customerinforUpdateWorship.engagedIndustry)
+                </select>
+                </td>
+                <td class="titlefc3">#mi18n("demandCredit"):</td>
+                <td><input type="radio" name="demandCredit" value="1" style="width: 25px;height: 14px;"
+						#if($!customerinforUpdateWorship.demandCredit !=0 )checked="checked" #end	>&nbsp;是 
+								&nbsp;&nbsp;&nbsp;
+					<input type="radio" name="demandCredit" style="width: 25px;height: 14px;"
+						#if($!customerinforUpdateWorship.demandCredit == 0)checked="checked" #end value="0">&nbsp;否 </td>
+			</td>
+            </tr>
+            <tr>
+              <td class="titlefc3">#mi18n("amountNumberent")</td>
+              <td><input class="rinpsty" type="text" id="amountNumberent" name="amountNumberent" value="$!customerinforUpdateWorship.amountNumberent" /></td>
+               <td class="titlefc3">#mi18n("numberentionDeadline"):</td>
+              <td><input class="rinpsty" type="text" id="numberentionDeadline" name="numberentionDeadline" value="$!customerinforUpdateWorship.numberentionDeadline" /></td>
+            </tr>
+            <tr>
+              <td class="titlefc3">#mi18n("numbererestRepaymentWay"):</td>
+               <td><select id="type" name="numbererestRepaymentWay" value="$!customerinforUpdateWorship.numbererestRepaymentWay">
+                  #dict('CMMHKFS',$!customerinforUpdateWorship.numbererestRepaymentWay)
+                </select>
+                </td>
+                <td class="titlefc3">#mi18n("potentialCustomer"):</td>
+                <td><input type="radio" name="potentialCustomer" value="1" style="width: 25px;height: 14px;"
+						#if($!customerinforUpdateWorship.potentialCustomer != 0 ) checked="checked" #end>&nbsp;是 
+								&nbsp;&nbsp;&nbsp;
+					<input type="radio" name="potentialCustomer" style="width: 25px;height: 14px;"
+						#if($!customerinforUpdateWorship.potentialCustomer == 0)checked="checked" #end value="0">&nbsp;否 </td>
+            </tr>
+                <tr>
+              <td class="titlefc3">#mi18n("suggestedMarketingAgain"):</td>
+              <td><input type="radio" name="suggestedMarketingAgain" value="1" style="width: 25px;height: 14px;"
+					#if($!customerinforUpdateWorship.suggestedMarketingAgain != 0 )checked="checked" #end>&nbsp;是 
+					&nbsp;&nbsp;&nbsp;
+					<input type="radio" name="suggestedMarketingAgain" style="width: 25px;height: 14px;"
+								#if($!customerinforUpdateWorship.suggestedMarketingAgain == 0)checked="checked"	#end value="0">&nbsp;否 </td>
+              <td class="titlefc3">#mi18n("suggestMarketingTimeAgain"):</td>
+             <td><input class="rinpsty" type="text" name="suggestMarketingTimeAgain" id="suggestMarketingTimeAgain"  value="$!date.format("yyyy-MM-dd HH:mm:ss", $!customerinforUpdateWorship.suggestMarketingTimeAgain)"  onmouseover="_calendar({format:'yyyy-MM-dd HH:mm:ss'})"/></td>
+
+            </tr>
+          </table>
+        </div>
+      </form>
+
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
+        <input type="button" onclick="returnClick();" value="#i18n('button.cancel')" />
+      </div>
+    </div>
+  </div>
+   
+    <script src='${contextPath}/js/customerInforUpdate/customerinfoupdate_mbxx.js'></script>
+  <script type="text/javascript">
+  
+	var layout=new FormsLayout("formsId");			
+	window.top.currentWindow.setLayout(layout);
+			
+	#set ($formName = "'#id_module_form'")
+	#validator($formName)
+	$(document).ready(function() {		
+		$("#id_save_button").click(function() {
+	        if ($($formName).valid()) {
+	          var formjson = $($formName).serialize();
+	          $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
+	            if (data.success) {
+	            	Dialog.message("保存成功!");
+	            }
+	          });
+	        }
+	      });
+	});
+	function returnClick(){
+		
+		 window.location.href= contextPath + "/customer/basiccustomerinforUpdate/browse.page" ;
+	}
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

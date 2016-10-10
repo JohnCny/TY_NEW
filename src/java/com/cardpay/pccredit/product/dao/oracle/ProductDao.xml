@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.product.dao.ProductDao">
+	<resultMap id="ResultMap"
+		type="com.cardpay.pccredit.product.model.ProductAttribute">
+		<result property="id" column="ID" />
+		<result property="productName" column="PRODUCT_NAME" />
+		<result property="purposeLoan" column="PURPOSE_LOAN" />
+		<result property="creditLine" column="CREDIT_LINE" />
+		<result property="rateRange" column="RATE_RANGE" />
+		<result property="loanTimeLimit" column="LOAN_TIME_LIMIT" />
+		<result property="loanPrincipal" column="LOAN_PRINCIPAL" />
+		<result property="letterPaymentWay" column="LETTER_PAYMENT_WAY" />
+		<result property="numbererestSettlementWay" column="NUMBEREREST_SETTLEMENT_WAY" />
+		<result property="assureMeans" column="ASSURE_MEANS" />
+		<result property="penaltyNumbererest" column="PENALTY_NUMBEREREST" />
+		<result property="productRiskTolerance" column="PRODUCT_RISK_TOLERANCE" />
+		<result property="productTypeCode" column="PRODUCT_TYPE_CODE" />
+		<result property="status" column="STATUS" />
+		<result property="createdTime" column="CREATED_TIME" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="modifiedTime" column="MODIFIED_TIME" />
+		<result property="modifiedBy" column="MODIFIED_BY" />
+		<result property="pictureUrl" column="PICTURE_URL" />
+		<result property="pictureName" column="PICTURE_NAME" />
+		<result property="seqno" column="SEQNO" />
+	</resultMap>
+<resultMap id="ProductResultMap"
+		type="com.cardpay.pccredit.ipad.model.ProductAttribute">
+		<result property="id" column="ID" />
+		<result property="productName" column="PRODUCT_NAME" />
+		<result property="purposeLoan" column="PURPOSE_LOAN" />
+		<result property="creditLine" column="CREDIT_LINE" />
+		<result property="rateRange" column="RATE_RANGE" />
+		<result property="loanTimeLimit" column="LOAN_TIME_LIMIT" />
+		<result property="loanPrincipal" column="LOAN_PRINCIPAL" />
+		<result property="letterPaymentWay" column="LETTER_PAYMENT_WAY" />
+		<result property="numbererestSettlementWay" column="NUMBEREREST_SETTLEMENT_WAY" />
+		<result property="assureMeans" column="ASSURE_MEANS" />
+		<result property="penaltyNumbererest" column="PENALTY_NUMBEREREST" />
+		<result property="productRiskTolerance" column="PRODUCT_RISK_TOLERANCE" />
+		<result property="productTypeCode" column="PRODUCT_TYPE_CODE" />
+		<result property="status" column="STATUS" />
+		<result property="createdTime" column="CREATED_TIME" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="modifiedTime" column="MODIFIED_TIME" />
+		<result property="modifiedBy" column="MODIFIED_BY" />
+		<result property="seqno" column="SEQNO" />
+		<result property="pictureUrl" column="PICTURE_URL" />
+		<result property="pictureName" column="PICTURE_NAME" />
+		<result property="prodLiTime" column="prodLiTime" />
+	</resultMap>
+	<resultMap id="dictMap" type="com.cardpay.pccredit.product.model.FilterDict">
+		<result property="id" column="ID" />
+		<result property="tableName" column="table_name" />
+		<result property="columnName" column="column_name" />
+		<result property="value" column="value" />
+		<result property="type" column="type" />
+		<result property="operate" column="operate" />
+	    <result property="createdTime" column="CREATED_TIME" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="modifiedTime" column="MODIFIED_TIME" />
+		<result property="modifiedBy" column="MODIFIED_BY" />
+	</resultMap>
+
+	<resultMap id="customerInforFormMap"
+		type="com.cardpay.pccredit.customer.web.CustomerInforForm">
+		<result property="id" column="ID" />
+		<result property="chineseName" column="CHINESE_NAME" />
+		<result property="cardType" column="CARD_TYPE" />
+		<result property="cardId" column="CARD_ID" />
+		<result property="residentialAddress" column="RESIDENTIAL_ADDRESS" />
+		<result property="telephone" column="TELEPHONE" />
+		<result property="displayName" column="display_name" />
+		<result property="divisionalStatus" column="DIVISIONAL_STATUS" />
+	</resultMap>
+
+
+	<resultMap id="productsAgencyAssociationMap"
+		type="com.cardpay.pccredit.product.model.ProductsAgencyAssociation">
+		<result property="id" column="ID" />
+		<result property="productId" column="PRODUCT_ID" />
+		<result property="institution" column="INSTITUTION" />
+		<result property="createTime" column="CREATED_TIME" />
+		<result property="createBy" column="CREATED_BY" />
+		<result property="modifyTime" column="MODIFIED_TIME" />
+		<result property="modifyBy" column="MODIFIED_BY" />
+	</resultMap>
+
+	<select id="findPublishedProductsByFilter" resultMap="ResultMap"
+		parameterType="map">
+		SELECT t.* from product_attribute t
+		WHERE 1=1
+		<if test="productName != null and productName != '' ">
+			AND t.PRODUCT_NAME=#{productName}
+		</if>
+		And (t.STATUS='Published' or t.STATUS='Screen')
+		ORDER BY
+	t.CREATED_TIME
+	</select>
+	<select id="findPublishedProductsCountByFilter" resultType="int"
+		parameterType="com.cardpay.pccredit.product.filter.ProductFilter">
+		SELECT
+		COUNT (*)
+		FROM
+		(
+		SELECT * from product_attribute t
+		WHERE 1=1
+		<if test="productName != null and productName != '' ">
+			AND PRODUCT_NAME=#{productName}
+		</if>
+		And t.STATUS='Published'
+		)
+	</select>
+
+	<select id="findFilterDict" resultMap="dictMap">
+		select d.* from
+		product_filter_map t left join filter_dict d on t.filter_dict_id=d.id
+		where t.product_id=#{productId}
+	</select>
+
+	<select id="findCustomerByDict" resultType="string">
+		${sql}
+	</select>
+
+	<select id="findScreeningResultsCustomerByProductId" resultMap="customerInforFormMap">
+	
+		SELECT
+		b.ID,
+		b.CARD_TYPE,
+		b.DIVISIONAL_STATUS,
+		b.CARD_ID,
+		b.HOUSEHOLD_ADDRESS,
+		b.TELEPHONE,
+		b.chinese_name,
+		U .display_name
+		FROM
+		(
+		SELECT
+		T .customer_id
+		FROM
+		screening_results T
+		WHERE
+		T .customer_id NOT IN (
+		SELECT
+		M .customer_id
+		FROM
+		marketing_plan M
+		WHERE
+		M .create_way = 'system'
+		AND M .product_id = #{productId}
+		)
+		) tt
+		LEFT JOIN basic_customer_information b ON tt.customer_id = b. ID
+		LEFT JOIN sys_user U ON b.user_id = U . ID
+		
+	</select>
+
+	<update id="updateProductStatus">
+		update product_attribute set status=#{status} where ID = #{productId}
+	</update>
+
+	<update id="updateProductSeqnoByProductId">
+		update product_attribute set SEQNO=#{seqno} where ID = #{productId}
+	</update>
+
+	<select id="findProductsAgencyAssociationByOrganizationId"
+		resultMap="productsAgencyAssociationMap">
+		SELECT
+		*
+		FROM
+		PRODUCTS_AGENCY_ASSOCIATION
+		WHERE
+		INSTITUTION = #{organizationId}
+	</select>
+
+	<select id="findPublishedProductAttributeByProductId" resultMap="ResultMap">
+		SELECT
+		*
+		FROM
+		PRODUCT_ATTRIBUTE P
+		WHERE
+		P . ID = #{productId}
+		AND (
+		P .STATUS = 'Published'
+		OR P .STATUS = 'Screen'
+		)
+	</select>
+
+	<select id="findInstitutionByProductId" resultMap="productsAgencyAssociationMap">
+		SELECT
+		*
+		FROM
+		PRODUCTS_AGENCY_ASSOCIATION
+		WHERE
+		PRODUCT_ID = #{productId}
+	</select>
+    <select id="findProducts" resultMap="ProductResultMap">
+    	SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		select p.*,to_char(p.PROD_LIMIT_TIME,'yyyy-MM-dd') as prodLiTime
+		from PRODUCT_ATTRIBUTE p
+		where 1=1
+		AND (
+		p.STATUS = 'Published'
+		OR p.STATUS = 'Screen'
+		) order by p.created_time desc
+        <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+    </select>
+    
+     <select id="findProductsPad" resultMap="ProductResultMap">
+    	SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		select p.*,to_char(p.PROD_LIMIT_TIME,'yyyy-MM-dd') as prodLiTime
+		from PRODUCT_ATTRIBUTE p
+		where 1=1
+		AND (
+		p.STATUS = 'Published'
+		OR p.STATUS = 'Screen'
+		) order by p.created_time desc
+        <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+    </select>
+    <select id="findProductsAgencyAssociationByOrganizationIdPage" resultMap="productsAgencyAssociationMap">
+    	SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+    	SELECT
+		*
+		FROM
+		PRODUCTS_AGENCY_ASSOCIATION
+		WHERE
+		INSTITUTION = #{organizationId}
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+    </select>
+<select id="findProductsCount" resultType="int">
+	select count(*)
+	from PRODUCT_ATTRIBUTE p
+	where 1=1
+		AND (
+		p.STATUS = 'Published'
+		OR p.STATUS = 'Screen'
+		)
+</select>
+<select id="findProductsAgencyAssociationCountByOrganizationId" resultType="int">
+	SELECT
+		count(*)
+		FROM
+		PRODUCTS_AGENCY_ASSOCIATION
+		WHERE
+		INSTITUTION = #{organizationId}
+</select>
+
+
+	<select id="findProductsByFilter" resultMap="ResultMap" parameterType="map">
+		SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+	    	SELECT * from product_attribute t
+			WHERE 1=1
+			<if test="productName != null and productName != '' ">
+				AND PRODUCT_NAME=#{productName}
+			</if>
+			And t.prod_limit_time >= sysdate
+		    <if test="status != null and status != '' ">
+				And t.status = #{status}
+			</if>
+			
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	<select id="findProductsCountByFilter" resultType="int">
+		SELECT
+		COUNT (*)
+		FROM
+		(
+		SELECT * from product_attribute t
+		WHERE 1=1
+		<if test="productName != null and productName != '' ">
+			AND PRODUCT_NAME=#{productName}
+		</if>
+		And t.prod_limit_time >= sysdate
+		<if test="status != null and status != '' ">
+		    And t.status = #{status}
+		</if>
+		)
+	</select>
+	
+	<select id="findProductCountByName" resultType="int">
+	select count(*)
+	from PRODUCT_ATTRIBUTE p
+	where 1=1
+	<if test="productName != null and productName != '' ">
+	 And p.PRODUCT_NAME = #{productName}
+    </if>
+    <if test="productId != null and productId != '' ">
+	 And p.ID != #{productId}
+    </if>
+	</select>
+</mapper>

@@ -1,0 +1,115 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+				<span>#i18n("operation.browse.location")：#i18n("module.sample.browse")</span>
+			</div>
+			<div class="inquiry">
+				<div class="search_tag">#i18n("operation.browse.filter")</div>
+				<div class="search">
+					<form id="submitForm">
+						<ul>
+							<li>
+								<span>#i18n("module.sample.filter.seqNo")：<input type="text" name="seqNo" value='$!result.filter.seqNo' maxlength="30" /></span>
+							</li>
+							<li>
+								<span>#i18n("module.sample.filter.name")：<input type="text" name="name" value='$!result.filter.name' maxlength="30" /></span>
+							</li>
+							<li>
+								<span>#i18n("module.sample.filter.type")：<select id="type" name="type">
+										<option value="">#i18n("module.sample.type.all")</option>
+										#dict("ProductType", $!result.filter.type)
+									</select>
+								</span>
+							</li>
+							<li>
+								<span>#i18n("module.sample.filter.nativeName")：<input type="text" name="nativeName" value='$!result.filter.nativeName' maxlength="30" /></span>
+							</li>
+							<li>
+								<span>#i18n("module.sample.filter.sampleDateStart")：<input type="text" name="sampleDateStart" id="sampleDateStart" readonly="readonly"  onmouseover="_calendar({ maxDate:'#sampleDateEnd',btnBar:false })" value="$!date.format("yyyy-MM-dd", $!result.filter.sampleDateStart)" maxlength="30" /></span>
+							</li>
+							<li>
+								<span>#i18n("module.sample.filter.sampleDateEnd")：<input type="text" name="sampleDateEnd" id="sampleDateEnd" readonly="readonly"  onmouseover="_calendar({ minDate:'#sampleDateStart',btnBar:false })"value="$!date.format("yyyy-MM-dd", $!result.filter.sampleDateEnd)" maxlength="30" /></span>
+							</li>	
+							<li class="search_button">
+								<input id="id_browse_button" type="button" value="#i18n('operation.browse')" class="search_button_inquiry"
+									style="height: 26px; line-height: 24px;" />
+							</li>
+						</ul>
+					</form>
+				</div>
+				<div class="inquiry_list" >                    
+					<table>
+						<colgroup>
+							<col width="5%" />
+							<col width="5%" />
+							<col width="10%" />
+							<col />
+							<col />
+							<col />
+							<col width="40%" />
+							<col />
+							<col />
+						</colgroup>
+						<tr class="title">
+							<th nowrap="nowrap"></th>
+							<th nowrap="nowrap">#i18n("module.sample.seqNo")</th>
+							<th nowrap="nowrap">#i18n("module.sample.name")</th>
+							<th nowrap="nowrap">#i18n("module.sample.type")</th>
+							<th nowrap="nowrap">#i18n("module.sample.nativeName")</th>
+							<th nowrap="nowrap">#i18n("module.sample.sampleDate")</th>
+							<th nowrap="nowrap">#i18n("module.sample.description")</th>
+							<th nowrap="nowrap">#i18n("module.sample.timeCreated")</th>
+							<th nowrap="nowrap">#i18n("module.sample.timeLastModified")</th>
+						</tr>
+						#foreach ($sample in $result.items)
+						<tr>
+							<td class="checkbox"><input type="radio" name="checkbox" value="$!sample.id" /></td>
+							<td nowrap="nowrap">$!sample.seqNo</td>
+							<td nowrap="nowrap">$!sample.name</td>
+							<td nowrap="nowrap">#dictVal("ProductType", $!sample.type)</td>
+							<td nowrap="nowrap">$!sample.nativeName</td>
+							<td nowrap="nowrap">$!date.format("yyyy-MM-dd", $!sample.sampleDate)</td>
+							<td nowrap="nowrap">$!sample.description</td>
+							<td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:ss",$!sample.timeCreated)</td>
+							<td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:ss",$!sample.timeLastModified)</td>
+						</tr>
+						#end
+					</table>
+				</div>
+			</div>
+			<div class="pagebar">
+				<div class="controlbtn">
+					<a id="id_create_button" class="btn_g" href="javascript:void(0);">#i18n("operation.create")</a>
+					<a id="id_change_button" class="btn_g" href="javascript:void(0);">#i18n("operation.change")</a>
+					<a id="id_delete_button" class="btn_g" href="javascript:void(0);">#i18n("operation.delete")</a>
+					<div class="seperator">|</div>
+					<a id="id_display_button" class="btn_g" href="javascript:void(0);">#i18n("operation.display")</a>
+					<div class="seperator">|</div>
+					<a id="id_export_button" class="btn_g" href="javascript:void(0);">#i18n("operation.export")</a>
+				</div>
+				#parse ("common/pagination.htm")
+				<div class="clear"></div>
+			</div>
+		</div>
+	</div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout();
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.createUrl = "${contextPath}/sample/create.page";
+		opsObj.displayUrl = "${contextPath}/sample/display.page";
+		opsObj.changeUrl = "${contextPath}/sample/change.page";
+		opsObj.deleteUrl = "${contextPath}/sample/delete.json";
+		opsObj.browseUrl = "${contextPath}/sample/browse.page";
+		opsObj.exportUrl = "${contextPath}/sample/export.page";
+
+		prepareOperations(opsObj);
+	});
+</script>
+</html>

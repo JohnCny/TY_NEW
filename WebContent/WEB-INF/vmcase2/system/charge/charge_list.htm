@@ -1,0 +1,141 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+	<div class="inquiry" style="padding-top: 0px;">
+		<div id="topDiv" class="inquiry_list inquiry_top">
+			<table>
+				<colgroup>
+					<col width="5%" />
+					<col width="35%" />
+					<col width="30%" />
+					<col width="30%" />
+				</colgroup>
+				<tr class="title">
+					<th nowrap="nowrap"></th>
+					<th nowrap="nowrap">姓名</th>
+					<th nowrap="nowrap">年龄</th>
+					<th nowrap="nowrap">性别</th>
+				</tr>
+			</table>
+		</div>
+		<div id="downDiv" class="inquiry_list inquiry_down">
+			<table>
+				<colgroup>
+					<col width="5%" />
+					<col width="35%" />
+					<col width="30%" />
+					<col width="30%" />
+
+				</colgroup>
+				#foreach ($user in $result.items)
+				<tr>
+					<td class="checkbox"><input type="radio" name="checkbox" value="$!user.id"/></td>
+					<td nowrap="nowrap">$!user.displayName</td>
+					<td nowrap="nowrap">$!user.age</td>
+					<td nowrap="nowrap">$!user.gender</td>
+				</tr>
+				#end
+			</table>
+		</div>
+	</div>
+	<div class="pagebar">
+		<div class="controlbtn">
+			<a id="id_create_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.create.hint')" onclick="addCharge();">添加</a>
+			<a id="id_delete_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.delete.hint')" onclick="deleteCharge();">删除</a>
+		</div>
+		#parse ("common/pagination.htm")
+		<div class="clear"></div>
+	</div>
+	
+	<div style="display: none;">
+      <form id="id_module_form" action="${contextPath}/system/charge/addCharge.json">
+      	<input type="hidden" id="userIds" name="userIds"/>
+      	<input type="hidden" id="orgId" name="orgId" value="$!orgId" />
+      	<input type="hidden" id="deptId" name="deptId" value="$!deptId" />
+      </form>
+  </div>
+  
+</body>
+<script language="javascript" type="text/javascript">
+	var p_place = window.parent.document.getElementById('place');
+	var placeHeight = $(p_place).outerHeight(true);
+	var layout = new TableLayout(3, placeHeight, 0.73);
+	window.top.currentWindow.setLayout(layout);
+	
+	function addCharge() {
+		var url = "${contextPath}/system/charge/charge.page";
+		if($("#orgId").val() != "" && $("#orgId").val() != null){
+			url += "?type=org";
+		}
+		else{
+			url += "?type=dept";
+		}
+		 Dialog.tablePage(url,"选择负责人","get","",
+			 function(){
+				 var val = window.top.$("#selectval").val();
+				 if(val !=""){
+				 var  arr=val.split(',');
+				 var auditUserNames ="";
+				 var auditUserIds ="";
+				 for(key in arr){
+					 var arry = arr[key].split("_");
+					 if(arry[0] !=""){
+					 auditUserIds +=  arry[0] +"," ;
+					 }
+					 if(arry[1] !=""){
+					 auditUserNames +=  arry[1] +"," ;
+					 }
+				 }
+				 if(auditUserIds !=""){
+					 auditUserIds = auditUserIds.substring(0,auditUserIds.length - 1);
+					 $("#userIds").val(auditUserIds);
+				 }
+				 }
+				 window.top.$("#selectval").val("");
+				 window.top.$("#tablePage_diaog").dialog("close");
+				 
+				 var formjson = $("#id_module_form").serialize();
+				 var url = "${contextPath}/system/charge/addCharge.json";
+				 $.ajax({
+					 url : url,
+					 type : "get",
+					 data : formjson,
+					 success : function(data) {
+						 if (data.success) {
+							 topWin.Dialog.message("保存成功！");
+							 window.location.reload();
+						 }
+						 else{
+							 topWin.Dialog.message(data.message);
+						 }
+					 }
+				 });
+				 
+			 },600,450);
+		}
+			
+		function deleteCharge(){
+			if ($(".checkbox :checked").length == 1) {
+	              var rowid = $($(".checkbox :checked")[0]).attr("value");
+	              $("#userIds").val(rowid);
+	              var formjson = $("#id_module_form").serialize();
+	              var url = "${contextPath}/system/charge/deleteCharge.json";
+					 $.ajax({
+						 url : url,
+						 type : "get",
+						 data : formjson,
+						 success : function(data) {
+							 if (data.success) {
+								 topWin.Dialog.message("保存成功！");
+								 window.location.reload();
+							 }
+							 else{
+								 topWin.Dialog.message(data.message);
+							 }
+						 }
+					 });
+	          } else {
+	        	  topWin.Dialog.message("请选择一行");
+	          }
+		}
+</script>
+</html>

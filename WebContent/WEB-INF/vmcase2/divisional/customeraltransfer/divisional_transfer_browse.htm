@@ -1,0 +1,98 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/customerInfor.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">移交客户</div>
+      </div>
+      
+      <div class="inquiry">
+<!-----------搜索------------------------------------------->  
+<!--  
+        <div class="search_tag">#i18n("label.browse.filter")</div>
+        <div class="search">
+          <form id="submitForm">
+            <ul>
+              <li>
+                <span>客户名称：<input type="text" id="chineseName" name="chineseName" value='' /></span>
+              </li>
+              
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
+-->       
+<!-------------- 信息显示 ------------------------------------->        
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="12%"/>
+              <col width="8%"/>
+              <col width="15%"/>
+              <col width="40%"/>
+              <col width="10%" />
+              <col width="7%"/>
+              <col width="8%"/>
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap">中文姓名</th>
+              <th nowrap="nowrap">证件类型</th>
+              <th nowrap="nowrap">证件号码</th>
+              <th nowrap="nowrap">住宅地址</th>
+              <th nowrap="nowrap">手机</th>
+              <th nowrap="nowrap">移交状态</th>
+              <th nowrap="nowrap">分配结果</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="12%"/>
+              <col width="8%"/>
+              <col width="15%"/>
+              <col width="40%"/>
+              <col width="10%" />
+              <col width="7%"/>
+              <col width="8%"/>
+            </colgroup>
+            #foreach ($!{transfer} in $result.items)
+            <tr>
+           <!--     <td class="checkbox"><input type="radio" name="checkbox" value="$!customer.id"
+                  #if ($!request.getParameter("recordId") == $customer.id) checked="checked" #end /></td>
+           -->  
+              <td nowrap="nowrap">$!transfer.chineseName</td>
+              <td nowrap="nowrap">#customerInfor($request.getAttribute("cardTypeList"),$!transfer.cardType)</td>
+              <td nowrap="nowrap">$!transfer.cardId</td>
+              <td nowrap="nowrap">$!transfer.residentialAddress</td>
+              <td nowrap="nowrap">$!transfer.telephone</td>
+              <td nowrap="nowrap">#dictVal("DivisionalStatus", $!transfer.divisionalStatus)</td>
+              <td nowrap="nowrap">#dictVal("DivisionalResult", $!transfer.divisionalResult)</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		prepareOperations(opsObj);
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")

@@ -1,0 +1,160 @@
+#parse ("common/iframe_page_header.htm")
+
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户额度调整</div>
+      </div>
+      
+      <div class="inquiry">
+<!-----------搜索------------------------------------------->  
+ <div class="search_tag">#i18n("label.browse.filter")</div>
+     <div class="search">
+          <form id="submitForm">
+            <ul>
+           	  <li>
+               <span>客户名称：<input type="text" id="customerName" name="customerName" value='$!result.filter.customerName'/></span>
+              </li>
+              <li>
+                <span>调额类型：<select id="adjustmentType" name="adjustmentType">
+                    <option value=""></option>
+                    #dict("QuotaAdjustType", $!result.filter.adjustmentType)
+                  </select>
+                </span>
+              </li>
+              <li>
+                <span>审批状态：<select id="approval" name="approval">
+                	<option value=""></option>
+                    #dict("AmountAdjustmentApprovalStatus", $!result.filter.approval)
+                  </select>
+                </span>
+              </li>
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
+<!-------------- 信息显示 ------------------------------------->        
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="3%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="15%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">客户名称</th>
+              <th nowrap="nowrap">证件类型</th>
+              <th nowrap="nowrap">证件号码</th>
+              <th nowrap="nowrap">产品名称</th>
+              <th nowrap="nowrap">调整类型</th>
+              <th nowrap="nowrap">原始额度</th>
+              <th nowrap="nowrap">审批额度</th>
+              <th nowrap="nowrap">评估额度</th>
+              <th nowrap="nowrap">实际额度</th>
+              <th nowrap="nowrap">状态</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="3%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="15%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col />
+            </colgroup>
+            #foreach ($amountAdjustment in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!amountAdjustment.id"
+                  #if ($!request.getParameter("recordId") == $!amountAdjustment.id) checked="checked" #end /></td>
+              <td nowrap="nowrap">$!amountAdjustment.customerName</td>
+              <td nowrap="nowrap">#dictVal("CARDTYPE", $!amountAdjustment.cardType)</td>
+              <td nowrap="nowrap">$!amountAdjustment.cardId</td>
+              <td nowrap="nowrap">$!amountAdjustment.productName</td>
+              <td nowrap="nowrap">#dictVal("QuotaAdjustType", $!amountAdjustment.adjustmentType)</td>
+              <td nowrap="nowrap">$format.formatNumber($!amountAdjustment.originalAmount, 2, 100)</td>
+              <td nowrap="nowrap">$format.formatNumber($!amountAdjustment.approvalLimit, 2, 100)</td>
+              <td nowrap="nowrap">$format.formatNumber($!amountAdjustment.assessAmount, 2, 100)</td>
+              <td nowrap="nowrap">$format.formatNumber($!amountAdjustment.actualAmount, 2, 100)</td>
+              <td nowrap="nowrap">#dictVal("AmountAdjustmentApprovalStatus", $!amountAdjustment.approval)</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+            #btnpriv("approve")<a id="id_approve_button" class="btn_g" href="javascript:void(0);" title="审批">审核</a>#end
+        	#btnpriv("applyapprove")<a id="id_apply_button" class="btn_g" href="javascript:void(0);" title="申请额度调整审核">申请审核</a>#end
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+  
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+	url = "${modulePath}/browse.page";
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.browseUrl = "${modulePath}/browse.page";
+		prepareOperations(opsObj);
+		
+		$("#id_apply_button").click(function() {
+    			$.post("${modulePath}/applayApproveAmountAdjustment.json", {},
+                function(data, textStatus, jqXhr) {
+                    if (data.success) {
+                        window.location.reload(true);
+                    } else {
+                        //Dialog.message(data.message);
+                    }
+                });
+	      });
+		
+        $("#id_approve_button").click(function() {
+            if ($(".checkbox :checked").length == 1) {
+                $("#id_approve_button").unbind();
+                var rowid = $($(".checkbox :checked")[0]).attr("value");
+                var url = "${modulePath}/apply.page?id=" + rowid;
+                if (opsObj.formObj) {
+                    // 回调URL
+                    var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
+                    if (callBackUrlObj) {
+                        url += "&" + $.param({
+                            'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+                        });
+                    }
+                }
+                window.location.href = url;
+            } else {
+                Dialog.message("请选择一行");
+            }
+        });
+		
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")

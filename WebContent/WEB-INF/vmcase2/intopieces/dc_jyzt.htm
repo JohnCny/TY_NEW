@@ -1,0 +1,615 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">进件新增>经营状态</div>
+      </div>
+        <div class="tabplace">
+            <ul class="com-tab" >
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/changewh.page?customerId=$!customerId&productId=$!productId">建议</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/findJbzk.page?customerId=$!customerId&productId=$!productId">基本状况</a></li>
+	            <li class="tab activeTab"><a href="${contextPath}/intopieces/addIntopieces/findJyzt.page?customerId=$!customerId&productId=$!productId">经营状态</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/findSczt.page?customerId=$!customerId&productId=$!productId">生存状态</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/findDdpz.page?customerId=$!customerId&productId=$!productId">道德品质</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_zcfz.page?customerId=$!customerId&productId=$!productId">资产负债</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_lrjb.page?customerId=$!customerId&productId=$!productId">利润简表</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_bzlr.page?customerId=$!customerId&productId=$!productId">标准利润表</a></li>
+	            <li class="tab "><a href="${contextPath}/intopieces/addIntopieces/create_xjl.page?customerId=$!customerId&productId=$!productId">现金流量</a></li>
+				<li class="tab "><a href="${contextPath}/intopieces/addIntopieces/create_jcjy.page?customerId=$!customerId&productId=$!productId">交叉检验</a></li>
+				<li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_dhd.page?customerId=$!customerId&productId=$!productId">点货单</a></li>
+				<li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_gdzc.page?customerId=$!customerId&productId=$!productId">固定资产清单</a></li>
+				<li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_yfys.page?customerId=$!customerId&productId=$!productId">应付预收</a></li>
+				<li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_ysyf.page?customerId=$!customerId&productId=$!productId">应收预付</a></li>
+				<li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_lsfx.page?customerId=$!customerId&productId=$!productId">流水分析</a></li>
+	            <!-- <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/changewh.page?id=${customerId}">基本信息</a></li>
+	            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_zyxx.page?id=${customerId}">职业信息</a></li>
+	            <li class="tab " ><a href="${contextPath}/customer/basiccustomerinforUpdate/create_mbxx.page?id=${customerId}">陌拜信息</a></li>
+	            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_zcfz.page?id=${customerId}">资产负债</a></li>
+	            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_syb.page?id=${customerId}">损益</a></li>
+	            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_xjl.page?id=${customerId}">现金流量</a></li>
+	            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_jcjy.page?id=${customerId}">交叉检验</a></li>
+				<li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_swpg.page?id=${customerId}">四维评估</a></li>
+				<li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_sxpg.page?id=${customerId}">授信评估</a></li>
+	            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_wjdc.page?id=${customerId}">问卷调查</a></li>
+	            <li class="tab" ><a href="${contextPath}/customer/basiccustomerinforUpdate/create_khtz.page?id=${customerId}">台账信息</a></li>
+	            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_yxzl.page?id=${customerId}">影像资料</a></li>    -->
+           </ul>
+         </div>
+         <div class="tabplace"></div>
+			<form id="id_module_form">
+			<input type="hidden" id="customer_id" name="customer_id" value="$!customerId" />
+			<input type="hidden" id="product_id" name="product_id" value="$!productId" />
+				<div class="form-bd" id="formsId"
+					style="margin-top: 0px; padding-top: 0px;">
+					<table id='MyTable' style='border-collapse: collapse;' width='100%'>
+						<tr>
+							<td rowspan='1' colspan='4' name='A1' align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 120%; width: 2816px; color: #000000; background-color: #FFFFFF; border-top: solid #d0d7e5 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #d0d7e5 1px;'>企业经营状态</td>
+						</tr>
+						<tr>
+							<td rowspan='3' colspan='1' name='A2' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2816px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>行业政策</td>
+							<td name='B2' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4064px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>金融货币政策</td>
+							<td name='C2' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='D2'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="hyzc_jrhb" name="hyzc_jrhb" value="$!jyzt.hyzc_jrhb" /></td>
+						</tr>
+						<tr>
+							<td name='B3' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4064px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>国家产业政策</td>
+							<td name='C3' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='D3'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="hyzc_gjcy" name="hyzc_gjcy" value="$!jyzt.hyzc_gjcy" /></td>
+						</tr>
+						<tr>
+							<td name='B4' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4064px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>税收政策</td>
+							<td name='C4' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='D4'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="hyzc_ss" name="hyzc_ss" value="$!jyzt.hyzc_ss" /></td>
+						</tr>
+						<tr>
+							<td rowspan='12' colspan='1' name='A5' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2816px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>行业现状</td>
+							<td name='B5' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4064px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>行业供求关系</td>
+							<td name='C5' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='D5'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="hyxz_gqr" name="hyxz_gqr" value="$!jyzt.hyxz_gqr" /></td>
+						</tr>
+						<tr>
+							<td name='B6' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4064px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>行业周期性分析</td>
+							<td name='C6' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='D6'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="hyxz_zqxfx" name="hyxz_zqxfx" value="$!jyzt.hyxz_zqxfx" /></td>
+						</tr>
+						<tr>
+							<td name='B7' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4064px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>行业资产结构</td>
+							<td name='C7' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='D7'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="hyxz_zcjg" name="hyxz_zcjg" value="$!jyzt.hyxz_zcjg" /></td>
+						</tr>
+						<tr>
+							<td rowspan='3' colspan='1' name='B8' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4064px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>行业盈利能力</td>
+							<td name='C8' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>净利率</td>
+							<td name='D8'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="hyxz_ylnl_jl" name="hyxz_ylnl_jl" value="$!jyzt.hyxz_ylnl_jl" /></td>
+						</tr>
+						<tr>
+							<td name='C9' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>平均应收账款周转天数</td>
+							<td name='D9'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="hyxz_ylnl_szzzts" name="hyxz_ylnl_szzzts" value="$!jyzt.hyxz_ylnl_szzzts" /></td>
+						</tr>
+						<tr>
+							<td name='C10' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>平均存货周转天数</td>
+							<td name='D10'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="hyxz_ylnl_chzzts" name="hyxz_ylnl_chzzts" value="$!jyzt.hyxz_ylnl_chzzts" /></td>
+						</tr>
+						<tr>
+							<td rowspan='2' colspan='1' name='B11' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4064px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>行业依赖性</td>
+							<td name='C11' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>上游供应商数量</td>
+							<td name='D11'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="hyxz_ylx_sysup" name="hyxz_ylx_sysup" value="$!jyzt.hyxz_ylx_sysup" /></td>
+						</tr>
+						<tr>
+							<td name='C12' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>下游经销商数量</td>
+							<td name='D12'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="hyxz_ylx_xysup" name="hyxz_ylx_xysup" value="$!jyzt.hyxz_ylx_xysup" /></td>
+						</tr>
+						<tr>
+							<td name='B13' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4064px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>行业替代性</td>
+							<td name='C13' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='D13'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="hyxz_tdx" name="hyxz_tdx" value="$!jyzt.hyxz_tdx" /></td>
+						</tr>
+						<tr>
+							<td rowspan='2' colspan='1' name='B14' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4064px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>行业发展趋势</td>
+							<td name='C14' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>本行业近一年的平均销售额增长比率</td>
+							<td name='D14'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="hyxz_fzqs_salerase" name="hyxz_fzqs_salerase" value="$!jyzt.hyxz_fzqs_salerase" /></td>
+						</tr>
+						<tr>
+							<td name='C15' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>本行业近一年来的平均净利润增长比率</td>
+							<td name='D15'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="hyxz_fzqs_jlrase" name="hyxz_fzqs_jlrase" value="$!jyzt.hyxz_fzqs_jlrase" /></td>
+						</tr>
+						<tr>
+							<td name='B16' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4064px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>行业风险分析</td>
+							<td name='C16' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='D16'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="hyxz_fxfx" name="hyxz_fxfx" value="$!jyzt.hyxz_fxfx" /></td>
+						</tr>
+						<tr>
+							<td rowspan='13' colspan='1' name='A17' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2816px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>经营</td>
+							<td rowspan='6' colspan='1' name='B17' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4064px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>市场与产品</td>
+							<td name='C17' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>产品的差异性</td>
+							<td name='D17'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jy_schcp_cy" name="jy_schcp_cy" value="$!jyzt.jy_schcp_cy" /></td>
+						</tr>
+						<tr>
+							<td name='C18' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>买方需求客户对产品的需求周期</td>
+							<td name='D18'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jy_schcp_xqzq" name="jy_schcp_xqzq" value="$!jyzt.jy_schcp_xqzq" /></td>
+						</tr>
+						<tr>
+							<td name='C19' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>可接受此价格的目标客户群比率</td>
+							<td name='D19'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jy_schcp_qbl" name="jy_schcp_qbl" value="$!jyzt.jy_schcp_qbl" /></td>
+						</tr>
+						<tr>
+							<td name='C20' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>经营范围内的竞争性同业数量</td>
+							<td name='D20'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jy_schcp_tysl" name="jy_schcp_tysl" value="$!jyzt.jy_schcp_tysl" /></td>
+						</tr>
+						<tr>
+							<td name='C21' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>最大的三个客户占企业总销售额的比率</td>
+							<td name='D21'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jy_schcp_salebl" name="jy_schcp_salebl" value="$!jyzt.jy_schcp_salebl" /></td>
+						</tr>
+						<tr>
+							<td name='C22' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>销售方法</td>
+							<td name='D22'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jy_schcp_method" name="jy_schcp_method" value="$!jyzt.jy_schcp_method" /></td>
+						</tr>
+						<tr>
+							<td rowspan='5' colspan='1' name='B23' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4064px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>生产环节</td>
+							<td name='C23' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>拥有专利技术的数量</td>
+							<td name='D23'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jy_schj_zlnum" name="jy_schj_zlnum" value="$!jyzt.jy_schj_zlnum" /></td>
+						</tr>
+						<tr>
+							<td name='C24' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>能独立解决技术难题的比率</td>
+							<td name='D24'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jy_schj_jslv" name="jy_schj_jslv" value="$!jyzt.jy_schj_jslv" /></td>
+						</tr>
+						<tr>
+							<td name='C25' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>受自然灾害影响</td>
+							<td name='D25'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jy_schj_zhyx" name="jy_schj_zhyx" value="$!jyzt.jy_schj_zhyx" /></td>
+						</tr>
+						<tr>
+							<td name='C26' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>环境</td>
+							<td name='D26'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jy_schj_hj" name="jy_schj_hj" value="$!jyzt.jy_schj_hj" /></td>
+						</tr>
+						<tr>
+							<td name='C27' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>劳资关系</td>
+							<td name='D27'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jy_schj_lz" name="jy_schj_lz" value="$!jyzt.jy_schj_lz" /></td>
+						</tr>
+						<tr>
+							<td rowspan='2' colspan='1' name='B28' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4064px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>企业的销售环节</td>
+							<td name='C28' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>本企业单位产品的销售成本/行业内单位产品的销售成本</td>
+							<td name='D28'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jy_sxhj_cb" name="jy_sxhj_cb" value="$!jyzt.jy_sxhj_cb" /></td>
+						</tr>
+						<tr>
+							<td name='C29' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>习惯购买同一品牌产品的客户比率</td>
+							<td name='D29'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jy_sxhj_bl" name="jy_sxhj_bl" value="$!jyzt.jy_sxhj_bl" /></td>
+						</tr>
+						<tr>
+							<td rowspan='28' colspan='1' name='A30' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2816px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>管理</td>
+							<td rowspan='2' colspan='1' name='B30' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4064px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>管理层的稳定性</td>
+							<td name='C30' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>职业经理人在管理层中的占比</td>
+							<td name='D30'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="gy_glwd_bl" name="gy_glwd_bl" value="$!jyzt.gy_glwd_bl" /></td>
+						</tr>
+						<tr>
+							<td name='C31' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>最近两年内管理人员的流失率</td>
+							<td name='D31'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="gy_glwd_ls" name="gy_glwd_ls" value="$!jyzt.gy_glwd_ls" /></td>
+						</tr>
+						<tr>
+							<td rowspan='7' colspan='1' name='B32' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4064px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>管理层素质和经验</td>
+							<td name='C32' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>文化程度</td>
+							<td name='D32'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="gy_sz_edu" name="gy_sz_edu" value="$!jyzt.gy_sz_edu" /></td>
+						</tr>
+						<tr>
+							<td name='C33' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>管理层平均年龄</td>
+							<td name='D33'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="gy_sz_aveage" name="gy_sz_aveage" value="$!jyzt.gy_sz_aveage" /></td>
+						</tr>
+						<tr>
+							<td name='C34' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>管理者在本企业内的平均从业时间</td>
+							<td name='D34'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="gy_sz_qycysj" name="gy_sz_qycysj" value="$!jyzt.gy_sz_qycysj" /></td>
+						</tr>
+						<tr>
+							<td name='C35' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>管理者在行业内的平均从业时间</td>
+							<td name='D35'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="gy_sz_hycysj" name="gy_sz_hycysj" value="$!jyzt.gy_sz_hycysj" /></td>
+						</tr>
+						<tr>
+							<td name='C36' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>开拓精神</td>
+							<td name='D36'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="gy_sz_kt" name="gy_sz_kt" value="$!jyzt.gy_sz_kt" /></td>
+						</tr>
+						<tr>
+							<td name='C37' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>团队精神</td>
+							<td name='D37'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="gy_sz_td" name="gy_sz_td" value="$!jyzt.gy_sz_td" /></td>
+						</tr>
+						<tr>
+							<td name='C38' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>道德品质</td>
+							<td name='D38'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="gy_sz_dd" name="gy_sz_dd" value="$!jyzt.gy_sz_dd" /></td>
+						</tr>
+						<tr>
+							<td rowspan='2' colspan='1' name='B39' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4064px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>经营思想和作风</td>
+							<td name='C39' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>经营思路的统一性</td>
+							<td name='D39'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="gy_sx_ty" name="gy_sx_ty" value="$!jyzt.gy_sx_ty" /></td>
+						</tr>
+						<tr>
+							<td name='C40' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>作风冒险或谨慎</td>
+							<td name='D40'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="gy_sx_js" name="gy_sx_js" value="$!jyzt.gy_sx_js" /></td>
+						</tr>
+						<tr>
+							<td rowspan='3' colspan='1' name='B41' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4064px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>关联企业的经营管理</td>
+							<td name='C41' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>债务人的母子公司运营情况</td>
+							<td name='D41'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="gy_jy_yyqk" name="gy_jy_yyqk" value="$!jyzt.gy_jy_yyqk" /></td>
+						</tr>
+						<tr>
+							<td name='C42' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>关联企业主要供应商数量</td>
+							<td name='D42'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="gy_jy_supnum" name="gy_jy_supnum" value="$!jyzt.gy_jy_supnum" /></td>
+						</tr>
+						<tr>
+							<td name='C43' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>关联企业主要经销商数量</td>
+							<td name='D43'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="gy_jy_jxnum" name="gy_jy_jxnum" value="$!jyzt.gy_jy_jxnum" /></td>
+						</tr>
+						<tr>
+							<td rowspan='2' colspan='1' name='B44' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4064px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>核心技术人员状况</td>
+							<td name='C44' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>核心技术人员在本行业平均从业时间</td>
+							<td name='D44'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="gy_js_cysj" name="gy_js_cysj" value="$!jyzt.gy_js_cysj" /></td>
+						</tr>
+						<tr>
+							<td name='C45' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>核心技术人员近两年的流失率</td>
+							<td name='D45'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="gy_js_lsl" name="gy_js_lsl" value="$!jyzt.gy_js_lsl" /></td>
+						</tr>
+						<tr>
+							<td rowspan='2' colspan='1' name='B46' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4064px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>员工队伍</td>
+							<td name='C46' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>大专以上的员工占比</td>
+							<td name='D46'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="gy_team_dzzb" name="gy_team_dzzb" value="$!jyzt.gy_team_dzzb" /></td>
+						</tr>
+						<tr>
+							<td name='C47' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>员工在本行业的平均从业时间</td>
+							<td name='D47'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="gy_team_cysj" name="gy_team_cysj" value="$!jyzt.gy_team_cysj" /></td>
+						</tr>
+						<tr>
+							<td rowspan='8' colspan='1' name='B48' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4064px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>内部控制与管理</td>
+							<td name='C48' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>组织架构</td>
+							<td name='D48'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="gy_kz_jg" name="gy_kz_jg" value="$!jyzt.gy_kz_jg" /></td>
+						</tr>
+						<tr>
+							<td name='C49' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>决策程序</td>
+							<td name='D49'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="gy_kz_jc" name="gy_kz_jc" value="$!jyzt.gy_kz_jc" /></td>
+						</tr>
+						<tr>
+							<td name='C50' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>人事管理政策之物质激励</td>
+							<td name='D50'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="gy_kz_wzjl" name="gy_kz_wzjl" value="$!jyzt.gy_kz_wzjl" /></td>
+						</tr>
+						<tr>
+							<td name='C51' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>人事管理政策之规范招聘</td>
+							<td name='D51'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="gy_kz_zp" name="gy_kz_zp" value="$!jyzt.gy_kz_zp" /></td>
+						</tr>
+						<tr>
+							<td name='C52' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>人事管理政策之晋升激励</td>
+							<td name='D52'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="gy_kz_jsjl" name="gy_kz_jsjl" value="$!jyzt.gy_kz_jsjl" /></td>
+						</tr>
+						<tr>
+							<td name='C53' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>人事管理政策之人性化管理</td>
+							<td name='D53' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="gy_kz_rxgl" name="gy_kz_rxgl" value="$!jyzt.gy_kz_rxgl" /></td>
+						</tr>
+						<tr>
+							<td name='C54' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>人事管理政策之淘汰制度</td>
+							<td name='D54'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="gy_kz_ttzd" name="gy_kz_ttzd" value="$!jyzt.gy_kz_ttzd" /></td>
+						</tr>
+						<tr>
+							<td name='C55' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>公司的发展战略</td>
+							<td name='D55'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="gy_kz_fzzl" name="gy_kz_fzzl" value="$!jyzt.gy_kz_fzzl" /></td>
+						</tr>
+						<tr>
+							<td rowspan='2' colspan='1' name='B56' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4064px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>财务管理能力</td>
+							<td name='C56' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>同等售价下本企业单位产品的平均成本/行业内产品单位产品的平均成本</td>
+							<td name='D56'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 30px;" type="text" id="gy_cw_cb" name="gy_cw_cb" value="$!jyzt.gy_cw_cb" /></td>
+						</tr>
+						<tr>
+							<td name='C57' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 9632px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>企业日均流动资金/企业日均开支</td>
+							<td name='D57'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 10464px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="gy_cw_kz" name="gy_cw_kz" value="$!jyzt.gy_cw_kz" /></td>
+						</tr>
+					</table>
+				</div>
+			</form>
+			<div class="submit">
+             <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
+             <input type="button" onclick="returnClick();" value="#i18n('button.cancel')" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout = new FormsLayout("formsId");
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	#parse ("customer/customerInforInsert/customerInforCreate_validation.js")
+	
+	$(document).ready(function() {
+		//save
+		$("#id_save_button").click(function() {
+			var url = "${modulePath}/addJyzt.json";
+			var formjson = $($formName).serialize();
+			alert(formjson);
+			$.ajax({
+				url : url,
+				type : "get",
+				data : formjson,
+				success : function(data) {
+					if (data.success) {
+						topWin.Dialog.message("保存成功！");
+					} else {
+						topWin.Dialog.message(data.message);
+					}
+				}
+			});
+		});
+		
+	});
+	
+	//取消
+	function returnClick(){
+		 window.location.href= contextPath + "/customer/basiccustomerinforUpdate/browse.page" ;
+	}
+  </script>
+   <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
+  
+</body>
+#parse ("common/iframe_page_footer.htm")

@@ -1,0 +1,122 @@
+#parse ("common/iframe_page_header.htm")
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+     <div class="place">
+        <div class="title">客户维护信息日志列表>四维评估</div>
+      </div>
+        <div class="tabplace">
+         <ul class="com-tab" >
+            <li class="tab "><a href="${contextPath}/customer/customermaintenancelog/customerinfobrowse.page?id=${customerId}"><span class="tabspan">基本信息</span></a></li>
+            <li class="tab activeTab"><a href="${contextPath}/customer/customermaintenancelog/customerswpgbrowse.page?id=${customerId}" ><span class="tabspan">四维评估</span></a></li>
+            <li class="tab"><a href="${contextPath}/customer/customermaintenancelog/customerkhzybrowse.page?id=${customerId}"><span class="tabspan">职业信息</span></a></li>
+            <li class="tab"><a href="${contextPath}/customer/customermaintenancelog/customermbxxbrowse.page?id=${customerId}"><span class="tabspan">陌拜信息</span></a></li>
+              <li class="tab"><a href="${contextPath}/customer/customermaintenancelog/customerdcdgbrowse.page?id=${customerId}"><span class="tabspan">问卷调查</span></a></li>
+                <li class="tab"><a href="${contextPath}/customer/customermaintenancelog/customertzxxbrowse.page?id=${customerId}"><span class="tabspan">台账信息</span></a></li>
+         </ul>
+        </div>
+      <form id="id_form_customer" action="">
+      <input type="hidden" id="customerId" name="customerId" value="$!customerId"/>
+       <input type="hidden" id="modifyTableName" name="modifyTableName" value="$!modifyTableName"/>
+         <input type="hidden" id="modifyTablevalue" name="modifyTablevalue" value=""/>
+        
+          <div class="form-bd" id="formsId" style="border: 0px;margin-top: 0px;padding-top: 0px;">
+			 <table class="table-bd"  bordercolor="#cccccc" border="1" style="width: 100%;text-align: center;" >
+             <colgroup>
+              <col width="30%" />
+              <col width="30%" />
+              <col width="30%" />
+              <col width="10%"/>
+             </colgroup>
+             <tr >
+              <td class="titlefc" nowrap="nowrap">字段名称</td>
+              <td class="titlefc" nowrap="nowrap">字段内容</td>
+              <td class="titlefc" nowrap="nowrap">修改时间</td>
+              <td class="titlefc" nowrap="nowrap"></td>
+            </tr>
+            </table>
+          
+		   <table class="table-bd"  bordercolor="#cccccc" border="1" style="width: 100%;text-align: center;" >
+             <colgroup>
+              <col width="30%" />
+              <col width="30%" />
+              <col width="30%" />
+              <col width="10%"/>
+             </colgroup>
+             #foreach ($customerMainLog in $result.items)
+             #set($prname = $!customerMainLog.modifyFieldName)
+                #if($prname != $orname && $orname !="")
+                <tr><td colspan="4"></td></tr>
+               <tr>
+               <td nowrap="nowrap">#mi18n("$!customerMainLog.modifyFieldName")</td>
+               <td nowrap="nowrap">$!customerMainLog.presentValue</td>
+               <td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:ss",$!customerMainLog.createdTime)</td>
+               <td nowrap="nowrap"><input type="radio" name="$!customerMainLog.modifyFieldName" value="$!customerMainLog.modifyFieldName"/></td>
+               </tr>
+                
+                #else
+                <tr>
+                <td nowrap="nowrap">#mi18n("$!customerMainLog.modifyFieldName")</td>
+                <td nowrap="nowrap">$!customerMainLog.presentValue</td>
+                <td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:ss",$!customerMainLog.createdTime)</td>
+                <td nowrap="nowrap"><input type="radio" name="$!customerMainLog.modifyFieldName" value="$!customerMainLog.modifyFieldName"/></td>
+                </tr>
+		         #end
+	          #set($orname = $prname)
+	       #end
+	       </table>
+	       </div>
+      </form>
+    <div class="submit">
+     <input id="id_save_button" type="button" value="#i18n("button.save")" class="current" />
+         <input type="button" onclick="returnClick();" value='#i18n("button.cancel")' />
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+     var layout = new FormsLayout("formsId");
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {	
+		 $("#id_save_button").click(function() {
+	    	 var str="";
+	    	 $("input:radio:checked").each(function(){
+	    		var modifyFieldName =  $(this).val();
+	    		var modifyFieldValue = $(this).parents("tr").find("td:eq(1)").text();
+	    	    str = str + modifyFieldName +"='" + modifyFieldValue +"',"	
+	    
+	    	 });
+	    	// str= str.substring(0,str.length - 1);
+	    	 $("#modifyTablevalue").val(str);
+	    	 //$("#id_form_log").submit();
+	    	 if(str !=""){
+	    	  $.ajax({
+					url : contextPath + "/customer/customermaintenancelog/update.json",
+						type : "post",
+						data : { "modifyTablevalue":$("#modifyTablevalue").val(),"modifyTableName":$("#modifyTableName").val(),"customerId":$("#customerId").val()},
+					dataType : "json",
+					 success : function(data) {
+							if (data.success) {
+								Dialog.message("修改成功！");
+								window.location.href= contextPath+"/customer/customermaintenancelog/customerswpgbrowse.page?id=${customerId}";			  
+						    }else{
+						    	 Dialog.message("修改失败！");
+						    }
+						}
+					});
+	    	 }
+	    
+	       });
+	     
+
+	});
+	function returnClick(){
+		
+		 window.location.href= contextPath + "/customer/customermaintenancelog/browse.page" ;
+	}
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")
+

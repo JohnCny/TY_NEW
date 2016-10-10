@@ -1,0 +1,78 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户经理“灵活金”透支情况统计（单位：万元）</div>
+      </div>
+      
+      <div class="inquiry">
+<!-----------搜索------------------------------------------->  
+  
+        <div class="search_tag"></div>
+  
+       
+		<!-------------- 信息显示 ------------------------------------->      
+		<div id="topDiv" class="inquiry_list inquiry_top">
+           <table> 
+            <colgroup>
+              <col width="60"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+            </colgroup>
+            <tr class="title" align="center">
+              <th nowrap="nowrap">序号</th>
+              <th nowrap="nowrap">客户经理</th>
+              
+              <th nowrap="nowrap">进件数量</th>
+              <th nowrap="nowrap">拒绝数量</th>
+              <th nowrap="nowrap">拒绝率</th>
+            
+            </tr>
+          </table>
+        </div>
+        
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+                <col width="60"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+            </colgroup>
+            #foreach ($mana in $result)
+            	<tr id="$!mana.id">
+	              <td nowrap="nowrap">$!mana.rowindex</td>
+	              <td nowrap="nowrap">$!mana.displayName</td>
+	              <td nowrap="nowrap">$!mana.jinjian</td>
+	              <td nowrap="nowrap">$!mana.rejectcount</td>
+	              <td nowrap="nowrap">$!mana.percent</td>
+	            </tr>
+            #end
+          </table>
+        </div>  
+      </div>		
+        <div class="clear"></div>
+      </div>
+    </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.createUrl = "${modulePath}/create.page";
+		opsObj.changeUrl = "${modulePath}/change.page";
+		opsObj.displayUrl = "${modulePath}/display.page";
+		opsObj.browseUrl = "${modulePath}/browse.page";
+
+		prepareOperations(opsObj);
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")

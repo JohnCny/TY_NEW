@@ -1,0 +1,81 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">系统参数配置浏览</div>
+      </div>
+      <div class="inquiry">
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="20%" />
+              <col />
+              <col />
+              <col />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">代码</th>
+              <th nowrap="nowrap">名字</th>
+              <th nowrap="nowrap">值</th>
+              <th nowrap="nowrap">创建时间</th>
+              <th nowrap="nowrap">修改时间</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="20%" />
+              <col />
+              <col />
+              <col />
+            </colgroup>
+            #foreach ($para in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!para.id"
+                  #if ($!request.getParameter("recordId") == $para.id) checked="checked" #end /></td>
+              <td nowrap="nowrap">$!para.sysCode</td>
+              <td nowrap="nowrap">$!para.sysName</td>
+              <td nowrap="nowrap">$!para.sysValues</td>
+              <td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:ss",$!para.createdTime)</td>
+              <td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:ss",$!para.modifiedTime)</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+          #btnpriv("change")<a id="id_change_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.change.hint')">#i18n("button.change")</a>#end 
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.createUrl = "${modulePath}/create.page";
+		opsObj.displayUrl = "${modulePath}/display.page";
+		opsObj.changeUrl = "${modulePath}/change.page";
+		opsObj.deleteUrl = "${modulePath}/delete.json";
+		opsObj.browseUrl = "${modulePath}/browse.page";
+		opsObj.exportUrl = "${modulePath}/export.page";
+
+		prepareOperations(opsObj);
+		
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")

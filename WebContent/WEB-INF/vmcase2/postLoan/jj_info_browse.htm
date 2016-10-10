@@ -1,0 +1,140 @@
+#parse ("common/iframe_page_header.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
+
+<body>
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+				  <div class="dvTab">
+        <ul class="com-tab">
+        	<li class="tab activeTab">借据信息</li>
+      </ul>
+        </div>
+			</div>
+			<form id="id_module_form" action="">
+				<div class="forms" id="formsId">
+					<!-- <input type="hidden" name="id" value="$!productId" /> -->
+					<table class="rule">
+						<colgroup>
+							<col width="10%" />
+							<col width="30%" />
+							<col width="10%" />
+							<col width="10%" />
+							<col width="30%" />
+						</colgroup>
+						<tr>
+							<td><label for="name">所属年份:</label></td>
+							<td><input type="text" id="suoshunf" name="suoshunf"
+								value="$!fcloanifo.year" disabled="true"/></td>
+							<td></td>
+							<td><label for="name">所属期次:</label></td>
+							<td><input type="text" id="suoshuqc" name="suoshuqc"
+								value="$!fcloanifo.times" disabled="true"/></td>
+						</tr>
+						
+					    <tr>
+							<td><label for="name">所属部门:</label></td>
+							<td><input type="text" id="suoshubm" name="suoshubm"
+								value="$!fcloanifo.deptcode" disabled="true"/></td>
+							<td></td>
+							<td><label for="name">客户编号:</label></td>
+						    <td><input type="text" id="kehubh" name="kehubh" 
+						    		   value="$!fcloanifo.custid"
+						    		   readonly="readonly" disabled="true"/>
+						</tr>
+
+						<tr>
+							<td><label for="name">客户名称:</label></td>
+							<td><input type="text" id="kehumc" name="kehumc"
+								value="$!fcloanifo.cname" disabled="true"/></td>
+							<td></td>
+							<td><label for="name">客户类型:</label></td>
+							<td><input type="text" id="kehulx" name="kehulx"
+								value="$!fcloanifo.custtype" disabled="true"/></td>
+						</tr>
+						<tr>
+							<td><label for="name">证件类型:</label></td>
+							<td><input type="text" id="cardType" name="cardType"
+								value="$!fcloanifo.cardtype" disabled="true"/></td>
+							<td></td>
+							<td><label for="name">证件号码:</label></td>
+							<td><input type="text" id="cardId" name="cardId"
+								value="$!fcloanifo.cardnum" disabled="true"/></td>
+						</tr>
+
+						<tr>
+							<td><label for="name">发放金额:</label></td>
+							<td><input type="text" id="fafangje" name="fafangje"
+								value="$!fcloanifo.money" disabled="true"/></td>
+							<td></td>
+							<td><label for="name">贷款余额:</label></td>
+							<td>
+								<input type="text" id="daikuanye" name="daikuanye"
+								value="$!fcloanifo.balamt" disabled="true"/>
+							</td>
+						</tr>
+
+						<tr>
+							<td><label for="name">欠息金额:</label></td>
+							<td><input type="text" id="qianxije" name="qianxije"
+								value="$!fcloanifo.debtinterest" disabled="true"/></td>
+							<td></td>
+							<td><label for="name">授信金额:</label></td>
+							<td><input type="text" id="shouxinje" name=""shouxinje""
+								value=" $!fcloanifo.reqlmt" disabled="true"/></td>
+						</tr>
+
+						<tr>
+							<td><label for="name">发放日期:</label></td>
+							<td><input type="text" id="fafanfrq" name="fafanfrq"
+								value="$!fcloanifo.loandate" disabled="true"/></td>
+							<td></td>
+							<td><label for="name">到期日期:</label></td>
+							<td><input type="text" id="productRiskTolerance" name="productRiskTolerance"
+								value="$!fcloanifo.enddate" disabled="true"/></td>
+						</tr>
+						
+						
+						<tr>
+							<td><label for="name">是否低风险:</label></td>
+							<td><input type="text" id="difengx" name="difengx"
+								value="$!fcloanifo.islowrisk" disabled="true"/></td>
+							<td></td>
+							<td><label for="name">状态:</label></td>
+							<td><input type="text" id="zhuangtai" name="zhuangtai"
+								value="$!fcloanifo.state" disabled="true"/></td>
+						</tr>
+						<tr>
+							<td><label for="name">逾期次数:</label></td>
+							<td><input type="text" id="difengx" name="difengx"
+								value="$!fcloanifo.overtimes" disabled="true"/></td>
+							<td></td>
+							<td><label for="name">本金逾期天数:</label></td>
+							<td><input type="text" id="zhuangtai" name="zhuangtai"
+								value="$!fcloanifo.delayamtdays" disabled="true"/></td>
+						</tr>
+						<tr>
+							<td><label for="name">利息逾期天数:</label></td>
+							<td><input type="text" id="lixi" name="lixi"
+								value="$!fcloanifo.delayinterestdays" disabled="true"/></td>
+							<td></td>
+							<td><label for="name">信用等级:</label></td>
+							<td><input type="text" id="zhuangtai" name="zhuangtai"
+								value="$!fcloanifo.creditlevel" disabled="true"/></td>
+						</tr>
+					</table>
+				</div>
+			</form>
+		
+			<div class="submit">
+				<input class="current" type="button" onclick="javascript:history.go(-1);" value="#i18n('button.back')" />
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		var layout = new FormsLayout("formsId");
+		window.top.currentWindow.setLayout(layout);
+	</script>
+</body>
+
+</html>

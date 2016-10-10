@@ -1,0 +1,30 @@
+        #if ($uiModel.browseAction.filter.controls.size()>0)
+        <div class="search_tag">#i18n("label.browse.filter")</div>
+        <div class="search">
+          <form id="submitForm">
+            <ul>
+            #foreach ($control in $uiModel.browseAction.filter.controls)
+            #if (!$control.system && !$control.hidden)
+            #set ($maxTitleWidth = $uiModel.browseAction.filter.maxTitleWidth)
+            #if ($control.getClass().getSimpleName().endsWith("Range"))
+              <li>
+              <span><label for="${control.name}Start">#mi18n("${control.name}Start",$maxTitleWidth)：#filtercontrol($control, 0)</span>
+              </li>
+              <li>
+              <span><label for="${control.name}End">#mi18n("${control.name}End",$maxTitleWidth)：#filtercontrol($control, 1)</span>
+              </li>
+            #else
+              <li>
+              <span><label for="$control.name">#mi18n("${control.name}",$maxTitleWidth)：#filtercontrol($control)</span>
+              </li>
+            #end
+            #end
+            #end
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry" title="#i18n('button.browse.hint')"
+                  style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
+        #end

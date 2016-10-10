@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validators>
+	<validator id="customer.amountadjustment">
+		<control name="approvalLimit">
+			<entry type="required" value="true" />
+		</control>
+		<control name="approveStatus">
+			<entry type="required" value="true" />
+		</control>
+		<control name="reason">
+			<entry type="required" value="true" />
+		</control>
+	</validator>
+</validators>

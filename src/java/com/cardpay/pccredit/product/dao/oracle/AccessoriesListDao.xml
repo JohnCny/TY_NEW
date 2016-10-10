@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.product.dao.AccessoriesListDao">
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.product.model.AccessoriesList">
+		<result property="id" column="ID" />
+		<result property="productId" column="PRODUCT_ID" />
+		<result property="appendixTypeCode" column="APPENDIX_TYPE_CODE" />
+	</resultMap>
+	
+	<resultMap id="AppendixResultMap" type="com.cardpay.pccredit.product.model.AppendixDict">
+		<result property="id" column="ID" />
+		<result property="typeName" column="TYPE_NAME" />
+		<result property="typeCode" column="TYPE_CODE" />
+	</resultMap>
+	
+    <resultMap id="logMap" type="com.cardpay.pccredit.intopieces.model.AppManagerAuditLog">
+		<result property="userId_1" column="USER_ID_1" />
+		<result property="userId_2" column="USER_ID_2" />
+		<result property="userId_3" column="USER_ID_3" />
+		<result property="userId_4" column="USER_ID_4" />
+		<result property="qx" 		column="QX" />
+		<result property="hkfs" 		 column="HKFS" />
+		<result property="beiZhu" 		 column="BEIZHU" />
+		<result property="examineAmount" column="EXAMINE_AMOUNT" />
+		<result property="examineLv" 	 column="EXAMINE_LV" />
+		<result property="auditType" 	 column="AUDIT_TYPE" />
+	</resultMap>
+	
+
+	<select id="findAppendixTypeCodeByProductId" resultMap="ResultMap" parameterType="java.lang.String">
+		SELECT * from ACCESSORIES_LIST
+		WHERE PRODUCT_ID=#{productId}
+	</select>
+	
+	<select id="findAppendixByProductId" resultMap="AppendixResultMap" parameterType="java.lang.String">
+		select t.* from appendix_dict t,accessories_list f where f.appendix_type_code = t.type_code and f.product_id = #{productId}
+	</select>
+	<delete id="deleteAppendixByProductId" parameterType="java.lang.String">
+	DELETE
+	FROM
+	ACCESSORIES_LIST A
+	WHERE
+	A .PRODUCT_ID = #{productId}
+	</delete>
+	
+	<select id="findAppManagerAuditLog" resultMap="logMap" parameterType="java.lang.String">
+		 select s.display_name as USERID_1,
+        d.display_name as USERID_2,
+        g.display_name as USERID_3,
+        h.display_name as USERID_4,
+        t.EXAMINE_AMOUNT as EXAMINE_AMOUNT,
+        t.EXAMINE_LV as EXAMINE_LV,
+        t.AUDIT_TYPE as AUDIT_TYPE,
+        t.qx as QX,
+        t.hkfs,
+        t.beizhu
+   from t_app_manager_audit_log t 
+   left join sys_user s on s.id = t.user_id_1
+   left join sys_user d on d.id = t.user_id_2
+   left join sys_user g on g.id = t.user_id_3
+   left join sys_user h on h.id = t.user_id_4
+        where 
+        APPLICATION_ID =#{appId}
+        <if test="auditType != null and auditType != '' ">
+			and AUDIT_TYPE =#{auditType}
+		</if>
+		order by audit_type desc
+	</select>
+	
+	
+	<select id="findAppManagerAuditById" resultMap="logMap" parameterType="java.lang.String">
+		 select * from t_app_manager_audit_log t 
+        where 
+        APPLICATION_ID =#{appId}
+	</select>
+
+</mapper>

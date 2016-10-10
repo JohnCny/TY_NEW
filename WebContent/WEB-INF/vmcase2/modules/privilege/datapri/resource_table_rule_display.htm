@@ -1,0 +1,59 @@
+#parse ("common/iframe_page_header.htm")
+<script src="${contextPath}/js/Math.uuid.js" type="text/javascript"></script>
+<script src="${contextPath}/js/jquery.base64.js" type="text/javascript"></script>
+<link href="${contextPath}/css/form.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+
+
+$(document).ready(function() {	
+	//初始化页面显示内容
+	if('${dataRule.divHtmlStr}'.length > 0){
+	 	$("#id_group_conditions").html($.base64.decode('$!{dataRule.divHtmlStr}'));	
+	 	$("#id_group_conditions").find("div").each(function(){
+			var con_div_id = $(this).attr("id");
+			var preId = con_div_id.split("_")[0];
+			$("#"+ preId + "_add_button").hide();
+			$("#"+ preId + "_delete_button").hide();
+			$("#"+ preId + "_leftBracket_select").attr("disabled","disabled");
+			$("#"+ preId + "_field_select").attr("disabled","disabled");
+			$("#"+ preId + "_op_select").attr("disabled","disabled");
+			$("#"+ preId + "_value_input").attr("disabled","disabled");
+			$("#"+ preId + "_value_input").removeAttr("title");
+			$("#"+ preId + "_value_input").css({"background-color":"#ececec","border":"1px solid #eeeeee","color":"#999"});
+			$("#"+ preId + "_rightBracket_select").attr("disabled","disabled");
+			$("#"+ preId + "_relation_select").attr("disabled","disabled");
+		});
+	}
+});
+
+</script>
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">数据权限配置</div>
+      </div>
+      <form id="id_module_form">
+        <div>
+		  <div class="form_line">
+		    <div class="form_txt">&nbsp;&nbsp;&nbsp;&nbsp;资源：</div>
+		    <input name="resTbl" value="${resourceTable.resTbl}" type="text" disabled="disabled"  class="form_input" />
+		    <div class="form_txt" style="float: left">&nbsp;&nbsp;&nbsp;&nbsp;资源名称：</div>
+		  	<input name="resTbl" value="${resourceTable.resTblCn}" type="text" disabled="disabled"  class="form_input" />
+		  </div>
+		  <div class="form_line">
+		    <div class="form_txt">&nbsp;&nbsp;&nbsp;&nbsp;条件规则：</div>
+		    <div class="form_cont">
+		      <div id="id_group_conditions" class="group">
+		      </div>
+		    </div>
+		  </div>
+		</div>
+      </form>
+      <div class="submit">
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n('button.cancel')" />
+      </div>
+    </div>
+  </div>
+</body>
+#parse ("common/iframe_page_footer.htm")

@@ -1,0 +1,106 @@
+#parse ("common/iframe_page_header.htm")
+<style>
+<!--
+.itemcols{
+	float:left;
+	width:24%;
+}
+-->
+</style>
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">风险客户</div>
+      </div>
+      <form id="id_module_form" action="${contextPath}/riskcontrol/riskcustomer/insert.json">
+        <input type="hidden" name="riskLevel" id="riskLevel"/>
+        <input type="hidden" name="customerId" value="$!request.getParameter('customerId')" />
+        <div class="forms" id="formsId">
+        	<div style="width:500px;">
+	         	#foreach($!riskAttr in $!ralist)  
+	              <div class="itemcols">
+	        		<label>
+	        		<input style="margin-left:10px;" type="radio" name="riskAttribute" value="$!riskAttr.riskAttribute" 
+	        			onclick="checkRiskAttribute(this)" riskLevel="$!riskAttr.riskLevel"/>
+	        		$!riskAttr.riskDes:
+	        			
+	        		</label>
+	        	  </div>
+	            #end   
+        	</div>
+        	<table class="rule" style="margin-top:15px;">
+	            <colgroup>
+	              <col width="5%" />
+	              <col width="95%" />
+	            </colgroup>
+	            
+	            <tr>
+	              <td><label>原因:</label></td>
+	              <td>
+	               <textarea id="riskDes" name="riskDes" rows="3" style="width:450px;"></textarea>
+	              </td>
+	            </tr>
+		     </table>
+        </div>
+      </form>
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n("button.save")" class="current" />
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n("button.cancel")" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");	
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	var validator = $('#id_module_form').validate({
+			rules : {
+				riskDes : {
+					maxlength : 200,
+					required:true,
+				},
+				riskAttribute:{
+					required:true
+				},
+			},
+			messages : {
+				riskDes : {
+					maxlength : "原因200",
+					required  : '原因不能为空',
+				},
+				riskAttribute:{required:'类型不能为空'},
+			},
+			errorPlacement : function(error, element) {
+				element.after(error);
+				if (layout) {
+					layout.resizeLayout();
+				}
+			}
+		});
+	$(document).ready(function() {	
+		#parse("common/part_create.js")
+	});
+	function checkRiskAttribute(obj){
+		$("#riskLevel").val($(obj).attr("riskLevel"));
+	}
+	
+	/* Dialog.load();
+	$.ajax({
+		type:'GET',
+		url:"${contextPath}/riskcontrol/riskcustomer//isInBlacklist.json",
+		data:{'customerId':rowId},
+		success:function(msg){
+			Dialog.closeLoad();
+			if(msg.success == true){
+				var url = "${contextPath}/riskcontrol/riskcustomer//blacklistcreate.page?customerId=" + rowId;
+				url += "&callBackUrl=" + window.location.href;
+				window.location.href = url;
+			}else{
+				Dialog.message(msg.message);
+			}
+		}
+	}); */
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

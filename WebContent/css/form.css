@@ -1,0 +1,138 @@
+/*全局通用重置浏览器默认CSS*/
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td, a {
+	margin: 0;
+	padding: 0;
+	font-size: 12px;
+	color: #333;
+}
+body, button, input, select, textarea {
+	font: 12px/1.5 tahoma, arial, \5b8b\4f53;
+}
+body {
+	overflow: hidden;
+	font-family: Helvetica, Arial, sans-serif;
+	color: #555;
+}
+html {
+	overflow: auto;
+}
+h1, h2, h3, h4, h5, h6 {
+	font-size: 100%;
+}
+address, cite, dfn, em, var {
+	font-style: normal;
+}
+code, kbd, pre, samp {
+	font-family: courier new, courier, monospace;
+}
+small {
+	font-size: 12px;
+}
+ul, ol, blockquote {
+	list-style: none;
+}
+a {
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: none;
+}
+fieldset, img, input[type=text], select, textarea {
+	border: none;
+}
+input[type=text], select, textarea {
+	border: 1px solid #dcdcdc;
+}
+input[type=text]:hover {
+	border: 1px solid #ffc600;
+}
+select:hover {
+	border: 1px solid #ffc600;
+}
+textarea:hover {
+	border: 1px solid #ffc600;
+}
+button, input, select, textarea {
+	font-size: 100%;
+}
+a:focus {
+	-moz-outline-style: none;
+} /* IE不支持 */
+a:focus {
+	outline: none;
+} /*很多网站都会加的属性*/
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+div {
+	display: block;
+}
+.clear {
+	clear: both;
+}
+
+
+
+/**************Form********************/
+
+.form {
+	width: 960px;
+	padding: 20px;
+	min-height: 320px;
+	margin: 100px auto;
+	border: 1px solid #ccc;
+}
+.form_line {
+	clear: both;
+	margin-bottom: 10px;
+}
+.form_txt {
+	display: block;
+	float: left;
+	width: 100px;
+	height: 30px;
+	line-height: 30px;
+	font-size: 14px;
+	color: #333;
+}
+.form_cont {
+	float: left;
+	width: 860px;
+}
+.group {
+	float: left;
+	border: 1px solid #ccc;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+.form_input {
+	float: left;
+	height: 30px;
+	width: 180px;
+	margin: 0 10px 10px 0;
+	padding-left: 5px;
+}
+.delete {
+	float: right;
+	display: block;
+	margin: 3px 15px;
+}
+.function {
+	float: right;
+}
+.fm_btn {
+	float: left;
+	padding: 0 20px;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	border: 1px solid #ccc;
+	background: #fafafa;
+	margin-right: 10px;
+}
+.fm_btn:hover {
+	background: #3879d9;
+	border: 1px solid #3879d9;
+	color: #fff;
+}

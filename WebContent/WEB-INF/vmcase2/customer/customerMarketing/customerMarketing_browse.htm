@@ -1,0 +1,99 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户营销计划信息列表</div>
+      </div>
+      <div class="inquiry">
+      <!-- 搜索 -->
+     
+        <!-- 信息列表 -->
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%"/>
+              <col width="20%"/>
+              <col width="15%"/>
+              <col width="10%"/>
+              <col width="10%"/>
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">客户名称</th>
+              <th nowrap="nowrap">产品名称</th>
+              <th nowrap="nowrap">营销时间</th>
+              <th nowrap="nowrap">营销方式</th>
+              <th nowrap="nowrap">营销结果</th>
+              <th nowrap="nowrap">营销结束时间</th>
+              <th nowrap="nowrap">创建方式</th>
+              <th nowrap="nowrap">实施记录数目</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%"/>
+              <col width="20%"/>
+              <col width="15%"/>
+              <col width="10%"/>
+              <col width="10%"/>
+            </colgroup>
+            #foreach ($customerMarketing in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!customerMarketing.id"
+                  #if ($!request.getParameter("recordId") == $customerMarketing.id) checked="checked" #end /></td>
+              <td nowrap="nowrap">$!customerMarketing.chineseName</td>
+              <td nowrap="nowrap">$!customerMarketing.productName</td>
+              <td nowrap="nowrap">$!customerMarketing.marketingTime</td>
+              <td nowrap="nowrap">$!customerMarketing.marketingMethod</td>
+              <td nowrap="nowrap">#dictVal("MarketingEndResult",$!customerMarketing.endResult)</td>
+              <td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:ss", $!customerMarketing.marketingEndtime)</td>
+              <td nowrap="nowrap">#dictVal("MarketingCreateWay",$!customerMarketing.createWay)</td>
+              <td nowrap="nowrap">$!customerMarketing.countAction</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+          #btnpriv("create")<a id="id_create_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.create.hint')">#i18n("button.create")</a>#end 
+          #if($!isEmpty!=true)
+          <a id="id_view_button" class="btn_g" href="javascript:void(0);" onclick="viewSub();" title="查看下属客户经理的营销计划" hidden="hidden">查看下属的营销计划</a>
+          #end
+          #btnpriv("change")<a id="id_change_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.change.hint')">#i18n("button.change")</a>#end 
+          #btnpriv("display")<a id="id_display_button" class="btn_gr" href="javascript:void(0);" title="#i18n('button.display.hint')">显示</a>#end
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.displayUrl = "${modulePath}/display.page";
+		opsObj.createUrl = "${modulePath}/createPlan.page";
+		opsObj.changeUrl = "${modulePath}/changePlan.page";
+		prepareOperations(opsObj);
+		
+	});
+	function viewSub(){
+		var url = "${modulePath}/view.page";
+		navigateTo(url);
+	}
+</script>
+#parse ("common/iframe_page_footer.htm")

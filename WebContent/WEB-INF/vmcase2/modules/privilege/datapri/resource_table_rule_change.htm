@@ -1,0 +1,471 @@
+#parse ("common/iframe_page_header.htm")
+<script src="${contextPath}/js/Math.uuid.js" type="text/javascript"></script>
+<script src="${contextPath}/js/jquery.base64.js" type="text/javascript"></script>
+<link href="${contextPath}/css/form.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+
+var addDivHtml=
+	"<div id='_{id}_con_div' class='div_condition' style='float: left;'>" +
+  	"<select id='_{id}_leftBracket_select' style='float: left; height: 30px; width: 60px; margin: 0 10px 10px 0; padding-left: 5px;'>" +
+	"  <option value='' >&nbsp;</option>" +
+    "  <option value='(' >(</option>" +
+    "  <option value='((' >((</option>" +
+    "  <option value='(((' >(((</option>" +
+    "  <option value='((((' >((((</option>" +
+    "</select>" +
+    "<select onchange=\"fieldChange('_{id}')\" id='_{id}_field_select' class='form_input'>" +
+    "${tblFieldOptionHtml}" +
+    "</select>" +
+  	"<select id='_{id}_op_select' style='float: left; height: 30px; width: 100px; margin: 0 10px 10px 0; padding-left: 5px;'>" +
+  	"  <option value='='>等于</option>" +
+  	"  <option value='<>'>不等于</option>" +
+  	"  <option value='in'>包含</option>" +
+  	"  <option value='not in'>不包含</option>" +
+  	"  <option value='>'>大于</option>" +
+  	"  <option value='<'>小于</option>" +
+  	"  <option value='>='>大于等于</option>" +
+	"  <option value='<='>小于等于</option>" +
+	"  <option value='is null'>为空</option>" +
+	"  <option value='is not null'>不为空</option>" +
+    "</select>" +
+    "<input onclick=\"selectRole('_{id}')\" id='_{id}_value_input' title='点击选择' style='float: left; height: 30px; width: 180px; margin: 0 10px 10px 0; padding-left: 5px;' readonly='readonly' value='' checkvalue=''/>"+
+    "<select id='_{id}_rightBracket_select' style='float: left; height: 30px; width: 60px; margin: 0 10px 10px 0; padding-left: 5px;'>" +
+    "	<option value='' >&nbsp;</option>" +
+    "	<option value=')' >)</option>" +
+  	"	<option value='))' >))</option>" +
+  	"	<option value=')))' >)))</option>" +
+  	"	<option value='))))' >))))</option>" +
+  	"</select>" +
+  	"<a href='javascript:void(0);' id='_{id}_add_button' onclick=\"addCondition('_{id}_con_div', '2')\" class='fm_btn' style='float: left; height: 30px; width: 60px; margin: 0 10px 10px 0; padding-left: 5px;'>增加</a>" +
+  	"<a href='javascript:void(0);' id='_{id}_delete_button' onclick=\"deleteCondition('_{id}_con_div')\" class='fm_btn' style='float: left; height: 30px; width: 60px; margin: 0 10px 10px 0; padding-left: 5px;'>删除</a>" +
+  	"<select id='_{id}_relation_select' class='form_input clear'>" +
+  	"	<option value='and'>并且</option>" +
+  	"	<option value='or'>或者</option>" +
+  	"</select>" +
+	"</div>";
+
+function fieldChange(preId){
+	
+	$("#"+preId+"_value_input").val("")
+	
+	var dateinput = "<input id='" + preId +"_value_input' style='float: left; height: 30px; width: 180px; margin: 0 10px 10px 0; padding-left: 5px;' type='text'  onmouseover='_calendar()' readonly='readonly'  value='' maxlength='30' />"
+	var textinput = "<input id='" + preId +"_value_input' title='请输入' style='float: left; height: 30px; width: 180px; margin: 0 10px 10px 0; padding-left: 5px;' value='' />"; 
+	var roleselectinput = "<input onclick=\"selectRole('" + preId + "')\" id='" + preId +"_value_input' title='点击选择' style='float: left; height: 30px; width: 180px; margin: 0 10px 10px 0; padding-left: 5px;' readonly='readonly' value='' checkvalue=''/>";
+	var orgselectinput = "<input onclick=\"selectOrg('" + preId + "')\" id='" + preId +"_value_input' title='点击选择' style='float: left; height: 30px; width: 180px; margin: 0 10px 10px 0; padding-left: 5px;' readonly='readonly' value='' checkvalue=''/>";
+	var deptselectinput = "<input onclick=\"selectDept('" + preId + "')\" id='" + preId +"_value_input' title='点击选择' style='float: left; height: 30px; width: 180px; margin: 0 10px 10px 0; padding-left: 5px;' readonly='readonly' value='' checkvalue=''/>";
+	var userselectinput = "<input onclick=\"selectUser('" + preId + "')\" id='" + preId +"_value_input' title='点击选择' style='float: left; height: 30px; width: 180px; margin: 0 10px 10px 0; padding-left: 5px;' readonly='readonly' value='' checkvalue=''/>";
+	
+	var field_select_value = $("#"+preId+"_field_select").val(); 
+	if(field_select_value.indexOf("_date") >= 0){
+		$("#"+preId+"_value_input").replaceWith(dateinput);
+	} else if(field_select_value.indexOf("currentRoleId") >= 0){
+		$("#"+preId+"_value_input").replaceWith(roleselectinput);
+	} else if(field_select_value.indexOf("currentOrgId") >= 0){
+		$("#"+preId+"_value_input").replaceWith(orgselectinput);
+	} else if(field_select_value.indexOf("currentDeptId") >= 0){
+		$("#"+preId+"_value_input").replaceWith(deptselectinput);
+	} else if(field_select_value.indexOf("currentUserId") >= 0){
+		$("#"+preId+"_value_input").replaceWith(userselectinput);
+	} else {
+		$("#"+preId+"_value_input").replaceWith(textinput);
+	}
+	
+}
+	
+function addCondition(conDivId, type){
+	var uuid = Math.uuid();
+	var newAddDivHtml = addDivHtml.replace(new RegExp("_{id}","g"), uuid);
+	if(type == '1'){
+		$("#" + conDivId).append(newAddDivHtml);	
+	} else {
+		$("#" + conDivId).after(newAddDivHtml);	 
+	}
+}
+
+function deleteCondition(conDivId){
+	$("#" + conDivId).remove();
+}
+
+function selectRole(preId) {
+	//设置默认的工作状态
+	var selectRoleIds = $("#"+preId+"_value_input").attr("checkvalue");
+	$("#roletable input[name='roleId']:checkbox").each(function(){
+		if(selectRoleIds.indexOf($(this).val().split("_")[0]) >= 0){
+			$(this).attr("checked", "checked");
+		} else {
+			$(this).removeAttr("checked");
+		}
+	});	
+	
+	Dialog.form("#selecRoleForm", "选择权限", function(){
+		var roleIds = "";
+		var roleNames = "";
+		window.top.$("#roletable input[name='roleId']:checkbox").each(function(){
+			if ($(this).attr("checked")){
+    			var arrs =  $(this).val().split("_");
+				roleIds+= "'" + arrs[0]+"',"; 
+    			roleNames += arrs[1]+",";
+    		}
+		});
+		if(roleIds.length > 0){
+			roleNames = roleNames.substring(0, roleNames.length - 1);
+			roleIds = roleIds.substring(0, roleIds.length - 1);
+		}
+		$("#"+preId+"_value_input").val(roleNames);
+		$("#"+preId+"_value_input").attr("checkvalue", roleIds);
+		window.top.$("#form_diaog").dialog("close");
+	}, null, 800, 200);
+
+}
+
+function selectOrg(preId) {
+	
+	var selectOrgIds = $("#"+preId+"_value_input").attr("checkvalue");
+	$("#orgtable input[name='orgId']:checkbox").each(function(){
+		if(selectOrgIds.indexOf($(this).val().split("_")[0]) >= 0){
+			$(this).attr("checked", "checked");
+		} else {
+			$(this).removeAttr("checked");
+		}
+	});	
+	
+	Dialog.formPosition("#selecOrgForm", "选择机构", function(){
+		var orgIds = "";
+		var orgNames = "";
+		window.top.$("#orgtable input[name='orgId']:checkbox").each(function(){
+			if ($(this).attr("checked")){
+    			var arrs =  $(this).val().split("_");
+    			orgIds+="'" + arrs[0]+"',"; 
+    			orgNames += arrs[1]+",";
+    		}
+		});
+		if(orgIds.length > 0){
+			orgNames = orgNames.substring(0, orgNames.length - 1);
+			orgIds = orgIds.substring(0, orgIds.length - 1);
+		}
+		$("#"+preId+"_value_input").val(orgNames);
+		$("#"+preId+"_value_input").attr("checkvalue", orgIds);
+		window.top.$("#form_diaog").dialog("close");
+	}, null, 800, 200, 260, 120);
+	
+}
+
+function selectDept(preId) {
+	
+	var selectDeptIds = $("#"+preId+"_value_input").attr("checkvalue");
+	$("#depttable input[name='deptId']:checkbox").each(function(){
+		if(selectDeptIds.indexOf($(this).val().split("_")[0]) >= 0){
+			$(this).attr("checked", "checked");
+		} else {
+			$(this).removeAttr("checked");
+		}
+	});	
+	
+	Dialog.formPosition("#selecDeptForm", "选择部门", function(){
+		var deptIds = "";
+		var deptNames = "";
+		window.top.$("#depttable input[name='deptId']:checkbox").each(function(){
+			if ($(this).attr("checked")){
+    			var arrs =  $(this).val().split("_");
+    			deptIds+="'" + arrs[0]+"',"; 
+    			deptNames += arrs[1]+",";
+    		}
+		});
+		if(deptIds.length > 0){
+			deptNames = deptNames.substring(0, deptNames.length - 1);
+			deptIds = deptIds.substring(0, deptIds.length - 1);
+		}
+		$("#"+preId+"_value_input").val(deptNames);
+		$("#"+preId+"_value_input").attr("checkvalue", deptIds);
+		window.top.$("#form_diaog").dialog("close");
+	}, null, 800, 200, 260, 120);
+	
+}
+
+function selectUser(preId) {
+	var selectUserIds = $("#"+preId+"_value_input").attr("checkvalue");
+	var selectUserNames = $("#"+preId+"_value_input").val();
+
+	selectUserIds = selectUserIds.replace(new RegExp("'","g"), "");
+	
+	Dialog.ajaxForm("${contextPath}/system/datapri/selectuser.page", "选择用户", "get", {"selectUserIds":selectUserIds, "selectUserNames":selectUserNames}, function(){
+		var selectUserIds = window.top.$("#selectUserIds").val();
+		var selectUserNames = window.top.$("#selectUserNames").val();
+		if(selectUserIds.indexOf(",") == 0){
+			selectUserIds = selectUserIds.substring(1, selectUserIds.length);
+			selectUserNames = selectUserNames.substring(1, selectUserNames.length);
+		}
+		var selectUserIdInstrs = "";
+		var selectUserIdsArr = selectUserIds.split(",");
+		for(i = 0; i < selectUserIdsArr.length; i++){
+			selectUserIdInstrs += "'" + selectUserIdsArr[i]+"',"; 
+		}
+		if(selectUserIdInstrs.length > 0){
+			selectUserIdInstrs = selectUserIdInstrs.substring(0, selectUserIdInstrs.length - 1);
+		}
+		$("#"+preId+"_value_input").val(selectUserNames);
+		$("#"+preId+"_value_input").attr("checkvalue", selectUserIdInstrs);
+		
+		return true;
+	}, null, 800, 400);
+	
+}
+
+$(document).ready(function() {	
+	
+	//初始化页面显示内容
+	if('${dataRule.divHtmlStr}'.length > 0){
+	 	$("#id_group_conditions").html($.base64.decode('$!{dataRule.divHtmlStr}'));	
+	}
+	
+	$("#id_browse_button").click(function() {
+		
+		var ruleSqlBrowse = "";
+		var divLength = $("#id_group_conditions").find("div").length;
+		var divCount = 0;
+		$("#id_group_conditions").find("div").each(function(){
+			divCount = divCount + 1;
+			var con_div_id = $(this).attr("id");
+			var preId = con_div_id.split("_")[0];
+			var leftBracketValue = $("#"+ preId + "_leftBracket_select").val();
+			var fieldSelectValue = $("#"+ preId + "_field_select").val();
+			var fieldSelectValueName = $("#"+ preId + "_field_select").find("option:selected").text();
+			var opSelectValue = $("#"+ preId + "_op_select").val();
+			var valueInputValueNames = $("#"+ preId + "_value_input").val();
+			if(opSelectValue == "in"){
+				valueInputValueNames = "(" + valueInputValueNames + ")";
+			}
+			if(opSelectValue == "not in"){
+				valueInputValueNames = "(" + valueInputValueNames + ")";
+			}
+			if(opSelectValue == "is null"){
+				valueInputValueNames ="";
+			}
+			if(opSelectValue == "is not null"){
+				valueInputValueNames ="";
+			}
+			var rightBracketValue = $("#"+ preId + "_rightBracket_select").val();
+			var relationSelectValueName = $("#"+ preId + "_relation_select").find("option:selected").text();
+			
+			if(divCount == divLength){
+				ruleSqlBrowse = relationSelectValueName + " (" + ruleSqlBrowse + " " + leftBracketValue + " " + fieldSelectValueName + " " + opSelectValue + " " + valueInputValueNames + " " + rightBracketValue + ")";
+			} else {
+				ruleSqlBrowse += (" " + leftBracketValue + " " + fieldSelectValueName + " " + opSelectValue + " " + valueInputValueNames + " " + rightBracketValue + " " + relationSelectValueName);
+			}
+		});
+		Dialog.message(ruleSqlBrowse);
+	});
+	
+	$("#id_save_button").click(function() {
+		var ruleSql = "";
+		var divLength = $("#id_group_conditions").find("div").length;
+		var divCount = 0;
+		$("#id_group_conditions").find("div").each(function(){
+			divCount = divCount + 1;
+			var con_div_id = $(this).attr("id");
+			var preId = con_div_id.split("_")[0];
+			var leftBracketValue = $("#"+ preId + "_leftBracket_select").val();
+			$("#"+ preId + "_leftBracket_select").find("option:selected").attr("selected","selected");
+			$("#"+ preId + "_leftBracket_select").find("option:not(:selected)").removeAttr("selected");
+			var fieldSelectValue = $("#"+ preId + "_field_select").val();
+			$("#"+ preId + "_field_select").find("option:selected").attr("selected","selected");
+			$("#"+ preId + "_field_select").find("option:not(:selected)").removeAttr("selected");
+			var opSelectValue = $("#"+ preId + "_op_select").val();
+			$("#"+ preId + "_op_select").find("option:selected").attr("selected","selected");
+			$("#"+ preId + "_op_select").find("option:not(:selected)").removeAttr("selected");
+			var valueInputValue = $("#"+ preId + "_value_input").val();
+			$("#"+ preId + "_value_input").attr("value", valueInputValue);
+			if(opSelectValue == "in"){
+				valueInputValue =  "(" +  $("#"+ preId + "_value_input").attr("checkvalue") + ")";
+			}
+			if(opSelectValue == "not in"){
+				valueInputValue =  "(" +  $("#"+ preId + "_value_input").attr("checkvalue") + ")";
+			}
+			if(opSelectValue == "is null"){
+				valueInputValue = "";
+			}
+			if(opSelectValue == "is not null"){
+				valueInputValue = "";
+			}
+			if("${currentRoleId}${currentOrgId}${currentDeptId}${currentUserId}".indexOf(fieldSelectValue) >= 0
+					&& "= <>".indexOf(opSelectValue) >= 0){
+				valueInputValue = $("#"+ preId + "_value_input").attr("checkvalue");
+			}
+			var rightBracketValue = $("#"+ preId + "_rightBracket_select").val();
+			$("#"+ preId + "_rightBracket_select").find("option:selected").attr("selected","selected");
+			$("#"+ preId + "_rightBracket_select").find("option:not(:selected)").removeAttr("selected");
+			var relationSelectValue = $("#"+ preId + "_relation_select").val();
+			$("#"+ preId + "_relation_select").find("option:selected").attr("selected","selected");
+			$("#"+ preId + "_relation_select").find("option:not(:selected)").removeAttr("selected");
+			//表字段  字段名_类型(string, number, date) 
+			if(fieldSelectValue.lastIndexOf("_") > 0){
+				var fieldSelectValueType = fieldSelectValue.substring(fieldSelectValue.lastIndexOf("_") + 1, fieldSelectValue.length);
+				fieldSelectValue = fieldSelectValue.substring(0, fieldSelectValue.lastIndexOf("_"));
+				if(fieldSelectValueType == "string"){
+					valueInputValue = "'" + valueInputValue + "'";
+				} else if(fieldSelectValueType == "date"){
+					$("#"+ preId + "_value_input").attr("onmouseover", "_calendar()");
+					valueInputValue = "to_date('" + valueInputValue + "', 'yyyy-MM-dd')";
+				}
+			}
+			
+			if(divCount == divLength){
+				ruleSql = relationSelectValue + " (" + ruleSql + leftBracketValue + " " + fieldSelectValue + " " + opSelectValue + " " + valueInputValue + " " + rightBracketValue + ")";
+			} else {
+				ruleSql += (" " + leftBracketValue + " " + fieldSelectValue + " " + opSelectValue + " " + valueInputValue + " " + rightBracketValue + " " + relationSelectValue + " ");
+			}
+		});
+
+		//div base64编码
+		var divHtmlStrBase64 = "";
+		if(divLength != 0){
+			divHtmlStrBase64 = $.base64.encode($("#id_group_conditions").html());			
+		} 
+		
+		Dialog.load();
+		$.ajax({
+			url : "${contextPath}/system/datapri/update.json",
+			type : "post",
+			data : {"id" : "$!{dataRule.id}",
+					"resTblId" : "${resourceTable.id}",
+					"ruleSql": ruleSql,
+					"divHtmlStr": divHtmlStrBase64},
+			success : function(sdata) {
+				Dialog.closeLoad();
+				if (sdata.success) {
+					Dialog.message(sdata.message);		
+				} else {
+					Dialog.message(sdata.message);
+				}
+			},
+			error : function(data, txtStatus, jqXhr) {
+				Dialog.closeLoad();
+				Dialog.message("设置错误,请检查。");
+			}
+		});
+	});
+	
+});
+
+</script>
+<body>
+
+	<div id="selectDeptDialog" title="选择部门" style="display: none; resize: none; z-index: 2000">
+      <form id="selecDeptForm">
+        <div class="forms">
+          <table id="depttable" style="border: 1px solid #dcdcdc;margin-bottom: 10px;">
+			<colgroup>
+				<col width="40%" />
+			</colgroup>
+			#foreach ($item in $deptTreeNodes)
+			 <tr>
+		 	   #set($bankStr="")
+		 	   #foreach($bc in [1..${item.level}])
+		 	  	  #set($bankStr= $bankStr + "&nbsp;&nbsp;&nbsp;")
+		 	   #end
+		 	   #if($item.type=="org")
+		 	   	  <td style="height: 22px; line-height: 22px">$!{bankStr} ${item.name}</td>
+		 	   #else
+		 	      <td style="height: 22px; line-height: 22px">$!{bankStr}<input type="checkbox" name="deptId" value="${item.id}_$item.name"/> $item.name</td> 
+		 	   #end
+    		 </tr>	
+		    #end
+		  </table>
+        </div>
+      </form>
+  </div>
+
+	<div id="selectOrgDialog" title="选择机构" style="display: none; resize: none; z-index: 2000">
+      <form id="selecOrgForm">
+        <div class="forms">
+          <table id="orgtable" style="border: 1px solid #dcdcdc;margin-bottom: 10px;">
+			<colgroup>
+				<col width="40%" />
+			</colgroup>
+			#foreach ($item in $orgList)
+			 <tr>
+			 	  #set($bankStr="")
+			 	  #foreach($bc in [1..${item.seqNo}])
+			 	  	  #set($bankStr= $bankStr + "&nbsp;&nbsp;&nbsp;")
+			 	  #end
+			 	  <td style="height: 22px; line-height: 22px">${bankStr}<input type="checkbox" name="orgId" value="${item.id}_$item.name"/> $item.name</td>
+		     </tr>
+		    #end
+		  </table>
+        </div>
+      </form>
+  </div>
+    
+	<div id="selectRoleDialog" title="选择角色" style="display: none; resize: none; z-index: 2000">
+      <form id="selecRoleForm">
+        <div class="forms">
+          <table id="roletable" style="border: 1px solid #dcdcdc;margin-bottom: 10px;">
+			<colgroup>
+			    <col width="5%" />
+				<col width="24%" />
+				<col width="24%" />
+				<col width="24%" />
+				<col width="24%" />
+			</colgroup>
+		      #set($total = ($roles.size()/4)) 
+		      #foreach ($!index in [0 .. $total])
+		      <tr>
+			      <td>&nbsp;</td>
+				  #set($current = $!index * 4 ) 
+				  #if($current<$roles.size())
+				     <td><input type="checkbox" name="roleId" value="${roles.get($current).id}_${roles.get($current).name}"/> $roles.get($current).name</td>
+				  #end
+				  
+				  #set($current = $!index * 4+1 )
+				  #if($current<$roles.size())
+				     <td><input type="checkbox" name="roleId" value="${roles.get($current).id}_${roles.get($current).name}"/> $roles.get($current).name</td>
+				  #end
+				  
+				  #set($current = $!index * 4+2 )
+				  #if($current<$roles.size())
+				     <td><input type="checkbox" name="roleId" value="${roles.get($current).id}_${roles.get($current).name}"/> $roles.get($current).name</td>
+				  #end
+	               
+				  #set($current = $!index * 4+3 )
+				  #if($current<$roles.size())
+				     <td><input type="checkbox" name="roleId" value="${roles.get($current).id}_${roles.get($current).name}"/> $roles.get($current).name</td>
+				  #end
+              </tr>
+              #end
+			</table>
+        </div>
+      </form>
+  </div>
+
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">数据权限配置</div>
+      </div>
+      <form id="id_module_form">
+        <div>
+		  <div class="form_line">
+		    <div class="form_txt">&nbsp;&nbsp;&nbsp;&nbsp;资源：</div>
+		    <input name="resTbl" value="${resourceTable.resTbl}" type="text" disabled="disabled"  class="form_input" />
+		  	<div class="form_txt" style="float: left">&nbsp;&nbsp;&nbsp;&nbsp;资源名称：</div>
+		  	<input name="resTbl" value="${resourceTable.resTblCn}" type="text" disabled="disabled"  class="form_input" />
+		  	<a href="javascript:void(0);" onclick="addCondition('id_group_conditions', '1')" class="fm_btn" style="float: left; height: 30px; width: 60px; margin: 0 10px 10px 0; padding-left: 5px;">增加</a>
+		  </div>
+		  <div class="form_line">
+		    <div class="form_txt">&nbsp;&nbsp;&nbsp;&nbsp;条件规则：</div>
+		    <div class="form_cont">
+		      <div id="id_group_conditions" class="group">
+		      </div>
+		    </div>
+		  </div>
+		</div>
+      </form>
+      <div class="submit">
+      	<input id="id_browse_button" type="button" value="预览规则" class="current" />
+        <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n('button.cancel')" />
+      </div>
+    </div>
+  </div>
+</body>
+#parse ("common/iframe_page_footer.htm")

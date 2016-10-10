@@ -1,0 +1,137 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">#mi18n("browse")</div>
+      </div>
+      <div class="inquiry">
+        <div class="search_tag">#i18n("label.browse.filter")</div>
+        <div class="search">
+          <form id="submitForm">
+            <ul>
+              <li>
+                <span>#mi18n("seqNo",4)：<input type="text" name="seqNo" value='$!request.getParameter('
+                    seqNo')' maxlength="30" /></span>
+              </li>
+              <li>
+                <span>#mi18n("name",4)：<input type="text" name="name" value='$!request.getParameter('
+                    name')' maxlength="30" /></span>
+              </li>
+              <li>
+                <span>#mi18n("type",4)：<select id="type" name="type">
+                    <option value="">#mi18n("type.all")</option>
+                    #dict("ProductType", $!result.filter.type)
+                  </select>
+                </span>
+              </li>
+              <li>
+                <span>#mi18n("nativeName",4)：<input type="text" name="nativeName" value='$!request.getParameter('
+                    nativeName')' maxlength="30" /></span>
+              </li>
+              <li>
+                <span>#mi18n("sampleDateStart",4)：<input type="text" name="sampleDateStart" id="sampleDateStart" onmouseover="_calendar({ maxDate:'#sampleDateEnd', btnBar:false})"
+                    readonly="readonly"  value="$!request.getParameter('sampleDateStart')"
+                    maxlength="30" /></span>
+              </li>
+              <li>
+                <span>#mi18n("sampleDateEnd",4)：<input type="text" name="sampleDateEnd" id="sampleDateEnd" onmouseover="_calendar({ minDate:'#sampleDateStart',btnBar:false })"
+                    readonly="readonly"  value="$!request.getParameter('sampleDateEnd')"
+                    maxlength="30" /></span>
+              </li>
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="5%" />
+              <col width="10%" />
+              <col />
+              <col />
+              <col />
+              <col width="40%" />
+              <col />
+              <col />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">#orderby("seqNo")</th>
+              <th nowrap="nowrap">#orderby("name")</th>
+              <th nowrap="nowrap">#orderby("type")</th>
+              <th nowrap="nowrap">#orderby("nativeName")</th>
+              <th nowrap="nowrap">#orderby("sampleDate")</th>
+              <th nowrap="nowrap">#mi18n("description")</th>
+              <th nowrap="nowrap">#orderby("createdTime")</th>
+              <th nowrap="nowrap">#mi18n("modifiedTime")</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="5%" />
+              <col width="10%" />
+              <col />
+              <col />
+              <col />
+              <col width="40%" />
+              <col />
+              <col />
+            </colgroup>
+            #foreach ($sample in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!sample.id"
+                  #if ($!request.getParameter("recordId") == $sample.id) checked="checked" #end /></td>
+              <td nowrap="nowrap">$!sample.seqNo</td>
+              <td nowrap="nowrap">$!sample.name</td>
+              <td nowrap="nowrap">#dictVal("ProductType", $!sample.type)</td>
+              <td nowrap="nowrap">$!sample.nativeName</td>
+              <td nowrap="nowrap">$!date.format("yyyy-MM-dd", $!sample.sampleDate)</td>
+              <td nowrap="nowrap">$escape.html($!sample.description)</td>
+              <td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:ss",$!sample.createdTime)</td>
+              <td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:ss",$!sample.modifiedTime)</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+          #btnpriv("create")<a id="id_create_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.create.hint')">#i18n("button.create")</a>#end 
+          #btnpriv("change")<a id="id_change_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.change.hint')">#i18n("button.change")</a>#end 
+          #btnpriv("delete")<a id="id_delete_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.delete.hint')">#i18n("button.delete")</a>#end
+          #btnpriv("display")<a id="id_display_button" class="btn_gr" href="javascript:void(0);" title="#i18n('button.display.hint')">#i18n("button.display")</a>#end
+          #btnpriv("export")<a id="id_export_button" class="btn_gr" href="javascript:void(0);" title="#i18n('button.export.hint')">#i18n("button.export")</a>#end
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.createUrl = "${modulePath}/create.page";
+		opsObj.displayUrl = "${modulePath}/display.page";
+		opsObj.changeUrl = "${modulePath}/change.page";
+		opsObj.deleteUrl = "${modulePath}/delete.json";
+		opsObj.browseUrl = "${modulePath}/browse.page";
+		opsObj.exportUrl = "${modulePath}/export.page";
+
+		prepareOperations(opsObj);
+		
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")

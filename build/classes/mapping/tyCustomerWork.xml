@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="GBK"?>
+
+<resultMap id="BaseResultMap" type="com.cardpay.pccredit.bank.model.XmAccCredit">
+	<!-- <result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/> -->
+	<result column="KHNM" jdbcType="VARCHAR" index="1" />
+
+	<result column="KSRQ" jdbcType="VARCHAR" index="2" />
+
+	<result column="JSRQ" jdbcType="VARCHAR" index="3" />
+	
+	<result column="DWMC" jdbcType="VARCHAR" index="4" />
+
+	<result column="DWXZ" jdbcType="VARCHAR" index="5" />
+
+	<result column="DWDH" jdbcType="VARCHAR" index="6" />
+
+	<result column="DWDZ" jdbcType="VARCHAR" index="7" />
+
+	<result column="DWYZBM" jdbcType="VARCHAR" index="8" />
+
+	<result column="SZBM" jdbcType="VARCHAR" index="9" />
+
+	<result column="ZC" jdbcType="VARCHAR" index="11" />
+
+	<result column="HYXZ" jdbcType="VARCHAR" index="12" />
+
+	<result column="NSR" jdbcType="VARCHAR" index="14" />
+	
+	<result column="BZ" jdbcType="VARCHAR" index="15" />
+
+</resultMap>

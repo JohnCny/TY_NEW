@@ -1,0 +1,119 @@
+#parse ("common/iframe_page_header.htm")
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+       <div class="place">
+       <div class="title">客户经理绩效参数配置</div>
+      </div>
+       #parse ("common/place_tab_jlcj.htm")
+      <form id="id_module_form" action="${contextPath}/manager/managerPromotionRule/saveJxParam.page" method="post">
+        <div class="form-bd" id="formsId" style="padding-top: 0px;">
+          <input type="hidden" name="id" value="$!parmeter.id">
+          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%">
+            <colgroup>
+              <col width="9%" />
+              <col width="9%" />
+              <col width="9%" />
+              <col width="9%" />
+			  <col width="9%" />
+			  <col width="9%" />
+			  <col width="9%" />
+			  <col width="9%" />
+			  <col width="9%" />
+			  <col width="9%" />
+			  <col width="9%" />
+            </colgroup>
+            <tr>
+                <td class="titlefc3" >主办客户经理计提单价(元/户)</td>
+                <td class="titlefc3" >协办客户经理计提单价(元/户)</td>
+                <td class="titlefc3" >管户维护奖金(元/户)</td>
+                <td class="titlefc3" >FTP价格(%)</td>
+                <td class="titlefc3" >利润提成系数(A)(%)</td>
+                <td class="titlefc3" >风险保障系数(R-信用类)</td>
+                <td class="titlefc3" >风险保障系数(R-保证类)</td>
+                <td class="titlefc3" >风险保障系数(R-抵押类)</td>
+                <td class="titlefc3" >逾期扣款(元/笔/天)</td>
+                <td class="titlefc3" >风险管理岗岗位津贴</td>
+                <td class="titlefc3" >风险保证金返回年限(月)</td>
+            </tr>
+            </table>
+             <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%">
+            <colgroup>
+              <col width="9%" />
+              <col width="9%" />
+              <col width="9%" />
+              <col width="9%" />
+			  <col width="9%" />
+			  <col width="9%" />
+			  <col width="9%" />
+			  <col width="9%" />
+			  <col width="9%" />
+			  <col width="9%" />
+			  <col width="9%" />
+            </colgroup>
+            #if($parmeters.size()!=0)
+	             #foreach($parmeter in $!parmeters)
+		            <tr>
+		              <td><input class="rinpsty" type="text" class="rinpstynum" id="A" name="A" value="$!parmeter.A" /></td>
+		              <td><input class="rinpsty" type="text" class="rinpstynum" id="B" name="B" value="$!parmeter.B" /></td>
+		              <td><input class="rinpsty" type="text" class="rinpstynum" id="D" name="D" value="$!parmeter.D" /></td>
+		              <td><input class="rinpsty" type="text" class="rinpstynum" id="E" name="E" value="$!parmeter.E" /></td>
+		              <td><input class="rinpsty" type="text" class="rinpstynum" id="F" name="F" value="$!parmeter.F" /></td>
+		              <td><input class="rinpsty" type="text" class="rinpstynum" id="G" name="G" value="$!parmeter.G" /></td>
+		              <td><input class="rinpsty" type="text" class="rinpstynum" id="H" name="H" value="$!parmeter.H" /></td>
+		              <td><input class="rinpsty" type="text" class="rinpstynum" id="I" name="I" value="$!parmeter.I" /></td>
+		              <td><input class="rinpsty" type="text" class="rinpstynum" id="J" name="J" value="$!parmeter.J" /></td>
+		              <td><input class="rinpsty" type="text" class="rinpstynum" id="L" name="L" value="$!parmeter.L" /></td>
+		              <td><input  type="text" class="rinpstynum" id="K" name="K" value="$!parmeter.K" /></td>
+		            </tr>
+	            #end
+            #else
+            	#foreach($dict in $!dictItems)
+		            <tr>
+		              <td><input class="rinpsty" type="text" class="rinpstynum" id="A" name="A" value="" /></td>
+		              <td><input class="rinpsty" type="text" class="rinpstynum" id="B" name="B" value="" /></td>
+		              <td><input class="rinpsty" type="text" class="rinpstynum" id="D" name="D" value="" /></td>
+		              <td><input class="rinpsty" type="text" class="rinpstynum" id="E" name="E" value="" /></td>
+		              <td><input class="rinpsty" type="text" class="rinpstynum" id="F" name="F" value="" /></td>
+		              <td><input class="rinpsty" type="text" class="rinpstynum" id="G" name="G" value="" /></td>
+		              <td><input class="rinpsty" type="text" class="rinpstynum" id="H" name="H" value="" /></td>
+		              <td><input class="rinpsty" type="text" class="rinpstynum" id="I" name="I" value="" /></td>
+		              <td><input class="rinpsty" type="text" class="rinpstynum" id="J" name="J" value="" /></td>
+		              <td><input class="rinpsty" type="text" class="rinpstynum" id="L" name="L" value="" /></td>
+		              <td><input  type="text" class="rinpstynum" id="K" name="K" value="" /></td>
+		            </tr>
+		         #end
+		    #end
+          </table>
+        </div>
+      </form>
+
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
+      </div>
+    </div>
+  </div>
+  
+  <script src='${contextPath}/js/maintenanceAccountManager/maintenanceAccountManager.js'></script> 
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");			
+	window.top.currentWindow.setLayout(layout);
+			
+	#set ($formName = "'#id_module_form'")
+	$(document).ready(function() {	
+		$("li").removeClass("activeTab");
+		$("li:eq(0)").addClass("activeTab");
+	     $("#id_save_button").click(function() {
+	    	var leng = 0;
+	    	 leng = $(".error").length;
+	    	if(leng > 0){
+	    		return;
+	    	}else{
+			  $("#id_module_form").submit();  
+	    	}
+	       });
+
+	});
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

@@ -1,0 +1,89 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">修改客户经理再培训计划</div>
+      </div>
+      <form id="id_module_form" action="${modulePath}/updateRetrainingMananger.json">
+      	<input type="hidden" name="id" value="$!recordId" id="id"/>
+        <div class="forms" id="formsId">
+         <table class="rule" border="1" bordercolor="#CCCCCC">
+          <caption>客户经理再培训计划</caption>
+            <colgroup>
+              <col width="10%" />
+              <col width="40%" />
+              <col width="10%" />
+              <col width="40%" />
+            </colgroup>
+            <tr>
+              <td><label>考试成绩:</label></td>
+              <td>
+				<input type="text" id="testScore" name="testScore" value="$!accountManagerRetraining.testScore" />              
+              <td><label>测评成绩:</label></td>
+              <td>
+              	<input type="text" id="evaluationScore" name="evaluationScore" value="$!accountManagerRetraining.evaluationScore" />
+              </td>
+            </tr>
+            <tr>
+              <td><label>实施结论:</label></td>
+              <td colspan="3">
+               <textarea id="implementationConclusion" name="implementationConclusion" rows="3">$!accountManagerRetraining.implementationConclusion</textarea>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </form>
+      
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n('button.cancel')" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");			
+	window.top.currentWindow.setLayout(layout);
+			
+	#set ($formName = "'#id_module_form'")
+	var validator = $('#id_module_form').validate({
+			rules : {
+				implementationConclusion : {
+					maxlength : 200.0
+				}
+			},
+			messages : {
+				implementationConclusion : {
+					maxlength : "培训地点长度最大为100"
+				}
+			},
+			errorPlacement : function(error, element) {
+				element.after(error);
+				if (layout) {
+					layout.resizeLayout();
+				}
+			}
+		});
+	$(document).ready(function() {		
+		$("#id_save_button").click(function() {
+	        if ($($formName).valid()) {
+	        var formjson = $($formName).serialize();
+			$.ajax({
+				type:'GET',
+				url:$($formName).attr("action"),
+				data: formjson,
+				success:function(msg){
+					if(msg.success == true){
+						#set ($callBackUrl = $request.getParameter('callBackUrl').replaceAll("recordId=.*",""))
+						navigateTo("${callBackUrl}");
+					}else{
+						Dialog.message(msg.message);
+					}
+				}
+			});
+	        }
+	        });
+	});
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

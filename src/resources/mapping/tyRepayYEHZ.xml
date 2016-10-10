@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="GBK"?>
+
+<resultMap>
+    <!-- <result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/> -->
+	<result column="JJH" jdbcType="VARCHAR" index="1" />
+
+	<result column="YWBH" jdbcType="VARCHAR" index="2" />
+
+	<result column="KHH" jdbcType="VARCHAR" index="3" />
+
+	<result column="ZHTBH" jdbcType="VARCHAR" index="4" />
+
+	<result column="JGDM" jdbcType="VARCHAR" index="5" />
+
+	<result column="KMH" jdbcType="VARCHAR" index="7" />
+
+	<result column="HBZL" jdbcType="VARCHAR" index="6" />
+
+	<result column="JKJE" jdbcType="VARCHAR" index="8" />
+
+	<result column="QXRQ" jdbcType="VARCHAR" index="9" />
+
+	<result column="DKYE" jdbcType="VARCHAR" index="10" />
+
+	<result column="BNQX" jdbcType="VARCHAR" index="11" />
+
+	<result column="BWQX" jdbcType="VARCHAR" index="12" />
+
+	<result column="WJFL1" jdbcType="VARCHAR" index="13" />
+
+	<result column="WJFL2" jdbcType="VARCHAR" index="14" />
+
+	<result column="WJFL3" jdbcType="VARCHAR" index="15" />
+
+	<result column="WJFL4" jdbcType="VARCHAR" index="16" />
+
+	<result column="WJFL5" jdbcType="VARCHAR" index="17" />
+
+	<result column="SHBJ" jdbcType="VARCHAR" index="18" />
+
+	<result column="SHLX" jdbcType="VARCHAR" index="19" />
+
+	<result column="LXJS" jdbcType="VARCHAR" index="20" />
+
+	<result column="KSQXRQ" jdbcType="VARCHAR" index="21" />
+
+	<result column="YHXBJ" jdbcType="VARCHAR" index="22" />
+
+	<result column="YHXLX" jdbcType="VARCHAR" index="23" />
+	
+	<result column="ZHHKR" jdbcType="VARCHAR" index="26" />
+	
+	<result column="BQLL" jdbcType="VARCHAR" index="27" />
+
+
+</resultMap>

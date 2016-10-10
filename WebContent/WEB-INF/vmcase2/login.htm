@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/jquery-ui-1.10.3.custom.css" />
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/css.css"></link>
+<script src='${contextPath}/common/js/common/jquery.min.js'></script>
+<script src="${contextPath}/common/js/common/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="${contextPath}/common/js/common/common.js"></script>
+<script src="${contextPath}/common/js/common/dialog.js"></script>
+<script type="text/javascript" src="${uicasePath}/js/adminLogin.js"></script>
+
+<title>#i18n("window.title")</title>
+</head>
+
+<body class="loginPage">
+
+  <div class="clearfix">
+    <div class="login_top">
+      <div class="wrap">
+      </div>
+    </div>
+    <form action="${contextPath}/login.json" id="userInfo" method="get">
+      <div class="login_cont">
+        <div class="bg">
+          <div class="bg_img">
+            <div class="wrap clearfix">
+              <div class="left">
+                <p class="p1">#i18n("system.company")</p>
+                <p class="p2">#i18n("system.title")</p>
+              </div>
+              <div class="login_box">
+                <span class="corner_l"></span> <span class="corner_r"></span>
+                <div class="hd">用户登录</div>
+                <div class="bd">
+                  <input type="hidden" id="redirectToCas" value="${redirectToCas}" />
+                  <!-- <div>
+                    <input type="radio" value="1" id="loginTypeLocal" name="loginType" checked="checked" style="cursor:pointer;" />
+                    <label for="loginTypeLocal" style="cursor:pointer;">本地用户&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                    <input type="radio" value="2" id="loginTypeAD" name="loginType" style="cursor:pointer;" />
+                    <label for="loginTypeAD" style="cursor:pointer;">AD用户</label>
+                  </div>
+                   -->
+                  <div class="input_box">
+                    <img src="${uicasePath}/images/icon_5.png" />
+                    <input type="text" placeholder="账号" name="username"/>
+                  </div>
+                  <div class="input_box">
+                    <img src="${uicasePath}/images/icon_6.png" />
+                    <input type="password" placeholder="密码" name="password"/>
+                  </div>
+                  <!-- <div class="error_info">密码错误！</div> -->
+                  <div class="act clearfix">
+                    <div class="remember f_l">
+                      <label class="check"> <input type="checkbox"/> <a href="#">记住用户名</a>
+                      </label>
+                    </div>
+                    <a href="javascript:void(0);" class="login_btn">登&nbsp;录</a>
+                  </div>
+                  <!-- 美化checkbox  -->
+                  <script type="text/javascript">
+					$(function() {
+						$(".remember label").click(function() {
+							if ($(this).hasClass("check")) {
+								$(this).removeClass("check");
+								return false;
+							} else {
+								$(this).addClass("check");
+								return false;
+							}
+
+						});
+					});
+				</script>
+                  <div class="link">
+                    <a href="#">忘记密码</a>
+                    &nbsp;&nbsp;|&nbsp;
+                    <a href="#">帮助</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+<script language="javascript">
+if (window.top != window) {
+	window.top.location.href = window.location.href;
+}
+</script>
+</body>
+</html>

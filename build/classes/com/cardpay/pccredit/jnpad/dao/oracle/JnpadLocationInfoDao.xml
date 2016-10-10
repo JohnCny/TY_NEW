@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.jnpad.dao.JnpadLocationInfoDao">
+    <resultMap id="managerLocation" type="com.cardpay.pccredit.jnpad.model.LocationInfoForm">
+		 <result property="userId" column="userId" />
+		 <result property="userName" column="userName" />
+		 <result property="longitude" column="longitude" />
+		 <result property="latitude" column="latitude" />
+		 <result property="updateTime" column="updateTime" />
+	</resultMap>
+    
+    <resultMap id="managerInfo" type="com.cardpay.pccredit.jnpad.model.ManagerInfoForm">
+		<result column="EXTERNAL_ID" property="EXTERNAL_ID" />
+		<result column="ID" property="ID" />
+		<result column="DISPLAY_NAME" property="DISPLAY_NAME" />
+	</resultMap>
+    
+    <select id="managerCount" resultType="int">
+		select count(*)
+		from
+		managerlocationInfo p
+		where 1=1
+		AND (
+		p.userId = #{managerId}
+		)
+	</select>
+    
+    <select id="selectManagerInforById" resultMap="managerInfo">
+		 select  s.EXTERNAL_ID , s.display_name 
+		 from sys_user s
+		 where 1=1
+		 AND (
+		s.id = #{managerId}
+		)
+        
+    </select>
+    
+    <insert id="insertManagerLocation">
+        INSERT INTO managerlocationInfo
+        (USERID,
+        UPDATETIME,
+        USERNAME,
+        LONGITUDE,
+        LATITUDE
+        )
+        VALUES(
+        #{userId},
+        #{updateTime},
+        #{userName},
+        #{longitude},
+        #{latitude}
+        )
+    </insert>
+    <update id="updateManagerLocation">
+        UPDATE managerlocationInfo SET
+        UPDATETIME = #{updateTime},
+        LONGITUDE = #{longitude},
+        LATITUDE = #{latitude}
+        WHERE updatetime =(select min(updatetime) 
+        from managerlocationInfo
+         where userid =#{userId})
+    </update>
+    
+    <select id="selectManagerLocationById" resultMap="managerLocation">
+		 select  * 
+		 from managerlocationInfo s
+		 where 1=1
+		 AND (
+		s.USERID = #{managerId}
+		)
+        
+    </select>
+    
+    <select id="selectlastManagerLocationById" resultMap="managerLocation">
+		 select  * 
+		 from managerlocationInfo
+		 where
+		 updateTime=(
+		 SELECT MAX(updateTime)
+		 FROM managerlocationInfo 
+		 WHERE 1=1
+		 AND (
+		USERID = #{managerId}
+		))
+        
+    </select>
+</mapper>

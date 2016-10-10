@@ -1,0 +1,141 @@
+#parse ("common/iframe_page_header.htm")
+<script src="${contextPath}/js/intopieces/intopieces.js" charset="utf-8"></script>
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">进件查询</div>
+      </div>
+      <div class="inquiry">
+       <div class="search_tag">进件查询</div>
+         <div class="search">
+          <form id="queryForm" action="${contextPath}/intopieces/intopiecesquery/browse.page">
+          <ul>
+              <li>
+                <span>客户名称：<input type="text" name="chineseName" value="$!result.filter.chineseName" /></span>
+              </li>
+               <li>
+                <span>证件号码：<input type="text" name="cardId" value="$!result.filter.cardId" /></span>
+              </li>
+               <li>
+                <span>进件状态：<select id="status" name="status" value="$!result.filter.status" >
+                  <option  value="" >ALL</option>
+                <option #if($!result.filter.status=='audit') selected="selected" #end value="audit">已申请 </option>
+                <option #if($!result.filter.status=='nopass_replenish') selected="selected" #end value="nopass_replenish">补充调查</option>
+                <option #if($!result.filter.status=='nopass_re') selected="selected" #end value="nopass_re">重新调查</option>
+                <option #if($!result.filter.status=='refuse') selected="selected" #end value="refuse">被拒绝</option>
+                <option #if($!result.filter.status=='approved') selected="selected" #end value="approved">审批通过</option>
+                <option #if($!result.filter.status=='succeed') selected="selected" #end value="succeed">申请成功</option>
+                </select>
+              </li>
+              <li class="search_button">
+                <input type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" onclick="javascript:this.form.submit();"/>
+              </li>
+          </ul>
+          </form>
+        </div>
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="25%" />
+              <col width="15%" />
+              <col width="15%"/>
+              <col width="15%"/>
+              <col width="15%"/>
+              <col width="15%"/>
+              <col width="10%"/>
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">进件编号</th>
+              <th nowrap="nowrap">客户名称</th>
+              <th nowrap="nowrap">证件号码</th>
+              <th nowrap="nowrap">产品名称</th>
+              <th nowrap="nowrap">申请额度</th>
+              <th nowrap="nowrap">发放额度</th>
+              <th nowrap="nowrap">进度</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="25%" />
+              <col width="15%" />
+              <col width="15%"/>
+              <col width="15%"/>
+              <col width="15%"/>
+              <col width="15%"/>
+              <col width="10%"/>
+            </colgroup>
+            #foreach ($intoPieces in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!{intoPieces.id}_$!{intoPieces.customerId}"/></td>
+              <td nowrap="nowrap">$!intoPieces.id</td>
+              <td nowrap="nowrap">$!intoPieces.chineseName</td>
+              <td nowrap="nowrap">$!intoPieces.cardId</td>
+              <td nowrap="nowrap">$!intoPieces.productName</td>
+              <td nowrap="nowrap">$!intoPieces.applyQuota</td>
+              <td nowrap="nowrap">$!intoPieces.actualQuote</td>
+              <td nowrap="nowrap">#if($!intoPieces.status=='audit')已申请  
+	              #elseif($!intoPieces.status=='save')暂存 
+	              #elseif($!intoPieces.status=='nopass')申请未通过 
+	              #elseif($!intoPieces.status=='refuse')被拒绝
+	              #elseif($!intoPieces.status=='approved')审批通过  
+	              #elseif($!intoPieces.status=='success')申请成功 
+	              #end</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+        
+         #btnpriv("approveloguser") <a class="btn_g" href="javascript:void(0);" title="查看审批记录(显示用户)" onclick="viewIntoPicesApproveHistory('YES')">查看审批记录(显示用户)</a>#end
+         #btnpriv("approvelog")<a class="btn_g" href="javascript:void(0);" title="查看审批记录" onclick="viewIntoPicesApproveHistory('NO')">查看审批记录</a>#end
+         #btnpriv("displayaccount") <a id="id_displaycardinfomation_button" class="btn_g" href="javascript:void(0);" title="查看账户信息" onclick="displaycardinfomation()">查看账户信息</a>#end
+         #btnpriv("display") <a class="btn_gr" href="javascript:void(0);" title="查看" onclick="viewIntoPices('view')">查看</a>#end
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.createUrl = "${modulePath}/create.page";
+		opsObj.displayUrl = "${modulePath}/display.page";
+		opsObj.changeUrl = "${modulePath}/change.page";
+		opsObj.deleteUrl = "${modulePath}/delete.json";
+		opsObj.browseUrl = "${modulePath}/browse.page";
+		opsObj.exportUrl = "${modulePath}/export.page";
+
+		prepareOperations(opsObj);
+		
+	});
+	
+	function viewIntoPicesApproveHistory(ifHideUser){
+		var id = null;
+		$("input[name='checkbox']:checked").each(function() {
+			id = $(this).val().split("_")[0];
+		});
+		if(id!=null){
+			var url = contextPath+"/intopieces/intopiecesquery/findApproveHistoryById.page?id="+id+"&ifHideUser="+ifHideUser+"&dataType=application";
+			Dialog.table(url, "查看审批历史", "get", null, 800, 340);
+		}else{
+			Dialog.message("请选择要被查看的进件!");
+		}
+	}
+</script>
+<script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
+#parse ("common/iframe_page_footer.htm")

@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd" >
+
+<log4j:configuration>
+	<appender name="DEFAULT" class="org.apache.log4j.DailyRollingFileAppender">
+		<!-- <param name="File" value="${jboss.server.log.dir}/jrad/jrad.log" /> -->
+		<param name="File" value="/home/jrad/jrad.log" />
+		<param name="Append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy/MM/dd HH:mm:ss,SSS} %5p [%t] %20c{1} %x - %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-5p %d{MM-dd HH:mm:ss} %m  (%F:%L) \n" />
+		</layout>
+	</appender>
+
+	<category name="java.sql">
+		<priority value="debug" />
+		<appender-ref ref="STDOUT" />
+	</category>
+
+	<category name="com.ibatis">
+		<priority value="debug" />
+		<appender-ref ref="STDOUT" />
+	</category>
+
+	<root>
+		<priority value="info" />
+		<appender-ref ref="DEFAULT" />
+		<appender-ref ref="STDOUT" />
+	</root>
+
+</log4j:configuration>

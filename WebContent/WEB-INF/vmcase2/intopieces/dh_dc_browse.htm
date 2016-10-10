@@ -1,0 +1,422 @@
+#parse ("common/iframe_page_header.htm")
+<script src="${contextPath}/js/intopieces/intopieces.js" charset="utf-8"></script>
+<script type="text/javascript">
+</script>
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">贷后监控</div>
+      </div>
+      <div class="inquiry">
+       <div class="search_tag">贷后监控</div>
+        <div class="search">
+          <form id="queryForm" action="${contextPath}/postLoan/post/dhbrowse.page" 
+          			onkeydown="javascript:if(event.keyCode==13) this.submit();">
+          <ul>
+          	  <li>
+                <span>客户名称：<input type="text" name="chineseName" value="$!result.filter.chineseName" /></span>
+              </li>
+               <li>
+                <span>证件号码：<input type="text" id="cardId" name="cardId" value="$!result.filter.cardId" /></span>
+              </li>
+              <li class="search_button">
+                <input type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" onclick="javascript:this.form.submit();"/>
+              </li>
+          </ul>
+          </form>
+        </div>
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="8%" />
+              <col width="7%" />
+              <col width="6%" />
+              <col width="7%" />
+              <col width="7%" />
+              <col width="7%" />
+              <col width="13%"/> 
+              <col width="8%"/>
+              <col width="8%"/>
+              <!-- <col width="10%"/>
+              <col width="10%"/> -->
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">客户名称</th>
+              <th nowrap="nowrap">产品名称</th>
+              <th nowrap="nowrap">客户经理</th>
+              <th nowrap="nowrap">申请金额(元)</th>
+              <th nowrap="nowrap">审贷金额(元)</th>
+              <th nowrap="nowrap">合同金额(元)</th>
+              <th nowrap="nowrap">证件号码</th> 
+              <th nowrap="nowrap">审核状态</th>
+              <th nowrap="nowrap">节点名称</th>
+             <!--  <th nowrap="nowrap">退回原因</th>
+              <th nowrap="nowrap">拒绝原因</th> -->
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="8%" />
+              <col width="7%" />
+              <col width="6%" />
+              <col width="7%" />
+              <col width="7%" />
+              <col width="7%" />
+              <col width="13%"/> 
+              <col width="8%"/>
+              <col width="8%"/>
+              <!-- <col width="10%"/>
+              <col width="10%"/> -->
+            </colgroup>
+           #foreach ($wait in $result.items)
+            <tr onclick="showButton();">
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.id@$!wait.customerId@$!wait.id@$!wait.applyQuota@$!wait.serialNumber@$!wait.cardId@$!wait.status@$!wait.productId"/></td>
+              <td nowrap="nowrap">$!wait.chineseName</td>
+              <td nowrap="nowrap">$!wait.productName</td>
+              <td nowrap="nowrap">$!wait.displayName</td>
+              <td nowrap="nowrap">$format.formatNumber($!wait.applyQuota,2,1)</td> 
+              <td nowrap="nowrap">$format.formatNumber($!wait.finalApproval,2,1)</td>
+              <td nowrap="nowrap">$format.formatNumber($!wait.reqlmt,2,1)</td>
+              <td nowrap="nowrap">$!wait.cardId</td> 
+               #if($!wait.status=='returnedToFirst')
+               <td nowrap="nowrap">退回至客户经理</td>
+               #else
+               <td nowrap="nowrap">#dictVal("applicationStatus",$!wait.status) </td>
+               #end
+               #if($!wait.status=='returnedToFirst')
+               <td nowrap="nowrap">退回</td>
+               #else
+               <td nowrap="nowrap">$!wait.nodeName</td>
+               #end
+             <!--    <td nowrap="nowrap">$!wait.fallBackReason</td>
+                <td nowrap="nowrap">$!wait.refusqlReason</td> -->
+            </tr>
+            #end
+
+
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+          <a class="btn_g" href="javascript:void(0);" title="审议结论" onclick="viewIntoPicesApproveHistory2('NO')">审议结论</a>
+          <!-- <a class="btn_g" href="javascript:void(0);" title="审议结论" onclick="viewIntoPicesApproveHistory1('NO')">审议结论</a> -->
+           #if($!type==1)
+          <a class="btn_g" href="javascript:void(0);" title="采集资料" onclick="scan('NO')">采集资料</a>
+           #else
+          <a class="btn_g" href="javascript:void(0);" title="在线预览" onclick="scanpage('NO')">在线预览</a>
+           #end        
+		</div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+	
+	function viewIntoPicesApproveHistory(ifHideUser){
+		var id = null;
+		$("input[name='checkbox']:checked").each(function() {
+			id = $(this).val().split("@")[0];
+			
+		});
+		if(id!=null){
+			var url = contextPath+"/intopieces/intopiecesquery/findApproveHistoryById.page?id="+id+"&ifHideUser="+ifHideUser+"&dataType=application";
+			Dialog.table(url, "审批历史", "get", null, 800, 340);
+		}else{
+			Dialog.message("请选择要被查看的进件!");
+		}
+	}
+	
+	//审议结论
+	function viewIntoPicesApproveHistory1(ifHideUser){
+		var id = null;
+		$("input[name='checkbox']:checked").each(function() {
+			id = $(this).val().split("@")[0];
+			
+		});
+		if(id!=null){
+			var url = contextPath+"/intopieces/intopiecesquery/findAuditConfigureById.page?id="+id;
+			Dialog.table(url, "审议结论", "get", null, 800, 340);
+		}else{
+			Dialog.message("请选择要被查看的进件!");
+		}
+	}
+	
+	//审议结论
+	function viewIntoPicesApproveHistory2(ifHideUser){
+		var id = null;
+		$("input[name='checkbox']:checked").each(function() {
+			id = $(this).val().split("@")[0];
+			
+		});
+		if(id!=null){
+			var url = contextPath+"/intopieces/intopiecesquery/findAuditConfigureFormById.page?id="+id;
+			window.location.href = url;
+		}else{
+			Dialog.message("请选择要被查看的进件!");
+		}
+	}
+	
+	//补充调查时显示补充调查按钮
+	function showButton(){
+		if ($(".checkbox :checked").length == 1) {
+			var rowid = $("input[name='checkbox']:checked").val();
+			var status = rowid.split("@")[6]
+			if(status == 'returnedToFirst'){
+				$("#id_bc_button").show();
+				$("#id_return_button").show();
+			}else{
+				$("#id_bc_button").hide();
+				$("#id_return_button").hide();
+			}
+		}
+		else{
+			Dialog.message("请选择一行!");
+		}
+	}
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		
+		$("#id_bc_button").hide();
+		$("#id_return_button").hide();
+		
+		$("#id_report_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var rowid = $("input[name='checkbox']:checked").val();
+				var url = "${contextPath}/customer/customerInfor_wh_ty/report_jy.page?appId=" + rowid.split("@")[0];
+				if (opsObj.formObj) {
+	                // 回调URL
+	                var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
+	                if (callBackUrlObj) {
+	                	if(url.indexOf("?")>=0){
+	                		url += "&" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}else{
+		                    url += "?" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}
+	                }
+	            }
+				window.location.href = url;
+			}
+			else{
+				Dialog.message("请选择一行!");
+			}
+	    });
+		
+		$("#id_image_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var rowid = $("input[name='checkbox']:checked").val();
+				var url = "${contextPath}/customer/customerInfor_wh_ty/imageImport.page?applicationId=" + rowid.split("@")[0];
+				if (opsObj.formObj) {
+	                // 回调URL
+	                var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
+	                if (callBackUrlObj) {
+	                	if(url.indexOf("?")>=0){
+	                		url += "&" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}else{
+		                    url += "?" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}
+	                }
+	            }
+				window.location.href = url;
+			}
+			else{
+				Dialog.message("请选择一行!");
+			}
+	    });
+		
+		$("#id_sy_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var rowid = $("input[name='checkbox']:checked").val();
+				if(rowid.split("/")[3]=='audit'){
+					Dialog.message("无审贷决议!");
+					return;
+				}
+				var url ="${contextPath}/intopieces/intopiecesdecision/input_decision.page?appId="+rowid.split("@")[0];
+				if (opsObj.formObj) {
+	                // 回调URL
+	                var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
+	                if (callBackUrlObj) {
+	                	if(url.indexOf("?")>=0){
+	                		url += "&" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}else{
+		                    url += "?" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}
+	                }
+	            }
+				
+				window.location.href= url;
+			}
+			else{
+				Dialog.message("请选择一行!");
+			}
+	    });
+		
+		
+		$("#id_yx_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var rowid = $("input[name='checkbox']:checked").val();
+				var url ="${contextPath}/intopieces/intopiecesquery/browe.page?appId="+rowid.split("@")[0];
+				if (opsObj.formObj) {
+	                // 回调URL
+	                var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
+	                if (callBackUrlObj) {
+	                	if(url.indexOf("?")>=0){
+	                		url += "&" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}else{
+		                    url += "?" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}
+	                }
+	            }
+				window.location.href= url;
+			}
+			else{
+				Dialog.message("请选择一行!");
+			}
+	    });
+		
+		$("#id_bc_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var rowid = $("input[name='checkbox']:checked").val();
+				if(rowid.split("@")[6] != 'returnedToFirst'){
+					alert("审核状态非退回至客户经理!");
+					return;
+				}
+				var url ="${contextPath}/intopieces/intopiecesquery/reportImport.page?customerId="+rowid.split("@")[1]+"&productId="+rowid.split("@")[7]+"&applicationId="+rowid.split("@")[0];
+				if (opsObj.formObj) {
+	                // 回调URL
+	                var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
+	                if (callBackUrlObj) {
+	                	if(url.indexOf("?")>=0){
+	                		url += "&" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}else{
+		                    url += "?" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}
+	                }
+	            }
+				window.location.href=url;
+			}
+			else{
+				Dialog.message("请选择一行!");
+			}
+	    });
+		
+		//退回重新调查发起进件
+		 $("#id_return_button").click(function() {
+				var url = "${modulePath}/applyInfo.json";
+				if ($(".checkbox :checked").length == 1) {
+					var rowid = $("input[name='checkbox']:checked").val();
+					 if(rowid.split("@")[6]!='returnedToFirst'){
+						 Dialog.message("审核状态非退回至客户经理!");
+						return; 
+					 }
+					Dialog.confirm("确定要处理吗？", "提示",
+			     		function() {
+			     			$.ajax({
+			      				url : url,
+			      				type : "get",
+			      				data : "id=" + rowid.split("@")[0],//要发送的数据
+			      				success : function(data) {
+			      					if (data.success) {
+			      						topWin.Dialog.message("处理成功！");
+			      						window.location.reload(true);
+			      					}
+			      					else{
+			      						topWin.Dialog.message(data.message);
+			      				    }
+			      					submitFlag = 0;
+			      				}
+			      			});
+				 	});
+				} else {
+	                Dialog.message("请选择一行!");
+	            } 
+	     });
+	});
+	
+	
+	
+	//flag: 1:为影像补扫入口。null：内部审核
+	function scan(flag){
+		var appId = null;
+		$("input[name='checkbox']:checked").each(function() {
+			appId = $(this).val().split("@")[0];
+			custId = $(this).val().split("@")[1];
+		});
+		if(appId!=null){
+			var url="${contextPath}/postLoan/post/sunds_ocx.page?appId=" + appId+"&custId="+custId;
+			window.location.href = url;
+		
+		}else{
+			Dialog.message("请选择一条记录!");
+		}
+	}
+	
+	function scanpage(flag){
+		var appId = null;
+		$("input[name='checkbox']:checked").each(function() {
+			appId = $(this).val().split("@")[0];
+		});
+		if(appId!=null){
+				var isInRisk = false;
+					$.ajax({
+						url : "${contextPath}/postLoan/post/isInUpload.json?id="+appId,
+						type : "get",
+						async: false,
+						success : function(data) {
+							if (data.success) {
+								if(data.isInUpload){
+									isInRisk = true;
+								}
+							}else{
+								window.top.Dialog.message("系统出现异常,请联系管理员");
+					    	}
+						}
+			    });
+				
+				if(isInRisk){
+				   window.top.Dialog.message("亲,客户经理还未上传贷后监控资料信息!");
+				   return;
+				}
+			
+			var url = "${contextPath}/postLoan/post/display_server_page.page?appId="+appId;
+			//window.location.href = url;
+			window.open(url,"newwindow");
+		}else{
+			Dialog.message("请选择一条记录!");
+		}
+	}
+	
+</script>
+#parse ("common/iframe_page_footer.htm")

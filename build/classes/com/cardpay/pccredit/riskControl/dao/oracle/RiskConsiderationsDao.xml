@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.riskControl.dao.RiskConsiderationsDao">
+	
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.riskControl.model.RiskConsiderations">
+		<result property="id" column="id" />
+		<result property="institutions" column="institutions" />
+		<result property="area" column="area" />
+		<result property="industry" column="industry" />
+		<result property="riskIssuesDescribed" column="risk_issues_described" />
+		<result property="riskLevel" column="risk_level" />
+		<result property="informationChannel" column="information_channel" />
+		<result property="whetherThrough" column="whether_through" />
+		<result property="releaseInstitution" column="release_institution" />
+		<result property="createdTime" column="created_time" />
+		<result property="modifiedBy" column="modified_by" />
+		<result property="modifiedTime" column="modified_time" />
+		<result property="createdBy" column="created_by" />
+		<result property="maintenanceWay" column="maintenance_way" />
+		<result property="maintenanceDay" column="maintenance_day" />
+		<result property="maintenanceTarget" column="maintenance_target" />
+	</resultMap>
+	
+	<select id="findRiskConsiderationsByFilter" resultMap="ResultMap" 
+			parameterType="com.cardpay.pccredit.riskControl.filter.RiskConsiderationsFilter">
+		SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					SELECT risk.*
+					  FROM risk_considerations risk
+					  WHERE 1=1
+					 <if test="institutions != null and institutions != '' ">
+						AND risk.institutions=#{institutions}
+					 </if>
+					  <if test="industry != null and industry != '' ">
+						AND risk.industry=#{industry}
+					 </if>
+					 <if test="area != null and area != '' ">
+						AND risk.area=#{area}
+					 </if>
+					 <if test="role != null and role != '' and role == 'manager'">
+					 </if>
+					 <if test="role != null and role != '' and role == 'cardcenter'">
+						AND (risk.status='REPORTED_CARDCENTER' or risk.status='CONFIRMED_CARDCENTER' or risk.status='REJECT_CARDCENTER')
+					 </if>
+					 <if test="role != null and role != '' and role == 'supervisor'">
+						AND (risk.status='REPORTED_SUPERVISOR' or risk.status='CONFIRMED_SUPERVISOR' or risk.status='REJECT_SUPERVISOR')
+					 </if>
+					 <if test="riskIssuesDescribed != null and riskIssuesDescribed != ''">
+						AND risk.risk_issues_described=#{riskIssuesDescribed}
+					 </if>
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	
+	<select id="findRiskConsiderationsCountByFilter" resultType="int"
+			parameterType="com.cardpay.pccredit.riskControl.filter.RiskConsiderationsFilter">
+		SELECT count(*)
+		   FROM risk_considerations risk
+		  WHERE 1=1
+		 <if test="institutions != null and institutions != '' ">
+			AND risk.institutions=#{institutions}
+		 </if>
+		 <if test="industry != null and industry != '' ">
+			AND risk.industry=#{industry}
+		 </if>
+		 <if test="area != null and area != '' ">
+			AND risk.area=#{area}
+		 </if>
+		 <if test="role != null and role != '' and role == 'manager'">
+		 </if>
+		 <if test="role != null and role != '' and role == 'cardcenter'">
+			AND (risk.status='REPORTED_CARDCENTER' or risk.status='CONFIRMED_CARDCENTER' or risk.status='REJECT_CARDCENTER')
+		 </if>
+		 <if test="role != null and role != '' and role == 'supervisor'">
+			AND (risk.status='REPORTED_SUPERVISOR' or risk.status='CONFIRMED_SUPERVISOR' or risk.status='REJECT_SUPERVISOR')
+		 </if>
+		 <if test="riskIssuesDescribed != null and riskIssuesDescribed != ''">
+			AND risk.risk_issues_described=#{riskIssuesDescribed}
+		 </if>
+		 ORDER BY risk.created_time DESC
+	</select>
+	
+	<update id="updateStatusToUnreportedCardcenter">
+		update risk_list
+		set status='UNREPORTED_CARDCENTER'
+		where status = 'REJECT_SUPERVISOR'
+		and modified_time - sysdate > 6
+	</update>
+	
+</mapper>

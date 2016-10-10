@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validators>
+	<validator id="customer.customercareer">
+ 	<control name="nameUnit">
+			<entry type="maxlength" value="500" />
+		</control>
+	</validator>
+</validators>

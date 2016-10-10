@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.riskControl.dao.RiskCustomerCollectionDao">
+	<resultMap id="CollectionFormResultMap"
+		type="com.cardpay.pccredit.riskControl.web.RiskCustomerCollectionPlanForm">
+		<result property="createWay" column="create_way"/>
+		<result property="customerId" column="CUSTOMER_ID" />
+		<result property="chineseName" column="CHINESE_NAME" />
+		<result property="productId" column="PRODUCT_ID" />
+		<result property="productName" column="PRODUCT_NAME" />
+		<result property="implementationObjective" column="IMPLEMENTATION_OBJECTIVE" />
+		<result property="endResult" column="END_RESULT" />
+		<result property="collectionTime" column="COLLECTION_TIME" />
+		<result property="collectionMethod" column="COLLECTION_METHOD" />
+		<result property="collectionPromiseDate" column="COLLECTION_PROMISE_DATE" />
+		<result property="collectionEndtime" column="COLLECTION_ENDTIME" />
+		<result property="collectionAmount" column="COLLECTION_AMOUNT" />
+		<result property="userName" column="DISPLAY_NAME"/>
+		<result property="size" column="countAction"/>
+	</resultMap>
+	<resultMap id="CollectionPlansActionResultMap" type="com.cardpay.pccredit.riskControl.model.RiskCustomerCollectionPlansAction"><result property="createWay" column="create_way"/>
+		<result property="collectionPlanId" column="COLLECTION_PLAN_ID" />
+		<result property="collection" column="COLLECTION" />
+		<result property="collectionResult" column="COLLECTION_RESULT" />
+		<result property="collectionStartTime" column="COLLECTION_START_TIME" />
+		<result property="collectionEndTime" column="COLLECTION_END_TIME" />
+		<result property="whetherImplement" column="WHETHER_IMPLEMENT" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="createdTime" column="CREATED_TIME" />
+		<result property="modifiedBy" column="MODIFIED_BY" />
+		<result property="modifiedTime" column="MODIFIED_TIME" />
+	</resultMap>
+	
+	<select id="findCountByFilter" resultType="int"
+		parameterType="com.cardpay.pccredit.riskControl.filter.RiskCustomerCollectionPlanFilter">
+		select
+		count(*)
+		from (
+		SELECT
+		c.*
+		FROM
+		COLLECTION_PLAN c
+		LEFT JOIN
+		BASIC_CUSTOMER_INFORMATION i ON c.customer_id = i.ID
+		where i.user_id=#{customerManagerId})
+	</select>
+	<select id="findRiskCustomerCollectionPlans" resultMap="CollectionFormResultMap">
+		SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		 SELECT c.*, P.PRODUCT_NAME, i.CHINESE_NAME,(select count(1) from collection_plans_action a where a.collection_plan_id=c.id) as countAction 
+		 FROM COLLECTION_PLAN c
+		 LEFT JOIN PRODUCT_ATTRIBUTE P
+		 ON c.product_id = P.ID
+		 LEFT JOIN BASIC_CUSTOMER_INFORMATION i
+		 ON c.customer_id = i.ID
+		 where i.user_id = #{customerManagerId}
+		 order by c.created_time desc
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	<select id="findRiskCustomerCollectionPlanById" resultMap="CollectionFormResultMap">
+		SELECT * FROM
+		(SELECT
+		c.*,
+		P.PRODUCT_NAME,
+		i.CHINESE_NAME
+		FROM
+		COLLECTION_PLAN c
+		LEFT JOIN
+		PRODUCT_ATTRIBUTE P ON c.product_id = P.ID
+		LEFT JOIN
+		BASIC_CUSTOMER_INFORMATION i ON c.customer_id = i.ID
+		WHERE C.ID=#{id})
+	</select>
+	<select id="getCustomerIdAndName" resultType="com.cardpay.pccredit.system.model.Dict">
+		<!-- select 
+		t.id as TypeCode,t.chineseName as TypeName 
+		from 
+		(select b.id as id,b.chinese_name as chineseName
+		from 
+		basic_customer_information b where b.user_id=#{userId})t
+		inner join
+		(select distinct(customer_id) as customerId 
+		from 
+		customer_overdue)c
+		on t.id=c.customerId -->
+		select 
+    		t.id as TypeCode,t.chineseName as TypeName 
+    	from 
+	    (select b.id as id,b.chinese_name as chineseName,b.ty_customer_id as tCustomerId from 
+	    basic_customer_information b where b.user_id=#{userId})t
+	    inner join
+	    (select distinct(CUSTID) as customerId from t_mibusidata_view where (DELAYINTERESTDAYS <![CDATA[ >  ]]> 0 or DELAYAMTDAYS <![CDATA[ >  ]]> 0 ))c
+	    on t.tCustomerId = c.customerId
+	</select>
+	
+	<select id="getProductIdAndName" resultType="com.cardpay.pccredit.system.model.Dict">
+	<!-- 	select 
+		p.id as TypeCode,p.product_name as TypeName
+		from
+		customer_overdue c
+		left join
+		product_attribute p
+		on c.product_id=p.id
+		where c.customer_id=#{customerId} -->
+		
+		select  p.id as TypeCode,p.product_name as TypeName
+		from
+		product_attribute p
+	</select>
+	<select id="checkCollectionPlan" resultType="int">
+		select count(*)
+		from collection_plan t
+		where t.customer_id=#{customerId}
+		and t.product_id=#{productId}
+		and (t.end_result=#{endResult1} or t.end_result=#{endResult2} or t.end_result is null)
+	</select>
+	<select id="findRiskCustomerCollectionPlansActionByCollectionPlanId" resultMap="CollectionPlansActionResultMap">
+		select *
+		from collection_plans_action t
+		where t.collection_plan_id=#{collectionPlanId}
+		order by t.created_time desc
+	</select>
+	<select id="findRiskViewSubCollectionPlansByFilter" resultMap="CollectionFormResultMap">
+		SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		SELECT
+		c.*,
+		P.PRODUCT_NAME,
+		i.CHINESE_NAME,
+		u.display_name,(select count(1) from collection_plans_action a where a.collection_plan_id=c.id) as countAction 
+		FROM
+		COLLECTION_PLAN c
+		LEFT
+		JOIN PRODUCT_ATTRIBUTE P ON c.product_id = P.ID
+		LEFT JOIN
+		BASIC_CUSTOMER_INFORMATION i ON c.customer_id = i.ID
+		LEFT JOIN
+		SYS_USER u ON i.user_id=u.id
+		where i.user_id in
+		<foreach collection="customerManagerIds" index="index" item="item" open="(" separator="," close=")">
+		     #{item.userId}
+		</foreach>
+		order by c.created_time desc
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	<select id="findRiskViewSubCollectionPlansCountByFilter" resultType="int">
+		SELECT
+		count(*)
+		FROM
+		COLLECTION_PLAN c
+		LEFT JOIN
+		BASIC_CUSTOMER_INFORMATION i ON c.customer_id = i.ID
+		where i.user_id in
+		<foreach collection="customerManagerIds" index="index" item="item" open="(" separator="," close=")">
+		     #{item.userId}
+		</foreach>
+	</select>
+	<select id="findCollectionCountToday" resultType="int">
+		select 
+		count(*)
+		from 
+		COLLECTION_PLAN
+		where 
+		customer_manager_id=#{customerManagerId}
+		and
+		end_result=#{result}
+		<if test="startTime!=null and startTime!=''">
+			<![CDATA[
+			and created_time<to_date(#{startTime},'yyyy-mm-dd hh24:mi:ss')
+			]]>
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			<![CDATA[
+			and collection_endtime>to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+			]]>
+		</if>
+	</select>
+	<select id="findCollectionPromiseCountByDay" resultType="int">
+		select count(*)
+		from COLLECTION_PLAN
+		where 
+		customer_manager_id=#{customerManagerId}
+		and
+		end_result=#{result}
+		<![CDATA[
+			and collection_promise_date between to_date(#{startTime},'yyyy-mm-dd hh24:mi:ss') and to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+		]]>
+	</select>
+</mapper>

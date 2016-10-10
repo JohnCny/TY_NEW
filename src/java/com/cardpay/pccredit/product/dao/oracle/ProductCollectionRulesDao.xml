@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.product.dao.ProductCollectionRulesDao">
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.product.model.ProductCollectionRules">
+		<result property="id" column="ID" />
+		<result property="productId" column="PRODUCT_ID" />
+		<result property="aging" column="AGING" />
+		<result property="money" column="MONEY" />
+		<result property="collectionType" column="collection_type" />
+		<result property="collectionTime" column="COLLECTION_TIME" />
+		<result property="collectionWay" column="COLLECTION_WAY" />
+		<result property="collectionWay" column="COLLECTION_WAY" />
+		<result property="operation" column="OPERATION" />
+		<result property="overdueDayEnd" column="OVERDUE_DAY_END" />
+		<result property="overdueDayStart" column="OVERDUE_DAY_START" />
+		<result property="createdTime" column="CREATED_TIME" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="modifiedTime" column="MODIFIED_TIME" />
+		<result property="modifiedBy" column="MODIFIED_BY" />
+	
+	</resultMap>
+
+	<select id="findProductCollectionRulesByProductId" resultMap="ResultMap" parameterType="java.lang.String">
+		SELECT * from product_collection_rules
+		WHERE PRODUCT_ID=#{productId}
+	</select>
+	<delete id="deleteProductCollectionRulesByProductId" parameterType="java.lang.String">
+		DELETE
+		FROM
+		product_collection_rules A
+		WHERE
+		A .PRODUCT_ID=#{productId}
+	</delete>
+	<select id="findAllProductCollectionRules" resultMap="ResultMap">
+	   SELECT * from product_collection_rules
+	</select>
+	
+
+</mapper>

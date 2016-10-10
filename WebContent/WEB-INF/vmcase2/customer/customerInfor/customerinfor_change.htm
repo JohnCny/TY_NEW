@@ -1,0 +1,134 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户基本信息修改</div>
+      </div>
+      <form id="id_module_form" action="${modulePath}/update.json">
+        <div class="forms" id="formsId">
+          <input type="hidden" id="id" name="id" value="$!customerInfor.id" />
+          <table class="rule">
+            <colgroup>
+              <col width="12%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="12%" />
+              <col width="30%" />
+            </colgroup>
+            <tr>
+              <td><label for="chineseName">中文姓名:</label></td>
+              <td><input type="text" id="chineseName" name="chineseName" value="$!customerInfor.chineseName" /></td>
+              <td>&nbsp;</td>
+              <td><label for="pinyinenglishName">拼音或英文姓名:</label></td>
+              <td><input type="text" id="pinyinenglishName" name="pinyinenglishName" value="$!customerInfor.pinyinenglishName" /></td>
+            </tr>
+            <tr>
+              <td><label for="nationality">国籍:</label></td>
+              <td><select id="nationality" name="nationality" >
+                  #customerInfo($request.getAttribute("nationalityList"),$!{customerInfor.nationality})
+                  </select></td>
+                <td>&nbsp;</td>
+                <td>性别:</td>
+                <td>
+                <input type="radio" id="sex" name="sex" value="Male" #if($!customerInfor.sex=='Male')checked#end />男
+                <input type="radio" id="sex" name="sex" value="Female"#if($!customerInfor.sex=='Female')checked#end />女
+				</td>
+            </tr>
+            <tr>
+              <td><label for="birthday">出生日期:</label></td>
+              <td><input type="text" name="birthday" id="birthday"  value="$!customerInfor.birthday" onmouseover="_calendar()"/></td>
+			  <td>&nbsp;</td>
+			  <td><label for="cardType">身份证件:</label></td>
+              <td><select id="cardType" name="cardType" >
+                  #customerInfo($request.getAttribute("cardTypeList"),$!{customerInfor.cardType})
+                  </select></td>
+            </tr>
+			<tr>
+              <td><label for="cardId">证件号码:</label></td>
+              <td><input type="text" name="cardId" id="cardId"  value="$!customerInfor.cardId" /></td>
+			  <td>&nbsp;</td>
+			  <td><label for="telephone">手机:</label></td>
+              <td><input type="text" name="telephone" id="telephone" value="$!customerInfor.telephone" /></td>
+            </tr>
+			<tr>
+              <td><label for="homePhone">住宅电话:</label></td>
+              <td><input type="text" name="homePhone" id="homePhone"  value="$!customerInfor.homePhone" /></td>
+			  <td>&nbsp;</td>
+			  <td><label for="residentialAddress">住宅地址:</label></td>
+              <td><input type="text" name="residentialAddress" id="residentialAddress" value="$!customerInfor.residentialAddress" /></td>
+            </tr>
+			<tr>
+              <td><label for="mail">E-mail:</label></td>
+              <td><input type="text" name="mail" id="mail"  value="$!customerInfor.mail" /></td>
+			  <td>&nbsp;</td>
+			  <td><label for="residentialPropertie">住宅性质:</label></td>
+              <td><select id="residentialPropertie" name="residentialPropertie" >
+                 #customerInfo($request.getAttribute("residentialPropertieList"),$!{customerInfor.residentialPropertie})
+                  </select>
+              </td>
+            </tr>
+			<tr>
+              <td>婚姻状况:</td>
+              <td><select id="maritalStatus" name="maritalStatus" >
+                  #customerInfo($request.getAttribute("maritalStatusList"),$!{customerInfor.maritalStatus})
+                  </select></td>
+			  <td>&nbsp;</td>
+			  <td>教育程度:</td>
+              <td><select name="degreeEducation" id="degreeEducation">
+              <option value="">请选择...</option>
+              #dict("degreeEducation","$!customerInfor.degreeEducation")
+              </select></td>
+            </tr>
+			<tr>
+              <td><label for="householdAddress">户籍地址:</label></td>
+              <td><input type="text" name="householdAddress" id="householdAddress"  value="$!customerInfor.householdAddress" /></td>
+			  <td>&nbsp;</td>
+			  <td><label for="zipCodeAddress">邮政编码(户籍地址):</label></td>
+              <td><input type="text" name="zipCodeAddress" id="zipCodeAddress" value="$!customerInfor.zipCodeAddress" /></td>
+            </tr>
+			<!--  <tr>
+              <td><label for="finalApproval">最终审批有效期(银联):</label></td>
+              <td><input type="text" name="finalApproval" id="finalApproval"  value="$!customerInfor.finalApproval" /></td>
+			  <td>&nbsp;</td>
+			  <td><label for="applyCredit">申请额度:</label></td>
+              <td><input type="text" name="applyCredit" id="applyCredit" value="$!customerInfor.applyCredit" /></td>
+            </tr>
+			<tr>
+              <td><label for="actualAmount">实际额度(信誉):</label></td>
+              <td><input type="text" name="actualAmount" id="actualAmount"  value="$!customerInfor.actualAmount" /></td>
+			  <td>&nbsp;</td>
+			  <td><label for="temporaryQuota">临时额度:</label></td>
+              <td><input type="text" name="temporaryQuota" id="temporaryQuota" value="$!customerInfor.temporaryQuota" /></td>
+            </tr>
+			<tr>
+              <td><label for="cashAdvanceRatio">预借现金比例:</label></td>
+              <td><input type="text" name="cashAdvanceRatio" id="cashAdvanceRatio"  value="$!customerInfor.cashAdvanceRatio" /></td>
+			  <td>&nbsp;</td>
+			  <td><label for="cardStatus">卡片状态:</label></td>
+              <td><input type="text" name="cardStatus" id="cardStatus" value="$!customerInfor.cardStatus" /></td>
+            </tr>-->
+          </table>
+        </div>
+      </form>
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n('button.cancel')" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout = new FormsLayout("formsId");
+	window.top.currentWindow.setLayout(layout);
+	url = "${modulePath}/browse.page";
+	#set ($formName = "'#id_module_form'")
+	#validator($formName)
+	$(document).ready(function() {		
+		#parse("common/part_change.js")
+	});
+  </script>
+   <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
+  
+</body>
+#parse ("common/iframe_page_footer.htm")

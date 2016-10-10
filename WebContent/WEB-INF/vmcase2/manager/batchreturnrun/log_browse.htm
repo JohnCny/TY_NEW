@@ -1,0 +1,131 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+	<div class="content_main">
+	
+		<div class="contentinner">
+			<div class="place">
+				<div class="title">日志查看</div>
+			</div>
+			<div class="inquiry">
+				<div class="search_tag">日志查看</div>
+				<div class="search">
+					<form id="submitForm">
+						<ul>
+							<li><span>日期：<input type="text" id="query_date" name="query_date" onmouseover="_calendar()" readonly/></span></li>
+							<li class="search_button"><input id="id_browse_button"
+								type="button" value="系统日志"
+								class="search_button_inquiry"
+								title="#i18n('button.browse.hint')"
+								style="height: 26px; line-height: 24px;" />
+								<input id="id_errLog_button"
+								type="button" value="错误日志"
+								class="search_button_inquiry"
+								title="#i18n('button.browse.hint')"
+								style="height: 26px; line-height: 24px;" />
+								</li>
+							
+						</ul>
+					</form>
+				</div>
+				<div id="topDiv" class="inquiry_list inquiry_top">
+					
+				</div>
+				<div id="downDiv" class="inquiry_list inquiry_down">
+					
+				</div>
+			</div>
+			
+			<div class="pagebar">
+				<div class="controlbtn">
+					
+				</div>
+				<div class="clear"></div> 
+			</div>
+		</div>
+	</div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+	
+	function getNowFormatDate()
+	{
+	   var day = new Date();
+	   var Year = 0;
+	   var Month = 0;
+	   var Day = 0;
+	   var CurrentDate = "";
+	   //初始化时间   
+	   Year       = day.getFullYear();
+	   Month      = day.getMonth()+1;
+	   Day        = day.getDate();
+	   
+	   CurrentDate += Year + "-";
+	   
+	   if (Month >= 10 )
+	   {
+	    CurrentDate += Month + "-";
+	   }
+	   else
+	   {
+	    CurrentDate += "0" + Month + "-";
+	   }
+	   if (Day >= 10 )
+	   {
+	    CurrentDate += Day ;
+	   }
+	   else
+	   {
+	    CurrentDate += "0" + Day ;
+	   } 
+	   return CurrentDate;
+	}
+	$(document).ready(function() {
+		
+
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		prepareOperations(opsObj);
+		
+		
+			$("#id_browse_button").click(function() {
+				
+				var x =$("#query_date").val();
+				
+				if(x==null||x==""){
+				topWin.Dialog.message("日期不能为空");
+					
+				}else{
+					var today = getNowFormatDate();
+					var startDate = new Date(today.replace("-",",")).getTime() ;
+					var endDate = new Date(x.replace("-",",")).getTime() ;
+					if( startDate > endDate ||startDate == endDate) {  
+						
+					document.getElementById("downDiv").innerHTML="开始下载..."
+					var url = "${contextPath}/batch/returnrun/download.json?query_date="+$("#query_date").val();
+					
+					window.location.href=url;
+	             	
+					
+					}else{
+						topWin.Dialog.message("日期不能大于当前日期");
+						
+					}
+					
+				}
+			});
+			
+			
+			$("#id_errLog_button").click(function() {
+				document.getElementById("downDiv").innerHTML="开始下载..."
+				var url = "${contextPath}/batch/returnrun/errLogDownload.json?query_date="+$("#query_date").val();
+				window.location.href=url;
+				
+			});
+			
+		  });
+	
+	
+	 
+</script>
+</html>

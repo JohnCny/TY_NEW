@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.intopieces.dao.CustomerApplicationInfoDao" >
+  <resultMap id="BaseResultMap" type="com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="CUSTOMER_ID" property="customerId" jdbcType="VARCHAR" />
+    <result column="PRODUCT_ID" property="productId" jdbcType="VARCHAR" />
+    <result column="APPLY_QUOTA" property="applyQuota" jdbcType="VARCHAR" />
+    <result column="FINAL_APPROVAL" property="finalApproval" jdbcType="VARCHAR" />
+    <result column="ACTUAL_QUOTE" property="actualQuote" jdbcType="VARCHAR" />
+    <result column="TEMPORARY_QUOTA" property="temporaryQuota" jdbcType="VARCHAR" />
+    <result column="CASH_ADVANCE_PROPORTION" property="cashAdvanceProportion" jdbcType="VARCHAR" />
+    <result column="CARD_STATUS" property="cardStatus" jdbcType="VARCHAR" />
+    <result column="ACCOUNT_STATUS" property="accountStatus" jdbcType="VARCHAR" />
+    <result column="BILLING_DATE" property="billingDate" jdbcType="VARCHAR" />
+    <result column="REPAYMENT_AGREEMENT" property="repaymentAgreement" jdbcType="VARCHAR" />
+    <result column="AUTOMATIC_REPAYMENT_AGREEMENT" property="automaticRepaymentAgreement" jdbcType="VARCHAR" />
+    <result column="CUSTOMER_RISK_RATING" property="customerRiskRating" jdbcType="VARCHAR" />
+    <result column="AGING" property="aging" jdbcType="VARCHAR" />
+    <result column="DEBIT_WAY" property="debitWay" jdbcType="VARCHAR" />
+    <result column="REPAYMENT_CARD_NUMBER" property="repaymentCardNumber" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, CUSTOMER_ID, PRODUCT_ID, APPLY_QUOTA, FINAL_APPROVAL, ACTUAL_QUOTE, TEMPORARY_QUOTA, 
+    CASH_ADVANCE_PROPORTION, CARD_STATUS, ACCOUNT_STATUS, BILLING_DATE, REPAYMENT_AGREEMENT, 
+    AUTOMATIC_REPAYMENT_AGREEMENT, CUSTOMER_RISK_RATING, AGING, DEBIT_WAY, REPAYMENT_CARD_NUMBER, 
+    STATUS
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from CUSTOMER_APPLICATION_INFO
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findCountByFilter" resultType="int" parameterType="com.cardpay.pccredit.intopieces.filter.CustomerApplicationInfoFilter">
+    select 
+    count(*)
+    from CUSTOMER_APPLICATION_INFO t
+    where 1=1
+    <if test="customerId != null and customerId != '' ">
+		AND t.customer_id=#{customerId}
+	 </if>
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from CUSTOMER_APPLICATION_INFO
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo" >
+    insert into CUSTOMER_APPLICATION_INFO (ID, CUSTOMER_ID, PRODUCT_ID, 
+      APPLY_QUOTA, FINAL_APPROVAL, ACTUAL_QUOTE, 
+      TEMPORARY_QUOTA, CASH_ADVANCE_PROPORTION, 
+      CARD_STATUS, ACCOUNT_STATUS, BILLING_DATE, 
+      REPAYMENT_AGREEMENT, AUTOMATIC_REPAYMENT_AGREEMENT, 
+      CUSTOMER_RISK_RATING, AGING, DEBIT_WAY, 
+      REPAYMENT_CARD_NUMBER, STATUS)
+    values (#{id,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, 
+      #{applyQuota,jdbcType=VARCHAR}, #{finalApproval,jdbcType=VARCHAR}, #{actualQuote,jdbcType=VARCHAR}, 
+      #{temporaryQuota,jdbcType=VARCHAR}, #{cashAdvanceProportion,jdbcType=VARCHAR}, 
+      #{cardStatus,jdbcType=VARCHAR}, #{accountStatus,jdbcType=VARCHAR}, #{billingDate,jdbcType=VARCHAR}, 
+      #{repaymentAgreement,jdbcType=VARCHAR}, #{automaticRepaymentAgreement,jdbcType=VARCHAR}, 
+      #{customerRiskRating,jdbcType=VARCHAR}, #{aging,jdbcType=VARCHAR}, #{debitWay,jdbcType=VARCHAR}, 
+      #{repaymentCardNumber,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo" >
+    insert into CUSTOMER_APPLICATION_INFO
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="customerId != null" >
+        CUSTOMER_ID,
+      </if>
+      <if test="productId != null" >
+        PRODUCT_ID,
+      </if>
+      <if test="applyQuota != null" >
+        APPLY_QUOTA,
+      </if>
+      <if test="finalApproval != null" >
+        FINAL_APPROVAL,
+      </if>
+      <if test="actualQuote != null" >
+        ACTUAL_QUOTE,
+      </if>
+      <if test="temporaryQuota != null" >
+        TEMPORARY_QUOTA,
+      </if>
+      <if test="cashAdvanceProportion != null" >
+        CASH_ADVANCE_PROPORTION,
+      </if>
+      <if test="cardStatus != null" >
+        CARD_STATUS,
+      </if>
+      <if test="accountStatus != null" >
+        ACCOUNT_STATUS,
+      </if>
+      <if test="billingDate != null" >
+        BILLING_DATE,
+      </if>
+      <if test="repaymentAgreement != null" >
+        REPAYMENT_AGREEMENT,
+      </if>
+      <if test="automaticRepaymentAgreement != null" >
+        AUTOMATIC_REPAYMENT_AGREEMENT,
+      </if>
+      <if test="customerRiskRating != null" >
+        CUSTOMER_RISK_RATING,
+      </if>
+      <if test="aging != null" >
+        AGING,
+      </if>
+      <if test="debitWay != null" >
+        DEBIT_WAY,
+      </if>
+      <if test="repaymentCardNumber != null" >
+        REPAYMENT_CARD_NUMBER,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null" >
+        #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="applyQuota != null" >
+        #{applyQuota,jdbcType=VARCHAR},
+      </if>
+      <if test="finalApproval != null" >
+        #{finalApproval,jdbcType=VARCHAR},
+      </if>
+      <if test="actualQuote != null" >
+        #{actualQuote,jdbcType=VARCHAR},
+      </if>
+      <if test="temporaryQuota != null" >
+        #{temporaryQuota,jdbcType=VARCHAR},
+      </if>
+      <if test="cashAdvanceProportion != null" >
+        #{cashAdvanceProportion,jdbcType=VARCHAR},
+      </if>
+      <if test="cardStatus != null" >
+        #{cardStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="accountStatus != null" >
+        #{accountStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="billingDate != null" >
+        #{billingDate,jdbcType=VARCHAR},
+      </if>
+      <if test="repaymentAgreement != null" >
+        #{repaymentAgreement,jdbcType=VARCHAR},
+      </if>
+      <if test="automaticRepaymentAgreement != null" >
+        #{automaticRepaymentAgreement,jdbcType=VARCHAR},
+      </if>
+      <if test="customerRiskRating != null" >
+        #{customerRiskRating,jdbcType=VARCHAR},
+      </if>
+      <if test="aging != null" >
+        #{aging,jdbcType=VARCHAR},
+      </if>
+      <if test="debitWay != null" >
+        #{debitWay,jdbcType=VARCHAR},
+      </if>
+      <if test="repaymentCardNumber != null" >
+        #{repaymentCardNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo" >
+    update CUSTOMER_APPLICATION_INFO
+    <set >
+      <if test="customerId != null" >
+        CUSTOMER_ID = #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null" >
+        PRODUCT_ID = #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="applyQuota != null" >
+        APPLY_QUOTA = #{applyQuota,jdbcType=VARCHAR},
+      </if>
+      <if test="finalApproval != null" >
+        FINAL_APPROVAL = #{finalApproval,jdbcType=VARCHAR},
+      </if>
+      <if test="actualQuote != null" >
+        ACTUAL_QUOTE = #{actualQuote,jdbcType=VARCHAR},
+      </if>
+      <if test="temporaryQuota != null" >
+        TEMPORARY_QUOTA = #{temporaryQuota,jdbcType=VARCHAR},
+      </if>
+      <if test="cashAdvanceProportion != null" >
+        CASH_ADVANCE_PROPORTION = #{cashAdvanceProportion,jdbcType=VARCHAR},
+      </if>
+      <if test="cardStatus != null" >
+        CARD_STATUS = #{cardStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="accountStatus != null" >
+        ACCOUNT_STATUS = #{accountStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="billingDate != null" >
+        BILLING_DATE = #{billingDate,jdbcType=VARCHAR},
+      </if>
+      <if test="repaymentAgreement != null" >
+        REPAYMENT_AGREEMENT = #{repaymentAgreement,jdbcType=VARCHAR},
+      </if>
+      <if test="automaticRepaymentAgreement != null" >
+        AUTOMATIC_REPAYMENT_AGREEMENT = #{automaticRepaymentAgreement,jdbcType=VARCHAR},
+      </if>
+      <if test="customerRiskRating != null" >
+        CUSTOMER_RISK_RATING = #{customerRiskRating,jdbcType=VARCHAR},
+      </if>
+      <if test="aging != null" >
+        AGING = #{aging,jdbcType=VARCHAR},
+      </if>
+      <if test="debitWay != null" >
+        DEBIT_WAY = #{debitWay,jdbcType=VARCHAR},
+      </if>
+      <if test="repaymentCardNumber != null" >
+        REPAYMENT_CARD_NUMBER = #{repaymentCardNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo" >
+    update CUSTOMER_APPLICATION_INFO
+    set CUSTOMER_ID = #{customerId,jdbcType=VARCHAR},
+      PRODUCT_ID = #{productId,jdbcType=VARCHAR},
+      APPLY_QUOTA = #{applyQuota,jdbcType=VARCHAR},
+      FINAL_APPROVAL = #{finalApproval,jdbcType=VARCHAR},
+      ACTUAL_QUOTE = #{actualQuote,jdbcType=VARCHAR},
+      TEMPORARY_QUOTA = #{temporaryQuota,jdbcType=VARCHAR},
+      CASH_ADVANCE_PROPORTION = #{cashAdvanceProportion,jdbcType=VARCHAR},
+      CARD_STATUS = #{cardStatus,jdbcType=VARCHAR},
+      ACCOUNT_STATUS = #{accountStatus,jdbcType=VARCHAR},
+      BILLING_DATE = #{billingDate,jdbcType=VARCHAR},
+      REPAYMENT_AGREEMENT = #{repaymentAgreement,jdbcType=VARCHAR},
+      AUTOMATIC_REPAYMENT_AGREEMENT = #{automaticRepaymentAgreement,jdbcType=VARCHAR},
+      CUSTOMER_RISK_RATING = #{customerRiskRating,jdbcType=VARCHAR},
+      AGING = #{aging,jdbcType=VARCHAR},
+      DEBIT_WAY = #{debitWay,jdbcType=VARCHAR},
+      REPAYMENT_CARD_NUMBER = #{repaymentCardNumber,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="findCustomerApplicationInfoCount" resultType="int">
+  select count(*) from customer_application_info c
+  left join 
+  basic_customer_information b
+  on c.customer_id = b.id
+  where b.user_id=#{userId}
+  <if test="status1!=null and status1!=''">
+  and (STATUS = #{status1,jdbcType=VARCHAR}
+  </if>
+  <if test="status2!=null and status2!=''">
+  	or STATUS = #{status2}
+  </if>
+  <if test="status1!=null and status1!=''">
+  )
+  </if>
+  </select>
+</mapper>
