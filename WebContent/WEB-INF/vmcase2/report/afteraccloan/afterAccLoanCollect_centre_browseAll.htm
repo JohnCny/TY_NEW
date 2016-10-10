@@ -1,0 +1,160 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">贷款汇总查询</div>
+      </div>
+      
+      <div class="inquiry">
+<!-----------搜索------------------------------------------->  
+  
+        <div class="search_tag"></div>
+        <div class="search">
+          <form id="submitForm">
+            <ul>
+              <li>
+                <span>开始日期：<input type="text" name="startDate" value="$!filter.startDate" onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span>
+              </li>
+              <li>
+                <span>结束日期：<input type="text" name="endDate" value="$!filter.endDate" onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span>
+              </li>
+             <!--  <li>
+                <span>产品类型：<select id="productId" name="productId">
+                		<option value="">请选择...</option>
+	                   #dict("ProductName", $!filter.productId)
+	                </select>
+				</span>
+              </li> -->
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="筛选" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
+       
+		<!-------------- 信息显示 ------------------------------------->      
+		<div id="topDiv" class="inquiry_list inquiry_top" >
+           <table>
+            <colgroup>
+              <col width="120"/>
+              <col width="120"/>
+              <col width="120"/>
+              <col width="120"/>
+              <col width="120"/>
+              <col width="120"/>
+            </colgroup>
+            <tr class="title" align="center">
+              <td nowrap="nowrap" style="background:#6699FF">汇总列名</td>
+              <td nowrap="nowrap" style="background:#6699FF">统计值</td>
+              
+              <td nowrap="nowrap" style="background:#6699FF">汇总列名</td>
+              <td nowrap="nowrap" style="background:#6699FF">统计值</td>
+              
+              <td nowrap="nowrap" style="background:#6699FF">汇总列名</td>
+              <td nowrap="nowrap" style="background:#6699FF">统计值</td>
+            </tr>
+            #foreach ($accloan in $list)
+            <tr>
+            	<td nowrap="nowrap" style="background:#99CCFF">新增用信客户</td>
+            	<td nowrap="nowrap"><font size='4'>$!accloan.increaseLoancount</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">新增用信余额</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.loanBalanceSum)</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">累计逾期客户数M0以上</td>
+            	<td nowrap="nowrap"><font size='4'>$!accloan.overdueCusM0</font></td>
+            </tr>
+            <tr>
+            	<td nowrap="nowrap" style="background:#99CCFF">累计用信客户</td>
+            	<td nowrap="nowrap"><font size='4'>$!accloan.loanCustomerSum</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">累计用信余额</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.contBalace)</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">累计逾期客户数M1以上</td>
+            	<td nowrap="nowrap"><font size='4'>$!accloan.overdueCusM1</font></td>
+            </tr>
+            <tr>
+            	<td nowrap="nowrap" style="background:#99CCFF">新增授信客户</td>
+            	<td nowrap="nowrap" ><font size='4'>$!accloan.increaseCusSum</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">新增授信余额</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.increaseLoanCredit)</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">累计逾期客户数M2以上</td>
+            	<td nowrap="nowrap"><font size='4'>$!accloan.overdueCusM2</font></td>
+            </tr>
+            <tr>
+            	<td nowrap="nowrap" style="background:#99CCFF">累计授信客户</td>
+            	<td nowrap="nowrap"><font size='4'>$!accloan.centreLoansSun</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">累计授信总额</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.contAmt)</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">累计逾期客户数M3以上</td>
+            	<td nowrap="nowrap"><font size='4'>$!accloan.overdueCusM3</font></td>
+            </tr>
+            <tr>
+            	<td nowrap="nowrap" style="background:#99CCFF">新增逾期客户数</td>
+            	<td nowrap="nowrap"><font size='4'>$!accloan.increseOverdueCusTheMon</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">新增逾期余额</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.overdueBalanceTheMon)</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">累计逾期客户数M4以上</td>
+            	<td nowrap="nowrap"><font size='4'>$!accloan.overdueCusM4</font></td>
+            </tr>
+            <tr>
+            	<td nowrap="nowrap" style="background:#99CCFF">累计逾期客户数</td>
+            	<td nowrap="nowrap"><font size='4'>$!accloan.alloverdue</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">累计逾期余额</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.overdueBalance)</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">实收利息总额</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.resvIntAccum)</font></td>
+            	
+            </tr>
+            <tr>
+            	<td nowrap="nowrap" style="background:#99CCFF">用信余额（日均）</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.increaseBalanceTheMonth)</font></td>
+            	
+            	
+            </tr>
+            
+             <tr>
+            	<td nowrap="nowrap" style="background:#99CCFF">信用类产品贷款余额</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.xy)</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">保证类产品贷款余额</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.bz)</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">抵押类产品贷款余额</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.dy)</font></td>
+            </tr>
+             #end
+          </table>
+        </div>  
+        
+      </div>		
+        <div class="clear"></div>
+      </div>
+    </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.browseUrl = "${modulePath}/browse.page";
+		Dialog.load();
+		prepareOperations(opsObj);
+		Dialog.closeLoad();
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")

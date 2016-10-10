@@ -1,0 +1,176 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户信息</div>
+      </div>
+      <form id="id_module_form" action="">
+        <div class="forms" id="formsId">
+          <input type="hidden" name="customerId" value="$!customerInfor.id" />
+          <input type="hidden" id="id" name="id" value="$!ID"/>
+          <table class="rule" border="1" bordercolor="#CCCCCC">
+          <caption>客户信息</caption>
+            <colgroup>
+              <col width="10%" />
+              <col width="40%" />
+              <col width="10%" />
+              <col width="40%" />
+			</colgroup>
+            <tr>
+              <td><label for="chineseName">中文姓名:</label></td>
+              <td><input type="text" id="chineseName" name="chineseName" value="$!customerInfor.chineseName" disabled="disabled"/></td>
+              
+              <td><label for="pinyinenglishName">拼音或英文姓名:</label></td>
+              <td><input type="text" id="pinyinenglishName" name="pinyinenglishName" value="$!customerInfor.pinyinenglishName" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label for="nationality">国籍:</label></td>
+              <td><select id="nationality" name="nationality" disabled="disabled">
+                  #customerInfo($request.getAttribute("nationalityList"),$!{customerInfor.nationality})
+                  </select>
+                  </td>
+               
+                <td><label>性别:</label></td>
+                <td><input type="text" id="sex" name="sex" value="#dictVal("Gender",$!customerInfor.sex)" disabled="disabled"/>
+				</td>
+            </tr>
+            <tr>
+              <td><label for="birthday">出生日期:</label></td>
+              <td><input type="text" name="birthday" id="birthday"  value="$!customerInfor.birthday" disabled="disabled"/></td>
+			  
+			  <td><label for="cardType">身份证件:</label></td>
+              <td><select id="cardType" name="cardType" disabled="disabled">
+                  #customerInfo($request.getAttribute("cardTypeList"),$!{customerInfor.cardType})
+                  </select></td>
+            </tr>
+			<tr>
+              <td><label for="cardId">证件号码:</label></td>
+              <td><input type="text" name="cardId" id="cardId"  value="$!customerInfor.cardId" disabled="disabled"/></td>
+			  
+			  <td><label for="telephone">手机:</label></td>
+              <td><input type="text" name="telephone" id="telephone" value="$!customerInfor.telephone" disabled="disabled"/></td>
+            </tr>
+			<tr>
+              <td><label for="homePhone">住宅电话:</label></td>
+              <td><input type="text" name="homePhone" id="homePhone"  value="$!customerInfor.homephone" disabled="disabled"/></td>
+			  
+			  <td><label for="residentialAddress">住宅地址:</label></td>
+              <td><input type="text" name="residentialAddress" id="residentialAddress" value="$!customerInfor.residentialAddress" disabled="disabled"/></td>
+            </tr>
+			<tr>
+              <td><label for="mail">E-mail:</label></td>
+              <td><input type="text" name="mail" id="mail"  value="$!customerInfor.mail" disabled="disabled"/></td>
+			  
+			  <td><label for="residentialPropertie">住宅性质:</label></td>
+              <td><select id="residentialPropertie" name="residentialPropertie" disabled="disabled">
+                 #customerInfo($request.getAttribute("residentialPropertieList"),$!{customerInfor.residentialPropertie})
+                  </select></td>
+            </tr>
+			<tr>
+              <td><label>婚姻状况:</label></td>
+              <td><select id="maritalStatus" name="maritalStatus" disabled="disabled">
+                  #customerInfo($request.getAttribute("maritalStatusList"),$!{customerInfor.maritalStatus})
+                  </select></td>
+			  
+			  <td><label for="degreeEducation">教育程度:</label></td>
+              <td><input type="text" name="degreeEducation" id="degreeEducation" value="$!customerInfor.degreeEducation" disabled="disabled"/></td>
+            </tr>
+			<tr>
+              <td><label for="householdAddress">户籍地址:</label></td>
+              <td><input type="text" name="householdAddress" id="householdAddress"  value="$!customerInfor.householdAddress" disabled="disabled"/></td>
+			  
+			  <td><label for="zipCodeAddress">邮政编码(户籍地址):</label></td>
+              <td><input type="text" name="zipCodeAddress" id="zipCodeAddress" value="$!customerInfor.zipCodeAddress" disabled="disabled"/></td>
+            </tr>
+			<tr>
+              <td><label for="finalApproval">最终审批有效期(银联):</label></td>
+              <td><input type="text" name="finalApproval" id="finalApproval"  value="$!customerInfor.finalApproval" disabled="disabled"/></td>
+			  
+			  <td><label for="applyCredit">申请额度:</label></td>
+              <td><input type="text" name="applyCredit" id="applyCredit" value="$!customerInfor.applyCredit" disabled="disabled"/></td>
+            </tr>
+			<tr>
+              <td><label for="actualAmount">实际额度(信誉):</label></td>
+              <td><input type="text" name="actualAmount" id="actualAmount"  value="$!customerInfor.actualAmount" disabled="disabled"/></td>
+			  
+			  <td><label for="temporaryQuota">临时额度:</label></td>
+              <td><input type="text" name="temporaryQuota" id="temporaryQuota" value="$!customerInfor.temporaryQuota" disabled="disabled"/></td>
+            </tr>
+			<tr>
+              <td><label for="cashAdvanceRatio">预借现金比例:</label></td>
+              <td><input type="text" name="cashAdvanceRatio" id="cashAdvanceRatio"  value="$!customerInfor.cashAdvanceRatio" disabled="disabled"/></td>
+			  
+			  <td><label for="cardStatus">卡片状态:</label></td>
+              <td><input type="text" name="cardStatus" id="cardStatus" value="$!customerInfor.cardStatus" disabled="disabled"/></td>
+            </tr>
+            #if($!customerManagers) 
+            <tr>
+              <td><label for="userId">客户经理ID:</label></td>
+              <td>
+              <select name="customerManagerId" #if(!$customerManagers)hidden="hidden" disabled="disabled"#end id="customerManagerId">
+              #foreach($!userId in $!customerManagers)
+                  <option value="$!userId.TypeCode">$!userId.TypeName</option>
+              #end
+                  </select>
+                  </td>
+              <td colspan="2"></td>
+            </tr>
+           #else
+           <tr>
+           <td><label for="userId">客户经理ID:</label></td>
+              <td><input type="text" id="userId" value="$!customerInfor.userName" disabled="disabled"/>
+              </td>
+           #end
+            </tr>
+          </table>
+        </div>
+      </form>
+      <div class="submit">
+          <input class="current" type="button" #if(!$customerManagers)hidden="hidden" disabled="disabled"#end onclick="divisional()" value="#i18n('button.divisional')"/>
+          <input class="current" type="button" #if(!$customerManagers)hidden="hidden" disabled="disabled"#end onclick="uploadTocardCenter()" value="上传到卡中心"/>
+          <input class="current" type="button" onclick="javascript:history.go(-1);" value="#i18n('button.back')" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout = new FormsLayout("formsId");
+	window.top.currentWindow.setLayout(layout);
+	function divisional(){
+		
+		$.ajax({
+			type:"GET",
+			url:"${modulePath}/divisional.json",
+			data:$("#id_module_form").serialize(),
+			success:function(msg){
+				
+				if(msg.success == true){
+					Dialog.message(msg.message);
+				}else{
+					Dialog.message(msg.message);
+				}
+				window.location.href="${modulePath}/browse.page?recordId="+msg.recordId;
+			}
+		});
+	}
+		function uploadTocardCenter(){
+			Dialog.load();
+			$.ajax({
+					type:"GET",
+					url:"${modulePath}/upload.json",
+					data:"id="+$("#id").val(),
+					success:function(msg){
+						Dialog.closeLoad();
+						if(msg.success == true){
+							Dialog.message(msg.message);
+						}else{
+							Dialog.message(msg.message);
+						}
+						window.location.href="${modulePath}/browse.page";
+					}
+			});
+		}
+  </script>  
+</body>
+#parse ("common/iframe_page_footer.htm")

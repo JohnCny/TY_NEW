@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.customer.dao.CustomerAccountInfoDao">
+	
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.customer.web.CustomerAccountInfoForm">
+		<result property="id" column="id" />
+		<result property="customerId" column="CUSTOMER_ID" />
+		<result property="accountStatus" column="ACCOUNT_STATUS" />
+		<result property="overdueAmount" column="OVERDUE_AMOUNT" />
+		<result property="tableTurnPay" column="TABLE_TURN_PAY" />
+		<result property="compoundAmount" column="COMPOUND_AMOUNT" />
+		<result property="currentPeriodPay" column="CURRENT_PERIOD_PAY" />
+		<result property="verificationCode" column="VERIFICATION_CODE" />
+		<result property="currentPeriodAnnuity" column="CURRENT_PERIOD_ANNUITY" />
+		<result property="cardNumber" column="CARD_NUMBER" />
+		<result property="currentPeriodOverduePay" column="CURRENT_PERIOD_OVERDUE_PAY" />
+		<result property="currentPeriodCash" column="CURRENT_PERIOD_CASH" />
+		<result property="currentPeriodScale" column="CURRENT_PERIOD_SCALE" />
+		<result property="accountStatusDate" column="ACCOUNT_STATUS_DATE" />
+		<result property="accountChargeAmount" column="ACCOUNT_CHARGE_AMOUNT" />
+		<result property="creditAmount" column="CREDIT_AMOUNT" />
+		<result property="amountProfitsInreturn" column="AMOUNT_PROFITS_INRETURN" />
+		<result property="reimbursementDeadline" column="REIMBURSEMENT_DEADLINE" />
+		<result property="statementDate" column="STATEMENT_DATE" />
+		<result property="debitAmountAdjustment" column="DEBIT_AMOUNT_ADJUSTMENT" />
+		<result property="consumptionLogo" column="CONSUMPTION_LOGO" />
+		<result property="compoundInterestReceivable" column="COMPOUND_INTEREST_RECEIVABLE" />
+		<result property="interestReceivable" column="INTEREST_RECEIVABLE" />
+		<result property="accruedInterestCompound" column="ACCRUED_INTEREST_COMPOUND" />
+		<result property="currentPeriodAccrued" column="CURRENT_PERIOD_ACCRUED" />
+		<result property="currentShouldCompounded" column="CURRENT_SHOULD_COMPOUNDED" />
+		<result property="nextInterestReceivable" column="NEXT_INTEREST_RECEIVABLE" />
+		<result property="recentInterestDate" column="RECENT_INTEREST_DATE" />
+		<result property="lastPaymentDate" column="LAST_PAYMENT_DATE" />
+		<result property="amountInstallmentPayment" column="AMOUNT_INSTALLMENT_PAYMENT" />
+		<result property="instalmentTotalAmount" column="INSTALMENT_TOTAL_AMOUNT" />
+		<result property="paymentInstallmentCredit" column="PAYMENT_INSTALLMENT_CREDIT" />
+		<result property="stagingRemainingPrincipal" column="STAGING_REMAINING_PRINCIPAL" />
+		<result property="overdueTotalNumber" column="OVERDUE_TOTAL_NUMBER" />
+		<result property="repaymentAccountPeriod" column="REPAYMENT_ACCOUNT_PERIOD" />
+		<result property="consumptionAccountPeriod" column="CONSUMPTION_ACCOUNT_PERIOD" />
+		<result property="transactionsAccount" column="TRANSACTIONS_ACCOUNT" />
+		<result property="accountQueueDate" column="ACCOUNT_QUEUE_DATE" />
+		<result property="amountOtherCosts" column="AMOUNT_OTHER_COSTS" />
+		<result property="amountControversy" column="AMOUNT_CONTROVERSY" />
+		<result property="prePeriodAccount" column="PRE_PERIOD_ACCOUNT" />
+		<result property="recentLowestBill" column="RECENT_LOWEST_BILL" />
+		<result property="overdueTime" column="OVERDUE_TIME" />
+		<result property="tempAmount" column="TEMP_AMOUNT" />
+		<result property="tempStartDate" column="TEMP_START_DATE" />
+		<result property="tempLossDate" column="TEMP_LOSS_DATE" />
+		<result property="chargeLogo" column="CHARGE_LOGO" />
+		<result property="accountNumber" column="ACCOUNT_NUMBER" />
+		<result property="aging" column="AGING" />
+		<result property="customerName" column="CHINESE_NAME" />
+	</resultMap>
+	
+	<select id="findCusomerAccountInfoByFilter" resultMap="ResultMap" 
+		parameterType="com.cardpay.pccredit.customer.filter.CustomerAccountInforFilter">
+		SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					 SELECT cai.*,
+							c.chinese_name
+					 FROM  customer_account_information cai
+					 LEFT JOIN basic_customer_information c
+					    ON c.id = cai.customer_id
+					 WHERE 1=1
+					 <if test="customerName != null and customerName != '' ">
+						<![CDATA[ and c.CHINESE_NAME like '%'||#{customerName}||'%']]>
+					 </if>
+					 <if test="accountStatus != null and accountStatus != '' ">
+						AND cai.ACCOUNT_STATUS = #{accountStatus}
+					 </if>
+			<![CDATA[
+					 AND cai.id not in(select account_id from npls_information where REVIEW_RESULTS <> 'refuse')
+					) ROW_
+				WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+			WHERE ROWNUM_ > #{limit}*#{page}
+			]]>
+	</select>
+	
+	
+	<select id="findCusomerAccountInfoCountByFilter" resultType="int" 
+		parameterType="com.cardpay.pccredit.customer.filter.CustomerAccountInforFilter">
+		 SELECT count(*)
+		 FROM  customer_account_information cai
+		 LEFT JOIN basic_customer_information c
+		    ON c.id = cai.customer_id
+		 WHERE 1=1
+		 <if test="customerName != null and customerName != '' ">
+			<![CDATA[ and c.CHINESE_NAME like '%'||#{customerName}||'%']]>
+		 </if>
+		 <if test="accountStatus != null and accountStatus != '' ">
+			AND cai.ACCOUNT_STATUS = #{accountStatus}
+		 </if>
+		 <![CDATA[
+		 AND cai.id not in(select account_id from npls_information where REVIEW_RESULTS <> 'refuse')
+		 ]]>
+	</select>
+	
+	<select id="findCustomerAccountById" resultMap="ResultMap">
+	 SELECT cai.*,
+			c.chinese_name
+	 FROM  customer_account_information cai
+	 LEFT JOIN basic_customer_information c
+	    ON c.id = cai.customer_id
+	 WHERE cai.id=#{id}
+	</select>
+	
+	<select id="findCustomerAccountByCardNumber" resultMap="ResultMap">
+	 SELECT cai.*
+	 FROM  customer_account_information cai
+	 WHERE cai.CARD_NUMBER=#{cardNumber}
+	</select>
+	
+	<select id="findCustomerAccountByaccountNumber" resultMap="ResultMap">
+	 SELECT cai.*
+	 FROM  customer_account_information cai
+	 WHERE cai.ACCOUNT_NUMBER=#{accountNumber}
+	</select>
+	
+	<select id="findCustomerAccountByCustomerId" resultMap="ResultMap">
+	 SELECT cai.*,
+			c.chinese_name
+	 FROM  customer_account_information cai
+	 LEFT JOIN basic_customer_information c
+	    ON c.id = cai.customer_id
+	 WHERE cai.customer_id = #{customerId}
+	</select>
+	
+	
+</mapper>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.jnpad.dao.JnpadZongBaoCustomerInsertDao">
+
+
+<resultMap type="com.cardpay.pccredit.jnpad.model.CustomerInfo" id="selectCustomerinfo">
+<result property="id" column="ID" />
+<result property="chineseName" column="CHINESE_NAME" />
+<result property="nationality" column="NATIONALITY" />
+<result property="sex" column="SEX" />
+<result property="pinyinenglishName" column="PINYINENGLISH_NAME" />
+<result property="birthday" column="BIRTHDAY" />
+<result property="cardType" column="CARD_TYPE" />
+<result property="cardId" column="CARD_ID" />
+<result property="residentialAddress" column="RESIDENTIAL_ADDRESS" />
+<result property="zipCode" column="ZIP_CODE" />
+<result property="homePhone" column="HOME_PHONE" />
+<result property="telephone" column="TELEPHONE" />
+<result property="mail" column="MAIL" />
+<result property="residentialPropertie" column="RESIDENTIAL_PROPERTIE" />
+<result property="maritalStatus" column="MARITAL_STATUS" />
+<result property="degreeEducation" column="DEGREE_EDUCATION" />
+<result property="householdAddress" column="HOUSEHOLD_ADDRESS" />
+<result property="zipCodeAddress" column="ZIP_CODE_ADDRESS" />
+<result property="userId" column="USER_ID" />
+<result property="divisionalStatus" column="DIVISIONAL_STATUS" />
+<result property="customerBusinessType" column="CUSTOMER_BUSINESS_TYPE" />
+<result property="customerBusinessAptitude" column="CUSTOMER_BUSINESS_APTITUDE" />
+<result property="tyCustomerId" column="TY_CUSTOMER_ID" />
+<result property="createdBy" column="CREATED_BY" />
+<result property="spmc" column="SPMC" />
+</resultMap>
+
+
+
+<select id="selectCustomerInfo" resultMap="selectCustomerinfo">
+	SELECT * FROM
+		(SELECT
+		ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		select *
+		from BASIC_CUSTOMER_INFORMATION c
+		where 1=1
+		<if test="userId != null and userId != '' ">
+		AND c.created_by=#{userId}
+		</if>
+		and c.user_id is null
+		
+		) ROW_)
+</select>
+
+<update id="updateCustomerInfo">
+    
+   UPDATE  BASIC_CUSTOMER_INFORMATION  SET  user_id =#{userId} WHERE id =#{customerId}
+</update>
+
+</mapper>

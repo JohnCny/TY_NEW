@@ -1,0 +1,234 @@
+#parse ("common/iframe_page_header.htm")
+<link rel="stylesheet" type="text/css"
+	href="${contextPath}/css/style.css" />
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
+<style>
+.form-l .form-r{height:32px;}
+</style>
+<body class="whitebg">
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+			   <div class="title">客户维护信息>交叉检验</div>
+			</div>
+				   <div class="tabplace">
+           <ul class="com-tab" >
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/changewh.page?id=${customerId}">基本信息</a></li>
+            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_zyxx.page?id=${customerId}">职业信息</a></li>
+            <li class="tab " ><a href="${contextPath}/customer/basiccustomerinforUpdate/create_mbxx.page?id=${customerId}">陌拜信息</a></li>
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_zcfz.page?id=${customerId}">资产负债</a></li>
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_syb.page?id=${customerId}">损益</a></li>
+            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_xjl.page?id=${customerId}">现金流量</a></li>
+            <li class="tab activeTab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_jcjy.page?id=${customerId}">交叉检验</a></li>
+			<li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_swpg.page?id=${customerId}">四维评估</a></li>
+			<li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_sxpg.page?id=${customerId}">授信评估</a></li>
+            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_wjdc.page?id=${customerId}">问卷调查</a></li>
+            <li class="tab" ><a href="${contextPath}/customer/basiccustomerinforUpdate/create_khtz.page?id=${customerId}">台账信息</a></li>
+            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_yxzl.page?id=${customerId}">影像资料</a></li>  
+         </ul>
+         </div>
+			
+
+			<form id="id_module_form" action="${modulePath}/saveCrossExamination.page" method="post">
+				<input type="hidden" id="customerId" name="customerId" value="$!customerId"/>
+				<input type="hidden" id="crossExaminationInfo" name="crossExaminationInfo" value=""/>
+				<div class="form-bd" id="formsId"  style="min-width:1000px;">
+					<div class="form-block clearfix" loan_type="1">
+						<div>
+							#foreach($crossExamination in $!crossExaminationList)
+								#if($crossExamination.loanType==1)
+								<div class="form-l"><span name="NAMES">销售额交叉检验</span>：</div>
+								<div class="form-r">
+									<textarea style="width: 795px;" name="CONTENTS_TEXT_NUMBERS" maxlength="120">$!crossExamination.contentsTextNumbers</textarea>
+								</div>
+								#end
+							#end
+						</div>
+					</div>
+					<div class="form-block clearfix" loan_type="2">
+						<div>
+							#foreach($crossExamination in $!crossExaminationList)
+								#if($crossExamination.loanType==2)
+									<div class="form-l"><span name="NAMES">毛利润/成本交叉检验</span>：</div>
+									<div class="form-r">
+										<textarea style="width: 795px;" name="CONTENTS_TEXT_NUMBERS" maxlength="120">$!crossExamination.contentsTextNumbers</textarea>
+									</div>
+								#end
+							#end
+						</div>
+					</div>
+					<div class="form-block clearfix" loan_type="3">
+						<div>
+							#foreach($crossExamination in $!crossExaminationList)
+								#if($crossExamination.loanType==3)
+									<div class="form-l"><span name="NAMES">毛利润/成本交叉检验</span>：</div>
+									<div class="form-r">
+										<textarea style="width: 795px;" name="CONTENTS_TEXT_NUMBERS" maxlength="120">$!crossExamination.contentsTextNumbers</textarea>
+									</div>
+								#end
+							#end
+						</div>
+					</div>
+
+					<div class="form-block clearfix">
+						<div class="form-bd-l" loan_type="4">
+							#foreach($crossExamination in $!crossExaminationList)
+								#if($crossExamination.loanType==4)
+									<div class="form-block clearfix">
+										<div class="form-l"><span name="NAMES">$!crossExamination.names</span>：</div>
+										<div class="form-r">
+											#if($crossExamination.no==1)
+											<a href="#" class="btn" onclick="deleteRowItem($(this).parent().parent().parent())"><img src="${contextPath}/images/del.png" /></a> 
+											<a href="#" class="btn" onclick="addRowItem($(this).parent().parent().parent())"><img src="${contextPath}/images/add.png" /></a> 
+											#end
+											<input name="CONTENTS_TEXT_NUMBERS" type="text" maxlength="15" style="width: 125px;" value="$!crossExamination.contentsTextNumbers" 
+											#if($crossExamination.no==1) disabled="disabled" #else onblur="collectItem($(this).parent().parent().parent())" #end/> 元
+										</div>
+									</div>
+								#end
+							#end
+						</div>
+						<div class="form-bd-r" loan_type="5">
+							#foreach($crossExamination in $!crossExaminationList)
+								#if($crossExamination.loanType==5)
+									<div class="form-block clearfix">
+										<div class="form-l"><span name="NAMES">$!crossExamination.names</span>：</div>
+										<div class="form-r">
+											#if($crossExamination.no==1)
+											<a href="#" class="btn" onclick="deleteRowItem($(this).parent().parent().parent())"><img src="${contextPath}/images/del.png" /></a> 
+											<a href="#" class="btn" onclick="addRowItem($(this).parent().parent().parent())"><img src="${contextPath}/images/add.png" /></a> 
+											#end
+											<input df="df" name="CONTENTS_TEXT_NUMBERS" type="text" maxlength="15" style="width: 125px;" value="$!crossExamination.contentsTextNumbers" 
+											#if($crossExamination.no==1) disabled="disabled" #else onblur="collectItem($(this).parent().parent().parent())" #end/> 元
+										</div>
+									</div>
+								#end
+							#end
+						</div>
+					</div>
+
+					<div class="form-block clearfix">
+						<div class="form-bd-l" loan_type="6">
+							#foreach($crossExamination in $!crossExaminationList)
+								#if($crossExamination.loanType==6)
+									<div class="form-block clearfix">
+										<div class="form-l"><span name="NAMES">$!crossExamination.names</span>：</div>
+										<div class="form-r">
+											#if($crossExamination.no==1)
+											<a href="#" class="btn" onclick="deleteRowItem($(this).parent().parent().parent())"><img src="${contextPath}/images/del.png" /></a> 
+											<a href="#" class="btn" onclick="addRowItem($(this).parent().parent().parent())"><img src="${contextPath}/images/add.png" /></a> 
+											#end
+											<input name="CONTENTS_TEXT_NUMBERS" type="text" maxlength="15" style="width: 125px;" value="$!crossExamination.contentsTextNumbers" 
+											#if($crossExamination.no==1) disabled="disabled" #else onblur="collectItem($(this).parent().parent().parent())" #end/> 元
+										</div>
+									</div>
+								#end
+							#end
+						</div>
+					</div>
+
+					<div class="form-block clearfix">
+						<div class="form-bd-l" loan_type="7">
+							#foreach($crossExamination in $!crossExaminationList)
+								#if($crossExamination.loanType==7)
+									<div class="form-block clearfix">
+										<div class="form-l"><span name="NAMES">$!crossExamination.names</span>：</div>
+										<div class="form-r">
+											<input name="CONTENTS_TEXT_NUMBERS" type="text" maxlength="15" style="width: 125px;" value="$!crossExamination.contentsTextNumbers" onblur="calculate()"/> 元
+										</div>
+									</div>
+								#end
+							#end
+						</div>
+						<div class="form-bd-r" loan_type="8">
+							#foreach($crossExamination in $!crossExaminationList)
+								#if($crossExamination.loanType==8)
+									<div class="form-block clearfix">
+										<div class="form-l"><span name="NAMES">$!crossExamination.names</span>：</div>
+										<div class="form-r">
+											<input name="CONTENTS_TEXT_NUMBERS" type="text" maxlength="15" style="width: 125px;" value="$!crossExamination.contentsTextNumbers" onblur="calculate()"/> 元
+										</div>
+									</div>
+								#end
+							#end
+						</div>
+
+					</div>
+
+					<div class="form-block clearfix">
+						<div class="form-bd-l" loan_type="9">
+							#foreach($crossExamination in $!crossExaminationList)
+								#if($crossExamination.loanType==9)
+									<div class="form-block clearfix">
+										<div class="form-l"><span name="NAMES">$!crossExamination.names</span>：</div>
+										<div class="form-r">
+											<input name="CONTENTS_TEXT_NUMBERS" type="text" maxlength="15" style="width: 125px;" value="$!crossExamination.contentsTextNumbers" disabled="disabled"/> 
+											#if($crossExamination.no==3)
+											 %
+											#else
+											 元
+											#end
+										</div>
+									</div>
+								#end
+							#end
+						</div>
+						<div class="form-bd-r" loan_type="10">
+							<div class="form-block clearfix">
+								<div class="form-l"><span name="NAMES">实际权益</span>：</div>
+								<div class="form-r">
+									<input type="text" name="CONTENTS_TEXT_NUMBERS" style="width: 125px;" value="$!sjsy" disabled="disabled"/> 元
+								</div>
+							</div>
+							#foreach($crossExamination in $!crossExaminationList)
+								#if($crossExamination.loanType==10 and $crossExamination.no!=1)
+									<div class="form-block clearfix">
+										<div class="form-l"><span name="NAMES">$!crossExamination.names</span>：</div>
+										<div class="form-r">
+											<input name="CONTENTS_TEXT_NUMBERS" type="text" maxlength="15" style="width: 125px;" value="$!crossExamination.contentsTextNumbers" disabled="disabled"/> 元
+										</div>
+									</div>
+								#end
+							#end
+						</div>
+					</div>
+				</div>
+			</form>
+
+			<div class="submit">
+				<input id="id_save_button" type="button" value='#i18n("button.save")' class="current" /> 
+				<input type="button" onclick="returnClick();" value='#i18n("button.cancel")' />
+			</div>
+		</div>
+	</div>
+	 <script src='${contextPath}/js/customerInforUpdate/customerinfoupdate_jcjy.js'></script>
+	<script type="text/javascript">
+		var layout = new FormsLayout("formsId");
+		window.top.currentWindow.setLayout(layout);
+		
+		var msg = '#i18n("validator.required")';
+		$(document).ready(function() {
+			$("input:enabled[name]").each(function (index, domEle) { 
+				  // domEle == this 
+				  $(domEle).moneyFormat();
+			});
+			
+			$("#id_save_button").click(function() {
+				if(!validate())return;
+				// 获取页面数据
+				var jsonArrObj = getData();
+				var customerId = $("#customerId").val();
+				$("#crossExaminationInfo").val(JSONstringify(jsonArrObj));
+				$("#id_module_form").submit();
+			});
+			
+			// 计算并设置业务数据
+			calculate();
+		});
+		function returnClick(){
+			
+			 window.location.href= contextPath + "/customer/basiccustomerinforUpdate/browse.page" ;
+		}
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

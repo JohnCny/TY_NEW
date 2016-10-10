@@ -1,0 +1,113 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/customerInfor.htm")
+
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户维护计划信息(下属)</div>
+      </div>
+      
+      <div class="inquiry">
+<!-----------搜索------------------------------------------->  
+ <div class="search_tag">#i18n("label.browse.filter")</div>
+     <div class="search">
+          <form id="submitForm">
+            <ul>
+              <li>
+                <span>客户经理：<select id="customerManagerId" name="customerManagerId">
+                <option value="">请选择...</option>
+                #web($forms,$!result.filter.customerManagerId)
+                  </select>
+                </span>
+              </li>
+              <li>
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
+<!-------------- 信息显示 ------------------------------------->        
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+             <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="15%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">客户名称</th>
+              <th nowrap="nowrap">维护目标</th>
+              <th nowrap="nowrap">维护天数</th>
+              <th nowrap="nowrap">维护方式</th>
+              <th nowrap="nowrap">维护备注</th>
+              <th nowrap="nowrap">创建方式</th>
+              <th nowrap="nowrap">实施记录数目</th>
+              <th nowrap="nowrap">维护结束时间</th>
+              <th nowrap="nowrap">所属客户经理</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="15%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col />
+            </colgroup>
+            #foreach ($customer in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!customer.id"
+                  #if ($!request.getParameter("recordId") == $!customer.id) checked="checked" #end /></td>
+              <td nowrap="nowrap">$!customer.chineseName</td>
+              <td nowrap="nowrap">$!customer.maintenanceGoal</td>
+              <td nowrap="nowrap">$!customer.maintenanceDay</td>
+              <td nowrap="nowrap">#customerInfor($request.getAttribute("collectionMethodList"),$!customer.maintenanceWay)</td>
+              <td nowrap="nowrap">$!customer.remarksCreateReason</td>
+              <td nowrap="nowrap">#dictVal("MarketingCreateWay",$!customer.createWay)</td>
+              <td nowrap="nowrap">$!customer.size</td>
+              <td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:dd",$!customer.maintenanceEndtime)</td>
+              <td nowrap="nowrap">#if($!customer.userName)$!customer.userName#else #webVal($forms,$!result.filter.customerManagerId)#end</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+          #btnpriv("change")<a id="id_change_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.change.hint')">修改</a>#end
+          #btnpriv("display")<a id="id_display_button" class="btn_gr" href="javascript:void(0);" title="#i18n('button.display.hint')">显示</a>#end
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+	url = "${modulePath}/browse.page";
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.displayUrl = "${modulePath}/display.page";
+		opsObj.changeUrl = "${modulePath}/change.page";
+		opsObj.browseUrl = "${modulePath}/browse.page";
+		prepareOperations(opsObj);
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")

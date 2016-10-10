@@ -1,0 +1,341 @@
+#parse ("common/iframe_page_header.htm")
+<style>
+<!--
+	.rightArrow {
+		background: url(${contextPath}/common/images/cp_icon_left_single_hover.png) repeat-x;width:33px;height:32px;border:0px;
+	}
+	.rightAllArrow {
+		background: url(${contextPath}/common/images/cp_icon_left_all_hover.png) repeat-x;width:33px;height:32px;border:0px;
+	}
+	.leftArrow {
+		background: url(${contextPath}/common/images/cp_icon_right_single_hover.png) repeat-x;width:33px;height:32px;border:0px;
+	}
+	.leftAllArrow {
+		background: url(${contextPath}/common/images/cp_icon_right_all_hover.png) repeat-x;width:33px;height:32px;border:0px;
+	}
+-->
+</style>
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户经理警示书创建</div>
+      </div>
+      <form id="id_module_form" action="">
+        <div class="forms" id="formsId">
+          <table class="rule" border="1" bordercolor="#CCCCCC">
+          <caption>客户经理警示书</caption>
+            <colgroup>
+              <col width="10%" />
+              <col width="40%" />
+              <col width="10%" />
+              <col width="40%" />
+            </colgroup>
+         <!--    <tr>
+            <td><label>客户经理姓名：</label></td>
+            <td><select id="userId" name="userId" value="">
+                  #foreach($qq in $!apf)
+                  <option value="$qq.userId">$qq.displayName</option>
+                  #end
+                </select>
+            </td>
+            <td colspan="2"></td>
+            </tr> -->
+            <tr>
+			<td class="titlec"><label>警示事项：</label></td>
+			<td><textarea id="warningItems" value="" rows="5"  name="warningItems"></textarea></td>
+			<td class="titlec"><label>主管建议：</label></td>
+			<td><textarea id="competentAdvice" value="" rows="5"  name="competentAdvice"></textarea></td>
+            </tr>
+             
+          </table>
+        </div>
+       <div class="search">
+	          <form id="submitForm">
+	            <ul>
+	              <li>
+	                <span>机构：
+	                <select name="orgId" id="orgId" onchange="orgChange();">
+	                	<option value="">请选择</option>
+	                	#foreach($org in $!orgList)
+	                		<option value="$!org.id" #if($org.id==$!result.filter.orgId) checked #end>$!org.name</option>
+						#end
+	                </select>
+					</span>
+	              </li>
+	            </ul>
+	          </form>
+	        </div>
+      <div class="inquiry">
+      	<div id="leftDiv" style="float:left;width:45%;height:100%;">
+      		
+	        <div id="leftTopDiv" class="inquiry_list inquiry_top">
+	          <table>
+	            <colgroup>
+	              <col width="5%" />
+	              <col width="25%" />
+	            </colgroup>
+	            <tr class="title">
+	              <th nowrap="nowrap"></th>
+	              <th nowrap="nowrap">客户经理</th>
+	            </tr>
+	          </table>
+	        </div>
+	        <div id="leftDownDiv" class="inquiry_list inquiry_down">
+	          <table>
+	            <colgroup>
+	              <col width="5%" />
+	              <col width="25%" />
+	            </colgroup>
+	            #foreach ($manager in $!managerList)
+	            <tr>
+	              <td class="checkbox" ><input type="checkbox" name="checkbox" value="$!manager.id"/></td>
+	              <td nowrap="nowrap">$!manager.displayName</td>
+	            </tr>
+	            #end
+	          </table>
+	        </div>
+      		<div class="submit">
+        <input id="id_save_button" type="button" value="#i18n("button.save")" class="current" />
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n("button.cancel")" />
+      </div>
+    </div>
+      	</div>
+        <div class="" style="float:left;width:5%;height:100%;margin-left:2%;">
+	        <div style="margin-top:100px;">
+	        	<input type="button" class="rightAllArrow" id="btnRightAllArrow">
+	        	<input type="button" class="rightArrow" id="btnRightArrow">
+	        	<input type="button" class="leftAllArrow" id="btnLeftAllArrow">
+	        	<input type="button" class="leftArrow" id="btnLeftArrow">
+	        </div>
+        </div>
+        <div id="righDiv" style="float:left;width:45%;height:100%;">
+        	
+	        <div id="rightTopDiv" class="inquiry_list inquiry_top">
+	          <table>
+	            <colgroup>
+	               <col width="5%" />
+	              <col width="25%" />
+	            </colgroup>
+	            <tr class="title">
+	              <th nowrap="nowrap"></th>
+	              <th nowrap="nowrap">客户经理</th>
+	            </tr>
+	          </table>
+	        </div>
+	        <div id="rightDownDiv" class="inquiry_list inquiry_down">
+	          <table>
+	            <colgroup>
+	              <col width="5%" />
+	              <col width="25%" />
+	            </colgroup>
+	            <!-- #foreach ($user in $userList)
+	            <tr>
+	              <td class="checkbox" ><input type="checkbox" name="checkbox" value="$!user.id"/></td>
+	              <td nowrap="nowrap">$!user.displayName</td>
+	              <td nowrap="nowrap">$!user.login</td>
+	            </tr>
+	            #end -->
+	          </table>
+	        </div>
+      	</div>
+      	
+      </div>
+    </div>
+    </form>
+     
+    
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");	
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	$("#rightDownDiv").height(400);
+	$("#leftDownDiv").height(400);
+	#validator($formName)
+	$(document).ready(function() {	
+		
+		$("#id_save_button").click(function() {
+	          var formjson = {'retrainId' : "$!retrainId", 't' : new Date().getTime()};
+	          var ids = "";
+	          $.each(deleteManagerIds, function(i, n){
+	        	  ids = ids + "," + n;
+	           });
+	          formjson.deleteManagerIds = ids;
+	          ids = "";
+	          $.each(newAddManagerIds, function(i, n){
+	        	  ids = ids + "," + n;
+	           });
+	          formjson.newAddManagerIds = ids;
+	          formjson.warningItems = $("#warningItems").val();
+	          formjson.competentAdvice = $("#competentAdvice").val();
+	          $.ajax({
+		  			type:'GET',
+		  			url:"${contextPath}/manager/managerriskcenter/insert.json",
+		  			data: formjson,
+		  			success:function(msg){
+		  				if(msg.success == true){
+		  					navigateTo("${contextPath}/manager/managerriskcenter/browse.page");
+		  				}else{
+		  					Dialog.message(msg.message);
+		  				}
+		  			}
+		  		});
+	          
+	      });
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		
+		var currentManagerIds = new Array();
+		// 新增客户经理
+		var newAddManagerIds = new Array();
+		// 删除的客户经理
+		var deleteManagerIds = new Array();
+		$("#rightDownDiv table [name=checkbox]").each(function(index, domEle){
+			currentManagerIds.push($(domEle).val());
+		});
+		
+		
+		/*
+		* 向右移除所有数据
+		*/
+		$("#btnRightAllArrow").click(function() {
+			var rightTable = $("#rightDownDiv table");
+			$("#leftDownDiv table .checkbox input[name=checkbox]").each(function(index, domEle){
+				// 添加客户经理
+				var flag = addManager(rightTable, domEle);
+				if(!flag){
+					return flag;
+				}
+			});
+		});
+		
+		/*
+		* 向右移除选中数据
+		*/
+		$("#btnRightArrow").click(function() {
+			var rightTable = $("#rightDownDiv table");
+			$("#leftDownDiv table .checkbox :checked").each(function(index, domEle){
+				// 添加客户经理
+				var flag = addManager(rightTable, domEle);
+				if(!flag){
+					return flag;
+				}
+			});
+		});
+		
+		/*
+		* 向左移除所有数据
+		*/
+		$('#btnLeftAllArrow').bind('click', function() {
+			var leftTable = $("#leftDownDiv table");
+			$("#rightDownDiv table .checkbox input[name=checkbox]").each(function(index, domEle){
+				// 删除客户经理
+				removeManager(leftTable, domEle);
+			});
+		});
+		
+		/*
+		* 向左移除选中数据
+		*/
+		$("#btnLeftArrow").click(function() {
+			var leftTable = $("#leftDownDiv table");
+			$("#rightDownDiv table .checkbox :checked").each(function(index, domEle){
+				// 删除客户经理
+				removeManager(leftTable, domEle);
+			});
+		});
+		
+		/*
+		* 添加培训客户经理
+		*/
+		function addManager(tableObj, domEle){
+			var domObj = $(domEle);
+			var index = $.inArray(domObj.val(),currentManagerIds);
+			if(index == -1 || currentManagerIds.length == 0){
+				index = $.inArray(domObj.val(),deleteManagerIds);
+				if(index != -1){
+					deleteManagerIds.splice(index,1);
+				}else{
+					newAddManagerIds.push(domObj.val());
+				}
+				currentManagerIds.push(domObj.val());
+				
+				addRow(tableObj, domObj.parent().parent()); 
+				return true;
+			}else{
+				Dialog.message(domObj.parent().parent().find("td:eq(1)").text() +"已经存在");
+				return false;
+			}
+		}
+		
+		/*
+		* 删除培训客户经理
+		*/
+		function removeManager(tableObj, domEle){
+			var domObj = $(domEle);
+			index = $.inArray(domObj.val(),newAddManagerIds);
+			if(index != -1){
+				newAddManagerIds.splice(index,1);
+			}else{
+				deleteManagerIds.push(domObj.val());
+			}
+		    // 删除rowId  
+			currentManagerIds.splice($.inArray(domObj.val(),currentManagerIds),1);
+			
+		    addRow(tableObj, domObj.parent().parent()); 
+		}
+		
+		function addRow(toObj, row){
+			row.remove();
+			toObj.append(row);
+		}
+		
+	
+	});
+	/*
+	* 改变机构
+	*/
+     function orgChange() {
+		var para = $("#submitForm").serialize();
+		if($("#orgId").val() == ""){
+			Dialog.message("机构不能为空");
+			return;
+		}
+		Dialog.load();
+		$.ajax({
+			type:'GET',
+			url:"${contextPath}/manager/managerriskcenter/findManagersByorgId.json?orgId=" + $("#orgId").val(),
+			data: para,
+			success:function(msg){
+				Dialog.closeLoad();
+				if(msg.success == true){
+					var datas = msg.datas;
+					if(datas){
+						// 先删除所有的行
+						$("#leftDownDiv table tr").remove();
+						var str ="<tr>"
+						      + "	<td class='checkbox'><input type='checkbox' name='checkbox' value='{value}'/></td>"
+						      + "	<td nowrap='nowrap'>{displayName}</td>"
+						      + "</tr>";
+						// 获取表格对象
+						var tableObj = $("#leftDownDiv table");
+						var tmpStr = "";
+						for(var i = 0; i < datas.length; i++){
+							tmpStr = str.replace("{displayName}", datas[i].displayName)
+					   		 			.replace("{login}", datas[i].login)
+					   		 			.replace("{value}", datas[i].id);
+							// 插入行
+							tableObj.append($(tmpStr));
+						}
+					}
+				}else{
+					Dialog.message(msg.message);
+				}
+			}
+		});
+	}
+	
+   
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

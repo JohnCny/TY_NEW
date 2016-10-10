@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cardpay.pccredit.jnpad.dao.JnpadIntopiecesDecisionDao">
+
+	<resultMap id="BaseResultMap"
+		type="com.cardpay.pccredit.intopieces.web.CustomerApplicationIntopieceWaitForm">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="CUSTOMER_ID" property="customerId" jdbcType="VARCHAR" />
+		<result column="CHINESE_NAME" property="chineseName" jdbcType="VARCHAR" />
+		<result column="RESIDENTIAL_ADDRESS" property="residentialAddress"
+			jdbcType="VARCHAR" />
+		<result column="EXAMINE_AMOUNT" property="examineAmount"
+			jdbcType="VARCHAR" />
+		<result column="CARD_TYPE" property="cardType" jdbcType="VARCHAR" />
+		<result column="CARD_ID" property="cardId" jdbcType="VARCHAR" />
+		<result column="APPLY_CREDIT" property="applyCredit" jdbcType="VARCHAR" />
+		<result column="PRODUCT_ID" property="productId" jdbcType="VARCHAR" />
+		<result column="APPLY_QUOTA" property="applyQuota" jdbcType="VARCHAR" />
+		<result column="FINAL_APPROVAL" property="finalApproval"
+			jdbcType="VARCHAR" />
+		<result column="ACTUAL_QUOTE" property="actualQuote" jdbcType="VARCHAR" />
+		<result column="TEMPORARY_QUOTA" property="temporaryQuota"
+			jdbcType="VARCHAR" />
+		<result column="CASH_ADVANCE_PROPORTION" property="cashAdvanceProportion"
+			jdbcType="VARCHAR" />
+		<result column="CARD_STATUS" property="cardStatus" jdbcType="VARCHAR" />
+		<result column="ACCOUNT_STATUS" property="accountStatus"
+			jdbcType="VARCHAR" />
+		<result column="BILLING_DATE" property="billingDate" jdbcType="VARCHAR" />
+		<result column="REPAYMENT_AGREEMENT" property="repaymentAgreement"
+			jdbcType="VARCHAR" />
+		<result column="AUTOMATIC_REPAYMENT_AGREEMENT" property="automaticRepaymentAgreement"
+			jdbcType="VARCHAR" />
+		<result column="CUSTOMER_RISK_RATING" property="customerRiskRating"
+			jdbcType="VARCHAR" />
+		<result column="AGING" property="aging" jdbcType="VARCHAR" />
+		<result column="DEBIT_WAY" property="debitWay" jdbcType="VARCHAR" />
+		<result column="REPAYMENT_CARD_NUMBER" property="repaymentCardNumber"
+			jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="VARCHAR" />
+
+		<result column="BEFORE_STATUS" property="beforeStatus" />
+		<result column="CURRENT_PROCESS" property="currentProcess" />
+		<result column="CURRENT_STATUS" property="currentStatus" />
+		<result column="EXAMINE_RESULT" property="examineResult" />
+		<result column="EXAMINE_USER" property="examineUser" />
+		<result column="EXAMINE_Amount" property="examineUser" />
+		<result column="START_EXAMINE_TIME" property="startExamineTime" />
+		<result column="SUBPROCESS_IS_CLOSED" property="subprocessIsClosed" />
+
+		<result column="APPLICATION_ID" property="applicationId" />
+		<result column="AUDIT_USER" property="auditUser" />
+		<result column="SERIAL_NUMBER" property="serialNumber" />
+		<result column="AUDIT_OPINION" property="auditOpinion" />
+		<result column="REFUSAL_REASON" property="refusalReason" />
+		<result column="FALLBACK_REASON" property="fallbackReason" />
+		<result column="NEXT_NODE_ID" property="nextNodeId" />
+		<result column="DELAY_AUDIT_USER" property="delayAuditUser" />
+		<result column="AUDIT_TIME" property="auditTime" />
+		<result column="CREATED_TIME" property="createdTime" />
+		<result column="NODE_NAME" property="nodeName" />
+
+		<result column="USER_ID" property="userId" />
+		<result column="PRODUCT_NAME" property="productName" />
+
+	</resultMap>
+	<resultMap id="managerInfo"
+		type="com.cardpay.pccredit.jnpad.model.ManagerInfoForm">
+		<result column="EXTERNAL_ID" property="EXTERNAL_ID" />
+		<result column="ID" property="ID" />
+		<result column="DISPLAY_NAME" property="DISPLAY_NAME" />
+</resultMap>
+	 <resultMap id="logMap" type="com.cardpay.pccredit.intopieces.model.AppManagerAuditLog">
+		<result property="userId_1" column="USER_ID_1" />
+		<result property="userId_2" column="USER_ID_2" />
+		<result property="userId_3" column="USER_ID_3" />
+		<result property="userId_4" column="USER_ID_4" />
+		<result property="qx" 		column="QX" />
+		<result property="hkfs" 		 column="HKFS" />
+		<result property="beiZhu" 		 column="BEIZHU" />
+		<result property="examineAmount" column="EXAMINE_AMOUNT" />
+		<result property="examineLv" 	 column="EXAMINE_LV" />
+		<result property="auditType" 	 column="AUDIT_TYPE" />
+	</resultMap>
+	
+	
+	 <resultMap id="ProductResultMap"
+	type="com.cardpay.pccredit.jnpad.model.ProductAttributes">
+	<result property="id" column="ID" />
+	<result property="productName" column="PRODUCT_NAME" />
+	<result property="purposeLoan" column="PURPOSE_LOAN" />
+	<result property="creditLine" column="CREDIT_LINE" />
+	<result property="rateRange" column="RATE_RANGE" />
+	<result property="loanTimeLimit" column="LOAN_TIME_LIMIT" />
+	<result property="loanPrincipal" column="LOAN_PRINCIPAL" />
+	<result property="letterPaymentWay" column="LETTER_PAYMENT_WAY" />
+	<result property="numbererestSettlementWay" column="NUMBEREREST_SETTLEMENT_WAY" />
+	<result property="assureMeans" column="ASSURE_MEANS" />
+	<result property="penaltyNumbererest" column="PENALTY_NUMBEREREST" />
+	<result property="productRiskTolerance" column="PRODUCT_RISK_TOLERANCE" />
+	<result property="productTypeCode" column="PRODUCT_TYPE_CODE" />
+	<result property="status" column="STATUS" />
+	<result property="createdTime" column="CREATED_TIME" />
+	<result property="createdBy" column="CREATED_BY" />
+	<result property="modifiedTime" column="MODIFIED_TIME" />
+	<result property="modifiedBy" column="MODIFIED_BY" />
+	<result property="pictureUrl" column="PICTURE_URL" />
+	<result property="pictureName" column="PICTURE_NAME" />
+	<result property="seqno" column="SEQNO" />
+</resultMap>
+	 
+	<select id="findCustomerApplicationIntopieceDecisionForm"
+		resultMap="BaseResultMap">
+		SELECT
+		b.*, U.CHINESE_NAME as chineseName,
+		U.RESIDENTIAL_ADDRESS AS
+		residentialAddress,
+		U.CARD_TYPE AS cardType,
+		U.CARD_ID AS cardId,
+		b.APPLY_QUOTA AS applyQuota,
+		A.SERIAL_NUMBER as SERIALNUMBER,
+		N.NODE_NAME as nodeName,
+		A.AUDIT_TIME as auditTime,
+		b.CREATED_TIME as
+		createdTime
+		FROM
+		CUSTOMER_APPLICATION_INFO b,
+		BASIC_CUSTOMER_INFORMATION
+		U,
+		CUSTOMER_APPLICATION_PROCESS A,
+		NODE_AUDIT N,NODE_AUDIT_USER p
+		WHERE
+		1=1
+		and U.ID = b.CUSTOMER_ID
+		and
+		a.APPLICATION_ID=b.ID
+		AND N.ID=A.NEXT_NODE_ID
+		and
+		A.NEXT_NODE_ID=p.NODE_ID and p.USER_ID=#{userId}
+		and b.status='audit'
+		<if test="cardId!=null and cardId!=''">
+			and U.card_id=#{cardId}
+		</if>
+		<if test="chineseName!=null ">
+			<![CDATA[ and U.chinese_name like '%'||#{chineseName}||'%' ]]>
+		</if>
+		<if test="nextNodeName!=null and nextNodeName!=''">
+			and N.NODE_NAME=#{nextNodeName}
+		</if>
+	</select>
+
+	<select id="findCustomerApplicationIntopieceDecisionCountForm"
+		resultType="int">
+		SELECT
+		COUNT (*)
+		FROM
+		(
+		SELECT
+		b.*, U.CHINESE_NAME as chineseName,
+		U.RESIDENTIAL_ADDRESS AS residentialAddress,
+		U.CARD_TYPE AS cardType,
+		U.CARD_ID AS cardId,
+		b.APPLY_QUOTA AS applyQuota,
+		A.SERIAL_NUMBER as
+		SERIALNUMBER,
+		N.NODE_NAME as nodeName,
+		A.AUDIT_TIME as auditTime
+		FROM
+		CUSTOMER_APPLICATION_INFO b,
+		BASIC_CUSTOMER_INFORMATION U,
+		CUSTOMER_APPLICATION_PROCESS A,
+		NODE_AUDIT N,NODE_AUDIT_USER p
+		WHERE
+		1=1
+		and U.ID = b.CUSTOMER_ID
+		and
+		a.APPLICATION_ID=b.ID
+		AND N.ID=A.NEXT_NODE_ID
+		and
+		A.NEXT_NODE_ID=p.NODE_ID and p.USER_ID=#{userId}
+		and b.status='audit'
+
+		<if test="cardId!=null and cardId!=''">
+			and U.card_id=#{cardId}
+		</if>
+		<if test="chineseName!=null ">
+			<![CDATA[ and U.chinese_name like '%'||#{chineseName}||'%' ]]>
+		</if>
+		<if test="nextNodeName!=null and nextNodeName!=''">
+			and N.NODE_NAME=#{nextNodeName}
+		</if>
+		)
+	</select>
+	<select id ="findManagerInfo" resultMap="managerInfo" >
+		select s.id, s.EXTERNAL_ID , s.display_name 
+		  from account_manager_parameter m, sys_user s
+		 where s.id = m.user_id
+	</select>
+	
+	<select id ="findteacherInfo" resultMap="managerInfo" >
+		select s.id,s.display_name 
+		 from  sys_user s
+     	 where s.user_type ='4'
+	</select>
+	
+	<select id="findAppManagerAuditLog" resultMap="logMap" parameterType="java.lang.String">
+		 select s.display_name as USERID_1,
+        d.display_name as USERID_2,
+        g.display_name as USERID_3,
+        h.display_name as USERID_4,
+        t.EXAMINE_AMOUNT as EXAMINE_AMOUNT,
+        t.EXAMINE_LV as EXAMINE_LV,
+        t.AUDIT_TYPE as AUDIT_TYPE,
+        t.qx as QX,
+        t.hkfs,
+        t.beizhu
+   from t_app_manager_audit_log t 
+   left join sys_user s on s.id = t.user_id_1
+   left join sys_user d on d.id = t.user_id_2
+   left join sys_user g on g.id = t.user_id_3
+   left join sys_user h on h.id = t.user_id_4
+        where 
+        APPLICATION_ID =#{appId}
+        <if test="auditType != null and auditType != '' ">
+			and AUDIT_TYPE =#{auditType}
+		</if>
+		order by audit_type desc
+	</select>
+	
+	<select id="findProductList" resultMap="ProductResultMap">
+	select *
+	from PRODUCT_ATTRIBUTE p
+	where 1=1
+		AND (
+		p.STATUS = 'Published'
+		OR p.STATUS = 'Screen'
+		)
+</select>
+</mapper>

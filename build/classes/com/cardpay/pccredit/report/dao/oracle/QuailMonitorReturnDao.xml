@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.report.dao.QuailMonitorReturnDao">
+	
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.report.model.QuailBankReturnMonitor">
+		<result property="id" column="id" />
+		<result property="displayName" column="displayName" />
+		<result property="rowindex" column="rowindex" />
+		<result property="percent" column="percent" />
+		<result property="APPRETURESION06" column="APPRETURESION06" />
+		<result property="APPRETURESION01" column="APPRETURESION01" />
+		<result property="APPRETURESION02" column="APPRETURESION02" />
+		<result property="APPRETURESION03" column="APPRETURESION03" />
+		<result property="APPRETURESION04" column="APPRETURESION04" />
+		<result property="APPRETURESION05" column="APPRETURESION05" />
+		<result property="APPRETURESION07" column="APPRETURESION07" />
+		<result property="APPRETURESION08" column="APPRETURESION08" />
+		<result property="APPRETURESION09" column="APPRETURESION09" />
+		<result property="APPRETURESION10" column="APPRETURESION10" />
+		<result property="APPRETURESION11" column="APPRETURESION11" />
+		<result property="APPRETURESION12" column="APPRETURESION12" />
+		
+	</resultMap>
+	
+	
+	<select id="getQuailReturnMonitorStatistical" resultMap="ResultMap"
+			parameterType="com.cardpay.pccredit.report.filter.StatisticalFilter">
+
+
+SELECT
+	nvl(ck.JINJIAN,'0') as JINJIAN ,
+	nvl(ck.RETURNCOUNT,'0') as RETURNCOUNT,
+	CL.DISPLAY_NAME AS displayName,
+trunc(nvl((ck.RETURNCOUNT*100/ck.JINJIAN),'0'),2)||'%' as percent,
+	ROWNUM AS rowindex,
+	nvl(CK.APPRETURESION06,'0') as APPRETURESION06,
+	nvl(CK.APPRETURESION01,'0') as APPRETURESION01 ,
+	nvl(CK.APPRETURESION02,'0') as APPRETURESION02,
+	nvl(CK.APPRETURESION03,'0') as APPRETURESION03,
+	nvl(CK.APPRETURESION04,'0') as APPRETURESION04,
+	nvl(CK.APPRETURESION05,'0') as APPRETURESION05,
+	nvl(CK.APPRETURESION07,'0') as APPRETURESION07,
+	nvl(CK.APPRETURESION08,'0') as APPRETURESION08,
+	nvl(CK.APPRETURESION09,'0') as APPRETURESION09 ,
+	nvl(CK.APPRETURESION10,'0') as APPRETURESION10,
+	nvl(CK.APPRETURESION11,'0') as APPRETURESION11,
+	nvl(CK.APPRETURESION12,'0') as APPRETURESION12
+FROM
+	(
+		SELECT
+			cf.JINJIAN,
+			ce.RETURNCOUNT,
+			CF.USERID,
+			CE.APPRETURESION06,
+			CE.APPRETURESION01,
+			CE.APPRETURESION02,
+			CE.APPRETURESION03,
+			CE.APPRETURESION04,
+			CE.APPRETURESION05,
+			CE.APPRETURESION07,
+			CE.APPRETURESION08,
+			CE.APPRETURESION09,
+			CE.APPRETURESION10,
+			CE.APPRETURESION11,
+			CE.APPRETURESION12
+		FROM
+			(
+				SELECT
+					COUNT (c. ID) AS jinjian,
+					U . ID AS USERID
+				FROM
+					CUSTOMER_APPLICATION_INFO c,
+					BASIC_CUSTOMER_INFORMATION b,
+					SYS_USER U
+				WHERE
+					c.CUSTOMER_ID = b. ID
+				AND U . ID = b.USER_ID
+				GROUP BY
+					U . ID
+			) cf
+		LEFT JOIN (
+			SELECT
+				CD.USER_ID,
+				COUNT (cd. ID) AS returncount,
+				SUM (
+					CASE
+					WHEN CC.FALLBACK_REASON = 'APPRETURESION06' THEN
+						1
+					ELSE
+						0
+					END
+				) AS APPRETURESION06,
+				SUM (
+					CASE
+					WHEN CC.FALLBACK_REASON = 'APPRETURESION01' THEN
+						1
+					ELSE
+						0
+					END
+				) AS APPRETURESION01,
+				SUM (
+					CASE
+					WHEN CC.FALLBACK_REASON = 'APPRETURESION02' THEN
+						1
+					ELSE
+						0
+					END
+				) AS APPRETURESION02,
+				SUM (
+					CASE
+					WHEN CC.FALLBACK_REASON = 'APPRETURESION03' THEN
+						1
+					ELSE
+						0
+					END
+				) AS APPRETURESION03,
+				SUM (
+					CASE
+					WHEN CC.FALLBACK_REASON = 'APPRETURESION04' THEN
+						1
+					ELSE
+						0
+					END
+				) AS APPRETURESION04,
+				SUM (
+					CASE
+					WHEN CC.FALLBACK_REASON = 'APPRETURESION05' THEN
+						1
+					ELSE
+						0
+					END
+				) AS APPRETURESION05,
+				SUM (
+					CASE
+					WHEN CC.FALLBACK_REASON = 'APPRETURESION07' THEN
+						1
+					ELSE
+						0
+					END
+				) AS APPRETURESION07,
+				SUM (
+					CASE
+					WHEN CC.FALLBACK_REASON = 'APPRETURESION08' THEN
+						1
+					ELSE
+						0
+					END
+				) AS APPRETURESION08,
+				SUM (
+					CASE
+					WHEN CC.FALLBACK_REASON = 'APPRETURESION09' THEN
+						1
+					ELSE
+						0
+					END
+				) AS APPRETURESION09,
+				SUM (
+					CASE
+					WHEN CC.FALLBACK_REASON = 'APPRETURESION10' THEN
+						1
+					ELSE
+						0
+					END
+				) AS APPRETURESION10,
+				SUM (
+					CASE
+					WHEN CC.FALLBACK_REASON = 'APPRETURESION11' THEN
+						1
+					ELSE
+						0
+					END
+				) AS APPRETURESION11,
+				SUM (
+					CASE
+					WHEN CC.FALLBACK_REASON = 'APPRETURESION12' THEN
+						1
+					ELSE
+						0
+					END
+				) AS APPRETURESION12
+			FROM
+				BASIC_CUSTOMER_INFORMATION cd
+			INNER JOIN (
+				SELECT
+					CA.CUSTOMER_ID,
+					CB.FALLBACK_REASON
+				FROM
+					CUSTOMER_APPLICATION_INFO ca
+				INNER JOIN (
+					SELECT
+						c.APPLICATION_ID,
+						c.FALLBACK_REASON
+					FROM
+						CUSTOMER_APPLICATION_PROCESS c
+					WHERE
+						c.PROCESS_OP_STATUS = 'RETURNAPPROVE'
+				) cb ON CB.APPLICATION_ID = CA. ID
+			) cc ON CC.CUSTOMER_ID = CD. ID
+			GROUP BY
+				CD.USER_ID
+		) ce ON CE.USER_ID = CF.USERID
+	) ck
+LEFT JOIN SYS_USER cl ON CK.USERID = CL. ID
+	</select>
+	<select id="getQuailBankReturnMonitorStatistical" resultMap="ResultMap"
+			parameterType="com.cardpay.pccredit.report.filter.StatisticalFilter">
+SELECT
+	mm.DISPLAYNAME ,
+  nvl(MM.JINJIAN,'0') as JINJIAN ,
+	nvl(MM.RETURNCOUNT,'0') as RETURNCOUNT,
+nvl(MM.APPRETURESION01 ,'0') as APPRETURESION01,
+nvl(MM.APPRETURESION02 ,'0') as APPRETURESION02,
+nvl(MM.APPRETURESION03 ,'0') as APPRETURESION03,
+nvl(MM.APPRETURESION04 ,'0') as APPRETURESION04,
+nvl(MM.APPRETURESION05 ,'0') as APPRETURESION05,
+nvl(MM.APPRETURESION06 ,'0') as APPRETURESION06,
+nvl(MM.APPRETURESION07 ,'0') as APPRETURESION07,
+nvl(MM.APPRETURESION08 ,'0') as APPRETURESION08,
+nvl(MM.APPRETURESION09 ,'0') as APPRETURESION09,
+nvl(MM.APPRETURESION10 ,'0') as APPRETURESION10,
+nvl(MM.APPRETURESION11 ,'0') as APPRETURESION11,
+nvl(MM.APPRETURESION12 ,'0') as APPRETURESION12,
+ ROWNUM AS rowindex,
+trunc(nvl((mm.RETURNCOUNT*100/MM.JINJIAN),'0'),2)||'%' as percent
+FROM
+	(
+		SELECT
+			oo. NAME AS displayName,
+			SUM (uu.jinjian) AS jinjian,
+			SUM (uu.RETURNCOUNT) AS RETURNCOUNT,
+			SUM (uu.APPRETURESION06) AS APPRETURESION06,
+			SUM (uu.APPRETURESION01) AS APPRETURESION01,
+			SUM (uu.APPRETURESION02) AS APPRETURESION02,
+			SUM (uu.APPRETURESION03) AS APPRETURESION03,
+			SUM (uu.APPRETURESION04) AS APPRETURESION04,
+			SUM (uu.APPRETURESION05) AS APPRETURESION05,
+			SUM (uu.APPRETURESION07) AS APPRETURESION07,
+			SUM (uu.APPRETURESION08) AS APPRETURESION08,
+			SUM (uu.APPRETURESION09) AS APPRETURESION09,
+			SUM (uu.APPRETURESION10) AS APPRETURESION10,
+			SUM (uu.APPRETURESION11) AS APPRETURESION11,
+			SUM (uu.APPRETURESION12) AS APPRETURESION12
+		FROM
+			sys_organization oo
+		INNER JOIN (
+			SELECT
+				ORG_ID,
+				USER_ID
+			FROM
+				sys_department dd
+			INNER JOIN SYS_DEPT_USER du ON dd. ID = DU.DEPT_ID
+		) ddu ON OO."ID" = DDU.ORG_ID
+		INNER JOIN (
+			SELECT
+				kk.*
+			FROM
+				(
+					SELECT
+						cf.JINJIAN,
+						ce.RETURNCOUNT,
+						CF.USERID,
+						CE.APPRETURESION06,
+						CE.APPRETURESION01,
+						CE.APPRETURESION02,
+						CE.APPRETURESION03,
+						CE.APPRETURESION04,
+						CE.APPRETURESION05,
+						CE.APPRETURESION07,
+						CE.APPRETURESION08,
+						CE.APPRETURESION09,
+						CE.APPRETURESION10,
+						CE.APPRETURESION11,
+						CE.APPRETURESION12
+					FROM
+						(
+							SELECT
+								COUNT (c. ID) AS jinjian,
+								U . ID AS USERID
+							FROM
+								CUSTOMER_APPLICATION_INFO c,
+								BASIC_CUSTOMER_INFORMATION b,
+								SYS_USER U
+							WHERE
+								c.CUSTOMER_ID = b. ID
+							AND U . ID = b.USER_ID
+							GROUP BY
+								U . ID
+						) cf
+					LEFT JOIN (
+						SELECT
+							CD.USER_ID,
+							COUNT (cd. ID) AS returncount,
+							SUM (
+								CASE
+								WHEN CC.FALLBACK_REASON = 'APPRETURESION06' THEN
+									1
+								ELSE
+									0
+								END
+							) AS APPRETURESION06,
+							SUM (
+								CASE
+								WHEN CC.FALLBACK_REASON = 'APPRETURESION01' THEN
+									1
+								ELSE
+									0
+								END
+							) AS APPRETURESION01,
+							SUM (
+								CASE
+								WHEN CC.FALLBACK_REASON = 'APPRETURESION02' THEN
+									1
+								ELSE
+									0
+								END
+							) AS APPRETURESION02,
+							SUM (
+								CASE
+								WHEN CC.FALLBACK_REASON = 'APPRETURESION03' THEN
+									1
+								ELSE
+									0
+								END
+							) AS APPRETURESION03,
+							SUM (
+								CASE
+								WHEN CC.FALLBACK_REASON = 'APPRETURESION04' THEN
+									1
+								ELSE
+									0
+								END
+							) AS APPRETURESION04,
+							SUM (
+								CASE
+								WHEN CC.FALLBACK_REASON = 'APPRETURESION05' THEN
+									1
+								ELSE
+									0
+								END
+							) AS APPRETURESION05,
+							SUM (
+								CASE
+								WHEN CC.FALLBACK_REASON = 'APPRETURESION07' THEN
+									1
+								ELSE
+									0
+								END
+							) AS APPRETURESION07,
+							SUM (
+								CASE
+								WHEN CC.FALLBACK_REASON = 'APPRETURESION08' THEN
+									1
+								ELSE
+									0
+								END
+							) AS APPRETURESION08,
+							SUM (
+								CASE
+								WHEN CC.FALLBACK_REASON = 'APPRETURESION09' THEN
+									1
+								ELSE
+									0
+								END
+							) AS APPRETURESION09,
+							SUM (
+								CASE
+								WHEN CC.FALLBACK_REASON = 'APPRETURESION10' THEN
+									1
+								ELSE
+									0
+								END
+							) AS APPRETURESION10,
+							SUM (
+								CASE
+								WHEN CC.FALLBACK_REASON = 'APPRETURESION11' THEN
+									1
+								ELSE
+									0
+								END
+							) AS APPRETURESION11,
+							SUM (
+								CASE
+								WHEN CC.FALLBACK_REASON = 'APPRETURESION12' THEN
+									1
+								ELSE
+									0
+								END
+							) AS APPRETURESION12
+						FROM
+							BASIC_CUSTOMER_INFORMATION cd
+						INNER JOIN (
+							SELECT
+								CA.CUSTOMER_ID,
+								CB.FALLBACK_REASON
+							FROM
+								CUSTOMER_APPLICATION_INFO ca
+							INNER JOIN (
+								SELECT
+									c.APPLICATION_ID,
+									c.FALLBACK_REASON
+								FROM
+									CUSTOMER_APPLICATION_PROCESS c
+								WHERE
+									c.PROCESS_OP_STATUS = 'RETURNAPPROVE'
+							) cb ON CB.APPLICATION_ID = CA. ID
+						) cc ON CC.CUSTOMER_ID = CD. ID
+						GROUP BY
+							CD.USER_ID
+					) ce ON CE.USER_ID = CF.USERID
+				) kk
+		) uu ON UU.userid = DDU.USER_ID
+		GROUP BY
+			oo. NAME
+	) mm
+	</select>
+</mapper>

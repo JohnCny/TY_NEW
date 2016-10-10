@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.customer.dao.AmountAdjustmentDao">
+	
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.customer.web.AmountAdjustmentForm">
+		<result property="id" column="id" />
+		<result property="customerId" column="CUSTOMER_ID" />
+		<result property="customerName" column="CHINESE_NAME" />
+		<result property="productId" column="PRODUCT_ID" />
+		<result property="productName" column="PRODUCT_NAME" />
+		<result property="actualAmount" column="ACTUAL_AMOUNT" />
+		<result property="assessAmount" column="ASSESS_AMOUNT" />
+		<result property="approvalLimit" column="APPROVAL_LIMIT" />
+		<result property="originalAmount" column="ORIGINAL_AMOUNT" />
+		<result property="adjustAmountTime" column="ADJUST_AMOUNT_TIME" />
+		<result property="approval" column="APPROVAL" />
+		<result property="cardType" column="CARD_TYPE" />
+		<result property="cardId" column="CARD_ID" />
+		<result property="adjustmentType" column="ADJUSTMENT_TYPE" />
+		<result property="serialNumber" column="SERIAL_NUMBER" />
+	</resultMap>
+	
+	<resultMap id="processMap" type="com.cardpay.pccredit.customer.web.AmountAdjustmentProcessForm">
+		<result property="id" column="ID" />
+		<result property="amountAdjustmentId" column="AMOUNT_ADJUSTMENT_ID" />
+		<result property="auditUser" column="AUDIT_USER" />
+		<result property="serialNumber" column="SERIAL_NUMBER" />
+		<result property="auditOpinion" column="AUDIT_OPINION" />
+		<result property="refusalReason" column="REFUSAL_REASON" />
+		<result property="fallbackReason" column="FALLBACK_REASON" />
+		<result property="examineAmount" column="EXAMINE_AMOUNT" />
+		<result property="nextNodeId" column="NEXT_NODE_ID" />
+		<result property="delayAuditUser" column="DELAY_AUDIT_USER" />
+		<result property="auditTime" column="AUDIT_TIME" />
+		<result property="productId" column="PRODUCT_ID" />
+	</resultMap>
+	
+	<select id="findAmountAdjustmentByFilter" resultMap="ResultMap" 
+		parameterType="com.cardpay.pccredit.customer.filter.AmountAdjustmentFilter">
+		SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					 SELECT t.*,
+							c.chinese_name,
+							c.card_type,
+							c.card_id,
+							p.product_name
+					 FROM  amount_adjustment t
+					 LEFT JOIN basic_customer_information c
+					    ON c.id = t.customer_id
+					 LEFT JOIN product_attribute p
+					 	ON p.id = t.product_id
+					 WHERE 1=1
+					 <if test="customerName != null and customerName != '' ">
+						<![CDATA[ and c.chinese_name like '%'||#{customerName}||'%']]>
+					 </if>
+					 <if test="approval != null and approval != '' ">
+						AND t.approval = #{approval}
+					 </if>
+					 <if test="adjustmentType != null and adjustmentType != '' ">
+						AND t.adjustment_type = #{adjustmentType}
+					 </if>
+			<![CDATA[
+					) ROW_
+				WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+			WHERE ROWNUM_ > #{limit}*#{page}
+			]]>
+	</select>
+	
+	
+	<select id="findAmountAdjustmentCountByFilter" resultType="int" 
+		parameterType="com.cardpay.pccredit.customer.filter.AmountAdjustmentFilter">
+		 SELECT count(*)
+		 FROM  amount_adjustment t
+		 LEFT JOIN basic_customer_information c
+		    ON c.id = t.customer_id
+		 LEFT JOIN product_attribute p
+		 	ON p.id = t.product_id
+		 WHERE 1=1
+		 <if test="customerName != null and customerName != '' ">
+			<![CDATA[ and c.CHINESE_NAME like '%'||#{customerName}||'%']]>
+		 </if>
+		 <if test="approval != null and approval != '' ">
+			AND t.approval = #{approval}
+		 </if>
+		 <if test="adjustmentType != null and adjustmentType != '' ">
+			AND t.adjustment_type = #{adjustmentType}
+		 </if>
+	</select>
+	
+	<select id="findAmountAdjustmentWaitApproveByFilter" resultMap="ResultMap" 
+		parameterType="com.cardpay.pccredit.customer.filter.AmountAdjustmentFilter">
+		SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					 SELECT t.*,
+							c.chinese_name,
+							c.card_type,
+							c.card_id,
+							pa.product_name
+					  FROM amount_adjustment t
+					  LEFT JOIN basic_customer_information c
+					    ON c.id = t.customer_id
+					  LEFT JOIN product_attribute pa
+					    ON pa.id = t.product_id
+					  LEFT JOIN amount_adjustment_process pr
+					    ON pr.amount_adjustment_id = t.id
+					 WHERE pr.delay_audit_user =#{auditUser}
+					 <if test="customerName != null and customerName != '' ">
+						<![CDATA[ and c.CHINESE_NAME like '%'||#{customerName}||'%']]>
+					 </if>
+					 <if test="approval != null and approval != '' ">
+						AND t.approval = #{approval}
+					 </if>
+					 <if test="adjustmentType != null and adjustmentType != '' ">
+						AND t.adjustment_type = #{adjustmentType}
+					 </if>
+					 order by t.modified_time desc
+			<![CDATA[
+					) ROW_
+				WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+			WHERE ROWNUM_ > #{limit}*#{page}
+			]]>
+	</select>
+	
+	<select id="findAmountAdjustmentWaitApproveCountByFilter" resultType="int" 
+		parameterType="com.cardpay.pccredit.customer.filter.AmountAdjustmentFilter">
+		 SELECT count(*)
+		 FROM amount_adjustment t
+		  LEFT JOIN basic_customer_information c
+		    ON c.id = t.customer_id
+		  LEFT JOIN product_attribute pa
+		    ON pa.id = t.product_id
+		  LEFT JOIN amount_adjustment_process pr
+		    ON pr.amount_adjustment_id = t.id
+		 WHERE  pr.delay_audit_user =#{auditUser}
+		 <if test="customerName != null and customerName != '' ">
+			<![CDATA[ and c.CHINESE_NAME like '%'||#{customerName}||'%']]>
+		 </if>
+		 <if test="approval != null and approval != '' ">
+			AND t.approval = #{approval}
+		 </if>
+		 <if test="adjustmentType != null and adjustmentType != '' ">
+			AND t.adjustment_type = #{adjustmentType}
+		 </if>
+	</select>
+	
+	<select id="findAmountAdjustmentById" resultMap="ResultMap">
+	 SELECT t.*,
+			c.chinese_name,
+			c.card_type,
+			c.card_id,
+			p.product_name
+	 FROM  amount_adjustment t
+	 LEFT JOIN basic_customer_information c
+	    ON c.id = t.customer_id
+	 LEFT JOIN product_attribute p
+	 	ON p.id = t.product_id
+	 WHERE t.id=#{id}
+	</select>
+	
+	<select id="findWaitProcessAmountAdjustmentAll" resultMap="processMap">
+		select t.*, aa.product_id 
+		from amount_adjustment_process t, amount_adjustment aa   
+		where t.amount_adjustment_id=aa.id
+		and t.serial_number = aa.serial_number
+		and (t.delay_audit_user is null or t.delay_audit_user='')
+		and aa.approval='Audit'
+	</select>
+	
+	<select id="findWaitApproveAmountAdjustById" resultMap="ResultMap">
+		select t.*, 
+			aa.serial_number,
+			c.chinese_name,
+			c.card_type,
+			c.card_id,
+			p.product_name
+		from amount_adjustment t
+		LEFT JOIN basic_customer_information c
+	    	ON c.id = t.customer_id
+	    LEFT JOIN product_attribute p
+	 		ON p.id = t.product_id
+		left join amount_adjustment_process aa 
+			on t.id=aa.amount_adjustment_id  
+		where t.id = #{id}
+	</select>
+	
+	<update id="updateWaitProcessAmountAdjustment" parameterType="com.cardpay.pccredit.customer.web.AmountAdjustmentProcessForm">
+		update amount_adjustment_process
+		<set>
+			audit_User='',
+			audit_Time='',
+			delay_audit_user=#{delayAuditUser}
+		</set>
+		where serial_number=#{serialNumber}
+	</update>
+	
+	<update id="updateAmountAdjustmentProcess"
+		parameterType="com.cardpay.pccredit.customer.model.AmountAdjustmentProcess">
+		UPDATE amount_adjustment_process c
+		<set>
+			<if test="auditUser!=null">
+				c.AUDIT_USER=#{auditUser},
+			</if>
+			<if test="examineAmount != null">
+				c.EXAMINE_AMOUNT=#{examineAmount},
+			</if>
+			<if test="fallbackReason !=null">
+				c.FALLBACK_REASON=#{fallbackReason},
+			</if>
+			<if test="nextNodeId !=null">
+				c.NEXT_NODE_ID=#{nextNodeId},
+			</if>
+			<if test="refusalReason!=null">
+				c.REFUSAL_REASON=#{refusalReason},
+			</if>
+			<if test="auditTime!=null">
+				c.AUDIT_TIME=#{auditTime},
+			</if>
+			<if test="processOpStatus!=null">
+				c.PROCESS_OP_STATUS=#{processOpStatus},
+			</if>
+			c.Delay_Audit_User=''
+		</set>
+		WHERE c.id=#{id}
+	</update>
+	
+	<update id="autoAfterApplyTimeReleaseApply">
+		update amount_adjustment_process t set t.delay_audit_user = ''
+		where t.amount_adjustment_id in(
+				select ad.id from amount_adjustment ad 
+				where ad.approval='Audit'
+	        <![CDATA[ and ad.modified_time<sysdate - #{maxDay}]]>
+			)
+	</update>
+	
+</mapper>

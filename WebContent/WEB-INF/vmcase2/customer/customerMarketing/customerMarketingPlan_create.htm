@@ -1,0 +1,67 @@
+#parse ("common/iframe_page_header.htm")
+<script src="${contextPath}/js/customerInfor/customerMarketing.js"></script>
+<body onload="initResource();">
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">新增营销计划</div>
+      </div>
+      <form id="id_module_form" action="${modulePath}/insertPlan.json">
+        <div class="forms" id="formsId">
+          <table class="rule" border="1" bordercolor="#CCCCCC">
+          <caption>营销计划</caption>
+            <colgroup>
+              <col width="10%" />
+              <col width="40%" />
+              <col width="10%" />
+              <col width="40%" />
+			</colgroup>
+            <tr>
+            <td><label>客户经理:</label></td>
+            <td><select id="customerManagerId" name="customerManagerId" onchange="changeResource();">
+            #foreach($!user in $users)
+            <option value="$!user.userId">$!user.displayName</option>
+            #end
+            </select></td>
+            <td><label>客户名称:</label></td>
+              <td><select id="customerId" name="customerId">
+              </select>
+              </td>
+            </tr>
+            <tr>
+			  <td><label>产品名称:</label></td>
+              <td><select id="productId" name="productId">
+              </select>
+              </td>
+              <td><label>实施目标:</label></td>
+              <td><input type="text" id="implementationObjective" name="implementationObjective" value=""/>
+            </tr>
+            <tr>
+		      <td><label>营销时间:</label></td>
+              <td><input type="text" id="marketingTime" name="marketingTime"/></td>
+              <td><label>营销方法:</label></td>
+              <td><input type="text" name="marketingMethod" id="marketingMethod"  value=""/></td>
+              <td><input type="text" name="marketingStartTime" value="-1" hidden="hidden"/></td>
+            </tr>
+         
+          </table>
+        </div>
+      </form>
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n("button.save")" class="current" />
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n("button.cancel")" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");	
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	#validator($formName)
+	$(document).ready(function() {	
+		
+		#parse("common/part_create.js")
+	});
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

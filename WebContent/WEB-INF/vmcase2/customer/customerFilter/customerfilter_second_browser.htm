@@ -1,0 +1,160 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/customerInfor.htm")
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+     	<div class="place">
+				<div class="dvTab">
+					<ul class="com-tab" >
+						<li class="tab activeTab" style="width:150px" ><a
+							href="">系统内客户筛选</a></li>
+						<li class="tab" style="width:150px"><a
+							href="">系统外客户筛选</a></li>
+					
+					</ul>
+				</div>
+			</div>
+      
+      <div class="inquiry">
+
+ 
+        <div class="search_tag">#i18n("label.browse.filter")</div>
+        <div class="search">
+          <form id="submitForm">
+            <ul>
+              <li>
+                <span>婚姻状况：<input type="text" id="chineseName" name="chineseName" value="$!customer.maritalStatus" /></span>
+              </li>
+              
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
+       <input type="hidden" id="productId" value="$!productId"></input>
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="8%" />
+              <col width="18%" />
+              <col width="12%"/>
+              <col width="35%" />
+              <col width="12%"/>
+              <col width="5%"/>
+              <col width="5%"/>
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">中文姓名</th>
+              <th nowrap="nowrap">证件类型</th>
+              <th nowrap="nowrap">证件号码</th>
+              <th nowrap="nowrap">住宅地址</th>
+              <th nowrap="nowrap">手机</th>
+               <th nowrap="nowrap">客户经理</th>
+                <th nowrap="nowrap">分案状态</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+               <col width="5%" />
+              <col width="8%" />
+              <col width="18%" />
+              <col width="12%"/>
+              <col width="35%" />
+              <col width="12%"/>
+              <col width="5%"/>
+              <col width="5%"/>
+            </colgroup>
+            
+            #foreach ($customer in $customerInforForm)
+            
+            <tr>
+              <td class="checkbox" ><input type="checkbox" name="checkbox" value="$!customer.id@$!customer.displayName" 
+                  #if ($!request.getParameter("recordId") == $customer.id) checked="checked" #end /></td>
+              <td nowrap="nowrap">$!customer.chineseName</td>
+              <td nowrap="nowrap"> #customerInfor($request.getAttribute('cardTypeList'),$!customer.cardType)</td>
+              <td nowrap="nowrap">$!customer.cardId</td>
+              <td nowrap="nowrap">$!customer.residentialAddress</td>
+              <td nowrap="nowrap">$!customer.telephone</td>
+               <td nowrap="nowrap">$!customer.displayName</td> 
+               <td nowrap="nowrap">#dictVal("DivisionalStatus", $!customer.divisionalStatus) </td>
+                <input type="hidden" id="$!customer.id" value="$!customer.userId"></input>
+            </tr>
+              #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+          
+         <a id="id_create_sales" class="btn_g" href="javascript:void(0);" title="生成营销计划">生成营销计划</a>
+         <a  class="btn_g" onclick="javascript:history.go(-1);" value="#i18n("button.cancel")">返回</a>
+        
+        </div>
+      
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+	var rowid=""; 
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+// 		opsObj.createUrl = "${modulePath}/createMarketingPlan.json";
+		opsObj.displayUrl = "${modulePath}/display.page";
+		opsObj.changeUrl = "${modulePath}/change.page";
+		opsObj.deleteUrl = "${modulePath}/delete.json";
+		opsObj.browseUrl = "${modulePath}/browse.page";
+		opsObj.exportUrl = "${modulePath}/export.page";
+		
+        $("#id_create_sales").click(function() {
+        	var rowid = "";
+        	var rowids = "";
+        	var nums="";
+        	$("input[name='checkbox']:checkbox:checked").each(function(){
+        		rowid+=$(this).val()+",";
+        	})
+        	if(rowid.length > 0){
+        		var arr= [];
+           	    var arr = rowid.substring(0,rowid.length-1);  
+           	    var arra =arr.split(",");
+           	    for ( var i = 0; i < arra.length; i++) {
+           	    	var toarr = arra[i];
+           	    	 rowids=rowids+toarr.split("@")[0]+"="+nums+ toarr.split("@")[1]+":";
+           	    	
+    			}
+                var productId = $("#productId").val();
+                
+                $.post("${modulePath}/createMarketingPlan.json", {
+                    id: rowids,
+                    productId:productId
+                },
+                function(data, textStatus, jqXhr) {
+                    if (data.success) {
+                        window.location.reload(true);
+                    } else {
+                        //Dialog.message(data.message);
+                    }
+                });
+	        } else {
+	            Dialog.message("请至少选择一行");
+	        }
+        });
+	      
+		prepareOperations(opsObj);
+	});
+</script>
+
+<script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
+#parse ("common/iframe_page_footer.htm")

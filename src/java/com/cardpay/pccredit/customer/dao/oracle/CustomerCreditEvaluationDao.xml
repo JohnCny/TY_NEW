@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.customer.dao.CustomerCreditEvaluationDao" >
+  <resultMap id="BaseResultMap" type="com.cardpay.pccredit.customer.model.CustomerCreditEvaluation" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result property="customerId" column="CUSTOMER_ID" />
+	<result property="customerName" column="CUSTOMER_NAME" />
+	<result property="gender" column="GENDER" />
+	<result property="idCard" column="ID_CARD" />
+	<result property="wetValue" column="WET_VALUE" />
+    <result column="MODEL_TYPE" property="modelType" jdbcType="VARCHAR" />
+    <result column="HOUSE_VALUE" property="houseValue" jdbcType="VARCHAR" />
+    <result column="CAR_VALUE" property="carValue" jdbcType="VARCHAR" />
+    <result column="OTHER_VALUE" property="otherValue" jdbcType="VARCHAR" />
+    <result column="DEBIT_REMAINING_VALUE" property="debitRemainingValue" jdbcType="VARCHAR" />
+    <result column="TOTAL_USED_AMOUNT_MAX" property="totalUsedAmountMax" jdbcType="VARCHAR" />
+    <result column="TOTAL_CREDIT_AMOUNT" property="totalCreditAmount" jdbcType="VARCHAR" />
+    <result column="OTHER_DEBIT_VALUE" property="otherDebitValue" jdbcType="VARCHAR" />
+    <result column="DAILY_FLOW_OVER_10000" property="dailyFlowOver10000" jdbcType="VARCHAR" />
+    <result column="AGE_35_50" property="age3550" jdbcType="VARCHAR" />
+    <result column="INLAND" property="inland" jdbcType="VARCHAR" />
+    <result column="MARRIED" property="married" jdbcType="VARCHAR" />
+    <result column="HAVE_RECORD" property="haveRecord" jdbcType="VARCHAR" />
+    <result column="CREIDT_BELOW_70PER" property="creidtBelow70per" jdbcType="VARCHAR" />
+    <result column="SEX_FEMALE" property="sexFemale" jdbcType="VARCHAR" />
+    <result column="LIVELIHOOD" property="livelihood" jdbcType="VARCHAR" />
+    <result column="OUR_BUSINESS" property="ourBusiness" jdbcType="VARCHAR" />
+    <result column="HAVE_LOANS" property="haveLoans" jdbcType="VARCHAR" />
+    <result column="CAR_VALUE_OVER_5" property="carValueOver5" jdbcType="VARCHAR" />
+    <result column="SELF_BUSINESS_LIFE_OVER_1" property="selfBusinessLifeOver1" jdbcType="VARCHAR" />
+    <result column="CREDIT_LIMIT" property="creditLimit" jdbcType="VARCHAR" />
+    <result column="AVERAGE_DAILY_FLOW" property="averageDailyFlow" jdbcType="VARCHAR" />
+    <result column="CAPITAL_VALUE" property="capitalValue" jdbcType="VARCHAR" />
+    <result column="FAMILY_LINE_CREDIT" property="familyLineCredit" jdbcType="VARCHAR" />
+    <result column="CUSTOMER_TYPE" property="customerType" jdbcType="VARCHAR" />
+    <result column="GUARANTEE_TYPE" property="guaranteeType" jdbcType="VARCHAR" />
+    <result column="APPLICANT_ASSETS" property="applicantAssets" jdbcType="VARCHAR" />
+    <result column="GUARANTOR_LIABILITY" property="guarantorLiability" jdbcType="VARCHAR" />
+    <result column="APPLICANT_LIABILITY" property="applicantLiability" jdbcType="VARCHAR" />
+    <result column="GUARANTOR_PROPERTY_VALUE" property="guarantorPropertyValue" jdbcType="VARCHAR" />
+    <result column="GUARANTOR_CAR_VALUE" property="guarantorCarValue" jdbcType="VARCHAR" />
+    <result column="GUARANTOR_OTHER_ASSETS" property="guarantorOtherAssets" jdbcType="VARCHAR" />
+    <result column="GUARANTOR_CREDIT_LOAN" property="guarantorCreditLoan" jdbcType="VARCHAR" />
+    <result column="GUARANTOR_CREDIT_USED_MAX" property="guarantorCreditUsedMax" jdbcType="VARCHAR" />
+    <result column="GUARANTOR_CREDIT_TOTAL_LIMIT" property="guarantorCreditTotalLimit" jdbcType="VARCHAR" />
+    <result column="GUARANTOR_EXTERNAL_AMOUNT" property="guarantorExternalAmount" jdbcType="VARCHAR" />
+    <result column="APPLICANT_CREDIT_LOAN_SUM" property="applicantCreditLoanSum" jdbcType="VARCHAR" />
+    <result column="APPLICANT_CREDIT_USED_MAX" property="applicantCreditUsedMax" jdbcType="VARCHAR" />
+    <result column="APPLICANT_CREDIT_TOTAL_QUOTA" property="applicantCreditTotalQuota" jdbcType="VARCHAR" />
+    <result column="APPLICANT_EXTERNAL_AMOUNT" property="applicantExternalAmount" jdbcType="VARCHAR" />
+    <result column="GUARANTOR_AMOUNT" property="guarantorAmount" jdbcType="VARCHAR" />
+    <result column="HIGH_QUAILTY_INDUSTRY" property="highQuailtyIndustry" jdbcType="VARCHAR" />
+    <result property="createdBy" column="CREATED_BY" />
+	<result property="createdTime" column="CREATED_TIME" />
+	<result property="modifiedBy" column="MODIFIED_BY" />
+	<result property="modifiedTime" column="MODIFIED_TIME" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID,CUSTOMER_ID,CUSTOMER_NAME,GENDER,ID_CARD, HOUSE_VALUE,MODEL_TYPE, CAR_VALUE, OTHER_VALUE, DEBIT_REMAINING_VALUE, TOTAL_USED_AMOUNT_MAX, 
+    TOTAL_CREDIT_AMOUNT, OTHER_DEBIT_VALUE, DAILY_FLOW_OVER_10000, AGE_35_50, INLAND, 
+    MARRIED, HAVE_RECORD, CREIDT_BELOW_70PER, SEX_FEMALE, LIVELIHOOD, OUR_BUSINESS, HAVE_LOANS, 
+    CAR_VALUE_OVER_5, SELF_BUSINESS_LIFE_OVER_1, CREDIT_LIMIT, AVERAGE_DAILY_FLOW, CAPITAL_VALUE, 
+    FAMILY_LINE_CREDIT, CUSTOMER_TYPE, GUARANTEE_TYPE, APPLICANT_ASSETS, GUARANTOR_LIABILITY, 
+    APPLICANT_LIABILITY, GUARANTOR_PROPERTY_VALUE, GUARANTOR_CAR_VALUE, GUARANTOR_OTHER_ASSETS, 
+    GUARANTOR_CREDIT_LOAN, GUARANTOR_CREDIT_USED_MAX, GUARANTOR_CREDIT_TOTAL_LIMIT, GUARANTOR_EXTERNAL_AMOUNT, 
+    APPLICANT_CREDIT_LOAN_SUM, APPLICANT_CREDIT_USED_MAX, APPLICANT_CREDIT_TOTAL_QUOTA, 
+    APPLICANT_EXTERNAL_AMOUNT, GUARANTOR_AMOUNT, HIGH_QUAILTY_INDUSTRY,CREATED_BY,CREATED_TIME,MODIFIED_BY,MODIFIED_TIME
+  </sql>
+  <select id="findCustomerCreidtEvaluationByCustomerId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from CUSTOMER_CREDIT_EVALUATION
+    WHERE CUSTOMER_ID=#{customerId}
+  </select>
+  
+  <insert id="insertCustomerCreidtEvaluation" parameterType="com.cardpay.pccredit.customer.model.CustomerCreditEvaluation" >
+    insert into CUSTOMER_CREDIT_EVALUATION
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="modelType != null" >
+        MODEL_TYPE,
+      </if>
+       <if test="customerId != null" >
+        CUSTOMER_ID,
+      </if>
+       <if test="customerName != null" >
+        CUSTOMER_NAME,
+      </if>
+       <if test="gender != null" >
+        GENDER,
+      </if>
+       <if test="idCard != null" >
+        ID_CARD,
+      </if>
+      <if test="wetValue != null" >
+        WET_VALUE,
+      </if>
+      <if test="houseValue != null" >
+        HOUSE_VALUE,
+      </if>
+      <if test="carValue != null" >
+        CAR_VALUE,
+      </if>
+      <if test="otherValue != null" >
+        OTHER_VALUE,
+      </if>
+      <if test="debitRemainingValue != null" >
+        DEBIT_REMAINING_VALUE,
+      </if>
+      <if test="totalUsedAmountMax != null" >
+        TOTAL_USED_AMOUNT_MAX,
+      </if>
+      <if test="totalCreditAmount != null" >
+        TOTAL_CREDIT_AMOUNT,
+      </if>
+      <if test="otherDebitValue != null" >
+        OTHER_DEBIT_VALUE,
+      </if>
+      <if test="dailyFlowOver10000 != null" >
+        DAILY_FLOW_OVER_10000,
+      </if>
+      <if test="age3550 != null" >
+        AGE_35_50,
+      </if>
+      <if test="inland != null" >
+        INLAND,
+      </if>
+      <if test="married != null" >
+        MARRIED,
+      </if>
+      <if test="haveRecord != null" >
+        HAVE_RECORD,
+      </if>
+      <if test="creidtBelow70per != null" >
+        CREIDT_BELOW_70PER,
+      </if>
+      <if test="sexFemale != null" >
+        SEX_FEMALE,
+      </if>
+      <if test="livelihood != null" >
+        LIVELIHOOD,
+      </if>
+      <if test="ourBusiness != null" >
+        OUR_BUSINESS,
+      </if>
+      <if test="haveLoans != null" >
+        HAVE_LOANS,
+      </if>
+      <if test="carValueOver5 != null" >
+        CAR_VALUE_OVER_5,
+      </if>
+      <if test="selfBusinessLifeOver1 != null" >
+        SELF_BUSINESS_LIFE_OVER_1,
+      </if>
+      <if test="creditLimit != null" >
+        CREDIT_LIMIT,
+      </if>
+      <if test="averageDailyFlow != null" >
+        AVERAGE_DAILY_FLOW,
+      </if>
+      <if test="capitalValue != null" >
+        CAPITAL_VALUE,
+      </if>
+      <if test="familyLineCredit != null" >
+        FAMILY_LINE_CREDIT,
+      </if>
+      <if test="customerType != null" >
+        CUSTOMER_TYPE,
+      </if>
+      <if test="guaranteeType != null" >
+        GUARANTEE_TYPE,
+      </if>
+      <if test="applicantAssets != null" >
+        APPLICANT_ASSETS,
+      </if>
+      <if test="guarantorLiability != null" >
+        GUARANTOR_LIABILITY,
+      </if>
+      <if test="applicantLiability != null" >
+        APPLICANT_LIABILITY,
+      </if>
+      <if test="guarantorPropertyValue != null" >
+        GUARANTOR_PROPERTY_VALUE,
+      </if>
+      <if test="guarantorCarValue != null" >
+        GUARANTOR_CAR_VALUE,
+      </if>
+      <if test="guarantorOtherAssets != null" >
+        GUARANTOR_OTHER_ASSETS,
+      </if>
+      <if test="guarantorCreditLoan != null" >
+        GUARANTOR_CREDIT_LOAN,
+      </if>
+      <if test="guarantorCreditUsedMax != null" >
+        GUARANTOR_CREDIT_USED_MAX,
+      </if>
+      <if test="guarantorCreditTotalLimit != null" >
+        GUARANTOR_CREDIT_TOTAL_LIMIT,
+      </if>
+      <if test="guarantorExternalAmount != null" >
+        GUARANTOR_EXTERNAL_AMOUNT,
+      </if>
+      <if test="applicantCreditLoanSum != null" >
+        APPLICANT_CREDIT_LOAN_SUM,
+      </if>
+      <if test="applicantCreditUsedMax != null" >
+        APPLICANT_CREDIT_USED_MAX,
+      </if>
+      <if test="applicantCreditTotalQuota != null" >
+        APPLICANT_CREDIT_TOTAL_QUOTA,
+      </if>
+      <if test="applicantExternalAmount != null" >
+        APPLICANT_EXTERNAL_AMOUNT,
+      </if>
+      <if test="guarantorAmount != null" >
+        GUARANTOR_AMOUNT,
+      </if>
+      <if test="highQuailtyIndustry != null" >
+        HIGH_QUAILTY_INDUSTRY,
+      </if>
+      <if test="createdBy!=null and createdBy != ''">
+		CREATED_BY,
+	  </if>
+	  <if test="createdTime!=null and createdTime != ''">
+		CREATED_TIME,
+	  </if>
+	  <if test="modifiedBy!=null and modifiedBy != ''">
+		MODIFIED_BY,
+	  </if>
+	  <if test="modifiedTime!=null and modifiedTime != ''">
+		MODIFIED_TIME,
+	  </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+       <if test="modelType != null" >
+        #{modelType,jdbcType=VARCHAR},
+      </if>
+       <if test="customerId != null" >
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+       <if test="customerName != null" >
+        #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=VARCHAR},
+      </if>
+        <if test="idCard != null" >
+        #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="wetValue != null" >
+        #{wetValue,jdbcType=VARCHAR},
+      </if>
+      <if test="houseValue != null" >
+        #{houseValue,jdbcType=VARCHAR},
+      </if>
+      <if test="carValue != null" >
+        #{carValue,jdbcType=VARCHAR},
+      </if>
+      <if test="otherValue != null" >
+        #{otherValue,jdbcType=VARCHAR},
+      </if>
+      <if test="debitRemainingValue != null" >
+        #{debitRemainingValue,jdbcType=VARCHAR},
+      </if>
+      <if test="totalUsedAmountMax != null" >
+        #{totalUsedAmountMax,jdbcType=VARCHAR},
+      </if>
+      <if test="totalCreditAmount != null" >
+        #{totalCreditAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="otherDebitValue != null" >
+        #{otherDebitValue,jdbcType=VARCHAR},
+      </if>
+      <if test="dailyFlowOver10000 != null" >
+        #{dailyFlowOver10000,jdbcType=VARCHAR},
+      </if>
+      <if test="age3550 != null" >
+        #{age3550,jdbcType=VARCHAR},
+      </if>
+      <if test="inland != null" >
+        #{inland,jdbcType=VARCHAR},
+      </if>
+      <if test="married != null" >
+        #{married,jdbcType=VARCHAR},
+      </if>
+      <if test="haveRecord != null" >
+        #{haveRecord,jdbcType=VARCHAR},
+      </if>
+      <if test="creidtBelow70per != null" >
+        #{creidtBelow70per,jdbcType=VARCHAR},
+      </if>
+      <if test="sexFemale != null" >
+        #{sexFemale,jdbcType=VARCHAR},
+      </if>
+      <if test="livelihood != null" >
+        #{livelihood,jdbcType=VARCHAR},
+      </if>
+      <if test="ourBusiness != null" >
+        #{ourBusiness,jdbcType=VARCHAR},
+      </if>
+      <if test="haveLoans != null" >
+        #{haveLoans,jdbcType=VARCHAR},
+      </if>
+      <if test="carValueOver5 != null" >
+        #{carValueOver5,jdbcType=VARCHAR},
+      </if>
+      <if test="selfBusinessLifeOver1 != null" >
+        #{selfBusinessLifeOver1,jdbcType=VARCHAR},
+      </if>
+      <if test="creditLimit != null" >
+        #{creditLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="averageDailyFlow != null" >
+        #{averageDailyFlow,jdbcType=VARCHAR},
+      </if>
+      <if test="capitalValue != null" >
+        #{capitalValue,jdbcType=VARCHAR},
+      </if>
+      <if test="familyLineCredit != null" >
+        #{familyLineCredit,jdbcType=VARCHAR},
+      </if>
+      <if test="customerType != null" >
+        #{customerType,jdbcType=VARCHAR},
+      </if>
+      <if test="guaranteeType != null" >
+        #{guaranteeType,jdbcType=VARCHAR},
+      </if>
+      <if test="applicantAssets != null" >
+        #{applicantAssets,jdbcType=VARCHAR},
+      </if>
+      <if test="guarantorLiability != null" >
+        #{guarantorLiability,jdbcType=VARCHAR},
+      </if>
+      <if test="applicantLiability != null" >
+        #{applicantLiability,jdbcType=VARCHAR},
+      </if>
+      <if test="guarantorPropertyValue != null" >
+        #{guarantorPropertyValue,jdbcType=VARCHAR},
+      </if>
+      <if test="guarantorCarValue != null" >
+        #{guarantorCarValue,jdbcType=VARCHAR},
+      </if>
+      <if test="guarantorOtherAssets != null" >
+        #{guarantorOtherAssets,jdbcType=VARCHAR},
+      </if>
+      <if test="guarantorCreditLoan != null" >
+        #{guarantorCreditLoan,jdbcType=VARCHAR},
+      </if>
+      <if test="guarantorCreditUsedMax != null" >
+        #{guarantorCreditUsedMax,jdbcType=VARCHAR},
+      </if>
+      <if test="guarantorCreditTotalLimit != null" >
+        #{guarantorCreditTotalLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="guarantorExternalAmount != null" >
+        #{guarantorExternalAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="applicantCreditLoanSum != null" >
+        #{applicantCreditLoanSum,jdbcType=VARCHAR},
+      </if>
+      <if test="applicantCreditUsedMax != null" >
+        #{applicantCreditUsedMax,jdbcType=VARCHAR},
+      </if>
+      <if test="applicantCreditTotalQuota != null" >
+        #{applicantCreditTotalQuota,jdbcType=VARCHAR},
+      </if>
+      <if test="applicantExternalAmount != null" >
+        #{applicantExternalAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="guarantorAmount != null" >
+        #{guarantorAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="highQuailtyIndustry != null" >
+        #{highQuailtyIndustry,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy!=null and createdBy != ''">
+		#{createdBy},
+	  </if>
+	  <if test="createdTime!=null and createdTime != ''">
+		#{createdTime},
+	  </if>
+	  <if test="modifiedBy!=null and modifiedBy != ''">
+		#{modifiedBy},
+	  </if>
+	  <if test="modifiedTime!=null and modifiedTime != ''">
+		#{modifiedTime},
+	  </if>
+    </trim>
+  </insert>
+  <update id="updateCustomerCreidtEvaluationByCustomerId" parameterType="com.cardpay.pccredit.customer.model.CustomerCreditEvaluation" >
+    update CUSTOMER_CREDIT_EVALUATION
+    <set >
+    
+      <if test="modelType != null" >
+        MODEL_TYPE =  #{modelType,jdbcType=VARCHAR},
+      </if>
+      <if test="wetValue != null" >
+        WET_VALUE =  #{wetValue,jdbcType=VARCHAR},
+      </if>
+      <if test="houseValue != null" >
+        HOUSE_VALUE = #{houseValue,jdbcType=VARCHAR},
+      </if>
+      <if test="carValue != null" >
+        CAR_VALUE = #{carValue,jdbcType=VARCHAR},
+      </if>
+      <if test="otherValue != null" >
+        OTHER_VALUE = #{otherValue,jdbcType=VARCHAR},
+      </if>
+      <if test="debitRemainingValue != null" >
+        DEBIT_REMAINING_VALUE = #{debitRemainingValue,jdbcType=VARCHAR},
+      </if>
+      <if test="totalUsedAmountMax != null" >
+        TOTAL_USED_AMOUNT_MAX = #{totalUsedAmountMax,jdbcType=VARCHAR},
+      </if>
+      <if test="totalCreditAmount != null" >
+        TOTAL_CREDIT_AMOUNT = #{totalCreditAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="otherDebitValue != null" >
+        OTHER_DEBIT_VALUE = #{otherDebitValue,jdbcType=VARCHAR},
+      </if>
+      <if test="dailyFlowOver10000 != null" >
+        DAILY_FLOW_OVER_10000 = #{dailyFlowOver10000,jdbcType=VARCHAR},
+      </if>
+      <if test="age3550 != null" >
+        AGE_35_50 = #{age3550,jdbcType=VARCHAR},
+      </if>
+      <if test="inland != null" >
+        INLAND = #{inland,jdbcType=VARCHAR},
+      </if>
+      <if test="married != null" >
+        MARRIED = #{married,jdbcType=VARCHAR},
+      </if>
+      <if test="haveRecord != null" >
+        HAVE_RECORD = #{haveRecord,jdbcType=VARCHAR},
+      </if>
+      <if test="creidtBelow70per != null" >
+        CREIDT_BELOW_70PER = #{creidtBelow70per,jdbcType=VARCHAR},
+      </if>
+      <if test="sexFemale != null" >
+        SEX_FEMALE = #{sexFemale,jdbcType=VARCHAR},
+      </if>
+      <if test="livelihood != null" >
+        LIVELIHOOD = #{livelihood,jdbcType=VARCHAR},
+      </if>
+      <if test="ourBusiness != null" >
+        OUR_BUSINESS = #{ourBusiness,jdbcType=VARCHAR},
+      </if>
+      <if test="haveLoans != null" >
+        HAVE_LOANS = #{haveLoans,jdbcType=VARCHAR},
+      </if>
+      <if test="carValueOver5 != null" >
+        CAR_VALUE_OVER_5 = #{carValueOver5,jdbcType=VARCHAR},
+      </if>
+      <if test="selfBusinessLifeOver1 != null" >
+        SELF_BUSINESS_LIFE_OVER_1 = #{selfBusinessLifeOver1,jdbcType=VARCHAR},
+      </if>
+      <if test="creditLimit != null" >
+        CREDIT_LIMIT = #{creditLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="averageDailyFlow != null" >
+        AVERAGE_DAILY_FLOW = #{averageDailyFlow,jdbcType=VARCHAR},
+      </if>
+      <if test="capitalValue != null" >
+        CAPITAL_VALUE = #{capitalValue,jdbcType=VARCHAR},
+      </if>
+      <if test="familyLineCredit != null" >
+        FAMILY_LINE_CREDIT = #{familyLineCredit,jdbcType=VARCHAR},
+      </if>
+      <if test="customerType != null" >
+        CUSTOMER_TYPE = #{customerType,jdbcType=VARCHAR},
+      </if>
+      <if test="guaranteeType != null" >
+        GUARANTEE_TYPE = #{guaranteeType,jdbcType=VARCHAR},
+      </if>
+      <if test="applicantAssets != null" >
+        APPLICANT_ASSETS = #{applicantAssets,jdbcType=VARCHAR},
+      </if>
+      <if test="guarantorLiability != null" >
+        GUARANTOR_LIABILITY = #{guarantorLiability,jdbcType=VARCHAR},
+      </if>
+      <if test="applicantLiability != null" >
+        APPLICANT_LIABILITY = #{applicantLiability,jdbcType=VARCHAR},
+      </if>
+      <if test="guarantorPropertyValue != null" >
+        GUARANTOR_PROPERTY_VALUE = #{guarantorPropertyValue,jdbcType=VARCHAR},
+      </if>
+      <if test="guarantorCarValue != null" >
+        GUARANTOR_CAR_VALUE = #{guarantorCarValue,jdbcType=VARCHAR},
+      </if>
+      <if test="guarantorOtherAssets != null" >
+        GUARANTOR_OTHER_ASSETS = #{guarantorOtherAssets,jdbcType=VARCHAR},
+      </if>
+      <if test="guarantorCreditLoan != null" >
+        GUARANTOR_CREDIT_LOAN = #{guarantorCreditLoan,jdbcType=VARCHAR},
+      </if>
+      <if test="guarantorCreditUsedMax != null" >
+        GUARANTOR_CREDIT_USED_MAX = #{guarantorCreditUsedMax,jdbcType=VARCHAR},
+      </if>
+      <if test="guarantorCreditTotalLimit != null" >
+        GUARANTOR_CREDIT_TOTAL_LIMIT = #{guarantorCreditTotalLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="guarantorExternalAmount != null" >
+        GUARANTOR_EXTERNAL_AMOUNT = #{guarantorExternalAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="applicantCreditLoanSum != null" >
+        APPLICANT_CREDIT_LOAN_SUM = #{applicantCreditLoanSum,jdbcType=VARCHAR},
+      </if>
+      <if test="applicantCreditUsedMax != null" >
+        APPLICANT_CREDIT_USED_MAX = #{applicantCreditUsedMax,jdbcType=VARCHAR},
+      </if>
+      <if test="applicantCreditTotalQuota != null" >
+        APPLICANT_CREDIT_TOTAL_QUOTA = #{applicantCreditTotalQuota,jdbcType=VARCHAR},
+      </if>
+      <if test="applicantExternalAmount != null" >
+        APPLICANT_EXTERNAL_AMOUNT = #{applicantExternalAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="guarantorAmount != null" >
+        GUARANTOR_AMOUNT = #{guarantorAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="highQuailtyIndustry != null" >
+        HIGH_QUAILTY_INDUSTRY = #{highQuailtyIndustry,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy!=null and createdBy != ''">
+				CREATED_BY=#{createdBy},
+	  </if>
+			<if test="createdTime!=null and createdTime != ''">
+				CREATED_TIME=#{createdTime},
+			</if>
+			<if test="modifiedBy!=null and modifiedBy != ''">
+				MODIFIED_BY=#{modifiedBy},
+			</if>
+			<if test="modifiedTime!=null and modifiedTime != ''">
+				MODIFIED_TIME=#{modifiedTime},
+			</if>
+    </set>
+    where CUSTOMER_ID = #{customerId}
+  </update>
+</mapper>

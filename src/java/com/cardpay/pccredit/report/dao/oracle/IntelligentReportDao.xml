@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.report.dao.IntelligentReportDao">
+	<resultMap id="CustomerResultMap" type="com.cardpay.pccredit.report.model.IntelligentCustomerReport">
+		<result property="name" column="chinese_name" />
+		<result property="cardId" column="CARD_ID" />
+		<result property="creditAmount" column="creditAmount" />
+		<result property="tempAmount" column="tempAmount" />
+		<result property="householdAddress" column="HOUSEHOLD_ADDRESS" />
+		<result property="customerBusinessAptitude" column="CUSTOMER_BUSINESS_APTITUDE" />
+		<result property="industryType" column="INDUSTRY_TYPE" />
+		<result property="unitNature" column="UNIT_NATURE" />
+		<result property="maritalStatus" column="MARITAL_STATUS" />
+		<result property="degreeEducation" column="DEGREE_EDUCATION" />
+		<result property="positio" column="POSITIO" />
+		<result property="title" column="TITLE" />
+		<result property="annualIncome" column="ANNUAL_INCOME" />
+		<result property="yearWorkUnit" column="YEAR_WORK_UNIT" />
+		<result property="workTime" column="WORK_TIME" />
+		<result property="sex" column="SEX" />
+	</resultMap>
+	<sql id="CustomerList">
+		chinese_name,CARD_ID,
+		HOUSEHOLD_ADDRESS,CUSTOMER_BUSINESS_APTITUDE,INDUSTRY_TYPE,UNIT_NATURE,
+		MARITAL_STATUS,DEGREE_EDUCATION,POSITIO,TITLE,ANNUAL_INCOME,YEAR_WORK_UNIT,
+		WORK_TIME,SEX
+	</sql>
+	
+	<resultMap id="AccountResultMap" type="com.cardpay.pccredit.report.model.IntelligentAccountReport">
+		<result property="cardNbr" column="CARD_NUMBER" />
+	    <result property="activationStatus" column="ACTIVATION_STATUS" />
+		<result property="principalOverdraft" column="PRINCIPAL_OVERDRAFT" />
+		<result property="interest" column="INTEREST" />
+		<result property="annualFee" column="ANNUAL_FEE" />
+		<result property="totalAmountOverdraft" column="TOTAL_AMOUNT_OVERDRAFT" />
+		<result property="availableLimit" column="availableLimit" />
+		<result property="lastTotalAmountOverdraft" column="lastTotalAmountOverdraft" />
+		<result property="lastPrincipalOverdraft" column="lastPrincipalOverdraft" />
+		<result property="lastInterest" column="lastInterest" />
+		<result property="paybackAccount" column="PAYBACK_ACCOUNT" />
+	    <result property="overdueAmount" column="OVERDUE_AMOUNT" />
+		<result property="overdueTime" column="overdue_time" />
+	</resultMap>
+	
+	<sql id="AccountList">
+		cai.CARD_NUMBER,ACTIVATION_STATUS,ado.PRINCIPAL_OVERDRAFT,INTEREST,ANNUAL_FEE,ado.TOTAL_AMOUNT_OVERDRAFT,PAYBACK_ACCOUNT,
+		cab.OVERDUE_AMOUNT,overdue_time
+	</sql>
+	
+	<resultMap id="DataResultMap" type="com.cardpay.pccredit.report.model.PostLoanManagementData">
+		 <result property="allDueStatusCount" column="allDue" />
+		 <result property="lowDueStatusCount" column="lowDue" />
+	</resultMap>
+	
+	<sql id="DataList">
+		(select count(*) from average_daily_overdraft t where t.all_due_status=1) as allDue,
+		(select count(*) from average_daily_overdraft t where t.low_due_status=1) as lowDue
+	</sql>
+	
+	<select id="findIntelligentCustomerReport" resultMap="CustomerResultMap">
+		select b.id,
+		(select count(CREDIT_AMOUNT) from customer_account_information cai where cai.customer_id=b.id) as creditAmount,
+		(select count(TEMP_AMOUNT)  from customer_account_information cai where cai.customer_id=b.id) as tempAmount,
+		<include refid="CustomerList" />
+		from
+		basic_customer_information b
+		left join
+		customer_careers_information c
+		on b.id=c.customer_id
+	</select>
+	
+	<select id="findIntelligentAccountReport" resultMap="AccountResultMap">
+		select (CREDIT_AMOUNT-ado.TOTAL_AMOUNT_OVERDRAFT) as availableLimit,
+		(select ado.TOTAL_AMOUNT_OVERDRAFT from customer_card_information cci
+		left join
+		card_information ci 
+		on ci.id=cci.card_id
+		inner join
+		customer_account_information cai
+		on ci.card_number =cai.card_number
+		inner join
+		AVERAGE_DAILY_OVERDRAFT ado
+		on cai.ACCOUNT_NUMBER = ado.ACCOUNT_NUMBER
+		inner join
+		customer_account_bill cab
+		on cab.ACCOUNT_NUMBER=cai.ACCOUNT_NUMBER
+		where cci.year=#{lastYear}
+		and cci.month=#{lastMonth}) as lastTotalAmountOverdraft,
+		(select ado.PRINCIPAL_OVERDRAFT from customer_card_information cci
+		left join
+		card_information ci 
+		on ci.id=cci.card_id
+		inner join
+		customer_account_information cai
+		on ci.card_number =cai.card_number
+		inner join
+		AVERAGE_DAILY_OVERDRAFT ado
+		on cai.ACCOUNT_NUMBER = ado.ACCOUNT_NUMBER
+		inner join
+		customer_account_bill cab
+		on cab.ACCOUNT_NUMBER=cai.ACCOUNT_NUMBER
+		where cci.year=#{lastYear}
+		and cci.month=#{lastMonth}) as lastPrincipalOverdraft,
+		(select INTEREST from customer_card_information cci
+		left join
+		card_information ci 
+		on ci.id=cci.card_id
+		inner join
+		customer_account_information cai
+		on ci.card_number =cai.card_number
+		inner join
+		AVERAGE_DAILY_OVERDRAFT ado
+		on cai.ACCOUNT_NUMBER = ado.ACCOUNT_NUMBER
+		inner join
+		customer_account_bill cab
+		on cab.ACCOUNT_NUMBER=cai.ACCOUNT_NUMBER
+		where cci.year=#{lastYear}
+		and cci.month=#{lastMonth}) as lastInterest,
+		<include refid="AccountList" />
+		from customer_card_information cci
+		left join
+		card_information ci 
+		on ci.id=cci.card_id
+		inner join
+		customer_account_information cai
+		on ci.card_number =cai.card_number
+		inner join
+		AVERAGE_DAILY_OVERDRAFT ado
+		on cai.ACCOUNT_NUMBER = ado.ACCOUNT_NUMBER
+		inner join
+		customer_account_bill cab
+		on cab.ACCOUNT_NUMBER=cai.ACCOUNT_NUMBER
+		where cci.year=#{year}
+		and cci.month=#{month}
+	</select>
+	
+	<select id="findPostLoanManagementData" resultMap="DataResultMap">
+		select rownum,
+		<include refid="DataList" />
+		from
+		average_daily_overdraft 
+		<![CDATA[
+		   where rownum<2
+		]]>
+		
+	</select>
+	
+</mapper>

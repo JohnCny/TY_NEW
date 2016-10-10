@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="GBK"?>
+
+<resultMap>
+	<!-- <result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/> -->
+	<result column="DM" jdbcType="VARCHAR" index="1" />
+
+	<result column="XM" jdbcType="VARCHAR" index="2" />
+
+	<result column="PY" jdbcType="VARCHAR" index="3" />
+
+	<result column="XB" jdbcType="VARCHAR" index="4" />
+
+	<result column="SSJG" jdbcType="VARCHAR" index="5" />
+
+	<result column="ZW" jdbcType="VARCHAR" index="6" />
+
+	<result column="BGDH" jdbcType="VARCHAR" index="7" />
+	
+	<result column="SJHM" jdbcType="VARCHAR" index="8" />
+	<result column="CZDH" jdbcType="VARCHAR" index="9" />
+	<result column="DZXX" jdbcType="VARCHAR" index="10" />
+	<result column="YZBM" jdbcType="VARCHAR" index="11" />
+	<result column="DZ" jdbcType="VARCHAR" index="12" />
+	<result column="BZ" jdbcType="VARCHAR" index="13" />
+	<result column="USERID" jdbcType="VARCHAR" index="14" />
+	
+	<result column="SSBM" jdbcType="VARCHAR" index="16" />
+	<result column="GH" jdbcType="VARCHAR" index="17" />
+	<result column="ISKHJL" jdbcType="VARCHAR" index="18" />
+	<result column="YWJS" jdbcType="VARCHAR" index="19" />
+	<result column="DLDM" jdbcType="VARCHAR" index="20" />
+	<result column="DDRQ" jdbcType="VARCHAR" index="21" />
+	<result column="WHRY" jdbcType="VARCHAR" index="22" />
+	<result column="DCJG" jdbcType="VARCHAR" index="23" />
+	<result column="KHJLDJ" jdbcType="VARCHAR" index="24" />
+	
+	<result column="SFZHM" jdbcType="VARCHAR" index="26" />
+	<result column="TSRQ" jdbcType="VARCHAR" index="27" />
+	<result column="SGZH" jdbcType="VARCHAR" index="28" />
+	<result column="PXZH" jdbcType="VARCHAR" index="29" />
+</resultMap>

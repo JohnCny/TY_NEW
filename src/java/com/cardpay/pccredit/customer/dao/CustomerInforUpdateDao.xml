@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.cardpay.pccredit.customer.dao.CustomerInforUpdateDao">
+	
+	<delete id="deleteCustomerInforUpdateCrossExamination"> 
+		delete Cross_Examination t where t.customer_id=#{id}
+	</delete>
+	
+	<delete id="deleteCustomerInforUpdateCrossExamination1"> 
+		delete Cross_Examination t where  t.customer_id=#{customerId} and t.product_id = #{productId}
+	</delete>
+	
+	<delete id="deleteDhd"> 
+		delete ty_dz_model_dhd t where  t.customer_id=#{customerId} and t.product_id = #{productId}
+	</delete>
+	
+	
+	<delete id="deleteGdzc"> 
+		delete ty_dz_model_gdzc t where  t.customer_id=#{customerId} and t.product_id = #{productId}
+	</delete>
+	
+	<delete id="deleteYfys"> 
+		delete ty_dz_model_yfys t where  t.customer_id=#{customerId} and t.product_id = #{productId}
+	</delete>
+	
+	<delete id="deleteYsyf"> 
+		delete ty_dz_model_ysyf t where  t.customer_id=#{customerId} and t.product_id = #{productId}
+	</delete>
+	
+	<delete id="deleteCustomerInforUpdateCashFlow"> 
+		delete Cash_Flow t where t.customer_id=#{id}
+	</delete>
+	
+	<delete id="deleteCustomerInforUpdateCashFlow1"> 
+		delete Cash_Flow t where t.customer_id=#{customerId} and t.product_id = #{productId}
+	</delete>
+	
+	
+	<delete id="deleteCustomerInforUpdateIncomeStatement"> 
+		delete Income_Statement t where t.customer_id=#{id}
+	</delete>
+	
+	<delete id="deleteCustomerInforUpdateBalanceSheet"> 
+		delete Balance_Sheet t where t.customer_id=#{id}
+	</delete>
+	
+
+	<delete id="deleteCustomerInforUpdateBalanceSheetById"> 
+		delete Balance_Sheet t where t.customer_id=#{customerId} and t.product_id =#{productId}
+	</delete>
+	
+	<select id="getCustomerInforUpdateBalanceSheetById" resultType="com.cardpay.pccredit.customer.model.CustomerInforUpdateBalanceSheet">
+
+		select t.loan_type as loanType,t.names,t.no,t.contents_text_numbers  as contentsTextNumbers from Balance_Sheet t where t.customer_id=#{id} order by no,loan_type
+	</select> 
+	
+	<select id="getCustomerInforUpdateBalanceSheetByCustIdAndProdId" resultType="com.cardpay.pccredit.customer.model.CustomerInforUpdateBalanceSheet">
+		select t.loan_type as loanType,t.names,t.no,t.contents_text_numbers  as contentsTextNumbers from Balance_Sheet t 
+		where t.customer_id=#{customerId} and t.product_id =#{productId} order by no,loan_type
+	</select>
+	
+	<select id="getCustomerInforUpdateIncomeStatementById" resultType="com.cardpay.pccredit.customer.model.CustomerInforUpdateIncomeStatement">
+		select t.id,
+	       t.loan_type as loanType,t.names,t.no,
+	       t.january,
+	       t.february,
+	       t.march,
+	       t.april,
+	       t.may,
+	       t.june,
+	       t.july,
+	       t.august,
+	       t.september,
+	       t.october,
+	       t.november,
+	       t.december,
+	       t.total_all as totalAll,
+	       t.monthly_average as monthlyAverage
+	  from income_statement t
+	 where t.customer_id = #{id}
+	</select>
+	
+	<select id="getCustomerInforUpdateCashFlowById" resultType="com.cardpay.pccredit.customer.model.CustomerInforUpdateCashFlow">
+		select t.id,
+	      t.loan_type as loanType,t.names,t.no,
+	       t.january,
+	       t.february,
+	       t.march,
+	       t.april,
+	       t.may,
+	       t.june,
+	       t.july,
+	       t.august,
+	       t.september,
+	       t.october,
+	       t.november,
+	       t.december,
+	       t.total_all as totalAll,
+	       t.monthly_average as monthlyAverage
+	  from Cash_Flow t
+	 where t.customer_id = #{id}
+	</select>
+	
+	<select id="getCustomerInforUpdateCashFlowById1" resultType="com.cardpay.pccredit.customer.model.CustomerInforUpdateCashFlow">
+		select t.id,
+	      t.loan_type as loanType,t.names,t.no,
+	       t.january,
+	       t.february,
+	       t.march,
+	       t.april,
+	       t.may,
+	       t.june,
+	       t.july,
+	       t.august,
+	       t.september,
+	       t.october,
+	       t.november,
+	       t.december,
+	       t.total_all as totalAll,
+	       t.monthly_average as monthlyAverage
+	  from Cash_Flow t
+	 where t.customer_id = #{customerId}
+	 and t.product_id =#{productId}
+	</select>
+	
+	<select id="getDcdhd" resultType="com.cardpay.pccredit.intopieces.model.Dcdhd">
+		select * from ty_dz_model_dhd t
+	 where t.customer_id = #{customerId}
+	 and t.product_id =#{productId}
+	</select>
+	
+	<select id="getDcgdzc" resultType="com.cardpay.pccredit.intopieces.model.Dcgdzc">
+		select * from ty_dz_model_gdzc t
+	 where t.customer_id = #{customerId}
+	 and t.product_id =#{productId}
+	</select>
+	
+	<select id="getDcyfys" resultType="com.cardpay.pccredit.intopieces.model.Dcyfys">
+		select * from ty_dz_model_yfys t
+	 where t.customer_id = #{customerId}
+	 and t.product_id =#{productId}
+	</select>
+	
+	<select id="getDcysyf" resultType="com.cardpay.pccredit.intopieces.model.Dcysyf">
+		select * from ty_dz_model_ysyf t
+	 where t.customer_id = #{customerId}
+	 and t.product_id =#{productId}
+	</select>
+	
+	<select id="getDclsfx" resultType="com.cardpay.pccredit.intopieces.model.Dclsfx">
+		select * from ty_dz_model_lsfx t
+	 where t.customer_id = #{customerId}
+	 and t.product_id =#{productId}
+	</select>
+	
+	<select id="getCustomerInforUpdateCrossExaminationById" resultType="com.cardpay.pccredit.customer.model.CustomerInforUpdateCrossExamination">
+		select t.loan_type as loanType,t.names,t.no,t.contents_text_numbers  as contentsTextNumbers from cross_examination t where t.customer_id=#{id} order by loan_type, no
+	</select>
+	
+	<select id="getCustomerInforUpdateCrossExaminationById1" resultType="com.cardpay.pccredit.customer.model.CustomerInforUpdateCrossExamination">
+		select t.loan_type as loanType,t.names,t.no,t.contents_text_numbers  as contentsTextNumbers from cross_examination t
+		 where t.customer_id=#{customerId} and t.product_id =#{productId} order by loan_type, no
+	</select>
+	
+	<select id="getCustomerinforUpdateWorshipByIntoId" resultType="com.cardpay.pccredit.customer.model.CustomerinforUpdateWorship" parameterType="String">
+		SELECT
+		*
+		FROM
+		CUSTOMER_WORSHIP_INFORMATION_S A
+		WHERE
+		A .APPLICATION_ID =#{id}
+	</select>
+	
+</mapper>

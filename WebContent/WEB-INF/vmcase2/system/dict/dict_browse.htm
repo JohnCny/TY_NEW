@@ -1,0 +1,99 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+				<div class="title">数据字典管理</div>
+			</div>
+			<div class="inquiry">
+				<div class="search_tag">数据字典筛选</div>
+				<div class="search">
+					<form id="submitForm">
+						<ul>
+							<li><span>字典类别：<input type="text"
+									name="dictType" value='$!result.filter.dictType'/></span></li>
+							<li><span>字典代码：<input type="text"
+									name="typeCode" value='$!result.filter.typeCode' /></span></li>
+							<li><span>字典名称：<input type="text"
+									name="typeName" value='$!result.filter.typeName' /></span></li>
+							<li class="search_button"><input id="id_browse_button"
+								type="button" value="筛选"
+								class="search_button_inquiry"
+								title="#i18n('button.browse.hint')"
+								style="height: 26px; line-height: 24px;" /></li>
+						</ul>
+					</form>
+				</div>
+				<div id="topDiv" class="inquiry_list inquiry_top">
+					<table>
+						<colgroup>
+							<col width="10%" />
+							<col width="30%" />
+							<col width="20%" />
+							<col width="20%" />
+							<col width="20%" />
+						</colgroup>
+						<tr class="title">
+							<th nowrap="nowrap"></th>
+							<th nowrap="nowrap">字典类别</th>
+							<th nowrap="nowrap">字典代码</th>
+							<th nowrap="nowrap">字典名称</th>
+							<th nowrap="nowrap">字典代码</th>
+						</tr>
+					</table>
+				</div>
+				<div id="downDiv" class="inquiry_list inquiry_down">
+					<table>
+						<colgroup>
+							<col width="10%" />
+							<col width="30%" />
+							<col width="20%" />
+							<col width="20%" />
+							<col width="20%" />
+						</colgroup>
+						#foreach ($dict in $result.items)
+						<tr>
+							<td class="checkbox"><input type="radio" name="checkbox"
+								value="$!dict.id" #if ($!request.getParameter("recordId") ==
+								$dict.id) checked="checked" #end /></td>
+							<td nowrap="nowrap">$!dict.dictType</td>
+							<td nowrap="nowrap">$!dict.typeCode</td>
+							<td nowrap="nowrap">$!dict.typeName</td>
+							<td nowrap="nowrap">$!dict.bankCode</td>
+						</tr>
+						#end
+					</table>
+				</div>
+			</div>
+			<div class="pagebar">
+				<div class="controlbtn">
+					#btnpriv("create")<a id="id_create_button" class="btn_g" href="javascript:void(0);"
+						title="#i18n('button.create.hint')">#i18n("button.create")</a> #end
+					#btnpriv("change")<a id="id_change_button" class="btn_g" href="javascript:void(0);"
+						title="#i18n('button.change.hint')">#i18n("button.change")</a> #end
+					#btnpriv("delete")<a id="id_delete_button" class="btn_g" href="javascript:void(0);"
+						title="#i18n('button.delete.hint')">#i18n("button.delete")</a> #end
+				</div>
+				#parse ("common/pagination.htm")
+				<div class="clear"></div> 
+			</div>
+		</div>
+	</div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.createUrl = "${contextPath}/system/dict/create.page";
+		opsObj.changeUrl = "${contextPath}/system/dict/change.page";
+		opsObj.deleteUrl = "${contextPath}/system/dict/delete.json";
+		opsObj.browseUrl = "${contextPath}/system/dict/browse.page";
+
+		prepareOperations(opsObj);
+	
+	  });
+</script>
+</html>

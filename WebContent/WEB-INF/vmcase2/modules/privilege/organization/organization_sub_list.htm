@@ -1,0 +1,198 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+	
+		  <div  class="inquiry" style="padding-top:0px;">
+			<div id="topDiv" class="inquiry_list inquiry_top" style="margin-top:0px;">
+				<table>
+					<colgroup>
+						<col width="5%" />
+			              <col width="20%" />
+			              <col width="20%" />
+			              <col />
+			              <col width="20%"/>
+			              <col width="20%" />
+					</colgroup>
+					<tr class="title"> 
+						<th nowrap="nowrap"></th>
+						<th nowrap="nowrap">#mi18n("name")</th>
+						<th nowrap="nowrap">#mi18n("shortName")</th>
+						<th nowrap="nowrap">#mi18n("description")</th>
+						<th nowrap="nowrap">#mi18n("createdTime")</th>
+						<th nowrap="nowrap">#mi18n("modifiedTime")</th>
+					</tr>
+				</table>
+			</div>
+			  <form id="submitForm">
+             </form>
+			<div id="downDiv" class="inquiry_list inquiry_down">
+				<table>
+					<colgroup>
+						<col width="5%" />
+			              <col width="20%" />
+			              <col width="20%" />
+			              <col />
+			              <col width="20%"/>
+			              <col width="20%" />
+					</colgroup>
+					#foreach ($item in $result.items)
+					<tr>
+						<td class="checkbox"><input type="radio" name="checkbox"
+							value="$!item.id" #if ($!request.getParameter("recordId") ==
+							$item.id) checked="checked" #end /></td>
+						<td nowrap="nowrap">$!item.name</td>
+						<td nowrap="nowrap">$!item.shortName</td>
+						<td nowrap="nowrap">$!item.description</td>
+						<td nowrap="nowrap">$!date.format("yyyy-MM-dd
+							HH:mm:ss",$!item.createdTime)</td>
+						<td nowrap="nowrap">$!date.format("yyyy-MM-dd
+							HH:mm:ss",$!item.modifiedTime)</td>
+					</tr>
+					#end
+				</table>
+			</div>
+         </div>
+			<div class="pagebar">
+				<div class="controlbtn">
+					#btnpriv("create") <a id="id_create_button" class="btn_g"
+						href="javascript:void(0);" title="#i18n('button.create.hint')">#i18n("button.create")</a>
+					#end #btnpriv("change") <a id="id_change_button" class="btn_g"
+						href="javascript:void(0);" title="#i18n('button.change.hint')">#i18n("button.change")</a>
+					#end #btnpriv("delete") <a id="id_delete_button" class="btn_g"
+						href="javascript:void(0);" title="#i18n('button.delete.hint')">#i18n("button.delete")</a>
+					#end #btnpriv("display") <a id="id_display_button" class="btn_gr"
+						href="javascript:void(0);" title="#i18n('button.display.hint')">#i18n("button.display")</a>
+					#end 
+				</div>
+				#parse ("common/pagination.htm")
+				<div class="clear"></div>
+			</div>
+
+</body>
+<script language="javascript" type="text/javascript">
+	 
+	    var p_place = window.parent.document.getElementById('place');
+	    var placeHeight = $(p_place).outerHeight(true);
+	    var layout = new TableLayout(3,placeHeight,0.73);
+		 window.top.currentWindow.setLayout(layout);
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.createUrl = "${modulePath}/create.page?parentId=$!organization.parentId&parentName=$!organization.parentName";
+		opsObj.displayUrl = "${modulePath}/display.page?parentName=$!organization.parentName";
+		opsObj.changeUrl = "${modulePath}/change.page?parentName=$!organization.parentName";
+		opsObj.deleteUrl = "${modulePath}/delete.json";
+		opsObj.browseUrl = "${modulePath}/browse.page";
+		opsObj.exportUrl = "${modulePath}/export.page";
+		
+		
+		if (opsObj.createUrl) {
+	        $("#id_create_button").click(function() {
+	            var url = opsObj.createUrl;
+	            if (opsObj.formObj) {
+	                // 回调URL
+	                var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
+	                if (callBackUrlObj) {
+	                	if(url.indexOf("?")>=0){
+	                		url += "&" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}else{
+		                    url += "?" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}
+	                }
+	            }
+	            window.location.href = url;
+	        });
+	    }
+		if (opsObj.displayUrl) {
+	        $("#id_display_button").click(function() {
+	            if ($(".checkbox :checked").length == 1) {
+	                var rowid = $($(".checkbox :checked")[0]).attr("value");
+	                var url ="";
+	                
+	                if(opsObj.displayUrl.indexOf("?")>=0){
+	                	url = opsObj.displayUrl + "&id=" + rowid;
+	                }else{
+	                	url = opsObj.displayUrl + "?id=" + rowid;
+	                }
+	                if (opsObj.formObj) {
+	                    // 回调URL
+	                    var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
+	                    if (callBackUrlObj) {
+	                        url += "&" + $.param({
+	                            'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+	                        });
+	                    }
+	                }
+	                window.location.href = url;
+	            } else {
+	                Dialog.message("请选择一行");
+	            }
+	        });
+	    }
+		 $("#id_export_button").click(function() {
+	            var url = opsObj.exportUrl;
+	            var submitForm = opsObj.formObj[0];
+	            if (submitForm) {
+	                submitForm.action = opsObj.exportUrl;
+	                submitForm.submit();
+	            }
+	        });
+		$("#id_change_button").click(function() {
+            if ($(".checkbox :checked").length == 1) {
+                $("#id_change_button").unbind();
+                var rowid = $($(".checkbox :checked")[0]).attr("value");
+                var url ="";
+                
+                if(opsObj.changeUrl.indexOf("?")>=0){
+                	url = opsObj.changeUrl + "&id=" + rowid;
+                }else{
+                	url = opsObj.changeUrl + "?id=" + rowid;
+                }
+                if (opsObj.formObj) {
+                    // 回调URL
+                    var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
+                    if (callBackUrlObj) {
+                        url += "&" + $.param({
+                            'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+                        });
+                    }
+                }
+                window.location.href = url;
+            } else {
+                Dialog.message("请选择一行");
+            }
+        });
+
+		if (opsObj.deleteUrl) {
+	        $("#id_delete_button").click(function() {
+	            if ($(".checkbox :checked").length == 1) {
+	                var rowid = $($(".checkbox :checked")[0]).attr("value");
+	                Dialog.confirm("确定删除所选行吗？", "提示",
+	                function() {
+	                    $.post(opsObj.deleteUrl, {
+	                        id: rowid
+	                    },
+	                    function(data, textStatus, jqXhr) {
+	                        if (data.success) {
+	                        	parent.addTreeNode();
+	                            window.location.reload(true);
+	                        } else {
+	                            Dialog.message(data.message);
+	                        }
+	                    });
+	                });
+	            } else {
+	                Dialog.message("请选择一行");
+	            }
+	        });
+	    }
+	
+		initClickEvent();
+	    
+		//prepareOperations(opsObj);
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")

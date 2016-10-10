@@ -1,0 +1,177 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户经理级别调整</div>
+      </div>
+      <div class="inquiry">
+        <div class="search_tag">筛选过滤条件</div>
+        <div class="search">
+          <form id="submitForm">
+            <ul>
+              <li>
+                <span>客户经理姓名：<input type="text" name="customerManagerName" value="$!result.filter.customerManagerName" maxlength="30" /></span>
+              </li>
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">年份</th>
+              <th nowrap="nowrap">月份</th>
+              <th nowrap="nowrap">客户经理</th>
+              <th nowrap="nowrap">当前级别</th>
+              <th nowrap="nowrap">调整后级别</th>
+              <th nowrap="nowrap">调整建议</th>
+              <th nowrap="nowrap">是否处理</th>
+              <th nowrap="nowrap">操作</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col />
+            </colgroup>
+            #foreach ($levelAdjustment in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!levelAdjustment.id"
+                  #if ($!request.getParameter("recordId") == $levelAdjustment.id) checked="checked" #end /></td>
+              <td nowrap="nowrap">$!{levelAdjustment.dataYear}</td>
+              <td nowrap="nowrap">$!{levelAdjustment.dataMonth}</td>
+              <td nowrap="nowrap">$!{levelAdjustment.customerManagerName}</td>
+              <td nowrap="nowrap">#dictVal("CUSTOMERMANAGERLEVEL", $!levelAdjustment.originalLevel)</td>
+              <td nowrap="nowrap">#dictVal("CUSTOMERMANAGERLEVEL", $!levelAdjustment.adjustAfterLevel)</td>
+              <td nowrap="nowrap">#dictVal("systemAdvice", $!levelAdjustment.systemAdvice)</td>
+              <td nowrap="nowrap">#dictVal("ifHandled", $!levelAdjustment.ifHandled)</td>
+              <td nowrap="nowrap">
+				#if($!levelAdjustment.ifHandled == "0")
+				<a onclick="handleAdjustmentLevel('$!levelAdjustment.id')" class="btn_g" href="javascript:void(0);" >处理</a>	
+				#end
+			  </td>
+              <input type="hidden" id="$!levelAdjustment.id" value="$!levelAdjustment.customerManagerId" />
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+         <a id="id_display_button" class="btn_gr" href="javascript:void(0);" title="#i18n('button.display.hint')">查看</a>
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.browseUrl = "${modulePath}/browse.page";
+		
+		$("#id_display_button").click(function() {
+            if ($(".checkbox :checked").length == 1) {
+                var rowid = $($(".checkbox :checked")[0]).attr("value");
+                var url ="${modulePath}/display_assessment_browse.page?customerManagerId=" + $("#" + rowid).val();
+                if (opsObj.formObj) {
+                    // 回调URL
+                    var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
+                    if (callBackUrlObj) {
+                        url += "&" + $.param({
+                            'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+                        });
+                    }
+                }
+                window.location.href = url;
+            } else {
+                Dialog.message("请选择一行");
+            }
+		});
+		
+		prepareOperations(opsObj);
+	});
+	
+	function handleAdjustmentLevel(id){
+		var url = "${modulePath}/handleAdjustmentLevel.json";
+		Dialog.confirm("确定级别已调整？", "提示",
+     		function() {
+     			$.ajax({
+      				url : url,
+      				type : "get",
+      				data : "id=" + id,//要发送的数据
+      				success : function(data) {
+      					if (data.success) {
+      						topWin.Dialog.message("处理成功！");
+      						window.location.reload(true);
+      					}
+      					else{
+      						topWin.Dialog.message(data.message);
+      				    }
+      					submitFlag = 0;
+      				}
+      			});
+	 	});
+	 }
+	
+	
+	//删除
+	  $("#id_delete_button").click(function() {
+      if ($(".checkbox :checked").length == 1) {
+      	var url = opsObj.deleteUrl;
+          var rowid = $($(".checkbox :checked")[0]).attr("value");
+          Dialog.confirm("确定删除所选行吗？", "提示",
+          function() {
+          	$.ajax({
+  				url : url,
+  				type : "get",
+  				data : "id=" + rowid,//要发送的数据
+  				success : function(data) {
+  					if (data.success) {
+  						topWin.Dialog.message("保存成功！");
+  						window.location.href= contextPath+"/manager/managercreate/browse.page" ;
+  					}
+  					else{
+  						topWin.Dialog.message(data.message);
+  				    }
+  					submitFlag = 0;
+  				}
+  			});
+           
+          });
+      } else {
+          Dialog.message("请选择一行");
+      }
+  });
+</script>
+#parse ("common/iframe_page_footer.htm")

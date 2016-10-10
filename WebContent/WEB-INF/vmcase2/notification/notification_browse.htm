@@ -1,0 +1,120 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">通知信息</div>
+      </div>
+      <div class="inquiry">
+        <div class="search_tag">#i18n("label.browse.filter")</div>
+        <div class="search">
+          <form id="submitForm">
+            <ul>
+            
+              <li>
+                <span>通知类别：<input type="text" name="nativeName" value='$!request.getParameter('
+                    productName')' maxlength="30" /></span>
+              </li>
+              
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="75%" />
+              <col width="10%"/>
+             
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">通知标题</th>
+              <th nowrap="nowrap">通知内容</th>
+              <th nowrap="nowrap">是否查看</th>
+              
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+             <col width="5%" />
+              <col width="10%" />
+              <col width="75%" />
+              <col width="10%"/>
+            </colgroup>
+            #foreach ($notification in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!notification.id"
+                  #if ($!request.getParameter("recordId") == $notification.id) checked="checked" #end /></td>
+             
+               <td nowrap="nowrap">$!notification.noticeTitle</td>
+              <td nowrap="nowrap">$!notification.noticeContent</td>
+             #if($!notification.isCheck==0)
+              <td nowrap="nowrap">未查看</td>
+              #else
+              <td nowrap="nowrap">已查看</td>
+            #end
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+        <a id="id_delete_button" class="btn_g" href="javascript:void(0);" title="已查看">#i18n("button.checked")</a>
+         <a id="id_display_button" class="btn_gr" href="javascript:void(0);" title="#i18n('button.display.hint')">#i18n("button.display")</a>
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.displayUrl = "${modulePath}/display.page";
+		opsObj.checkedUrl = "${modulePath}/delete.json";
+
+		prepareOperations(opsObj);
+		
+		   if (opsObj.checkedUrl) {
+		        $("#id_delete_button").click(function() {	
+		            if ($(".checkbox :checked").length == 1) {
+		                var rowid = $($(".checkbox :checked")[0]).attr("value");
+		                Dialog.confirm("确定选择已读所选行吗？", "提示",
+		                function() {
+		                    $.post(opsObj.checkedUrl, {
+		                        id: rowid
+		                    },
+		                    function(data, textStatus, jqXhr) {
+		                        if (data.success) {
+		                            window.location.reload(true);
+		                        } else {
+		                            //Dialog.message(data.message);
+		                        }
+		                    });
+		                });
+		            } else {
+		                Dialog.message("请选择一行");
+		            }
+		        });
+		    }
+		
+	});
+	
+ 
+	
+</script>
+#parse ("common/iframe_page_footer.htm")

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="GBK"?>
+<resultMap>
+	 <result column="ID"    				 jdbcType="VARCHAR" index="1"/>
+	 <result column="NAME"    				 jdbcType="VARCHAR" index="2"/>
+	 <result column="DISPLAY"    			 jdbcType="VARCHAR" index="3"/>
+	 <result column="TYPE"    				 jdbcType="VARCHAR" index="4"/>
+	 <result column="SCOPE"    				 jdbcType="VARCHAR" index="5"/>
+	 <result column="TREE"    				 jdbcType="VARCHAR" index="6"/>
+	 <result column="CODEGENERATOR"     	 jdbcType="VARCHAR" index="7"/>
+	 <result column="CODELENGTH"    		 jdbcType="VARCHAR" index="8"/>
+	 <result column="CODEAUTOGENERATE"       jdbcType="VARCHAR" index="9"/>
+	 <result column="DESCRIPTION"    		 jdbcType="VARCHAR" index="10"/>
+	 <result column="NAMECAPTION"    		 jdbcType="VARCHAR" index="11"/>
+	 <result column="CODECAPTION"    		 jdbcType="VARCHAR" index="12"/>
+	 <result column="BRIEFNAMECAPTION"       jdbcType="VARCHAR" index="13"/>
+	 <result column="CLASSURI"    			 jdbcType="VARCHAR" index="14"/>
+	 <result column="REPOSITORYPROCESSOR"    jdbcType="VARCHAR" index="15"/>
+	 <result column="DISPLAYURI"    		 jdbcType="VARCHAR" index="16"/>
+	 <result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/>
+</resultMap>

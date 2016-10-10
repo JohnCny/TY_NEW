@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validators>
+	<validator id="com.wicresoft.jrad.base.validation.ValidateBean">
+		<control name="name" title="姓名">
+			<entry type="required" value="true" message="" />
+			<entry type="rangelength" value="2,50" message="" />
+			<entry type="minlength" value="2" message="" />
+			<entry type="maxlength" value="6" message="" />
+		</control>
+		<control name="date" title="日期">
+			<entry type="datetime" value="yyyy/MM/dd HH:mm:ss" message="" />
+		</control>
+		<control name="number" title="值大小">
+			<entry type="min" value="3" message="" />
+			<entry type="max" value="20" message="" />
+			<entry type="range" value="2,21" message="" />
+			<entry type="number" value="" message="" />
+		</control>
+		<control name="email" title="邮箱">
+			<entry type="email" value="" message="" />
+		</control>
+		<control name="phone" title="座机号">
+			<entry type="phone" value="" message="" />
+		</control>
+		<control name="mobile" title="手机号">
+			<entry type="mobile" value="" message="" />
+		</control>
+		<control name="url" title="url">
+			<entry type="url" value="" message="" />
+		</control>
+		<control name="creditcard" title="信用卡">
+			<entry type="creditcard" value="" message="" />
+		</control>
+		<control name="equalsto" title="值相等">
+			<entry type="equalsto" value="23" message="" />
+		</control>
+		<control name="regex" title="格式">
+			<entry type="regex" value="^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$" message="" />
+		</control>
+	</validator>
+</validators>

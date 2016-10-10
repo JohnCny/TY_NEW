@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.manager.dao.ManagerBelongMapDao" >
+
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.manager.web.ManagerBelongMapForm">
+		<result property="id" column="ID" />
+		<result property="parentId" column="PARENT_ID" />
+		<result property="childId" column="CHILD_ID" />
+		<result property="isLeaf" column="IS_LEAF" />
+		<result property="userName" column="DISPLAY_NAME" />
+		<result property="levelInformation" column="LEVEL_INFORMATION" />
+	</resultMap>
+	
+	<resultMap id="SysOrganMap" type="com.cardpay.pccredit.manager.web.SysOrganizationForm">
+		<result property="userId" column="ID" />
+		<result property="displayName" column="NAME" />
+	</resultMap>
+	
+	<resultMap id="managerBelongMap" type="com.cardpay.pccredit.manager.model.ManagerBelongMap">
+		<result property="id" column="ID" />
+		<result property="childId" column="CHILD_ID" />
+		<result property="parentId" column="PARENT_ID" />
+		<result property="isLeaf" column="IS_LEAF" />
+	</resultMap>
+	
+	<resultMap id="AccountManagerParameterFormMap"
+		type="com.cardpay.pccredit.manager.web.AccountManagerParameterForm">
+		<result property="id" column="ID" />
+		<result property="userId" column="USER_ID" />
+		<result property="displayName" column="DISPLAY_NAME" />
+		<result property="rewardIncentiveInformation" column="REWARD_INCENTIVE_INFORMATION" />
+		<result property="levelInformation" column="LEVEL_INFORMATION" />
+		<result property="creditLine" column="CREDIT_LINE" />
+		<result property="monthlyOverdraftBalance" column="MONTHLY_OVERDRAFT_BALANCE" />
+		<result property="teamOverdraftBalance" column="TEAM_OVERDRAFT_BALANCE" />
+		<result property="tubeNumber" column="TUBE_NUMBER" />
+		<result property="activationRate" column="ACTIVATION_RATE" />
+		<result property="activeRate" column="ACTIVE_RATE" />
+		<result property="entryTime" column="ENTRY_TIME" />
+		<result property="riskTolerance" column="RISK_TOLERANCE" />
+		<result property="createdTime" column="CREATED_TIME" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="modifiedTime" column="MODIFIED_TIME" />
+		<result property="modifiedBy" column="MODIFIED_BY" />
+	</resultMap>
+	
+	<resultMap id="managerChildIdMap" type="com.cardpay.pccredit.manager.web.ManagerBelongMapForm">
+		 <result property="childId" column="child_id" />
+	</resultMap>
+	
+	<select id="findManagerBelongMapByFilter" resultMap="ResultMap" 
+		parameterType="com.cardpay.pccredit.manager.filter.ManagerBelongMapFilter">
+		SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					 SELECT mbm.*,
+							su.DISPLAY_NAME,
+							amp.LEVEL_INFORMATION
+					 FROM  manager_belong_map mbm
+					 LEFT JOIN account_manager_parameter amp
+					 	on amp.id = mbm.child_id
+					 LEFT JOIN sys_user su
+					    ON su.id = amp.user_id
+					 WHERE 1=1 and mbm.parent_id = #{parentId}
+ 			<![CDATA[		
+					) ROW_
+				WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+			WHERE ROWNUM_ > #{limit}*#{page}
+			]]>
+	</select>
+	
+	<select id="findManagerBelongMapCountByFilter" resultType="int" 
+		parameterType="com.cardpay.pccredit.manager.filter.ManagerBelongMapFilter">
+		SELECT count(*)
+		 FROM  manager_belong_map mbm
+		 LEFT JOIN account_manager_parameter amp
+		 	on amp.id = mbm.child_id
+		 LEFT JOIN sys_user su
+		    ON su.id = amp.user_id
+		 WHERE 1=1 and mbm.parent_id = #{parentId}
+	</select>
+	 
+	<select id="findByParentId" resultMap="ResultMap">
+		 SELECT mbm.*,
+				su.DISPLAY_NAME,
+				amp.LEVEL_INFORMATION
+		 FROM  manager_belong_map mbm
+		 LEFT JOIN account_manager_parameter amp
+		 	on amp.id = mbm.child_id
+		 LEFT JOIN sys_user su
+		    ON su.id = amp.user_id
+		 WHERE mbm.parent_id = #{parentId}
+	</select>
+	
+	<select id="findByChildId" resultMap="ResultMap">
+		 SELECT mbm.*,
+				su.DISPLAY_NAME,
+				amp.LEVEL_INFORMATION
+		 FROM  manager_belong_map mbm
+		 LEFT JOIN account_manager_parameter amp
+		 	on amp.id = mbm.child_id
+		 LEFT JOIN sys_user su
+		    ON su.id = amp.user_id
+		 WHERE mbm.child_id = #{childId}
+	</select>
+	
+	<select id="getManagerBelongRoot" resultMap="managerBelongMap">
+		 SELECT * FROM manager_belong_map
+		 WHERE parent_id is null
+	</select>
+	
+	<select id="findAccountManagerParameterByChildIds" resultMap="AccountManagerParameterFormMap">
+		SELECT T.*, s.DISPLAY_NAME
+		FROM ACCOUNT_MANAGER_PARAMETER T
+		LEFT JOIN SYS_USER s ON s.id = T.USER_ID
+		WHERE  s.USER_TYPE = '1'
+		and t.id in ${childIdInStr}
+		ORDER BY t.CREATED_TIME DESC
+	</select>
+	
+	
+	<select id="findOrgManagerById" resultMap="AccountManagerParameterFormMap">
+       select e.display_name,
+       		  e.id as user_id
+         from sys_charge a,
+              sys_organization b,
+              sys_department c,
+              sys_dept_user d,
+              sys_user e  
+          where a.org_id = b.id     
+            and c.org_id = b.id
+            and d.dept_id = c.id
+            and e.id = d.user_id    
+            and a.user_id = #{userId}
+            and e.user_type ='1'
+	</select>
+	
+	<select id="findDeptManagerById" resultMap="AccountManagerParameterFormMap">
+      select d.display_name,
+             d.id as user_id
+		  from sys_organization a,
+		       sys_department b, 
+		       sys_dept_user c, sys_user d
+		 where a.id = b.org_id
+		   and b.id = c.dept_id
+		   and c.user_id = d.id
+		   and d.user_type ='1'
+	</select>
+	
+	
+	<select id="findDeptOrgan" resultMap="SysOrganMap">
+      select t.*,t.rowid from sys_organization  t
+	</select>
+	
+	<select id="findOrgOrgan" resultMap="SysOrganMap">
+     select b.id,
+	        b.name,
+	        b.short_name 
+	 from 
+	        sys_charge a,
+	        sys_organization b,
+	        sys_user c
+     where a.org_id =b.id  
+      and a.user_id = c.id
+      and a.user_id = #{userId}
+	</select>
+	
+	
+	<select id="findManagerOrgan" resultMap="SysOrganMap">
+      select d.id, 
+             d.name,
+             d.short_name
+      from   sys_user         a,
+             sys_dept_user    b,
+             sys_department   c,
+             sys_organization d
+       where a.id = b.user_id
+         and b.dept_id = c.id
+         and c.org_id = d.id
+         and a.id = #{userId}
+	</select>
+	
+	
+	
+	<select id="findChildId" resultMap="managerChildIdMap">
+		select  mbm.*
+  	    from manager_belong_map mbm
+ 		start with child_id =
+            (select amp.id
+               from manager_belong_map t
+               left join account_manager_parameter amp  on amp.id = t.child_id
+               left join sys_user su ON su.id = amp.user_id    
+              where amp.user_id = #{id}
+             ) 
+		connect by prior child_id = parent_id
+	</select>
+	
+	<select id="findAllManager" resultMap="AccountManagerParameterFormMap">
+		SELECT T.*, s.DISPLAY_NAME
+		FROM ACCOUNT_MANAGER_PARAMETER T
+		LEFT JOIN SYS_USER s ON s.id = T.USER_ID
+	</select>
+	
+</mapper>

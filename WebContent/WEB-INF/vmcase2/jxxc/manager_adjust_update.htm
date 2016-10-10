@@ -1,0 +1,199 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/customerInfor.htm")
+<style type="text/css">
+.divcss5_list_title{background:#eeeeee; border:1px solid #cccccc; padding:1em;}
+.divcss5_list_content{padding:1em;}
+#tinybox{position:absolute; display:none; padding:10px; background:#ffffff url(${contextPath}/images/preload.gif) no-repeat 50% 50%; border:10px solid #e3e3e3; z-index:2000;}
+#tinymask{position:absolute; display:none; top:0; left:0; height:100%; width:100%; background:#000000; z-index:1500;}
+#tinycontent{background:#ffffff; font-size:1.1em;}
+
+#n{margin:10px auto; width:920px; border:1px solid #CCC;font-size:12px; line-height:30px;}
+#n a{ padding:0 4px; color:#333}
+</style>
+<script type="text/javascript" src="${contextPath}/common/js/common/tinybox.js"></script>
+<script src="${contextPath}/common/js/common/jquery.form.js"></script>
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
+<body>
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+			   <div class="dvTab">
+	             <ul class="com-tab">
+	                <li class="tab activeTab" ><a href="${contextPath}/manager/leveladjustment/changeSalary.page?id=${id}">工资</a></li>
+	             </ul>
+       		   </div>
+			</div>
+			<form id="id_module_form" action="${contextPath}/manager/leveladjustment/updateManagerSalary.json"  method="post">
+				<div class="forms" id="formsId">
+					<input type="hidden" name="id" value="$!id" />
+					<table class="rule">
+						<colgroup>
+							<col width="10%" />
+							<col width="30%" />
+			 				<col width="10%" />
+							<col width="10%" />
+							<col width="30%" />
+						</colgroup>
+						<tr>
+							<td><label for="name">客户姓名:</label></td>
+							<td><input type="text" id="managerName" name="managerName"
+								value="$!salary.managerName" disabled="disabled"/></td>
+							<td></td>
+							<td><label for="name">所属机构:</label></td>
+							<td><input type="text" id="instCode" name="instCode"
+								value="$!salary.instCode" disabled="disabled"/></td>
+						</tr>
+						
+						<tr>
+							<td><label for="name">年份:</label></td>
+							<td><input type="text" id="year" name="year"
+								value="$!salary.year" disabled="disabled"/></td>
+							<td></td>
+							<td><label for="name">月份:</label></td>
+							<td><input type="text" id="month" name="month"
+								value="$!salary.month" disabled="disabled"/></td>
+						</tr>
+						
+						
+						<tr>
+							<td><label for="name">基本工资:</label></td>
+							<td><input type="text" id="basePay" name="basePay"
+								value="$!salary.basePay" disabled="disabled"/></td>
+							<td></td>
+							<td><label for="name">基础任务量奖金(外聘):</label></td>
+							<td><input type="text" id="basicTaskBonus" name="basicTaskBonus"
+								value="$!salary.basicTaskBonus" disabled="disabled"/></td>
+						</tr>
+						
+						<tr>
+							<td><label for="name">岗位津贴(风险岗):</label></td>
+							<td><input type="text" id="subsidies" name="subsidies"
+								value="$!salary.subsidies" disabled="disabled"/></td>
+							<td></td>
+						</tr>
+						
+						
+						<tr>
+							<td><label for="name">贷款业务绩效:</label></td>
+							<td><input type="text" id="rewardIncentiveInformation" name="rewardIncentiveInformation"
+								value="$!salary.rewardIncentiveInformation" disabled="disabled"/></td>
+							<td></td>
+							<td><label for="name">业务量绩效:</label></td>
+							<td><input type="text" id="volumePerformance" name="volumePerformance"
+								value="$!salary.volumePerformance" disabled="disabled"/></td>
+						</tr>
+						
+						<tr>
+							<td><label for="name">利润提成:</label></td>
+							<td><input type="text" id="profitDraw" name="profitDraw"
+								value="$!salary.profitDraw" disabled="disabled"/></td>
+							<td></td>
+							<td><label for="name">逾期扣款:</label></td>
+							<td><input type="text" id="overdueDeduct" name="overdueDeduct"
+								value="$!salary.overdueDeduct" disabled="disabled"/></td>
+						</tr>
+						
+						
+						
+						<tr>
+							<td><label for="name">风险准备金余额:</label></td>
+							<td><input type="text" id="riskReserveBalances" name="riskReserveBalances"
+								value="$!salary.riskReserveBalances" disabled="disabled"/></td>
+							<td></td>
+						</tr>
+						
+						
+						<tr>
+							<td><label for="name">新增风险保证金:</label></td>
+							<td><input type="text" id="insertPrepareAmount" name="insertPrepareAmount"
+								value="$!salary.insertPrepareAmount" disabled="disabled"/></td>
+							<td></td>
+							<td><label for="name">返还的风险保证金:</label></td>
+							<td><input type="text" id="returnPrepareAmount" name="returnPrepareAmount"
+								value="$!salary.returnPrepareAmount" disabled="disabled"/></td>
+						</tr>
+						
+						<!-- <tr>
+							<td><label for="name">奖金(劳动):</label></td>
+							<td><input class="rinpsty" type="text" id="allowance" name="allowance"
+								value="$!salary.allowance" /></td>
+							<td></td>
+							<td><label for="name">中间业务奖金:</label></td>
+							<td><input class="rinpsty" type="text" id="middleAllowance" name="middleAllowance"
+								value="$!salary.middleAllowance" /></td>
+						</tr>
+						
+						<tr>
+							<td><label for="name">调整:</label></td>
+							<td><input class="rinpsty" type="text" id="fine" name="fine"
+								value="$!salary.fine" /></td>
+							<td></td>
+							<td><label for="name">缺勤扣:</label></td>
+							<td><input class="rinpsty" type="text" id="attendDeduct" name="attendDeduct"
+								value="$!salary.attendDeduct" /></td>
+						</tr>
+						
+						<tr>
+							<td  class="titlefc3"><label id ="name" for="name">备注:</label></td>
+              				<td><textarea style="height:80px;" name="describe" id="describe">$!salary.describe</textarea></td>
+						</tr> -->
+						
+					</table>
+				</div>
+			</form>
+		
+			 <div class="submit">
+			    <!--<input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />-->
+				<input class="current" type="button" onclick="javascript:history.go(-1);" value="#i18n('button.back')" />
+			</div> 
+		</div>
+	</div>
+	
+	<script src='${contextPath}/js/maintenanceAccountManager/maintenanceAccountManager.js'></script> 
+	<script type="text/javascript">
+	
+		var layout = new FormsLayout("formsId");
+		window.top.currentWindow.setLayout(layout);
+
+	    #set ($formName = "'#id_module_form'")
+	    $(document).ready(function() {
+		 $("#id_save_button").click(function() {
+		        if ($($formName).valid()) {
+		        	mySave();
+		        }
+		 });
+	    });
+		 
+		 
+	     
+	    function viewPicture(url){
+				url+='&tempid='+Math.random();
+				Dialog.img(url,"原始图片","650","120");
+	    }
+			
+		function mySave() {
+			$('#id_module_form').ajaxSubmit({
+				dataType : 'json',
+				type : "post",
+				success : function(data) {
+					if (data.success) {
+						Dialog.message(data.message,"提示", function() {
+							window.location.reload(true);
+						 });
+					} else {
+						Dialog.message(data.errors.errors[0].message);
+						return false;
+					}
+				},
+				error : function(data) {
+					Dialog.closeLoad();
+					Dialog.message("操作失败");
+					return false;
+				}
+			}); 
+		}  
+	        
+	</script>
+</body>
+
+</html>

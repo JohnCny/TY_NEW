@@ -1,0 +1,105 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/customerInfor.htm")
+<script src="${contextPath}/common/js/common/jquery.form.js"></script>
+<script src="${contextPath}/js/intopieces/intopieces.js"></script>
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">进件查询>导入调查报告</div>
+      </div>
+ <div class="inquiry">
+        <div class="search_tag">#i18n("label.browse.filter")</div>
+        <div class="search">
+          <form id="excelForm" enctype="multipart/form-data" method="post" 
+          	action="${contextPath}/intopieces/intopiecesquery/reportImport.json?customerId=$!result.filter.customerId&productId=$!result.filter.productId&applicationId=$!result.filter.applicationId">
+            <ul>
+              <li>
+                <span><b>选择excel文件:</b>&nbsp;&nbsp;<input type="file" id="file" name="file"/></span>
+              </li>
+              <li id="uploadTip" style="display:none;color:red">
+                <span><b>上传中，请稍后... ...</b></span>
+              </li>
+              <li class="search_button">
+              <input type="button" value="导入" class="search_button_inquiry" id="uploadButton" style="height: 26px; line-height: 24px;"
+              	onclick="importCustomer('${contextPath}/intopieces/intopiecesquery/reportImport.page?customerId=$!result.filter.customerId&productId=$!result.filter.productId&applicationId=$!result.filter.applicationId')"/>
+              </li>
+            </ul>
+          </form>
+        </div>
+               <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="20%" />
+              <col width="20%" />
+              <col width="20%" />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">文件名</th>
+              <th nowrap="nowrap">客户名称</th>
+              <th nowrap="nowrap">产品名称</th>
+              <th nowrap="nowrap">上传时间</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+               	<col width="10%" />
+              	<col width="30%" />
+              	<col width="20%" />
+              	<col width="20%" />
+              	<col width="20%" />
+            </colgroup>
+            #foreach ($obj in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!obj.id"/></td>
+              <td nowrap="nowrap">$!obj.attachment</td>
+              <td nowrap="nowrap">$!obj.customerName</td>
+              <td nowrap="nowrap">$!obj.productName</td>
+              <td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:dd",$!obj.createdTime)</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+        	 #btnpriv("change")<a  class="btn_gr" onclick="toBrowse();"  value="#i18n('button.back')" >返回</a>#end
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+	
+	function toBrowse(){
+		var url = "${modulePath}/browse.page";
+		navigateTo(url);
+	}
+	
+	$(document).ready(function() {
+		var opsObj = new Object();
+		prepareOperations(opsObj);
+		
+		/* $("#id_next_button").click(function() {
+            if ($(".checkbox :checked").length == 1) {
+                var rowid = $($(".checkbox :checked")[0]).attr("value");
+                var url = "${contextPath}/intopieces/addIntopieces/imageImport.page?excelId="+rowid+"&customerId=$!result.filter.customerId&productId=$!result.filter.productId";
+                
+                window.location.href = url;
+            } else {
+                Dialog.message("请选择一行");
+            }
+        }); */
+	});
+</script>
+   <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
+#parse ("common/iframe_page_footer.htm")

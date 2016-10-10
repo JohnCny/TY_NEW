@@ -1,0 +1,283 @@
+#parse ("common/iframe_page_header.htm")
+<script src="${contextPath}/js/intopieces/intopieces.js" charset="utf-8"></script>
+<script type="text/javascript">
+</script>
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">进件查询</div>
+      </div>
+      <div class="inquiry">
+       <div class="search_tag">进件查询</div>
+        <div class="search">
+          <form id="queryForm" action="${contextPath}/intopieces/intopiecesquery/browse.page">
+          <ul>
+              <li>
+                <span>客户名称：<input type="text" id="chineseName" name="chineseName" value="$!result.filter.chineseName" /></span>
+              </li>
+               <li>
+                <span>证件号码：<input type="text" id="cardId" name="cardId" value="$!result.filter.cardId" /></span>
+              </li>
+               <li>
+                <span>进件状态：<select id="status" name="status" value="$!result.filter.status" >
+                <option  value="" >ALL</option>
+                <option #if($!result.filter.status=='audit') selected="selected" #end value="audit">已申请 </option>
+                <option #if($!result.filter.status=='nopass_replenish') selected="selected" #end value="nopass_replenish">补充调查</option>
+                <option #if($!result.filter.status=='nopass_re') selected="selected" #end value="nopass_re">重新调查</option>
+                <option #if($!result.filter.status=='refuse') selected="selected" #end value="refuse">被拒绝</option>
+                <option #if($!result.filter.status=='approved') selected="selected" #end value="approved">审批通过</option>
+                <option #if($!result.filter.status=='succeed') selected="selected" #end value="succeed">申请成功</option>
+                <option #if($!result.filter.status=='end') selected="selected" #end value="end">放款成功</option>
+                </select>
+                </span>
+              </li>
+              <li class="search_button">
+                <input type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" onclick="javascript:this.form.submit();"/>
+              </li>
+          </ul>
+          </form>
+        </div>
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="15%" />
+              <col width="15%"/>
+              <col width="15%"/>
+              <col width="15%"/>
+              <col width="15%"/>
+              <col width="10%"/>
+              <col width="10%"/>
+              <col width="10%"/>
+              <col />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">客户名称</th>
+              <th nowrap="nowrap">证件号码</th>
+              <th nowrap="nowrap">产品名称</th>
+              <th nowrap="nowrap">申请额度</th>
+              <th nowrap="nowrap">发放额度</th>
+              <th nowrap="nowrap">状态</th>
+              <th nowrap="nowrap">客户经理</th>
+              <th nowrap="nowrap">主管</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="15%" />
+              <col width="15%"/>
+              <col width="15%"/>
+              <col width="15%"/>
+              <col width="15%"/>
+              <col width="10%"/>
+              <col width="10%"/>
+              <col width="10%"/>
+              <col />
+            </colgroup>
+            #foreach ($intoPieces in $result.items)
+            <tr onclick="showButton();">
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!{intoPieces.id}/$!{intoPieces.customerId}/$!{intoPieces.productId}/$!{intoPieces.status}"/></td>
+              <td nowrap="nowrap">$!intoPieces.chineseName</td>
+              <td nowrap="nowrap">$!intoPieces.cardId</td>
+              <td nowrap="nowrap">$!intoPieces.productName</td>
+              <td nowrap="nowrap">$format.formatNumber($!intoPieces.applyQuota, 2, 1)</td>
+              <td nowrap="nowrap">$format.formatNumber($!intoPieces.actualQuote, 2, 1)</td>
+              <td nowrap="nowrap">
+	             #if($!intoPieces.status=='audit')已申请  
+	              #elseif($!intoPieces.status=='refuse')被拒绝
+	              #elseif($!intoPieces.status=='approved')审批通过  
+	              #elseif($!intoPieces.status=='nopass_replenish')补充调查
+	              #elseif($!intoPieces.status=='nopass_re')退回重新调查
+	              #elseif($!intoPieces.status=='end')放款成功
+	              #end
+              </td>
+              <td nowrap="nowrap">$!intoPieces.displayName</td>
+              <td nowrap="nowrap">$!intoPieces.groupName</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+          <a id="id_report_button" class="btn_g" href="javascript:void(0);" title="调查报告">调查报告</a>
+          <a id="id_image_button" class="btn_g" href="javascript:void(0);" title="影像资料">影像资料</a>
+          <a id="id_sy_button" class="btn_g" href="javascript:void(0);" title="审议结论">审议结论</a>
+          <a id="id_yx_button" class="btn_g" href="javascript:void(0);" title="用信信息">用信信息</a>
+          <a id="id_bc_button"  class="btn_g" href="javascript:void(0);" title="补充调查">补充调查</a>
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+	
+	//补充调查时显示补充调查按钮
+	function showButton(){
+		if ($(".checkbox :checked").length == 1) {
+			var rowid = $("input[name='checkbox']:checked").val();
+			var status = rowid.split("/")[3]
+			if(status == 'nopass_replenish'){
+				$("#id_bc_button").show();
+			}
+		}
+		else{
+			Dialog.message("请选择一行!");
+		}
+	}
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		
+		$("#id_bc_button").hide();
+		
+		$("#id_report_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var rowid = $("input[name='checkbox']:checked").val();
+				var url = "${contextPath}/customer/customerInfor_wh_ty/report_jy.page?appId=" + rowid.split("/")[0]+"&urlType=1";
+				if (opsObj.formObj) {
+	                // 回调URL
+	                var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
+	                if (callBackUrlObj) {
+	                	if(url.indexOf("?")>=0){
+	                		url += "&" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}else{
+		                    url += "?" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}
+	                }
+	            }
+				window.location.href = url;
+			}
+			else{
+				Dialog.message("请选择一行!");
+			}
+	    });
+		
+		$("#id_image_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var rowid = $("input[name='checkbox']:checked").val();
+				var url = "${contextPath}/customer/customerInfor_wh_ty/imageImport.page?applicationId=" + rowid.split("/")[0];
+				if (opsObj.formObj) {
+	                // 回调URL
+	                var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
+	                if (callBackUrlObj) {
+	                	if(url.indexOf("?")>=0){
+	                		url += "&" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}else{
+		                    url += "?" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}
+	                }
+	            }
+				window.location.href = url;
+			}
+			else{
+				Dialog.message("请选择一行!");
+			}
+	    });
+		
+		$("#id_sy_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var rowid = $("input[name='checkbox']:checked").val();
+				if(rowid.split("/")[3]=='audit'){
+					Dialog.message("无审贷决议!");
+					return;
+				}
+				var url ="${contextPath}/intopieces/intopiecesdecision/input_decision.page?appId="+rowid.split("/")[0];
+				if (opsObj.formObj) {
+	                // 回调URL
+	                var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
+	                if (callBackUrlObj) {
+	                	if(url.indexOf("?")>=0){
+	                		url += "&" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}else{
+		                    url += "?" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}
+	                }
+	            }
+				
+				window.location.href= url;
+			}
+			else{
+				Dialog.message("请选择一行!");
+			}
+	    });
+		
+		
+		$("#id_yx_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var rowid = $("input[name='checkbox']:checked").val();
+				var url ="${contextPath}/intopieces/intopiecesquery/browe.page?appId="+rowid.split("/")[0];
+				if (opsObj.formObj) {
+	                // 回调URL
+	                var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
+	                if (callBackUrlObj) {
+	                	if(url.indexOf("?")>=0){
+	                		url += "&" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}else{
+		                    url += "?" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}
+	                }
+	            }
+				window.location.href= url;
+			}
+			else{
+				Dialog.message("请选择一行!");
+			}
+	    });
+		
+		$("#id_bc_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var rowid = $("input[name='checkbox']:checked").val();
+				var url ="${contextPath}/intopieces/intopiecesquery/reportImport.page?customerId="+rowid.split("/")[1]+"&productId="+rowid.split("/")[2]+"&applicationId="+rowid.split("/")[0];
+				if (opsObj.formObj) {
+	                // 回调URL
+	                var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
+	                if (callBackUrlObj) {
+	                	if(url.indexOf("?")>=0){
+	                		url += "&" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}else{
+		                    url += "?" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}
+	                }
+	            }
+				window.location.href=url;
+			}
+			else{
+				Dialog.message("请选择一行!");
+			}
+	    });
+		
+	});
+	
+</script>
+#parse ("common/iframe_page_footer.htm")

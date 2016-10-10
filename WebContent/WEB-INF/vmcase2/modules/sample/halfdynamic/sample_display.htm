@@ -1,0 +1,54 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">#mi18n("display")</div>
+      </div>
+      <form id="id_form_sample" action="">
+        <div class="forms" id="formsId">
+          <input type="hidden" name="id" value="$!sample.id" />
+          <table class="rule">
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="30%" />
+            </colgroup>
+            <tr>
+              <td>#mi18n("seqNo"):</td>
+              <td>#control("seqNo", $!sample)</td>
+              <td>&nbsp;</td>
+              <td>#mi18n("name"):</td>
+              <td>#control("name", $!sample)</td>
+            </tr>
+            <tr>
+              <td>#mi18n("type"):</td>
+              <td>#control("type", $!sample)</td>
+              <td>&nbsp;</td>
+              <td>#mi18n("nativeName"):</td>
+              <td>#control("nativeName", $!sample)</td>
+            </tr>
+            <tr>
+              <td>#mi18n("sampleDate"):</td>
+              <td>#control("sampleDate", $!sample)</td>
+            </tr>
+            <tr>
+              <td>#mi18n("description"):</td>
+              <td colspan="4">#control("description", $!sample)</td>
+            </tr>
+          </table>
+        </div>
+      </form>
+      <div class="submit">
+        <input class="current" type="button" onclick="javascript:history.go(-1);" value="#i18n('button.back')" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+			var layout = new FormsLayout("formsId");
+			window.top.currentWindow.setLayout(layout);
+		</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.intopieces.dao.CrossExaminationDao" >
+  <resultMap id="BaseResultMap" type="com.cardpay.pccredit.intopieces.model.CrossExamination" >
+    <id column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="LOAN_APPLY_ID" property="loanApplyId" jdbcType="DECIMAL" />
+    <result column="CATEGORY" property="category" jdbcType="DECIMAL" />
+    <result column="INCREMENT_FROM_0" property="incrementFrom0" jdbcType="DECIMAL" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="PURCHASE_PRICE" property="purchasePrice" jdbcType="VARCHAR" />
+    <result column="PRICE" property="price" jdbcType="VARCHAR" />
+    <result column="SHARES" property="shares" jdbcType="VARCHAR" />
+    <result column="GROSS_PROFIT" property="grossProfit" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, LOAN_APPLY_ID, CATEGORY, INCREMENT_FROM_0, NAME, PURCHASE_PRICE, PRICE, SHARES, 
+    GROSS_PROFIT
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from CROSS_EXAMINATION
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from CROSS_EXAMINATION
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="com.cardpay.pccredit.intopieces.model.CrossExamination" >
+    insert into CROSS_EXAMINATION (ID, LOAN_APPLY_ID, CATEGORY, 
+      INCREMENT_FROM_0, NAME, PURCHASE_PRICE, 
+      PRICE, SHARES, GROSS_PROFIT
+      )
+    values (#{id,jdbcType=DECIMAL}, #{loanApplyId,jdbcType=DECIMAL}, #{category,jdbcType=DECIMAL}, 
+      #{incrementFrom0,jdbcType=DECIMAL}, #{name,jdbcType=VARCHAR}, #{purchasePrice,jdbcType=VARCHAR}, 
+      #{price,jdbcType=VARCHAR}, #{shares,jdbcType=VARCHAR}, #{grossProfit,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cardpay.pccredit.intopieces.model.CrossExamination" >
+    insert into CROSS_EXAMINATION
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="loanApplyId != null" >
+        LOAN_APPLY_ID,
+      </if>
+      <if test="category != null" >
+        CATEGORY,
+      </if>
+      <if test="incrementFrom0 != null" >
+        INCREMENT_FROM_0,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="purchasePrice != null" >
+        PURCHASE_PRICE,
+      </if>
+      <if test="price != null" >
+        PRICE,
+      </if>
+      <if test="shares != null" >
+        SHARES,
+      </if>
+      <if test="grossProfit != null" >
+        GROSS_PROFIT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=DECIMAL},
+      </if>
+      <if test="loanApplyId != null" >
+        #{loanApplyId,jdbcType=DECIMAL},
+      </if>
+      <if test="category != null" >
+        #{category,jdbcType=DECIMAL},
+      </if>
+      <if test="incrementFrom0 != null" >
+        #{incrementFrom0,jdbcType=DECIMAL},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="purchasePrice != null" >
+        #{purchasePrice,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=VARCHAR},
+      </if>
+      <if test="shares != null" >
+        #{shares,jdbcType=VARCHAR},
+      </if>
+      <if test="grossProfit != null" >
+        #{grossProfit,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cardpay.pccredit.intopieces.model.CrossExamination" >
+    update CROSS_EXAMINATION
+    <set >
+      <if test="loanApplyId != null" >
+        LOAN_APPLY_ID = #{loanApplyId,jdbcType=DECIMAL},
+      </if>
+      <if test="category != null" >
+        CATEGORY = #{category,jdbcType=DECIMAL},
+      </if>
+      <if test="incrementFrom0 != null" >
+        INCREMENT_FROM_0 = #{incrementFrom0,jdbcType=DECIMAL},
+      </if>
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="purchasePrice != null" >
+        PURCHASE_PRICE = #{purchasePrice,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        PRICE = #{price,jdbcType=VARCHAR},
+      </if>
+      <if test="shares != null" >
+        SHARES = #{shares,jdbcType=VARCHAR},
+      </if>
+      <if test="grossProfit != null" >
+        GROSS_PROFIT = #{grossProfit,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cardpay.pccredit.intopieces.model.CrossExamination" >
+    update CROSS_EXAMINATION
+    set LOAN_APPLY_ID = #{loanApplyId,jdbcType=DECIMAL},
+      CATEGORY = #{category,jdbcType=DECIMAL},
+      INCREMENT_FROM_0 = #{incrementFrom0,jdbcType=DECIMAL},
+      NAME = #{name,jdbcType=VARCHAR},
+      PURCHASE_PRICE = #{purchasePrice,jdbcType=VARCHAR},
+      PRICE = #{price,jdbcType=VARCHAR},
+      SHARES = #{shares,jdbcType=VARCHAR},
+      GROSS_PROFIT = #{grossProfit,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+</mapper>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-autowire="byName" default-init-method="init" default-destroy-method="depose"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+
+		<bean id="accessRightManager" class="com.wicresoft.jrad.modules.privilege.business.impl.AccessRightManagerImpl">
+			<property name="authOperation" value="true"/>
+		</bean>
+		<bean id="departmentManager" class="com.wicresoft.jrad.modules.privilege.business.impl.DepartmentManagerImpl" />
+		<bean id="roleUserManager" class="com.wicresoft.jrad.modules.privilege.business.impl.RoleUserManagerImpl" />
+		<bean id="organizationManager" class="com.wicresoft.jrad.modules.privilege.business.impl.OrganizationManagerImpl" />
+		<bean id="resourceManager" class="com.wicresoft.jrad.modules.privilege.business.impl.ResourceManagerImpl" />
+		<bean id="roleManager" class="com.wicresoft.jrad.modules.privilege.business.impl.RoleManagerImpl" />
+		<bean id="userManager" class="com.wicresoft.jrad.modules.privilege.business.impl.UserManagerImpl" />
+		<bean id="groupUserManager" class="com.wicresoft.jrad.modules.privilege.business.impl.GroupUserManagerImpl" />
+		<bean id="deptUserManager" class="com.wicresoft.jrad.modules.privilege.business.impl.DeptUserManagerImpl" />
+		<bean id="loginLogManager" class="com.wicresoft.jrad.modules.log.business.impl.LoginLogManagerImpl" />
+		<bean id="casServerManager" class="com.wicresoft.jrad.modules.casserver.business.impl.CasServerManagerImpl">
+			<property name="casServerUrl" value="${cas.server.url}"/>
+		</bean>
+		
+		<bean id="accessRightService" class="com.wicresoft.jrad.modules.privilege.service.impl.AccessRightServiceImpl" />
+		<bean id="departmentService" class="com.wicresoft.jrad.modules.privilege.service.impl.DepartmentServiceImpl" />
+		<bean id="organizationService" class="com.wicresoft.jrad.modules.privilege.service.impl.OrganizationServiceImpl" />
+		<bean id="resourceService" class="com.wicresoft.jrad.modules.privilege.service.impl.ResourceServiceImpl" />
+		<bean id="roleService" class="com.wicresoft.jrad.modules.privilege.service.impl.RoleServiceImpl" />
+		<bean id="roleUserService" class="com.wicresoft.jrad.modules.privilege.service.impl.RoleUserServiceImpl" />
+		<bean id="userService" class="com.wicresoft.jrad.modules.privilege.service.impl.UserServiceImpl" />
+		<bean id="groupUserService" class="com.wicresoft.jrad.modules.privilege.service.impl.GroupUserServiceImpl" />
+		<bean id="deptUserService" class="com.wicresoft.jrad.modules.privilege.service.impl.DeptUserServiceImpl" />
+		<bean id="loginLogService" class="com.wicresoft.jrad.modules.log.service.impl.LoginLogServiceImpl" />
+</beans>

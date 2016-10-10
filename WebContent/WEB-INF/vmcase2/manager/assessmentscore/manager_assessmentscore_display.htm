@@ -1,0 +1,218 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">综合评估标准</div>
+      </div>
+      <form id="id_module_form" action="">
+        <input type="hidden" name="id" value="$!assessmentScoreForm.id" />
+        <div class="forms" id="formsId">
+         <table class="table-bd" align="center" bordercolor="#CCCCCC" border="1">
+         <caption>定量评估项</caption>
+            <colgroup>
+              <col width="15%" />
+              <col width="10%" />
+              <col width="15%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="30%" />
+            </colgroup>
+            <tr style="height:30px; line-height:30px;">
+            	<th>项目</th>
+                <th>分值</th>
+                <th>评估标准</th>
+                <th>打分区间</th>
+                <th>打分</th>
+                <th>结果</th>
+                <th>备注</th>
+            </tr>
+            <tr>
+              <td><label>贷款使用率:</label></td>
+              <td>10</td>
+              <td>$!assessmentScoreForm.creditUtilizationRatePgbz</td>
+              <td>$!assessmentScoreForm.creditUtilizationRateBetScore</td>
+              <td><input type="text" readonly="readonly" id="creditUtilizationScore" name="creditUtilizationScore" value="$!assessmentScoreForm.creditUtilizationScore"/></td>
+              <td><input type="text" readonly="readonly" value="$!{assessmentScoreForm.creditUtilizationRate}%"/></td>
+              <td>评估标准=贷款余额/合同金额*100%</td>
+            </tr>
+            <tr>
+              <td><label>利息回收率:</label></td>
+              <td>15</td>
+              <td>$!assessmentScoreForm.numbererestRecoveryRatePgbz</td>
+              <td>$!assessmentScoreForm.numbererestRecoveryRateBetScore</td>
+              <td><input type="text" readonly="readonly" id="numbererestRecoveryScore" name="numbererestRecoveryScore" value="$!assessmentScoreForm.numbererestRecoveryScore"/></td>
+              <td><input type="text" readonly="readonly" value="$!{assessmentScoreForm.numbererestRecoveryRate}%"/></td>
+              <td>评估标准=每月实收客户利息/每月应收客户利息*100%</td>
+            </tr>
+            <tr>
+              <td><label>逾期率:</label></td>
+              <td>15</td>
+              <td>$!assessmentScoreForm.overdueRatePgbz</td>
+              <td>$!assessmentScoreForm.overdueRateBetScore</td>
+              <td><input type="text" readonly="readonly" id="overdueScore" name="overdueScore" value="$!assessmentScoreForm.overdueScore"/></td>
+              <td><input type="text" readonly="readonly" value="$!{assessmentScoreForm.overdueRate}%"/></td>
+              <td>评估标准=逾期金额/贷款余额*100%</td>
+            </tr>
+            <tr>
+              <td><label>逾期回收率:</label></td>
+              <td>15</td>
+              <td>$!assessmentScoreForm.lateRecoveryRatePgbz</td>
+              <td>$!assessmentScoreForm.lateRecoveryRateBetScore</td>
+              <td><input type="text" readonly="readonly" id="lateRecoveryScore" name="lateRecoveryScore" value="$!assessmentScoreForm.lateRecoveryScore"/></td>
+              <td><input type="text" readonly="readonly" value="$!{assessmentScoreForm.lateRecoveryRate}%"/></td>
+              <td>评估标准=当期逾期回收金额/上期逾期余额*100%</td>
+            </tr>
+			<tr>
+              <td><label>逾期余额:</label></td>
+              <td>15</td>
+              <td>$!assessmentScoreForm.overdueBalanceRatePgbz</td>
+              <td>$!assessmentScoreForm.overdueBalanceRateBetScore</td>
+              <td><input type="text" readonly="readonly" id="overdueBalanceScore" name="overdueBalanceScore" value="$!assessmentScoreForm.overdueBalanceScore"/></td>
+              <td><input type="text" readonly="readonly" value="$!{assessmentScoreForm.overdueBalanceRate} 万"/></td>
+              <td>逾期未还贷款余额</td>
+            </tr>
+            <tr>
+              <td><label>瑕疵贷款率:</label></td>
+              <td>10</td>
+              <td>$!assessmentScoreForm.defectiveLoansRatePgbz</td>
+              <td>$!assessmentScoreForm.defectiveLoansRateBetScore</td>
+              <td><input type="text" readonly="readonly" id="defectiveLoansScore" name="defectiveLoansScore" value="$!assessmentScoreForm.defectiveLoansScore"/></td>
+              <td><input type="text"  readonly="readonly" value="$!{assessmentScoreForm.defectiveLoansRate}%"/></td>
+              <td>评估标准=逾期后还款总额/贷款余额*100%</td>
+            </tr>
+          </table>
+          
+          
+          <table class="table-bd" align="center" bordercolor="#CCCCCC" border="1">
+         <caption>定性评估</caption>
+            <colgroup>
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="55%" />
+            </colgroup>
+            <tr style="height:30px; line-height:30px;">
+            	<th>项目</th>
+                <th>分值</th>
+                <th>得分</th>
+                <th>备注</th>
+            </tr>
+            <tr>
+              <td><label>客户潜在价值:</label></td>
+              <td>4</td>
+              <td><input type="text" readonly="readonly" id="customerPotentialValue" name="customerPotentialValue" value="$!assessmentScoreForm.customerPotentialValue"/></td>
+              <td>客户数量、客户综合实力、客户的职业或朋友圈、客户的信用、道德测评等</td>
+            </tr>
+            <tr>
+              <td><label>自我培训能力:</label></td>
+              <td>4</td>
+              <td><input type="text" readonly="readonly" id="selfTrainingAbility" name="selfTrainingAbility" value="$!assessmentScoreForm.selfTrainingAbility"/></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td><label>团队合作能力:</label></td>
+              <td>4</td>
+              <td><input type="text" readonly="readonly" id="teamCooperationAbility" name="teamCooperationAbility" value="$!assessmentScoreForm.teamCooperationAbility"/></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td><label>客户管理能力:</label></td>
+              <td>4</td>
+              <td><input type="text" readonly="readonly" id="customerManagementAbility" name="customerManagementAbility" value="$!assessmentScoreForm.customerManagementAbility"/></td>
+              <td></td>
+            </tr>
+			<tr>
+              <td><label>组织协调能力:</label></td>
+              <td>4</td>
+              <td><input type="text" readonly="readonly" id="orgaCoordinationAbility" name="orgaCoordinationAbility" value="$!assessmentScoreForm.orgaCoordinationAbility"/></td>
+              <td></td>
+            </tr>
+            
+          </table>
+          
+          
+          <table class="table-bd" align="center" bordercolor="#CCCCCC" border="1">
+         <caption>加分项</caption>
+            <colgroup>
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="55%" />
+            </colgroup>
+            <tr style="height:30px; line-height:30px;">
+            	<th>项目</th>
+                <th>总分</th>
+                <th>得分</th>
+                <th>备注</th>
+            </tr>
+            <tr>
+              <td><label>存款:</label></td>
+              <td>10</td>
+              <td><input type="text" readonly="readonly" id="deposit" name="deposit" value="$!assessmentScoreForm.deposit"/></td>
+              <td>存款余额每增加10万元加1分，总分10分</td>
+            </tr>
+            <tr>
+              <td><label>点子银行产品:</label></td>
+              <td>10</td>
+              <td><input type="text" readonly="readonly" id="bankingProduct" name="bankingProduct" value="$!assessmentScoreForm.bankingProduct"/></td>
+              <td>每增加5个客户加1分，总分10分</td>
+            </tr>
+          </table>
+          
+          
+          
+          <table class="table-bd" align="center" bordercolor="#CCCCCC" border="1">
+         <caption>总评价</caption>
+            <colgroup>
+              <col width="20%" />
+              <col width="30%" />
+              <col width="20%" />
+              <col width="30%" />
+            </colgroup>
+            <tr>
+              <td><label>总分:</label></td>
+              <td><input type="text" readonly="readonly" id="totalScore" name="totalScore" value="$!assessmentScoreForm.totalScore"/></td>
+              <td><label>总评价：</label></td>
+              <td>
+              <input id="totalEvaluation_1" type="radio" #if($!assessmentScoreForm.totalEvaluation == "1") checked="checked" #end name="totalEvaluation" value="1" disabled="disabled"/>通过（80分及以上）
+              <input id="totalEvaluation_2" type="radio" #if($!assessmentScoreForm.totalEvaluation == "0") checked="checked" #end name="totalEvaluation" value="0" disabled="disabled"/>未通过（80分以下）
+              </td>
+            </tr>
+            <tr>
+              <td><label>其他评价:</label></td>
+              <td colspan="3"><textarea id="otherEvaluation" name="otherEvaluation" style="width:95%;" cols="3" disabled="disabled">$!assessmentScoreForm.otherEvaluation</textarea></td>
+            </tr>
+            <tr>
+            	<td><label>被评估人：</label></td>
+                <td><input class="w100" type="text" readonly="readonly" id="assessedName" name="assessedName" value="$!assessmentScoreForm.assessedName"/>
+                	<input type="hidden" value="$!assessmentScoreForm.assessed" id="assessed" name="assessed"/>
+                </td>
+                <td><label>日期：</label></td>
+                <td><input class="w100" type="text" readonly="readonly" id="assessedConfirmDate" name="assessedConfirmDate" value="$!date.format('yyyy-MM-dd',$!assessmentScoreForm.assessedConfirmDate)"/></td>
+            </tr>
+            <tr>
+            	<td><label>评估人：</label></td>
+                <td><input class="w100" type="text" readonly="readonly" id="assessedName" name="assessedName" value="$!assessmentScoreForm.assessedName"/>
+                	<input type="hidden" value="$!assessmentScoreForm.assessor" id="assessor" name="assessor"/></td>
+                <td><label>日期：</label></td>
+                <td><input class="w100" type="text" readonly="readonly" id="assessmentDate" name="assessmentDate" value="$!date.format('yyyy-MM-dd',$!assessmentScoreForm.assessmentDate)"/></td>
+            </tr>
+          </table>
+        </div>
+      </form>
+
+      <div class="submit">
+       <!--  <input id="id_save_button" type="button" value="保存" class="current" /> -->
+        <input type="button" onclick="javascript:history.go(-1);" value="取消" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");			
+	window.top.currentWindow.setLayout(layout);
+	
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

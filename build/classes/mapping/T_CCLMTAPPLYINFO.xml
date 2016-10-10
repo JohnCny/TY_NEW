@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="GBK"?>
+
+<resultMap>
+    <result column="APPCODE"   	        jdbcType="VARCHAR" index="1" />
+    <result column="PROCESSID"   	    jdbcType="VARCHAR" index="2" />
+    <result column="CUSTID"   	        jdbcType="VARCHAR" index="3" />
+    <result column="BUSISTATE"   	    jdbcType="VARCHAR" index="4" />
+    <result column="CCTYPE"   	        jdbcType="VARCHAR" index="5" />
+    <result column="BUSITYPE"   	    jdbcType="VARCHAR" index="6" />
+    <result column="LOANPURPOSE"   	    jdbcType="VARCHAR" index="7" />
+    <result column="LOWRISKFLAG"   	    jdbcType="VARCHAR" index="8" />
+    <result column="LOANPURPOSEREMARK"  jdbcType="VARCHAR" index="9" />
+    <result column="REQLMT"   	        jdbcType="VARCHAR" index="10" />
+    <result column="CURRENCY"   	    jdbcType="VARCHAR" index="11" />
+    <result column="BUSIMANAGER"   	    jdbcType="VARCHAR" index="12" />
+    <result column="ASSISTBUSIMANAGER"  jdbcType="VARCHAR" index="13" />
+    <result column="APPDATE"   	        jdbcType="VARCHAR" index="14" />
+    <result column="STATE"   	        jdbcType="VARCHAR" index="15" />
+    <result column="IFCORPLOAN"   	    jdbcType="VARCHAR" index="16" />
+    <result column="AUDITDATE"   	    jdbcType="VARCHAR" index="17" />
+    <result column="OPERDATETIME"   	jdbcType="VARCHAR" index="18" />
+    <result column="OPERATOR"   	    jdbcType="VARCHAR" index="19" />
+    <result column="INSTCITYCODE"   	jdbcType="VARCHAR" index="20" />
+    <result column="INSTCODE"   	    jdbcType="VARCHAR" index="21" />
+    <result column="DEPTCODE"   	    jdbcType="VARCHAR" index="22" />
+    <result column="LOANCARDFLAG"   	jdbcType="VARCHAR" index="23" />
+    <result column="CREDITMODEL"   	    jdbcType="VARCHAR" index="24" />
+    <result column="ACCANTDEPT"   	    jdbcType="VARCHAR" index="25" />
+    <result column="IFFNONGCARD"   	    jdbcType="VARCHAR" index="26" />
+    <result column="CREATE_TIME" 		jdbcType="DATE_NOW" index="" style="yyyyMMdd"/>
+</resultMap>

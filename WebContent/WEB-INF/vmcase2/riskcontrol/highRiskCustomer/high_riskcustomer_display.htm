@@ -1,0 +1,68 @@
+<div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户风险等级详情</div>
+      </div>
+       <div class="inquiry">
+      <div class="search_tag">#i18n("label.browse.filter")</div>
+         <div class="search">
+          <form id="submitForm">
+            <ul>
+              <li>
+                <span>客户名称：<input type="text" name="customerName" value="$!customerName" readonly="readonly"/></span>
+              </li>
+              <li>
+                <span>证件类型：
+                	<select id="type" name="cardType" disabled="disabled">
+	                   <option value="">请选择...</option>
+	                   #dict("CARDTYPE", $!cardType)
+                  	</select>
+                  </span>
+              </li>
+              <li>
+                <span>证件号码：<input type="text" name="cardId" value="$!cardId" readonly="readonly"/></span>
+              </li>
+             
+            </ul>
+          </form>
+        </div>
+
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="50%" />
+              <col width="50%" />
+            
+            </colgroup>
+            <tr class="title">
+             <th nowrap="nowrap">风险等级</th>
+              <th nowrap="nowrap">风险属性</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+               <col width="50%" />
+              <col width="50%" />
+            </colgroup>
+            #foreach ($riskCustomer in $result)
+             
+            <tr>
+            
+              <td nowrap="nowrap">$!riskCustomer.riskLevel</td>
+              <td nowrap="nowrap">$!riskCustomer.riskDescription</td>
+            
+            </tr>
+            
+            #end
+          </table>
+        </div>
+      </div>
+      
+      </div>
+
+      
+    </div>
+  </div>
+ 

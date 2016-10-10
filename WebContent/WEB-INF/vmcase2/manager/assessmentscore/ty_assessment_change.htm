@@ -1,0 +1,174 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">KPI评估</div>
+      </div>
+      <form id="id_module_form" action="${contextPath}/manager/assessmentscorerecord/save.json" method="post">
+        <div class="forms" id="formsId">
+          <input type="hidden" id="Oldscore" name="Oldscore" value="$!assessmentScoreForm.score">
+          <input type="hidden" id="avgScore" name="avgScore">
+          <input type="hidden" id="assessId" name="assessId" value="$!assessmentScoreForm.id">
+          <table class="table-bd" align="center" bordercolor="#CCCCCC" border="1">
+         <caption>定性评估</caption>
+            <colgroup>
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="40%" />
+            </colgroup>
+            <tr style="height:30px; line-height:30px;">
+            	<th>考核内容</th>
+            	<th>KPI指标</th>
+                <th>分值</th>
+                <th>得分</th>
+                <th>计算方式</th>
+            </tr>
+            <tr>
+              <td><label>业务指标:</label></td>
+               <td>当月中心下达的指标</td>
+              <td>60分</td>
+              <td><input type="text" onblur="calculateTotalScore()" id="score0" name="score0" value="" class="rinpstynum"/></td>
+              <td>各指标实际完成额÷指标额×各指标权重×分值</td>
+            </tr>
+            <tr>
+              <td><label>考勤:</label></td>
+               <td>按当月出勤情况考核</td>
+              <td>5分</td>
+              <td><input type="text" onblur="calculateTotalScore()" id="score1" name="score1" value="" class="rinpstynum"/></td>
+              <td>当月有旷工不得分，病假不扣分，迟到早退一次扣一分，事假一天扣两分</td>
+            </tr>
+            <tr>
+              <td><label>逾期贷款比例:</label></td>
+               <td>按当月贷款逾期情况考核</td>
+              <td>15分</td>
+              <td><input type="text" onblur="calculateTotalScore()" id="score2" name="score2" value="" class="rinpstynum"/></td>
+              <td>贷款逾期一天扣1分，扣完为止，多笔贷款合并计算。</td>
+            </tr>
+            <tr>
+              <td><label>调查合格率:</label></td>
+               <td>当月中心下达的指标</td>
+              <td>10分</td>
+              <td><input type="text" onblur="calculateTotalScore()" id="score3" name="score3" value="" class="rinpstynum"/></td>
+              <td>审贷会决议为重新调查的比例，每低1%扣一分，扣完为止</td>
+            </tr>
+            <tr>
+              <td><label>其他:</label></td>
+               <td>当月中心下达的指标</td>
+              <td>10分</td>
+              <td><input type="text" onblur="calculateTotalScore()" id="score4" name="score4" value="" class="rinpstynum"/></td>
+              <td>按中心相关规定执行。</td>
+            </tr>
+            
+          </table>       
+          
+          <table class="table-bd" align="center" bordercolor="#CCCCCC" border="1">
+         <caption>总评价</caption>
+            <colgroup>
+              <col width="20%" />
+              <col width="30%" />
+              <col width="20%" />
+              <col width="30%" />
+            </colgroup>
+            <tr>
+              <td><label>总分:</label></td>
+              <td><input type="text" readonly="readonly" id="totalScore" name="totalScore" value="$!assessmentScoreForm.totalScore"/></td>
+              <td><label>总评价：</label></td>
+              <td colspan="3"><textarea id="remark" name="remark" style="width:95%;" cols="3">$!assessmentScoreForm.remark</textarea></td>
+            </tr>
+            <tr>
+            	<td><label>被评估人：</label></td>
+                <td><input class="w100" type="text" readonly="readonly" id="customerName" name="customerName" value="$!assessmentScoreForm.customerName"/>
+                </td>
+                <td><label>评估人：</label></td>
+                <td><input class="w100" type="text" readonly="readonly" id="createUser" name="createUser" value="$!assessmentScoreForm.createUser"/>
+            </tr>
+            <tr>
+                <td><label>评估日期：</label></td>
+                <td><input class="w100" type="text"  id="createTime" name="createTime" value="$!date.format('yyyy-MM-dd',$!assessmentScoreForm.createTime)" onmouseover="_calendar()"/></td>
+            </tr>
+          </table>
+        </div>
+      </form>
+
+      <div class="submit">
+        <input id="id_save_button" type="button" value="保存" class="current" />
+        <input type="button" onclick="returnUrl()" value="返回" />
+      </div>
+    </div>
+  </div>
+  <script src='${contextPath}/js/maintenanceAccountManager/maintenanceAccountManager.js'></script> 
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");			
+	window.top.currentWindow.setLayout(layout);
+			
+	#set ($formName = "'#id_module_form'")
+	$(document).ready(function() {
+		var score = $("#Oldscore").val();
+ 		if(score!=null||score!=""){
+ 			for(var i=0;i<5;i++){
+		 		var scoreValue = $("#score"+i);
+		 		scoreValue.val(score.split(",")[i]);
+		 	}
+		} 
+		
+		
+		$("#id_save_button").click(function() {
+			if(submitFlag == 1){
+				alert("请勿重复提交!")
+				return;
+			}
+			
+			submitFlag = 1;
+			if ($($formName).valid()) {
+				var arr = new Array();
+				for(var i=0;i<5;i++){
+			 		var score = $("#score"+i).val();
+			 		if(score==null||score==""){
+			 			score=0;
+			 		}
+			 		arr.push(score);
+			 	}
+				$("#avgScore").val(arr);
+				var formjson = $($formName).serialize();
+				var url = "${contextPath}/manager/assessmentscorerecord/save.json";
+	   	       	$.ajax({
+					url : url,
+					type : "get",
+					data : formjson,
+					success : function(data) {
+						if (data.success) {
+							topWin.Dialog.message("保存成功！");
+							window.location.reload(true);
+						}
+						else{
+							window.Dialog.message("保存失败！");
+					    }
+						submitFlag = 0;
+					}
+				});
+					
+			}
+	    });
+	});
+	
+	function calculateTotalScore(){
+		var totalScore = 0;
+	 	for(var i=0;i<5;i++){
+	 		var score = $("#score"+i).val();
+	 		if(score==null||score==""){
+	 			score=0;
+	 		}
+	 		totalScore+=parseInt(score);
+	 	}
+		$("#totalScore").val(totalScore);
+	}
+	
+	function returnUrl(){
+		window.location.href="${contextPath}/manager/assessmentscorerecord/browse.page";
+	}
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

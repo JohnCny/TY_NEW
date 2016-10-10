@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.riskControl.dao.AccountalilityDao">
+	
+	<update id="autoAccountalilityEnd">
+		update accountability_record t set t.audit_status='endaudit',t.modified_time=sysdate where 
+		<![CDATA[	t.audit_status='cfccaudit' and t.reconsideration='0' and t.modified_time<sysdate - #{maxDay}]]>
+	</update>
+	
+	
+</mapper>

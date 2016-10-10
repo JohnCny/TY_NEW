@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.customer.dao.CustomerQuestionDao">
+	<resultMap id="ResultMap"
+		type="com.cardpay.pccredit.customer.model.CustomerQuestionInfo">
+		<result property="id" column="ID" />
+		<result property="customerId" column="CUSTOMER_ID" />
+		<result property="questionCode" column="QUESTION_CODE" />
+		<result property="questionAnswer" column="QUESTION_ANSWER" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="createdTime" column="CREATED_TIME" />
+		<result property="modifiedBy" column="MODIFIED_BY" />
+		<result property="modifiedTime" column="MODIFIED_TIME" />
+	</resultMap>
+	
+	<resultMap id="QuestionDict"
+		type="com.cardpay.pccredit.customer.model.QuestionDict">
+		<result property="id" column="ID" />
+		<result property="questionCode" column="QUESTION_CODE" />
+		<result property="questionName" column="QUESTION_NAME" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="createdTime" column="CREATED_TIME" />
+		<result property="modifiedBy" column="MODIFIED_BY" />
+		<result property="modifiedTime" column="MODIFIED_TIME" />
+	</resultMap>
+	
+		<resultMap id="FormMap"
+		type="com.cardpay.pccredit.customer.web.CustomerQuestionInfoForm">
+		<result property="id" column="ID" />
+		<result property="customerId" column="CUSTOMER_ID" />
+		<result property="questionCode" column="QUESTION_CODE" />
+		<result property="questionName" column="QUESTION_NAME" />
+		<result property="questionAnswer" column="QUESTION_ANSWER" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="createdTime" column="CREATED_TIME" />
+		<result property="modifiedBy" column="MODIFIED_BY" />
+		<result property="modifiedTime" column="MODIFIED_TIME" />
+	</resultMap>
+	<select id="findCustomerQuestionByCustomerId" resultMap="FormMap" parameterType="String">
+		SELECT
+		*
+		FROM
+		CUSTOMER_QUESTION_INFO A
+		WHERE
+		A .CUSTOMER_ID =#{customerId}
+		ORDER BY
+        A.QUESTION_CODE
+	</select>
+	
+	<select id="findCustomerQuestionByapplicationId" resultMap="FormMap" parameterType="String">
+		SELECT
+		*
+		FROM
+		CUSTOMER_QUESTION_INFO_S A
+		WHERE
+		A .APPLICATION_ID =#{application_id}
+	</select>
+
+	<select id="findCustomerQuestionByCustomerQu" resultMap="ResultMap">
+	SELECT
+	*
+	FROM
+	CUSTOMER_QUESTION_INFO A
+	WHERE
+	1 = 1
+	AND A .CUSTOMER_ID = #{customerId}
+	AND A .QUESTION_CODE = #{questionCode}
+	 
+	</select>
+</mapper>

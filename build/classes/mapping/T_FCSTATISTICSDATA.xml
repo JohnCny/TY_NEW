@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="GBK"?>
+
+<resultMap>
+    <result column="DT"   	        jdbcType="VARCHAR" index="1" />
+    <result column="BRHID"   	    jdbcType="VARCHAR" index="2" />
+    <result column="FTYPE"   	    jdbcType="VARCHAR" index="3" />
+    <result column="DIM1"   	    jdbcType="VARCHAR" index="4" />
+    <result column="DIM2"   	    jdbcType="VARCHAR" index="5" />
+    <result column="DIM3"   	    jdbcType="VARCHAR" index="6" />
+    <result column="AMT1"   	    jdbcType="VARCHAR" index="7" />
+    <result column="AMT2"   	    jdbcType="VARCHAR" index="8" />
+    <result column="AMT3"   	    jdbcType="VARCHAR" index="9" />
+    <result column="LASTMODIFIED"   	  jdbcType="VARCHAR" index="10" />
+    <result column="INSTCITYCODE"   	  jdbcType="VARCHAR" index="11" />
+    <result column="ISTRANS"   	    jdbcType="VARCHAR" index="12" />
+    <result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/>
+</resultMap>

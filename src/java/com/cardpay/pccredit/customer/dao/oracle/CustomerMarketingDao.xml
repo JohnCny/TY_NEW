@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.customer.dao.CustomerMarketingDao">
+	<resultMap id="resultMap" type="com.cardpay.pccredit.customer.model.MarketingPlanWeb">
+		<result property="id" column="ID" />
+		<result property="chineseName" column="chinese_name" />
+	    <result property="productName" column="product_name" />
+	    <result property="marketingTime" column="marketing_time" />
+	    <result property="marketingMethod" column="marketing_method" />
+	    <result property="marketingEndtime" column="marketing_endtime" />
+	    <result property="endResult" column="end_result" />
+	    <result property="createWay" column="create_way" />
+	    <result property="userName" column="display_name" />
+	    <result property="countAction" column="count_action" />
+	</resultMap>
+	<select id="findCustomerMarketingPlansByMarketingPlanId" resultType="com.cardpay.pccredit.customer.model.CustomerMarketingPlan">
+		select 
+		<include refid="Marketing_Plans_Action" />
+        from marketing_plans_action 
+		where 1=1 and marketing_plan_id=#{id}
+	</select>
+	<sql id="Marketing_Plans_Action" >
+		id,marketing_plan_id as marketingPlanId,marketing,marketing_result as marketingResult,marketing_start_time as marketingStartTime,marketing_end_time as marketingEndTime,
+		whether_implement as whetherImplement,created_by as createdBy,created_time as createdTime,modified_by as modifiedBy,
+		modified_time as modifiedTime
+	</sql>
+	<sql id="Base_Column_List" >
+    m.id,b.chinese_name as customerName,m.product_id as productId,p.product_name as productName,
+    m.create_way as createWay,m.implementation_objective as implementationObjective,
+    m.end_result as endResult,m.marketing_time as marketingTime,marketing_method as marketingMethod,marketing_endtime as marketingEndtime
+  </sql>
+	<select id="findCustomerMarketingById" resultType="com.cardpay.pccredit.customer.model.CustomerMarketingWeb">
+		select 
+        <include refid="Base_Column_List" />
+		from marketing_plan m 
+		left join basic_customer_information b
+		on m.customer_id=b.id
+		left join product_attribute p
+		on m.product_id=p.id
+		where m.id=#{id}
+		order by m.created_time desc
+	</select>
+	
+	<select id="findProductMarketingRulesByProductId" resultType="com.cardpay.pccredit.product.model.ProductMarketingRules">
+		select t.marketing_time as marketingTime,t.marketing_method as marketingMethod from product_marketing_rules t where t.product_id=#{productId}
+	</select>
+	<select id="findSubMarketingPlan" resultMap="resultMap">
+		SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		select m.id,b.chinese_name,p.product_name,m.marketing_time,m.marketing_method,m.marketing_endtime,m.end_result,m.create_way,s.display_name,
+		(select count(*) from marketing_plans_action a where a.marketing_plan_id=m.id) as count_action 
+		from marketing_plan m 
+		left join product_attribute p 
+		on m.product_id=p.id 
+		left join basic_customer_information b 
+		on m.customer_id=b.id 
+		left join SYS_USER s
+		on b.user_id=s.id
+		where b.user_id in
+         <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+         	#{item}
+         </foreach>
+        order by m.create_way,m.created_time desc
+        <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	<select id="findSubMarketingPlanCountsByIds" resultType="int">
+		select count(*)
+		from marketing_plan m 
+		left join product_attribute p 
+		on m.product_id=p.id 
+		left join basic_customer_information b 
+		on m.customer_id=b.id 
+		left join SYS_USER s
+		on b.user_id=s.id
+		where b.user_id in
+         <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+         	#{item}
+         </foreach>
+	</select>
+	<select id="findCustomerManagerIdByMarketingId" resultType="String">
+		select b.user_id
+		from marketing_plan m
+		left join
+		basic_customer_information b
+		on m.customer_id=b.id
+		where m.id=#{id}
+	</select>
+	<select id="findMarketingCountToday" resultType="int">
+		<![CDATA[
+		select count(*) from marketing_plan
+		where end_result='marketing'
+				]]>
+		and customer_manager_id=#{userId}
+	</select>
+	<select id="findMarketingCountByDay" resultType="int">
+		<![CDATA[
+		select count(*) from marketing_plan
+		where end_result='marketing'
+		and created_time<to_date(#{start},'yyyy-mm-dd hh24:mi:ss')
+		and marketing_endtime>to_date(#{end},'yyyy-mm-dd hh24:mi:ss')
+		]]>
+		and customer_manager_id=#{userId}
+	</select>
+</mapper>

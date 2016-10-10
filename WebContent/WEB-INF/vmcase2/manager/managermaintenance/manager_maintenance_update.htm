@@ -1,0 +1,213 @@
+#parse ("common/iframe_page_header.htm")
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+       <div class="place">
+       <div class="title">客户经理层级参数维护</div>
+      </div>
+       #parse ("common/place_tab_jlcj.htm")
+      <form id="id_module_form" action="${contextPath}/manager/managerPromotionRule/savecswh.page" method="post">
+        <div class="form-bd" id="formsId" style="padding-top: 0px;">
+         
+          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%">
+            <colgroup>
+              <col width="8%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="5%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="8%" />
+              
+
+            </colgroup>
+            <tr>
+            <td class="titlec" >经理级别</td>
+             <td class="titlec" >奖励激励加权数</td>
+              <td class="titlec" >管户奖金(元)</td>
+               <td class="titlec" >管理绩效比例</td>
+                <td class="titlec" >津贴(元)</td>
+                <td class="titlec" >新增客户奖金(元)</td>
+                <!--  <td class="titlec" >客户经理风险容忍度加权</td>
+                  <td class="titlec" >风险准备金的权数</td> -->
+                      <td class="titlec" >睡眠卡奖金比例</td>
+                      <td class="titlec" >有效卡奖金比例</td>
+                       <td class="titlec" >活跃卡奖金比例</td>
+                       <td class="titlec" >激活卡奖金比例</td>
+                    <td class="titlec" >责任工资(元)</td>
+                    <td class="titlec" >客户类型</td>
+            </tr>
+            </table>
+            #if($nplsInfomationConfigurationlist.size()!=0)
+             <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%">
+            <colgroup>
+                <col width="8%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="5%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="8%" />
+
+
+            </colgroup>
+             #foreach($nplsInfomationConfiguration in $!nplsInfomationConfigurationlist)
+            <tr>
+              <td class="titlefc3"><input type="hidden" name="id" value="$!nplsInfomationConfiguration.id"><input type="hidden" name="hierarchy" value="$!nplsInfomationConfiguration.hierarchy">#dictVal('CUSTOMERMANAGERLEVEL',$!nplsInfomationConfiguration.hierarchy)</td>
+              <td><input class="rinpsty" type="text" id="weightedNumber" name="weightedNumber" value="$!nplsInfomationConfiguration.weightedNumber" style="width: 70%"/>%</td>
+              <td><input class="rinpsty" type="text" id="customerNumberAward" name="customerNumberAward" value="$format.formatNumber($!nplsInfomationConfiguration.customerNumberAward,2,100)" /></td>
+              <td><input class="rinpsty" type="text" id="teamAward" name="teamAward" value="$!nplsInfomationConfiguration.teamAward" style="width: 70%"/>%</td>
+              <td><input class="rinpsty" type="text" id="allowance" name="allowance" value="$format.formatNumber($!nplsInfomationConfiguration.allowance,2,100)" /></td>
+              <td><input class="rinpsty" type="text" id="insertCustomerAward" name="insertCustomerAward" value="$format.formatNumber($!nplsInfomationConfiguration.insertCustomerAward,2,100)"/></td>
+             <!--   <td><input class="rinpsty" type="text" id="tolerateRate" name="tolerateRate" value="$!nplsInfomationConfiguration.tolerateRate" style="width: 70%"/>%</td>
+              <td><input class="rinpsty" type="text" id="prepareRate" name="prepareRate" value="$!nplsInfomationConfiguration.prepareRate" style="width: 70%"/>%</td>-->
+              <td><input class="rinpsty" type="text" id="sleepRate" name="sleepRate" value="$!nplsInfomationConfiguration.sleepRate" style="width: 70%"/>%</td>
+              <td><input class="rinpsty" type="text" id="validRate" name="validRate" value="$!nplsInfomationConfiguration.validRate" style="width: 70%"/>%</td>
+              <td><input class="rinpsty" type="text" id="activeRate" name="activeRate" value="$!nplsInfomationConfiguration.activeRate" style="width: 70%"/>%</td>
+              <td><input class="rinpsty" type="text" id="activateRate" name="activateRate" value="$!nplsInfomationConfiguration.activateRate" style="width: 70%"/>%</td>
+              <td><input class="rinpsty" type="text" id="dutySalary" name="dutySalary" value="$format.formatNumber($!nplsInfomationConfiguration.dutySalary,2,100)" /></td>
+              <td><input class="rinpsty" type="text" id="customerType" name="customerType" value="$!nplsInfomationConfiguration.customerType" title="$!nplsInfomationConfiguration.customerType" onclick="selectCustomerType(this)" readonly="readonly"/> <input type="hidden" id="customerTypeCode" name="customerTypeCode" value="$!nplsInfomationConfiguration.customerTypeCode" /></td>
+            </tr>
+            #end
+          </table>
+          #else
+          
+            <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%">
+            <colgroup>
+               <col width="8%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="5%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="8%" />
+              <col width="8%" />
+               <col width="8%" />
+
+            </colgroup>
+             #foreach($dict in $!dictItems)
+            <tr>
+              <td class="titlefc3"><input type="hidden" name="id" value=""><input type="hidden" name="hierarchy" value="$!dict.name">$!dict.title</td>
+              <td><input class="rinpsty" type="text" id="weightedNumber" name="weightedNumber" value="" style="width: 70%"/>%</td>
+              <td><input class="rinpsty" type="text" id="customerNumberAward" name="customerNumberAward" value="" style="width: 70%"/>%</td>
+              <td><input class="rinpsty" type="text" id="teamAward" name="teamAward" value="" style="width: 70%"/>%</td>
+              <td><input class="rinpsty" type="text" id="allowance" name="allowance" value="" /></td>
+              <td><input class="rinpsty" type="text" id="insertCustomerAward" name="insertCustomerAward" value="" style="width: 70%"/>%</td>
+              <!--   <td><input class="rinpsty" type="text" id="tolerateRate" name="tolerateRate" value="" style="width: 70%"/>%</td>
+              <td><input class="rinpsty" type="text" id="prepareRate" name="prepareRate" value="" style="width: 70%"/>%</td>-->
+              <td><input class="rinpsty" type="text" id="sleepRate" name="sleepRate" value="" style="width: 70%"/>%</td>
+              <td><input class="rinpsty" type="text" id="validRate" name="validRate" value="" style="width: 70%"/>%</td>
+              <td><input class="rinpsty" type="text" id="activeRate" name="activeRate" value="" style="width: 70%"/>%</td>
+              <td><input class="rinpsty" type="text" id="activateRate" name="activateRate" value="" style="width: 70%"/>%</td>
+              <td><input class="rinpsty" type="text" id="dutySalary" name="dutySalary" value="" /></td>
+              <td><input class="rinpsty" type="text" id="customerType" name="customerType" value="本地户籍无房" title="" onclick="selectCustomerType(this)" readonly="readonly"/> <input type="hidden" id="customerTypeCode" name="customerTypeCode" value="local" /></td>
+            </tr>
+            #end
+          </table>
+          #end
+        </div>
+      </form>
+
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n('button.cancel')" />
+      </div>
+    </div>
+  </div>
+    <div id="customerTypeDialog" title="选择客户类型" style="display: none; resize: none; z-index: 2000">
+      <form id="customerTypeForm">
+        <div class="forms">
+          <table id="customerTypetable" style="border: 1px solid #dcdcdc;margin-bottom: 10px;">
+			<colgroup>
+			   
+				<col width="20%" />
+				<col width="60%" />
+				<col width="20%" />
+			
+			</colgroup>
+		    #foreach($customerType in $!customerTypeDictItems)
+		    <tr>
+		    <td>&nbsp;</td>
+              <td><input type="checkbox" name="customerType" value="${customerType.name}_${customerType.title}"/>${customerType.title}</td>
+              <td>&nbsp;</td>
+              </tr>
+              #end
+			</table>
+        </div>
+      </form>
+  </div>
+      
+   <script src='${contextPath}/js/maintenanceAccountManager/maintenanceAccountManager.js'></script> 
+  <script type="text/javascript">
+  
+	var layout=new FormsLayout("formsId");			
+	window.top.currentWindow.setLayout(layout);
+			
+	#set ($formName = "'#id_module_form'")
+	$(document).ready(function() {	
+
+		$("li").removeClass("activeTab");
+		$("li:eq(3)").addClass("activeTab");
+	     $("#id_save_button").click(function() {
+	    	var leng = 0;
+	    	 leng = $(".error").length;
+	    	if(leng > 0){
+	    		return;
+	    	}else{
+			  $("#id_module_form").submit();  
+	    	}
+	       });
+
+	});
+	function selectCustomerType(obj){
+		
+		//设置默认的用户id
+		
+		var customerTypeCode = $(obj).next().val();
+		//var selectUserIds = $("#auditUserIds").val();
+		if(customerTypeCode != null && customerTypeCode != "" && customerTypeCode.length > 0){
+			$("#customerTypetable input[name='customerType']:checkbox").each(function(){
+				if(customerTypeCode.indexOf($(this).val().split("_")[0]) >= 0){
+					$(this).attr("checked", "checked");
+				} else {
+					$(this).removeAttr("checked");
+				}
+			});			
+		}
+     Dialog.formPosition("#customerTypeForm", "选择客户类型", function(){
+			var customerType = "";
+			var customerTypeCode = "";
+			window.top.$("#customerTypetable input[name='customerType']:checkbox").each(function(){
+				if ($(this).attr("checked")){
+	    			var arrs =  $(this).val().split("_");
+	    			customerTypeCode += arrs[0] + ","; 
+	    			customerType += arrs[1] + ",";
+	    		}
+			});
+			if(customerTypeCode.length > 0){
+				customerType = customerType.substring(0, customerType.length - 1);
+				customerTypeCode = customerTypeCode.substring(0, customerTypeCode.length - 1);
+			}
+			$(obj).val(customerType);
+			$(obj).attr("title",customerType)
+			$(obj).next().val(customerTypeCode);
+			return true;
+		}, null, 400, 140, 450,300);
+
+	}
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

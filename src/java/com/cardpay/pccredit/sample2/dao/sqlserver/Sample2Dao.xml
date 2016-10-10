@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.sample2.dao.Sample2Dao">
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.sample2.model.Sample2">
+		<result property="id" column="ID" />
+		<result property="seqNo" column="SEQ_NO" />
+		<result property="name" column="NAME" />
+		<result property="type" column="TYPE" />
+		<result property="nativeName" column="NATIVE_NAME" />
+		<result property="sampleDate" column="SAMPLE_DATE" />
+		<result property="description" column="DESCRIPTION" />
+		<result property="timeCreated" column="TIME_CREATED" />
+		<result property="timeLastModified" column="TIME_LAST_MODIFIED" />
+	</resultMap>
+
+	<select id="findSamplesByFilter" resultMap="ResultMap" parameterType="map">
+		SELECT * from sample t
+		WHERE 1=1
+
+		<if test="seqNo != null and seqNo != '' ">
+			AND SEQ_NO=#{seqNo}
+		</if>
+		<if test="name != null and name != '' ">
+			AND NAME like '%${name}%'
+		</if>
+		<if test="type != null and type != '' ">
+			AND TYPE=#{type}
+		</if>
+		<if test="nativeName != null and nativeName != '' ">
+			AND NATIVE_NAME=#{nativeName}
+		</if>
+
+		<if test="sampleDateStart != null and sampleDateStart != ''">
+			AND SAMPLE_DATE &gt; #{sampleDateStart,jdbcType=TIMESTAMP}
+		</if>
+		<if test="sampleDateEnd != null and sampleDateEnd  != ''">
+			AND SAMPLE_DATE &lt; #{sampleDateEnd,jdbcType=TIMESTAMP}
+		</if>
+		ORDER BY TIME_CREATED DESC
+	</select>
+
+</mapper>

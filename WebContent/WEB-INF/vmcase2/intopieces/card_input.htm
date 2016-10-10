@@ -1,0 +1,84 @@
+#parse ("common/iframe_page_header.htm") #parse ("common/macro.htm")
+#parse ("common/macro.htm")
+<script src="${contextPath}/common/js/common/jquery.form.js"></script>
+<script src="${contextPath}/js/intopieces/intopieces.js"></script>
+<body>
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+				<div>卡片新增</div>
+			</div>
+
+			<div id="topDiv">
+				<form id="allInfoForm"
+					action="${contextPath}/intopieces/carcenter/saveCardData.json" method="post">
+					<div class="forms">
+						<table class="rule" id="customerBaseInfo" border="1"
+							bordercolor="#CCCCCC">
+							<caption>卡片新增</caption>
+							<colgroup>
+								<col width="10%">
+								<col width="40%">
+								<col width="10%">
+								<col width="40%">
+							</colgroup>
+							<tr>
+								<td><label>客户姓名:</label></td>
+								<td><input type="text" name="customerName"></td>
+								<td><label>客户证件类型:</label></td>
+								<td>
+								   <select name="identityType">
+                                    #customerInfo($request.getAttribute("cardTypeList"),$null)
+                                   </select>
+								</td>
+							</tr>
+							
+							<tr>
+							    <td><label>客户证件号码:</label></td>
+								<td><input type="text" name="customerIdentity"></td>
+								<td><label>卡号:</label></td>
+								<td><input type="text" name="cardNumber"></td>
+							</tr>
+							<tr>
+								<td><label>组织机构:</label></td>
+								<td><select name="cardOrganization">
+								    #dict("Organizations", $null)
+								    </select>
+								</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+							</tr>
+							
+						</table>
+					</div>
+				</form>
+			</div>
+			<div class="controlbtn" style="padding-left: 15px;">
+				<a class="btn_g" href="javascript:void(0);" id="saveButton">保存</a>
+				<a class="btn_g" href="javascript:void(0);" onclick="javascript :history.back(-1)">返回</a>
+			</div>
+
+		</div>
+	</div>
+</body>
+<script language="javascript" type="text/javascript">
+	#set ($formName = "'#allInfoForm'")
+	#parse("common/intopieces_validation.js")
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+	$(document).ready(function() {
+		$("#saveButton").click(function() {
+	        if ($($formName).valid()) {
+	        	saveCard('${contextPath}/intopieces/carcenter/queryCard.page');
+	        	}
+	        }
+			);
+	        $("#list input[type='checkbox']").click(function() {
+	            if (jQuery(this).attr("checked") == true) {
+	                jQuery("#list input[type='checkbox']").attr("checked", false);
+	                jQuery(this).attr("checked", true);
+	            }
+	        });
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")

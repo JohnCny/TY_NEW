@@ -1,0 +1,51 @@
+#parse ("common/iframe_page_header5.htm")
+<script src="${contextPath}/js/startMove.js" charset="utf-8"></script>
+<script type="text/javascript">
+	window.onload=function(){
+		var id ='$Id';
+		$("#hugeImages" + 1).attr({
+			src:"${contextPath}/customer/customerInfor_wh_ty/downLoadYxzlJn.json"+"?id="+id
+		});
+	
+	}
+	
+	$(document).ready(function() {
+		var batchId ='$!batchId';
+		//上一张
+		$("#id_beer_button").click(function() {
+			var currentPage = Number($!rowNum) - Number(1);
+			if(Number(currentPage)<0){
+			    	alert("已经是第一张");
+			    	return;
+			}
+			var url = "${contextPath}/intopieces/intopiecesquery/display_server.page?currentPage"+currentPage+"&batchId="+batchId;
+			window.location.href = url;s
+		});
+		
+		//下一张
+		$("#id_next_button").click(function() {
+		    var currentPage = Number($!rowNum) +Number(1);
+		    if(Number(currentPage)>=Number($!totalCount)){
+		    	alert("已经是最后一张");
+		    	return;
+		    }
+			var url = "${contextPath}/intopieces/intopiecesquery/display_server.page?currentPage="+currentPage+"&batchId="+batchId;
+			window.location.href = url;
+		});
+	});
+</script>
+
+<div id="box" style="text-align:center;">
+		<li><a href="javascript:void();"><img id="hugeImages1" width="660" height="530"  alt="" /></a></li>
+		 <input type="hidden"  name=totalCount value="$!totalCount"/>
+      	 <input type="hidden"  name="rowNum" value="$!rowNum"/>
+      	 <input type="hidden"  name="batchId" value="$!batchId"/>
+</div>
+<div class="pagebar">
+<div class="" style="text-align:center;">
+          <a id="id_beer_button" class="btn_gtr" href="javascript:void(0);" title="上一张">上一张</a>
+          <a id="id_next_button" class="btn_gtr" href="javascript:void(0);" title="下一张">下一张</a>
+</div>
+</div>
+</body>
+#parse ("common/iframe_page_footer.htm")

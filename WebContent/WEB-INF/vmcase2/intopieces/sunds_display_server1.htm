@@ -1,0 +1,116 @@
+#parse ("common/iframe_page_header.htm")
+<script src="${contextPath}/js/intopieces/intopieces.js" charset="utf-8"></script>
+<script type="text/javascript">
+</script>
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="inquiry">
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">图片名称</th>
+              <th nowrap="nowrap">图片大小</th>
+              <th nowrap="nowrap">状态</th>
+              <th nowrap="nowrap">操作</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col />
+            </colgroup>
+            #foreach ($obj in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value='$!{obj.file_no}'/></td>
+              <td nowrap="nowrap">$!obj.file_name</td>
+              <td nowrap="nowrap">$!{obj.pic_size}字节</td>
+              <td nowrap="nowrap">
+              		#if($!obj.file_no_local != $null)
+              			更新中
+              		#else
+              			正常
+              		#end
+              </td>
+              <td nowrap="nowrap">
+              		#if($!obj.file_no_local != $null)
+              			更新中，禁止操作！
+              		#else
+              			<a id="id_browse_button" class="btn_g" href="javascript:void(0);" title="查看" onclick="browseFile('$!{obj.url}')">查看</a>
+              			#if($!type == $null)
+              				<a id="id_update_button" class="btn_g" href="javascript:void(0);" title="更新" onclick="updateFile('$!{obj.detail_id}','$!{obj.file_no}','$!{obj.doc_id}')">更新</a>
+              				<a id="id_delete_button" class="btn_g" href="javascript:void(0);" title="删除" onclick="deleteFile('$!{obj.detail_id}','$!{obj.file_no}','$!{obj.doc_id}')">删除</a>
+              			#end
+              		#end
+              </td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		
+		var opsObj = new Object();
+		prepareOperations(opsObj);
+		
+	});
+	
+	//查看文件
+	function browseFile(url){
+		window.open(url,"newwindow",height=500,width=350);
+	}
+	//更新
+	function updateFile(detail_id,file_no,doc_id){
+		window.location.href = "${contextPath}/intopieces/intopiecesapprove/browse_update_folder.page?detail_id="+detail_id+"&file_no="+file_no+"&doc_id="+doc_id;
+	}
+	//删除
+	function deleteFile(detail_id,file_no,doc_id){
+		Dialog.confirm("确定删除吗？", "提示",
+			function() {
+				Dialog.load();
+				$.ajax({
+					url : "${contextPath}/intopieces/intopiecesapprove/delete_server_file.json?detail_id="+detail_id+"&file_no="+file_no+"&doc_id="+doc_id,
+					type : "get",
+					success : function(data) {
+						Dialog.closeLoad();
+						if (data.success) {
+							topWin.Dialog.message("影像删除成功！");
+							window.location.reload();
+						}
+						else{
+							topWin.Dialog.message("影像删除失败！");
+					    }
+					}
+				});
+			});
+	}
+</script>
+#parse ("common/iframe_page_footer.htm")

@@ -1,0 +1,69 @@
+
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">#mi18n("browse")</div>
+      </div>
+      <div class="inquiry">
+#parse ("uimodel/browse_page_filter_part.htm")
+#parse ("uimodel/browse_page_table_part.htm")
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+          #if ($uiModel.createAction)<a id="id_create_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.create.hint')">#i18n("button.create")</a>#end
+          #if ($uiModel.changeAction)<a id="id_change_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.change.hint')">#i18n("button.change")</a>#end
+          #if ($uiModel.deleteAction)<a id="id_delete_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.delete.hint')">#i18n("button.delete")</a>#end
+           <a id="id_number_mainten" class="btn_g" href="javascript:void(0);" title="#i18n('button.export.hint')">维护组用户</a>
+          #if ($uiModel.displayAction)
+          <a id="id_display_button" class="btn_gr" href="javascript:void(0);" title="#i18n('button.display.hint')">#i18n("button.display")</a>
+          #end
+         
+        </div>
+         
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+  var layout = new TableLayout(2);
+  window.top.currentWindow.setLayout(layout);
+
+  $(document).ready(function() {
+    var opsObj = new Object();
+    opsObj.formObj = $("#submitForm");
+    #if ($uiModel.createAction)opsObj.createUrl = "${modulePath}/create.page";#end
+    #if ($uiModel.displayAction)opsObj.displayUrl = "${modulePath}/display.page";#end
+    #if ($uiModel.changeAction)opsObj.changeUrl = "${modulePath}/change.page";#end
+    #if ($uiModel.deleteAction)opsObj.deleteUrl = "${modulePath}/delete.json";#end
+    #if ($uiModel.browseAction)opsObj.browseUrl = "${modulePath}/browse.page";#end
+    #if ($uiModel.exportAction)opsObj.exportUrl = "${modulePath}/export.page";#end
+
+    prepareOperations(opsObj);
+  });
+  function getCurrentRowId() {
+	    if ($(".checkbox :checked").length == 1) {
+	        var rowid = $($(".checkbox :checked")[0]).attr("value");
+	        
+	        if (rowid != null && rowid.length > 0) {
+	            return rowid;
+	        }
+	    } 
+	    
+	    Dialog.message("请选择一行");
+	    
+	    return null;
+	}
+  $("#id_number_mainten").click(function() {
+	  var rowid = getCurrentRowId();
+	  if (rowid != null) {
+		  var url = "${contextPath}/system/group_user/browse.page?groupId=" + rowid;
+	      window.location.href = url;
+	  }
+  });
+</script>
+</html>
+#parse ("common/iframe_page_footer.htm")

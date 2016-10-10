@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.manager.dao.DailyAccountDao">
+	<resultMap id="DailyAccountFormMap"
+		type="com.cardpay.pccredit.manager.web.DailyAccountManagerForm">
+		<result property="id" column="ID" />
+		<result property="weeklyId" column="WEEKLY_ID" />
+		<result property="loginId" column="LOGIN_ID" />
+		<result property="displayName" column="	DISPLAY_NAME" />
+		<result property="title" column="title" />
+		<result property="whatDay" column="WHAT_DAY" />
+		<result property="morningPlan" column="MORNING_PLAN" />
+		<result property="morningActual" column="MORNING_ACTUAL" />
+		<result property="afternoonPlan" column="AFTERNOON_PLAN" />
+		<result property="afternoonActual" column="AFTERNOON_ACTUAL" />
+		<result property="daySummary" column="DAY_SUMMARY" />
+		<result property="createdTime" column="CREATED_TIME" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="modifiedTime" column="MODIFIED_TIME" />
+		<result property="modifiedBy" column="MODIFIED_BY" />
+	</resultMap>
+
+
+	<select id="findDailyAccountManagersByFilter" resultMap="DailyAccountFormMap" >
+		SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		SELECT
+		D .*, s.DISPLAY_NAME as displayName,
+        w.TITLE as title
+		FROM
+		DAILY_ACCOUNT_MANAGER D,
+		WEEKLY_ACCOUNT_MANAGER w,
+		SYS_USER s
+		WHERE
+		1 = 1
+		AND D .WEEKLY_ID = w. ID
+		AND w.CUSTOMER_MANAGER_ID = s. ID
+		<if test="loginId != null and loginId != '' ">
+			AND w.CUSTOMER_MANAGER_ID = #{loginId}
+		</if>
+		<if test="displayName != null and displayName != '' ">
+			AND s.DISPLAY_NAME = #{displayName}
+		</if>
+		order by d.created_time desc 
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+
+	
+	<select id="findDailyAccountManagersCountByFilter"
+		resultType="int"
+		parameterType="com.cardpay.pccredit.manager.filter.DailyAccountManagerFilter">
+		SELECT
+		COUNT (*)
+		FROM
+		(
+		SELECT
+		D .*, s.DISPLAY_NAME
+		FROM
+		DAILY_ACCOUNT_MANAGER D,
+		WEEKLY_ACCOUNT_MANAGER w,
+		SYS_USER s
+		WHERE
+		1 = 1
+		AND D .WEEKLY_ID = w. ID
+		AND w.CUSTOMER_MANAGER_ID = s. ID
+		<if test="loginId != null and loginId != '' ">
+			AND w.CUSTOMER_MANAGER_ID = #{loginId}
+		</if>
+		<if test="displayName != null and displayName != '' ">
+			AND s.DISPLAY_NAME = #{displayName}
+		</if>
+		
+		)
+	</select>
+</mapper>

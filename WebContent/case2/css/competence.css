@@ -1,0 +1,21 @@
+body{ font-size:12px; color:#333; }
+
+.competence{  margin:0 auto; overflow:hidden;}
+.competence_title{ background:url(../images/content_place_bg.png) repeat-x ; height:39px; line-height:39px; padding-left:15px; }
+.competence_user{ border:1px solid #b4b4b4; min-height:70px; margin:20px 30px; position: relative;}
+.competence_user_title{ width:66px;background:#fff; margin:-5px 0 0 15px; text-align:center; font-size:13px;}
+.competence_user_content{ margin:15px;}
+.competence_user_content input{ vertical-align:-2px; margin-right:5px;}
+.competence_user_content label{margin-right:40px;}
+.competence_content{ clear:both;margin:20px;}
+.competence_PowerTree{ height:500px; border:1px solid #b4b4b4; width:46%; float:left;margin-right:20px;}
+.competence_PowerTree_title{background:url(../images/cp_title_bg.png) repeat-x ; height:30px; line-height:30px; padding-left:15px;  font-size:13px; }
+.competence_function{ float:left; width:85px; height:500px; padding-top:100px;}
+.competence_function_left_sg{background:url(../images/cp_icon_left_single_normal.png) no-repeat; width:33px; height:32px; margin:20px auto; cursor:pointer;}
+.competence_function_left_sg:hover{background:url(../images/cp_icon_left_single_hover.png) no-repeat; width:33px; height:32px;}
+.competence_function_right_sg{background:url(../images/cp_icon_right_single_normal.png) no-repeat; width:33px; height:32px; margin:20px auto; cursor:pointer;}
+.competence_function_right_sg:hover{background:url(../images/cp_icon_right_single_hover.png) no-repeat; width:33px; height:32px;}
+.competence_function_left_all{background:url(../images/cp_icon_left_all_normal.png) no-repeat; width:33px; height:32px; margin:20px auto; cursor:pointer;}
+.competence_function_left_all:hover{background:url(../images/cp_icon_left_all_hover.png) no-repeat; width:33px; height:32px;}
+.competence_function_right_all{background:url(../images/cp_icon_right_all_normal.png) no-repeat; width:33px; height:32px; margin:20px auto; cursor:pointer;}
+.competence_function_right_all:hover{background:url(../images/cp_icon_right_all_hover.png) no-repeat; width:33px; height:32px;}

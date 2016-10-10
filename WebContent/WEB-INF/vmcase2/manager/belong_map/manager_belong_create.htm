@@ -1,0 +1,79 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+	<div class="content_main">
+		<div class="contentinner">
+			<form id="id_module_form" action="${contextPath}/manager/belongmap/insert.json">
+				<div class="forms" id="formsId">
+					<table class="rule">
+						<colgroup>
+							<col width="10%" />
+							<col width="30%" />
+							<col width="10%" />
+							<col width="10%" />
+							<col width="30%" />
+						</colgroup>
+						<tr>
+							<td><label for="childId">客户经理:</label></td>
+							<td>
+							  <select id="childId" name="childId">
+			                    #dict("CONGSHUMANAGER", '')
+			                  </select>
+			                </span></td>
+							<td>&nbsp;</td>
+							<td>归属客户经理:</td>
+							<td>
+							<input type="hidden" id="parentId" name="parentId" value="$!organization.parentId" />
+							<input type="text" id="userName" name="userName" value="$!organization.userName" readonly="readonly"/></td>
+						</tr>
+					</table>
+				</div>
+			</form>
+
+			<div class="submit">
+				<input id="id_save_button" type="button" value="#i18n("button.save")" class="current" />
+				<input type="button" onclick="javascript:history.go(-1);" value="#i18n("button.cancel")" />
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	var p_place = window.parent.document.getElementById('place');
+	var placeHeight = $(p_place).outerHeight(true);
+	var layout=new FormsLayout("formsId",placeHeight,0.73);			
+	window.top.currentWindow.setLayout(layout);
+
+	#set ($formName = "'#id_module_form'")
+	#validator($formName)
+	$(document).ready(function() {
+		$("#id_save_button").click(function() {
+			if(submitFlag == 1){
+				alert("请勿重复提交!")
+				return;
+			}
+			submitFlag = 1;
+	        if ($($formName).valid()) {
+	          var formjson = $($formName).serialize();
+	          var url = "${modulePath}/insert.json";
+			  $.ajax({
+					url : url,
+					type : "get",
+					data : formjson,
+					success : function(data) {
+						if (data.success) {
+							topWin.Dialog.message("保存成功！");
+							navigateTo("${contextPath}/manager/belongmap/displayManagerBelong.page?recordId=" + data.recordId+"&parentId=$!organization.parentId&userName=$!organization.userName");
+						}
+						else{
+							topWin.Dialog.message(data.message);
+					    }
+						submitFlag = 0;
+					}
+			 });
+	        }else{
+				submitFlag = 0;
+			}
+	      });
+	});
+	
+	</script>
+</body>
+</html>

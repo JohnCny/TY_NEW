@@ -1,0 +1,126 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">营销计划详细信息</div>
+      </div>
+      
+    <form id="id_form_sample" action="${modulePath}/create.page">   
+        <div class="forms" id="formsId">
+          <input type="hidden" name="id" value="$!marketing.id" />
+          <table class="rule">
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="30%" />
+            </colgroup>
+            <tr>
+              <td>客户名称:</td>
+              <td><input type="text" value="$!marketing.customerName" disabled="disabled" /></td>
+              <td>&nbsp;</td>
+              <td>创建方式:</td>
+              <td><input type="text" value="#dictVal('MarketingCreateWay',$!marketing.createWay)" disabled="disabled" /></td>
+            </tr>
+            <tr>
+              <td>产品名称:</td>
+              <td><input type="text" value="$!marketing.productName"
+                  disabled="disabled" /></td>
+              <td>&nbsp;</td>
+              <td>实施目标:</td>
+              <td><input type="text" value="$!marketing.implementationObjective" disabled="disabled" /></td>
+            </tr>
+            <tr>
+              <td>营销方式:</td>
+              <td><input type="text" value="$!marketing.marketingMethod" disabled="disabled" /></td>
+              <td>&nbsp;</td>
+              <td>营销时间:</td>
+              <td><input type="text" value="$!marketing.marketingTime" disabled="disabled" /></td>
+            </tr>
+            <tr>
+            <td>最终结果:</td>
+            <td><input type="text" value="#dictVal('MarketingEndResult',$!marketing.endResult)" disabled="disabled" /></td>
+            <td>&nbsp;</td>
+            <td>营销结束时间:</td>
+            <td><input type="text" value="$!date.format('yyyy-MM-dd HH:mm:ss',$!marketing.marketingEndtime)" disabled="disabled" /></td>
+            </tr>
+          </table>
+      </div>
+     </form>
+     <div class="inquiry">
+          <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="20%"/>
+              <col width="20%"/>
+              <col width="20%"/>
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">实施营销方式</th>
+              <th nowrap="nowrap">实施营销结果</th>
+              <th nowrap="nowrap">实施营销开始时间</th>
+              <th nowrap="nowrap">实施营销结束时间</th>
+              <th nowrap="nowrap">是否实施</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="20%"/>
+              <col width="20%"/>
+              <col width="20%"/>
+            </colgroup>
+            #foreach ($!customerMarketing in $!marketingplans)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!customerMarketing.id"
+                  #if ($!request.getParameter("recordId") == $customerMarketing.id) checked="checked" #end /></td>
+              <td nowrap="nowrap">$!customerMarketing.marketing</td>
+              <td nowrap="nowrap">$!customerMarketing.marketingResult</td>
+              <td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:ss",$!customerMarketing.marketingStartTime)</td>
+              <td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:ss",$!customerMarketing.marketingEndTime)</td>
+              <td nowrap="nowrap">#dictVal("SystemRole",$!customerMarketing.whetherImplement)</td>
+            </tr>
+            #end
+          </table>
+        </div>
+        </div>
+        <div class="controlbtn">
+              #if($!marketing.endResult != 'continuemarketing')
+              #if($!marketing.endResult !='complete')
+              <a id="id_create_button" class="btn_g" href="javascript:void(0);" title="创建新的实施记录">创建新的实施记录</a>
+              #if($!marketing.endResult !='hang')
+              #if($!marketing.endResult != 'reject')
+              <a id="id_change_button" class="btn_g" href="javascript:void(0);" title="修改实施记录">修改实施记录</a>
+              #end
+              #end
+              #end
+              #end
+              <a class="btn_gr" href="javascript:void(0);" title="返回"  onclick="location.href='${modulePath}/browse.page?recordId=$!marketing.id'">#i18n("button.back")</a>
+        </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+	
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.changeUrl = "${modulePath}/change.page?marketingPlanId=$!marketing.id";
+		prepareOperations(opsObj);
+		$("#id_create_button").click(function(){
+			document.getElementById('id_form_sample').submit();
+		});
+	});
+  </script>
+</body>
+#parse ("common/iframe_page_footer.htm")

@@ -1,0 +1,117 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">风险事项筛选</div>
+      </div>
+      <div class="inquiry">
+        <div class="search_tag">#i18n("label.browse.filter")</div>
+        <div class="search">
+          <form id="submitForm" action="${contextPath}/riskcontrol/riskreviewprocessmanager/report.json">
+            <ul>
+              <li>
+                <span>机构：
+                	<select id="institutions" name="institutions">
+                		<option value="">请选择...</option>
+	              		#foreach($!flatTreeNode in $!orgList)
+							<option value="$!flatTreeNode.id" #if($!flatTreeNode.id== $!riskConsiderations.institutions) selected #end>
+							$!flatTreeNode.name
+							</option>
+						#end
+	                </select>
+                  </span>
+              </li>
+              
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="15%" />
+              <col width="10%" />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">机构</th>
+              <th nowrap="nowrap">区域</th>
+              <th nowrap="nowrap">行业</th>
+              <th nowrap="nowrap">风险等级</th>
+              <th nowrap="nowrap">发布机构</th>
+              <th nowrap="nowrap">风险事项描述</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="15%" />
+              <col width="10%" />
+            </colgroup>
+            #foreach ($riskConsiderations in $result.items)
+            <tr status="$!riskConsiderations.status">
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!riskConsiderations.id"
+                  #if ($!request.getParameter("recordId") == $!riskConsiderations.id) checked="checked" #end /></td>
+              <td nowrap="nowrap">#dictVal("Organizations", $!riskConsiderations.institutions)</td>
+              <td nowrap="nowrap">$!riskConsiderations.area</td>
+              <td nowrap="nowrap">#dictVal("HYLB_", $!riskConsiderations.industry)</td>
+              <td nowrap="nowrap">#dictVal("CustomerRiskRating", $!riskConsiderations.riskLevel)</td>
+              <td nowrap="nowrap">#dictVal("Organizations", $!riskConsiderations.releaseInstitution)</td>
+              <td nowrap="nowrap">$!riskConsiderations.riskIssuesDescribed</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+          #btnpriv("change")<a id="id_ok_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.ok')">#i18n("button.ok")</a>#end 
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		prepareOperations(opsObj);
+	});
+	
+	#set ($formName = "'#submitForm'")
+	$("#id_ok_button").click(function() {
+		if ($(".checkbox :checked").length == 0) {
+			Dialog.message("请选择一行");
+			return;
+		}
+		var rowid = $($(".checkbox :checked")[0]).attr("value");
+		var formjson = {'riskIssuesId':rowid};
+        $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
+          if (data.success) {
+            #set ($callBackUrl = $request.getParameter('callBackUrl').replaceAll("recordId=.*",""))
+            #if ($request.getParameter('callBackUrl').indexOf('?') != -1)
+              navigateTo("${callBackUrl}" + "&recordId=" + data.recordId);
+            #else
+              navigateTo("${callBackUrl}" + "?recordId=" + data.recordId);
+            #end
+          }
+        });
+     });
+</script>
+#parse ("common/iframe_page_footer.htm")

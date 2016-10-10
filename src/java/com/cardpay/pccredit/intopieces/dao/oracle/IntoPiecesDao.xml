@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.intopieces.dao.IntoPiecesDao" >
+
+
+ 	<resultMap id="IntoPiecesResultMap" type="com.cardpay.pccredit.intopieces.model.IntoPieces">
+		<result property="id" column="id" />
+		<result property="customerId" column="customer_id" />
+		<result property="tyCustomerId" column="ty_customer_id" />
+		<result property="chineseName" column="chinese_name" />
+		<result property="productId" column="product_id" />
+		<result property="productName" column="product_name" />
+		<result property="cardId" column="card_id" />
+		<result property="applyQuota" column="apply_quota" />
+		<result property="actualQuote" column="actual_quote" />
+		<result property="status" column="status" />
+		<result property="decisionRefuseReason" column="DECISION_REFUSEREASON" />
+		<result property="displayName" column="display_name" />
+	</resultMap>
+	
+    <select id="checkValue" resultType="int">
+  		select count(1) from account_manager_parameter a, manager_customer_type c   where  a.level_information = c.level_id  and  a.user_id=#{userId} and c.customer_type =#{valueType} 
+    </select>
+  
+  
+ 
+	
+	<select id="findIntoPiecesList" resultMap="IntoPiecesResultMap" parameterType="com.cardpay.pccredit.intopieces.model.IntoPieces">
+					SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+				select t.id,
+		               t.customer_id,
+		               b.ty_customer_id,
+		               b.chinese_name,
+		               t.product_id,
+		               p.product_name,
+		               b.card_id,
+		               t.apply_quota,
+		               t.actual_quote,
+		               t.status,
+		               t.DECISION_REFUSEREASON,a.display_name,a.id as userId
+		          from customer_application_info  t,
+		               basic_customer_information b,
+		               product_attribute          p,sys_user a
+		         where t.customer_id = b.id
+		               and t.product_id = p.id and a.id=b.user_id
+					<if test="custManagerIds != null and custManagerIds != '' ">  
+ 					  	AND b.user_id in ${custManagerIds}
+					</if>
+					
+					<if test="userId != null and userId != '' ">  
+ 					  	AND b.user_id = #{userId}
+					 </if>
+					
+					<if test="productName != null and productName != '' ">
+						and p.product_name like '%'||#{productName}||'%'
+					 </if>
+					 
+					 <if test="id != null and id != '' ">
+						and t.id like '%'||#{id}||'%'
+					 </if>
+					 
+					 <if test="status != null and status != '' ">
+						and t.status= #{status}
+					 </if>
+					 
+					 <if test="cardId != null and cardId != '' ">
+						and b.card_id like '%'||#{cardId}||'%' 
+					 </if>
+					  
+					  <if test="chineseName != null and chineseName != '' ">
+						and b.chinese_name like '%'||#{chineseName}||'%' 
+					  </if>
+					  order by t.status asc
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	<select id="findIntoPiecesCountList" resultType="int" parameterType="com.cardpay.pccredit.intopieces.model.IntoPieces">
+		  select  count(*)
+		          from customer_application_info  t,
+		               basic_customer_information b,
+		               product_attribute          p
+		         where t.customer_id = b.id
+		               and t.product_id = p.id
+					 <if test="custManagerIds != null and custManagerIds != '' ">  
+ 					  	AND b.user_id in ${custManagerIds}
+					 </if>
+					 
+					 <if test="userId != null and userId != '' ">  
+ 					  	AND b.user_id = #{userId}
+					 </if>
+					
+					 <if test="productName != null and productName != '' ">
+						and p.product_name like '%'||#{productName}||'%'
+					 </if>
+					 
+					 <if test="id != null and id != '' ">
+						and t.id like '%'||#{id}||'%'
+					 </if>
+					 
+					 <if test="status != null and status != '' ">
+						and t.status= #{status}
+					 </if>
+					 
+					 <if test="cardId != null and cardId != '' ">
+						and b.card_id like '%'||#{cardId}||'%' 
+					 </if>
+					  
+					 <if test="chineseName != null and chineseName != '' ">
+						and b.chinese_name like '%'||#{chineseName}||'%' 
+					 </if>
+	</select>
+	
+	
+	<update id="updateCustomerApplicationInfo" parameterType="com.cardpay.pccredit.intopieces.model.IntoPieces">
+		update customer_application_info
+		<set>
+			status = #{status} 
+		</set>
+		<if test="jjh != null and jjh != '' ">
+			,jjh = #{jjh} 
+		 </if>
+		 <if test="jkrq != null and jkrq != '' ">
+			,jkrq = #{jkrq} 
+		 </if>
+		where id = #{id}
+	</update>
+	
+	
+	<update id="updateCustomerApplicationInfoJn" parameterType="com.cardpay.pccredit.intopieces.model.IntoPieces">
+		update customer_application_info
+		<set>
+			id = #{id}
+		</set>
+		
+		<if test="status != null and status != '' ">
+			,STATUS = #{status} 
+		</if>
+		
+		<if test="repayStatus != null and repayStatus != '' ">
+			,REPAY_STATUS = #{repayStatus} 
+		</if>
+		
+		<if test="actualAmt != null and actualAmt != '' ">
+			,ACTUAL_QUOTE = #{actualAmt} 
+		</if>
+		where id = #{id}
+	</update>
+	
+</mapper>

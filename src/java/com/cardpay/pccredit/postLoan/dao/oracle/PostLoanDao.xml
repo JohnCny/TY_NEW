@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.postLoan.dao.PostLoanDao">
+
+
+	 <resultMap id="BaseResultMap1" type="com.cardpay.pccredit.postLoan.model.Fcloaninfo" >
+   			  <result column="KEYCODE" 		property="keycode" jdbcType="VARCHAR" /> 
+			  <result column="YEAR" 		property="year" jdbcType="VARCHAR" /> 
+			  <result column="TIMES"		property="times" jdbcType="VARCHAR" /> 
+			  <result column="BUSICODE" 	property="busicode" jdbcType="VARCHAR" /> 
+			  <result column="BUSITYPE" 	property="busitype" jdbcType="VARCHAR" /> 
+			  <result column="DEPTCODE" 	property="deptcode" jdbcType="VARCHAR" /> 
+			  <result column="INSTCITYCODE" property="instcitycode" jdbcType="VARCHAR" /> 
+			  <result column="CONTRACTCODE" property="contractcode" jdbcType="VARCHAR" /> 
+			  <result column="CUSTID" 		property="custid" jdbcType="VARCHAR" /> 
+			  <result column="CNAME" 		property="cname" jdbcType="VARCHAR" /> 
+			  <result column="TYPEID" 		property="typeid" jdbcType="VARCHAR" /> 
+			  <result column="CUSTTYPE" 	property="custtype" jdbcType="VARCHAR" /> 
+			  <result column="CUSTPROPERTY" property="custproperty" jdbcType="VARCHAR" /> 
+			  <result column="ORGCERTCODE" 	property="orgcertcode" jdbcType="VARCHAR" /> 
+			  <result column="UNITCUSTTYPE" property="unitcusttype" jdbcType="VARCHAR" /> 
+			  <result column="CARDTYPE" 	property="cardtype" jdbcType="VARCHAR" /> 
+			  <result column="CARDNUM" 		property="cardnum" jdbcType="VARCHAR" /> 
+			  <result column="CITY" 		property="city" jdbcType="VARCHAR" /> 
+			  <result column="DISTRICTCOUNTY" property="districtcounty" jdbcType="VARCHAR" /> 
+			  <result column="TOWN"			  property="town" jdbcType="VARCHAR" /> 
+			  <result column="COMMUNITY" 	  property="community" jdbcType="VARCHAR" /> 
+			  <result column="INSTCODE" 	  property="instcode" jdbcType="VARCHAR" /> 
+			  <result column="CURRENCY" 	  property="currency" jdbcType="VARCHAR" /> 
+			  <result column="MONEY" 		  property="money" jdbcType="VARCHAR" /> 
+			  <result column="BALAMT" 		  property="balamt" jdbcType="VARCHAR" /> 
+			  <result column="DEBTINTEREST"   property="debtinterest" jdbcType="VARCHAR" /> 
+			  <result column="REQLMT" 		  property="reqlmt" jdbcType="VARCHAR" /> 
+			  <result column="LOANDATE" 	  property="loandate" jdbcType="VARCHAR" /> 
+			  <result column="ENDDATE" 		  property="enddate" jdbcType="VARCHAR" /> 
+			  <result column="BUSISTATE"      property="busistate" jdbcType="VARCHAR" /> 
+			  <result column="CREDITLEVEL"    property="creditlevel" jdbcType="VARCHAR" /> 
+			  <result column="INDUSTRY"       property="industry" jdbcType="VARCHAR" /> 
+			  <result column="LOANPURPOSE"    property="loanpurpose" jdbcType="VARCHAR" /> 
+			  <result column="MAINASSURE"     property="mainassure" jdbcType="VARCHAR" /> 
+			  <result column="BUSIMANAGER"    property="busimanager" jdbcType="VARCHAR" /> 
+			  <result column="ISBACK" 		  property="isback" jdbcType="VARCHAR" /> 
+			  <result column="ISBIGCOMPANY"   property="isbigcompany" jdbcType="VARCHAR" /> 
+			  <result column="STATE" 		  property="state" jdbcType="VARCHAR" /> 
+			  <result column="ISLOWRISK" 	  property="islowrisk" jdbcType="VARCHAR" /> 
+			  <result column="VALIDTIME" 	  property="validtime" jdbcType="VARCHAR" /> 
+			  <result column="SORTRESULT"     property="sortresult" jdbcType="VARCHAR" /> 
+			  <result column="SORTRESULTFIVE" property="sortresultfive" jdbcType="VARCHAR" /> 
+			  <result column="PRESORTRESULT"  property="presortresult" jdbcType="VARCHAR" /> 
+			  <result column="PRESORTFIVE"    property="presortfive" jdbcType="VARCHAR" /> 
+			  <result column="AUTOSORTRESULT" property="autosortresult" jdbcType="VARCHAR" /> 
+			  <result column="AUTOSORTREMARK" property="autosortremark" jdbcType="VARCHAR" /> 
+			  <result column="AUTOSORTFIVE"   property="autosortfive" jdbcType="VARCHAR" /> 
+			  <result column="ISADM" 		  property="isadm" jdbcType="VARCHAR" /> 
+			  <result column="CUSTSCALE"      property="custscale" jdbcType="VARCHAR" /> 
+			  <result column="OVERTIMES"      property="overtimes" jdbcType="VARCHAR" /> 
+			  <result column="DELAYAMTDAYS"   property="delayamtdays" jdbcType="VARCHAR" /> 
+			  <result column="DELAYINTERESTDAYS" property="delayinterestdays" jdbcType="VARCHAR" /> 
+			  <result column="CHANGEFLAG" 		 property="changeflag" jdbcType="VARCHAR" /> 
+			  <result column="CATEGORYTYPE" 	 property="categorytype" jdbcType="VARCHAR" /> 
+			  <result column="OPERDATETIME"      property="operdatetime" jdbcType="VARCHAR" /> 
+			  <result column="OPERATOR" 		 property="operator" jdbcType="VARCHAR" /> 
+			  <result column="ISWORKMANU" 		 property="isworkmanu" jdbcType="VARCHAR" /> 
+			  <result column="ADMDATE" 			 property="admdate" jdbcType="VARCHAR" /> 
+			  <result column="AJUSTSTATE" 		 property="ajuststate" jdbcType="VARCHAR" /> 
+			  <result column="ISTRANS" 			 property="istrans" jdbcType="VARCHAR" /> 
+			  <result column="LASTYEARSORTRESULT" property="lastyearsortresult" jdbcType="VARCHAR" /> 
+			  <result column="PROCESSID" 		  property="processid" jdbcType="VARCHAR" /> 
+			  <result column="TOBADLOANREASON"    property="tobadloanreason" jdbcType="VARCHAR" /> 
+			  <result column="BADLOANDATE" 		  property="badloandate" jdbcType="VARCHAR" /> 
+			  <result column="CREATE_TIME" 		  property="create_time" jdbcType="VARCHAR" /> 
+ 	 </resultMap>
+ 	 
+ 	 <resultMap id="BaseResultMap2" type="com.cardpay.pccredit.postLoan.model.RarepaylistForm" >
+   		<result column="KEYCODE" 		property="keycode" 			jdbcType="VARCHAR" />
+		<result column="REPAYDATE" 		property="repaydate" 		jdbcType="VARCHAR" />
+		<result column="BUSICODE" 		property="busicode" 		jdbcType="VARCHAR" />
+		<result column="REPAYAMT" 		property="repayamt" 		jdbcType="VARCHAR" />
+		<result column="RAPAYINTEREST"	property="rapayinterest" 	jdbcType="VARCHAR" />
+		<result column="SQUAREMODEL" 	property="squaremodel" 		jdbcType="VARCHAR" />
+		<result column="SQUAREOPER" 	property="squareoper" 		jdbcType="VARCHAR" />
+		<result column="HANDLESCHEMAID" property="handleschemaid" 	jdbcType="VARCHAR" />
+		<result column="HANDLETYPEID" 	property="handletypeid"     jdbcType="VARCHAR" />
+		<result column="INSTCODE" 		property="instcode" 		jdbcType="VARCHAR" />
+		<result column="DEPTCODE" 		property="deptcode" 		jdbcType="VARCHAR" />
+		<result column="INSTCITYCODE" 	property="instcitycode" 	jdbcType="VARCHAR" />
+		<result column="OPERDATETIME" 	property="operdatetime" 	jdbcType="VARCHAR" />
+		<result column="OPERATOR_1" 	property="operator_1" 		jdbcType="VARCHAR" />
+		<result column="LOANSTATUS"	    property="loanstatus" 		jdbcType="VARCHAR" />
+		<result column="ISTRANS" 		property="istrans" 			jdbcType="VARCHAR" />
+		<result column="CREATE_TIME" 	property="create_time" 		jdbcType="VARCHAR" />
+		<result column="PARAM1" 	    property="param1" 			jdbcType="VARCHAR" />
+ 	 </resultMap>
+ 	 
+ 	 
+ 	 <resultMap id="BaseResultMap3" type="com.cardpay.pccredit.postLoan.model.MibusidataForm" >
+   		 <result column="BUSICODE"        property="busicode"    jdbcType="VARCHAR" />         
+		 <result column="CUSTID"        property="custid"    jdbcType="VARCHAR" />         
+		 <result column="CNAME"        property="cname"    jdbcType="VARCHAR" />         
+		 <result column="DEPTCODE"        property="deptcode"    jdbcType="VARCHAR" />         
+		 <result column="MAINASSURE"        property="mainassure"    jdbcType="VARCHAR" />         
+		 <result column="REQLMT"        property="reqlmt"    jdbcType="VARCHAR" />         
+		 <result column="LOANDATE"        property="loandate"    jdbcType="VARCHAR" />         
+		 <result column="STARTDATE"        property="startdate"    jdbcType="VARCHAR" />         
+		 <result column="ORIENDDATE"        property="orienddate"    jdbcType="VARCHAR" />         
+		 <result column="ENDDATE"        property="enddate"    jdbcType="VARCHAR" />         
+		 <result column="MONEY"        property="money"    jdbcType="VARCHAR" />         
+		 <result column="BALAMT"        property="balamt"    jdbcType="VARCHAR" />         
+		 <result column="STATE"        property="accountstate"    jdbcType="VARCHAR" />         
+		 <result column="CLOSEDATE"        property="closedate"    jdbcType="VARCHAR" />         
+		 <result column="FIVECLASS"        property="fiveclass"    jdbcType="VARCHAR" />         
+		 <result column="DELAYAMTDAYS"        property="delayamtdays"    jdbcType="VARCHAR" />         
+		 <result column="DELAYINTERESTDAYS"        property="delayinterestdays"    jdbcType="VARCHAR" />         
+		 <result column="FIRSTINTERESTDATE"        property="firstinterestdate"    jdbcType="VARCHAR" />         
+		 <result column="DEBTINTEREST"        property="debtinterest"    jdbcType="VARCHAR" />         
+		 <result column="DEBTINTERESTTIMES"        property="debtinteresttimes"    jdbcType="VARCHAR" />         
+		 <result column="DLAYAMT"        property="dlayamt"    jdbcType="VARCHAR" />         
+		 <result column="DLAYDT"        property="dlaydt"    jdbcType="VARCHAR" />         
+		 <result column="PAYDEBT"        property="paydebt"    jdbcType="VARCHAR" />         
+		 <result column="INDEBTAMT"        property="indebtamt"    jdbcType="VARCHAR" />         
+		 <result column="OUTDEBTAMT"        property="outdebtamt"    jdbcType="VARCHAR" />         
+		 <result column="BALAMT"        property="balamt"    jdbcType="VARCHAR" />         
+		 <result column="CREATE_TIME"        property="create_time"    jdbcType="VARCHAR" />    
+		 <result column="CUSTIDNO"        property="custidno"    jdbcType="VARCHAR" />  
+		 <result column="LIMIT"        property="limit"    jdbcType="VARCHAR" />  
+		 <result column="REPAYMETHOD"        property="repaymethod"    jdbcType="VARCHAR" />  
+ 	 </resultMap>
+
+	  <!-- <resultMap id="BaseResultMap" type="com.cardpay.pccredit.customer.model.TyRepayTkmxForm" >
+   		<result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR" />
+ 	  </resultMap>
+ 	 
+ 	 <resultMap id="BaseResultMap1" type="com.cardpay.pccredit.customer.model.TyRepayLshForm" >
+   		<result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR" />
+ 	 </resultMap>
+ 	
+ 	
+	 	<select id="findListByFilter" resultMap="BaseResultMap" 
+			parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
+					SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					  select a.*,b.product_name as productName,c.zjhm from ty_repay_tkmx a left join ty_product_type b on a.cpmc=b.product_code
+					  left join ty_customer_base c on c.khnm=a.khh 
+					  WHERE 1=1 
+					  <if test="zjhm != null and zjhm != '' ">
+						AND c.zjhm=#{zjhm}
+					 </if>
+					  order by c.zjhm,a.khjl 
+					
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+		</select>
+		
+	<select id="findListCountByFilter" resultType="int"
+			parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
+	  	select count(*) from ty_repay_tkmx a left join ty_product_type b on a.cpmc=b.product_code
+					  left join ty_customer_base c on c.khnm=a.khh 
+					  WHERE 1=1 
+					  <if test="zjhm != null and zjhm != '' ">
+						AND c.zjhm=#{zjhm}
+					 </if>
+					  order by c.zjhm,a.khjl
+	</select> 
+	
+	
+	<select id="findLshListByFilter" resultMap="BaseResultMap1" 
+			parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
+					SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					  select a.*,b.khjl as khjl1  from ty_repay_lsz a left join ty_repay_tkmx b on a.jjh=b.jjh  
+					  WHERE 1=1 
+					  <if test="jjh != null and jjh != '' ">
+						AND a.jjh=#{jjh}
+					 </if>
+					  order by a.jjh,b.khjl 
+					
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	<select id="findLshListCountByFilter" resultType="int"
+			parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
+	  	select count(*)  from ty_repay_lsz a left join ty_repay_tkmx b on a.jjh=b.jjh  
+					  WHERE 1=1 
+					  <if test="jjh != null and jjh != '' ">
+						AND a.jjh=#{jjh}
+					 </if>
+	</select>  -->
+	
+	
+	<select id="findJJJnListByFilter" resultMap="BaseResultMap1" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
+					SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					  select *  from t_fcloaninfo a WHERE 1=1 
+					   <if test="busiCode != null and busiCode != '' ">
+						AND trim(a.BUSICODE)=#{busiCode}
+					   </if>
+					  <if test="cardNum != null and cardNum != '' ">
+							AND trim(a.CARDNUM)=#{cardNum}
+					  </if>
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	<select id="findJJJnListCountByFilter" resultType="int" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
+	  	select count(*)  from t_fcloaninfo a  WHERE 1=1 
+	  	<if test="busiCode != null and busiCode != '' ">
+			AND trim(a.BUSICODE)=#{busiCode}
+		</if>
+		<if test="cardNum != null and cardNum != '' ">
+			AND trim(a.CARDNUM)=#{cardNum}
+	   </if>
+	</select>
+	
+	
+	
+	<select id="findLshJnListByFilter" resultMap="BaseResultMap2" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
+					SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					  select a.*,trim(a.squaremodel) as param1 from T_RAREPAYLIST a WHERE 1=1 
+					  <if test="busiCode != null and busiCode != '' ">
+						AND trim(a.BUSICODE)=#{busiCode}
+					   </if>
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	<select id="selectRarepaylistfoInfoByBusicode" resultMap="BaseResultMap2" parameterType="com.cardpay.pccredit.postLoan.filter.FcloaninfoFilter">
+
+	    		select a.* from T_RAREPAYLIST a WHERE 1=1 
+						AND a.BUSICODE=#{busiCode}
+		<if test="rapayinterest != null and rapayinterest != '' ">
+		   				AND a.rapayinterest=#{rapayinterest}
+		   				</if>
+		<if test="repayamt != null and repayamt != '' ">
+		   				AND a.repayamt=#{repayamt}
+		   				</if>
+	</select>
+	
+	<select id="findLshJnListCountByFilter" resultType="int" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
+	  	select count(*)  from T_RAREPAYLIST a  WHERE 1=1 
+	  	<if test="busiCode != null and busiCode != '' ">
+			AND trim(a.BUSICODE)=#{busiCode}
+		</if>
+	</select>
+	
+	<select id="findObjectsByBusicode" resultMap="BaseResultMap1">
+	    select *  from t_fcloaninfo a where 1=1 and 
+	    a.BUSICODE=#{busicode}
+	    
+	</select>
+	
+	
+	
+	<select id="findTzJnListByFilter" resultMap="BaseResultMap3" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
+					SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					  select a.*,trim(a.ACCOUNTSTATE) as STATE from t_mibusidata_view a where 1=1
+					 <if test="busiCode != null and busiCode != '' ">
+						AND trim(a.BUSICODE)=#{busiCode}
+					 </if>
+					 
+					 <if test="customerName != null and customerName != '' ">
+						AND cname =#{customerName}
+					 </if>
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	
+	<select id="findTzJnListCountByFilter" resultType="int" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
+	  	select count(*)  from t_mibusidata_view where 1=1
+	  	<if test="busiCode != null and busiCode != '' ">
+			AND trim(BUSICODE)=#{busiCode}
+		</if>
+		
+	  	<if test="customerName != null and customerName != '' ">
+			AND cname =#{customerName}
+		 </if>
+	</select>
+</mapper>

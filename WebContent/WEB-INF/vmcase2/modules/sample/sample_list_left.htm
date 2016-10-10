@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/css.css" />
+<link rel="stylesheet" type="text/css"	href="${contextPath}/common/css/jquery-ui-1.10.3.custom.css" />
+<script type="text/javascript" src="${contextPath}/common/js/common/json2.js"></script>
+<script src='${contextPath}/common/js/common/jquery.min.js'></script>
+<script src='${contextPath}/common/js/common/JTimer_2.0.js'></script>
+<script src="${contextPath}/common/js/common/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="${contextPath}/common/js/common/common.js"></script>
+<script src="${contextPath}/common/js/common/dialog.js"></script>
+<script type="text/javascript" src="${uicasePath}/js/common/layoutInfo.js"></script>
+<title></title>
+</head>
+
+
+<body>
+        <div class="content_main">
+           <div class="contentinner">
+               <div class="place">
+					<span>当前位置：显示列表 >table标题、左侧列固定 </span>
+					<!--  <div class="control">
+					<a id="id_create_button" href="javascript:void(0);">增加</a>
+					<a id="id_update_button" href="javascript:void(0);">修改</a>
+					<a id="id_delete_button" href="javascript:void(0);">删除</a>
+					</div> -->
+				</div>
+						
+               <div  class="inquiry">
+                <div class="search_tag">查询条件</div>
+                 <div class="search">  
+                <form id="submitForm" action="${contextPath}/sample/query.page">
+                      <ul>
+							<li><span>序号：<input type="text" name="seqNo"
+									value='$!result.filter.seqNo' maxlength="30" /></span></li>
+							<li><span>名称：<input type="text" name="name"
+									value='$!result.filter.name' maxlength="30" /></span></li>
+							<li><span>类型：<input type="text" name="type"
+									style="_margin-top: 15px;" value='$!result.filter.type'
+									maxlength="30" /></span></li>
+							<li><span>显示名称<input type="text" name="nativeName"
+									style="_margin-top: 15px;" value='$!result.filter.nativeName'
+									maxlength="30" /></span></li>
+							<li class="search_button"><input type="submit" value="查询"
+								class="search_button_inquiry"
+								style="height: 26px; line-height: 24px;" /></li>
+					</ul>
+                       </form>  
+                    </div>   
+                   
+                   	<div class="inquiry_list inquiry_topl">
+						<table>
+							<colgroup>
+								<col width="3%">
+								<col width="7%">
+								<col width="7%">
+								<col width="7%">
+							</colgroup>
+							<tr>
+								<th class="none"></th>
+								<th nowrap="nowrap">序号</th>
+								<th nowrap="nowrap">名称</th>
+								<th nowrap="nowrap">类型</th>
+							</tr>
+						</table>
+					</div>
+					
+					<div id="topDiv" class="inquiry_list inquiry_topr">
+						<table >
+							<colgroup>
+								<col width="80">
+								<col width="80">
+								<col width="90">
+								<col width="90">
+								<col width="90">
+							</colgroup>
+							<tr>
+								<th nowrap="nowrap" style="border-left: none;">显示名称</th>
+								<th nowrap="nowrap">日期</th>
+								<th nowrap="nowrap">描述信息</th>
+								<th nowrap="nowrap">创建时间</th>
+								<th nowrap="nowrap">上次修改时间</th>
+							</tr>
+						</table>
+					</div>
+					
+                    <div id="leftDiv" class="inquiry_list inquiry_left">
+						<table>
+							<colgroup>
+								<col width="3%">
+								<col width="7%">
+								<col width="7%">
+								<col width="7%">
+							</colgroup>
+							    #foreach ($sample in $result.items)
+                        <tr>
+	                        <td class="checkbox"><input type="checkbox" name="checkbox" value="$!sample.id"/></td>
+	                        <td>$!sample.seqNo</td>
+	                        <td>$!sample.name</td>
+	                        <td>$!sample.type</td>
+                        </tr>
+                        #end 
+					</table>
+				</div>
+                   <div id="rightDiv" class="inquiry_list inquiry_right">
+						<table >
+							<colgroup>
+								<col width="80">
+								<col width="80">
+								<col width="90">
+								<col width="90">
+								<col width="90">
+							</colgroup>
+ 
+                          
+                           #foreach ($sample in $result.items)
+                        <tr>
+	                        <td>$!sample.nativeName</td>
+	                        <td>$!sample.sampleDate</td>
+	                        <td>$!sample.description</td>
+	                        <td>$!date.format("yyyy-MM-dd
+								HH:mm:ss",$!sample.timeCreated)</td>
+	                        <td>$!date.format("yyyy-MM-dd
+								HH:mm:ss",$!sample.timeLastModified)</td>
+                        </tr>
+                        #end 
+                        </table>
+                       
+                    </div>
+                   
+                 </div>                                 
+                <div class="pagebar">
+                  <div class="controlbtn">
+					<a id="id_view_button" class="btn_w" href="javascript:void(0);">查看</a>
+					<a id="id_create_button" class="btn_w" href="javascript:void(0);">增加</a>
+					<a id="id_update_button" class="btn_w" href="javascript:void(0);">修改</a>
+					<a id="id_batchDelete_button" class="btn_w" href="javascript:void(0);">批量删除</a>
+					<a id="id_export_button" class="btn_w" href="javascript:void(0);">导出</a>
+					</div>                               
+             #parse ("common/pagination.htm")
+             <div class="clear"></div>
+               </div> 
+                   
+           </div>
+        </div>
+</body>
+
+<script language="javascript" type="text/javascript">
+var layout = new TableLayout(4);
+window.top.currentWindow.setLayout(layout);
+$(document).ready(function() {
+	
+	var crudObj = new Object();
+	crudObj.formObj = $("#submitForm");
+	crudObj.createUrl = "${contextPath}/sample/create.page";
+	crudObj.updateUrl = "${contextPath}/sample/change.page";
+	crudObj.viewUrl = "${contextPath}/sample/view.page";
+	crudObj.batchDeleteUrl = "${contextPath}/sample/batchDelete.json";
+	prepareCRUD(crudObj);
+});
+</script>
+</html>

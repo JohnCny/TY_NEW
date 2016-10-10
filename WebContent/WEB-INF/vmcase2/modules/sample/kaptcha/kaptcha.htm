@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/css.css" />
+<link rel="stylesheet" type="text/css"	href="${contextPath}/common/css/jquery-ui-1.10.3.custom.css" />
+<script type="text/javascript" src="${contextPath}/common/js/common/json2.js"></script>
+<script src='${contextPath}/common/js/common/jquery.min.js'></script>
+<script src='${contextPath}/common/js/common/JTimer_2.0.js'></script>
+<script src="${contextPath}/common/js/common/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="${contextPath}/common/js/common/common.js"></script>
+<script src="${contextPath}/common/js/common/dialog.js"></script>
+<script type="text/javascript" src="${uicasePath}/js/common/layoutInfo.js"></script>
+</head>
+<body>
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+				<span>当前位置：openflashchart > 验证码</span>
+			</div>
+		<table style="margin-left:20px;margin-top:20px;">
+			<tr>
+				<td>
+					<img src="${contextPath}/Kaptcha.jpg" id="kaptchaImage"/> 
+					<script type="text/javascript">
+						$('#kaptchaImage').click(
+								function() {
+									$(this).hide().attr('src',
+											'${contextPath}/Kaptcha.jpg?' + Math.floor(Math.random() * 100)).fadeIn();
+								})
+					</script>
+					<br />
+					单击换图片
+				</td>
+				<td valign="top">
+
+					<form method="post">
+						<br>
+						验证码::
+						<input type="text" name="kaptchafield" id="kaptchafield">
+						<br />
+						<br />
+						<input type="button" value="提   交" onclick="doSubmit()">
+					</form>
+				</td>
+			</tr>
+		</table>
+		</div>
+	</div>
+</body>
+
+<script language="javascript">
+
+	function doSubmit(){
+		var kaptchafield = $("#kaptchafield").val();
+		if(kaptchafield.replace(/ /, "") == ""){
+			alert("请输入验证码")
+		}else{
+			//提交前先异步检查验证码是否输入正确
+			  var verifyUrl = "${contextPath}/kaptcha/validateCode.json?kaptchafield="+kaptchafield;
+			  $.ajax({
+					url : verifyUrl,
+					type : "GET",
+					data : {},
+					success : function(data) {
+						if (data != null) {
+							alert(data.msg);
+						}
+					}
+				});
+		}
+	}
+	$(document).ready(function() {
+
+	});
+</script>
+<script language="javascript" type="text/javascript">
+$(document).ready(function() {
+	
+});
+</script>
+</html>

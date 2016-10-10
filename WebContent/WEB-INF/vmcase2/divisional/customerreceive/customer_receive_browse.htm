@@ -1,0 +1,119 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/customerInfor.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">接受客户</div>
+      </div>
+      
+      <div class="inquiry">
+<!-------------- 信息显示 ------------------------------------->        
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="8%" />
+              <col width="18%" />
+              <col width="12%"/>
+              <col width="40%" />
+              <col width="10%"/>
+              <col width="7%">
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">中文姓名</th>
+              <th nowrap="nowrap">证件类型</th>
+              <th nowrap="nowrap">证件号码</th>
+              <th nowrap="nowrap">住宅地址</th>
+              <th nowrap="nowrap">手机</th>
+              <th nowrap="nowrap"></th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="8%" />
+              <col width="18%" />
+              <col width="12%"/>
+              <col width="40%" />
+              <col width="10%"/>
+              <col width="7%">
+            </colgroup>
+            #foreach ($!{divisional} in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!divisional.customerId"
+                  #if ($!request.getParameter("recordId") == $!divisional.customerId) checked="checked" #end /></td>
+              <td nowrap="nowrap">$!divisional.chineseName</td>
+              <td nowrap="nowrap">#customerInfor($request.getAttribute("cardTypeList"),$!divisional.cardType)</td>
+              <td nowrap="nowrap">$!divisional.cardId</td>
+              <td nowrap="nowrap">$!divisional.residentialAddress</td>
+              <td nowrap="nowrap">$!divisional.telephone</td>  
+              <td nowrap="nowrap">#if($!divisional.divisionalResult=='distribution')<a href="javascript:void(0)" style="color:green" onclick="receive('$!divisional.id','$!divisional.customerId')">接受</a>&nbsp;
+                                  <a href="javascript:void(0)" style="color:red" onclick="reject('$!divisional.id')">拒绝</a></td>
+                                  #else
+                                  #dictVal("DivisionalResult",$!divisional.divisionalResult)
+                                  #end
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+          #btnpriv("display")<a id="id_display_button" class="btn_gr" href="javascript:void(0);" title="#i18n('button.display.hint')">#i18n("button.display")</a>#end
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.displayUrl = "${modulePath}/display.page";
+		prepareOperations(opsObj);
+	});
+	function receive(m,n){
+		Dialog.load()
+		$.ajax({
+			type:"GET",
+			url:"${modulePath}/receive.json",
+			data:"id="+m+"&customerId="+n,
+			success:function(msg){
+				Dialog.closeLoad();
+				if(msg.success == true){
+					Dialog.message(msg.message);
+				}else{
+					Dialog.message(msg.message);
+				}
+				window.location.href="${modulePath}/browse.page";
+			}
+		});
+	}
+	function reject(id){
+		Dialog.load()
+		$.ajax({
+			type:"GET",
+			url:"${modulePath}/reject.json",
+			data:"id="+id,
+			success:function(msg){
+				Dialog.closeLoad();
+				if(msg.success == true){
+					Dialog.message(msg.message);
+				}else{
+					Dialog.message(msg.message);
+				}
+				window.location.href="${modulePath}/browse.page";
+			}
+		});
+	}
+</script>
+#parse ("common/iframe_page_footer.htm")

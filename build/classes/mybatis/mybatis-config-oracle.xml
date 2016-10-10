@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+	 PUBLIC "-//mybatis.org//DTD Config 3.1//EN"
+	 "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<setting name="cacheEnabled" value="true" />
+		<setting name="lazyLoadingEnabled" value="true" />
+		<setting name="multipleResultSetsEnabled" value="true" />
+		<setting name="useColumnLabel" value="true" />
+		<setting name="useGeneratedKeys" value="false" />
+		<setting name="defaultExecutorType" value="SIMPLE" />
+		<setting name="defaultStatementTimeout" value="100" />
+		<setting name="safeRowBoundsEnabled" value="false" />
+		<setting name="mapUnderscoreToCamelCase" value="false" />
+		<setting name="localCacheScope" value="STATEMENT" />
+		<setting name="jdbcTypeForNull" value="NULL" />
+		<setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString" />
+	</settings>
+	<typeAliases></typeAliases>
+	<plugins>
+		<plugin interceptor="com.wicresoft.jrad.base.database.PaginationInterceptor">
+			<property name="dialectClass" value="com.wicresoft.jrad.base.database.dialect.OracleDialect" />
+		</plugin>
+	</plugins>
+	<mappers>
+		<mapper resource="com/wicresoft/jrad/base/database/dao/common/oracle/CommonDaoMapper.xml" />
+		<mapper resource="com/wicresoft/jrad/modules/sample/dao/oracle/SampleMapper.xml" />
+		<mapper resource="com/wicresoft/jrad/modules/mail/dao/oracle/MailSendRecordMapper.xml" />
+		<mapper resource="com/wicresoft/jrad/modules/mail/dao/oracle/MailTemplateMapper.xml" />
+		<mapper resource="com/wicresoft/jrad/modules/mail/dao/oracle/MailTemplateConfigMapper.xml" />
+		
+		<mapper resource="com/wicresoft/jrad/modules/privilege/dao/oracle/ResourceMapper.xml" />
+		<mapper resource="com/wicresoft/jrad/modules/privilege/dao/oracle/RoleMapper.xml" />
+		<mapper resource="com/wicresoft/jrad/modules/privilege/dao/oracle/AccessRightMapper.xml" />
+		<mapper resource="com/wicresoft/jrad/modules/privilege/dao/oracle/DepartmentMapper.xml" />
+		<mapper resource="com/wicresoft/jrad/modules/privilege/dao/oracle/OrganizationMapper.xml" />
+		<mapper resource="com/wicresoft/jrad/modules/privilege/dao/oracle/UserMapper.xml" />
+		<mapper resource="com/wicresoft/jrad/modules/privilege/dao/oracle/GroupUserMapper.xml" />
+		<mapper resource="com/wicresoft/jrad/modules/privilege/dao/oracle/RoleUserMapper.xml" />
+		
+		
+		
+		
+	</mappers>
+</configuration>

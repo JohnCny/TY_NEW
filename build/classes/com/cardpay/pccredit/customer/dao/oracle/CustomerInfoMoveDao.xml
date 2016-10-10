@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.customer.dao.CustomerInforMoveDao" >
+  
+  <select id="findCustomerMoveList" resultType="com.cardpay.pccredit.customer.web.CustomerInfoMoveForm" parameterType="com.cardpay.pccredit.customer.filter.CustomerInforFilter">
+    select 
+    t.id,t.chinese_name as customerName,t.card_type as cardType,t.card_id as cardId,s.id as receiveId,s.approve_id as approveId,s.approve_gh as approveGh,
+    s.approve_name as approveName,s.move_id as moveId,s.move_gh as moveGh,s.move_name as moveName,s.status 
+    from basic_customer_information t left join ty_customer_move s on t.id=s.customer_id
+    where 1=1
+    <if test="userId != null and userId != '' ">
+		AND t.user_id=#{userId}
+	 </if>
+	 <if test="cardId != null and cardId != '' ">
+		AND t.card_id=#{cardId}
+	 </if>
+	 <if test="chineseName != null and chineseName != '' ">
+		AND t.CHINESE_NAME =#{chineseName}
+	 </if>
+	 <if test="moveStatus != null and moveStatus != '' ">
+		AND s.status=#{moveStatus}
+	 </if>
+  </select>
+  <select id="findCustomerMoveListCount" resultType="int" parameterType="com.cardpay.pccredit.customer.filter.CustomerInforFilter">
+    select 
+    count(*)
+    from basic_customer_information t left join ty_customer_move s on t.id=s.customer_id
+    where 1=1
+    <if test="userId != null and userId != '' ">
+		AND t.user_id=#{userId}
+	 </if>
+	 <if test="cardId != null and cardId != '' ">
+		AND t.card_id=#{cardId}
+	 </if>
+	 <if test="chineseName != null and chineseName != '' ">
+		AND t.CHINESE_NAME =#{chineseName}
+	 </if>
+	 <if test="moveStatus != null and moveStatus != '' ">
+		AND s.status=#{moveStatus}
+	 </if>
+  </select>
+</mapper>

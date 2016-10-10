@@ -1,0 +1,64 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">维护实施计划详情</div>
+      </div>
+      <form id="id_module_form" action="${modulePath}/updateAction.json">
+        <div class="forms" id="formsId">
+          <input type="hidden" name="id" value="$!maintenanceAction.id" />
+          <input type="hidden" name="maintenancePlanId" value="$!maintenanceAction.maintenancePlanId"/>
+          <input type="hidden" name="appId" value="$!appId">
+          <table class="rule">
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="30%" />
+            </colgroup>
+            <tr>
+              <td>实施维护方式:</td>
+              <td><select id="maintenanceWay" name="maintenanceWay" disabled="disabled">
+              #customerInfo($request.getAttribute("collectionMethodList"),$!maintenanceAction.maintenanceWay)
+              </select>
+              </td>
+              <td>&nbsp;</td>
+              <td>实施维护结果描述:</td>
+              <td><textarea id="maintenanceResult" name="maintenanceResult"  disabled="disabled">$!maintenanceAction.maintenanceResult</textarea>
+              </td>
+            </tr>
+            <tr>
+              <td>实施维护开始时间:</td>
+              <td><input type="text" id="maintenanceStartTime" name="maintenanceStartTime"  disabled="disabled" value="$!date.format('yyyy-MM-dd HH:mm:ss',$!maintenanceAction.maintenanceStartTime)" onmouseover="_calendar({format:'yyyy-MM-dd HH:mm:ss'})"/>
+              <td>&nbsp;</td>
+              <td>实施维护结束时间:</td>
+              <td><input type="text" id="maintenanceEndTime" name="maintenanceEndTime"  disabled="disabled" value="$!date.format('yyyy-MM-dd HH:mm:ss',$!maintenanceAction.maintenanceEndTime)" onmouseover="_calendar({format:'yyyy-MM-dd HH:mm:ss'})"/></td>
+            </tr>
+           <!--  <tr>
+              <td>是否有客户信息表更:</td>
+              <td><input type="text" id="m" name="m"  disabled="disabled"/></td>
+              <td>&nbsp;</td>
+              <td>是否触发资信状况变更:</td>
+              <td><input type="text" id="n" name="n"  disabled="disabled"/></td>
+            </tr> -->
+          </table>
+        </div>
+      </form>
+
+      <div class="submit">
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n('button.cancel')" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");			
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	#validator($formName)
+	
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

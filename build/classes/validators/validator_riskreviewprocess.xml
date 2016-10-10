@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validators>
+	
+	<validator id="riskcontrol.riskreviewprocesscardcenter">
+	</validator>
+	
+	<validator id="riskcontrol.riskreviewprocesssupervisor">
+	</validator>
+	
+	<validator id="riskcontrol.riskreviewprocessmanager">
+	</validator>
+	
+	<validator id="riskcontrol.riskreviewprocess">
+	</validator>
+</validators>

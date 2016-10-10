@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.jnpad.dao.JnpadImageBrowseDao">
+   
+
+<resultMap id="BaseResultMap" type="com.cardpay.pccredit.intopieces.web.LocalImageForm" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="CUSTOMER_ID" property="customerId" jdbcType="VARCHAR" />
+    <result column="CHINESE_NAME" property="customerName" jdbcType="VARCHAR" />
+    <result column="PRODUCT_ID" property="productId" jdbcType="VARCHAR" />
+    <result column="PRODUCT_NAME" property="productName" jdbcType="VARCHAR" />
+    <result column="APPLICATION_ID" property="applicationId" jdbcType="VARCHAR" />
+    <result column="ATTACHMENT" property="attachment" jdbcType="VARCHAR" />
+    <result column="URI" property="uri" jdbcType="VARCHAR" />
+    <result column="CREATED_TIME" property="createdTime" jdbcType="VARCHAR" />
+  </resultMap>
+
+<select id="findLocalImage" resultMap="BaseResultMap">
+   select i.CUSTOMER_ID,i.ID,i.PRODUCT_ID,i.APPLICATION_ID,i.ATTACHMENT,i.URI,i.CREATED_TIME,
+   t.CHINESE_NAME,p.PRODUCT_NAME from local_image i INNER JOIN BASIC_CUSTOMER_INFORMATION t
+   on t.id = i.CUSTOMER_ID inner join PRODUCT_ATTRIBUTE p on i.PRODUCT_ID=p.id
+    where CUSTOMER_ID =#{customerId}
+	AND PRODUCT_ID=#{productId}
+</select>
+<delete id="deleteImage">
+    delete from local_image where id=#{id}
+    
+</delete>
+</mapper>

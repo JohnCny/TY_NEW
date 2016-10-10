@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.manager.dao.LedgerAccountManagerDao">
+	<resultMap id="LedgerAccountManagerFormMap"
+		type="com.cardpay.pccredit.manager.web.LedgerAccountManagerForm">
+		<result property="id" column="ID" />
+		<result property="customerManagerd" column="CUSTOMER_MANAGER_ID" />
+		<result property="displayName" column="DISPLAY_NAME" />
+		<result property="affiliation" column="AFFILIATION" />
+		<result property="tubeNumber" column="TUBE_NUMBER" />
+		<result property="managementCycle" column="MANAGEMENT_CYCLE" />
+		<result property="attendanceSituation" column="ATTENDANCE_SITUATION" />
+		<result property="customerVisitNumber" column="CUSTOMER_VISIT_NUMBER" />
+		<result property="dailyQuality" column="DAILY_QUALITY" />
+		<result property="weeklyQuality" column="WEEKLY_QUALITY" />
+		<result property="customerMaintenanceNumber" column="CUSTOMER_MAINTENANCE_NUMBER" />
+		<result property="manumberenResult" column="MANUMBEREN_RESULT" />
+		<result property="softInformationCollection" column="SOFT_INFORMATION_COLLECTION" />
+		<result property="moneySituation" column="MONEY_SITUATION" />
+		<result property="operatingCondition" column="OPERATING_CONDITION" />
+		<result property="paymentCondition" column="PAYMENT_CONDITION" />
+		<result property="weekCompletion" column="WEEK_COMPLETION" />
+		<result property="monthsComplete" column="MONTHS_COMPLETE" />
+		<result property="dailyLoanBalance" column="DAILY_LOAN_BALANCE" />
+		<result property="leaderDescription" column="LEADER_DESCRIPTION" />
+		<result property="createdTime" column="CREATED_TIME" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="modifiedTime" column="MODIFIED_TIME" />
+		<result property="modifiedBy" column="MODIFIED_BY" />
+	</resultMap>
+
+
+	<select id="findLedgerAccountManagersByFilter" resultMap="LedgerAccountManagerFormMap">
+		SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		SELECT
+		l.*,
+		s.display_name AS displayName
+		FROM
+		LEDGER_ACCOUNT_MANAGER l,
+		SYS_USER s
+		WHERE
+		
+		1 = 1
+		
+		AND l.CUSTOMER_MANAGER_ID = s. ID
+		
+		AND l.CUSTOMER_MANAGER_ID = #{loginId}
+		
+		<if test="displayName != null and displayName != '' ">
+		AND s.display_name =#{displayName}
+		</if>
+		ORDER BY
+		l.CREATED_TIME DESC
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+
+
+	<select id="findLedgerAccountManagersCountByFilter" resultType="int"
+		parameterType="com.cardpay.pccredit.manager.filter.LedgerAccountManagerFilter">
+		SELECT
+		COUNT (*)
+		FROM
+		(
+		SELECT
+		l.*, s.display_name AS
+		displayName
+		FROM
+		LEDGER_ACCOUNT_MANAGER l,
+		SYS_USER s
+		WHERE
+		1 = 1
+		AND
+		l.CUSTOMER_MANAGER_ID = s. ID
+		AND l.CUSTOMER_MANAGER_ID = #{loginId}
+		ORDER BY
+		l.CREATED_TIME DESC
+		)
+	</select>
+</mapper>

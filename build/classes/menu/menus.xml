@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menus>
+	 <menu id="000000" name="" title="所有资源" url="" img="" operations="" >
+		<menu id="010000" name="home" title="系统首页" url="/home.page" img="images/icon_4.png" operations=""/>
+		<menu id="030000" name="intopieces" title="进件管理" url="" img="images/icon_sys.gif" operations="">
+		    <menu id="030001" name="intopiecesquery" title="进件查询" url="/intopieces/intopiecesquery/browse.page" img="" operations="create|addbatch|change|display|import|approveloguser|approvelog|browse"/>
+		    <menu id="030002" name="addIntopieces" title="进件新增" url="/intopieces/addIntopieces/browseProduct.page" img="" operations="create|change|display|browse"/>
+		    <menu id="030003" name="intopiecesps " title="进件初审" url="/intopieces/intopiecesdecision/csBrowse.page" img="" operations="create|change|display|browse"/>
+			<menu id="030004" name="intopiecesdecision " title="审贷决议" url="/intopieces/intopiecesdecision/browse.page" img="" operations="create|change|display|browse"/>
+			<menu id="030005" name="intopiecesdecisionbz" title="小微负责人审批" url="/intopieces/intopiecesdecision/bzBrowse.page" img="" operations="create|change|display|browse"/>
+			<menu id="030006" name="intopiecesdecisionzj" title="零售业务部负责人审批" url="/intopieces/intopiecesdecision/zjBrowse.page" img="" operations="create|change|display|browse"/>
+			<menu id="030007" name="intopiecesdecisionhz" title="行长审批" url="/intopieces/intopiecesdecision/hzBrowse.page" img="" operations="create|change|display|browse"/>
+		</menu>
+		<menu id="040000" name="customer" title="客户管理" operations="">
+			<menu id="040001" name="basiccustomerinfor" title="客户原始信息管理" url="/customer/firsthend/browse.page" img="" operations="create|browse"/>
+			<menu id="040002" name="basiccustomerinforCreate" title="客户信息新增" url="/customer/basiccustomerinforCreate/insert.page" img="" operations="create|browse"/>
+			<menu id="040003" name="customer_wh_ty" title="客户维护信息" url="/customer/customerInfor_wh_ty/browse.page" img="" operations="create|change|browse"/>
+			<menu id="040004" name="maintenance" title="客户维护计划列表" url="/customer/maintenance/browse.page" img="" operations="create|change|display|browse"/>
+			<menu id="040005" name="customermaintenancelog" title="客户维护信息日志列表" url="/customer/maintenance/log.page" img="" operations="display|browse|change"/>
+			<menu id="040006" name="basiccustomerinforMove" title="客户移交申请" url="/customer/basiccustomerinforMove/browse.page" img="" operations="create|browse"/>
+			<menu id="040007" name="basiccustomerinforMoveExamine" title="客户移交审批" url="/customer/basiccustomerinforMove/examineBrowse.page" img="" operations="create|browse"/>
+			<menu id="040026" name="customer_ZRRTZ" title="自然人台账" url="/customer/customer_ZRRTZ/zrrtz.json" img="" operations="browse"/>
+		</menu>
+		
+		<menu id="060000" name="product" title="产品管理" url="" img="images/icon_sys.gif" operations="">
+			<menu id="060001" name="productinformation" title="产品信息" url="/product/productinformation/browse.page" img="" operations="create|change|display|browse|confignodeintopieces|confignodeamountadjustment"/>
+			<menu id="060002" name="productpublic" title="产品发布" url="/product/productpublic/browse.page" img="" operations="approvepass|published|browse"/>
+		</menu>
+		<menu id="070000" name="manager" title="客户经理管理" url="" img="images/icon_sys.gif" operations="">
+		    <menu id="070001" name="managercreate" title="客户经理参数配置" url="/manager/managercreate/browse.page" img="" operations="create|change|delete|display|browse"/>
+			<menu id="070002" name="belongmap" title="客户经理从属设置" url="/manager/belongmap/browse.page" img="" operations="create|subturnother|delete|browse"/>
+			<menu id="070003" name="dailyaccount" title="客户经理日报" url="/manager/dailyaccount/browse.page" img="" operations="change|display|browse"/>
+			<menu id="070004" name="retraining" title="客户经理培训计划列表" url="/manager/retraining/browse.page" img="" operations="create|change|delete|display|browse"/>
+ 			<menu id="070005" name="trainmessage" title="培训通知" url="/notificationmessage/trainmessage/browse.page" img="" operations="checked|display|browse"/>		    
+ 			<menu id="070006" name="performmanceinput" title="业绩进度录入" url="/manager/performmance/insert.page" img="" operations="checked|display|browse"/>		    
+ 			<menu id="070007" name="performmancebrowse" title="业绩进度查询" url="/manager/performmance/browse.page" img="" operations="checked|display|browse"/>
+ 			<menu id="070008" name="trainmessage" title="管辖客户管理" url="/manager/khgl/browse.page" img="" operations="checked|display|browse"/>
+ 			<menu id="070009" name="model" title="四维授信评估模型" url="/manager/khgl/dimensionsCreditModel.page" img="" operations="checked|display|browse"/>		    
+		</menu>
+		<menu id="080000" name="riskcontrol" title="综合风控管理" operations=""> 
+			<menu id="080001" name="riskcustomermanager" title="风险客户管理" url="/riskcontrol/riskcustomermanager/managerbrowse.page" img="" operations="reported|browse"/>
+			<menu id="080002" name="riskcustomercollection" title="客户催收计划列表" url="/riskcontrol/riskcustomercollection/browse.page" img="" operations="create|change|display|browse"/>
+		</menu>
+		
+		
+		<menu id="091000" name="postLoan" title="贷后管理" url="" img="images/icon_sys.gif" operations="">
+			<menu id="091001" name="postLoan1" title="借据表信息" url="/postLoan/post/browse.page" img="" operations="create|change|display|browse"/>
+			<menu id="091002" name="postLoan2" title="流水表信息" url="/postLoan/post/lshbrowse.page" img="" operations="create|change|display|browse"/>
+			<menu id="091003" name="postLoan3" title="贷后监控" url="/postLoan/post/dhbrowse.page" img="" operations="create|addbatch|change|display|import|approveloguser|approvelog|browse"/>
+			<menu id="091004" name="postLoan4" title="台帐表信息" url="/postLoan/post/tzbrowse.page" img="" operations="create|change|display|browse"/>
+		</menu>
+		
+		<menu id="104000" name="shouxi" title="收息统计" url="" img="images/icon_sys.gif" operations="">
+		    <menu id="102005" name="postLoan1" title="机构收息统计" url="/Sx/post/SxBrowse.page" img="" operations="create|change|display|browse"/>
+			<menu id="102006" name="postLoan2" title="机构内收息统计" url="/Sx/post/JgnSxBrowse.page" img="" operations="create|change|display|browse"/>
+		</menu>
+		
+		<menu id="092000" name="performanceManagement" title="绩效管理" url="" img="images/icon_sys.gif" operations="">
+			 <menu id="092001" name="managerPromotionRule" title="客户经理绩效工资参数配置" url="/manager/managerPromotionRule/updateJxParam.page" img="" operations="browse|change|create"/>
+	         <menu id="092002" name="jbxc" 	 title="客户经理基本薪酬配置" url="/manager/leveladjustment/browsejnjbxc.page" img="" operations="display|browse"/>
+			 <menu id="092003" name="jxcs"   title="客户经理绩效每月绩效参数" url="/manager/leveladjustment/browseMonthJx.page" img="" operations="browse|change|create"/>
+		     <menu id="092004" name="dkye"   title="客户每月日均贷款余额" url="/manager/leveladjustment/browseCustDayBalamt.page" img="" operations="browse|change|create"/>
+		     <menu id="092005" name="dkywjx" title="客户经理每月工资信息" url="/manager/leveladjustment/jnJxbrowse.page" img="" operations="display|browse"/>
+	     <!--<menu id="092006" name="qtywjx" title="客户经理其他业务员绩效" url="/manager/leveladjustment/browse.page" img="" operations="display|browse"/>
+			 <menu id="092007" name="fxbzj"  title="客户经理风险保证金" url="/manager/leveladjustment/browse.page" img="" operations="display|browse"/>
+			 <menu id="092008" name="bkkx"   title="客户经理补扣款项" url="/manager/leveladjustment/browse.page" img="" operations="display|browse"/> 
+	         <menu id="092002" name="managersalary"   title="客户经理工资信息列表" url="/manager/managersalary/browse.page" img="" operations="change|browse"/>
+		     <menu id="092006" name="leveladjustment" title="客户经理级别调整"    url="/manager/leveladjustment/browse.page" img="" operations="display|browse"/>-->
+		</menu>
+		
+		<menu id="100000" name="report" title="报表管理" url="" img="images/icon_sys.gif" operations="">
+			<menu id="100010" name="customerMove" title="客户移交流水记录报表 "  url="/customer/transferFlow/queryCustomerTransfer.page" img="" operations="browse"/>
+			<menu id="100020" name="disburseLoan" title="已发放贷款统计报表 "   url="/disburse/loan/queryHaveBeenLoan.page" img="" operations="browse"/>
+			<menu id="100030" name="refuseLoan"   title="被拒绝贷款统计报表 "   url="/refuse/loan/queryRefuseLoan.page" img="" operations="browse"/>
+			<menu id="100040" name="expireLoan"   title="到期终止贷款统计报表 "  url="/expire/loan/queryExpireLoan.page" img="" operations="browse"/>
+			<menu id="100050" name="balanceLoan"  title="贷款余额统计报表 "     url="/balance/loan/queryBalanceLoan.page" img="" operations="browse"/>
+			<menu id="100060" name="overLoan"     title="逾期贷款统计报表 "     url="/overdue/loan/queryOverdueLoan.page" img="" operations="browse"/>
+			<menu id="100070" name="expectLoan"   title="预期还款贷款统计报表 "   url="/expect/loan/queryExpectLoan.page" img="" operations="browse"/>
+			<menu id="100080" name="creditFlow"   title="信贷流程统计报表 "      url="/credit/flow/queryCreditFlow.page" img="" operations="browse"/>
+			<menu id="100090" name="afterLoancollectAll" title="贷款汇总查询"  url="/report/afterLoancollect/browseAll.page" img="" operations="browse"/>
+		</menu>
+		
+		<menu id="102000" name="batchrunManagement" title="批处理管理" url="" img="images/icon_sys.gif" operations="">
+			 <menu id="102001" name="batchrun" title="批处理重跑" url="/batch/returnrun/browse.page" img="" operations="display|browse"/>
+			 <menu id="102002" name="log" title="日志查看" url="/batch/returnrun/logBrowse.page" img="" operations="display|browse"/>
+			 <menu id="102003" name="excute" title="数据差错处理" url="/batch/returnrun/dataErrorProcee.page" img="" operations="display|browse"/>
+		</menu>
+		
+		<menu id="103000" name="system" title="系统管理" url="" img="images/icon_sys.gif" operations="">
+			<menu id="103010" name="resource" title="权限配置" url="/system/resource/browse.page" img="" operations="browse" />
+			<menu id="103020" name="datapri" title="数据权限" url="/system/datapri/browse.page" img="" operations="display|change|browse" />
+			<menu id="103030" name="organization" title="机构管理" url="/system/organization/browse.page" img="" operations="create|change|delete|display|browse" />
+			<menu id="103040" name="department" title="部门管理" url="/system/department/browse.page" img="" operations="create|change|delete|display|browse" />
+			<menu id="103050" name="role" title="角色管理" url="/system/role/browse.page" img="" operations="create|change|delete|display|browse|maintenance" />
+			<menu id="103060" name="user" title="用户管理" url="/system/user/browse.page" operations="create|change|delete|display|browse" />
+			<menu id="103070" name="operlog" title="操作日志" url="/system/operlog/browse.page" img="" operations="display|browse|export" />
+			<menu id="103080" name="login" title="登录日志" url="/system/loginlog/browse.page" img="" operations="display|browse|export" />
+			<menu id="103090" name="dict" title="数据字典" url="/system/dict/browse.page" img="" operations="create|delete|browse|change" />
+			<menu id="103100" name="parameter" title="系统参数配置" url="/system/parameter/browse.page" img="" operations="change|browse" />
+			<menu id="103110" name="group" title="用户组管理" url="/system/group/browse.page" img="" operations="display|browse|export" />
+			<menu id="103120" name="charge" title="负责人管理" url="/system/charge/browse.page" img="" operations="create|change|delete|display|browse" />
+		</menu>
+	</menu>
+</menus>

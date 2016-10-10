@@ -1,0 +1,20 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+        <div class="title">#mi18n("display")</div>
+			</div>
+#parse ("uimodel/display_page_form_part.htm")
+			<div class="submit">
+				<input class="current" type="button" onclick="javascript:history.go(-1);" value="#i18n('button.back')" />
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	var layout=new FormsLayout("formsId");			
+	window.top.currentWindow.setLayout(layout);
+	</script>
+</body>
+</html>
+#parse ("common/iframe_page_footer.htm")

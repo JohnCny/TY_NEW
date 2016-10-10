@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validators>
+	<validator id="manager.retraining">
+		<control name="trainingLocation">
+			<entry type="required" value="true" />
+			<entry type="maxlength" value="100" />
+		</control>
+		<control name="trainingTime">
+			<entry type="required" value="true" />
+		</control>
+		<control name="trainingPeople">
+			<entry type="required" value="true" />
+			<entry type="maxlength" value="100" />
+		</control>
+		
+		<control name="trainingMethod">
+			<entry type="maxlength" value="100" />
+		</control>
+		<control name="trainingObjective">
+			<entry type="maxlength" value="100" />
+		</control>
+		<control name="trainingContent">
+			<entry type="maxlength" value="100" />
+		</control>
+	</validator>
+</validators>

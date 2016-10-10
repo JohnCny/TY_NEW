@@ -1,0 +1,94 @@
+#parse ("common/iframe_page_header.htm")
+<link rel="stylesheet" type="text/css"
+	href="${contextPath}/css/customer/style.css" />
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
+<style>
+.form-l .form-r{height:32px;}
+</style>
+<body class="whitebg">
+	<div class="content_main">
+		<div class="contentinner">
+		 <div class="place">
+		<div class="title">客户维护信息快照>问卷调查</div>	
+    </div>
+			  #parse ("common/place_tab.htm")
+			<form id="id_module_form">
+			<input type="hidden" id="customerId" name="customerId" value="$!customer.id"/>
+			 <input type="hidden" id="applicationId" name="applicationId" value="$!applicationId" />
+			<div class="form-bd" id="formsId" style="border: 0px;">
+			
+					<table class="table-bd"  bordercolor="#cccccc" border="1" >
+					<h2 style="width:20%;">问题</h2>
+					<h2 style="width:80%;">回答</h2>
+						<colgroup>
+							<col width="20%" />
+							<col width="80%" />
+						
+						</colgroup>
+						#foreach ($cqi in $customerQuestionInfo)
+						
+						<tr>
+							<input type="hidden" id="id" name="questionCode_$!cqi.questionCode" value="$!cqi.questionCode"/>
+							<td><label class="" id="questionName" name="" > $!cqi.questionName</label>
+							<input type="hidden" id="questionCode" name="questionCode_$!cqi.questionCode" value="$!cqi.questionCode"/>
+							</td>
+							
+							<td><input id="anwser" name="${cqi.questionCode}_questionAnswer"  value="$!cqi.questionAnswer" disabled="disabled"></td>
+						
+						</tr>
+						#end
+					</table>
+					</div>
+					
+			</form>
+
+			<div class="submit">
+				  <input class="current" type="button" onclick="javascript:history.go(-1);" value="#i18n('button.back')" />
+			</div>
+		</div>
+	</div>
+
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");	
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	$(document).ready(function() {	
+		
+		$("li").removeClass("activeTab");
+		$("li:eq(3)").addClass("activeTab");
+	     $("#id_save_button").click(function() {
+		    
+			  if( $("#questionCustomerId").attr("value") == "")	{
+			  var formjson = $($formName).serialize();
+	     	    $.get("${contextPath}/customer/basiccustomerQuestion/insert.json", formjson, function(data, textStatus, jqXhr) {
+		            if (data.success) {
+		              #if ($request.getParameter('callBackUrl').indexOf('?') != -1)
+		            	  navigateTo("${contextPath}/customer/basiccustomerQuestion/create_wjdc.page?id=$!customer.id") ;
+		              #end
+		            }
+		          });}	
+	     	    else{
+	     	    	var formjson = $($formName).serialize();
+	     	    $.get("${contextPath}/customer/basiccustomerQuestion/insert.json", formjson, function(data, textStatus, jqXhr) {
+		            if (data.success) {
+		              #if ($request.getParameter('callBackUrl').indexOf('?') != -1)
+		            	  navigateTo("${contextPath}/customer/basiccustomerQuestion/create_wjdc.page?id=$!customer.id") ;
+		              #end
+		            }
+		          });
+	     	    }
+	     	    	
+	     	    
+	     	    
+	     	    
+	       });
+
+
+	});
+	
+	</script>
+	<script type="text/javascript">
+	
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

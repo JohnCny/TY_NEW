@@ -1,0 +1,137 @@
+#parse ("common/iframe_page_header.htm")
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+       <div class="place">
+       <div class="title">客户经理层级月度考核指标配置</div>
+      </div>
+       #parse ("common/place_tab_jlcj.htm")
+      <form id="id_module_form" action="${contextPath}/manager/managerPromotionRule/saveydkh.page" method="post">
+        <div class="form-bd" id="formsId" style="padding-top: 0px;">
+        
+          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%">
+            <colgroup>
+               <col width="10%" />
+              <col width="15%" />
+              <col width="20%" />
+              <col width="20%" />
+              <col width="15%" />
+              <col width="10%" />
+              <col width="10%" />
+              
+
+            </colgroup>
+            <tr>
+            <td class="titlec" >经理级别</td>
+             <td class="titlec" >授信额度(万)</td>
+              <td class="titlec" >月度日均透支余额(万)</td>
+               <td class="titlec" >团队月度日均透支余额(万)</td>
+                <td class="titlec" >管户数(户)</td>
+                <td class="titlec" >激活率</td>
+                 <td class="titlec" >活跃率</td>
+                  
+            </tr>
+            </table>
+            #if($mangerMonthAssessmentlist.size()!=0)
+             <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%">
+            <colgroup>
+               <col width="10%" />
+              <col width="15%" />
+              <col width="20%" />
+              <col width="20%" />
+              <col width="15%" />
+              <col width="10%" />
+              <col width="10%" />
+
+            </colgroup>
+             #foreach($mangerMonthAssessment in $!mangerMonthAssessmentlist)
+            <tr>
+              <td class="titlefc3"><input type="hidden" name="id" value="$!mangerMonthAssessment.id"><input type="hidden" name="customerManagerLevel" value="$!mangerMonthAssessment.customerManagerLevel">#dictVal('CUSTOMERMANAGERLEVEL',$!mangerMonthAssessment.customerManagerLevel)</td>
+              <td style="text-align: center;"><input type="hidden" id="creditlineAccount" name="creditlineAccount" value="$format.formatNumber($!mangerMonthAssessment.creditlineAccount,2,1000000)" readonly="readonly"/>--</td>
+              <td><input class="rinpsty" type="text" id="monthdayAvgCreditline" name="monthdayAvgCreditline" value="$format.formatNumber($!mangerMonthAssessment.monthdayAvgCreditline,2,1000000)" /></td>
+              #if($!mangerMonthAssessment.customerManagerLevel == "MANA005")
+              <td><input class="rinpsty" type="text" id="monthdayTeamAvgCreditline" name="monthdayTeamAvgCreditline" value="$format.formatNumber($!mangerMonthAssessment.monthdayTeamAvgCreditline,2,1000000)" /></td>
+              #else
+               <td style="text-align: center;"><input  type="hidden" id="monthdayTeamAvgCreditline" name="monthdayTeamAvgCreditline" value="$format.formatNumber($!mangerMonthAssessment.monthdayTeamAvgCreditline,2,1000000)" />--</td>
+              #end
+              <td><input class="rinpstynum" type="text" id="tubeNumber" name="tubeNumber" value="$!mangerMonthAssessment.tubeNumber" /></td>
+               #if($!mangerMonthAssessment.customerManagerLevel == "MANA001")
+              <td style="text-align: center;"><input  type="hidden" id="activeRate" name="activeRate" value="$!mangerMonthAssessment.activeRate"style="width: 70%"/>--</td>
+               <td style="text-align: center;"><input  type="hidden" id="activationRate" name="activationRate" value="$!mangerMonthAssessment.activationRate" style="width: 70%"/>--</td>
+              #else
+               <td><input class="rinpsty" type="text" id="activeRate" name="activeRate" value="$!mangerMonthAssessment.activeRate"style="width: 70%"/>%</td>
+              <td><input class="rinpsty" type="text" id="activationRate" name="activationRate" value="$!mangerMonthAssessment.activationRate" style="width: 70%"/>%</td>
+              #end
+            </tr>
+            #end
+          </table>
+          #else
+          
+            <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%">
+            <colgroup>
+               <col width="10%" />
+              <col width="15%" />
+              <col width="20%" />
+              <col width="20%" />
+              <col width="15%" />
+              <col width="10%" />
+              <col width="10%" />
+
+            </colgroup>
+             #foreach($dict in $!dictItems)
+            <tr>
+              <td class="titlefc3"><input type="hidden" name="id" value=""><input type="hidden" name="customerManagerLevel" value="$!dict.name">$!dict.title</td>
+              <td style="text-align: center;"><input class="rinpsty" type="hidden" id="creditlineAccount" name="creditlineAccount" value="" />--</td>
+              <td><input class="rinpsty" type="text" id="monthdayAvgCreditline" name="monthdayAvgCreditline" value="" /></td>
+               #if($!dict.name == "MANA005")
+              <td><input class="rinpsty" type="text" id="monthdayTeamAvgCreditline" name="monthdayTeamAvgCreditline" value="" /></td>
+              #else
+               <td style="text-align: center;"><input  type="hidden" id="monthdayTeamAvgCreditline" name="monthdayTeamAvgCreditline" value="" />--</td>
+              #end
+              <td><input class="rinpstynum" type="text" id="tubeNumber" name="tubeNumber" value="" /></td>
+               #if($!dict.name == "MANA001")
+              <td style="text-align: center;"><input  type="hidden" id="activeRate" name="activeRate" value=""style="width: 70%"/>--</td>
+               <td style="text-align: center;"><input  type="hidden" id="activationRate" name="activationRate" value="" style="width: 70%"/>--</td>
+              #else
+               <td><input class="rinpsty" type="text" id="activeRate" name="activeRate" value=""style="width: 70%"/>%</td>
+              <td><input class="rinpsty" type="text" id="activationRate" name="activationRate" value="" style="width: 70%"/>%</td>
+              #end
+             
+            </tr>
+            #end
+          </table>
+          #end
+        </div>
+      </form>
+
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n('button.cancel')" />
+      </div>
+    </div>
+  </div>
+   <script src='${contextPath}/js/maintenanceAccountManager/maintenanceAccountManager.js'></script> 
+  <script type="text/javascript">
+  
+	var layout=new FormsLayout("formsId");			
+	window.top.currentWindow.setLayout(layout);
+			
+	#set ($formName = "'#id_module_form'")
+	$(document).ready(function() {	
+
+		$("li").removeClass("activeTab");
+		$("li:eq(1)").addClass("activeTab");
+	     $("#id_save_button").click(function() {
+	    	var leng = 0;
+	    	 leng = $(".error").length;
+	    	if(leng > 0){
+	    		return;
+	    	}else{
+			  $("#id_module_form").submit();  
+	    	}
+	       });
+
+	});
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

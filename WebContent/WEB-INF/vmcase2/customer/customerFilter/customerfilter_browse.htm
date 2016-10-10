@@ -1,0 +1,125 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户筛选</div>
+      </div>
+      <div class="inquiry">
+        <div class="search_tag">#i18n("label.browse.filter")</div>
+        <div class="search">
+          <form id="submitForm">
+            <ul>
+            
+              <li>
+                <span>产品名称：<input type="text" name="productName" value="$!product.productName" /></span>
+              </li>
+              
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="5%" />
+              <col width="10%" />
+              <col />
+              <col />
+              <col />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">产品类型</th>
+              <th nowrap="nowrap">产品名称</th>
+              <th nowrap="nowrap">授信额度</th>
+              <th nowrap="nowrap">利率区间</th>
+              <th nowrap="nowrap">贷款期限</th>
+              <th nowrap="nowrap">贷款主体</th>
+              <th nowrap="nowrap">产品状态</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="5%" />
+              <col width="10%" />
+              <col />
+              <col />
+              <col />
+            </colgroup>
+            #foreach ($product in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!product.id"
+                  #if ($!request.getParameter("recordId") == $product.id) checked="checked" #end /></td>
+              <td nowrap="nowrap">#dictVal("CMMCPLX", $!product.productTypeCode)</td>
+              <td nowrap="nowrap">$!product.productName</td>
+              <td nowrap="nowrap">$!product.creditLine</td>
+              <td nowrap="nowrap">$!product.rateRange</td>
+              <td nowrap="nowrap">$!product.loanTimeLimit</td>
+              <td nowrap="nowrap">$!product.loanPrincipal</td>
+               <td nowrap="nowrap">#dictVal("ProductStatus", $!product.status)</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+        <a id="id_filter_button" class="btn_g" href="javascript:void(0);" title="筛选">筛选</a>
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.createUrl = "${modulePath}/filter.page";
+		opsObj.browseUrl = "${modulePath}/browse.page";
+	
+	if (opsObj.createUrl) {
+        $("#id_filter_button").click(function() {
+            if ($(".checkbox :checked").length == 1) {
+                var rowid = $($(".checkbox :checked")[0]).attr("value");
+                var url ="";
+                
+                if(opsObj.createUrl.indexOf("?")>=0){
+                	url = opsObj.createUrl + "&id=" + rowid;
+                }else{
+                	url = opsObj.createUrl + "?id=" + rowid;
+                }
+                if (opsObj.formObj) {
+                    // 回调URL
+                    var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
+                    if (callBackUrlObj) {
+                        url += "&" + $.param({
+                            'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+                        });
+                    }
+                }
+                window.location.href = url;
+            } else {
+                Dialog.message("请选择一行");
+            }
+        });
+    }
+	});
+	
+	 initClickEvent();
+
+
+</script>
+#parse ("common/iframe_page_footer.htm")

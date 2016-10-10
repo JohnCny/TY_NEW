@@ -1,0 +1,87 @@
+#parse ("common/iframe_page_header.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
+
+<body>
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+				  <div class="dvTab">
+        <ul class="com-tab">
+        	<li class="tab activeTab">流水信息</li>
+      </ul>
+        </div>
+			</div>
+			<form id="id_module_form" action="">
+				<div class="forms" id="formsId">
+					<!-- <input type="hidden" name="id" value="$!productId" /> -->
+					<table class="rule">
+						<colgroup>
+							<col width="10%" />
+							<col width="30%" />
+							<col width="10%" />
+							<col width="10%" />
+							<col width="30%" />
+						</colgroup>
+						<tr>
+							<td><label for="name">还款日期:</label></td>
+							<td><input type="text" id="suoshunf" name="suoshunf"
+								value="$!rarepaylist.repaydate" disabled="true"/></td>
+							<td></td>
+							<td><label for="name">业务编号:</label></td>
+							<td><input type="text" id="suoshuqc" name="suoshuqc"
+								value="$!rarepaylist.busicode" disabled="true"/></td>
+						</tr>
+						
+					    <tr>
+							<td><label for="name">收回本金:</label></td>
+							<td><input type="text" id="suoshubm" name="suoshubm"
+								value="$!rarepaylist.repayamt" disabled="true"/></td>
+							<td></td>
+							<td><label for="name">收回利息:</label></td>
+						    <td><input type="text" id="kehubh" name="kehubh" 
+						    		   value="$!rarepaylist.rapayinterest"
+						    		   readonly="readonly" disabled="true"/>
+						</tr>
+
+						<tr>
+							<td><label for="name">清收方式:</label></td>
+							<td><input type="text" id="kehumc" name="kehumc"
+								value="$!rarepaylist.squaremodel" disabled="true"/></td>
+							<td></td>
+							<td><label for="name">实际清收人:</label></td>
+							<td><input type="text" id="kehulx" name="kehulx"
+								value="$!rarepaylist.squareoper" disabled="true"/></td>
+						</tr>
+						<tr>
+							<td><label for="name">处置方案:</label></td>
+							<td><input type="text" id="cardType" name="cardType"
+								value="$!rarepaylist.handleschemaid" disabled="true"/></td>
+							<td></td>
+							<td><label for="name">处置类型:</label></td>
+							<td><input type="text" id="cardId" name="cardId"
+								value="$!rarepaylist.handletypeid" disabled="true"/></td>
+						</tr>
+
+						<tr>
+							<td><label for="name">贷款状态:</label></td>
+							<td><input type="text" id="fafangje" name="fafangje"
+								value="$!fcloanifo.loanstatus" disabled="true"/></td>
+							
+						</tr>
+
+					</table>
+				</div>
+			</form>
+		
+			<div class="submit">
+				<input class="current" type="button" onclick="javascript:history.go(-1);" value="#i18n('button.back')" />
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		var layout = new FormsLayout("formsId");
+		window.top.currentWindow.setLayout(layout);
+	</script>
+</body>
+
+</html>

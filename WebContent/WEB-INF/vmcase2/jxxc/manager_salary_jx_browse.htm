@@ -1,0 +1,245 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户经理每月工资信息</div>
+      </div>
+      <div class="inquiry">
+        <div class="search_tag">#i18n("label.browse.filter")</div>
+        <div class="search">
+          <form id="submitForm" >
+            <ul>
+              <li>
+                <span>客户经理姓名：<input type="text" id="managerName" name="managerName" value="" maxlength="50"/></span>
+              </li>
+              <li>
+                <span>所属机构：<select id="organName" name="organName"><option value="">请选择</option>#dict("ORGANJN","")</select></span>
+              </li>
+              <li>
+              	  <span style="color:red">客户经理类型：<select  name="managerType" id ="managerType">
+              	    <option value=""></option>
+                  	#dict("MANAGER_TYPE","")
+                  </select></span>
+              </li>
+              <li>
+	          	<span style="color:red">日期:&nbsp;<input type="text" id ="date" name="date" value='$!date.format("yyyy-MM-dd",$!result.filter.startDate)' 
+	          		onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span>
+              </li>
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="2%" />
+              <col width="2%" />
+              <col width="2%" />
+              <col width="4%" />
+              <col width="4%" />
+              <col width="4%" />
+              <col width="5%" />
+              
+              <col width="5%" />
+              <col width="5%" />
+              <col width="5%" />
+              <col width="5%" />
+              <col width="5%" />
+              <col width="5%" />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">年份</th>
+              <th nowrap="nowrap">月份</th>
+              <th nowrap="nowrap">管辖行</th>
+              <th nowrap="nowrap">客户经理</th>
+              <th nowrap="nowrap">基本工资(元)</th>
+              <th nowrap="nowrap">基础任务量奖金</th>
+              
+              <th nowrap="nowrap">业务量绩效</th>
+              <th nowrap="nowrap">利润提成</th>
+              <th nowrap="nowrap">逾期扣款</th>
+              <th nowrap="nowrap">风险准备金余额</th>
+              <th nowrap="nowrap">返还风险准备金</th>
+              <th nowrap="nowrap">存入风险准备金</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="2%" />
+              <col width="2%" />
+              <col width="2%" />
+              <col width="4%" />
+              <col width="4%" />
+              <col width="4%" />
+              <col width="5%" />
+              
+              <col width="5%" />
+              <col width="5%" />
+              <col width="5%" />
+              <col width="5%" />
+              <col width="5%" />
+              <col width="5%" />
+            </colgroup>
+            #foreach ($managerSalary in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!managerSalary.id"/></td>
+              <td nowrap="nowrap">$!managerSalary.year</td>
+              <td nowrap="nowrap">$!managerSalary.month</td>
+              <td nowrap="nowrap">$!managerSalary.instCode</td>
+              <td nowrap="nowrap">$!managerSalary.managerName</td>
+              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.basePay)</td>
+              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.basicTaskBonus)</td>
+              
+              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.volumePerformance)</td>
+              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.profitDraw)</td>
+              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.overdueDeduct)</td>
+              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.riskReserveBalances)</td>
+              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.returnPrepareAmount)</td>
+              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.insertPrepareAmount)</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+           <input id="id_genertae_button" type="button" value="生成数据" class="search_button_inquiry"
+                  title="生成数据" style="height: 26px; line-height: 24px;" />
+           <input id="id_update_button" type="button" value="查看详情" class="search_button_inquiry"
+                  title="查看详情" style="height: 26px; line-height: 24px;" /> 
+           <input id="id_export_button" type="button" value="导出EXCEL" class="search_button_inquiry"
+                  title="导出工资单" style="height: 26px; line-height: 24px;" />
+          <!--  <input id="id_print_button" type="button" value="打印" class="search_button_inquiry"
+                  title="打印" style="height: 26px; line-height: 24px;" /> -->
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.createUrl  = "${modulePath}/create.page";
+		opsObj.displayUrl = "${modulePath}/display.page";
+		opsObj.changeUrl  = "${modulePath}/changeSalary.page";
+		opsObj.deleteUrl  = "${modulePath}/delete.json";
+		opsObj.browseUrl  = "${modulePath}/jnJxbrowse.page";
+		opsObj.exportUrl  = "${modulePath}/exportData.json";
+		
+		//浏览
+		if (opsObj.browseUrl) {
+			 $("#id_browse_button").click(function() {
+		            var url = opsObj.browseUrl;
+	                document.getElementById("submitForm").action = url;
+	                document.getElementById("submitForm").submit();
+		        });
+		}
+		
+		//生成工资
+		$("#id_genertae_button").click(function() {
+	    	if($('#date').val() == "" || $('#date').val() == null){
+	    		Dialog.message("请输入日期");
+	    	}else{
+	    		Dialog.load();
+				$.ajax({
+					type:'GET',
+					url:"${modulePath}/generateData.json",
+					data:{'date': $('#date').val()},
+					success:function(data){
+						Dialog.closeLoad();
+						if(data.success == true){
+							//Dialog.message("成功");
+							window.location.href="${modulePath}/jnJxbrowse.page";
+						}else{
+							Dialog.message(data.errors.errors[0].message);
+						}
+						
+					}
+				});
+	    	}
+	    });
+		
+		
+	 	//导出
+		$("#id_export_button").click(function() {
+			/* if($('#date').val() == "" || $('#date').val() == null){
+	    		Dialog.message("请输入日期");
+	    	}else{
+	    		var url = opsObj.exportUrl;
+            	document.getElementById("submitForm").action = url;
+            	document.getElementById("submitForm").submit();
+	    	} */
+	    	
+			if($('#date').val() == "" || $('#date').val() == null){
+	    		Dialog.message("请输入日期");
+	    		return;
+	    	}
+	    	
+			if($('#managerType').val() == "" || $('#managerType').val() == null){
+	    		Dialog.message("请选择客户经理类型");
+	    		return;
+	    	}
+	       
+			if($('#managerType').val() == '3'){
+				//风险岗
+				var url = "${modulePath}/exportDatas.json";
+          		document.getElementById("submitForm").action = url;
+          		document.getElementById("submitForm").submit();
+			}else{
+				//行编及外聘客户经理
+   				var url = opsObj.exportUrl;
+          		document.getElementById("submitForm").action = url;
+          		document.getElementById("submitForm").submit();
+			}
+	    	
+	    }); 
+	 	
+	 	//打印
+		$("#id_print_button").click(function() {
+			var url = "${contextPath}/manager/leveladjustment/print.page";
+			window.open(url,"newwindow");
+	    }); 
+	 	
+	 	//工资调整
+        $("#id_update_button").click(function() {
+            if ($(".checkbox :checked").length == 1) {
+                var rowid = $($(".checkbox :checked")[0]).attr("value");
+                var url = opsObj.changeUrl;
+                
+                if(url.indexOf("?")>=0){
+                	url = url + "&id=" + rowid;
+                }else{
+                	url = url + "?id=" + rowid;
+                }
+                if (opsObj.formObj) {
+                    // 回调URL
+                    var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
+                    if (callBackUrlObj) {
+                        url += "&" + $.param({
+                            'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+                        });
+                    }
+                }
+                window.location.href = url;
+            } else {
+                Dialog.message("请选择一行");
+            }
+        }); 
+ 	
+		
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")

@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	default-autowire="byName" default-init-method="init" default-destroy-method="depose"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+	<!-- 邮件配置 start -->
+	<bean id="mailHelper" class="com.wicresoft.util.mail.MailHelper">
+		<property name="from" value="${mail.sender.from}"/>
+		<property name="fromName" value="${mail.sender.fromName}"/>
+		<property name="signalAttachFileMaxSize" value="${mail.attach.file.size}"/>
+		<property name="attachFileMaxCount" value="${mail.attach.max.count}"/>
+		<property name="fileSuffixes" value="${mail.attach.suffixes}"/>
+		<property name="mailSender" ref="mailSender" />
+	</bean>
+	
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="${mail.host}"/>
+		<property name="port" value="${mail.port}"/>
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">${mail.smtp.auth}</prop>
+				<prop key="mail.smtp.timeout">${mail.smtp.timeout}</prop>
+			</props>
+		</property>
+		<property name="username" value="${mail.sender.username}"/>
+		<property name="password" value="${mail.sender.password}"/>
+	</bean>
+	<!-- 邮件配置 end -->
+	
+	<!-- ftp配置 start -->
+	<bean id="sftpHelper" class="com.wicresoft.util.ftp.SftpHelper">
+		<property name="host" value="${jardutil.sftpHost}"/>
+		<property name="port" value="${jardutil.sftpPort}"/>
+		<property name="username" value="${jardutil.sftpUser}"/>
+		<property name="password" value="${jardutil.sftpPass}"/>
+		<property name="privateKey" value="${jardutil.sftpKeyFile}"/>
+		<property name="passphrase" value="${jardutil.sftpKeyPass}"/>
+	</bean>
+	
+	<bean id="ftpHelper" class="com.wicresoft.util.ftp.FtpHelper">
+		<property name="ftpHostName" value="${jardutil.ftpHost}"/>
+		<property name="ftpPort" value="${jardutil.ftpPort}"/>
+		<property name="ftpUserName" value="${jardutil.ftpUser}"/>
+		<property name="ftpPassword" value="${jardutil.ftpPass}"/>
+		<property name="dataTransferMode" value="${jardutil.dataTransfer}"/>
+	</bean>
+	<!-- ftp配置 end -->
+	
+	<!-- 短信配置 start -->
+	<bean id="sms7HttpClientService" class="com.wicresoft.util.sms.httpclient.Sms7HttpClientService">
+		<property name="url" value="${jardutil.httpsms.url}"/>
+		<property name="uid" value="${jardutil.httpsms.uid}"/>
+		<property name="pwd" value="${jardutil.httpsms.pwd}"/>
+<!-- 		<property name="connectTimeout" value="${jardutil.httpsms.connectTimeout}"/> -->
+<!-- 		<property name="socketTimeout" value="${jardutil.httpsms.socketTimeout}"/> -->
+<!-- 		<property name="maxTotalConnections" value="${jardutil.httpsms.maxTotalConnections}"/> -->
+<!-- 		<property name="maxRouteConnections" value="${jardutil.httpsms.maxRouteConnections}"/> -->
+	</bean>
+	
+	<bean id="smsHttpClient" class="com.wicresoft.util.sms.SmsHttpClient">
+		<property name="sms7HttpClientService" ref="sms7HttpClientService"/>
+	</bean>
+	
+	<bean id="smsServiceClient" class="com.wicresoft.util.sms.SmsServiceClient">
+		<property name="locator" value="${jardutil.wssms.locator}"/>
+		<property name="username" value="${jardutil.wssms.username}"/>
+		<property name="password" value="${jardutil.wssms.password}"/>
+		<property name="batch" value="${jardutil.wssms.batch}"/>
+	</bean>
+	
+	<bean id="smsHelper" class="com.wicresoft.util.sms.SmsHelper">
+		<property name="iSms" ref="smsHttpClient"/>
+	</bean>
+	<!-- 短信配置 end -->
+	
+	
+	
+	
+	<!-- =========================================================== 系统定时触发器 ==================================================-->
+	<!-- 1.task -->
+	<bean id="taskJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="dailyReportScheduleService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>doTransferData</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="taskTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="taskJob"/>
+        </property>
+        <!-- cron表达式 -->
+        <property name="cronExpression">
+            <value>0 00 17 ? * *</value><!--时间定在第一个跑批前  -->
+        </property>
+    </bean>
+	<!-- task end-->
+	
+	<!-- 2.每日下载和解压数据 -->
+	<bean id="downAndtargzJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="odsTools_jn"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>downloadFiles</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="downAndtargzScheduleTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="downAndtargzJob"/>
+        </property>
+        <!-- cron表达式 -->
+        <property name="cronExpression">
+            <value>0 10 18 ? * *</value><!--下午3点 -->
+        </property>
+    </bean>
+	<!-- 每日下载和解压数据 end-->
+    
+    <!-- 3.客户经理日报 -->
+    <bean id="dailyReportScheduleJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="dailyReportScheduleService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>insertWeekSchedule</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="dailyReportScheduleTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="dailyReportScheduleJob"/>
+        </property>
+        <!-- cron表达式 -->
+        <property name="cronExpression">
+            <value>0 0 12 ? * SAT</value><!--时间定在周六  -->
+        </property>
+    </bean>
+    <!-- 客户经理日报  end -->
+    
+    
+    <!-- 4.ODS增量数据-->
+    <bean id="readWholeAndIncrementScheduleJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="readWholeAndIncrementService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>doReadFileIncrement</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="readWholeAndIncrementScheduleTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="readWholeAndIncrementScheduleJob"/>
+        </property>
+        <!-- cron表达式 -->
+        <property name="cronExpression">
+            <value>0 30 18 ? * *</value><!--时间定在周六  -->
+        </property>
+    </bean>
+    <!-- 客户经理日报  end -->
+    
+    
+    <!--5.同步系统中的进件的status-->
+    <bean id="updateCustomerAppInfoStatusJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="customerApplicationInfoSynchScheduleService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>dosynchJnCustAppInfoMethod</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="updateCustomerAppInfoStatusTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="updateCustomerAppInfoStatusJob"/>
+        </property>
+        <property name="cronExpression">
+            <value>0 00 23 ? * *</value>
+        </property>
+    </bean>
+    
+    
+    <!--每月初统计客户经理绩效参数-->
+    <!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序  -->
+    <bean id="scheduler" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+            	 <ref bean="taskTigger"/>
+                 <ref bean="downAndtargzScheduleTigger"/>
+                 <ref bean="readWholeAndIncrementScheduleTigger"/>
+                 <ref bean="dailyReportScheduleTigger"/>
+                 <ref bean="updateCustomerAppInfoStatusTigger"/>
+            </list>
+        </property>
+    </bean>
+    
+   
+</beans>

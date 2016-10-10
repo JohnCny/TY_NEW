@@ -1,0 +1,8 @@
+			#if ($result.totalPages > 0)
+			#set ($baseURI = $request.getRequestURI())
+				<div class="page">	
+				        <span>共<b>$result.totalCount</b>条数据</span>				
+				</div>
+			#else
+			<div class="page">	共<b>0</b>条数据</div>
+			#end

@@ -1,0 +1,183 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/customerInfor.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户原始信息</div>
+      </div>
+      
+      <div class="inquiry">
+<!-----------搜索------------------------------------------->  
+  
+        <div class="search_tag">#i18n("label.browse.filter")</div>
+        <div class="search">
+          <form id="submitForm" action="${contextPath}/customer/firsthend/browse.page">
+            <ul>
+              <li>
+                <span>客户名称：<input type="text" name="chineseName" value="$!result.filter.chineseName" /></span>
+              </li>
+              <li>
+                <span>证件号码：<input type="text" name="cardId" value="$!result.filter.cardId" /></span>
+              </li>
+              
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
+       
+<!-------------- 信息显示 ------------------------------------->        
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="8%" />
+              <col width="18%" />
+              <col width="17%"/>
+              <col width="40%" />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">中文姓名</th>
+              <th nowrap="nowrap">证件类型</th>
+              <th nowrap="nowrap">证件号码</th>
+              <th nowrap="nowrap">客户经理姓名</th> 
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="8%" />
+              <col width="18%" />
+              <col width="17%"/>
+              <col width="40%" /> 
+            </colgroup>
+            #foreach ($!{customer} in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" id="checkbox" value="$!customer.tyCustomerId@$!customer.chineseName@$!customer.cardId"/></td>
+              <td nowrap="nowrap">$!customer.chineseName</td>
+              <!-- <td nowrap="nowrap">#customerInfor($request.getAttribute("cardTypeList"),$!customer.cardType)</td> -->
+              <td nowrap="nowrap">#dictVal("CARDTYPEJN", $!customer.cardType)</td>
+              <td nowrap="nowrap">$!customer.cardId</td>
+              <td nowrap="nowrap">$!customer.userId</td> 
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+          <a id="id_create_button" class="btn_g" href="javascript:void(0);" title="查看原始信息">查看原始信息</a>
+          <!-- <a id="id_reject_button" class="btn_g" href="javascript:void(0);" title="拒绝">拒绝</a> -->
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+ <!--  <div id="rejectDataDialog" title="拒绝" style=" resize: none; z-index: 2000">
+    <div class="inquiry_list">
+      <form name="modifyPasswordForm" id="modifyPasswordForm">
+        <table style="height: auto;">
+          <colgroup>
+            <col width="10%">
+            <col width="20%">
+            <col width="35%">
+            <col width="35%">
+          </colgroup>
+          <tr>
+            <td>&nbsp;</td>
+            <td>姓名:</td>
+            <td><input type="text" name="xm" id="xm" value="" readonly/></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td>证件号:</td>
+            <td><input type="text" name="card_id" id="card_id" value=""  readonly/></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td>拒绝原因:</td>
+            <td><textarea name="reason" id="reason" ></textarea></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td>拒绝日期:</td>
+            <td><input type="text" name="date" id="date"  value="" onmouseover="_calendar()"/></td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td>客户经理:</td>
+            <td><input type="text" name="customer_name" id="customer_name" value="$!{customerName}" readonly/></td>
+            <td>&nbsp;</td>
+          </tr>
+        </table>
+    </form>
+    </div> 
+  </div> -->
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+	url = "${modulePath}/browse.page";
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+
+		opsObj.displayUrl = "${modulePath}/display.page";
+		opsObj.changeUrl = "${modulePath}/change.page";
+		opsObj.deleteUrl = "${modulePath}/delete.json";
+		opsObj.browseUrl = "${modulePath}/browse.page";
+		prepareOperations(opsObj);
+		
+		$("#id_create_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var value = $("input[name='checkbox']:checked").val();
+				var rowid = value.split("@")[0];
+				if(rowid==''||rowid==null){
+					Dialog.message("无原始信息!");
+					return;
+				}
+				//var url = "${modulePath}/showInfo.page?id=" + rowid;//ty
+				var url = "${modulePath}/showInfoJn.page?id=" + rowid;//jn
+				window.location.href = url;
+			}else{
+				Dialog.message("请选择记录!");
+			}
+	    });
+	/* 	$("#id_reject_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var value = $("input[name='checkbox']:checked").val();
+				var name = value.split("@")[1];
+				var cardId = value.split("@")[2];
+				  Dialog.form("#rejectDataDialog", 
+						'拒绝客户 ', 
+						function(){
+						}, function(){；
+							
+							$("#form_diaog").dialog("close");
+						}, 
+						500, 200);  
+				  window.top.$("#xm").val(name);
+				  window.top.$("#card_id").val(cardId);
+				
+			}else{
+				Dialog.message("请选择记录!");
+			}
+	    }); */
+
+	});
+	
+	
+</script>
+   <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
+#parse ("common/iframe_page_footer.htm")

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validators>
+	<validator id="customer.viewsubmaintenance">
+	  <control name="customerId">
+			<entry type="maxlength" value="222"/>
+		</control>
+	</validator>
+</validators>

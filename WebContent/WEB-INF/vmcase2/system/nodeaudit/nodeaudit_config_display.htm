@@ -1,0 +1,75 @@
+#parse ("common/iframe_page_header.htm")
+<body class="whitebg">
+    <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">审批流程节点显示</div>
+      </div>
+      <form id="id_module_form" action="">
+        <div class="forms" id="formsId">
+          <table class="rule">
+            <colgroup> 
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="30%" />
+            </colgroup>
+            <tr>
+              <td><label for="seqNo">序号:</label></td>
+              <td><input type="text" id="seqNo" name="seqNo" value="$!nodeAudit.seqNo" disabled="disabled"/></td>
+              <td>&nbsp;</td>
+              <td><label for="nodeName">节点名称:</label></td>
+              <td><input type="text" id="nodeName" name="nodeName" value="$!nodeAudit.nodeName" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label for="auditUserNames">审批人员:</label></td>
+              <td><input type="text" id="auditUserNames" name="auditUserNames" value="$!nodeAudit.auditUserNames" disabled="disabled"/></td>
+              <td>&nbsp;</td>
+              <td><label for="nodeTypeView">节点类型:</label></td>
+              <td>
+               <select id="nodeTypeView" name="nodeTypeView" disabled="disabled">
+                #dict("NODETYPE", $!nodeType)
+               </select>
+              </td>
+            </tr>
+            <tr>
+              <td><label for="isstart">是否开始节点:</label></td>
+              <td>
+              	<select id="isstart" name="isstart" disabled="disabled">
+                #dict("YESNO", $!nodeAudit.isstart)
+                </select>
+              </td>
+              <td>&nbsp;</td>
+              <td><label for="isend">是否结束节点:</label></td>
+              <td>
+               <select id="isend" name="isend" disabled="disabled">
+                #dict("YESNO", $!nodeAudit.isend)
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><label for="type">节点操作类型:</label></td>
+              <td>
+               <select id="type" name="type" disabled="disabled">
+                #dict("NODEOPTYPE", '')
+               </select>
+              </td>
+              <td colspan="3">&nbsp;</td>
+            </tr>
+          </table>
+        </div>
+      </form>
+      <div class="submit">
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n("button.cancel")" />
+      </div>
+    </div>
+  </div>
+  
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");	
+	window.top.currentWindow.setLayout(layout);
+	
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

@@ -1,0 +1,162 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户经理“灵活金”发卡情况统计</div>
+      </div>
+      
+      <div class="inquiry">
+<!-----------搜索------------------------------------------->  
+  
+        <div class="search_tag"></div>
+        <div class="search">
+          <form id="submitForm">
+            <ul>
+              <li>
+                <span>产品：<select id="productId" name="productId">
+	                   <option value="">请选择...</option>
+	                   #foreach($!product in $!result.items)
+							<option value="$!product.id" #if($!product.id== $!filter.productId) selected #end>
+								$!product.productName
+							</option>
+						#end
+	                </select>
+				</span>
+              </li>
+              <li>
+                <span>基准日期：<input type="text" name="basicDate" value='$!date.format("yyyy-MM-dd",$!filter.basicDate)' onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span>
+              </li>
+              <li>
+                <span>报表日期：<input type="text" name="reportDate" value='$!date.format("yyyy-MM-dd",$!filter.reportDate)' onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span>
+              </li>
+              
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="筛选" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
+       
+		<!-------------- 信息显示 ------------------------------------->      
+		<div id="topDiv" class="inquiry_list inquiry_top">
+           <table>
+            <colgroup>
+              <col width="60"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+            </colgroup>
+            <tr class="title" align="center">
+              <th nowrap="nowrap">序号</th>
+              <th nowrap="nowrap">客户经理</th>
+              
+              <th nowrap="nowrap">基准日期</th>
+              <th nowrap="nowrap">发卡数</th>
+              <th nowrap="nowrap">到卡数</th>
+              <th nowrap="nowrap">激活卡数</th>
+              <th nowrap="nowrap">未激活卡数</th>
+              <th nowrap="nowrap">激活率</th>
+              <th nowrap="nowrap">发卡数</th>
+              
+              <th nowrap="nowrap">报表日期</th>
+              <th nowrap="nowrap">到卡数</th>
+              <th nowrap="nowrap">激活卡数</th>
+              <th nowrap="nowrap">未激活卡数</th>
+              <th nowrap="nowrap">激活率</th>
+              
+              <th nowrap="nowrap">发卡净增</th>
+              <th nowrap="nowrap">到卡净增数</th>
+              <th nowrap="nowrap">激活卡净增数</th>
+              <th nowrap="nowrap">未激活净增卡数</th>
+              <th nowrap="nowrap">激活率变动</th>
+            </tr>
+          </table>
+        </div>  
+        
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="60"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="110"/>
+            </colgroup>
+            #foreach ($cardStatistical in $list)
+            	<tr id="$!cardStatistical.id">
+	              <td nowrap="nowrap">$!cardStatistical.rowIndex</td>
+	              <td nowrap="nowrap">$!cardStatistical.name</td>
+	              <td nowrap="nowrap">$!date.format("yyyy-MM-dd",$!filter.basicDate)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!cardStatistical.bSendCardNumber)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!cardStatistical.bAcceptCardNumber)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!cardStatistical.bActivateCardNumber)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!cardStatistical.bNoActivateCardNumber)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!cardStatistical.bActiveRate)%</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!cardStatistical.rSendCardNumber)</td>
+	              <td nowrap="nowrap">$!date.format("yyyy-MM-dd",$!filter.reportDate)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!cardStatistical.rAcceptCardNumber)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!cardStatistical.rActivateCardNumber)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!cardStatistical.rNoActivateCardNumber)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!cardStatistical.rActiveRate)%</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!cardStatistical.addSendCardNumber)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!cardStatistical.addAcceptCardNumber)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!cardStatistical.addActivateCardNumber)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!cardStatistical.addNoActivateCardNumber)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!cardStatistical.addActiveRate)%</td>
+	            </tr>
+            #end
+          </table>
+        </div>
+      </div>		
+        <div class="clear"></div>
+      </div>
+    </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.createUrl = "${modulePath}/create.page";
+		opsObj.changeUrl = "${modulePath}/change.page";
+		opsObj.displayUrl = "${modulePath}/display.page";
+		opsObj.browseUrl = "${modulePath}/browse.page";
+
+		prepareOperations(opsObj);
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")

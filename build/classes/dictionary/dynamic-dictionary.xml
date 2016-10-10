@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dictionaries>
+	<!-- <dictionary name="ProductType" title="产品类型" timeout="10000"> select 
+		xx as name, yy as title from tb_xxx where xxxxx=? </dictionary> -->
+
+	<dictionary name="AllUsers" title="所有用户" timeout="10000">
+		select id
+		as name, display_name as title from sys_user order by display_name
+	</dictionary>
+
+	<dictionary name="GroupUsers" title="用户组成员" timeout="1000">
+		SELECT
+		b.id AS name,
+		b.display_name AS title
+		FROM
+		sys_user_group a,
+		sys_user b
+		WHERE
+		a.group_id = '#P{0}'
+		AND
+		a.user_id = b.id
+		ORDER BY
+		b.display_name
+
+	</dictionary>
+	<dictionary name="RoleUsers" title="角色成员" timeout="1000">
+
+		SELECT
+		b.id AS name,
+		b.display_name AS title
+		FROM
+		sys_role_user a,
+		sys_user b
+		WHERE
+		a.role_id = '#P{0}'
+		AND
+		a.user_id = b.id
+		ORDER BY
+		b.display_name
+
+	</dictionary>
+
+	<dictionary name="Organizations" title="机构列表" timeout="1000">
+		select t.id as name,
+		t.name as title
+		from SYS_ORGANIZATION t
+	</dictionary>
+
+	<dictionary name="CMMSCLNM" title="贷款担保方式" timeout="1000">
+		SELECT
+		A.TYPE_CODE AS name,
+		A.TYPE_NAME AS title
+		FROM
+		DICT A
+		WHERE
+		A .DICT_TYPE =
+		'CMMSCLNM-贷款担保方式'
+	</dictionary>
+	<dictionary name="CMMHKFS" title="信用(还款）方式" timeout="1000">
+		SELECT
+		A.TYPE_CODE AS name,
+		A.TYPE_NAME AS title
+		FROM
+		DICT A
+		WHERE
+		A .DICT_TYPE =
+		'CMMHKFS-信用还款方式'
+	</dictionary>
+	<dictionary name="CMMJXFS" title="结息方式" timeout="1000">
+		SELECT
+		A.TYPE_CODE AS name,
+		A.TYPE_NAME AS title
+		FROM
+		DICT A
+		WHERE
+		A .DICT_TYPE =
+		'CMMJXFS-结息方式'
+	</dictionary>
+	<dictionary name="CMMCPLX" title="产品类型" timeout="1000">
+		SELECT
+		A.id AS name,
+		A.product_name AS title
+		FROM
+		product_attribute A
+	</dictionary>
+
+	<dictionary name="HYLB_" title="行业类别" timeout="1000">
+		SELECT
+		A.TYPE_CODE AS name,
+		A.TYPE_NAME AS title
+		FROM
+		INDUSTRY_DICT A
+	</dictionary>
+	<dictionary name="APPRETURESION" title="退回原因" timeout="1000">
+		SELECT
+		A.TYPE_CODE AS name,
+		A.TYPE_NAME AS title
+		FROM
+		DICT A
+		WHERE
+		A.DICT_TYPE ='APPRETURESION'
+	</dictionary>
+	
+	<dictionary name="HYLB_CODE" title="行业类别" timeout="1000">
+		SELECT
+		A.TYPE_CODE AS name,
+		A.TYPE_NAME AS title
+		FROM
+		INDUSTRY_DICT A
+	</dictionary>
+
+	<dictionary name="HYLB" title="行业类别" timeout="1000">
+		SELECT
+		A.RISK AS
+		name,
+		A.TYPE_NAME AS title
+		FROM
+		INDUSTRY_DICT A
+	</dictionary>
+
+	<dictionary name="CARDTYPE" title="证件类型" timeout="1000">
+		SELECT
+		A.TYPE_CODE AS name,
+		A.TYPE_NAME AS title
+		FROM
+		DICT A
+		WHERE Dict_Type like
+		'CMMSCCST%'
+	</dictionary>
+
+	<dictionary name="WJDC" title="问卷调查" timeout="1000">
+		SELECT
+		A.QUESTON_CODE AS name,
+		A.QUESTION_NAME AS title
+		FROM
+		QUESTION_DICT A
+		where a.QUESTON_CODE='#P{0}'
+	</dictionary>
+	<dictionary name="ProductName" title="产品名称" timeout="1000">
+		SELECT
+		ID AS name,
+		PRODUCT_NAME AS title
+		FROM
+		PRODUCT_ATTRIBUTE
+	</dictionary>
+	<dictionary name="CustomerName" title="客户名称" timeout="1000">
+		select
+		t.id as name ,
+		t.chinese_name as title
+		from basic_customer_information t
+		where t.user_id = '#P{0}'
+	</dictionary>
+
+	<dictionary name="VERIFICATIONTYPE" title="核销类型" timeout="1000">
+		SELECT
+		A.TYPE_CODE AS name,
+		A.TYPE_NAME AS title
+		FROM
+		DICT A
+		WHERE
+		Dict_Type = 'CMMJXFS-核销条件'
+	</dictionary>
+
+	<dictionary name="ACCOUNTSTATUS" title="帐户状态" timeout="10000">
+		SELECT
+		A.TYPE_CODE AS name,
+		A.TYPE_NAME AS title
+		FROM
+		DICT A
+		WHERE
+		Dict_Type = 'CMMSCCCS-帐户状态'
+	</dictionary>
+
+<dictionary name="DEGREEEDUCATION" title="教育程度" timeout="10000">
+		SELECT
+		A.TYPE_CODE AS name,
+		A.TYPE_NAME AS title
+		FROM
+		DICT A
+		WHERE
+		Dict_Type = 'DEGREEEDUCATION'
+	</dictionary>
+	<dictionary name="GENDER" title="性别" timeout="10000">
+		SELECT
+		A.TYPE_CODE AS name,
+		A.TYPE_NAME AS title
+		FROM
+		DICT A
+		WHERE
+		Dict_Type = 'GENDER'
+	</dictionary>
+	<dictionary name="CUSTOMERMANAGERLEVEL" title="客户经理层级"
+		timeout="10000">
+		SELECT
+		A .TYPE_CODE AS NAME,
+		A .TYPE_NAME AS title
+		FROM
+		DICT A
+		WHERE
+		Dict_Type = '经理层级'
+		ORDER BY  A .TYPE_CODE  ASC
+	</dictionary>
+
+	<dictionary name="WHFS" title="维护方式" timeout="10000">
+		select
+		Type_code as name,Type_name as title
+		from Dict
+		where 1=1
+		and
+		Dict_Type = 'CMMJXFS-催收方式'
+	</dictionary>
+	
+	<dictionary name="CMMSCNTC" title="国籍" timeout="10000">
+		select
+		Type_code as name,Type_name as title
+		from Dict
+		where 1=1
+		and
+		Dict_Type = 'CMMSCNTC-国籍'
+	</dictionary>
+	
+	<dictionary name="CMMSCHOM" title="住宅类型" timeout="10000">
+		select
+		Type_code as name,Type_name as title
+		from Dict
+		where 1=1
+		and
+		Dict_Type = 'CMMSCHOM-住宅类型'
+	</dictionary>
+	
+	<dictionary name="CMMSCMRC" title="婚姻状况" timeout="10000">
+		select
+		Type_code as name,Type_name as title
+		from Dict
+		where 1=1
+		and
+		Dict_Type = 'CMMSCMRC-婚姻状况'
+	</dictionary>
+	
+	<dictionary name="CMMSCCOM" title="单位性质分值" timeout="10000">
+		select
+		Type_code as name,Type_name as title
+		from Dict
+		where 1=1
+		and
+		Dict_Type = 'CMMSCCOM-单位性质分值'
+	</dictionary>
+	
+
+	<dictionary name="CUSTOMERMANAGER" title="客户经理" timeout="10000">
+		SELECT
+	A.ID AS NAME,
+	A.DISPLAY_NAME AS title
+FROM
+	SYS_USER A
+WHERE
+	A.ID NOT IN (
+		SELECT
+			P.user_id AS NAME
+		FROM
+			ACCOUNT_MANAGER_PARAMETER P
+	)
+AND A.IS_DELETED = '0'
+AND A.USER_TYPE !='0'
+	</dictionary>
+	<dictionary name="ALLMANAGER" title="所有客户经理" timeout="10000">
+		SELECT
+		A ."ID" AS NAME,
+		A .DISPLAY_NAME AS title
+		FROM
+		SYS_USER A
+		WHERE
+		A .USER_TYPE = '1'
+	</dictionary>
+	<dictionary name="CONGSHUMANAGER" title="添加客户经理从属关系"  timeout="0">
+		SELECT
+		amp.ID AS NAME,
+		su.DISPLAY_NAME AS title
+		FROM
+		account_manager_parameter amp
+		left join sys_user su on su.id = amp.user_id
+		WHERE amp.id not in (select child_id from manager_belong_map)
+	</dictionary>
+
+	<dictionary name="DKSYL" title="贷款使用率" timeout="10000">
+		select
+		Type_code as name,Type_name as title
+		from Dict
+		where 1=1
+		and
+		Dict_Type = 'DKSYL-贷款使用率'
+	</dictionary>
+	
+	<dictionary name="LSHSL" title="利息收回率" timeout="10000">
+		select
+		Type_code as name,Type_name as title
+		from Dict
+		where 1=1
+		and
+		Dict_Type = 'LSHSL-利息收回率'
+	</dictionary>
+	
+	<dictionary name="YQL" title="逾期率" timeout="10000">
+		select
+		Type_code as name,Type_name as title
+		from Dict
+		where 1=1
+		and
+		Dict_Type = 'YQL-逾期率'
+	</dictionary>
+	
+	<dictionary name="YQHSL" title="逾期回收率" timeout="10000">
+		select
+		Type_code as name,Type_name as title
+		from Dict
+		where 1=1
+		and
+		Dict_Type = 'YQHSL-逾期回收率'
+	</dictionary>
+	
+	<dictionary name="YQYE" title="逾期余额" timeout="10000">
+		select
+		Type_code as name,Type_name as title
+		from Dict
+		where 1=1
+		and
+		Dict_Type = 'YQYE-逾期余额'
+	</dictionary>
+	
+	<dictionary name="XCDKL" title="瑕疵贷款率" timeout="10000">
+		select
+		Type_code as name,Type_name as title
+		from Dict
+		where 1=1
+		and
+		Dict_Type = 'XCDKL-瑕疵贷款率'
+	</dictionary>
+	
+	<dictionary name="KHZZ" title="客户资质" timeout="10000">
+		select
+		Type_code as name,Type_name as title
+		from Dict
+		where 1=1
+		and
+		Dict_Type = '客户资质'
+	</dictionary>
+	
+	<dictionary name="KHJLPGNFLB" title="客户评估年份" timeout="10000">
+		select distinct to_char(data_year) as name,to_char(data_year)||'年' as title
+    	from manager_assessment_score
+	</dictionary>
+	<dictionary name="NODECONFIGLIST" title="角色成员" timeout="1000">
+		SELECT
+		b.id AS name,
+		b.node_name AS title
+		FROM
+		node_audit b
+		WHERE
+		b.product_id = '#P{0}'
+		AND
+		b.node_type = '#P{1}'
+		and
+		b.is_deleted = 0
+		ORDER BY
+		b.seq_no asc
+
+	</dictionary>
+	
+		<dictionary name="USERS" title="客户经理列表"
+		timeout="10000">
+		select '0' as NAME,'请选择' as title FROM
+ 		sys_user 
+ 		union
+		SELECT
+		A .id AS NAME,
+		A .external_id || A .display_name AS title
+		FROM
+		sys_user A
+		WHERE
+		user_type = '1' order by NAME 
+	</dictionary>
+		<dictionary name="USERSANDMANA" title="客户经理和区域主管列表"
+		timeout="10000">
+		 select '0' as NAME,'请选择' as title FROM
+ 		sys_user 
+ 		union
+ 		SELECT
+		id AS NAME,
+ 		external_id || display_name AS title
+		FROM
+ 		sys_user WHERE external_id is not null and USER_TYPE in ('1','2')
+	</dictionary>
+	
+	
+	<dictionary name="MANAGERUSERS" title="客户经理" timeout="10000">
+		select '0' as NAME, '请选择' as title
+		  FROM sys_user
+		union
+		select s.id as NAME, s.external_id || s.display_name AS title
+		  from account_manager_parameter m, sys_user s
+		 where s.id = m.user_id
+	</dictionary>
+	
+	<dictionary name="XWTUDUUSERS" title="小微团队" timeout="10000">
+		select '0' as NAME, '请选择' as title
+      FROM sys_user t where user_type ='4'
+    union
+    select s.id as NAME, s.external_id || s.display_name AS title
+      from  sys_user s
+     where s.user_type ='4'
+	</dictionary>
+	
+</dictionaries>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="GBK"?>
+
+<resultMap>
+    <!-- <result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/> -->
+	<result column="YWBH" jdbcType="VARCHAR" index="1" />
+
+	<result column="KMH" jdbcType="VARCHAR" index="2" />
+
+	<result column="KHJL" jdbcType="VARCHAR" index="3" />
+
+	<result column="JJH" jdbcType="VARCHAR" index="4" />
+
+	<result column="YWJG" jdbcType="VARCHAR" index="5" />
+
+	<result column="YWJGH" jdbcType="VARCHAR" index="7" />
+
+	<result column="DKZH" jdbcType="VARCHAR" index="6" />
+
+	<result column="FZH" jdbcType="VARCHAR" index="8" />
+
+	<result column="LSH" jdbcType="VARCHAR" index="9" />
+
+	<result column="YWDM" jdbcType="VARCHAR" index="10" />
+
+	<result column="JZRQ" jdbcType="VARCHAR" index="11" />
+
+	<result column="YWRQ" jdbcType="VARCHAR" index="12" />
+
+	<result column="ZY" jdbcType="VARCHAR" index="13" />
+
+	<result column="PZH" jdbcType="VARCHAR" index="14" />
+
+	<result column="JF" jdbcType="VARCHAR" index="15" />
+
+	<result column="DF" jdbcType="VARCHAR" index="16" />
+
+	<result column="YE" jdbcType="VARCHAR" index="17" />
+
+	<result column="QXRX" jdbcType="VARCHAR" index="18" />
+
+	<result column="ZXRQ" jdbcType="VARCHAR" index="19" />
+
+	<result column="SFMZ" jdbcType="VARCHAR" index="20" />
+
+	<result column="MZYH" jdbcType="VARCHAR" index="21" />
+
+	<result column="MZSJ" jdbcType="VARCHAR" index="22" />
+
+	<result column="SFCL" jdbcType="VARCHAR" index="23" />
+
+</resultMap>

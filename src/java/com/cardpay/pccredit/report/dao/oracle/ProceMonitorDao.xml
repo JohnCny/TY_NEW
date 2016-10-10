@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.report.dao.ProceMonitorDao">
+	
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.report.model.manaProceMonitor">
+		<result property="id" column="id" />
+		<result property="bank" column="bank" />
+		<result property="rowindex" column="rowindex" />
+		<result property="displayName" column="displayName" />
+		<result property="orgName" column="orgName" />
+		<result property="jinjian" column="jinjian" />
+		<result property="chushen" column="chushen" />
+		<result property="luru" column="luru" />
+		<result property="fushen" column="fushen" />
+		<result property="chushenapprove" column="chushenapprove" />
+		<result property="luruapprove" column="luruapprove" />
+		<result property="fushenapprove" column="fushenapprove" />
+	</resultMap>
+	
+	<resultMap id="BankResultMap" type="com.cardpay.pccredit.report.model.bankProceMonitor">
+		<result property="id" column="id" />
+		<result property="bank" column="bank" />
+		<result property="rowindex" column="rowindex" />
+		<result property="displayName" column="displayName" />
+		<result property="orgName" column="orgName" />
+		<result property="jinjian" column="jinjian" />
+		<result property="chushen" column="chushen" />
+		<result property="luru" column="luru" />
+		<result property="fushen" column="fushen" />
+		<result property="chushenapprove" column="chushenapprove" />
+		<result property="luruapprove" column="luruapprove" />
+		<result property="fushenapprove" column="fushenapprove" />
+	</resultMap>
+	
+	<select id="getProceMonitorStatistical" resultMap="ResultMap"
+			parameterType="com.cardpay.pccredit.report.filter.StatisticalFilter">
+
+
+select a.*,ROWNUM as rowindex from(
+SELECT
+	COUNT (c.ID) AS jinjian,
+	(
+		SELECT
+			SUM (
+				CASE
+				WHEN A .SEQ_NO = '1' THEN
+					1
+				ELSE
+					0
+				END
+			)
+		FROM
+			CUSTOMER_APPLICATION_PROCESS P,
+			WF_STATUS_QUEUE_RECORD r,
+			NODE_AUDIT A,
+			CUSTOMER_APPLICATION_INFO c
+		WHERE
+			A . ID = r.CURRENT_STATUS
+		AND P .SERIAL_NUMBER = r.CURRENT_PROCESS
+		AND P .APPLICATION_ID = c. ID
+		AND A .NODE_TYPE = 'Product'
+	) AS chushen,
+	(
+		SELECT
+			SUM (
+				CASE
+				WHEN A .SEQ_NO = '2' THEN
+					1
+				ELSE
+					0
+				END
+			)
+		FROM
+			CUSTOMER_APPLICATION_PROCESS P,
+			WF_STATUS_QUEUE_RECORD r,
+			NODE_AUDIT A,
+			CUSTOMER_APPLICATION_INFO c
+		WHERE
+			A . ID = r.CURRENT_STATUS
+		AND P .SERIAL_NUMBER = r.CURRENT_PROCESS
+		AND P .APPLICATION_ID = c. ID
+		AND A .NODE_TYPE = 'Product'
+	) AS luru,
+	(
+		SELECT
+			SUM (
+				CASE
+				WHEN A .SEQ_NO = '3' THEN
+					1
+				ELSE
+					0
+				END
+			)
+		FROM
+			CUSTOMER_APPLICATION_PROCESS P,
+			WF_STATUS_QUEUE_RECORD r,
+			NODE_AUDIT A,
+			CUSTOMER_APPLICATION_INFO c
+		WHERE
+			A . ID = r.CURRENT_STATUS
+		AND P .SERIAL_NUMBER = r.CURRENT_PROCESS
+		AND P .APPLICATION_ID = c. ID
+		AND A .NODE_TYPE = 'Product'
+	) AS fushen,
+	(
+		SELECT
+			SUM (
+				CASE
+				WHEN A .SEQ_NO = '1'
+				AND r.EXAMINE_RESULT = 'APPROVE' THEN
+					1
+				ELSE
+					0
+				END
+			)
+		FROM
+			CUSTOMER_APPLICATION_PROCESS P,
+			WF_STATUS_QUEUE_RECORD r,
+			NODE_AUDIT A,
+			CUSTOMER_APPLICATION_INFO c
+		WHERE
+			A . ID = r.CURRENT_STATUS
+		AND P .SERIAL_NUMBER = r.CURRENT_PROCESS
+		AND P .APPLICATION_ID = c. ID
+		AND A .NODE_TYPE = 'Product'
+	) AS chushenapprove,
+	(
+		SELECT
+			SUM (
+				CASE
+				WHEN A .SEQ_NO = '2'
+				AND r.EXAMINE_RESULT = 'APPROVE' THEN
+					1
+				ELSE
+					0
+				END
+			)
+		FROM
+			CUSTOMER_APPLICATION_PROCESS P,
+			WF_STATUS_QUEUE_RECORD r,
+			NODE_AUDIT A,
+			CUSTOMER_APPLICATION_INFO c
+		WHERE
+			A . ID = r.CURRENT_STATUS
+		AND P .SERIAL_NUMBER = r.CURRENT_PROCESS
+		AND P .APPLICATION_ID = c. ID
+		AND A .NODE_TYPE = 'Product'
+	) AS luruapprove,
+	(
+		SELECT
+			SUM (
+				CASE
+				WHEN A .SEQ_NO = '3'
+				AND r.EXAMINE_RESULT = 'APPROVE' THEN
+					1
+				ELSE
+					0
+				END
+			)
+		FROM
+			CUSTOMER_APPLICATION_PROCESS P,
+			WF_STATUS_QUEUE_RECORD r,
+			NODE_AUDIT A,
+			CUSTOMER_APPLICATION_INFO c
+		WHERE
+			A . ID = r.CURRENT_STATUS
+		AND P .SERIAL_NUMBER = r.CURRENT_PROCESS
+		AND P .APPLICATION_ID = c. ID
+		AND A .NODE_TYPE = 'Product'
+	) AS fushenapprove,
+u.DISPLAY_NAME as displayName
+FROM
+	CUSTOMER_APPLICATION_INFO c,
+	BASIC_CUSTOMER_INFORMATION b,
+	SYS_USER u
+WHERE
+	c.CUSTOMER_ID = b. ID
+	and u.ID = b.USER_ID
+GROUP BY
+ u.DISPLAY_NAME) a 
+	</select>
+	
+	<select id="getBankProceMonitorStatistical" resultMap="BankResultMap"
+			parameterType="com.cardpay.pccredit.report.filter.StatisticalFilter">
+		
+SELECT res.*,ROWNUM as rowindex FROM
+(
+select oo.NAME as displayName ,SUM(uu.jinjian) as jinjian, SUM(uu.chushen) as chushen ,SUM(uu.luru) as luru,SUM(uu.fushen) as fushen 
+,SUM(uu.chushenapprove) as chushenapprove ,SUM(uu.luruapprove) as luruapprove ,SUM(uu.fushenapprove) as fushenapprove
+from sys_organization oo
+inner join 
+(
+select ORG_ID, USER_ID from sys_department dd inner join SYS_DEPT_USER du 
+on dd.ID = DU.DEPT_ID
+) ddu
+on OO."ID" = DDU.ORG_ID
+inner join 
+
+(
+SELECT kk.* from (
+SELECT
+	COUNT (c.ID) AS jinjian,
+	(
+		SELECT
+			SUM (
+				CASE
+				WHEN A .SEQ_NO = '1' THEN
+					1
+				ELSE
+					0
+				END
+			)
+		FROM
+			CUSTOMER_APPLICATION_PROCESS P,
+			WF_STATUS_QUEUE_RECORD r,
+			NODE_AUDIT A,
+			CUSTOMER_APPLICATION_INFO c
+		WHERE
+			A . ID = r.CURRENT_STATUS
+		AND P .SERIAL_NUMBER = r.CURRENT_PROCESS
+		AND P .APPLICATION_ID = c. ID
+		AND A .NODE_TYPE = 'Product'
+	) AS chushen,
+	(
+		SELECT
+			SUM (
+				CASE
+				WHEN A .SEQ_NO = '2' THEN
+					1
+				ELSE
+					0
+				END
+			)
+		FROM
+			CUSTOMER_APPLICATION_PROCESS P,
+			WF_STATUS_QUEUE_RECORD r,
+			NODE_AUDIT A,
+			CUSTOMER_APPLICATION_INFO c
+		WHERE
+			A . ID = r.CURRENT_STATUS
+		AND P .SERIAL_NUMBER = r.CURRENT_PROCESS
+		AND P .APPLICATION_ID = c. ID
+		AND A .NODE_TYPE = 'Product'
+	) AS luru,
+	(
+		SELECT
+			SUM (
+				CASE
+				WHEN A .SEQ_NO = '3' THEN
+					1
+				ELSE
+					0
+				END
+			)
+		FROM
+			CUSTOMER_APPLICATION_PROCESS P,
+			WF_STATUS_QUEUE_RECORD r,
+			NODE_AUDIT A,
+			CUSTOMER_APPLICATION_INFO c
+		WHERE
+			A . ID = r.CURRENT_STATUS
+		AND P .SERIAL_NUMBER = r.CURRENT_PROCESS
+		AND P .APPLICATION_ID = c. ID
+		AND A .NODE_TYPE = 'Product'
+	) AS fushen,
+	(
+		SELECT
+			SUM (
+				CASE
+				WHEN A .SEQ_NO = '1'
+				AND r.EXAMINE_RESULT = 'APPROVE' THEN
+					1
+				ELSE
+					0
+				END
+			)
+		FROM
+			CUSTOMER_APPLICATION_PROCESS P,
+			WF_STATUS_QUEUE_RECORD r,
+			NODE_AUDIT A,
+			CUSTOMER_APPLICATION_INFO c
+		WHERE
+			A . ID = r.CURRENT_STATUS
+		AND P .SERIAL_NUMBER = r.CURRENT_PROCESS
+		AND P .APPLICATION_ID = c. ID
+		AND A .NODE_TYPE = 'Product'
+	) AS chushenapprove,
+	(
+		SELECT
+			SUM (
+				CASE
+				WHEN A .SEQ_NO = '2'
+				AND r.EXAMINE_RESULT = 'APPROVE' THEN
+					1
+				ELSE
+					0
+				END
+			)
+		FROM
+			CUSTOMER_APPLICATION_PROCESS P,
+			WF_STATUS_QUEUE_RECORD r,
+			NODE_AUDIT A,
+			CUSTOMER_APPLICATION_INFO c
+		WHERE
+			A . ID = r.CURRENT_STATUS
+		AND P .SERIAL_NUMBER = r.CURRENT_PROCESS
+		AND P .APPLICATION_ID = c. ID
+		AND A .NODE_TYPE = 'Product'
+	) AS luruapprove,
+	(
+		SELECT
+			SUM (
+				CASE
+				WHEN A .SEQ_NO = '3'
+				AND r.EXAMINE_RESULT = 'APPROVE' THEN
+					1
+				ELSE
+					0
+				END
+			)
+		FROM
+			CUSTOMER_APPLICATION_PROCESS P,
+			WF_STATUS_QUEUE_RECORD r,
+			NODE_AUDIT A,
+			CUSTOMER_APPLICATION_INFO c
+		WHERE
+			A . ID = r.CURRENT_STATUS
+		AND P .SERIAL_NUMBER = r.CURRENT_PROCESS
+		AND P .APPLICATION_ID = c. ID
+		AND A .NODE_TYPE = 'Product'
+	) AS fushenapprove,
+u.ID as userId
+FROM
+	CUSTOMER_APPLICATION_INFO c,
+	BASIC_CUSTOMER_INFORMATION b,
+	SYS_USER u
+WHERE
+	c.CUSTOMER_ID = b. ID
+	and u.ID = b.USER_ID
+GROUP BY
+ u.ID ) kk) uu
+on UU.userid = DDU.USER_ID
+GROUP BY oo.NAME
+) res
+
+
+	</select>
+</mapper>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validators>
+	<validator id="riskcontrol.accountabilityrecordcfcc">
+	  <control name="money">
+			<entry type="required" value="true" />
+			<entry type="number" value="true" />
+		</control>
+		 <control name="customerId">
+			<entry type="required" value="true" />
+		</control>
+		 <control name="productId">
+			<entry type="required" value="true" />
+		</control>
+	</validator>
+</validators>

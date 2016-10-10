@@ -1,0 +1,968 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.report.dao.CustomerTransferFlowDao">
+	
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.report.model.CustomerMoveForm">
+		<result property="customerId" column="customer_id" />
+		<result property="approveId" column="approve_id" />
+		<result property="moveId" column="move_id" />
+		<result property="status" column="status" />
+		<result property="approveGh" column="approve_gh" />
+		<result property="approveName" column="approve_name" />
+		<result property="moveGh" column="move_gh" />
+		<result property="moveName" column="move_name" />
+		<result property="chineseName" column="CHINESE_NAME" />
+		<result property="certiCode" column="CARD_ID" />
+		<result property="rowIndex" column="row_index" />
+	</resultMap>
+	
+	
+	<resultMap id="YffdktjbbFormResultMap" type="com.cardpay.pccredit.report.model.YffdktjbbForm">
+		<result property="cname" column="cname" />
+		<result property="cardtype" column="cardtype" />
+		<result property="prodName" column="prodName" />
+		<result property="money" column="money" />
+		<result property="baserate" column="baserate" />
+		<result property="interest" column="interest" />
+		<result property="state" column="state" />
+		<result property="busimanager" column="busimanager" />
+		<result property="name" column="name" />
+		<result property="rowIndex" column="row_index" />
+		<result property="accountstate" column="ACCOUNTSTATE" />
+	</resultMap>
+	
+	
+	
+	<resultMap id="DqzzdktjbbFormResultMap" type="com.cardpay.pccredit.report.model.DqzzdktjbbForm">
+		<result property="cname" column="cname" />
+		<result property="cardtype" column="cardtype" />
+		<result property="prodName" column="prodName" />
+		<result property="loandate" column="loandate" />
+		<result property="enddate" column="enddate" />
+		<result property="money" column="money" />
+		<result property="baserate" column="baserate" />
+		<result property="qs" column="qs" />
+		<result property="bjzh" column="bjzh" />
+		<result property="lxzh" column="lxzh" />
+		<result property="busimanager" column="busimanager" />
+		<result property="name" column="name" />
+		<result property="rowIndex" column="row_index" />
+	</resultMap>
+	
+	
+	
+	<resultMap id="BjjdktjbbFormResultMap" type="com.cardpay.pccredit.report.model.BjjdktjbbForm">
+		<result property="cname" column="cname" />
+		<result property="cardtype" column="cardtype" />
+		<result property="prodName" column="prodName" />
+		<result property="appdate" column="appdate" />
+		<result property="reqlmt" column="reqlmt" />
+		<result property="refuseDate" column="refuseDate" />
+		<result property="refuseReason" column="refuseReason" />
+		<result property="busimanager" column="busimanager" />
+		<result property="name" column="name" />
+		<result property="rowIndex" column="row_index" />
+	</resultMap>
+	
+	
+	<resultMap id="DkyetjbbFormResultMap" type="com.cardpay.pccredit.report.model.DkyetjbbForm">
+		<result property="cname" column="cname" />
+		<result property="cardnum" column="cardnum" />
+		<result property="prodName" column="prodName" />
+		<result property="money" column="money" />
+		<result property="interest" column="interest" />
+		<result property="loandate" column="loandate" />
+		<result property="balamt" column="balamt" />
+		<result property="bj" column="bj" />
+		<result property="lx" column="lx" />
+		<result property="state" column="state" />
+		<result property="busimanager" column="busimanager" />
+		<result property="instcode" column="instcode" />
+		<result property="rowIndex" column="row_index" />
+		<result property="accountstate" column="ACCOUNTSTATE" />
+	</resultMap>
+	
+	
+	<resultMap id="YqdktjbbFormResultMap" type="com.cardpay.pccredit.report.model.YqdktjbbForm">
+		<result property="cname" column="cname" />
+		<result property="cardnum" column="cardnum" />
+		<result property="contactmobiletel" column="contactmobiletel" />
+		<result property="prodName" column="prodName" />
+		<result property="money" column="money" />
+		<result property="interest" column="interest" />
+		<result property="hkze" column="hkze" />
+		<result property="hkbj" column="hkbj" />
+		<result property="yhlx" column="yhlx" />
+		<result property="busimanager" column="busimanager" />
+		<result property="instcode" column="instcode" />
+		<result property="rowIndex" column="row_index" />
+	</resultMap>
+	
+	<resultMap id="YqhkdktjbbFormResultMap" type="com.cardpay.pccredit.report.model.YqhkdktjbbForm">
+		<result property="cname" column="cname" />
+		<result property="cardnum" column="cardnum" />
+		<result property="prodName" column="prodName" />
+		<result property="money" column="money" />
+		<result property="interest" column="interest" />
+		<result property="loandate" column="loandate" />
+		<result property="balamt" column="balamt" />
+		<result property="bj" column="bj" />
+		<result property="lx" column="lx" />
+		<result property="state" column="state" />
+		<result property="busimanager" column="busimanager" />
+		<result property="instcode" column="instcode" />
+		<result property="rowIndex" column="row_index" />
+	</resultMap>
+	
+	<resultMap id="XdlctjbbFormResultMap" type="com.cardpay.pccredit.report.model.XdlctjbbForm">
+		<result property="chineseName" column="chineseName" />
+		<result property="cardId" column="cardId" />
+		<result property="prodName" column="prodName" />
+		<result property="applyQuota" column="applyQuota" />
+		<result property="createdTime" column="createdTime" />
+		<result property="clts" column="clts" />
+		<result property="dcr" column="dcr" />
+		<result property="dcts" column="dcts" />
+		<result property="sdhrq" column="sdhrq" />
+		<result property="sdhts" column="sdhts" />
+		<result property="dkffjjr" column="dkffjjr" />
+		<result property="totalNum" column="totalNum" />
+		<result property="custManager" column="custManager" />
+		<result property="name" column="name" />
+		<result property="rowIndex" column="row_index" />
+	</resultMap>
+
+   <resultMap id="CollectResultMap" type="com.cardpay.pccredit.report.model.AccLoanCollectInfo">
+	    <result property="rowIndex" column="rowindex" />
+	    <result property="increaseLoancount" column="increaseLoancount" />
+	    <result property="loanCustomerSum" column="loanCustomerSum" />
+	    <result property="increaseCusSum" column="increaseCusSum" />
+	    <result property="centreLoansSun" column="centreLoansSun" />
+	    <result property="loanBalanceSum" column="loanBalanceSum" />
+	    <result property="contAmt" column="contAmt" />
+	    <result property="contBalace" column="contBalace" />
+	    <result property="increaseLoanCredit" column="increaseLoanCredit" />
+	    <result property="increaseBalanceTheMonth" column="increaseBalanceTheMonth" />
+	    <result property="overdueBalanceTheMon" column="overdueBalanceTheMon" />
+	    <result property="overdueBalance" column="overdueBalance" />
+	    <result property="increseOverdueCusTheMon" column="increseOverdueCusTheMon" />
+	    <result property="alloverdue" column="alloverdue" />
+	    <result property="resvIntAccum" column="resvIntAccum" />
+	    <result property="overdueCusM0" column="overdueCusM0" />
+	    <result property="overdueCusM1" column="overdueCusM1" />
+	    <result property="overdueCusM2" column="overdueCusM2" />
+	    <result property="overdueCusM3" column="overdueCusM3" />
+	    <result property="overdueCusM4" column="overdueCusM4" />
+	    
+	    <result property="xy" column="xy" />
+	    <result property="bz" column="bz" />
+	    <result property="dy" column="dy" />
+	 </resultMap>
+  
+
+  
+
+	<select id="findCustomerTransferList" resultMap="ResultMap" 
+			parameterType="com.cardpay.pccredit.report.filter.CustomerMoveFilter">
+					SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					 select move.*,base.CHINESE_NAME,base.CARD_ID from TY_CUSTOMER_MOVE move,
+					 			   BASIC_CUSTOMER_INFORMATION base 
+					  WHERE 1=1 and base.ID = move.CUSTOMER_ID and move.status ='2'
+					<if test="certiCode != null and certiCode != '' ">
+						AND base.CARD_ID=#{certiCode}
+					</if>
+					 
+					<if test="customerName != null and customerName != '' ">
+						AND base.CHINESE_NAME=#{customerName}
+					</if>
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	<select id="findCustomerMoveCountList" resultType="int" 
+			parameterType="com.cardpay.pccredit.report.filter.CustomerMoveFilter">
+		 select count(*) from TY_CUSTOMER_MOVE move,
+					 	      BASIC_CUSTOMER_INFORMATION base
+		 WHERE 1=1 and base.ID = move.CUSTOMER_ID and move.status ='2'
+		<if test="certiCode != null and certiCode != '' ">
+			AND base.CARD_ID=#{certiCode}
+		</if>
+					 
+		<if test="customerName != null and customerName != '' ">
+		    AND base.CHINESE_NAME=#{customerName}
+		</if>
+	</select>
+	
+	
+	<select id="getCustomerMovelList" resultMap="ResultMap"
+			parameterType="com.cardpay.pccredit.report.filter.CustomerMoveFilter">
+ 		select move.*,base.CHINESE_NAME,base.CARD_ID,ROWNUM row_index from TY_CUSTOMER_MOVE move,
+					 			   BASIC_CUSTOMER_INFORMATION base 
+					  WHERE 1=1 and base.ID = move.CUSTOMER_ID and move.status ='2'
+					<if test="certiCode != null and certiCode != '' ">
+						AND base.CARD_ID=#{certiCode}
+					</if>
+					 
+					<if test="customerName != null and customerName != '' ">
+						AND base.CHINESE_NAME=#{customerName}
+					</if>
+
+ 	</select>
+ 	
+ 	
+ 	<!-- 已发放贷款统计 -->
+ 	<select id="findYffdktjbbFormList" resultMap="YffdktjbbFormResultMap" 
+			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
+					SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					 select a.*,trim(a.state) as ACCOUNTSTATE from yffdktjbb a WHERE 1=1 
+					<if test="certiCode != null and certiCode != '' ">
+						AND a.cardtype=#{certiCode}
+					</if>
+								 
+					<if test="customerName != null and customerName != '' ">
+					    AND a.cname=#{customerName}
+					</if>
+					
+					<if test="organName != null and organName != '' ">
+					    AND a.name=#{organName}
+					</if>
+					
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.busimanager=#{custManagerName}
+					</if>
+					
+					<if test="status != null and status != '' ">
+						AND a.state=#{status}
+					</if>
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	
+	<select id="getYffdktjbbFormlList" resultMap="YffdktjbbFormResultMap"
+			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
+ 		 			select a.*,ROWNUM row_index from yffdktjbb a WHERE 1=1 
+					<if test="certiCode != null and certiCode != '' ">
+						AND a.cardtype=#{certiCode}
+					</if>
+								 
+					<if test="customerName != null and customerName != '' ">
+					    AND a.cname=#{customerName}
+					</if>
+					
+					<if test="organName != null and organName != '' ">
+					    AND a.name=#{organName}
+					</if>
+					
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.busimanager=#{custManagerName}
+					</if>
+					
+					<if test="status != null and status != '' ">
+						AND a.state=#{status}
+					</if>
+ 	</select>
+	
+	<select id="findYffdktjbbFormCountList" resultType="int" 
+			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
+		 select count(*) from yffdktjbb a WHERE 1=1 
+		<if test="certiCode != null and certiCode != '' ">
+			AND a.cardtype=#{certiCode}
+		</if>
+					 
+		<if test="customerName != null and customerName != '' ">
+		    AND a.cname=#{customerName}
+		</if>
+		
+		<if test="organName != null and organName != '' ">
+		    AND a.name=#{organName}
+		</if>
+		
+		<if test="custManagerName != null and custManagerName != '' ">
+			AND a.busimanager=#{custManagerName}
+		</if>
+		
+		<if test="status != null and status != '' ">
+			AND a.state=#{status}
+		</if>
+	</select>
+	
+	<!-- 被拒绝贷款统计 -->
+	<select id="findbjjdktjbbFormList" resultMap="BjjdktjbbFormResultMap" 
+			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
+					SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					 select * from bjjdktjbb a WHERE 1=1 
+					<if test="certiCode != null and certiCode != '' ">
+						AND a.cardtype=#{certiCode}
+					</if>
+					<if test="customerName != null and customerName != '' ">
+					    AND a.cname=#{customerName}
+					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.name=#{organName}
+					</if>
+					
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.busimanager=#{custManagerName}
+					</if>
+					
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	<select id="findbjjdktjbbFormCountList" resultType="int" 
+			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
+		 select count(*) from bjjdktjbb a WHERE 1=1 
+		<if test="certiCode != null and certiCode != '' ">
+			AND a.cardtype=#{certiCode}
+		</if>
+		<if test="customerName != null and customerName != '' ">
+		    AND a.cname=#{customerName}
+		</if>
+		<if test="organName != null and organName != '' ">
+		    AND a.name=#{organName}
+		</if>
+		
+		<if test="custManagerName != null and custManagerName != '' ">
+			AND a.busimanager=#{custManagerName}
+		</if>
+		
+	</select>
+	
+	
+	<select id="getbjjdktjbbFormList" resultMap="BjjdktjbbFormResultMap" 
+			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
+					 select a.*,ROWNUM row_index from bjjdktjbb a WHERE 1=1 
+					<if test="certiCode != null and certiCode != '' ">
+						AND a.cardtype=#{certiCode}
+					</if>
+					<if test="customerName != null and customerName != '' ">
+					    AND a.cname=#{customerName}
+					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.name=#{organName}
+					</if>
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.busimanager=#{custManagerName}
+					</if>
+	</select>
+	
+	<!-- 到期终止贷款统计 -->
+	<select id="findDqzzdktjbbFormList" resultMap="DqzzdktjbbFormResultMap" 
+			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
+					SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					 select * from dqzzdktjbb a WHERE 1=1 
+					<if test="certiCode != null and certiCode != '' ">
+						AND a.cardtype=#{certiCode}
+					</if>
+					<if test="customerName != null and customerName != '' ">
+					    AND a.cname=#{customerName}
+					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.name=#{organName}
+					</if>
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.busimanager=#{custManagerName}
+					</if>
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	<select id="findDqzzdktjbbFormCountList" resultType="int" 
+			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
+		 select count(*) from dqzzdktjbb a WHERE 1=1 
+		<if test="certiCode != null and certiCode != '' ">
+			AND a.cardtype=#{certiCode}
+		</if>
+		<if test="customerName != null and customerName != '' ">
+		    AND a.cname=#{customerName}
+		</if>
+		<if test="organName != null and organName != '' ">
+		    AND a.name=#{organName}
+		</if>
+		<if test="custManagerName != null and custManagerName != '' ">
+			AND a.busimanager=#{custManagerName}
+		</if>
+	</select>
+	
+	
+	<select id="getDqzzdktjbbFormList" resultMap="DqzzdktjbbFormResultMap" 
+			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
+					 select a.*,ROWNUM row_index from dqzzdktjbb a WHERE 1=1 
+					<if test="certiCode != null and certiCode != '' ">
+						AND a.cardtype=#{certiCode}
+					</if>
+					<if test="customerName != null and customerName != '' ">
+					    AND a.cname=#{customerName}
+					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.name=#{organName}
+					</if>
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.busimanager=#{custManagerName}
+					</if>
+	</select>
+	
+	<!-- 贷款余额统计 -->
+	<select id="findDkyetjbbFormList" resultMap="DkyetjbbFormResultMap" 
+			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
+					SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					 select a.*,trim(a.state) as ACCOUNTSTATE from dkyetjbb a WHERE 1=1 
+					<if test="certiCode != null and certiCode != '' ">
+						AND a.cardnum=#{certiCode}
+					</if>
+					<if test="customerName != null and customerName != '' ">
+					    AND a.cname=#{customerName}
+					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.instcode=#{organName}
+					</if>
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.busimanager=#{custManagerName}
+					</if>
+					
+					<if test="status != null and status != '' ">
+						AND a.state=#{status}
+					</if>
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	<select id="findDkyetjbbFormCountList" resultType="int" 
+			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
+		 select count(*) from dkyetjbb a WHERE 1=1 
+		<if test="certiCode != null and certiCode != '' ">
+			AND a.cardnum=#{certiCode}
+		</if>
+		<if test="customerName != null and customerName != '' ">
+		    AND a.cname=#{customerName}
+		</if>
+		<if test="organName != null and organName != '' ">
+		    AND a.instcode=#{organName}
+		</if>
+		<if test="custManagerName != null and custManagerName != '' ">
+			AND a.busimanager=#{custManagerName}
+		</if>
+		
+		<if test="status != null and status != '' ">
+			AND a.state=#{status}
+		</if>
+	</select>
+	
+	<select id="getDkyetjbbFormList" resultMap="DkyetjbbFormResultMap" 
+			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
+					 select a.*,ROWNUM row_index from dkyetjbb a WHERE 1=1 
+					<if test="certiCode != null and certiCode != '' ">
+						AND a.cardnum=#{certiCode}
+					</if>
+					<if test="customerName != null and customerName != '' ">
+					    AND a.cname=#{customerName}
+					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.instcode=#{organName}
+					</if>
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.busimanager=#{custManagerName}
+					</if>
+					
+					<if test="status != null and status != '' ">
+						AND a.state=#{status}
+					</if>
+	</select>
+	
+	<!-- 逾期贷款统计 -->
+	<select id="findYqdktjbbFormList" resultMap="YqdktjbbFormResultMap" 
+			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
+					SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					 select * from yqdktjbb a WHERE 1=1 
+					<if test="certiCode != null and certiCode != '' ">
+						AND a.cardnum=#{certiCode}
+					</if>
+					<if test="customerName != null and customerName != '' ">
+					    AND a.cname=#{customerName}
+					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.instcode=#{organName}
+					</if>
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.busimanager=#{custManagerName}
+					</if>
+		 			<![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	
+	<select id="getYqdktjbbFormList" resultMap="YqdktjbbFormResultMap" 
+			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
+					
+					 select a.*,ROWNUM row_index from yqdktjbb a WHERE 1=1 
+					<if test="certiCode != null and certiCode != '' ">
+						AND a.cardnum=#{certiCode}
+					</if>
+					<if test="customerName != null and customerName != '' ">
+					    AND a.cname=#{customerName}
+					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.instcode=#{organName}
+					</if>
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.busimanager=#{custManagerName}
+					</if>
+	</select>
+	
+	
+	<select id="findYqdktjbbFormCountList" resultType="int" 
+			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
+		 select count(*) from yqdktjbb a WHERE 1=1 
+		<if test="certiCode != null and certiCode != '' ">
+			AND a.cardnum=#{certiCode}
+		</if>
+		<if test="customerName != null and customerName != '' ">
+		    AND a.cname=#{customerName}
+		</if>
+		<if test="organName != null and organName != '' ">
+		    AND a.instcode=#{organName}
+		</if>
+		<if test="custManagerName != null and custManagerName != '' ">
+			AND a.busimanager=#{custManagerName}
+		</if>
+	</select>
+	
+	<!--预期还款贷款统计-->
+	<select id="findYqhkdktjbbFormList" resultMap="YqhkdktjbbFormResultMap" 
+			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
+					SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					 select * from yqhkdktjbb a WHERE 1=1 
+					<if test="certiCode != null and certiCode != '' ">
+						AND a.cardnum=#{certiCode}
+					</if>
+					<if test="customerName != null and customerName != '' ">
+					    AND a.cname=#{customerName}
+					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.instcode=#{organName}
+					</if>
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.busimanager=#{custManagerName}
+					</if>
+		 			<![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	<select id="findYqhkdktjbbFormCountList" resultType="int" 
+			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
+		 select count(*) from yqhkdktjbb a WHERE 1=1 
+		<if test="certiCode != null and certiCode != '' ">
+			AND a.cardnum=#{certiCode}
+		</if>
+		<if test="customerName != null and customerName != '' ">
+		    AND a.cname=#{customerName}
+		</if>
+		<if test="organName != null and organName != '' ">
+		    AND a.instcode=#{organName}
+		</if>
+		<if test="custManagerName != null and custManagerName != '' ">
+			AND a.busimanager=#{custManagerName}
+		</if>
+	</select>
+	
+	<select id="getYqhkdktjbbFormList" resultMap="YqhkdktjbbFormResultMap" 
+			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
+					 select a.*,ROWNUM row_index from yqhkdktjbb a WHERE 1=1 
+					<if test="certiCode != null and certiCode != '' ">
+						AND a.cardnum=#{certiCode}
+					</if>
+					<if test="customerName != null and customerName != '' ">
+					    AND a.cname=#{customerName}
+					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.instcode=#{organName}
+					</if>
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.busimanager=#{custManagerName}
+					</if>
+	</select>
+	
+	
+	<!--信贷流程统计-->
+	<select id="findXdlctjbbFormList" resultMap="XdlctjbbFormResultMap" 
+			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
+					SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					 select * from xdlctjbb a WHERE 1=1 
+					<if test="certiCode != null and certiCode != '' ">
+						AND a.cardId=#{certiCode}
+					</if>
+					<if test="customerName != null and customerName != '' ">
+					    AND a.chineseName=#{customerName}
+					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.name=#{organName}
+					</if>
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.custManager=#{custManagerName}
+					</if>
+					
+		 			<![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	<select id="findXdlctjbbFormCountList" resultType="int" 
+			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
+		 select count(*) from xdlctjbb a WHERE 1=1 
+		<if test="certiCode != null and certiCode != '' ">
+			AND a.cardId=#{certiCode}
+		</if>
+		<if test="customerName != null and customerName != '' ">
+		    AND a.chineseName=#{customerName}
+		</if>
+		<if test="organName != null and organName != '' ">
+		    AND a.name=#{organName}
+		</if>
+		<if test="custManagerName != null and custManagerName != '' ">
+			AND a.custManager=#{custManagerName}
+		</if>
+	</select>
+	
+	<select id="getXdlctjbbFormList" resultMap="XdlctjbbFormResultMap" 
+			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
+					 select a.*,ROWNUM row_index from xdlctjbb a WHERE 1=1 
+					<if test="certiCode != null and certiCode != '' ">
+						AND a.cardId=#{certiCode}
+					</if>
+					<if test="customerName != null and customerName != '' ">
+					    AND a.chineseName=#{customerName}
+					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.name=#{organName}
+					</if>
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.custManager=#{custManagerName}
+					</if>
+	</select>
+	
+	
+	
+	 
+	 
+	 
+	 <select id="getAccLoanCollect" resultMap="CollectResultMap"
+			parameterType="com.cardpay.pccredit.report.filter.AccLoanCollectFilter">
+		<!--  select rownum rowIndex,
+        '' as increaseLoancount,
+        '' as loanCustomerSum,
+        '' as increaseCusSum,
+        '' as centreLoansSun,
+        '' as loanBalanceSum,
+        '' as increaseLoanCredit,
+        '' as increaseBalanceTheMonth,
+        '' as overdueBalanceTheMon,
+        '' as overdueBalance,
+        '' as increseOverdueCusTheMon,
+        '' as resvIntAccum,
+        '' as overdueCusM0,
+        '' as overdueCusM1,
+        '' as overdueCusM2,
+        '' as overdueCusM3,
+        '' as overdueCusM4,
+        '' as contAmt,
+        '' as contBalace,
+        '' as alloverdue
+   from dual -->
+   
+    with circle as (
+	    SELECT *
+		  FROM (select T.BUSICODE,T.CUSTID,T.CNAME,T.CUSTIDNO,T.DEPTCODE,T.TELEPHONE,T.MAINASSURE,T.REQLMT,T.BUSIMANAGER,T.LOANDATE,T.STARTDATE,T.ORIENDDATE,T.ENDDATE,T.INTEREST,T.MONEY,T.BALAMT,T.ACCOUNTSTATE,T.CLOSEDATE,T.FIVECLASS,T.DELAYAMTDAYS,T.DELAYINTERESTDAYS,T.FIRSTINTERESTDATE,T.DEBTINTEREST,T.DEBTINTERESTTIMES,T.NORMALAMT,T.DLAYAMT,T.DLAYDT,T.PAYDEBT,T.INDEBTAMT,T.OUTDEBTAMT,T.BAILAMT,T.CREATE_TIME,ROW_NUMBER() OVER(PARTITION BY busicode ORDER BY OPERDATETIME desc) RN
+		          from t_mibusidata T)
+		 WHERE RN = 1
+	    )
+   
+   select (select count(distinct(a.CUSTID))
+          from circle a, basic_customer_information b
+         where a.custid = b.ty_customer_id
+         and a.LOANDATE <![CDATA[ <=  ]]> #{endDate}
+         and a.LOANDATE <![CDATA[ >=  ]]> #{startDate}
+         <if test="userId != null and userId != '' ">
+             and b.USER_ID =#{userId}
+         </if> ) as increaseLoancount,
+         
+       (select count(distinct(a.CUSTID))
+          from circle a, basic_customer_information b
+         where a.custid = b.ty_customer_id
+         and a.LOANDATE <![CDATA[ <=  ]]> #{endDate}
+         <if test="userId != null and userId != '' ">
+             and b.USER_ID =#{userId}
+         </if> ) as loanCustomerSum,
+         
+       (select count(distinct(b.CUSTID))
+          from t_gccontractmain           a,
+               t_gccontractmulticlient    b,
+               basic_customer_information c
+         where trim(a.KEYCODE) = b.KEYCODE
+           and c.ty_customer_id = b.CUSTID
+           and a.keyeffectedstate ='1'
+           and b.keyeffectedstate ='1'
+           and a.STARTDATE <![CDATA[ <=  ]]> #{endDate}
+           and a.STARTDATE <![CDATA[ >=  ]]> #{startDate}
+           <if test="userId != null and userId != '' ">
+             and c.USER_ID =#{userId}
+           </if> ) as increaseCusSum,
+           
+       (select count(distinct(b.CUSTID))
+          from t_gccontractmain           a,
+               t_gccontractmulticlient    b,
+               basic_customer_information c
+         where trim(a.KEYCODE) = b.KEYCODE
+           and c.ty_customer_id = b.CUSTID
+           and a.keyeffectedstate ='1'
+           and b.keyeffectedstate ='1'
+           and a.STARTDATE <![CDATA[ <=  ]]> #{endDate}
+           <if test="userId != null and userId != '' ">
+             and c.USER_ID =#{userId}
+           </if> ) as centreLoansSun,
+           
+       (select count(distinct(a.custid))
+          from circle a, basic_customer_information b
+         where a.custid = b.ty_customer_id
+           and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
+           and a.ACCOUNTSTATE !='5'
+           and a.DLAYDT <![CDATA[ <=  ]]> #{endDate}
+           and a.DLAYDT <![CDATA[ >=  ]]> #{startDate}
+           <if test="userId != null and userId != '' ">
+             and b.USER_ID =#{userId}
+           </if> ) as increseOverdueCusTheMon,
+           
+       (select count(distinct(a.custid))
+          from circle a, basic_customer_information b
+         where a.custid = b.ty_customer_id
+           and a.ACCOUNTSTATE !='5'
+           and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
+           and a.DLAYDT <![CDATA[ <=  ]]> #{endDate}
+           <if test="userId != null and userId != '' ">
+             and b.USER_ID =#{userId}
+           </if> ) as alloverdue,
+           
+       (select sum(a.balamt)/(trunc(to_date(#{endDate},'yyyy-MM-dd'))-trunc(to_date(#{startDate},'yyyy-MM-dd')))
+          from circle a,
+               basic_customer_information c
+         where c.ty_customer_id = a.custid
+           and a.LOANDATE <![CDATA[ <=  ]]> #{endDate}
+           and a.LOANDATE <![CDATA[ >=  ]]> #{startDate}
+           <if test="userId != null and userId != '' ">
+             and c.USER_ID =#{userId}
+           </if> ) as increaseBalanceTheMonth,
+           
+       (select sum(a.balamt)
+          from circle a,
+               basic_customer_information c
+         where  c.ty_customer_id = a.custid
+           and a.LOANDATE <![CDATA[ <=  ]]> #{endDate}
+           and a.LOANDATE <![CDATA[ >=  ]]> #{startDate}
+           <if test="userId != null and userId != '' ">
+             and c.USER_ID =#{userId}
+           </if> ) as loanBalanceSum,
+           
+       (select sum(a.balamt)
+          from circle a,
+               basic_customer_information c
+         where  c.ty_customer_id = a.custid
+           and a.LOANDATE <![CDATA[ <=  ]]> #{endDate}
+           <if test="userId != null and userId != '' ">
+             and c.USER_ID =#{userId}
+           </if> ) as contBalace,
+           
+       (select sum(a.MONEY)
+          from t_gccontractmain           a,
+               basic_customer_information b,
+               t_gccontractmulticlient    c
+         where trim(a.KEYCODE) = c.KEYCODE
+           and c.custid = b.ty_customer_id
+           and a.keyeffectedstate ='1'
+           and c.keyeffectedstate ='1'
+           and a.STARTDATE <![CDATA[ <=  ]]> #{endDate}
+           and a.STARTDATE <![CDATA[ >=  ]]> #{startDate}
+           <if test="userId != null and userId != '' ">
+             and b.USER_ID =#{userId}
+           </if> ) as increaseLoanCredit,
+           
+       (select sum(a.MONEY)
+          from t_gccontractmain           a,
+               basic_customer_information b,
+               t_gccontractmulticlient    c
+         where trim(a.KEYCODE) = c.KEYCODE
+           and c.custid = b.ty_customer_id
+           and a.keyeffectedstate ='1'
+           and c.keyeffectedstate ='1'
+           and a.STARTDATE <![CDATA[ <=  ]]> #{endDate}
+           <if test="userId != null and userId != '' ">
+             and b.USER_ID =#{userId}
+           </if> ) as contAmt,
+           
+       (select sum(nvl(a.DLAYAMT,0) + nvl(a.INDEBTAMT,0) + nvl(a.OUTDEBTAMT,0))
+          from circle a, basic_customer_information c
+         where a.custid = c.ty_customer_id
+           and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
+           and a.DLAYDT <![CDATA[ <=  ]]> #{endDate}
+           and a.DLAYDT <![CDATA[ >=  ]]> #{startDate}
+           <if test="userId != null and userId != '' ">
+             and c.USER_ID =#{userId}
+           </if> ) as overdueBalanceTheMon,
+           
+       (select sum(nvl(a.DLAYAMT,0) + nvl(a.INDEBTAMT,0) + nvl(a.OUTDEBTAMT,0))
+          from circle a, basic_customer_information c
+         where a.custid = c.ty_customer_id
+           and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
+           and a.DLAYDT <![CDATA[ <=  ]]> #{endDate}
+           <if test="userId != null and userId != '' ">
+             and c.USER_ID =#{userId}
+           </if> ) as overdueBalance,
+           
+       (select count(a.custid)
+          from circle a, basic_customer_information b
+         where a.custid = b.ty_customer_id
+           and  a.ACCOUNTSTATE !='5'
+           and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
+           and nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ <  ]]> 30
+           and nvl(a.DELAYAMTDAYS,0) <![CDATA[ < ]]> 30
+           and a.DLAYDT <![CDATA[ <=  ]]> #{endDate}
+           and a.DLAYDT <![CDATA[ >=  ]]> #{startDate}
+           <if test="userId != null and userId != '' ">
+             and b.USER_ID =#{userId}
+           </if> ) as overdueCusM0,
+           
+       (select count(a.custid)
+          from circle a, basic_customer_information b
+         where a.custid = b.ty_customer_id
+           and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
+           and nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >=  ]]> 30
+           and nvl(a.DELAYAMTDAYS,0) <![CDATA[ >=  ]]> 30
+           and a.DLAYDT <![CDATA[ <=  ]]> #{endDate}
+           and a.DLAYDT <![CDATA[ >=  ]]> #{startDate}
+           <if test="userId != null and userId != '' ">
+             and b.USER_ID =#{userId}
+           </if> ) as overdueCusM1,
+           
+       (select count(a.custid)
+          from circle a, basic_customer_information b
+         where a.custid = b.ty_customer_id
+           and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
+           and nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >=  ]]> 60
+           and nvl(a.DELAYAMTDAYS,0) <![CDATA[ >=  ]]> 60
+           and a.DLAYDT <![CDATA[ <=  ]]> #{endDate}
+           and a.DLAYDT <![CDATA[ >=  ]]> #{startDate}
+           <if test="userId != null and userId != '' ">
+             and b.USER_ID =#{userId}
+           </if> ) as overdueCusM2,
+           
+       (select count(a.custid)
+          from circle a, basic_customer_information b
+         where a.custid = b.ty_customer_id
+           and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
+           and nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >=  ]]> 90
+           and nvl(a.DELAYAMTDAYS,0) <![CDATA[ >=  ]]> 90
+           and a.DLAYDT <![CDATA[ <=  ]]> #{endDate}
+           and a.DLAYDT <![CDATA[ >=  ]]> #{startDate}
+           <if test="userId != null and userId != '' ">
+             and b.USER_ID =#{userId}
+           </if> ) as overdueCusM3,
+           
+       (select count(a.custid)
+          from circle a, basic_customer_information b
+         where a.custid = b.ty_customer_id
+           and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
+           and nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >=  ]]> 120
+           and nvl(a.DELAYAMTDAYS,0) <![CDATA[ >=  ]]> 120
+           and a.DLAYDT <![CDATA[ <=  ]]> #{endDate}
+           and a.DLAYDT <![CDATA[ >=  ]]> #{startDate}
+           <if test="userId != null and userId != '' ">
+             and b.USER_ID =#{userId}
+           </if> ) as overdueCusM4,
+           
+       (select sum(a.PAYDEBT)
+          from circle a, basic_customer_information b
+         where a.custid = b.ty_customer_id
+         and a.LOANDATE <![CDATA[ <=  ]]> #{endDate}
+         and a.LOANDATE <![CDATA[ >=  ]]> #{startDate}
+         <if test="userId != null and userId != '' ">
+             and b.USER_ID =#{userId}
+         </if> ) as resvIntAccum,
+         
+        (select nvl(sum(a.BALAMT),0) from 
+           circle a,
+           basic_customer_information b
+         where a.custid = b.ty_customer_id
+               and a.MAINASSURE ='C100'
+               and a.LOANDATE <![CDATA[ <=  ]]> #{endDate}
+         	   and a.LOANDATE <![CDATA[ >=  ]]> #{startDate}
+         <if test="userId != null and userId != '' ">
+             and b.USER_ID =#{userId}
+         </if>) as xy,
+         
+         (select nvl(sum(a.BALAMT),0) from 
+           circle a,
+           basic_customer_information b
+         where a.custid = b.ty_customer_id
+               and a.MAINASSURE ='C101'
+               and a.LOANDATE <![CDATA[ <=  ]]> #{endDate}
+         	   and a.LOANDATE <![CDATA[ >=  ]]> #{startDate}
+           <if test="userId != null and userId != '' ">
+             and b.USER_ID =#{userId}
+           </if>) as bz,
+         
+         (select nvl(sum(a.BALAMT),0) from 
+           circle a,
+           basic_customer_information b
+         where a.custid = b.ty_customer_id
+               and a.MAINASSURE ='C102'
+               and a.LOANDATE <![CDATA[ <=  ]]> #{endDate}
+         	   and a.LOANDATE <![CDATA[ >=  ]]> #{startDate}
+           <if test="userId != null and userId != '' ">
+             and b.USER_ID =#{userId}
+           </if>) as dy
+           
+         
+           
+  from dual
+   
+
+ 	 </select>
+</mapper>

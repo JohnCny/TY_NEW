@@ -1,0 +1,85 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/customerInfor.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">分案申请</div>
+      </div>
+      
+      <div class="inquiry">
+<!-------------- 信息显示 ------------------------------------->        
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="8%" />
+              <col width="18%" />
+              <col width="12%"/>
+              <col width="40%" />
+              <col width="10%"/>
+              <col width="7%">
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">中文姓名</th>
+              <th nowrap="nowrap">证件类型</th>
+              <th nowrap="nowrap">证件号码</th>
+              <th nowrap="nowrap">住宅地址</th>
+              <th nowrap="nowrap">手机</th>
+              <th nowrap="nowrap">状态</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="8%" />
+              <col width="18%" />
+              <col width="12%"/>
+              <col width="40%" />
+              <col width="10%"/>
+              <col width="7%">
+            </colgroup>
+            #foreach ($!{divisional} in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!divisional.id"
+                  #if ($!request.getParameter("recordId") == $!divisional.id) checked="checked" #end /></td>
+              <td nowrap="nowrap">$!divisional.chineseName</td>
+              <td nowrap="nowrap">#customerInfor($request.getAttribute("cardTypeList"),$!divisional.cardType)</td>
+              <td nowrap="nowrap">$!divisional.cardId</td>
+              <td nowrap="nowrap">$!divisional.residentialAddress</td>
+              <td nowrap="nowrap">$!divisional.telephone</td>  
+              <td nowrap="nowrap">#if($!divisional.divisionalResult=='distribution')<span style="">分配成功</span>
+                                  #else
+                                  <span style=""> 未分配</span>
+                                  #end
+              </td>            
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+          #btnpriv("distribution")<a id="id_display_button" class="btn_gr" href="javascript:void(0);" title="#i18n('button.divisional.hint')">#i18n("button.divisional")</a>#end
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.displayUrl = "${modulePath}/divisional.page";
+		prepareOperations(opsObj);
+	});
+</script>
+#parse("common/iframe_page_footer.htm")

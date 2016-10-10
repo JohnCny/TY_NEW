@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	default-autowire="byType" default-init-method="init" default-destroy-method="depose"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+	<!-- DAO Layer -->
+	<!-- 如果使用Mybatis,则不需要在这里配置 	
+	<bean id="sampleDao" class="com.wicresoft.jrad.modules.sample.dao.file.SampleDaoFileImpl" />
+ 	-->
+
+	<!-- DAO Layer -->
+	<!-- 如果使用Mybatis,则不需要在这里配置 	
+	<bean id="sampleDao" class="com.wicresoft.jrad.modules.sample.dao.file.SampleDaoFileImpl" />
+ 	-->
+	<!-- Storage Service Layer -->
+	<bean id="sampleService" class="com.wicresoft.jrad.modules.sample.service.impl.SampleServiceImpl" />
+
+	<!-- Business Manager Layer -->
+	<bean id="sampleManager" class="com.wicresoft.jrad.modules.sample.business.impl.SampleManagerImpl2" />
+
+
+</beans>

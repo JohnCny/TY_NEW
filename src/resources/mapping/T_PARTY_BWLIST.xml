@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="GBK"?>
+<resultMap>
+  	<result column="ID" 			jdbcType="VARCHAR" index="1" />                   
+	<result column="PARTYID" 		jdbcType="VARCHAR" index="2" />              
+	<result column="PARTYINITID" 	jdbcType="VARCHAR" index="3" />          
+	<result column="PARTYTYPEID" 	jdbcType="VARCHAR" index="4" />          
+	<result column="CUSTID" 		jdbcType="VARCHAR" index="5" />               
+	<result column="CUSTSTATUS" 	jdbcType="VARCHAR" index="6" />           
+	<result column="BLACKREASON" 	jdbcType="VARCHAR" index="7" />          
+	<result column="OTHERREASON" 	jdbcType="VARCHAR" index="8" />          
+	<result column="BUSIMANAGER" 	jdbcType="VARCHAR" index="9" />          
+	<result column="INSTCODE" 		jdbcType="VARCHAR" index="10" />            
+	<result column="DEPTCODE" 		jdbcType="VARCHAR" index="11" />            
+	<result column="INSTCITYCODE" 	jdbcType="VARCHAR" index="12" />        
+	<result column="CAUSEREMARK" 	jdbcType="VARCHAR" index="13" />         
+	<result column="CREATEDUSER" 	jdbcType="VARCHAR" index="14" />         
+	<result column="CREATEDTIME" 	jdbcType="VARCHAR" index="15" />         
+	<result column="MODIFIEDUSER" 	jdbcType="VARCHAR" index="16" />        
+	<result column="MODIFIEDTIME" 	jdbcType="VARCHAR" index="17" />        
+	<result column="ACTIVATESTATUS" jdbcType="VARCHAR" index="18" />      
+	<result column="ISTRANS" 		jdbcType="VARCHAR" index="19" />
+	<result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/>             	
+</resultMap>

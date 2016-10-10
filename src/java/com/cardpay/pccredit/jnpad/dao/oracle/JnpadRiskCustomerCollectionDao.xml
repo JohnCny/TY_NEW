@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.jnpad.dao.JnpadRiskCustomerCollectionDao">
+
+
+<resultMap id="CollectionFormResultMap"
+		type="com.cardpay.pccredit.riskControl.web.RiskCustomerCollectionPlanForm">
+		<result property="createWay" column="create_way"/>
+		<result property="customerId" column="CUSTOMER_ID" />
+		<result property="chineseName" column="CHINESE_NAME" />
+		<result property="productId" column="PRODUCT_ID" />
+		<result property="productName" column="PRODUCT_NAME" />
+		<result property="implementationObjective" column="IMPLEMENTATION_OBJECTIVE" />
+		<result property="endResult" column="END_RESULT" />
+		<result property="collectionTime" column="COLLECTION_TIME" />
+		<result property="collectionMethod" column="COLLECTION_METHOD" />
+		<result property="collectionPromiseDate" column="COLLECTION_PROMISE_DATE" />
+		<result property="collectionEndtime" column="COLLECTION_ENDTIME" />
+		<result property="collectionAmount" column="COLLECTION_AMOUNT" />
+		<result property="userName" column="DISPLAY_NAME"/>
+		<result property="size" column="countAction"/>
+	</resultMap>
+	
+		<resultMap id="ResultMap" type="com.cardpay.pccredit.riskControl.model.RiskCustomer">
+		<result property="id" column="id" />
+		<result property="customerId" column="customer_id" />
+		<result property="riskLevel" column="risk_level" />
+		<result property="riskCreateType" column="risk_create_type" />
+		<result property="status" column="status" />
+		<result property="refuseReason" column="refuse_reason" />
+		<result property="reportedIdManager" column="reported_id_manager" />
+		<result property="customerName" column="customerName" />
+		<result property="cardType" column="cardType" />
+		<result property="cardId" column="cardId" />
+		<result property="riskDes" column="risk_des" />
+		<result property="numRisk" column="numRisk" />
+		<result property="riskAttribute" column="risk_attribute" />
+		<result property="riskDescription" column="riskDescription" />
+		<result property="maxRiskLevel" column="maxRiskLevel" />
+		<result property="customerId" column="customerId" />
+		<result property="productName" column="productName" />
+		
+		 
+		
+		
+	</resultMap>
+	<select id="findCountByFilter" resultType="int"
+		parameterType="com.cardpay.pccredit.riskControl.filter.RiskCustomerCollectionPlanFilter">
+		select
+		count(*)
+		from (
+		SELECT
+		c.*
+		FROM
+		COLLECTION_PLAN c
+		LEFT JOIN
+		BASIC_CUSTOMER_INFORMATION i ON c.customer_id = i.ID
+		where i.user_id=#{customerManagerId})
+	</select>
+	
+		<select id="findRiskCustomerCollectionPlans" resultMap="CollectionFormResultMap">
+		SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		 SELECT c.*, P.PRODUCT_NAME, i.CHINESE_NAME,(select count(1) from collection_plans_action a where a.collection_plan_id=c.id) as countAction 
+		 FROM COLLECTION_PLAN c
+		 LEFT JOIN PRODUCT_ATTRIBUTE P
+		 ON c.product_id = P.ID
+		 LEFT JOIN BASIC_CUSTOMER_INFORMATION i
+		 ON c.customer_id = i.ID
+		 where i.user_id = #{customerManagerId}
+		 order by c.created_time desc
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	
+<select id="findRiskCustomerCollectionPlanById" resultMap="CollectionFormResultMap">
+		SELECT * FROM
+		(SELECT
+		c.*,
+		P.PRODUCT_NAME,
+		i.CHINESE_NAME
+		FROM
+		COLLECTION_PLAN c
+		LEFT JOIN
+		PRODUCT_ATTRIBUTE P ON c.product_id = P.ID
+		LEFT JOIN
+		BASIC_CUSTOMER_INFORMATION i ON c.customer_id = i.ID
+		WHERE C.ID=#{id})
+	</select>
+	
+	
+	<select id="findRiskViewSubCollectionPlansCountByFilter" resultType="int">
+		SELECT
+		count(*)
+		FROM
+		COLLECTION_PLAN c
+		LEFT JOIN
+		BASIC_CUSTOMER_INFORMATION i ON c.customer_id = i.ID
+		where i.user_id in
+		<foreach collection="customerManagerId" index="index" item="item" open="(" separator="," close=")">
+		     #{item.userId}
+		</foreach>
+	</select>
+	
+	
+	<select id="findRiskCustomersByFilter" resultMap="ResultMap" 
+			parameterType="com.cardpay.pccredit.riskControl.filter.RiskCustomerFilter">
+		
+			SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					SELECT risk.*,
+							customer.chinese_name as customerName,
+							customer.card_type as cardType,
+							customer.card_id as cardId,
+							sysuser.display_name as reportedManager,
+							p.PRODUCT_NAME as productName
+					  FROM basic_customer_information customer
+					 INNER JOIN risk_list risk
+					    ON customer.id = risk.customer_id
+					 INNER JOIN sys_user sysuser
+					    ON sysuser.id = risk.reported_id_manager
+					 LEFT  JOIN product_attribute p on p.id = risk.PRODUCT_ID
+					  WHERE 1=1 
+					 <if test="reportedIdManager != null and reportedIdManager != '' ">
+						AND risk.reported_id_manager=#{reportedIdManager}
+					 </if>
+					 <if test="custManagerId != null and custManagerId != '' ">
+						AND risk.CUST_MANAGER_ID=#{custManagerId}
+					 </if>
+					 <if test="status != null and status != '' ">
+						AND risk.status=#{status}
+					 </if>
+					 <if test="role != null and role != '' and role == 'manager'">
+					 </if>
+					 <if test="role != null and role != '' and role == 'cardcenter'">
+						AND (risk.status='REPORTED_CARDCENTER' or risk.status='CONFIRMED_CARDCENTER' or risk.status='REJECT_CARDCENTER')
+					 </if>
+					 <if test="riskCreateType != null and riskCreateType != ''">
+						AND risk.risk_create_type=#{riskCreateType}
+					 </if>
+					 <if test="customerName != null and customerName != '' ">
+						AND customer.chinese_name like '%${customerName}%'
+					 </if>
+					 <if test="cardType != null and cardType != '' ">
+						AND customer.card_type=#{cardType}
+					 </if>
+					 <if test="cardId != null and cardId != '' ">
+						AND customer.card_id like '%${cardId}%'
+					 </if>
+		 	
+							) ROW_
+					
+	</select>
+	
+	</mapper>

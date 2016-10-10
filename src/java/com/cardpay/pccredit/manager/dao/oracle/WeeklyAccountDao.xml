@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.manager.dao.WeeklyAccountDao">
+	<resultMap id="WeeklyAccountMap"
+		type="com.cardpay.pccredit.manager.web.WeeklyAccountManagerForm">
+		<result property="id" column="ID" />
+		<result property="coustomerManagerId" column="coustomer_Manager_Id" />
+		<result property="loginId" column="login_Id" />
+		<result property="title" column="title" />
+		<result property="displayName" column="display_name" />
+		<result property="managerWeeklySummary" column="manager_Weekly_Summary" />
+		<result property="leaderReview" column="leader_Review" />
+		<result property="teamLeaderReview" column="team_Leader_Review" />
+		<result property="actualCredit" column="actual_Credit" />
+		<result property="actualNumber" column="actual_Number" />
+		<result property="actualNumberVisit" column="actual_Number_Visit" />
+		<result property="actualNumberCustomers" column="actual_Number_Customers" />
+		<result property="monthlyNumber" column="monthly_Number" />
+		<result property="monthlyCredit" column="monthly_Credit" />
+		<result property="groupNumber" column="group_Number" />
+		<result property="groupCredit" column="group_Credit" />
+		<result property="resistanceDifficultCollect" column="resistance_Difficult_Collect" />
+		<result property="improvementSuggestions" column="IMPROVEMENT_SUGGESTIONS" />
+		<result property="createdTime" column="CREATED_TIME" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="modifiedTime" column="MODIFIED_TIME" />
+		<result property="modifiedBy" column="MODIFIED_BY" />
+	</resultMap>
+
+	<select id="findWeeklyAccountByManagerId" resultMap="WeeklyAccountMap">
+	<![CDATA[	 select * from weekly_account_manager t where t.customer_manager_id=#{customerManagerId} and t.created_time>to_date(#{startTime},'yyyy-mm-dd hh24:mi:ss') and t.created_time<to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss')]]>
+	</select>
+<!--   点击客户经理周报 -->
+	<select id="findWeeklyAccountManagersByFilter" resultMap="WeeklyAccountMap">
+		SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		SELECT
+		w.*, s.DISPLAY_NAME as displayName
+		FROM
+
+		WEEKLY_ACCOUNT_MANAGER w,
+		SYS_USER s
+		WHERE
+		1 = 1
+
+		AND w.CUSTOMER_MANAGER_ID = s. ID
+		
+		AND w.CUSTOMER_MANAGER_ID = #{loginId}
+
+		order by w.CREATED_TIME DESC
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+
+
+	<select id="findWeeklyAccountManagersCountByFilter" resultType="int"
+		parameterType="com.cardpay.pccredit.manager.filter.WeeklyAccountManagerFilter">
+		SELECT
+		COUNT (*)
+		FROM
+		(
+		SELECT
+		w.*, s.DISPLAY_NAME as displayName
+		FROM
+
+		WEEKLY_ACCOUNT_MANAGER w,
+		SYS_USER s
+		WHERE
+		1 = 1
+
+		AND w.CUSTOMER_MANAGER_ID = s. ID
+		
+		AND w.CUSTOMER_MANAGER_ID = #{loginId}
+		)
+	</select>
+	<!-- 点击下属客户经理周报 -->
+	
+	<select id="findSubWeeklyAccountManagersByFilter" resultMap="WeeklyAccountMap">
+		SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		SELECT
+		w.*, s.DISPLAY_NAME AS displayName
+		FROM
+		WEEKLY_ACCOUNT_MANAGER w,
+		SYS_USER s
+		WHERE
+		1 = 1
+		
+	    <if test="displayName != null and displayName != '' ">
+			AND s.DISPLAY_NAME=#{displayName}
+		</if>
+		
+		AND w.CUSTOMER_MANAGER_ID = s.ID
+		<if test="subManagerIds != null and subManagerIds.size() > 0 ">
+			and w.CUSTOMER_MANAGER_ID in
+			<foreach item="item" index="index" collection="subManagerIds" open="("  
+				     separator="," close=")">  
+				     #{item}
+		    </foreach>
+		</if>
+<!-- 		AND ( -->
+<!-- 		 w.CUSTOMER_MANAGER_ID IN ( -->
+<!-- 		SELECT -->
+<!-- 			T.CHILD_ID  -->
+<!-- 		FROM -->
+<!-- 			manager_belong_map T -->
+<!-- 		LEFT JOIN account_manager_parameter amp ON amp. ID = T .child_id -->
+<!-- 		WHERE -->
+<!-- 			amp.user_id = #{loginId} -->
+<!-- 		) -->
+<!-- 		) -->
+		ORDER BY
+		w.CREATED_TIME DESC
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+
+
+	<select id="findSubWeeklyAccountManagersCountByFilter" resultType="int"
+		parameterType="com.cardpay.pccredit.manager.filter.WeeklyAccountManagerFilter">
+		SELECT
+		COUNT (*)
+		FROM
+		(
+		SELECT
+		w.*, s.DISPLAY_NAME AS displayName
+		FROM
+		WEEKLY_ACCOUNT_MANAGER w,
+		SYS_USER s
+		WHERE
+		1 = 1
+		 <if test="displayName != null and displayName != '' ">
+			AND s.DISPLAY_NAME=#{displayName}
+		</if>
+		AND w.CUSTOMER_MANAGER_ID = s. ID
+		AND (
+		 w.CUSTOMER_MANAGER_ID IN (
+		SELECT
+			T.CHILD_ID 
+		FROM
+			manager_belong_map T
+		LEFT JOIN account_manager_parameter amp ON amp. ID = T .child_id
+		WHERE
+			amp.user_id = #{loginId}
+	)
+)
+ORDER BY
+	w.CREATED_TIME DESC
+		)
+	</select>
+<!-- 点击客户经理周报 (团队负责人)-->
+	
+	<select id="findOrgSubWeeklyAccountManagersByFilter" resultMap="WeeklyAccountMap">
+		SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+	SELECT
+		w.*, s.DISPLAY_NAME AS displayName
+		FROM
+		WEEKLY_ACCOUNT_MANAGER w,
+		SYS_USER s
+		WHERE
+		1 = 1
+ 		<if test="displayName != null and displayName != '' ">
+			AND s.DISPLAY_NAME=#{displayName}
+		</if>
+AND w.CUSTOMER_MANAGER_ID = s. ID
+		AND (
+		 w.CUSTOMER_MANAGER_ID IN (
+	select usr.id as id
+		   from (select * 
+				   from sys_organization 
+				    ) org
+		  inner join sys_department dep 
+			 on org.id = dep.org_id 
+		  inner join sys_dept_user dep_user 
+			 on dep.id = dep_user.dept_id 
+		  inner join sys_user usr 
+			 on usr.id = dep_user.user_id 
+			and usr.user_type = 1 
+			and usr.is_deleted = 0 
+     INNER JOIN  (
+     select sys_organization.id as orgId from sys_organization 
+		where id in (select t.org_id from sys_department t 
+					  where t.id in(select tt.dept_id 
+					  from sys_dept_user tt where tt.user_id =#{loginId})) ) aa
+ON   org.id= aa.orgId
+		)
+		)
+		ORDER BY
+		w.CREATED_TIME DESC
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+
+
+	<select id="findOrgSubWeeklyAccountManagersCountByFilter" resultType="int"
+		parameterType="com.cardpay.pccredit.manager.filter.WeeklyAccountManagerFilter">
+		SELECT
+		COUNT (*)
+		FROM
+		(
+		SELECT
+		w.*, s.DISPLAY_NAME AS displayName
+		FROM
+		WEEKLY_ACCOUNT_MANAGER w,
+		SYS_USER s
+		WHERE
+		1 = 1
+ <if test="displayName != null and displayName != '' ">
+			AND s.DISPLAY_NAME=#{displayName}
+		</if>
+AND w.CUSTOMER_MANAGER_ID = s. ID
+		AND (
+		 w.CUSTOMER_MANAGER_ID IN (
+	select usr.id as id
+		   from (select * 
+				   from sys_organization 
+				    ) org
+		  inner join sys_department dep 
+			 on org.id = dep.org_id 
+		  inner join sys_dept_user dep_user 
+			 on dep.id = dep_user.dept_id 
+		  inner join sys_user usr 
+			 on usr.id = dep_user.user_id 
+			and usr.user_type = 1 
+			and usr.is_deleted = 0 
+     INNER JOIN  (
+     select sys_organization.id as orgId from sys_organization 
+		where id in (select t.org_id from sys_department t 
+					  where t.id in(select tt.dept_id 
+					  from sys_dept_user tt where tt.user_id =#{loginId})) ) aa
+ON   org.id= aa.orgId
+		)
+		)
+		ORDER BY
+		w.CREATED_TIME DESC
+		)
+	</select>
+
+</mapper>

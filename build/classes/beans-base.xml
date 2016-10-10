@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-autowire="byName" default-init-method="init" default-destroy-method="depose"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+	<bean id="springBeans" class="com.wicresoft.util.spring.Beans" lazy-init="false"></bean>
+
+	<bean id="globalSetting" class="com.wicresoft.jrad.base.enviroment.GlobalSetting">
+		<property name="entranceClassName" value="com.cardpay.pccredit.main.MainController" />
+
+		<!-- Running Mode -->
+		<property name="runningMode" value="develop" /> <!-- develop|test|release -->
+
+		<!-- Current ui case -->
+		<property name="uiCaseName" value="case2" />
+
+		<!-- Database Info -->
+		<property name="charSize" value="2" />
+	</bean>
+
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="cacheSeconds" value="0" />
+		<property name="basenames">
+			<list>
+				<value>i18n/system</value>
+				<value>i18n/errors</value>
+				<value>i18n/messages</value>
+				<value>i18n/modules/sample</value>
+				<value>i18n/modules/privilege</value>
+				<value>i18n/modules/accountability</value>
+				<value>i18n/modules/nplsInfomation</value>
+				<value>i18n/customer/customer</value>
+				<value>i18n/modules/retraining</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="i18nHelper" class="com.wicresoft.jrad.base.i18n.I18nHelper">
+		<property name="messageSource">
+			<ref local="messageSource" />
+		</property>
+	</bean>
+
+	<bean id="loginManager" class="com.wicresoft.jrad.base.web.security.LoginManager">
+		<constructor-arg index="0" value="superadmin" />
+		<constructor-arg index="1" value="$$$USER_SESSION_KEY$$$" />
+		<constructor-arg index="2" value="$$$ORG_SESSION_KEY$$$" />
+	</bean>
+
+	<bean id="uiMenuMgr" class="com.wicresoft.jrad.base.web.menu.UIMenuMgr">
+		<constructor-arg index="0" value="true" />
+	</bean>
+
+
+	<bean id="xMLMapperLoader" class="com.wicresoft.jrad.base.database.reload.XMLMapperLoader" />
+	
+	<bean id="dictionaryManager" class="com.wicresoft.jrad.modules.dictionary.DictionaryManager" init-method="init" lazy-init="true" />
+
+	<bean id="commonDao" class="com.wicresoft.jrad.base.database.dao.common.CommonDao" />	
+	<bean id="businessDao" class="com.wicresoft.jrad.base.database.dao.business.BusinessDao" />
+
+	<bean id="singleTableDynamicDao" class="com.wicresoft.jrad.framework.dynamic.singletable.SingleTableDynamicDao" />
+	<bean id="singleTableDynamicService" class="com.wicresoft.jrad.framework.dynamic.singletable.SingleTableDynamicService" />
+</beans>

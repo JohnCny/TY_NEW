@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.intopieces.dao.CustomerApplicationOtherDao" >
+  <resultMap id="BaseResultMap" type="com.cardpay.pccredit.intopieces.model.CustomerApplicationOther" >
+    <id column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="MAIN_APPLICATION_FORM_ID" property="mainApplicationFormId" jdbcType="DECIMAL" />
+    <result column="BILLING_METHOD" property="billingMethod" jdbcType="VARCHAR" />
+    <result column="PAPER_BILLING_SHIPPING_ADDRESS" property="paperBillingShippingAddress" jdbcType="VARCHAR" />
+    <result column="COLLAR_CARD_MODE" property="collarCardMode" jdbcType="VARCHAR" />
+    <result column="CONSUMPTION_USE_PASSWORD" property="consumptionUsePassword" jdbcType="VARCHAR" />
+    <result column="SMS_OPENING_TRADING" property="smsOpeningTrading" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, MAIN_APPLICATION_FORM_ID, BILLING_METHOD, PAPER_BILLING_SHIPPING_ADDRESS, COLLAR_CARD_MODE, 
+    CONSUMPTION_USE_PASSWORD, SMS_OPENING_TRADING
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from CUSTOMER_APPLICATION_OTHER
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from CUSTOMER_APPLICATION_OTHER
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="com.cardpay.pccredit.intopieces.model.CustomerApplicationOther" >
+    insert into CUSTOMER_APPLICATION_OTHER (ID, MAIN_APPLICATION_FORM_ID, BILLING_METHOD, 
+      PAPER_BILLING_SHIPPING_ADDRESS, COLLAR_CARD_MODE, 
+      CONSUMPTION_USE_PASSWORD, SMS_OPENING_TRADING
+      )
+    values (#{id,jdbcType=DECIMAL}, #{mainApplicationFormId,jdbcType=DECIMAL}, #{billingMethod,jdbcType=VARCHAR}, 
+      #{paperBillingShippingAddress,jdbcType=VARCHAR}, #{collarCardMode,jdbcType=VARCHAR}, 
+      #{consumptionUsePassword,jdbcType=VARCHAR}, #{smsOpeningTrading,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cardpay.pccredit.intopieces.model.CustomerApplicationOther" >
+    insert into CUSTOMER_APPLICATION_OTHER
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="mainApplicationFormId != null" >
+        MAIN_APPLICATION_FORM_ID,
+      </if>
+      <if test="billingMethod != null" >
+        BILLING_METHOD,
+      </if>
+      <if test="paperBillingShippingAddress != null" >
+        PAPER_BILLING_SHIPPING_ADDRESS,
+      </if>
+      <if test="collarCardMode != null" >
+        COLLAR_CARD_MODE,
+      </if>
+      <if test="consumptionUsePassword != null" >
+        CONSUMPTION_USE_PASSWORD,
+      </if>
+      <if test="smsOpeningTrading != null" >
+        SMS_OPENING_TRADING,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=DECIMAL},
+      </if>
+      <if test="mainApplicationFormId != null" >
+        #{mainApplicationFormId,jdbcType=DECIMAL},
+      </if>
+      <if test="billingMethod != null" >
+        #{billingMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="paperBillingShippingAddress != null" >
+        #{paperBillingShippingAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="collarCardMode != null" >
+        #{collarCardMode,jdbcType=VARCHAR},
+      </if>
+      <if test="consumptionUsePassword != null" >
+        #{consumptionUsePassword,jdbcType=VARCHAR},
+      </if>
+      <if test="smsOpeningTrading != null" >
+        #{smsOpeningTrading,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cardpay.pccredit.intopieces.model.CustomerApplicationOther" >
+    update CUSTOMER_APPLICATION_OTHER
+    <set >
+      <if test="mainApplicationFormId != null" >
+        MAIN_APPLICATION_FORM_ID = #{mainApplicationFormId,jdbcType=DECIMAL},
+      </if>
+      <if test="billingMethod != null" >
+        BILLING_METHOD = #{billingMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="paperBillingShippingAddress != null" >
+        PAPER_BILLING_SHIPPING_ADDRESS = #{paperBillingShippingAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="collarCardMode != null" >
+        COLLAR_CARD_MODE = #{collarCardMode,jdbcType=VARCHAR},
+      </if>
+      <if test="consumptionUsePassword != null" >
+        CONSUMPTION_USE_PASSWORD = #{consumptionUsePassword,jdbcType=VARCHAR},
+      </if>
+      <if test="smsOpeningTrading != null" >
+        SMS_OPENING_TRADING = #{smsOpeningTrading,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cardpay.pccredit.intopieces.model.CustomerApplicationOther" >
+    update CUSTOMER_APPLICATION_OTHER
+    set MAIN_APPLICATION_FORM_ID = #{mainApplicationFormId,jdbcType=DECIMAL},
+      BILLING_METHOD = #{billingMethod,jdbcType=VARCHAR},
+      PAPER_BILLING_SHIPPING_ADDRESS = #{paperBillingShippingAddress,jdbcType=VARCHAR},
+      COLLAR_CARD_MODE = #{collarCardMode,jdbcType=VARCHAR},
+      CONSUMPTION_USE_PASSWORD = #{consumptionUsePassword,jdbcType=VARCHAR},
+      SMS_OPENING_TRADING = #{smsOpeningTrading,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+</mapper>

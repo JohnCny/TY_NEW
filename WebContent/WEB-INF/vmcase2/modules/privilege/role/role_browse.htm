@@ -1,0 +1,137 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+				<div class="title">#mi18n("browse")</div>
+			</div>
+			<div class="inquiry">
+				<div class="search_tag">#i18n("label.browse.filter")</div>
+				<div class="search">
+					<form id="submitForm">
+						<ul>
+							<li><span>#mi18n("name",4)：<input type="text"
+									name="name" value='$!result.filter.name' maxlength="30" /></span></li>
+							<li><span>#mi18n("shortName",4)：<input type="text"
+									name="shortName" value='$!result.filter.shortName'
+									maxlength="30" /></span></li>
+							<li class="search_button"><input id="id_browse_button"
+								type="button" value="#i18n('button.browse')"
+								class="search_button_inquiry"
+								title="#i18n('button.browse.hint')"
+								style="height: 26px; line-height: 24px;" /></li>
+						</ul>
+					</form>
+				</div>
+				<div id="topDiv" class="inquiry_list inquiry_top">
+					<table>
+						<colgroup>
+							<col width="5%" />
+							<!-- <col width="10%" /> -->
+							<col width="10%" />
+							<col width="10%" />
+							<col width="20%" />
+							<col />
+							<col />
+						</colgroup>
+						<tr class="title">
+							<th nowrap="nowrap"></th>
+							<!-- <th nowrap="nowrap">#mi18n("seqNo")</th>  -->
+							<th nowrap="nowrap">#mi18n("name")</th>
+							<th nowrap="nowrap">#mi18n("shortName")</th>
+							<th nowrap="nowrap">#mi18n("systemRole")</th>
+							<th nowrap="nowrap">#mi18n("createdTime")</th>
+							<th nowrap="nowrap">#mi18n("modifiedTime")</th>
+							<th nowrap="nowrap">#mi18n("description")</th>
+						</tr>
+					</table>
+				</div>
+				<div id="downDiv" class="inquiry_list inquiry_down">
+					<table>
+						<colgroup>
+							<col width="5%" />
+							<!-- <col width="10%" />  -->
+							<col width="10%" />
+							<col width="10%" />
+							<col width="20%" />
+							<col />
+							<col />
+						</colgroup>
+						#foreach ($role in $result.items)
+						<tr>
+							<td class="checkbox"><input type="radio" name="checkbox"
+								value="$!role.id" #if ($!request.getParameter("recordId") ==
+								$role.id) checked="checked" #end /></td>
+							<!-- <td nowrap="nowrap">$!role.seqNo</td>  -->
+							<td nowrap="nowrap">$!role.name</td>
+							<td nowrap="nowrap">$!role.shortName</td>
+							
+							<td nowrap="nowrap">#mi18n("$!role.isSystem")</td>
+							<td nowrap="nowrap">$!date.format("yyyy-MM-dd
+								HH:mm:ss",$!role.createdTime)</td>
+							<td nowrap="nowrap">$!date.format("yyyy-MM-dd
+								HH:mm:ss",$!role.modifiedTime)</td>
+								<td nowrap="nowrap">$!role.description</td>
+						</tr>
+						#end
+					</table>
+				</div>
+			</div>
+			<div class="pagebar">
+				<div class="controlbtn">
+					#btnpriv("create")<a id="id_create_button" class="btn_g" href="javascript:void(0);"
+						title="#i18n('button.create.hint')">#i18n("button.create")</a> #end 
+					#btnpriv("change")	<a id="id_change_button" class="btn_g" href="javascript:void(0);"
+						title="#i18n('button.change.hint')">#i18n("button.change")</a> #end
+					#btnpriv("delete") <a
+						id="id_delete_button" class="btn_g" href="javascript:void(0);"
+						title="#i18n('button.delete.hint')">#i18n("button.delete")</a> #end
+                   #btnpriv("maintenance") <a id="id_number_mainten" class="btn_g" href="javascript:void(0);" >维护信息</a> #end
+					#btnpriv("display") <a id="id_display_button" class="btn_gr" href="javascript:void(0);"
+						title="#i18n('button.display.hint')">#i18n("button.display")</a> #end
+				</div>
+				#parse ("common/pagination.htm")
+				<div class="clear"></div>
+			</div>
+		</div>
+	</div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.createUrl = "${contextPath}/system/role/create.page";
+		opsObj.displayUrl = "${contextPath}/system/role/display.page";
+		opsObj.changeUrl = "${contextPath}/system/role/change.page";
+		opsObj.deleteUrl = "${contextPath}/system/role/delete.json";
+		opsObj.browseUrl = "${contextPath}/system/role/browse.page";
+		opsObj.exportUrl = "${contextPath}/system/role/export.page";
+
+		prepareOperations(opsObj);
+	});
+	
+	 function getCurrentRowId() {
+		    if ($(".checkbox :checked").length == 1) {
+		        var rowid = $($(".checkbox :checked")[0]).attr("value");
+		        
+		        if (rowid != null && rowid.length > 0) {
+		            return rowid;
+		        }
+		    } 
+		    
+		    Dialog.message("请选择一行");
+		    
+		    return null;
+		}
+	  $("#id_number_mainten").click(function() {
+		  var rowid = getCurrentRowId();
+		  if (rowid != null) {
+			  var url = "${contextPath}/system/role_user/browse.page?roleId=" + rowid;
+		      window.location.href = url;
+		  }
+	  });
+</script>
+</html>

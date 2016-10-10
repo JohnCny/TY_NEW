@@ -1,0 +1,1885 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.customer.dao.CustomerInforDao">
+	<resultMap id="ResultMap"
+		type="com.cardpay.pccredit.customer.model.CustomerInfor">
+		<result property="chineseName" column="chinese_name" />
+		<result property="cardType" column="card_type" />
+		<result property="cardId" column="card_id" />
+		<result property="eesidentialAddress" column="residential_address" />
+		<result property="telephone" column="telephone" />
+	</resultMap>
+
+	<resultMap id="customerCareersInformationMap"
+		type="com.cardpay.pccredit.customer.model.CustomerCareersInformation">
+		<result property="customerId" column="customer_Id" />
+		<result property="customerCode" column="customer_Code" />
+		<result property="nameUnit" column="name_Unit" />
+		<result property="departmentName" column="department_Name" />
+		<result property="unitAddress" column="unit_Address" />
+		<result property="zipCode" column="zip_Code" />
+		<result property="unitPhone" column="unit_Phone" />
+		<result property="unitNature" column="unit_Nature" />
+		<result property="industryType" column="industry_Type" />
+		<result property="positio" column="positio" />
+		<result property="title" column="title" />
+		<result property="annualIncome" column="annual_Income" />
+		<result property="yearWorkUnit" column="year_Work_Unit" />
+		<result property="beforeNameUnit" column="before_Name_Unit" />
+		<result property="beforeYearWorkUnit" column="before_Year_Work_Unit" />
+		<result property="workTime" column="work_Time" />
+	</resultMap>
+
+	<select id="findcloneCustomerCareersByCustomerId" resultMap="customerCareersInformationMap">
+		select * from customer_careers_information_s t
+		where t.customer_id=#{customerId}
+		and t.application_id=#{applicationId}
+	</select>
+
+	<select id="findNationality" resultType="com.cardpay.pccredit.system.model.Dict">
+		select Type_code as TypeCode,Type_name as TypeName
+		from Dict
+		where 1=1
+		and
+		Dict_Type like 'CMMSCNTC%'
+	</select>
+	<select id="findCardType" resultType="com.cardpay.pccredit.system.model.Dict">
+		select Type_code as TypeCode,Type_name as TypeName
+		from Dict
+		where 1=1
+		and
+		Dict_Type like 'CMMSCCST%'
+	</select>
+	<select id="findTypeNameByTypeCode" resultType="String"
+		parameterType="String">
+		select Type_Name as TypeName
+		from Dict
+		where 1=1
+		and
+		Type_Code = #{typecode}
+	</select>
+	<select id="findMaritalStatus" resultType="com.cardpay.pccredit.system.model.Dict">
+		select Type_code as TypeCode,Type_name as TypeName
+		from Dict
+		where 1=1
+		and
+		Dict_Type like 'CMMSCMRC%'
+	</select>
+	<select id="findResidentialPropertie" resultType="com.cardpay.pccredit.system.model.Dict">
+		select Type_code as TypeCode,Type_name as TypeName
+		from Dict
+		where 1=1
+		and
+		Dict_Type like 'CMMSCHOM%'
+	</select>
+
+	<select id="findSex" resultType="com.cardpay.pccredit.system.model.Dict">
+		select Type_code as TypeCode,Type_name as TypeName
+		from Dict where dict_type='GENDER'
+	</select>
+	<select id="findPositio" resultType="com.cardpay.pccredit.system.model.Dict">
+		select Type_code as TypeCode,Type_name as TypeName
+		from Dict
+		where 1=1
+		and
+		Dict_Type like 'CMCI%'
+	</select>
+	<select id="findTitle" resultType="com.cardpay.pccredit.system.model.Dict">
+		select Type_code as TypeCode,Type_name as TypeName
+		from Dict
+		where 1=1
+		and
+		Dict_Type like 'CMCT%'
+	</select>
+	<select id="findUnitPropertis" resultType="com.cardpay.pccredit.system.model.Dict">
+		select Type_code as TypeCode,Type_name as TypeName
+		from Dict
+		where 1=1
+		and
+		Dict_Type like 'CMMSCCOM%'
+	</select>
+	<select id="findIndustryType" resultType="com.cardpay.pccredit.system.model.Dict">
+		select Type_code as TypeCode,Type_name as TypeName
+		from INDUSTRY_DICT
+		where 1=1
+	</select>
+	<select id="findCollectionMethod" resultType="com.cardpay.pccredit.system.model.Dict">
+		select Type_code as TypeCode,Type_name as TypeName
+		from Dict
+		where 1=1
+		and
+		Dict_Type = 'CMMJXFS-催收方式'
+	</select>
+	<select id="findCustomerInforByName" resultType="com.cardpay.pccredit.customer.model.CustomerInfor">
+		select t.chinese_name as chineseName, t.card_id as cardId, t.telephone as
+		telephone from basic_customer_information t where t.user_id=#{userId}
+		and t.chinese_name like '%'||#{name}||'%'
+	</select>
+
+	<update id="updateCustomerInfor">
+		update basic_customer_information
+		set user_id=#{customerManagerId},
+		divisional_status=#{status}
+		where id=#{id}
+	</update>
+
+	<select id="findCustomerManagerIdById" resultType="string">
+		select t.user_id from basic_customer_information t where id=#{customerId}
+	</select>
+	<sql id="Base_Column_List">
+		b.id,
+		b.chinese_name as chineseName,
+		b.nationality,
+		b.sex,
+		b.pinyinenglish_name as pinyinenglishName,
+		b.birthday,
+		b.card_type as cardType,
+		b.card_id as cardId,
+		b.residential_address as residentialAddress,
+		b.zip_code as zipCode,
+		b.home_Phone as homePhone,
+		b.telephone,
+		b.mail,
+		b.residential_propertie residentialPropertie,
+		b.marital_status as maritalStatus,
+		b.degree_education as degreeEducation,
+		b.household_address as householdAddress,
+		b.zip_code_address as zipCodeAddress,
+		u.display_name as userName
+	</sql>
+	<select id="findCustomerInforWebById"
+		resultType="com.cardpay.pccredit.customer.model.CustomerInforWeb">
+		select
+		<include refid="Base_Column_List" />
+		from basic_customer_information b
+		left join sys_user u
+		on b.user_Id=u.id
+		where b.id=#{id}
+	</select>
+	<update id="updateCustomerInforDivisionalStatus">
+		update basic_customer_information b
+		set b.divisional_status=#{status}
+		where b.id=#{id}
+	</update>
+
+	<select id="getCustomerInforDivisionalStatus" resultType="String">
+		select divisional_status
+		from basic_customer_information
+		where id=#{id}
+	</select>
+
+	<insert id="cloneBasicCustomerInfo">
+		insert into basic_customer_information_s select t.*,'${applicationId}' from
+		basic_customer_information t WHERE t.id = #{customerId}
+	</insert>
+
+	<insert id="cloneCustomerCareersInf">
+		insert into customer_careers_information_s select t.*,'${applicationId}'
+		from customer_careers_information t WHERE t.customer_id =
+		#{customerId}
+	</insert>
+
+	<insert id="cloneCustomerMainManager">
+		insert into customer_main_manager_s select t.*,'${applicationId}' from
+		customer_main_manager t WHERE t.customer_id = #{customerId}
+	</insert>
+
+	<insert id="cloneCustomerQuestionInfo">
+		insert into customer_question_info_s select t.*,'${applicationId}' from
+		customer_question_info t WHERE t.customer_id = #{customerId}
+	</insert>
+
+	<insert id="cloneCustomerWorkshipInfo">
+		insert into customer_worship_information_s select t.*,'${applicationId}'
+		from customer_worship_information t WHERE t.customer_id =
+		#{customerId}
+	</insert>
+
+	<insert id="cloneDimensionalModelCredit">
+		insert into dimensional_model_credit_s select t.*,'${applicationId}' from
+		dimensional_model_credit t WHERE t.customer_id = #{customerId}
+	</insert>
+
+	<insert id="cloneCustomerVideoAccessories">
+		insert into video_accessories_s select
+		t.id,'${applicationId}',t.server_url_path,t.created_time,t.modified_time,t.image_type,t.file_path,
+		t.file_name,t.remark,t.customer_id,t.created_by,t.modified_by from
+		video_accessories t WHERE t.customer_id = #{customerId}
+	</insert>
+
+	<select id="findCloneCustomerInforByAppId" resultType="com.cardpay.pccredit.customer.model.CustomerInfor">
+		select
+		b.id,
+		b.chinese_name as chineseName,
+		b.nationality,
+		b.sex,
+		b.pinyinenglish_name as pinyinenglishName,
+		b.birthday,
+		b.card_type as cardType,
+		b.card_id as cardId,
+		b.residential_address as residentialAddress,
+		b.zip_code as zipCode,
+		b.home_phone as homePhone,
+		b.telephone,
+		b.mail,
+		b.residential_propertie as residentialPropertie,
+		b.marital_status as maritalStatus,
+		b.degree_education as degreeEducation,
+		b.household_address as householdAddress,
+		b.zip_code_address as zipCodeAddress,
+		b.user_id as userId,
+		b.divisional_status as divisionalStatus,
+		b.created_time as createdTime,
+		b.created_by as createdBy,
+		b.modified_time as modifiedTime,
+		b.modified_by as modifiedBy
+		from basic_customer_information_s b
+		where b.application_id=#{applicationId}
+	</select>
+	<select id="findCustomerInforCountByUserId" resultType="int">
+		select count(*)
+		from basic_customer_information
+		where user_id=#{userId}
+	</select>
+
+
+	<delete id="deleteCloneBasicCustomerInfo">
+		delete basic_customer_information_s t WHERE t.id = #{customerId} and
+		t.application_id = #{applicationId}
+	</delete>
+
+	<delete id="deleteCloneCustomerCareersInf">
+		delete customer_careers_information_s t WHERE t.customer_id = #{customerId}
+		and t.application_id = #{applicationId}
+	</delete>
+
+	<delete id="deleteCloneCustomerMainManager">
+		delete customer_main_manager_s t WHERE t.customer_id = #{customerId} and
+		t.application_id = #{applicationId}
+	</delete>
+
+	<delete id="deleteCloneCustomerQuestionInfo">
+		delete customer_question_info_s t WHERE t.customer_id = #{customerId} and
+		t.application_id = #{applicationId}
+	</delete>
+
+	<delete id="deleteCloneCustomerWorkshipInfo">
+		delete customer_worship_information_s t WHERE t.customer_id = #{customerId}
+		and t.application_id = #{applicationId}
+	</delete>
+
+	<delete id="deleteCloneDimensionalModelCredit">
+		delete dimensional_model_credit_s t WHERE t.customer_id = #{customerId} and
+		t.application_id = #{applicationId}
+	</delete>
+
+	<delete id="deleteCloneCustomerVideoAccessories">
+		delete video_accessories_s t WHERE t.customer_id = #{customerId} and
+		t.application_id = #{applicationId}
+	</delete>
+
+	<insert id="insertCustomerBase" parameterType="map">
+		INSERT INTO ty_customer_base (ID,CREATE_TIME,KHNM,KHMC,KHH,RH,KHLX,ZJLX,
+		ZJHM,QFJG,SFCQ,QFRQ,DQRQ,GLTX,PQDZ,CSRQ,XB,
+		GTSPMC,GTYYZZHM,ZXYZSJ,YYDZ,XXDZ,YZBM,HJDZ,JTDH,CZ,
+		SJ,DZYX,GJ,MZ,ZZMM,XL,XW,JKZK,HYZK,
+		XYDJ,XYDJSXRQ,XYDJDQRQ,SFXYH,SXED,SXJZRQ,YXYE,BLDKYE,NNJHSXED,
+		JHYSSXED,ZYYW,CSHY,SFBHZG,SFGD,SFGJGZRY,SFHZ,POXM,POSFZH,
+		PODH,POGZDW,GHJL,ZBJG,DJRY,DJRQ,ZHXGRY,ZHXGSJ,KHJL) values
+		(#{id,jdbcType=VARCHAR},#{createTime,jdbcType=VARCHAR},#{khnm,jdbcType=VARCHAR},
+		#{khmc,jdbcType=VARCHAR}, #{khh,jdbcType=VARCHAR},
+		#{rh,jdbcType=VARCHAR}, #{khlx,jdbcType=VARCHAR},
+		#{zjlx,jdbcType=VARCHAR},
+		#{zjhm,jdbcType=VARCHAR}, #{qfjg,jdbcType=VARCHAR}, #{sfcq,jdbcType=VARCHAR},
+		#{qfrq,jdbcType=VARCHAR}, #{dqrq,jdbcType=VARCHAR},
+		#{gltx,jdbcType=VARCHAR},
+		#{pqdz,jdbcType=VARCHAR}, #{csrq,jdbcType=VARCHAR}, #{xb,jdbcType=VARCHAR},
+		#{gtspmc,jdbcType=VARCHAR}, #{gtyyzzhm,jdbcType=VARCHAR},
+		#{zxyzsj,jdbcType=VARCHAR},
+		#{yydz,jdbcType=VARCHAR}, #{xxdz,jdbcType=VARCHAR}, #{yzbm,jdbcType=VARCHAR},
+		#{hjdz,jdbcType=VARCHAR}, #{jtdh,jdbcType=VARCHAR},
+		#{cz,jdbcType=VARCHAR},
+		#{sj,jdbcType=VARCHAR}, #{dzyx,jdbcType=VARCHAR}, #{gj,jdbcType=VARCHAR},
+		#{mz,jdbcType=VARCHAR}, #{zzmm,jdbcType=VARCHAR},
+		#{xl,jdbcType=VARCHAR},
+		#{xw,jdbcType=VARCHAR}, #{jkzk,jdbcType=VARCHAR}, #{hyzk,jdbcType=VARCHAR},
+		#{xydj,jdbcType=VARCHAR}, #{xydjsxrq,jdbcType=VARCHAR},
+		#{xydjdqrq,jdbcType=VARCHAR},
+		#{sfxyh,jdbcType=VARCHAR}, #{sxed,jdbcType=VARCHAR}, #{sxjzrq,jdbcType=VARCHAR},
+		#{yxye,jdbcType=VARCHAR}, #{bldkye,jdbcType=VARCHAR},
+		#{nnjhsxed,jdbcType=VARCHAR},
+		#{jhyssxed,jdbcType=VARCHAR}, #{zyyw,jdbcType=VARCHAR}, #{cshy,jdbcType=VARCHAR},
+		#{sfbhzg,jdbcType=VARCHAR}, #{sfgd,jdbcType=VARCHAR},
+		#{sfgjgzry,jdbcType=VARCHAR},
+		#{sfhz,jdbcType=VARCHAR}, #{poxm,jdbcType=VARCHAR}, #{posfzh,jdbcType=VARCHAR},
+		#{podh,jdbcType=VARCHAR}, #{pogzdw,jdbcType=VARCHAR},
+		#{ghjl,jdbcType=VARCHAR},
+		#{zbjg,jdbcType=VARCHAR}, #{djry,jdbcType=VARCHAR}, #{djrq,jdbcType=VARCHAR},
+		#{zhxgry,jdbcType=VARCHAR}, #{zhxgsj,jdbcType=VARCHAR}, #{khjl,jdbcType=VARCHAR})
+
+	</insert>
+
+	<update id="updateCustomerBase" parameterType="map">
+		update ty_customer_base set
+		CREATE_TIME=#{createTime,jdbcType=VARCHAR},KHMC=#{khmc,jdbcType=VARCHAR},KHH=#{khh,jdbcType=VARCHAR},
+		RH=#{rh,jdbcType=VARCHAR},KHLX=#{khlx,jdbcType=VARCHAR},ZJLX=#{zjlx,jdbcType=VARCHAR},ZJHM=#{zjhm,jdbcType=VARCHAR},QFJG=#{qfjg,jdbcType=VARCHAR},
+		SFCQ=#{sfcq,jdbcType=VARCHAR},QFRQ=#{qfrq,jdbcType=VARCHAR},DQRQ=#{dqrq,jdbcType=VARCHAR},GLTX=#{gltx,jdbcType=VARCHAR},
+		PQDZ=#{pqdz,jdbcType=VARCHAR},CSRQ=#{csrq,jdbcType=VARCHAR},XB=#{xb,jdbcType=VARCHAR},GTSPMC=#{gtspmc,jdbcType=VARCHAR},
+		GTYYZZHM=#{gtyyzzhm,jdbcType=VARCHAR},ZXYZSJ=#{zxyzsj,jdbcType=VARCHAR},YYDZ=#{yydz,jdbcType=VARCHAR},XXDZ=#{xxdz,jdbcType=VARCHAR},
+		YZBM=#{yzbm,jdbcType=VARCHAR},HJDZ=#{hjdz,jdbcType=VARCHAR},JTDH=#{jtdh,jdbcType=VARCHAR},CZ=#{cz,jdbcType=VARCHAR},
+		SJ=#{sj,jdbcType=VARCHAR},DZYX=#{dzyx,jdbcType=VARCHAR},GJ=#{gj,jdbcType=VARCHAR},MZ=#{mz,jdbcType=VARCHAR},
+		ZZMM=#{zzmm,jdbcType=VARCHAR},XL=#{xl,jdbcType=VARCHAR},XW=#{xw,jdbcType=VARCHAR},JKZK=#{jkzk,jdbcType=VARCHAR},
+		HYZK=#{hyzk,jdbcType=VARCHAR},XYDJ=#{xydj,jdbcType=VARCHAR},XYDJSXRQ=#{xydjsxrq,jdbcType=VARCHAR},XYDJDQRQ=#{xydjdqrq,jdbcType=VARCHAR},
+		SFXYH=#{sfxyh,jdbcType=VARCHAR},SXED=#{sxed,jdbcType=VARCHAR},SXJZRQ=#{sxjzrq,jdbcType=VARCHAR},YXYE=#{yxye,jdbcType=VARCHAR},
+		BLDKYE=#{bldkye,jdbcType=VARCHAR},NNJHSXED=#{nnjhsxed,jdbcType=VARCHAR},JHYSSXED=#{jhyssxed,jdbcType=VARCHAR},ZYYW=#{zyyw,jdbcType=VARCHAR},
+		CSHY=#{cshy,jdbcType=VARCHAR},SFBHZG=#{sfbhzg,jdbcType=VARCHAR},SFGD=#{sfgd,jdbcType=VARCHAR},SFGJGZRY=#{sfgjgzry,jdbcType=VARCHAR},
+		SFHZ=#{sfhz,jdbcType=VARCHAR},POXM=#{poxm,jdbcType=VARCHAR},POSFZH=#{posfzh,jdbcType=VARCHAR},PODH=#{podh,jdbcType=VARCHAR},
+		POGZDW=#{pogzdw,jdbcType=VARCHAR},GHJL=#{ghjl,jdbcType=VARCHAR},ZBJG=#{zbjg,jdbcType=VARCHAR},DJRY=#{djry,jdbcType=VARCHAR},
+		DJRQ=#{djrq,jdbcType=VARCHAR},ZHXGRY=#{zhxgry,jdbcType=VARCHAR},ZHXGSJ=#{zhxgsj,jdbcType=VARCHAR},KHJL=#{khjl,jdbcType=VARCHAR}
+		where
+		KHNM=#{khnm,jdbcType=VARCHAR}
+	</update>
+
+	<insert id="insertCustomerBaseLocal" parameterType="map">
+		INSERT INTO ty_customer_base_local
+		(ID,CREATE_TIME,KHNM,KHMC,KHH,RH,KHLX,ZJLX,
+		ZJHM,QFJG,SFCQ,QFRQ,DQRQ,GLTX,PQDZ,CSRQ,XB,
+		GTSPMC,GTYYZZHM,ZXYZSJ,YYDZ,XXDZ,YZBM,HJDZ,JTDH,CZ,
+		SJ,DZYX,GJ,MZ,ZZMM,XL,XW,JKZK,HYZK,
+		XYDJ,XYDJSXRQ,XYDJDQRQ,SFXYH,SXED,SXJZRQ,YXYE,BLDKYE,NNJHSXED,
+		JHYSSXED,ZYYW,CSHY,SFBHZG,SFGD,SFGJGZRY,SFHZ,POXM,POSFZH,
+		PODH,POGZDW,GHJL,ZBJG,DJRY,DJRQ,ZHXGRY,ZHXGSJ,KHJL) values
+		(#{id,jdbcType=VARCHAR},#{createTime,jdbcType=VARCHAR},#{khnm,jdbcType=VARCHAR},
+		#{khmc,jdbcType=VARCHAR}, #{khh,jdbcType=VARCHAR},
+		#{rh,jdbcType=VARCHAR}, #{khlx,jdbcType=VARCHAR},
+		#{zjlx,jdbcType=VARCHAR},
+		#{zjhm,jdbcType=VARCHAR}, #{qfjg,jdbcType=VARCHAR}, #{sfcq,jdbcType=VARCHAR},
+		#{qfrq,jdbcType=VARCHAR}, #{dqrq,jdbcType=VARCHAR},
+		#{gltx,jdbcType=VARCHAR},
+		#{pqdz,jdbcType=VARCHAR}, #{csrq,jdbcType=VARCHAR}, #{xb,jdbcType=VARCHAR},
+		#{gtspmc,jdbcType=VARCHAR}, #{gtyyzzhm,jdbcType=VARCHAR},
+		#{zxyzsj,jdbcType=VARCHAR},
+		#{yydz,jdbcType=VARCHAR}, #{xxdz,jdbcType=VARCHAR}, #{yzbm,jdbcType=VARCHAR},
+		#{hjdz,jdbcType=VARCHAR}, #{jtdh,jdbcType=VARCHAR},
+		#{cz,jdbcType=VARCHAR},
+		#{sj,jdbcType=VARCHAR}, #{dzyx,jdbcType=VARCHAR}, #{gj,jdbcType=VARCHAR},
+		#{mz,jdbcType=VARCHAR}, #{zzmm,jdbcType=VARCHAR},
+		#{xl,jdbcType=VARCHAR},
+		#{xw,jdbcType=VARCHAR}, #{jkzk,jdbcType=VARCHAR}, #{hyzk,jdbcType=VARCHAR},
+		#{xydj,jdbcType=VARCHAR}, #{xydjsxrq,jdbcType=VARCHAR},
+		#{xydjdqrq,jdbcType=VARCHAR},
+		#{sfxyh,jdbcType=VARCHAR}, #{sxed,jdbcType=VARCHAR}, #{sxjzrq,jdbcType=VARCHAR},
+		#{yxye,jdbcType=VARCHAR}, #{bldkye,jdbcType=VARCHAR},
+		#{nnjhsxed,jdbcType=VARCHAR},
+		#{jhyssxed,jdbcType=VARCHAR}, #{zyyw,jdbcType=VARCHAR}, #{cshy,jdbcType=VARCHAR},
+		#{sfbhzg,jdbcType=VARCHAR}, #{sfgd,jdbcType=VARCHAR},
+		#{sfgjgzry,jdbcType=VARCHAR},
+		#{sfhz,jdbcType=VARCHAR}, #{poxm,jdbcType=VARCHAR}, #{posfzh,jdbcType=VARCHAR},
+		#{podh,jdbcType=VARCHAR}, #{pogzdw,jdbcType=VARCHAR},
+		#{ghjl,jdbcType=VARCHAR},
+		#{zbjg,jdbcType=VARCHAR}, #{djry,jdbcType=VARCHAR}, #{djrq,jdbcType=VARCHAR},
+		#{zhxgry,jdbcType=VARCHAR}, #{zhxgsj,jdbcType=VARCHAR}, #{khjl,jdbcType=VARCHAR})
+
+	</insert>
+
+	<insert id="insertCustomerRygl" parameterType="map">
+		INSERT INTO ty_customer_rygl
+		(CREATE_TIME,DM,XM,PY,XB,SSJG,ZW,BGDH,SJHM,CZDH,DZXX,YZBM,DZ,BZ,USERID,SSBM,GH,ISKHJL,YWJS,DLDM,DDRQ,WHRY,DCJG,KHJLDJ,SFZHM,TSRQ,
+		SGZH,PXZH) values
+		(#{createTime,jdbcType=VARCHAR},#{dm,jdbcType=VARCHAR},#{xm,jdbcType=VARCHAR},#{py,jdbcType=VARCHAR},#{xb,jdbcType=VARCHAR},
+		#{ssjg,jdbcType=VARCHAR}, #{zw,jdbcType=VARCHAR},
+		#{bgdh,jdbcType=VARCHAR}, #{sjhm,jdbcType=VARCHAR},#{czdh,jdbcType=VARCHAR}, #{dzxx,jdbcType=VARCHAR},
+		#{yzbm,jdbcType=VARCHAR},#{dz,jdbcType=VARCHAR},#{bz,jdbcType=VARCHAR},#{userid,jdbcType=VARCHAR},#{ssbm,jdbcType=VARCHAR},#{gh,jdbcType=VARCHAR},
+		#{iskhjl,jdbcType=VARCHAR},#{ywjs,jdbcType=VARCHAR},#{dldm,jdbcType=VARCHAR},#{ddrq,jdbcType=VARCHAR},#{whry,jdbcType=VARCHAR}
+		,#{dcjg,jdbcType=VARCHAR},#{khjldj,jdbcType=VARCHAR},#{sfzhm,jdbcType=VARCHAR},#{tsrq,jdbcType=VARCHAR}
+		,#{sgzh,jdbcType=VARCHAR},#{pxzh,jdbcType=VARCHAR})
+
+	</insert>
+
+	
+	<insert id="insertCustomerFamilyCy" parameterType="map">
+		INSERT INTO ty_customer_family_cy
+		(ID,CREATE_TIME,KHNM,CYXM,YKHGX,ZJLX,ZJHM,XB,
+		GXFL) values
+		(#{id,jdbcType=VARCHAR},#{createTime,jdbcType=VARCHAR},#{khnm,jdbcType=VARCHAR},
+		#{cyxm,jdbcType=VARCHAR}, #{ykhgx,jdbcType=VARCHAR},
+		#{zjlx,jdbcType=VARCHAR}, #{zjhm,jdbcType=VARCHAR},
+		#{xb,jdbcType=VARCHAR},
+		#{gxfl,jdbcType=VARCHAR})
+
+	</insert>
+
+	<update id="updateCustomerFamilyCy" parameterType="map">
+		update ty_customer_family_cy set
+		CREATE_TIME=#{createTime,jdbcType=VARCHAR},CYXM=#{cyxm,jdbcType=VARCHAR},YKHGX=#{ykhgx,jdbcType=VARCHAR},
+		ZJLX=#{zjlx,jdbcType=VARCHAR},ZJHM=#{zjhm,jdbcType=VARCHAR},XB=#{xb,jdbcType=VARCHAR},GXFL=#{gxfl,jdbcType=VARCHAR}
+		where
+		KHNM=#{khnm,jdbcType=VARCHAR}
+	</update>
+
+	<insert id="insertCustomerFamilyCc" parameterType="map">
+		INSERT INTO ty_customer_family_cc (ID,CREATE_TIME,KHNM,TZH,CCZL,CCMC,SL,DW,
+		GZRQ,ZCYZ,PGJZ,PGRQ,ZL) values
+		(#{id,jdbcType=VARCHAR},#{createTime,jdbcType=VARCHAR},#{khnm,jdbcType=VARCHAR},
+		#{tzh,jdbcType=VARCHAR}, #{cczl,jdbcType=VARCHAR},
+		#{ccmc,jdbcType=VARCHAR}, #{sl,jdbcType=VARCHAR},
+		#{dw,jdbcType=VARCHAR},
+		#{gzrq,jdbcType=VARCHAR},#{zcyz,jdbcType=VARCHAR},#{pgjz,jdbcType=VARCHAR},#{pgrq,jdbcType=VARCHAR},#{zl,jdbcType=VARCHAR})
+
+	</insert>
+
+	<update id="updateCustomerFamilyCc" parameterType="map">
+		update ty_customer_family_cc set
+		CREATE_TIME=#{createTime,jdbcType=VARCHAR},TZH=#{tzh,jdbcType=VARCHAR},CCZL=#{cczl,jdbcType=VARCHAR},
+		CCMC=#{ccmc,jdbcType=VARCHAR},SL=#{sl,jdbcType=VARCHAR},DW=#{dw,jdbcType=VARCHAR},GZRQ=#{gzrq,jdbcType=VARCHAR},
+		ZCYZ=#{zcyz,jdbcType=VARCHAR},PGJZ=#{pgjz,jdbcType=VARCHAR}
+		,PGRQ=#{pgrq,jdbcType=VARCHAR},ZL=#{zl,jdbcType=VARCHAR} where
+		KHNM=#{khnm,jdbcType=VARCHAR}
+	</update>
+
+	<insert id="insertCustomerStudy" parameterType="map">
+		INSERT INTO ty_customer_study (ID,CREATE_TIME,KHNM,KSRQ,JSRQ,SZXX,SZYX,ZY,
+		XW,XL,XZ,XLZSH,XWZSH,BZ) values
+		(#{id,jdbcType=VARCHAR},#{createTime,jdbcType=VARCHAR},#{khnm,jdbcType=VARCHAR},
+		#{ksrq,jdbcType=VARCHAR}, #{jsrq,jdbcType=VARCHAR},
+		#{szxx,jdbcType=VARCHAR}, #{szyx,jdbcType=VARCHAR},
+		#{zy,jdbcType=VARCHAR},
+		#{xw,jdbcType=VARCHAR},#{xl,jdbcType=VARCHAR},#{xz,jdbcType=VARCHAR},#{xlzsh,jdbcType=VARCHAR},#{xwzsh,jdbcType=VARCHAR},#{bz,jdbcType=VARCHAR})
+
+	</insert>
+
+	<update id="updateCustomerStudy" parameterType="map">
+		update ty_customer_study set
+		CREATE_TIME=#{createTime,jdbcType=VARCHAR},KSRQ=#{ksrq,jdbcType=VARCHAR},JSRQ=#{jsrq,jdbcType=VARCHAR},
+		SZXX=#{szxx,jdbcType=VARCHAR},SZYX=#{szyx,jdbcType=VARCHAR},ZY=#{zy,jdbcType=VARCHAR},XW=#{xw,jdbcType=VARCHAR},
+		XL=#{xl,jdbcType=VARCHAR},XZ=#{xz,jdbcType=VARCHAR}
+		,XLZSH=#{xlzsh,jdbcType=VARCHAR},XWZSH=#{xwzsh,jdbcType=VARCHAR},BZ=#{bz,jdbcType=VARCHAR}
+		where
+		KHNM=#{khnm,jdbcType=VARCHAR}
+	</update>
+
+	<insert id="insertCustomerWork" parameterType="map">
+		INSERT INTO ty_customer_work (ID,CREATE_TIME,KHNM,KSRQ,JSRQ,DWMC,DWXZ,DWDH,
+		DWDZ,DWYZBM,SZBM,ZC,HYXZ,NSR,BZ) values
+		(#{id,jdbcType=VARCHAR},#{createTime,jdbcType=VARCHAR},#{khnm,jdbcType=VARCHAR},
+		#{ksrq,jdbcType=VARCHAR}, #{jsrq,jdbcType=VARCHAR},
+		#{dwmc,jdbcType=VARCHAR}, #{dwxz,jdbcType=VARCHAR},
+		#{dwdh,jdbcType=VARCHAR},#{dwdz,jdbcType=VARCHAR},
+		#{dwyzbm,jdbcType=VARCHAR},#{szbm,jdbcType=VARCHAR},#{zc,jdbcType=VARCHAR},#{hyxz,jdbcType=VARCHAR},#{nsr,jdbcType=VARCHAR},#{bz,jdbcType=VARCHAR})
+
+	</insert>
+
+	<update id="updateCustomerWork" parameterType="map">
+		update ty_customer_work set
+		CREATE_TIME=#{createTime,jdbcType=VARCHAR},KSRQ=#{ksrq,jdbcType=VARCHAR},JSRQ=#{jsrq,jdbcType=VARCHAR},
+		DWMC=#{dwmc,jdbcType=VARCHAR},DWXZ=#{dwxz,jdbcType=VARCHAR},DWDH=#{dwdh,jdbcType=VARCHAR},DWDZ=#{dwdz,jdbcType=VARCHAR},
+		DWYZBM=#{dwyzbm,jdbcType=VARCHAR},SZBM=#{szbm,jdbcType=VARCHAR}
+		,ZC=#{zc,jdbcType=VARCHAR},HYXZ=#{hyxz,jdbcType=VARCHAR},NSR=#{nsr,jdbcType=VARCHAR},BZ=#{bz,jdbcType=VARCHAR}
+		where
+		KHNM=#{khnm,jdbcType=VARCHAR}
+	</update>
+
+	<insert id="insertCustomerManage" parameterType="map">
+		INSERT INTO ty_customer_manage
+		(ID,CREATE_TIME,KHNM,ZYYWMC,JYGM,JYZK,YJZSR,YJCSR) values
+		(#{id,jdbcType=VARCHAR},#{createTime,jdbcType=VARCHAR},#{khnm,jdbcType=VARCHAR},
+		#{zyywmc,jdbcType=VARCHAR}, #{jygm,jdbcType=VARCHAR},
+		#{jyzk,jdbcType=VARCHAR}, #{yjzsr,jdbcType=VARCHAR},
+		#{yjcsr,jdbcType=VARCHAR})
+
+	</insert>
+
+	<update id="updateCustomerManage" parameterType="map">
+		update ty_customer_manage set
+		CREATE_TIME=#{createTime,jdbcType=VARCHAR},ZYYWMC=#{zyywmc,jdbcType=VARCHAR},JYGM=#{jygm,jdbcType=VARCHAR},
+		JYZK=#{jyzk,jdbcType=VARCHAR},JYZK=#{yjzsr,jdbcType=VARCHAR},YJZSR=#{yjcsr,jdbcType=VARCHAR}
+		where
+		KHNM=#{khnm,jdbcType=VARCHAR}
+	</update>
+
+	<insert id="insertCustomerSafe" parameterType="map">
+		INSERT INTO ty_customer_safe (ID,CREATE_TIME,KHNM,BXLX,BXMC,CBGS,BXNR,BZ)
+		values
+		(#{id,jdbcType=VARCHAR},#{createTime,jdbcType=VARCHAR},#{khnm,jdbcType=VARCHAR},
+		#{bxlx,jdbcType=VARCHAR}, #{bxmc,jdbcType=VARCHAR},
+		#{cbgs,jdbcType=VARCHAR}, #{bxnr,jdbcType=VARCHAR},
+		#{bz,jdbcType=VARCHAR})
+
+	</insert>
+
+	<update id="updateCustomerSafe" parameterType="map">
+		update ty_customer_safe set
+		CREATE_TIME=#{createTime,jdbcType=VARCHAR},BXLX=#{bxlx,jdbcType=VARCHAR},BXMC=#{bxmc,jdbcType=VARCHAR},
+		CBGS=#{cbgs,jdbcType=VARCHAR},BXNR=#{bxnr,jdbcType=VARCHAR},BZ=#{bz,jdbcType=VARCHAR}
+		where
+		KHNM=#{khnm,jdbcType=VARCHAR}
+	</update>
+	<select id="findCustomerInforByFilterAndProductId" resultType="com.cardpay.pccredit.customer.model.CustomerInfor">
+		SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+			select 
+			id,
+			chinese_name as chineseName,
+			card_type as cardType,
+			card_id as cardId,
+			TY_CUSTOMER_ID as tyCustomerId
+			from BASIC_CUSTOMER_INFORMATION T1 where 1 = 1
+				AND user_id=#{userId}
+				<if test="chineseName != null and chineseName != '' ">
+					AND chinese_name=#{chineseName}
+				</if>
+				<if test="cardType != null and cardType != '' ">
+					AND card_type=#{cardType}
+				</if>
+				<if test="cardId != null and cardId != '' ">
+					AND card_id=#{cardId}
+				</if>
+		       	and not exists 
+		       	(
+		       		<!-- select 1 from CUSTOMER_APPLICATION_INFO T2 where T1.id = T2.customer_id and T2.product_id =#{productId} -->
+		       		select 1 from RISK_LIST T2 where T1.id = T2.CUSTOMER_ID and T2.product_id =#{productId}
+		       	)
+		       	
+		       	and  not exists 
+		       	(
+		       		select 1 from CUSTOMER_APPLICATION_INFO T2 where T1.id = T2.customer_id and T2.product_id =#{productId} 
+ 		       		and T2.REPAY_STATUS  != '1' and status !='refuse'
+            	    <!--and (trunc(sysdate)-trunc(T2.created_time))&lt;180 -->
+		       	) 
+	
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+
+	<select id="findCustomerInforCountByFilterAndProductId"
+		resultType="int">
+		select count(0) from BASIC_CUSTOMER_INFORMATION T1 where 1 = 1
+		AND user_id=#{userId}
+		<if test="chineseName != null and chineseName != '' ">
+			AND chinese_name=#{chineseName}
+		</if>
+		<if test="cardType != null and cardType != '' ">
+			AND card_type=#{cardType}
+		</if>
+		<if test="cardId != null and cardId != '' ">
+			AND card_id=#{cardId}
+		</if>
+		and not exists
+		(
+		<!-- select 1 from CUSTOMER_APPLICATION_INFO T2 where T1.id = T2.customer_id and
+		T2.product_id =#{productId} -->
+		select 1 from RISK_LIST T2 where T1.id = T2.CUSTOMER_ID and T2.product_id =#{productId}
+		)
+		and not exists 
+       	(
+       		select 1 from CUSTOMER_APPLICATION_INFO T2 where T1.id = T2.customer_id and T2.product_id =#{productId} 
+       		and T2.REPAY_STATUS  != '1' and status !='refuse'
+            <!-- and (trunc(sysdate)-trunc(T2.created_time))&lt;180 -->
+       	)
+	</select>
+
+	<select id="findCustomerByFilter" resultType="com.cardpay.pccredit.customer.model.MaintenanceLog"
+		parameterType="com.cardpay.pccredit.customer.filter.CustomerInforFilter">
+		select a.id,a.chinese_name as chineseName,a.card_id as
+		cardId,c.id as productId,c.PRODUCT_NAME as
+		productName,a.user_id as userId,
+		d.display_name as userName
+		from basic_customer_information a,customer_application_info
+		b,PRODUCT_ATTRIBUTE c,sys_user d
+		WHERE 1=1 and a.id=b.customer_id and b.product_id=c.id and d.id=a.user_id 
+		<!-- and b.status in ('approved','end') -->
+		<if test="cardId != null and cardId != '' ">
+			AND a.card_id=#{cardId}
+		</if>
+
+		<if test="chineseName != null and chineseName != '' ">
+			AND a.CHINESE_NAME=#{chineseName}
+		</if>
+
+		
+		<if test="productId != null and productId != '' ">
+			AND c.id = #{productId}
+		</if>
+		<if test="customerManagerIds != null and customerManagerIds != '' ">
+			AND a.user_id in
+			<foreach collection="customerManagerIds" index="index" item="item"
+				open="(" separator="," close=")">
+				#{item.userId}
+			</foreach>
+			<if test="userId != null and userId != '' ">
+			AND a.user_id = #{userId}
+		</if>
+		</if>
+	</select>
+
+	<select id="findCustomerCountByFilter" resultType="int"
+		parameterType="com.cardpay.pccredit.customer.filter.CustomerInforFilter">
+		select count(*)
+		from basic_customer_information a,customer_application_info
+		b,PRODUCT_ATTRIBUTE c,sys_user d
+		WHERE 1=1 and a.id=b.customer_id and b.product_id=c.id and d.id=a.user_id
+	<!-- 	and b.status in ('approved','end') -->
+		<if test="cardId != null and cardId != '' ">
+			AND a.card_id=#{cardId}
+		</if>
+
+		<if test="chineseName != null and chineseName != '' ">
+			AND a.CHINESE_NAME=#{chineseName}
+		</if>
+
+		
+		<if test="productId != null and productId != '' ">
+			AND c.id = #{productId}
+		</if>
+		<if test="customerManagerIds != null and customerManagerIds != '' ">
+			AND a.user_id in
+			<foreach collection="customerManagerIds" index="index" item="item"
+				open="(" separator="," close=")">
+				#{item.userId}
+			</foreach>
+			<if test="userId != null and userId != '' ">
+			AND a.user_id = #{userId}
+		</if>
+		</if>
+	</select>
+	
+	<select id="findCustomerOriginaList" resultType="com.cardpay.pccredit.customer.model.CustomerInfor">
+		SELECT * FROM
+		 (SELECT ROW_.*,ROWNUM ROWNUM_
+		   FROM (
+			select 
+			T1.id,
+			T1.chinese_name as chineseName,
+			T1.card_type as cardType,
+			T1.card_id as cardId,
+			T1.ty_customer_id as tyCustomerId,
+			<!-- T1.user_id as userId,-->
+ 			u.display_name as userId
+			from BASIC_CUSTOMER_INFORMATION T1,
+			sys_user u
+		  where 1=1
+		   			and  u.id = t1.user_id
+				<if test="chineseName != null and chineseName != '' ">
+					AND T1.chinese_name=#{chineseName}
+				</if>
+				<if test="cardType != null and cardType != '' ">
+					AND T1.card_type=#{cardType}
+				</if>
+				<if test="cardId != null and cardId != '' ">
+					AND T1.card_id=#{cardId}
+				</if>
+				<if test="customerManagerIds != null and customerManagerIds != '' ">  
+ 		    		and T1.user_id in  
+	 	    		<foreach collection="customerManagerIds" index="index" item="item" open="(" separator="," close=")"> 
+			   		#{item.userId} 
+					</foreach>
+				</if>
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+		]]>
+	</select>
+	
+	
+	<select id="findCustomerOriginaCountList" resultType="int">
+		select count(0) 
+		from BASIC_CUSTOMER_INFORMATION T1 
+		where 1 = 1
+		<if test="chineseName != null and chineseName != '' ">
+			AND chinese_name=#{chineseName}
+		</if>
+		<if test="cardType != null and cardType != '' ">
+			AND card_type=#{cardType}
+		</if>
+		<if test="cardId != null and cardId != '' ">
+			AND card_id=#{cardId}
+		</if>
+		<if test="customerManagerIds != null and customerManagerIds != '' ">  
+ 		    AND T1.user_id in  
+	 	    <foreach collection="customerManagerIds" index="index" item="item" open="(" separator="," close=")"> 
+			   #{item.userId} 
+			</foreach>
+		</if>
+	</select>
+	
+		<insert id="insertRepayLSZ" parameterType="map">
+		INSERT INTO ty_repay_lsz (CREATE_TIME,YWBH,KMH,KHJL,JJH,YWJG,YWJGH,
+		DKZH,FZH,LSH,YWDM,JZRQ,YWRQ,ZY,PZH,JF,
+		DF,YE,QXRX,ZXRQ,SFMZ,MZYH,MZSJ,SFCL) values
+		(#{createTime,jdbcType=VARCHAR},#{ywbh,jdbcType=VARCHAR},
+		#{kmh,jdbcType=VARCHAR}, #{khjl,jdbcType=VARCHAR},
+		#{jjh,jdbcType=VARCHAR}, #{ywjg,jdbcType=VARCHAR},
+		#{ywjgh,jdbcType=VARCHAR},
+		#{dkzh,jdbcType=VARCHAR}, #{fzh,jdbcType=VARCHAR}, #{lsh,jdbcType=VARCHAR},
+		#{ywdm,jdbcType=VARCHAR}, #{jzrq,jdbcType=VARCHAR},
+		#{ywrq,jdbcType=VARCHAR},
+		#{zy,jdbcType=VARCHAR}, #{pzh,jdbcType=VARCHAR}, #{jf,jdbcType=VARCHAR},
+		#{df,jdbcType=VARCHAR}, #{ye,jdbcType=VARCHAR},
+		#{qxrx,jdbcType=VARCHAR},
+		#{zxrq,jdbcType=VARCHAR}, #{sfmz,jdbcType=VARCHAR}, #{mzyh,jdbcType=VARCHAR},
+		#{mzsj,jdbcType=VARCHAR}, #{sfcl,jdbcType=VARCHAR})
+	</insert>
+	
+		<insert id="insertRepayYEHZ" parameterType="map">
+		INSERT INTO ty_repay_yehz (CREATE_TIME,JJH,YWBH,KHH,ZHTBH,JGDM,KMH,
+		HBZL,JKJE,QXRQ,DKYE,BNQX,BWQX,WJFL1,WJFL2,WJFL3,
+		WJFL4,WJFL5,SHBJ,SHLX,LXJS,KSQXRQ,YHXBJ,YHXLX,ZHHKR,BQLL) values
+		(#{createTime,jdbcType=VARCHAR},#{jjh,jdbcType=VARCHAR},
+		#{ywbh,jdbcType=VARCHAR}, #{khh,jdbcType=VARCHAR},
+		#{zhtbh,jdbcType=VARCHAR}, #{jgdm,jdbcType=VARCHAR},
+		#{kmh,jdbcType=VARCHAR},
+		#{hbzl,jdbcType=VARCHAR}, #{jkje,jdbcType=VARCHAR}, #{qxrq,jdbcType=VARCHAR},
+		#{dkye,jdbcType=VARCHAR}, #{bnqx,jdbcType=VARCHAR},
+		#{bwqx,jdbcType=VARCHAR},
+		#{wjfl1,jdbcType=VARCHAR}, #{wjfl2,jdbcType=VARCHAR}, #{wjfl3,jdbcType=VARCHAR},
+		#{wjfl4,jdbcType=VARCHAR}, #{wjfl5,jdbcType=VARCHAR},
+		#{shbj,jdbcType=VARCHAR},
+		#{shlx,jdbcType=VARCHAR}, #{lxjs,jdbcType=VARCHAR}, #{ksqxrq,jdbcType=VARCHAR},
+		#{yhxbj,jdbcType=VARCHAR}, #{yhxlx,jdbcType=VARCHAR}, #{zhhkr,jdbcType=VARCHAR}, #{bqll,jdbcType=VARCHAR})
+	</insert>
+	<update id="updateRepayYEHZ" parameterType="map">
+		update ty_repay_yehz set
+		CREATE_TIME=#{createTime,jdbcType=VARCHAR},YWBH=#{ywbh,jdbcType=VARCHAR},KHH=#{khh,jdbcType=VARCHAR},
+		ZHTBH=#{zhtbh,jdbcType=VARCHAR},JGDM=#{jgdm,jdbcType=VARCHAR},KMH=#{kmh,jdbcType=VARCHAR},HBZL=#{hbzl,jdbcType=VARCHAR},JKJE=#{jkje,jdbcType=VARCHAR},
+		QXRQ=#{qxrq,jdbcType=VARCHAR},DKYE=#{dkye,jdbcType=VARCHAR},BNQX=#{bnqx,jdbcType=VARCHAR},BWQX=#{bwqx,jdbcType=VARCHAR},
+		WJFL1=#{wjfl1,jdbcType=VARCHAR},WJFL2=#{wjfl2,jdbcType=VARCHAR},WJFL3=#{wjfl3,jdbcType=VARCHAR},WJFL4=#{wjfl4,jdbcType=VARCHAR},
+		WJFL5=#{wjfl5,jdbcType=VARCHAR},SHBJ=#{shbj,jdbcType=VARCHAR},SHLX=#{shlx,jdbcType=VARCHAR},LXJS=#{lxjs,jdbcType=VARCHAR},
+		KSQXRQ=#{ksqxrq,jdbcType=VARCHAR},YHXBJ=#{yhxbj,jdbcType=VARCHAR},YHXLX=#{yhxlx,jdbcType=VARCHAR},ZHHKR=#{zhhkr,jdbcType=VARCHAR},
+		BQLL=#{bqll,jdbcType=VARCHAR}
+		where
+		JJH=#{jjh,jdbcType=VARCHAR}
+	</update>
+	<insert id="insertRepayYEHZHistory" parameterType="map">
+		INSERT INTO ty_repay_yehz_history (CREATE_TIME,JJH,YWBH,KHH,ZHTBH,JGDM,KMH,
+		HBZL,JKJE,QXRQ,DKYE,BNQX,BWQX,WJFL1,WJFL2,WJFL3,
+		WJFL4,WJFL5,SHBJ,SHLX,LXJS,KSQXRQ,YHXBJ,YHXLX,ZHHKR,BQLL) values
+		(#{createTime,jdbcType=VARCHAR},#{jjh,jdbcType=VARCHAR},
+		#{ywbh,jdbcType=VARCHAR}, #{khh,jdbcType=VARCHAR},
+		#{zhtbh,jdbcType=VARCHAR}, #{jgdm,jdbcType=VARCHAR},
+		#{kmh,jdbcType=VARCHAR},
+		#{hbzl,jdbcType=VARCHAR}, #{jkje,jdbcType=VARCHAR}, #{qxrq,jdbcType=VARCHAR},
+		#{dkye,jdbcType=VARCHAR}, #{bnqx,jdbcType=VARCHAR},
+		#{bwqx,jdbcType=VARCHAR},
+		#{wjfl1,jdbcType=VARCHAR}, #{wjfl2,jdbcType=VARCHAR}, #{wjfl3,jdbcType=VARCHAR},
+		#{wjfl4,jdbcType=VARCHAR}, #{wjfl5,jdbcType=VARCHAR},
+		#{shbj,jdbcType=VARCHAR},
+		#{shlx,jdbcType=VARCHAR}, #{lxjs,jdbcType=VARCHAR}, #{ksqxrq,jdbcType=VARCHAR},
+		#{yhxbj,jdbcType=VARCHAR}, #{yhxlx,jdbcType=VARCHAR}, #{zhhkr,jdbcType=VARCHAR}, #{bqll,jdbcType=VARCHAR})
+	</insert>
+			<insert id="insertRepayTKMX" parameterType="map">
+		INSERT INTO ty_repay_tkmx (CREATE_TIME,YWBH,KHH,ZHTBH,JJH,JZLL,SFBL,
+		HTLL,TKBH,FFJE,TKYT,JKRQ,DQRQ,DKKM,XGRY,XGSJ,
+		DKQX,ZQDQR,SFZQ,SFJQ,DKZL,DKFS,BLJG,SFZF,KHJL,ZQHTH,DKZH,SFJZ,DKFL,DKLX,JJBH,CPMC,DKXZ,DKYT,DKTX
+		,LLZL,JXFS,HKLY,HKFS,JQRQ,YWLX,ZQRQ,HBZL,YTMX,SFXEDK,YQSF,SHYJ,SHRY,SHSJ,TXLX,YQLL,SFTXJE,NYJFBL,BLRY,YJJH,SFSTDK,YSTXYH,SFYXDK,YXR,
+		FLCORZLC) values
+		(#{createTime,jdbcType=VARCHAR},
+		#{ywbh,jdbcType=VARCHAR}, #{khh,jdbcType=VARCHAR},
+		#{zhtbh,jdbcType=VARCHAR},#{jjh,jdbcType=VARCHAR}, #{jzll,jdbcType=VARCHAR},
+		#{sfbl,jdbcType=VARCHAR},
+		#{htll,jdbcType=VARCHAR}, #{tkbh,jdbcType=VARCHAR}, #{ffje,jdbcType=VARCHAR},
+		#{tkyt,jdbcType=VARCHAR}, #{jkrq,jdbcType=VARCHAR},
+		#{dqrq,jdbcType=VARCHAR},
+		#{dkkm,jdbcType=VARCHAR}, #{xgry,jdbcType=VARCHAR}, #{xgsj,jdbcType=VARCHAR},
+		#{dkqx,jdbcType=VARCHAR}, #{zqdqr,jdbcType=VARCHAR},
+		#{sfzq,jdbcType=VARCHAR},
+		#{sfjq,jdbcType=VARCHAR}, #{dkzl,jdbcType=VARCHAR}, #{dkfs,jdbcType=VARCHAR},
+		#{bljg,jdbcType=VARCHAR}, #{sfzf,jdbcType=VARCHAR}, #{khjl,jdbcType=VARCHAR}, #{zqhth,jdbcType=VARCHAR}
+		, #{dkzh,jdbcType=VARCHAR}, #{sfjz,jdbcType=VARCHAR}, #{dkfl,jdbcType=VARCHAR}, #{dklx,jdbcType=VARCHAR}
+		, #{jjbh,jdbcType=VARCHAR}, #{cpmc,jdbcType=VARCHAR}, #{dkxz,jdbcType=VARCHAR}, #{dkyt,jdbcType=VARCHAR}
+		, #{dktx,jdbcType=VARCHAR}, #{llzl,jdbcType=VARCHAR}, #{jxfs,jdbcType=VARCHAR}, #{hkly,jdbcType=VARCHAR}
+		, #{hkfs,jdbcType=VARCHAR}, #{jqrq,jdbcType=VARCHAR}, #{ywlx,jdbcType=VARCHAR}, #{zqrq,jdbcType=VARCHAR}
+		, #{hbzl,jdbcType=VARCHAR}, #{ytmx,jdbcType=VARCHAR}, #{sfxedk,jdbcType=VARCHAR}, #{yqsf,jdbcType=VARCHAR},
+		#{shyj,jdbcType=VARCHAR},#{shry,jdbcType=VARCHAR},#{shsj,jdbcType=VARCHAR},#{txlx,jdbcType=VARCHAR},
+		#{yqll,jdbcType=VARCHAR},#{sftxje,jdbcType=VARCHAR},#{nyjfbl,jdbcType=VARCHAR},#{blry,jdbcType=VARCHAR},
+		#{yjjh,jdbcType=VARCHAR},#{sfstdk,jdbcType=VARCHAR},#{ystxyh,jdbcType=VARCHAR},#{sfyxdk,jdbcType=VARCHAR},
+		#{yxr,jdbcType=VARCHAR},#{flcorzlc,jdbcType=VARCHAR})
+	</insert>
+	<update id="updateRepayTKMX" parameterType="map">
+		update ty_repay_tkmx set
+		CREATE_TIME=#{createTime,jdbcType=VARCHAR},YWBH=#{ywbh,jdbcType=VARCHAR},KHH=#{khh,jdbcType=VARCHAR},
+		ZHTBH=#{zhtbh,jdbcType=VARCHAR},JZLL=#{jzll,jdbcType=VARCHAR},SFBL=#{sfbl,jdbcType=VARCHAR},HTLL=#{htll,jdbcType=VARCHAR},TKBH=#{tkbh,jdbcType=VARCHAR},
+		FFJE=#{ffje,jdbcType=VARCHAR},TKYT=#{tkyt,jdbcType=VARCHAR},JKRQ=#{jkrq,jdbcType=VARCHAR},DQRQ=#{dqrq,jdbcType=VARCHAR},
+		DKKM=#{dkkm,jdbcType=VARCHAR},XGRY=#{xgry,jdbcType=VARCHAR},XGSJ=#{xgsj,jdbcType=VARCHAR},DKQX=#{dkqx,jdbcType=VARCHAR},
+		ZQDQR=#{zqdqr,jdbcType=VARCHAR},SFZQ=#{sfzq,jdbcType=VARCHAR},SFJQ=#{sfjq,jdbcType=VARCHAR},DKZL=#{dkzl,jdbcType=VARCHAR},
+		DKFS=#{dkfs,jdbcType=VARCHAR},BLJG=#{bljg,jdbcType=VARCHAR},SFZF=#{sfzf,jdbcType=VARCHAR},KHJL=#{khjl,jdbcType=VARCHAR},
+		ZQHTH=#{zqhth,jdbcType=VARCHAR},DKZH=#{dkzh,jdbcType=VARCHAR},SFJZ=#{sfjz,jdbcType=VARCHAR},DKFL=#{dkfl,jdbcType=VARCHAR},DKLX=#{dklx,jdbcType=VARCHAR},
+		JJBH=#{jjbh,jdbcType=VARCHAR},CPMC=#{cpmc,jdbcType=VARCHAR},DKXZ=#{dkxz,jdbcType=VARCHAR},DKYT=#{dkyt,jdbcType=VARCHAR},DKTX=#{dktx,jdbcType=VARCHAR},
+		LLZL=#{llzl,jdbcType=VARCHAR},JXFS=#{jxfs,jdbcType=VARCHAR},HKLY=#{hkly,jdbcType=VARCHAR},HKFS=#{hkfs,jdbcType=VARCHAR},JQRQ=#{jqrq,jdbcType=VARCHAR},
+		YWLX=#{ywlx,jdbcType=VARCHAR},ZQRQ=#{zqrq,jdbcType=VARCHAR},HBZL=#{hbzl,jdbcType=VARCHAR},YTMX=#{ytmx,jdbcType=VARCHAR},SFXEDK=#{sfxedk,jdbcType=VARCHAR},
+		YQSF=#{yqsf,jdbcType=VARCHAR},SHYJ=#{shyj,jdbcType=VARCHAR},SHRY=#{shry,jdbcType=VARCHAR},SHSJ=#{shsj,jdbcType=VARCHAR},TXLX=#{txlx,jdbcType=VARCHAR},
+		YQLL=#{yqll,jdbcType=VARCHAR},SFTXJE=#{sftxje,jdbcType=VARCHAR},NYJFBL=#{nyjfbl,jdbcType=VARCHAR},BLRY=#{blry,jdbcType=VARCHAR},
+		YJJH=#{yjjh,jdbcType=VARCHAR},SFSTDK=#{sfstdk,jdbcType=VARCHAR},YSTXYH=#{ystxyh,jdbcType=VARCHAR},SFYXDK=#{sfyxdk,jdbcType=VARCHAR},
+		YXR=#{yxr,jdbcType=VARCHAR},FLCORZLC=#{flcorzlc,jdbcType=VARCHAR}
+		where
+		JJH=#{jjh,jdbcType=VARCHAR}
+	</update>
+	<insert id="insertProduct" parameterType="map">
+		INSERT INTO ty_product_type (CREATE_TIME,PRODUCT_CODE,PRODUCT_NAME) values
+		(#{createTime,jdbcType=VARCHAR},
+		#{productCode,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertHmd" parameterType="map">
+		INSERT INTO f_agr_crd_xyk_cuneg (CREATED_TIME,ZBJG,KHNM,SXRQ,TCRQ,SBYY) values
+		(#{createTime,jdbcType=VARCHAR},
+		#{zbjg,jdbcType=VARCHAR}, #{khnm,jdbcType=VARCHAR}, #{sxrq,jdbcType=VARCHAR}, #{tcrq,jdbcType=VARCHAR}, #{sbyy,jdbcType=VARCHAR})
+	</insert>
+	
+	
+	
+	
+	<select id="findCustomerYexxList" resultType="com.cardpay.pccredit.customer.model.TyRepayYehzVo">
+		SELECT * FROM
+		 (SELECT ROW_.*,ROWNUM ROWNUM_
+		   FROM (
+			        select base.khmc,
+			               base.zjlx,
+			               base.zjhm,
+			               yehz.jjh,
+			               yehz.ywbh,
+			               yehz.khh,
+			               yehz.jgdm,
+			               yehz.kmh,
+			               yehz.hbzl,
+			               yehz.jkje,
+			               yehz.qxrq,
+			               yehz.dkye,
+			               yehz.shbj,
+			               yehz.shlx,
+			               yehz.zhhkr,
+			               yehz.bqll,
+			               yehz.create_time createTime
+			          from ty_customer_base base, ty_repay_yehz_history yehz
+			         where base.khnm = yehz.khh
+			        <if test="chineseName != null and chineseName != '' ">
+					     AND base.KHMC=#{chineseName}
+					</if>
+					<if test="cardId != null and cardId != '' ">
+						AND  base.ZJHM=#{cardId}
+					</if>
+					
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+		]]>
+	</select>
+	
+    <select id="findCustomerYexxCountList" resultType="int">
+			select count(*)
+			  from (
+			        select base.khmc,
+			               base.zjlx,
+			               base.zjhm,
+			               yehz.jjh,
+			               yehz.ywbh,
+			               yehz.khh,
+			               yehz.jgdm,
+			               yehz.kmh,
+			               yehz.hbzl,
+			               yehz.jkje,
+			               yehz.qxrq,
+			               yehz.dkye,
+			               yehz.shbj,
+			               yehz.shlx,
+			               yehz.zhhkr,
+			               yehz.bqll,
+			               yehz.create_time createTime
+			          from ty_customer_base base, ty_repay_yehz_history yehz
+			         where base.khnm = yehz.khh
+			        <if test="chineseName != null and chineseName != '' ">
+					     AND base.KHMC=#{chineseName}
+					</if>
+					<if test="cardId != null and cardId != '' ">
+						AND  base.ZJHM=#{cardId}
+					</if>
+				)
+			         
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	<select id="findRepayLszList" resultType="com.cardpay.pccredit.customer.model.TyRepayLsz">
+		SELECT * FROM
+		 (SELECT ROW_.*,ROWNUM ROWNUM_
+		   FROM (
+			        select lsz.*,
+			        	   lsz.create_time as createTime
+			          from TY_REPAY_LSZ lsz
+			         where 1=1
+			        <if test="jjh != null and jjh != '' ">
+					     AND lsz.jjh=#{jjh}
+					</if>
+					order by jzrq desc
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+		]]>
+	</select>
+	
+    <select id="findRepayLszCountList" resultType="int">
+			select count(*)
+			  from (
+			        select lsz.*,
+			        	   lsz.create_time as createTime
+			          from TY_REPAY_LSZ lsz
+			         where 1=1
+			        <if test="jjh != null and jjh != '' ">
+					     AND lsz.jjh=#{jjh}
+					</if>
+				)
+			         
+	</select>
+	
+	<insert id="insertBatchTask" parameterType="map">
+		INSERT INTO T_BATCH_TASK (ID,BATCH_CODE,BATCH_NAME,STATUS,CREATED_TIME
+		) values
+		(#{id,jdbcType=VARCHAR},
+		 #{batchCode,jdbcType=VARCHAR},
+		 #{batchName,jdbcType=VARCHAR},
+		 #{status,jdbcType=VARCHAR}, 
+		 #{createdTime,jdbcType=VARCHAR}
+		 )
+	</insert>
+	
+	
+	<select id="findCipersonfamilyCount" resultType="int" parameterType="map">
+			select count(id) from t_cipersonfamily where CUSTID = #{custid}
+	</select>
+	
+	<select id="findCIPERSONBASINFOCount" resultType="int" parameterType="map">
+			select count(id) from T_CIPERSONBASINFO where CUSTID = #{custid}
+	</select>
+	
+	<select id="findMIBUSIDATACount" resultType="int" parameterType="map">
+			select count(BUSICODE) from T_MIBUSIDATA_VIEW where trim(BUSICODE) = #{busicode}
+	</select>
+	
+	<select id="findFCLOANINFOCount" resultType="int" parameterType="map">
+			select count(BUSICODE) from t_fcloaninfo where trim(BUSICODE) = #{busicode}
+	</select>
+	
+	
+	<select id="findAppAuditLog" resultType="int" parameterType="map">
+			select count(id) from T_APP_MANAGER_AUDIT_LOG 
+			where APPLICATION_ID = #{param1} and AUDIT_TYPE = #{param2}
+	</select>
+	
+	<update id="updateAppAuditLog" parameterType="map">
+		update T_APP_MANAGER_AUDIT_LOG
+		set APPLICATION_ID = #{param1}
+		<if test="user1 != null and user1 != '' ">
+			 ,USER_ID_1=#{user1}
+		</if>
+		<if test="user2 != null and user2 != '' ">
+			 ,USER_ID_2=#{user2}
+		</if>
+		<if test="user3 != null and user3 != '' ">
+			 ,USER_ID_3=#{user3}
+		</if>
+		<if test="examineAmount != null and examineAmount != '' ">
+			 ,EXAMINE_AMOUNT=#{examineAmount}
+		</if>
+		<if test="lv != null and lv != '' ">
+			 ,EXAMINE_LV=#{lv}
+		</if>
+		<if test="qx != null and qx != '' ">
+			 ,qx=#{qx}
+		</if>
+		<if test="sdUser != null and sdUser != '' ">
+			 ,USER_ID_4=#{sdUser}
+		</if>
+		<if test="hkfs != null and hkfs != '' ">
+			 ,HKFS=#{hkfs}
+		</if>
+		<if test="beiZhu != null and beiZhu != '' ">
+			 ,BEIZHU=#{beiZhu}
+		</if>
+		where APPLICATION_ID = #{param1} and AUDIT_TYPE = #{param2}
+	</update>
+	
+	
+	
+	<insert id="insertMain" parameterType="map">
+		insert into T_GCCONTRACTMAIN   (keycode,               
+				                              	   keytype,               
+				                              	   extendkeycode,         
+				                           	     appcode,                  
+				                          		     gcbusinesslevel,           
+				                           	     gcsyslevel,                  
+				                           	     upkeycode,                   
+				                           	     upkeytype,            	      
+				                           	     upgcbusinesslevel,           
+				                           	     upgcsyslevel,                
+				                           	     oldkeycode,                  
+				                           	     money,                       
+				                                  currency,              
+				                                  startdate,             
+				                                  enddate,               
+				                                  lastdate,              
+				                                  limit_1,               
+				                                  limitunit,             
+				                                  keyeffectedstate,      
+				                                  keydatestate,          
+				                                  squarestate,           
+				                                  subbusicodetype,       
+				                                  billmoney,             
+				                                  billtype,              
+				                                  billnum,               
+				                                  bailacc,               
+				                                  assuremoney,           
+				                                  assurecur,             
+				                                  assurerate,            
+				                                  interest,              
+				                                  interestunit,          
+				                                  squareinterestmode,    
+				                                  ratetype,              
+				                                  floattype,             
+				                                  baserate,              
+				                                  baseratetype,          
+				                                  floatrate,             
+				                                  intrstratefdot,        
+				                                  remittername,          
+				                                  remitteraccount,       
+				                                  createbank,            
+				                                  createbankname,        
+				                                  poundagecurtype,       
+				                                  poundageamt,           
+				                                  poundagerate,          
+				                                  loanpurpose,           
+				                                  regroupflag,           
+				                                  revoldflag,            
+				                                  changeflag,            
+				                                  isbankloan,            
+				                                  loancardflag,          
+				                                  contractcount,         
+				                                  solutionmode,          
+				                                  usetype,               
+				                                  terminaldate,          
+				                                  aribtrateorganization, 
+				                                  busimanager,           
+				                                  createdate,            
+				                                  passeddate,            
+				                                  editionno,             
+				                                  assistbusimanager,     
+				                                  loantype,              
+				                                  busistate,             
+				                                  lowriskflag,           
+				                                  mainassure,            
+				                                  subassure,             
+				                                  accounttype,           
+				                                  savingaccountnum,      
+				                                  repaytype,             
+				                                  repaymethod,           
+				                                  repaycycle,            
+				                                  repaymoney,            
+				                                  loanpurposeremark,     
+				                                  item,                  
+				                                  loanflag,              
+				                                  firstloandate,         
+				                                  transferstate,         
+				                                  deptcode,              
+				                                  instcode,              
+				                                  accantdept,            
+				                                  instcitycode,          
+				                                  operdatetime,          
+				                                  operator_1,            
+				                                  istrans,               
+				                                  isreferagricultural,   
+				                                  isunitcust,            
+				                                  unionid,               
+				                                  ifspecialfloatrate,    
+				                                  iffnongcard,           
+				                                  frozenstate,           
+				                                  busiflag,              
+				                                  paymode,
+				                                  CREATE_TIME)   
+				      values(  #{keycode},               
+				      			   #{keytype},                                                    
+                       #{extendkeycode},         
+                       #{appcode},               
+                       #{gcbusinesslevel},       
+                       #{gcsyslevel},            
+                       #{upkeycode},            
+                       #{upkeytype},             
+                       #{upgcbusinesslevel},     
+                       #{upgcsyslevel},          
+                       #{oldkeycode},            
+                       #{money},                
+                       #{currency},              
+                       #{startdate},             
+                       #{enddate},               
+                       #{lastdate},              
+                       #{limit},               
+                       #{limitunit},             
+                       #{keyeffectedstate},      
+                       #{keydatestate},         
+                       #{squarestate},           
+                       #{subbusicodetype},       
+                       #{billmoney},             
+                       #{billtype},              
+                       #{billnum},               
+                       #{bailacc},               
+                       #{assuremoney},           
+                       #{assurecur},             
+                       #{assurerate},            
+                       #{interest},              
+                       #{interestunit},          
+                       #{squareinterestmode},    
+                       #{ratetype},              
+                       #{floattype},             
+                       #{baserate},              
+                       #{baseratetype},          
+                       #{floatrate},             
+                       #{intrstratefdot},        
+                       #{remittername},          
+                       #{remitteraccount},       
+                       #{createbank},            
+                       #{createbankname},        
+                       #{poundagecurtype},       
+                       #{poundageamt},           
+                       #{poundagerate},          
+                       #{loanpurpose},           
+                       #{regroupflag},           
+                       #{revoldflag},            
+                       #{changeflag},            
+                       #{isbankloan},            
+                       #{loancardflag},          
+                       #{contractcount},         
+                       #{solutionmode},          
+                       #{usetype},               
+                       #{terminaldate},          
+                       #{aribtrateorganization}, 
+                       #{busimanager},           
+                       #{createdate},            
+                       #{passeddate},            
+                       #{editionno},             
+                       #{assistbusimanager},     
+                       #{loantype},              
+                       #{busistate},             
+                       #{lowriskflag},           
+                       #{mainassure},            
+                       #{subassure},             
+                       #{accounttype},           
+                       #{savingaccountnum},      
+                       #{repaytype},             
+                       #{repaymethod},           
+                       #{repaycycle},            
+                       #{repaymoney},            
+                       #{loanpurposeremark},     
+                       #{item},                 
+                       #{loanflag},              
+                       #{firstloandate},         
+                       #{transferstate},         
+                       #{deptcode},              
+                       #{instcode},              
+                       #{accantdept},            
+                       #{instcitycode},          
+                       #{operdatetime},          
+                       #{operator},            
+                       #{istrans},               
+                       #{isreferagricultural},   
+                       #{isunitcust},            
+                       #{unionid},               
+                       #{ifspecialfloatrate},    
+                       #{iffnongcard},           
+                       #{frozenstate},           
+                       #{busiflag},              
+                       #{paymode},               
+                       #{createdTime})           
+	</insert>
+	
+	
+	
+	
+	
+	<insert id="insertFCLOANINFO" parameterType="map">
+										insert into T_FCLOANINFO ( KEYCODE,	   
+                                                            YEAR,			   
+                                                            TIMES,		   
+                                                            BUSICODE,	   
+                                                            BUSITYPE,	   
+                                                            DEPTCODE,		 
+                                                            INSTCITYCODE,
+                                                            CONTRACTCODE,
+                                                            CUSTID,      
+                                                            CNAME,       
+                                                            TYPEID,      
+                                                            CUSTTYPE,    
+                                                            CUSTPROPERTY,
+                                                            ORGCERTCODE, 
+                                                            UNITCUSTTYPE,
+                                                            CARDTYPE,    
+                                                            CARDNUM,     
+                                                            CITY,        
+                                                            DISTRICTCOUNTY,
+                                                            TOWN,
+                                                            COMMUNITY,
+                                                            INSTCODE,
+                                                            CURRENCY,
+                                                            MONEY,
+                                                            BALAMT,
+                                                            DEBTINTEREST,
+                                                            REQLMT,
+                                                            LOANDATE,
+                                                            ENDDATE,
+                                                            BUSISTATE,
+                                                            CREDITLEVEL,
+                                                            INDUSTRY,
+                                                            LOANPURPOSE,
+                                                            MAINASSURE,
+                                                            BUSIMANAGER,
+                                                            ISBACK,
+                                                            ISBIGCOMPANY,
+                                                            STATE,
+                                                            ISLOWRISK,
+                                                            VALIDTIME,
+                                                            SORTRESULT,
+                                                            SORTRESULTFIVE,
+                                                            PRESORTRESULT,
+                                                            PRESORTFIVE,
+                                                            AUTOSORTRESULT,
+                                                            AUTOSORTREMARK,
+                                                            AUTOSORTFIVE,
+                                                            ISADM,
+                                                            CUSTSCALE,
+                                                            OVERTIMES,
+                                                            DELAYAMTDAYS,
+                                                            DELAYINTERESTDAYS,
+                                                            CHANGEFLAG,
+                                                            CATEGORYTYPE,
+                                                            OPERDATETIME,
+                                                            OPERATOR,
+                                                            ISWORKMANU,
+                                                            ADMDATE,
+                                                            AJUSTSTATE,
+                                                            ISTRANS,
+                                                            LASTYEARSORTRESULT,
+                                                            PROCESSID,
+                                                            TOBADLOANREASON,
+                                                            BADLOANDATE,
+                                                            CREATE_TIME)
+                								values(#{keycode},                              
+                                               		    #{year},                              
+                                               		    #{times},                              
+                                               		    #{busicode},                              
+                                               		    #{busitype},                              
+                                               		    #{deptcode},                              
+                                               		    #{instcitycode},                              
+                                               		    #{contractcode},                              
+                                               		    #{custid},                              
+                                               		    #{cname},                              
+                                               		    #{typeid},                              
+                                               		    #{custtype},                              
+                                               		    #{custproperty},                              
+                                               		    #{orgcertcode},                              
+                                               		    #{unitcusttype},                              
+                                               		    #{cardtype},                              
+                                               		    #{cardnum},                              
+                                               		    #{city},                              
+                                               		    #{districtcounty},                              
+                                               		    #{town},                              
+                                               		    #{community},                              
+                                               		    #{instcode},                              
+                                               		    #{currency},                              
+                                               		    #{money},                              
+                                               		    #{balamt},                              
+                                               		    #{debtinterest},                              
+                                               		    #{reqlmt},                              
+                                               		    #{loandate},                              
+                                               		    #{enddate},                              
+                                               		    #{busistate},                              
+                                               		    #{creditlevel},                              
+                                               		    #{industry},                              
+                                               		    #{loanpurpose},                              
+                                               		    #{mainassure},                              
+                                               		    #{busimanager},                              
+                                               		    #{isback},                              
+                                               		    #{isbigcompany},                              
+                                               		    #{state},                              
+                                               		    #{islowrisk},                              
+                                               		    #{validtime},                              
+                                               		    #{sortresult},                              
+                                               		    #{sortresultfive},                              
+                                               		    #{presortresult},                              
+                                               		    #{presortfive},                              
+                                               		    #{autosortresult},                              
+                                               		    #{autosortremark},                              
+                                               		    #{autosortfive},                              
+                                               		    #{isadm},                              
+                                               		    #{custscale},                              
+                                               		    #{overtimes},                              
+                                               		    #{delayamtdays},                              
+                                               		    #{delayinterestdays},                              
+                                               		    #{changeflag},                              
+                                               		    #{categorytype},                              
+                                               		    #{operdatetime},                              
+                                               		    #{operator},                              
+                                               		    #{isworkmanu},                              
+                                               		    #{admdate},                              
+                                               		    #{ajuststate},                              
+                                               		    #{istrans},                              
+                                               		    #{lastyearsortresult},                              
+                                               		    #{processid},                              
+                                               		    #{tobadloanreason},                              
+                                               		    #{badloandate},
+                                            			#{createdTime})
+	</insert>
+	
+	
+	<insert id="insertFCRESULTHIS" parameterType="map">
+				insert into T_FCRESULTHIS ( KEYCODE,
+                                                            TYPEID,
+                                                            CUSTTYPE,
+                                                            CUSTID,
+                                                            YEAR,
+                                                            TIMES,
+                                                            CONTRACTCODE,
+                                                            BUSICODE,
+                                                            SORTINSTCODE,
+                                                            SORTDEPTCODE,
+                                                            BUSISTATE,
+                                                            BUSITYPE,
+                                                            MONEY,
+                                                            LOANDATE,
+                                                            ENDDATE,
+                                                            LOANPURPOSE,
+                                                            DELAYAMTDAYS,
+                                                            DELAYINTERESTDAYS,
+                                                            DEBTINTEREST,
+                                                            CREDITLEVEL,
+                                                            INITSORTINSTCODE,
+                                                            INITSORTDEPTCODE,
+                                                            CREATOR,
+                                                            CREATORTIMES,
+                                                            APPROVER,
+                                                            BUSIMANAGER,
+                                                            SORTDATE,
+                                                            SORTRESULT,
+                                                            TOBADLOANREASON,
+                                                            REASONSTATUS,
+                                                            PRESORTRESULT,
+                                                            REMARK,
+                                                            STATE,
+                                                            INSTCODE,
+                                                            DEPTCODE,
+                                                            INSTCITYCODE,
+                                                            OPERDATETIME,
+                                                            OPERATOR,
+                                                            ISTRANS,
+                                                            CREATE_TIME)
+                    values (#{keycode},                              
+                    		    #{typeid},                              
+                    		    #{custtype},                              
+                    		    #{custid},                              
+                    		    #{year},                              
+                    		    #{times},                              
+                    		    #{contractcode},                              
+                    		    #{busicode},                              
+                    		    #{sortinstcode},                              
+                    		    #{sortdeptcode},                              
+                    		    #{busistate},                              
+                    		    #{busitype},                              
+                    		    #{money},                              
+                    		    #{loandate},                              
+                    		    #{enddate},                              
+                    		    #{loanpurpose},                              
+                    		    #{delayamtdays},                              
+                    		    #{delayinterestdays},                              
+                    		    #{debtinterest},                              
+                    		    #{creditlevel},                              
+                    		    #{initsortinstcode},                              
+                    		    #{initsortdeptcode},                              
+                    		    #{creator},                              
+                    		    #{creatortimes},                              
+                    		    #{approver},                              
+                    		    #{busimanager},                              
+                    		    #{sortdate},                              
+                    		    #{sortresult},                              
+                    		    #{tobadloanreason},                              
+                    		    #{reasonstatus},                              
+                    		    #{presortresult},                              
+                    		    #{remark},                              
+                    		    #{state},                              
+                    		    #{instcode},                              
+                    		    #{deptcode},                              
+                    		    #{instcitycode},                              
+                    		    #{operdatetime},                              
+                    		    #{operator},                              
+                    		    #{istrans},
+                    		    #{createdTime})
+	</insert>
+	
+	
+	<insert id="insertMIBUSIDATA" parameterType="map">
+		           insert into T_MIBUSIDATA       (busicode,                                      
+				                                        busitype,                                 
+				                                        loanaccount,                              
+				                                        bmcfg,                                    
+				                                        cnlno,                                    
+				                                        dtlnam,                                   
+				                                        custid,                                   
+				                                        cname,                                    
+				                                        typeid,                                   
+				                                        custtype,                                 
+				                                        custidtype,                               
+				                                        custidno,                                 
+				                                        brhid,                                    
+				                                        custproperty,                             
+				                                        unitcusttype,                             
+				                                        industry,                                 
+				                                        city,                                     
+				                                        districtcounty,                           
+				                                        town,                                     
+				                                        community,                                
+				                                        instcode,                                 
+				                                        deptcode,                                 
+				                                        instcitycode,                             
+				                                        telephone,                                
+				                                        syaddr,                                   
+				                                        messageaddr,                              
+				                                        relaman,                                  
+				                                        isreferagricultural,                      
+				                                        isrelamanloan,                            
+				                                        enterprisestatus,                         
+				                                        ecoattr,                                  
+				                                        custscale,                                
+				                                        controlmode,                              
+				                                        contractno,                               
+				                                        contractmoney,                            
+				                                        delaytype,                                
+				                                        loantype,                                 
+				                                        mainassure,                               
+				                                        assuremanname,                            
+				                                        creditlevel,                              
+				                                        reqlmt,                                   
+				                                        isexp,                                    
+				                                        purposeremark,                            
+				                                        busimanager,                              
+				                                        assistbusimanager,                        
+				                                        firstloandate,                            
+				                                        repayaccount1,                            
+				                                        repayaccount2,                            
+				                                        repayaccount3,                            
+				                                        loandate,                                 
+				                                        startdate,                                
+				                                        orienddate,                               
+				                                        enddate,                                  
+				                                        limit,                                    
+				                                        limittype,                                
+				                                        ratetype,                                 
+				                                        floattype,                                
+				                                        baserate,                                 
+				                                        baseratetype,                             
+				                                        crtrate,                                  
+				                                        interest,                                 
+				                                        floatrate,                                
+				                                        money,                                    
+				                                        currency,                                 
+				                                        balamt,                                   
+				                                        loanpurpose,                              
+				                                        accountstate,                             
+				                                        closedate,                                
+				                                        notcounttype,                             
+				                                        ofiveclass,                               
+				                                        fiveclass,                                
+				                                        otenclass,                                
+				                                        tenclass,                                 
+				                                        pastratescale,                            
+				                                        repaytype,                                
+				                                        repaymethod,                              
+				                                        delayamtdays,                             
+				                                        delayinterestdays,                        
+				                                        firstinterestdate,                        
+				                                        debtinterest,                             
+				                                        debtinteresttimes,                        
+				                                        normalaccno,                              
+				                                        normalamt,                                
+				                                        dlayaccno,                                
+				                                        dlayamt,                                  
+				                                        dlaydt,                                   
+				                                        tovdlyaccno,                              
+				                                        tovdlyamt,                                
+				                                        tovdlydt,                                 
+				                                        paydebt,                                  
+				                                        indebtamt,                                
+				                                        outdebtamt,                               
+				                                        debtinterestflag,                         
+				                                        paymode,                                  
+				                                        squareinterestmode,                       
+				                                        squarestate,                              
+				                                        isadm,                                    
+				                                        admamt,                                   
+				                                        badtimepriod,                             
+				                                        badloandate,                              
+				                                        tobadloanreason,                          
+				                                        draftstatus,                              
+				                                        bailamt,                                  
+				                                        assurerate,                               
+				                                        bailacc,                                  
+				                                        bailcurtype,                              
+				                                        poundagerate,                             
+				                                        poundagecurtype,                          
+				                                        poundageamt,                              
+				                                        remittername,                             
+				                                        remitteraccount,                          
+				                                        createbank,                               
+				                                        createbankname,                           
+				                                        payeename,                                
+				                                        payeeaccbankname,                         
+				                                        payeeaccbankcode,                         
+				                                        payeeacc,                                 
+				                                        dftno,                                    
+				                                        autosortresult,                           
+				                                        lowriskflag,                              
+				                                        operdatetime,                             
+				                                        item,                                     
+				                                        mainbusiness,                             
+				                                        operator,                                 
+				                                        loanmanager,                              
+				                                        revoldtimes,                              
+				                                        firstrevolddate,                          
+				                                        loancardflag,                             
+				                                        istrans,                                  
+				                                        firstmanager,                             
+				                                        isouttableloan,                           
+				                                        transout,                                 
+				                                        iffnongcard,                              
+				                                        loanchannel,                              
+				                                        repaychannel,                             
+				                                        selfhelploannet,                          
+				                                        selfhelprepaynet,                         
+				                                        guarantornames,                           
+				                                        lmtcode,                                  
+				                                        usemode,                                  
+				                                        contractusemode,                          
+				                                        clreqlmt,                                 
+				                                        busiflag,CREATE_TIME)                     
+				      values(#{busicode},                                                         
+				      			 #{busitype},                                                         
+				      			 #{loanaccount},                                                      
+				      			 #{bmcfg},                                                            
+				      			 #{cnlno},                                                            
+				      			 #{dtlnam},                                                           
+				             #{custid},                                                           
+				             #{cname},                                                            
+				             #{typeid},                                                           
+				             #{custtype},                                                         
+				             #{custidtype},                                                       
+				             #{custidno},                                                         
+				             #{brhid},                                                            
+				             #{custproperty},                                                     
+				             #{unitcusttype},                                                     
+				             #{industry},                                                         
+				             #{city},                                                             
+				             #{districtcounty},                                                   
+				             #{town},                                                             
+				             #{community},                                                        
+				             #{instcode},                                                         
+				             #{deptcode},                                                         
+				             #{instcitycode},                                                     
+				             #{telephone},                                                        
+				             #{syaddr},                                                           
+				             #{messageaddr},                                                      
+				             #{relaman},                                                          
+				             #{isreferagricultural},                                              
+				             #{isrelamanloan},                                                    
+				             #{enterprisestatus},                                                 
+				             #{ecoattr},                                                          
+				             #{custscale},                                                        
+				             #{controlmode},                                                      
+				             #{contractno},                                                       
+				             #{contractmoney},                                                    
+				             #{delaytype},                                                        
+				             #{loantype},                                                         
+				             #{mainassure},                                                       
+				             #{assuremanname},                                                    
+				             #{creditlevel},                                                      
+				             #{reqlmt},                                                           
+				             #{isexp},                                                            
+				             #{purposeremark},                                                    
+				             #{busimanager},                                                      
+				             #{assistbusimanager},                                                
+				             #{firstloandate},                                                    
+				             #{repayaccount1},                                                    
+				             #{repayaccount2},                                                    
+				             #{repayaccount3},                                                    
+				             #{loandate},                                                         
+				             #{startdate},                                                        
+				             #{orienddate},                                                       
+				             #{enddate},                                                          
+				             #{limit},                                                            
+				             #{limittype},                                                        
+				             #{ratetype},                                                         
+				             #{floattype},                                                        
+				             #{baserate},                                                         
+				             #{baseratetype},                                                     
+				             #{crtrate},                                                          
+				             #{interest},                                                         
+				             #{floatrate},                                                        
+				             #{money},                                                            
+				             #{currency},                                                         
+				             #{balamt},                                                           
+				             #{loanpurpose},                                                      
+				             #{accountstate},                                                     
+				             #{closedate},                                                        
+				             #{notcounttype},                                                     
+				             #{ofiveclass},                                                       
+				             #{fiveclass},                                                        
+				             #{otenclass},                                                        
+				             #{tenclass},                                                         
+				             #{pastratescale},                                                    
+				             #{repaytype},                                                        
+				             #{repaymethod},                                                      
+				             #{delayamtdays},                                                     
+				             #{delayinterestdays},                                                
+				             #{firstinterestdate},                                                
+				             #{debtinterest},                                                     
+				             #{debtinteresttimes},                                                
+				             #{normalaccno},                                                      
+				             #{normalamt},                                                        
+				             #{dlayaccno},                                                        
+				             #{dlayamt},                                                          
+				             #{dlaydt},                                                           
+				             #{tovdlyaccno},                                                      
+				             #{tovdlyamt},                                                        
+				             #{tovdlydt},                                                         
+				             #{paydebt},                                                          
+				             #{indebtamt},                                                        
+				             #{outdebtamt},                                                       
+				             #{debtinterestflag},                                                 
+				             #{paymode},                                                          
+				             #{squareinterestmode},                                               
+				             #{squarestate},                                                      
+				             #{isadm},                                                            
+				             #{admamt},                                                           
+				             #{badtimepriod},                                                     
+				             #{badloandate},                                                      
+				             #{tobadloanreason},                                                  
+				             #{draftstatus},                                                      
+				             #{bailamt},                                                          
+				             #{assurerate},                                                       
+				             #{bailacc},                                                          
+				             #{bailcurtype},                                                      
+				             #{poundagerate},                                                     
+				             #{poundagecurtype},                                                  
+				             #{poundageamt},                                                      
+				             #{remittername},                                                     
+				             #{remitteraccount},                                                  
+				             #{createbank},                                                       
+				             #{createbankname},                                                   
+				             #{payeename},                                                        
+				             #{payeeaccbankname},                                                 
+				             #{payeeaccbankcode},                                                 
+				             #{payeeacc},                                                         
+				             #{dftno},                                                            
+				             #{autosortresult},                                                   
+				             #{lowriskflag},                                                      
+				             #{operdatetime},                                                     
+				             #{item},                                                             
+				             #{mainbusiness},                                                     
+				             #{operator},                                                         
+				             #{loanmanager},                                                      
+				             #{revoldtimes},                                                      
+				             #{firstrevolddate},                                                  
+				             #{loancardflag},                                                     
+				             #{istrans},                                                          
+				             #{firstmanager},                                                     
+				             #{isouttableloan},                                                   
+				             #{transout},                                                         
+				             #{iffnongcard},                                                      
+				             #{loanchannel},                                                      
+				             #{repaychannel},                                                     
+				             #{selfhelploannet},                                                  
+				             #{selfhelprepaynet},                                                 
+				             #{guarantornames},                                                   
+				             #{lmtcode},                                                          
+				             #{usemode},                                                          
+				             #{contractusemode},                                                  
+				             #{clreqlmt},                                                         
+				             #{busiflag},                                                         
+				             #{createdTime})
+	</insert>
+	
+	
+	<insert id="insertCipersonBasinfo" parameterType="map">
+														  insert into T_CIPERSONBASINFO ( ID,
+                                                            INITID,
+                                                            CUSTID,
+                                                            TYPEID,
+                                                            CUSTTYPE,
+                                                            CNAME,
+                                                            SEX,
+                                                            CARDTYPE,
+                                                            CARDNUM,
+                                                            ETHICAL,
+                                                            COUNTRY,
+                                                            BIRTHDAY,
+                                                            SYADDR,
+                                                            USEFULLIFE,
+                                                            SIGNORG,
+                                                            CUSTPROPERTY,
+                                                            EMPLOYER,
+                                                            EMPLOYERADDR,
+                                                            EMPLOYERPOSTCODE,
+                                                            EMPLOYERTIME,
+                                                            CATEGORYID,
+                                                            TITLE,
+                                                            VOCATION,
+                                                            DUTY,
+                                                            REGISTERCODE,
+                                                            CODENAME,
+                                                            MANAGERNAME,
+                                                            MANAGEPLACE,
+                                                            MANAGEEXTENT,
+                                                            FOUNDDATE,
+                                                            ANNUCHECK,
+                                                            SCHOOL,
+                                                            SCHOOLADDR,
+                                                            SCHOOLATTRIB,
+                                                            SCHOOLTEL,
+                                                            MARRIGE,
+                                                            ISREFERAGRICULTURAL,
+                                                            CITY,
+                                                            DISTRICTCOUNTY,
+                                                            TOWN,
+                                                            COMMUNITY,
+                                                            CONTACTMOBILETEL,
+                                                            CONTACTTEL,
+                                                            ADDRESS,
+                                                            POSTCODE,
+                                                            MESSAGEADDR,
+                                                            COMMPOSTCODE,
+                                                            EDUCATIONLEVEL,
+                                                            DEGREE,
+                                                            INDUSTRY,
+                                                            RESIDE,
+                                                            LEVELCAL,
+                                                            JOINRING,
+                                                            FAMASSET,
+                                                            FAMDEBT,
+                                                            FAMANNUINCOME,
+                                                            FAMANNUPAYOUT,
+                                                            RELAMAN,
+                                                            EMAIL,
+                                                            INCOMEACCOUNT,
+                                                            INCOMEBANK,
+                                                            BUSIMANAGER,
+                                                            INSTCODE,
+                                                            DEPTCODE,
+                                                            INSTCITYCODE,
+                                                            ISTMP,
+                                                            VERSION,
+                                                            DISPOSALSTATUS,
+                                                            STATUS,
+                                                            REMARK,
+                                                            INPUTMAN,
+                                                            INPUTDATE,
+                                                            GROUPID,
+                                                            OPERATOR,
+                                                            OPERDATETIME,
+                                                            CUSTSTATUS,
+                                                            ASSISTBUSIMANAGE,
+                                                            FAMNUM,
+                                                            FIRSTMANAGER,
+                                                            GOVERNMANAGER,
+                                                            ISTRANS,
+                                                            HUKOU,
+                                                            BACKOPERATOR,
+                                                            BUSIFLAG,CREATE_TIME)
+                    values                         (#{id},                                 
+                                            		    #{initid},                              
+                                            		    #{custid},                              
+                                            		    #{typeid},                              
+                                            		    #{custtype},                              
+                                            		    #{cname},                              
+                                            		    #{sex},                              
+                                            		    #{cardtype},                              
+                                            		    #{cardnum},                              
+                                            		    #{ethical},                              
+                                            		    #{country},                              
+                                            		    #{birthday},                              
+                                            		    #{syaddr},                              
+                                            		    #{usefullife},                              
+                                            		    #{signorg},                              
+                                            		    #{custproperty},                              
+                                            		    #{employer},                              
+                                            		    #{employeraddr},                              
+                                            		    #{employerpostcode},                              
+                                            		    #{employertime},                              
+                                            		    #{categoryid},                              
+                                            		    #{title},                              
+                                            		    #{vocation},                              
+                                            		    #{duty},                              
+                                            		    #{registercode},                              
+                                            		    #{codename},                              
+                                            		    #{managername},                              
+                                            		    #{manageplace},                              
+                                            		    #{manageextent},                              
+                                            		    #{founddate},                              
+                                            		    #{annucheck},                              
+                                            		    #{school},                              
+                                            		    #{schooladdr},                              
+                                            		    #{schoolattrib},                              
+                                            		    #{schooltel},                              
+                                            		    #{marrige},                              
+                                            		    #{isreferagricultural},                              
+                                            		    #{city},                              
+                                            		    #{districtcounty},                              
+                                            		    #{town},                              
+                                            		    #{community},                              
+                                            		    #{contactmobiletel},                              
+                                            		    #{contacttel},                              
+                                            		    #{address},                              
+                                            		    #{postcode},                              
+                                            		    #{messageaddr},                              
+                                            		    #{commpostcode},                              
+                                            		    #{educationlevel},                              
+                                            		    #{degree},                              
+                                            		    #{industry},                              
+                                            		    #{reside},                              
+                                            		    #{levelcal},                              
+                                            		    #{joinring},                              
+                                            		    #{famasset},                              
+                                            		    #{famdebt},                              
+                                            		    #{famannuincome},                              
+                                            		    #{famannupayout},                              
+                                            		    #{relaman},                              
+                                            		    #{email},                              
+                                            		    #{incomeaccount},                              
+                                            		    #{incomebank},                              
+                                            		    #{busimanager},                              
+                                            		    #{instcode},                              
+                                            		    #{deptcode},                              
+                                            		    #{instcitycode},                              
+                                            		    #{istmp},                              
+                                            		    #{version},                              
+                                            		    #{disposalstatus},                              
+                                            		    #{status},                              
+                                            		    #{remark},                              
+                                            		    #{inputman},                              
+                                            		    #{inputdate},                              
+                                            		    #{groupid},                              
+                                            		    #{operator},                              
+                                            		    #{operdatetime},                              
+                                            		    #{custstatus},                              
+                                            		    #{assistbusimanage},                              
+                                            		    #{famnum},                              
+                                            		    #{firstmanager},                              
+                                            		    #{governmanager},                              
+                                            		    #{istrans},                              
+                                            		    #{hukou},                              
+                                            		    #{backoperator},                              
+                                            		    #{busiflag},
+                                            		    #{create_time})
+	</insert>
+</mapper>

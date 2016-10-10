@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.product.dao.ProductAccountabilityDao">
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.product.model.ProductAccountability">
+		<result property="id" column="ID" />
+		<result property="productId" column="PRODUCT_ID" />
+		<result property="aging" column="AGING" />
+		<result property="overdueDay" column="OVERDUE_DAY" />
+		<result property="overdueAmount" column="OVERDUE_AMOUNT" />
+		<result property="overdueTotalTime" column="OVERDUE_TOTAL_TIME" />
+		<result property="overdueTotalAmount" column="OVERDUE_TOTAL_AMOUNT" />
+	</resultMap>
+
+	<select id="findProductAccountabilityByProductId" resultMap="ResultMap" parameterType="java.lang.String">
+		SELECT * from product_accountability
+		WHERE PRODUCT_ID=#{productId}
+	</select>
+	<delete id="deleteProductAccountabilityByProductId" parameterType="java.lang.String">
+		DELETE
+		FROM
+		product_accountability A
+		WHERE
+		A .PRODUCT_ID=#{productId}
+	</delete>
+
+</mapper>

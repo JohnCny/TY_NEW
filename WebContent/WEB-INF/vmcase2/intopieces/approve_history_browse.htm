@@ -1,0 +1,54 @@
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <!-- <div class="place">
+        <div class="title">审批历史信息</div>
+      </div> -->
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="10%" />
+              <col width="20%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="20%"/>
+              <col width="20%"/>
+              <col />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap">序号</th>
+              <th nowrap="nowrap">节点名称</th>
+              <th nowrap="nowrap">审核结果</th>
+              <th nowrap="nowrap">审核人</th>
+              <th nowrap="nowrap">审核时间</th>
+              <th nowrap="nowrap">审核金额</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="10%" />
+              <col width="20%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="20%"/>
+              <col width="20%"/>
+              <col />
+            </colgroup>
+            #foreach ($history in $historyForms)
+            <tr>
+              <td nowrap="nowrap">$velocityCount</td>
+              <td nowrap="nowrap">$!history.statusName</td>
+              <td nowrap="nowrap">#dictVal("approveOperationSpecialStatus" , $!history.examineResult)</td>
+              <td nowrap="nowrap">$!history.displayName</td>
+              <td nowrap="nowrap">$!date.format('yyyy-MM-dd HH:mm:ss',$!history.startExamineTime)</td>
+              <td nowrap="nowrap">$!history.examineAmount</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

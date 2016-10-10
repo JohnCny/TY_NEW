@@ -1,0 +1,104 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+				<div class="title">客户账户智能报表</div>
+			</div>
+
+			<div class="inquiry">
+				<!-------------- 信息显示 ------------------------------------->
+				<div id="topDiv" class="inquiry_list inquiry_top" >
+					<table>
+						<colgroup>
+							<col width="100" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+							<col width="200" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+						</colgroup>
+						<tr class="title" align="center">
+							<th nowrap="nowrap">卡号</th>
+							<th nowrap="nowrap">卡状态</th>
+							<th nowrap="nowrap">账户透支本金</th>
+							<th nowrap="nowrap">应付利息</th>
+							<th nowrap="nowrap">年费</th>
+							<th nowrap="nowrap">已用额度</th>
+							<th nowrap="nowrap">可用额度</th>
+							<th nowrap="nowrap">上期账单总金额</th>
+							<th nowrap="nowrap">上期账单透支本金</th>
+							<th nowrap="nowrap">上期账单利息</th>
+							<th nowrap="nowrap">上期账单最小还款金额</th>
+							<th nowrap="nowrap">逾期透支本金</th>
+							<th nowrap="nowrap">逾期天数</th>
+						</tr>
+					</table>
+				</div>
+
+				<div id="downDiv" class="inquiry_list inquiry_down" >
+					<table>
+						<colgroup>
+							<col width="100" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+							<col width="200" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+						</colgroup>
+						#foreach ($account in $result)
+						<tr id="$!account.id" >
+							<td nowrap="nowrap">$!account.cardNbr</td>
+							<td nowrap="nowrap">$!account.activationStatus</td>
+							<td nowrap="nowrap">$format.formatNumber(2,$!account.principalOverdraft)</td>
+							<td nowrap="nowrap">$format.formatNumber(2,$!account.interest)</td>
+							<td nowrap="nowrap">$format.formatNumber(2,$!account.annualFee)</td>
+							<td nowrap="nowrap">$format.formatNumber(2,$!account.totalAmountOverdraft)</td>
+							<td nowrap="nowrap">$format.formatNumber(2,$!account.availableLimit)</td>
+							<td nowrap="nowrap">$format.formatNumber(2,$!account.lastTotalAmountOverdraft)</td>
+							<td nowrap="nowrap">$format.formatNumber(2,$!account.lastPrincipalOverdraft)</td>
+							<td nowrap="nowrap">$format.formatNumber(2,$!account.lastInterest)</td>
+							<td nowrap="nowrap">$format.formatNumber(2,$!account.paybackAccount)</td>
+							<td nowrap="nowrap">$format.formatNumber(2,$!account.overdueAmount)</td>
+							<td nowrap="nowrap">$!account.overdueTime</td>
+						</tr>
+						#end
+					</table>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+</body>
+
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.createUrl = "${modulePath}/create.page";
+		opsObj.changeUrl = "${modulePath}/change.page";
+		opsObj.displayUrl = "${modulePath}/display.page";
+		opsObj.browseUrl = "${modulePath}/browse.page";
+
+		prepareOperations(opsObj);
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")

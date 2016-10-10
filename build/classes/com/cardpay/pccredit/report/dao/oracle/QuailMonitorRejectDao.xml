@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.report.dao.QuailMonitorRejectDao">
+	
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.report.model.QuailBankRejectMonitor">
+		<result property="id" column="id" />
+		<result property="displayName" column="displayName" />
+		<result property="rowindex" column="rowindex" />
+		<result property="rejectcount" column="rejectcount" />
+		<result property="percent" column="percent" />
+		
+	</resultMap>
+	
+	
+	<select id="getQuailRejectMonitorStatistical" resultMap="ResultMap"
+			parameterType="com.cardpay.pccredit.report.filter.StatisticalFilter">
+
+
+SELECT
+	nvl(ck.JINJIAN,'0') as JINJIAN,
+		nvl(ck.REJECTCOUNT,'0') as rejectcount ,
+	CL.DISPLAY_NAME AS displayName,
+trunc(nvl((ck.REJECTCOUNT*100/ck.JINJIAN),'0'),2)||'%' as percent,
+	ROWNUM AS rowindex
+	
+FROM
+	(
+		SELECT
+			cf.JINJIAN,
+			ce.REJECTCOUNT,
+			CF.USERID
+		FROM
+			(
+				SELECT
+					COUNT (c. ID) AS jinjian,
+					U . ID AS USERID
+				FROM
+					CUSTOMER_APPLICATION_INFO c,
+					BASIC_CUSTOMER_INFORMATION b,
+					SYS_USER U
+				WHERE
+					c.CUSTOMER_ID = b. ID
+				AND U . ID = b.USER_ID
+				GROUP BY
+					U . ID
+			) cf
+		LEFT JOIN (
+			SELECT
+				CD.USER_ID,
+				COUNT (cd. ID) AS rejectcount
+			
+			FROM
+				BASIC_CUSTOMER_INFORMATION cd
+			INNER JOIN (
+				SELECT
+					CA.CUSTOMER_ID,
+					CB.FALLBACK_REASON
+				FROM
+					CUSTOMER_APPLICATION_INFO ca
+				INNER JOIN (
+					SELECT
+						c.APPLICATION_ID,
+						c.FALLBACK_REASON
+					FROM
+						CUSTOMER_APPLICATION_PROCESS c
+					WHERE
+						c.PROCESS_OP_STATUS = 'REJECTAPPROVE'
+				) cb ON CB.APPLICATION_ID = CA. ID
+			) cc ON CC.CUSTOMER_ID = CD. ID
+			GROUP BY
+				CD.USER_ID
+		) ce ON CE.USER_ID = CF.USERID
+	) ck
+LEFT JOIN SYS_USER cl ON CK.USERID = CL. ID
+	</select>
+	<select id="getQuailBankRejectMonitorStatistical" resultMap="ResultMap"
+			parameterType="com.cardpay.pccredit.report.filter.StatisticalFilter">
+		SELECT
+	nvl(mm.JINJIAN,'0') as JINJIAN , 
+nvl(mm.REJECTCOUNT ,'0') as REJECTCOUNT , 
+trunc( nvl((mm.REJECTCOUNT*100/mm.JINJIAN),'0'),2)||'%' as percent,
+ MM.DISPLAYNAME as displayName,
+ROWNUM AS rowindex FROM (
+		SELECT
+			oo. NAME AS displayName,
+			SUM (uu.jinjian) AS jinjian,
+			SUM (uu.rejectcount) AS rejectcount
+		FROM
+			sys_organization oo
+		INNER JOIN (
+			SELECT
+				ORG_ID,
+				USER_ID
+			FROM
+				sys_department dd
+			INNER JOIN SYS_DEPT_USER du ON dd. ID = DU.DEPT_ID
+		) ddu ON OO."ID" = DDU.ORG_ID
+		INNER JOIN (
+			SELECT
+				kk.*
+			FROM
+				(
+					SELECT
+						cf.JINJIAN,
+						ce.rejectcount,
+						CF.USERID
+					FROM
+						(
+							SELECT
+								COUNT (c. ID) AS jinjian,
+								U . ID AS USERID
+							FROM
+								CUSTOMER_APPLICATION_INFO c,
+								BASIC_CUSTOMER_INFORMATION b,
+								SYS_USER U
+							WHERE
+								c.CUSTOMER_ID = b. ID
+							AND U . ID = b.USER_ID
+							GROUP BY
+								U . ID
+						) cf
+					LEFT JOIN (
+						SELECT
+							CD.USER_ID,
+							COUNT (cd. ID) AS rejectcount
+						FROM
+							BASIC_CUSTOMER_INFORMATION cd
+						INNER JOIN (
+							SELECT
+								CA.CUSTOMER_ID,
+								CB.FALLBACK_REASON
+							FROM
+								CUSTOMER_APPLICATION_INFO ca
+							INNER JOIN (
+								SELECT
+									c.APPLICATION_ID,
+									c.FALLBACK_REASON
+								FROM
+									CUSTOMER_APPLICATION_PROCESS c
+								WHERE
+									c.PROCESS_OP_STATUS = 'REJECTAPPROVE'
+							) cb ON CB.APPLICATION_ID = CA. ID
+						) cc ON CC.CUSTOMER_ID = CD. ID
+						GROUP BY
+							CD.USER_ID
+					) ce ON CE.USER_ID = CF.USERID
+				) kk
+		) uu ON UU.userid = DDU.USER_ID
+		GROUP BY
+			oo. NAME
+	) mm
+	</select>
+</mapper>

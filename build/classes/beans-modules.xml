@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	default-autowire="byName" default-init-method="init" default-destroy-method="depose"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+	<import resource="modules/module-system.xml" />
+
+	<import resource="modules/module-privilege.xml" />
+
+	<import resource="modules/module-log.xml" />
+
+	<import resource="modules/module-sample.xml" />
+	
+	<import resource="modules/module-mail.xml" />
+</beans>

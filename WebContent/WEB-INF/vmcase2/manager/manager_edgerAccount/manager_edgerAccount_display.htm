@@ -1,0 +1,94 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户经理台账修改</div>
+      </div>
+      <form id="id_module_form" action="">
+        <input type="hidden" name="id" value="$!ledgerAccountManager.id" />
+        <div class="forms" id="formsId">
+		<table class="rule" bordercolor="#CCCCCC" border="1">
+          <caption>客户基本信息资料</caption>
+            <colgroup>
+              <col width="10%" />
+              <col width="40%" />
+              <col width="10%" />
+              <col width="40%" />
+            </colgroup>
+            <tr>
+              <td><label for="chineseName">客户经理:</label></td>
+              <td><input type="text" id="displayName" name="displayName" value="$!displayName"  readonly="readonly"/></td>
+              <td><label for="">所属机构</label></td>
+              <td><input type="text" id="" name="affiliation" value="$!ledgerAccountManager.affiliation"  readonly="readonly"/></td>
+            </tr>
+            <tr>
+              <td><label for="nationality">管户数:</label></td>
+              <td><input type="text" id="" name="tubeNumber" value="$!ledgerAccountManager.tubeNumber" readonly="readonly"/></td>
+              <td><label>管理周期:</label></td>
+              <td><input type="text" id="" name="managementCycle" value="$!ledgerAccountManager.managementCycle" readonly="readonly"/></td>
+            </tr>
+            <tr>
+              <td><label for="birthday">考情情况:</label></td>
+              <td><input type="text" id="" name="attendanceSituation" value="$!ledgerAccountManager.attendanceSituation" readonly="readonly"/></td>
+			  <td><label for="cardType">客户拜访数:</label></td>
+              <td><input type="text" id="" name="customerVisitNumber" value="$!ledgerAccountManager.customerVisitNumber" readonly="readonly"/></td>
+            </tr>
+			<tr>
+              <td><label for="cardId">日报质量:</label></td>
+              <td><input type="text" id="" name="dailyQuality" value="$!ledgerAccountManager.dailyQuality" readonly="readonly"/></td>
+			  <td><label for="telephone">周报质量:</label></td>
+              <td><input type="text" id="" name="weeklyQuality" value="$!ledgerAccountManager.weeklyQuality" readonly="readonly"/></td>
+            </tr>
+			<tr>
+              <td><label for="homePhone">客户维护数:</label></td>
+              <td><input type="text" id="" name="customerMaintenanceNumber" value="$!ledgerAccountManager.customerMaintenanceNumber" readonly="readonly"/></td>
+			  <td><label for="residentialAddress">维护结果:</label></td>
+              <td><input type="text" id="" name="manumberenResult" value="$!ledgerAccountManager.manumberenResult" readonly="readonly"/></td>
+            </tr>
+			<tr>
+              <td><label for="mail">软信息收集:</label></td>
+              <td><input type="text" id="" name="softInformationCollection" value="$!ledgerAccountManager.softInformationCollection" readonly="readonly"/></td>
+			  <td><label for="residentialPropertie">用款情况:</label></td>
+              <td><input type="text" id="" name="moneySituation" value="$!ledgerAccountManager.moneySituation" readonly="readonly"/></td>
+            </tr>
+			<tr>
+              <td><label>经营情况:</label></td>
+              <td><input type="text" id="" name="operatingCondition" value="$!ledgerAccountManager.operatingCondition" readonly="readonly"/></td>
+			  <td><label for="degreeEducation">还款情况:</label></td>
+              <td><input type="text" id="" name="paymentCondition" value="$!ledgerAccountManager.paymentCondition" readonly="readonly"/></td>
+            </tr>
+			<tr>
+              <td><label>周完成情况:</label></td>
+              <td><input type="text" name="weekCompletion" id="weekCompletion"  value="$!ledgerAccountManager.weekCompletion" readonly="readonly"/></td>
+			  <td><label>月完成情况:</label></td>
+              <td><input type="text" name="monthsComplete" id="monthsComplete" value="$!ledgerAccountManager.monthsComplete" readonly="readonly"/></td>
+            </tr>
+			<tr>
+              <td><label>贷款日均余额:</label></td>
+              <td><input type="text" name="dailyLoanBalance" id="dailyLoanBalance"  value="$!ledgerAccountManager.dailyLoanBalance" readonly="readonly"/></td>
+			  <td><label>组长对微贷经理的主观描述:</label></td>
+              <td><input type="text" name="leaderDescription" id="leaderDescription" value="$!ledgerAccountManager.leaderDescription" readonly="readonly"/></td>
+            </tr>
+
+          </table>
+        </div>
+      </form>
+
+      <div class="submit">
+        <input type="button" onclick="javascript:history.go(-1);" value="取消" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");			
+	window.top.currentWindow.setLayout(layout);
+			
+	#set ($formName = "'#id_module_form'")
+	#validator($formName)
+	$(document).ready(function() {		
+		#parse("common/part_change.js")
+	});
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

@@ -1,0 +1,106 @@
+#parse ("common/iframe_page_header.htm")
+ <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+<body class="whitebg">
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+				<div class="title">客户经理业绩进度</div>
+			</div>
+			<form id="id_module_form"
+				action="${contextPath}/manager/performmance/update.json" />
+			
+				<table cellpadding="0" cellspacing="0" class="table-bd" border="1"
+					bordercolor="#cccccc" style="width: 50%">
+					<colgroup>
+						<col width="10%" />
+						<col width="30%" />
+						<col width="10%" />
+						<col width="30%" />
+					</colgroup>
+					<tr>
+						<td class="titlec" colspan="4" style="text-align: center;">进度录入</td>
+					</tr>
+					<tr>
+						<td class="titlefc3"><label for="visitcount">拜访数:</label></td>
+						<td><input class="rinpsty" type="text" id="visitcount"
+							name="visitcount" value="0" onfocus="if(value=='0'){value=''}"  onblur="if(value==''||!/^\d+$/.test(this.value)){value='0'}"/></td>
+						<td class="titlefc3"><label for="applycount">申请数:</label></td>
+						<td><input class="rinpsty" type="text" id="applycount"
+							name="applycount" value="$!ssss.applyNum" readonly="readonly"/></td>
+					</tr>
+					<tr>
+						<td class="titlefc3"><label for="applyrefuse">申请拒绝数:</label></td>
+						<td><input class="rinpsty" type="text" id="applyrefuse"
+							name="applyrefuse" value="$!ssss.refuseNum" readonly="readonly"/></td>
+						<td class="titlefc3"><label for="creditcount">征信数:</label></td>
+						<td><input class="rinpsty" type="text" id="creditcount"
+							name="creditcount" value="0" onfocus="if(value=='0'){value=''}"  onblur="if(value==''||!/^\d+$/.test(this.value)){value='0'}"/></td>
+					</tr>
+					<tr>
+						<td class="titlefc3"><label for="creditrefuse">征信拒绝数:</label></td>
+						<td><input class="rinpsty" type="text" id="creditrefuse"
+							name="creditrefuse" value="0" onfocus="if(value=='0'){value=''}"  onblur="if(value==''||!/^\d+$/.test(this.value)){value='0'}" /></td>
+						<td class="titlefc3"><label for="realycount">实调数:</label></td>
+						<td><input class="rinpsty" type="text" id="realycount"
+							name="realycount" value="0" onfocus="if(value=='0'){value=''}"  onblur="if(value==''||!/^\d+$/.test(this.value)){value='0'}"/></td>
+					</tr>
+					<tr>
+						<td class="titlefc3"><label for="reportcount">报告数:</label></td>
+						<td><input class="rinpsty" type="text" id="reportcount"
+							name="reportcount" value="0" onfocus="if(value=='0'){value=''}"  onblur="if(value==''||!/^\d+$/.test(this.value)){value='0'}"/></td>
+						<td class="titlefc3"><label for="internalcount">内审数:</label></td>
+						<td><input class="rinpsty" type="text" id="internalcount"
+							name="internalcount" value="$!ssss.auditNum" readonly="readonly"/></td>
+					</tr>
+					<tr>
+						<td class="titlefc3"><label for="meetingcout">上会数:</label></td>
+						<td><input class="rinpsty" type="text" id="meetingcout"
+							name="meetingcout" value="$!ssss.willNum" readonly="readonly"/></td>
+						<td class="titlefc3"><label for="passcount">通过数:</label></td>
+						<td><input class="rinpsty" type="text" id="passcount"
+							name="passcount" value="$!ssss.passNum" readonly="readonly"/></td>
+					</tr>
+					<tr>
+						<td class="titlefc3"><label for="signcount">签约数:</label></td>
+						<td><input class="rinpsty" type="text" id="signcount"
+							name="signcount" value="0" onfocus="if(value=='0'){value=''}"  onblur="if(value==''||!/^\d+$/.test(this.value)){value='0'}"/></td>
+						<td class="titlefc3"><label for="givemoneycount">放款数:</label></td>
+						<td><input class="rinpsty" type="text" id="givemoneycount"
+							name="givemoneycount" value="0" onfocus="if(value=='0'){value=''}"  onblur="if(value==''||!/^\d+$/.test(this.value)){value='0'}"/></td>
+					</tr>
+				</table>
+			</form>
+			<div class="submit" style="text-align: left;">
+				<input id="id_save_button" type="button"
+					value="#i18n('button.save')" class="current" />
+			</div>
+		</div>
+	</div>
+</body>
+ <script type="text/javascript">
+ $(document).ready(function() {	
+	 #set ($formName = "'#id_module_form'");
+	 $("#id_save_button").click(function (){
+		 
+		 var formjson = $($formName).serialize();
+   	     var url = $($formName).attr("action");
+		 $.ajax({
+				url : url,
+				type : "get",
+				data : formjson,
+				success : function(data) {
+					if (data.success) {
+						topWin.Dialog.message(data.mess);
+	   	            	window.location.reload() ;
+					}else{
+						topWin.Dialog.message(data.mess);
+				    }
+				}
+			});
+	});
+	
+ })
+ 
+ 
+ </script>
+#parse ("common/iframe_page_footer.htm")

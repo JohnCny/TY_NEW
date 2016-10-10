@@ -1,0 +1,141 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/customerInfor.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">问责记录查询</div>
+      </div>
+ <div class="inquiry">
+      <div class="search_tag">#i18n("label.browse.filter")</div>
+         <div class="search">
+          <form id="submitForm">
+            <ul>
+              <li>
+                <span>客户名称：<input type="text" name="chineseName" value="$!result.filter.chineseName" /></span>
+              </li>
+              <li>
+                <span>证件类型：
+                	<select id="type" name="cardType">
+	                   <option value="">请选择...</option>
+	                   #dict("CARDTYPE", $!result.filter.cardType)
+                  	</select>
+                  </span>
+              </li>
+              <li>
+                <span>证件号码：<input type="text" name="cardId" value="$!result.filter.cardId" /></span>
+              </li>
+              
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
+       
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="15%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="15%" />
+               <col width="8%" />
+              <col width="7%" />
+               <col width="10%" />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">中文姓名</th>
+              <th nowrap="nowrap">证件类型</th>
+              <th nowrap="nowrap">证件号码</th>
+              <th nowrap="nowrap">经理名称</th>
+              <th nowrap="nowrap">问责原因</th>
+              <th nowrap="nowrap">问责结论</th>
+              <th nowrap="nowrap">金额</th>
+              <th nowrap="nowrap">复议状态</th>
+              <th nowrap="nowrap">审核状态</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+             <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="15%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="15%" />
+               <col width="8%" />
+              <col width="7%" />
+               <col width="10%" />
+            </colgroup>
+            #foreach ($accountabilityRecord in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!accountabilityRecord.id"
+                  #if ($!request.getParameter("recordId") == $accountabilityRecord.id) checked="checked" #end /></td>
+              <td nowrap="nowrap">$!accountabilityRecord.chineseName</td>
+              <td nowrap="nowrap">#customerInfor($request.getAttribute("cardTypeList"),$!accountabilityRecord.cardType)</td>
+              <td nowrap="nowrap">$!accountabilityRecord.cardId</td>
+              <td nowrap="nowrap">$!accountabilityRecord.displayName</td>
+              <td nowrap="nowrap">$!accountabilityRecord.createReason</td>
+              <td nowrap="nowrap">$!accountabilityRecord.accountabilityConclusion</td>
+             <td nowrap="nowrap">$format.formatNumber($!accountabilityRecord.money,2,100)</td>
+              <td nowrap="nowrap">#if ($!accountabilityRecord.reconsideration == 1) 是  #else 否 #end</td>
+              <td nowrap="nowrap"> <input type="hidden" name="createWay" value="$!accountabilityRecord.createWay" /><input type="hidden" name="auditStatus" value="$!accountabilityRecord.auditStatus" />#mi18n("$!accountabilityRecord.auditStatus")</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+           #btnpriv("reconsider")<a id="id_change_button" class="btn_g" href="javascript:void(0);" title="复议">复议</a>#end
+           #btnpriv("display")<a id="id_display_button" class="btn_gr" href="javascript:void(0);" title="#i18n('button.display.hint')">#i18n("button.display")</a>#end
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.displayUrl = "${contextPath}/accountabilitycontrol/accountabilitymanager/cfccdisplay.page";
+		opsObj.browseUrl = "${modulePath}/browse.page";
+		prepareOperations(opsObj);
+		$("#id_change_button").click(function(){
+			 if ($(".checkbox :checked").length == 1) {
+				  var rowid = $($(".checkbox :checked")[0]).attr("value");
+				  var createWay = $(".checkbox :checked").parents("tr").find("input[name='createWay']").val();
+				  var auditStatus = $(".checkbox :checked").parents("tr").find("input[name='auditStatus']").val();
+				
+				  if( auditStatus == "cfccaudit"){
+					  window.location.href= contextPath + "/accountabilitycontrol/accountabilitymanager/managerupdate.page?id=" + rowid;
+					
+				  }else{
+					  Dialog.message("审核结束记录不可复议,请选择卡中心确认记录！");   
+					  
+				  }
+				 
+			 }else{
+				 
+				 Dialog.message("请选择一行"); 
+				 
+			 }
+		});
+	
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")

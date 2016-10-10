@@ -1,0 +1,130 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/customerInfor.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户基本信息</div>
+      </div>
+      
+      <div class="inquiry">
+<!-----------搜索------------------------------------------->  
+  
+        <div class="search_tag">#i18n("label.browse.filter")</div>
+        <div class="search">
+          <form id="submitForm">
+            <ul>
+              <li>
+                <span>客户名称：<input type="text" name="chineseName" value="$!result.filter.chineseName" /></span>
+              </li>
+              <li>
+                <span>证件类型：
+                	<select id="type" name="cardType">
+	                   <option value="">请选择...</option>
+	                   #dict("CARDTYPE", $!result.filter.cardType)
+                  	</select>
+                  </span>
+              </li>
+              <li>
+                <span>证件号码：<input type="text" name="cardId" value="$!result.filter.cardId" /></span>
+              </li>
+              
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
+       
+<!-------------- 信息显示 ------------------------------------->        
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="8%" />
+              <col width="18%" />
+              <col width="12%"/>
+              <col width="40%" />
+              <col width="12%"/>
+              <col width="5%"/>
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">中文姓名</th>
+              <th nowrap="nowrap">证件类型</th>
+              <th nowrap="nowrap">证件号码</th>
+              <th nowrap="nowrap">住宅地址</th>
+              <th nowrap="nowrap">手机</th>
+              <th nowrap="nowrap">&nbsp;</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="8%" />
+              <col width="18%" />
+              <col width="12%"/>
+              <col width="40%" />
+              <col width="12%"/>
+              <col width="5%"/>
+            </colgroup>
+            #foreach ($!{customer} in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!customer.id"
+                  #if ($!request.getParameter("recordId") == $customer.id) checked="checked" #end />
+                  <input type="hidden" value="$!customer.divisionalStatus"/></td>
+              <td nowrap="nowrap">$!customer.chineseName</td>
+              <td nowrap="nowrap">#customerInfor($request.getAttribute("cardTypeList"),$!customer.cardType)</td>
+              <td nowrap="nowrap">$!customer.cardId</td>
+              <td nowrap="nowrap">$!customer.residentialAddress</td>
+              <td nowrap="nowrap">$!customer.telephone</td>
+              <td nowrap="nowrap">#if($!customer.divisionalStatus=='turn')移交中#end</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+          #btnpriv("addblacklist")<a id="id_blacklist_button" class="btn_g" href="javascript:void(0);" title="加入黑名单">加入黑名单</a>#end
+          #btnpriv("transfer")<a id="id_transfer_button" class="btn_g" href="javascript:void(0);" title="移交" onclick="transfer()">移交</a>#end
+          <a id="id_displaycardinfomation_button" class="btn_g" href="javascript:void(0);" title="查看账户信息" onclick="displaycardinfomation()">查看账户信息</a>
+          #btnpriv("change")<a id="id_change_button" class="btn_g" href="javascript:void(0);" title="修改">修改</a>#end
+          #btnpriv("display")<a id="id_display_button" class="btn_gr" href="javascript:void(0);" title="#i18n('button.display.hint')">#i18n("button.display")</a>#end
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+	url = "${modulePath}/browse.page";
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.createUrl = "${modulePath}/create.page";
+		opsObj.displayUrl = "${modulePath}/display.page";
+		opsObj.changeUrl = "${modulePath}/change.page";
+		opsObj.deleteUrl = "${modulePath}/delete.json";
+		opsObj.browseUrl = "${modulePath}/browse.page";
+		prepareOperations(opsObj);
+		
+		
+		
+		$("#id_blacklist_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var rowId = getCurrentRowId();
+				var url = "${contextPath}/riskcontrol/riskcustomer//blacklistcreate.page?customerId=" + rowId;
+				window.location.href = url + "&callBackUrl=" + window.location.href;
+			}
+	    });
+	});
+</script>
+   <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
+#parse ("common/iframe_page_footer.htm")

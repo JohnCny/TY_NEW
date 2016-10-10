@@ -1,0 +1,117 @@
+#parse ("common/iframe_page_header.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
+<body>
+	<div class="content_main">
+		<div class="contentinner">
+		
+			<form id="id_module_form"
+				action="${contextPath}/product/productpublic/insertCpjg.json">
+				<input type="hidden" id="productId" name="productId" value="${productId}">
+				<div class="forms" id="formsId">
+				<tr>
+				<td>产品编号：</td>
+				<td>
+					<input id="seqno" name="seqno" value="">
+				</td>
+				</tr>
+				<br>
+				<br>
+           <table style="border: 1px solid #dcdcdc;margin-bottom: 10px;" id="tab";>
+						<colgroup>
+						    <col width="5%" />
+							<col width="24%" />
+							<col width="24%" />
+							<col width="24%" />
+							<col width="24%" />
+						</colgroup>
+						<tr>
+                          <td colspan="5" style="text-align:center;font-weight: bold;background-color:#ECFDF9;">机构清单</td>
+                         </tr>
+					      #set($total = ($organization.size()/4)) 
+					      
+					      #foreach ($!index in [0 .. $total])
+					
+					      <tr>
+					      <td>&nbsp;</td>
+						  #set($current = $!index * 4 ) 
+						  #if($current<$organization.size())
+						     <td><input type="checkbox" name="organizationId" value="$organization.get($current).id"/> $organization.get($current).name</td>
+						  #end
+						  #set($current = $!index * 4+1 )
+						  #if($current<$organization.size())
+						     <td><input type="checkbox" name="organizationId" value="$organization.get($current).id"/> $organization.get($current).name</td>
+						  #end
+						  
+						  #set($current = $!index * 4+2 )
+						  #if($current<$organization.size())
+						     <td><input type="checkbox" name="organizationId" value="$organization.get($current).id"/> $organization.get($current).name</td>
+						  #end
+                          
+                          #set($current = $!index * 4+3 )
+						  #if($current<$organization.size())
+						     <td><input type="checkbox" name="organizationId" value="$organization.get($current).id"/> $organization.get($current).name</td>
+						  #end
+                        </tr>
+                        #end
+						</table> 
+						<input type="hidden" id="organizationIds" name="organizationIds" />
+				</div>
+				
+				
+			</form>
+
+			<div class="submit">
+				<input id="id_save_button" type="button"
+					value="确定" class="current" /> <input
+					type="button" onclick="javascript:history.go(-1);"
+					value="#i18n('button.cancel')" />
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	var layout=new FormsLayout("formsId");			
+	window.top.currentWindow.setLayout(layout);
+
+	#set ($formName = "'#id_module_form'")
+	 $(document).ready(function() {
+		 $("#id_save_button").click(function() {
+		        if ($($formName).valid()) {
+		         var organizationIds = "";
+		     	 $("input[name='organizationId']:checkbox").each(function(){
+		     		 if ($(this).attr("checked")){
+		     			organizationIds+=$(this).val()+","; 
+		     		}
+		     	  }
+		         );
+		     	 
+		     	 $("#organizationIds").val(organizationIds);
+		     	 var formjson = $($formName).serialize();
+		     /*      $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
+		            if (data.success) {
+		            
+		                navigateTo("${contextPath}/product/productpublic/browse.page");
+		              
+		            }
+		          }); */
+		          
+				     	$.ajax({
+		    				url : $($formName).attr("action"),
+		    				type : "get",
+		    				data : formjson,
+		    				success : function(data) {
+		    					if (data.success) {
+		    						 navigateTo("${contextPath}/product/productpublic/browse.page");
+		    						 topWin.Dialog.message("审核成功！");
+		    					}else{
+		    						topWin.Dialog.message(data.message);
+		    				    }
+		    				}
+		    		});
+		          
+		        }
+		      });
+	}); 
+	
+	
+	</script>
+	</body>

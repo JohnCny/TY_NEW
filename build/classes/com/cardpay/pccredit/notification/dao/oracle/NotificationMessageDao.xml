@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.notification.dao.NotificationMessageDao">
+	<resultMap id="ResultMap"
+		type="com.cardpay.pccredit.notification.model.NotificationMessage">
+		<result property="id" column="ID" />
+		<result property="userId" column="USER_ID" />
+		<result property="noticeType" column="NOTICE_TYPE" />
+		<result property="noticeContent" column="NOTICE_CONTENT" />
+	    <result property="createTime" column="CREATED_TIME" />
+		<result property="createBy" column="CREATED_BY" />
+		<result property="modifyTime" column="MODIFIED_TIME" />
+		<result property="modifyBy" column="MODIFIED_BY" />
+	</resultMap>
+
+	<select id="findNotificationMessageByFilter" resultMap="ResultMap"
+		parameterType="map">
+		SELECT * from notification_message t
+		WHERE 1=1
+		<if test="userId != null and userId != '' ">
+			AND T.USER_ID=#{userId}
+		</if>
+		   AND T.IS_CHECK != 1
+	</select>
+	
+	<update id="deleteNotificationMessage"
+		parameterType="com.cardpay.pccredit.notification.model.NotificationMessage">
+		update notification_message
+		<set>
+			is_check=1
+		</set>
+		WHERE ID=#{messageId}
+	</update>
+
+</mapper>

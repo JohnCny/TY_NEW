@@ -1,0 +1,129 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">设置用户为角色"${role.name}"</div>
+      </div>
+      <form id="id_module_form" action="${modulePath}/insertOneRole.json">
+        <div class="forms" id="formsId">
+          <table class="rule">
+            <colgroup>
+              <col width="30%" />
+              <col width="10%" />
+              <col width="30%" />
+              <col />
+            </colgroup>
+            <tr>
+              <td><b>已包含人员:</b>
+              <select name="userIds" id="userIds" multiple="true" size="10" style="height: 300px;">
+                #dict("RoleUsers", "", false, $role.id)
+                </select></td>
+              <td style="text-align: center; vertical-align: middle; padding-left: 1%; padding-right: 1%;">
+                  <a type="button" value="增加" class="btn_g" href="javascript:void(0);" onclick="addMembers()" />增&nbsp;&nbsp;加</a><br /> 
+                  <a type="button" value="删除" class="btn_gr" href="javascript:void(0);" onclick="removeMembers()" />删&nbsp;&nbsp;除>></a>
+              </td>
+              <td><b>所有人员:</b>
+              <select id="allUserIds" name="allUserIds" multiple="true" size="10" style="height: 300px;">
+                #dict("AllUsers", "")
+              </select></td>
+              <td>&nbsp;</td>
+            </tr>
+          </table>
+        </div>
+      </form>
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n('button.cancel')" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+  var layout=new FormsLayout("formsId");      
+  window.top.currentWindow.setLayout(layout);
+
+  #set ($formName = "'#id_module_form'")
+  $(document).ready(function() {
+	     $("#id_save_button").click(function() {
+	    	   $("#userIds").find("option").attr("selected", true);
+	           var formjson = $($formName).serialize();
+	           $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
+	             if (data.success) {
+	             
+	                 navigateTo("${contextPath}/system/role_user/browse.page");
+	              
+	             }
+	           });
+	       });
+  });
+  
+  function addMembers(){
+	  var str = "" ;
+	  var optionHtml = "";
+	  var addUserIds = "";
+	  $("#allUserIds option:selected").each(function(){  
+	      var allUserIds = $(this).val();
+	      var allUserText = $(this).text();
+	      var count = $(this).parents("tr").find("#userIds option").length;
+	      
+	      for(var i=0; i < count;i++) 
+	      { 
+	    	  var userIds = $(this).parents("tr").find("#userIds").get(0).options[i].value;
+	    	  var userText = $(this).parents("tr").find("#userIds").get(0).options[i].text;
+	    	  
+	    	  if( userIds == allUserIds) { 
+	    	  	str = str+userText.trim()+",";
+	    	 	return;
+	         }
+		  }
+	      
+	      addUserIds += allUserIds + ","
+	      optionHtml += "<option value=" + allUserIds + ">" + allUserText.trim() + "</option>";
+// 	      $(this).parents("tr").find("#userIds").append("<option value=" + allUserIds + ">" + allUserText.trim() + "</option>");
+	  }); 
+	  
+	  if(addUserIds.length > 0){
+		  Dialog.load();
+		  $.ajax({
+		  		url : "${contextPath}/system/role_user/validateinsert.json",
+				type : "post",
+				data : {"addUserIds" : addUserIds,
+						"roleId" : "$role.id"},
+				success : function(sdata) {
+					Dialog.closeLoad();
+					if (sdata.success) {
+						if(sdata.message.length > 0){
+							Dialog.confirm(sdata.message,"提示", function() {
+								$("#userIds").append(optionHtml);
+							});
+						}
+					} else {
+						Dialog.message(sdata.message);
+					}
+				},
+				error : function(data, txtStatus, jqXhr) {
+					Dialog.closeLoad();
+					Dialog.message("设置错误,请检查。");
+				}
+			});
+		  
+// 		  if( str != "" ){
+// 			 var str1 = str.substring(0,str.length-1);
+// 			  Dialog.message(str1,"以下人员已经添加过了!");
+// 		  }		  
+	  }
+  }
+
+  function removeMembers() {
+	if ($("#userIds option:selected").length > 0) {
+	    Dialog.confirm("你确定要删除这些选中的成员吗？","提示", function() {
+	        $("#userIds option:selected").each(function(){
+	  		$(this).remove();
+	        }); 
+	      });
+	}
+  }
+  </script>
+</body>
+</html>
+#parse ("common/iframe_page_footer.htm")

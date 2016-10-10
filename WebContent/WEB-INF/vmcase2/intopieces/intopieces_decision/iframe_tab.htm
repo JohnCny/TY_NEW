@@ -1,0 +1,48 @@
+﻿#parse ("common/iframe_page_header2.htm")
+	<link rel="stylesheet" type="text/css" href="${uicasePath}/box/box.css" />
+	<style type="text/css">
+		.Tabs{margin-left:10px;position:fixed;margin-top:70px;height:30px;}
+		.Tabs li{list-style:none;border:1px solid #b9c4cf;border-radius:5px 5px 0 0;background:#ebf3fa;width:90px;text-align:center;line-height:30px;color:#333333;display:inline-block;float:left;}
+		.Tabs .active{background:#135aa4;border:1px solid #135aa4;color:#ffffff;}
+		.TabContent{width:98%;position:absolute;margin:1px 10px;margin-top:-1px\9;margin-top:102px;margin-bottom:10px;}
+		.tabContent{display:none;}
+		.selectTab{display:block}
+		.buttons{margin-top:15px;}
+	</style>
+</head>
+<body>
+	<div class="fixed">
+		<h1>审贷决议</h1>
+		<div class="buttons">
+		</div>
+	</div>
+	
+	<ul class="Tabs">
+		<li class="active" onclick="selectTab(1,this);">审贷决议</li>
+		<li onclick="selectTab(2,this);">调查模板</li> 
+	</ul>
+	<div class="TabContent" id="Content1">
+		<div class="tabContent" id="tabContent1">
+			<iframe id="tabContent_frame1" frameborder="0" width="100%;" src="${contextPath}/intopieces/intopiecesdecision/input_decision.page?appId=${appId}" marginheight="0" marginwidth="0" height="420px"></iframe>
+		</div>
+		
+		<div class="tabContent" id="tabContent2">
+			<iframe id="tabContent_frame2" frameborder="0" width="100%;" src="${contextPath}/customer/customerInfor_wh_ty/report_jy.page?appId=${appId}&urlType=0" marginheight="0" marginwidth="0" height="420px"></iframe>
+		</div>
+	</div>
+	<script src="${contextPath}/js/xm_appln/xm_appln.js" type="text/javascript"></script>
+	<script type="text/javascript">			
+		function selectTab(index,obj,btnId){//tab页
+			$(".Tabs li").attr("class","");
+			$(obj).attr("class","active");
+			$(".TabContent div").hide();
+			$("#tabContent"+index).show();
+			document.getElementById("tabContent"+"_frame"+index).contentWindow.location.reload();
+		}
+		
+		$(document).ready(function(){
+		});
+	</script>	
+</body>
+#parse ("common/iframe_page_footer.htm")
+

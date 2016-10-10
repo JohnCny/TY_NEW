@@ -1,0 +1,125 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+<script src="${contextPath}/js/maintenance/maintenance.js"></script>
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">新增维护计划</div>
+      </div>
+      <form id="id_module_form" action="${modulePath}/insert.json">
+        <div class="forms" id="formsId">
+          <table class="rule" border="1" bordercolor="#CCCCCC">
+            <caption>维护计划</caption>
+			<colgroup>
+              <col width="10%" />
+              <col width="40%" />
+              <col width="10%" />
+              <col width="40%" />
+			</colgroup>
+            <tr>
+              <td><label>客户经理:</label></td>
+              <td>
+               <input type="text" id="displayName" name="displayName" value="$!maintenance.displayName" disabled="disabled"/>
+               <input type="hidden" id="customerManagerId" name="customerManagerId" value="$!maintenance.userId" />
+              <!-- <select id="customerManagerId" name="customerManagerId" ></select> -->
+              </td>
+              <td><label>客户名称:</label></td>
+              <td><input type="text" id="chineseName" name="chineseName" value="$!maintenance.chineseName" disabled="disabled"/>
+                  <input type="hidden" id="customerId" name="customerId" value="$!maintenance.customerId" />
+                  <input type="hidden" id="appId" name="appId" value="$!appId" />
+                  <!-- <input type="text" id="customerManagerId" name="customerManagerId" value="$!customerManagerId" /> --></td>
+            </tr>
+            
+            <tr>
+              <td><label>证件号码:</label></td>
+              <td><input type="text" id="cardId" name="cardId" value="$!maintenance.cardId" disabled="disabled"/>
+              <td><label>产品名称:</label></td>
+              <td><input type="text" id="productName" name="productName" value="$!maintenance.productName" disabled="disabled"/>
+              <input type="hidden" id="productId" name="productId" value="$!maintenance.productId" /></td>
+            </tr>
+            
+            <tr>
+              <td><label>授信金额:</label></td>
+              <td><input type="text" id="actualQuote" name="actualQuote" value="$!maintenance.actualQuote" disabled="disabled"/>
+            </tr>
+            
+             <tr>
+              <td><label>还款方式:</label></td>
+              <td><select id="repayWay" name="repayWay" disabled="disabled">
+                    #dict("repayWay",$!maintenance.repayWay)
+                  </select></td>
+              <td><label>还款状态:</label></td>
+              <td><select id="repayStatus" name="repayStatus" disabled="disabled">
+                    #dict("repayStatus",$!maintenance.repayStatus)
+                  </select></td>
+            </tr>
+            
+            <tr>
+              <td><label>维护目标:</label></td>
+              <td><input  type="text" id="maintenanceGoal" name="maintenanceGoal" value="" /></td>
+              <td><label>维护方式:</label></td>
+              <td><select name="maintenanceWay" id="maintenanceWay" >
+              #customerInfo($request.getAttribute("collectionMethodList"),'')
+              </select></td>
+               <td><input type="text" name="maintenanceStartTime" hidden="hidden" value="-1" /></td>
+            </tr>
+            <tr>
+              <td><label>备注:</label></td>
+              <td><textarea id="remarksCreateReason" name="remarksCreateReason" ></textarea>
+              <td><label>维护天数:</label></td>
+              <td><input type="text" id="maintenanceDay" name="maintenanceDay" value=""/></td>
+            </tr>
+            
+            
+          
+          </table>
+        </div>
+      </form>
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n("button.save")" class="current" />
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n("button.cancel")" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");	
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	#parse ("/customer/maintenance/maintenance_validation.js")
+	#validator($formName)
+	
+	$("#id_save_button").click(function() {
+		if(submitFlag == 1){
+			alert("请勿重复提交!")
+			return;
+		}
+		submitFlag = 1;
+		if ($($formName).valid()) {
+			var formjson = $($formName).serialize();
+   	       var url = "${modulePath}/insert.json";
+   	       var customerId = $("#customerId").val();
+   	    	var productId = $("#productId").val();
+			$.ajax({
+				url : url,
+				type : "get",
+				data : formjson,
+				success : function(data) {
+					if (data.success) {
+						topWin.Dialog.message("保存成功！");
+						window.location.href= contextPath+"/customer/maintenance/log_info.page?id="+customerId+"@"+productId ;
+					}
+					else{
+						topWin.Dialog.message(data.message);
+				    }
+					submitFlag = 0;
+				}
+			});
+				
+		}else{
+			submitFlag = 0;
+		}
+    });
+  </script>
+</body>
+#parse ("common/iframe_page_footer.htm")

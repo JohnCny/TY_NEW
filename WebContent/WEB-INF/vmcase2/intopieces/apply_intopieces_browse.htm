@@ -1,0 +1,108 @@
+#parse ("common/iframe_page_header.htm")
+<script src="${contextPath}/js/intopieces/intopieces.js" charset="utf-8"></script>
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">申请件审核查询</div>
+      </div>
+      <div class="inquiry">
+       <div class="search_tag">进件查询</div>
+        <div class="search">
+          <form id="submitForm">
+          <ul>
+              <li>
+                <span>进件编号：<input type="text" name="bianhao"  maxlength="30" /></span>
+              </li>
+              <li class="search_button">
+                <input type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" onclick="javascript:this.form.submit();"/>
+              </li>
+          </ul>
+          </form>
+        </div>
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="20%" />
+              <col width="20%"/>
+              <col width="20%"/>
+              <col width="15%"/>
+              <col width="10%"/>
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">进件编号</th>
+              <th nowrap="nowrap">客户名称</th>
+              <th nowrap="nowrap">证件号码</th>
+              <th nowrap="nowrap">产品名称</th>
+              <th nowrap="nowrap">申请额度</th>
+              <th nowrap="nowrap">进度</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="20%" />
+              <col width="20%"/>
+              <col width="20%"/>
+              <col width="15%"/>
+              <col width="10%"/>
+            </colgroup>
+            #foreach ($intoPieces in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!{intoPieces.id}_$!intoPieces.customerId"/></td>
+              <td nowrap="nowrap">$!intoPieces.id</td>
+              <td nowrap="nowrap">$!intoPieces.chineseName</td>
+              <td nowrap="nowrap">$!intoPieces.cardId</td>
+              <td nowrap="nowrap">$!intoPieces.productName</td>
+              <td nowrap="nowrap">$!intoPieces.applyQuota</td>
+              <td nowrap="nowrap">
+	              #if($!intoPieces.status=='save')未申请 
+	              #elseif($!intoPieces.status=='audit')已申请
+	              #elseif($!intoPieces.status=='nopass')申请未通过
+	              #elseif($!intoPieces.status=='refuse')被拒绝  
+	              #elseif($!intoPieces.status=='approved')审批通过 
+	              #elseif($!intoPieces.status=='succeed')申请通过  
+              #end
+              </td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+          #btnpriv("exportupload")<a class="btn_g" href="javascript:void(0);" title="导出并上传到ftp服务器" onclick="importData('${contextPath}/intopieces/intopiecesquery/importData.page')">导出并上传到ftp服务器</a>#end
+          #btnpriv("display")<a class="btn_g" href="javascript:void(0);" title="查看" onclick="viewIntoPices('view')">查看</a>#end
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.createUrl = "${modulePath}/create.page";
+		opsObj.displayUrl = "${modulePath}/display.page";
+		opsObj.changeUrl = "${modulePath}/change.page";
+		opsObj.deleteUrl = "${modulePath}/delete.json";
+		opsObj.browseUrl = "${modulePath}/browse.page";
+		opsObj.exportUrl = "${modulePath}/export.page";
+
+		prepareOperations(opsObj);
+		
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")

@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.manager.dao.ManagerSalaryDao">
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.manager.model.ManagerSalary">
+		<result property="id" column="id" />
+		<result property="customerId" column="customer_id" />
+		<result property="rewardIncentiveInformation" column="reward_incentive_information" />
+		<result property="deductAmount" column="deduct_amount" />
+		<result property="basePay" column="base_pay" />
+		<result property="allowance" column="allowance" />
+		<result property="dutySalary" column="duty_salary" />
+		<result property="returnPrepareAmount" column="return_prepare_amount" />
+		<result property="insertPrepareAmount" column="insert_prepare_amount" />
+		<result property="riskReserveBalances" column="risk_reserve_balances" />
+		<result property="fine" column="fine" />
+		<result property="year" column="year" />
+		<result property="month" column="month" />
+		<result property="describe" column="describe" />
+		<result property="createdTime" column="created_time" />
+		<result property="modifiedBy" column="modified_by" />
+		<result property="modifiedTime" column="modified_time" />
+		<result property="createdBy" column="created_by" />
+		<result property="groupSalary" column="group_salary" />
+		<result property="zdPerform" column="zd_perform" />
+		<result property="fdPerform" column="fd_perform" />
+		<result property="ghPerform" column="gh_perform" />
+		<result property="spPerform" column="sp_perform" />
+		<result property="gwPerform" column="gw_perform" />
+		<result property="competerPerform" column="competer_perform" />
+	</resultMap>
+	
+	<resultMap id="ResultMapJn" type="com.cardpay.pccredit.manager.model.ManagerSalaryForm">
+		<result property="id" column="id" />
+		<result property="customerId" column="customer_id" />
+		<result property="rewardIncentiveInformation" column="reward_incentive_information" />
+		<result property="deductAmount" column="deduct_amount" />
+		<result property="basePay" column="base_pay" />
+		<result property="allowance" column="allowance" />
+		<result property="dutySalary" column="duty_salary" />
+		<result property="returnPrepareAmount" column="return_prepare_amount" />
+		<result property="insertPrepareAmount" column="insert_prepare_amount" />
+		<result property="fine" column="fine" />
+		<result property="year" column="year" />
+		<result property="month" column="month" />
+		<result property="describe" column="describe" />
+		<result property="createdTime" column="created_time" />
+		<result property="modifiedBy" column="modified_by" />
+		<result property="modifiedTime" column="modified_time" />
+		<result property="createdBy" column="created_by" />
+		<result property="own" column="own" />
+		<result property="instCode" column="INST_CODE" />
+		<result property="wage" column="WAGE" />
+		<result property="middleAllowance" column="MIDDLE_ALLOWANCE" />
+		<result property="basicTaskBonus" column="BASIC_TASK_BONUS" />
+		<result property="attendDeduct" column="ATTEND_DEDUCT" />
+		<result property="riskReserveBalances" column="RISK_RESERVE_BALANCES" />
+		<result property="rowIndex" column="row_index" />
+		<result property="monthLoanNum" column="MONTH_LOAN_NUM" />
+		<result property="monthTimes"   column="MONTH_TIMES" />
+		<result property="monthEffectNum" column="MONTH_EFFECT_NUM" />
+		<result property="monthOverdueDays" column="MONTH_OVERDUE_DAYS" />
+		<result property="volumePerformance" column="VOLUME_PERFORMANCE" />
+		<result property="profitDraw" column="PROFIT_DRAW" />
+		<result property="overdueDeduct" column="OVERDUE_DEDUCT" />
+		<result property="managerType" column="MANAGER_TYPE" />
+		<result property="subsidies" column="SUBSIDIES" />
+		<result property="auditNum"  column="AUDIT_NUM" />
+	</resultMap>
+	
+	<select id="findManagerSalarysByFilter" resultMap="ResultMap" 
+			parameterType="com.cardpay.pccredit.manager.filter.ManagerSalaryFilter">
+		SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					SELECT salary.*, usr.display_name as managerName,c.short_name as shortName 
+					  FROM manager_salary salary ,
+					  sys_user usr,SYS_DEPT_USER b,SYS_DEPARTMENT c
+					 WHERE 1=1
+    				    and usr.id = salary.customer_id and salary.CUSTOMER_ID=b.USER_ID and b.DEPT_ID=c.id
+					 <if test="managerName != null and managerName != '' ">
+						AND usr.display_name like '%${managerName}%'
+					 </if>
+					 <if test="month != null and month != '' ">
+						AND salary.month=#{month}
+					 </if>
+					 <if test="year != null and year != '' ">
+						AND salary.year=#{year}
+					 </if>
+					 order by salary.year desc,salary.month desc,c.name
+		 		<![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	<select id="findManagerSalarysCountByFilter" resultType="int"
+			parameterType="com.cardpay.pccredit.manager.filter.ManagerSalaryFilter">
+		SELECT count(*)
+		   FROM manager_salary salary
+		 INNER join sys_user usr
+ 			ON usr.id = salary.customer_id
+		  WHERE 1=1
+		 <if test="managerName != null and managerName != '' ">
+			AND usr.display_name like '%${managerName}%'
+		 </if>
+		 <if test="month != null and month != '' ">
+			AND salary.month=#{month}
+		 </if>
+		 <if test="year != null and year != '' ">
+			AND salary.year=#{year}
+		 </if>
+	</select>
+	
+	<select id="getMaxManagerLevel" resultType="int">
+		select max(t.lev)
+		  from (select mbm.parent_id,
+		               mbm.child_id,
+		               level lev,
+		               decode(connect_by_isleaf, 1, 'Y', 'N') isLeaf
+		          from manager_belong_map mbm
+		         start with parent_id  = '100000'
+		        connect by prior child_id = parent_id) t
+	</select>
+	
+	<select id="findSalaryParametersByFilter" resultType="com.cardpay.pccredit.manager.model.SalaryParameter" >
+		select manager_para.*,
+		       card_num.actualActiveCardNumber,
+		       card_num.addActivationCardNumber,
+		       p_conf.margin_extract_info/100 as marginExtractInfo,
+		       salary.insert_prepare_amount     as insertPrepareAmount,
+		       target.active_number             as targetActiveNumber,
+		       target.activation_number         as targetActivationNumber,
+		       balances_salary.risk_reserve_balances as riskReserveBalances,
+		       nvl(manager_sxfr.sxfr, 0)        as sxfr
+		  from (select tree_manager_parameter.*,
+		               usr.display_name,
+		               usr.id                                    as managerId,
+		               tree_manager_parameter.base_pay           as basePay,
+		               maintenance_manager.duty_salary           as dutySalary,
+		               maintenance_manager.allowance             as allowance,
+		               maintenance_manager.insert_customer_award as insertCustomerAwardRate,
+		               maintenance_manager.customer_number_award as customerNumberAwardRate,
+		               maintenance_manager.team_award            as teamAwardRate,
+		               maintenance_manager.weighted_number       as weightedNumber
+		          from sys_user usr
+		         inner join (select manager_parameter.*, tree.*
+		                      from (select mbm.parent_id,
+		                                   mbm.child_id,
+		                                   level lev,
+		                                   decode(connect_by_isleaf, 1, 'Y', 'N') isLeaf
+		                              from manager_belong_map mbm
+		                             start with parent_id = '100000'
+		                            connect by prior child_id = parent_id) tree
+		                     inner join account_manager_parameter manager_parameter
+		                        on tree.child_id = manager_parameter.id) tree_manager_parameter
+		            on usr.id = tree_manager_parameter.user_id
+		         inner join maintenance_account_manager maintenance_manager
+		            on maintenance_manager.hierarchy =
+		               tree_manager_parameter.level_information
+		         where tree_manager_parameter.lev=#{level}) manager_para
+		   inner join customer_manager_target target
+		    on target.hierarchy = manager_para.level_information
+		   and target.target_date = 'month'
+		    left join (select manager_total.user_id,
+						       sum(manager_total.total_interest *
+						           nvl(reward_incentive.nterest_income_parameter, 0) +
+						           manager_total.total_poundage *
+						           nvl(reward_incentive.fee_sparameter, 0) +
+						           manager_total.total_annual_fee *
+						           nvl(reward_incentive.parameters_annual_fee, 0))*
+                    			   avg(weighted_number) / 100 as sxfr
+						  from (select customer_information.user_id,
+						               card.product_id,
+						               avg(nvl(mam.weighted_number, 0)) as weighted_number,
+						               sum(nvl(customer_card.interest, 0)) as total_interest,
+						               sum(nvl(customer_card.poundage, 0)) as total_poundage,
+						               sum(nvl(customer_card.annual_fee, 0)) as total_annual_fee
+						          from card_information card
+						         inner join customer_card_information customer_card
+						            on card.id = customer_card.card_id
+						         inner join basic_customer_information customer_information
+						            on customer_information.id = card.customer_id
+						         inner join (select manager_parameter.*, tree.*
+						                      from (select mbm.parent_id,
+						                                   mbm.child_id,
+						                                   level lev,
+						                                   decode(connect_by_isleaf, 1, 'Y', 'N') isLeaf
+						                              from manager_belong_map mbm
+						                             start with parent_id = '100000'
+						                            connect by prior child_id = parent_id) tree
+						                     inner join account_manager_parameter manager_parameter
+						                        on tree.child_id = manager_parameter.id) tree_manager_parameter
+						            on tree_manager_parameter.user_id = customer_information.user_id
+						           and tree_manager_parameter.lev=#{level}
+						          inner join maintenance_account_manager mam
+			                         on mam.hierarchy =
+			                            tree_manager_parameter.LEVEL_INFORMATION
+						         where customer_card.year=#{year}
+						           and customer_card.month=#{month}
+						         group by customer_information.user_id, card.product_id) manager_total
+						 inner join product_reward_incentive reward_incentive
+						    on reward_incentive.product_id = manager_total.product_id
+						 group by manager_total.user_id) manager_sxfr
+			    on manager_sxfr.user_id = manager_para.managerId
+		  left join (select customer.user_id,
+		                    count((case
+		                            when status = 'active' then
+		                             1
+		                            else
+		                             0
+		                          end)) as addActivationCardNumber,
+		                    count((case
+		                            when status = 'effective' then
+		                             1
+		                            else
+		                             0
+		                          end)) as actualActiveCardNumber
+		               from basic_customer_information customer
+		              inner join card_information card
+		                 on customer.id = card.customer_id
+		              inner join customer_card_information customer_card
+		                 on card.id = customer_card.card_id
+		              where customer_card.year=#{year}
+		                and customer_card.month=#{month}
+		              group by customer.user_id) card_num
+		    on card_num.user_id = manager_para.managerId
+		  left join (select t.customer_id, t.insert_prepare_amount
+		               from manager_salary t
+		              where t.year=#{year}-3
+		                and t.month=#{month}) salary
+		    on salary.customer_id = manager_para.managerId
+	      left join (select t.customer_id,
+					       sum(nvl(t.insert_prepare_amount, 0)) -
+					       sum(nvl(t.return_prepare_amount, 0)) risk_reserve_balances
+					  from manager_salary t
+             		where t.year=#{year}
+              		 and t.month=#{month}-1
+              		group by t.customer_id) balances_salary
+            on balances_salary.customer_id = manager_para.managerId
+            left join manager_products_configuration p_conf
+		    on p_conf.customer_manager_level = manager_para.level_information
+		   and p_conf.product_id = '402880f04955718b0149558a5717000f'
+	</select>
+	
+	<select id="getManagePerformance" resultType="string">
+		select sum(a.managePerformance) as managePerformance 
+		from(
+		select sum(manager_total.total_interest *
+		           nvl(reward_incentive.Nterest_income_parameter, 0))
+		           *avg(weighted_number) as managePerformance
+		  from (select customer_information.user_id,
+		               card.product_id,
+		               sum(nvl(customer_card.interest, 0)) as total_interest,
+		               avg(nvl(mam.weighted_number, 0)) weighted_number
+		          from card_information card
+		         inner join customer_card_information customer_card
+		            on card.id = customer_card.card_id
+		         inner join basic_customer_information customer_information
+		            on customer_information.id = card.customer_id
+		         inner join (select manager_parameter.*, tree.*
+		                      from (select mbm.parent_id,
+		                                   mbm.child_id,
+		                                   level lev,
+		                                   decode(connect_by_isleaf, 1, 'Y', 'N') isLeaf
+		                              from manager_belong_map mbm
+		                             start with parent_id in
+		                                        (select t.id
+		                                           from account_manager_parameter t
+		                                          where t.user_id=#{managerId})
+		                            connect by prior child_id = parent_id) tree
+		                     inner join account_manager_parameter manager_parameter
+		                        on tree.child_id = manager_parameter.id) tree_manager_parameter
+		            on tree_manager_parameter.user_id = customer_information.user_id
+		             inner join maintenance_account_manager mam
+                    on mam.hierarchy =
+                       tree_manager_parameter.LEVEL_INFORMATION
+		         where customer_card.year=#{year}
+		           and customer_card.month=#{month}
+		         group by customer_information.user_id, card.product_id) manager_total
+		 inner join product_reward_incentive reward_incentive
+		    on reward_incentive.product_id = manager_total.product_id
+		 group by manager_total.user_id) a
+	</select>
+	
+	<insert id="batchInsertManagerSalary" useGeneratedKeys="true" parameterType="ArrayList">
+		insert into manager_salary (id, customer_id, reward_incentive_information, deduct_amount) 
+		<foreach collection="list" item="item" index="index" separator="union all" >
+			select #{item.id},#{item.customerId},#{item.rewardIncentiveInformation},#{item.deductAmount}
+			from dual
+		</foreach>
+	</insert>
+	
+	<insert id="statisticalManager">
+		insert into statistical_table
+		  (id,
+		   customer_manager_id,
+		   product_id,
+		   send_card_number,
+		   accept_card_number,
+		   activate_card_number,
+		   credit_extension_amount,
+		   activate_extension_amount)
+		  with make_card_tmp as
+		   (select *
+		      from make_card t
+		     where t.created_time <![CDATA[ >  ]]> sysdate - 1
+		       and t.created_time <![CDATA[ <  ]]> sysdate + 1),
+		  application_info_tmp as
+		   (select *
+		      from customer_application_info t
+		     where t.upload_status = 'upload'
+		       and t.completion_time <![CDATA[ >  ]]> sysdate - 1
+		       and t.completion_time <![CDATA[ <  ]]> sysdate + 1)
+		  select sys_guid() as id,
+		         ucp.user_id as manager_id,
+		         ucp.product_id as product_id,
+		         nvl(sum(cp_send_card.send_card_number), 0) as send_card_number /*发卡数*/,
+		         nvl(sum(activate_info.activate_card_number), 0) as activate_card_number /*激活卡数*/,
+		         nvl(sum(activate_info.activate_extension_amount), 0) as activate_extension_amount /*激活总额度*/,
+		         nvl(sum(accept_info.accept_card_number), 0) as accept_card_number /*到卡数*/,
+		         nvl(sum(accept_info.credit_extension_amount), 0) as credit_extension_amount /*授信总额度*/
+		  
+		    from (select customer_info.*, ait.product_id as product_id
+		            from sys_user usr
+		           inner join basic_customer_information customer_info
+		              on usr.id = customer_info.user_id
+		             and usr.user_type = 1
+		           inner join application_info_tmp ait
+		              on customer_info.id = ait.customer_id) ucp
+		  
+		    left join (select application_info.customer_id as customer_id,
+		                      application_info.product_id as product_id,
+		                      count(0) as send_card_number /*发卡数*/
+		                 from application_info_tmp application_info
+		                group by application_info.customer_id,
+		                         application_info.product_id) cp_send_card
+		      on ucp.id = cp_send_card.customer_id
+		     and ucp.product_id = cp_send_card.product_id
+		  
+		    left join (select card_info.customer_id as customer_id,
+		                      pa.id as product_id,
+		                      count(0) as activate_card_number, /*激活卡数*/
+		                      sum(nvl(pa.credit_line, 0)) as activate_extension_amount /*激活总额度*/
+		                 from make_card_tmp mct
+		                inner join card_information card_info
+		                   on mct.card_number = card_info.card_number
+		                inner join product_attribute pa
+		                   on pa.id = card_info.product_id
+		                where mct.card_customer_status = 1
+		                group by card_info.customer_id, pa.id) activate_info
+		      on ucp.id = activate_info.customer_id
+		     and ucp.product_id = activate_info.product_id
+		  
+		    left join (select card_info.customer_id as customer_id,
+		                      pa.id as product_id,
+		                      count(0) as accept_card_number, /*到卡数*/
+		                      sum(nvl(pa.credit_line, 0)) as credit_extension_amount /*授信总额度*/
+		                 from make_card_tmp mct
+		                inner join card_information card_info
+		                   on mct.card_number = card_info.card_number
+		                inner join product_attribute pa
+		                   on pa.id = card_info.product_id
+		                where mct.card_customer_status = 0
+		                group by card_info.customer_id, pa.id) accept_info
+		      on ucp.id = activate_info.customer_id
+		     and ucp.product_id = accept_info.product_id
+		  
+		   group by ucp.user_id, ucp.product_id
+	</insert>
+	
+	<select id="getReturnPrepareAmountById" resultType="String">
+		select return_prepare_amount from MANAGER_SALARY t
+		where t.year=#{year}
+		and t.month=#{month}
+		and t.customer_id=#{id}
+	</select>
+	<select id="getRewardIncentiveInformation" resultType="String">
+		select reward_incentive_information from MANAGER_SALARY t
+		where t.year=#{year}
+		and t.month=#{month}
+		and t.customer_id=#{id}
+	</select>
+	
+	<delete id="deleteManagerSalaryByYearAndMonth">
+		DELETE FROM manager_salary a
+		  WHERE a.year=#{year} and a.month=#{month}
+	</delete>
+	
+	<select id="findManagerSalarys" resultMap="ResultMap" 
+			parameterType="com.cardpay.pccredit.manager.filter.ManagerSalaryFilter">
+					SELECT salary.*, usr.display_name as managerName,c.short_name as shortName 
+					  FROM manager_salary salary ,
+					  sys_user usr,SYS_DEPT_USER b,SYS_DEPARTMENT c
+					 WHERE 1=1
+    				    and usr.id = salary.customer_id and salary.CUSTOMER_ID=b.USER_ID and b.DEPT_ID=c.id
+
+					 <if test="month != null and month != '' ">
+						AND salary.month=#{month}
+					 </if>
+					 <if test="year != null and year != '' ">
+						AND salary.year=#{year}
+					 </if>
+					 order by salary.year desc,salary.month desc,c.name
+		 		
+	</select>
+	
+	
+	<!-- =====================================济南绩效相关start============================= -->
+	<select id="findManagerSalarysByFilterJn" resultMap="ResultMapJn" 
+			parameterType="com.cardpay.pccredit.manager.filter.ManagerSalaryFilter">
+		SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					SELECT salary.*, 
+						   usr.display_name as managerName
+					  FROM manager_salary salary
+					 INNER join sys_user usr ON usr.id = salary.customer_id
+					 WHERE 1=1
+					 <if test="managerName != null and managerName != '' ">
+						AND usr.display_name like '%${managerName}%'
+					 </if>
+					 <if test="month != null and month != '' ">
+						AND salary.month=#{month}
+					 </if>
+					 <if test="year != null and year != '' ">
+						AND salary.year=#{year}
+					 </if>
+					 <if test="organName != null and organName != '' ">
+						AND salary.INST_CODE=#{organName}
+					 </if>
+					 order by salary.year desc,salary.month,salary.inst_code desc
+		 		<![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	<select id="findManagerSalarysCountByFilterJn" resultType="int"
+			parameterType="com.cardpay.pccredit.manager.filter.ManagerSalaryFilter">
+		SELECT count(*)
+		   FROM manager_salary salary
+		 INNER join sys_user usr
+ 			ON usr.id = salary.customer_id
+		  WHERE 1=1
+		 <if test="managerName != null and managerName != '' ">
+			AND usr.display_name like '%${managerName}%'
+		 </if>
+		 <if test="month != null and month != '' ">
+			AND salary.month=#{month}
+		 </if>
+		 <if test="year != null and year != '' ">
+			AND salary.year=#{year}
+		 </if>
+		 <if test="organName != null and organName != '' ">
+			AND salary.INST_CODE=#{organName}
+		 </if>
+	</select>
+	
+	<select id="getOrganName" resultType="String">
+		   select org.name
+     from sys_organization org
+    where id in (select t.org_id
+                   from sys_department t
+                  where t.id in (select tt.dept_id
+                                   from sys_dept_user tt
+                                  where tt.user_id = #{managerId}))
+	</select>
+	
+	<select id="findManagerSalaryCount" resultType="int">
+		SELECT count(*)
+		   FROM manager_salary salary
+		  WHERE 1=1
+			AND salary.month=#{month}
+			AND salary.year=#{year}
+	</select>
+	
+	
+	<select id="findXbCountByManagerId" resultType="int">
+	  select count(0) from customer_application_info info,
+              t_app_manager_audit_log log
+	  where   info.id = log.application_id 
+	      and info.status = 'approved'
+	      and log.audit_type = '2'
+	      and log .user_id_3 = #{managerId}
+	      and substr(to_char(info.created_time,'yyyyMMdd'),'0','4') = #{year}
+	      and substr(to_char(info.created_time,'yyyyMMdd'),'5','2') = #{month}
+	</select>
+	
+	<select id="findProdLimitAndType" resultType="map">
+		select cname,INTEREST, MAINASSURE                  
+  from t_mibusidata a, basic_customer_information b
+ where a.custid = b.ty_customer_id                 
+   and substr(a.OPERDATETIME, '0', '4') = #{year} 
+   and substr(a.OPERDATETIME, '6', '2') = #{month}  
+   and b.id = #{customerId}  
+	    
+	</select>
+	
+	
+	<select id="findDistinctBusicode" resultType="map">
+		select distinct(t.busicode)
+		  from t_mibusidata t
+		 where substr(OPERDATETIME, '0', '4') = #{year} 
+		   and substr(OPERDATETIME, '6', '2') = #{month}  
+		   and t.custid = #{tyCustomerId}  
+	</select>
+	
+	
+	<select id="findManagerSalaryForm" resultMap="ResultMapJn"  
+	    parameterType="com.cardpay.pccredit.manager.filter.ManagerSalaryFilter">
+					SELECT salary.*, 
+						   parmeter.*,
+						   usr.display_name as managerName,
+						   acc.manager_type
+					  FROM manager_salary salary
+					 INNER join sys_user usr ON usr.id = salary.customer_id
+    				 left join t_jx_parameters parmeter on parmeter.customer_manager_id = salary.customer_id
+    				 inner join account_manager_parameter acc on acc.user_id = usr.id
+					 WHERE 1=1
+					 <if test="managerName != null and managerName != '' ">
+						AND usr.display_name like '%${managerName}%'
+					 </if>
+					 <if test="month != null and month != '' ">
+						AND salary.month=#{month}
+					 </if>
+					 <if test="year != null and year != '' ">
+						AND salary.year=#{year}
+					 </if>
+					 <if test="organName != null and organName != '' ">
+						AND salary.INST_CODE=#{organName}
+					 </if>
+					 <if test="managerType != null and managerType != '' ">
+						AND acc.MANAGER_TYPE=#{managerType}
+					 </if>
+					 order by salary.inst_code desc,salary.year desc,salary.month desc
+	</select>
+	
+	
+	<select id="findSdAprovedCountByManagerId" resultType="int">
+	  select count(0) from 
+	          customer_application_info info,
+              t_app_manager_audit_log log
+	  where   info.id = log.application_id 
+	      and info.status = 'approved'
+	      and log.audit_type = '2'
+	      and (log.user_id_1 = #{managerId} or log.user_id_2 = #{managerId})
+	      and substr(to_char(info.created_time,'yyyyMMdd'),'0','4') = #{year}
+	      and substr(to_char(info.created_time,'yyyyMMdd'),'5','2') = #{month}
+	</select>
+	
+	<!-- =====================================济南绩效相关end============================= -->
+</mapper>

@@ -1,0 +1,207 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+  <script src="${contextPath}/common/js/common/jquery.form.js"></script>
+  <script type="text/javascript" src="${contextPath}/common/js/common/tinybox.js"></script>
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户原始信息修改>基本信息</div>
+      </div>
+        <div class="tabplace">
+            <ul class="com-tab" >
+            	<li class="tab activeTab"><a href="${contextPath}/customer/firsthend/showCustomerInfoJn.page?id=${customerNm}">基本信息</a></li>
+         	</ul>
+        </div>
+      <form id="id_module_form" action="${contextPath}/product/productinformation/updateBaseCustomer.json"  method="post">
+         <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
+          <input type="hidden" id="id" name="id" value="$!{customerNm}" />
+          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 90%">
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="30%" />
+            </colgroup>
+              <tr><td class="titlec" colspan="4" style="text-align: center;">基本信息</td></tr>
+            <tr>
+              <td class="titlefc3"><label for="khh">客户初始ID:</label></td>
+              <td><input class="rinpsty"  type="text" id="initid" name="initid" value="$!customerInfor.initid" disabled="disabled"/></td>
+              <td class="titlefc3"><label for="khmc">客户编号:</label></td>
+              <td><input class="rinpsty"  type="text" id="custid" name="custid" value="$!customerInfor.custid" disabled="disabled"/></td>
+            </tr>
+             <tr>
+              <td class="titlefc3"><label for="rh">客户类型:</label></td>
+              <!-- <td><input class="rinpsty"  type="text" id="rh" name="rh" value="$!customerInfor.custtype" /></td> -->
+              <td><select id="custtype" name="custtype" class="rinpsty" disabled="disabled"> 
+              		<option value=""></option>
+              		#dict("CUSTTYPEJN", $!customerInfor.custtype)
+              	  </select>
+              </td>
+              <td class="titlefc3"><label for="khlx">客户名称:</label></td>
+              <td><input class="rinpsty"  type="text" id="cname" name="cname" value="$!customerInfor.cname" /></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="zjlx">证件类型:</label></td>
+              <!-- <td><input class="rinpsty"  type="text" id="zjlx" name="zjlx" value="$!customerInfor.cardtype" /></td> -->
+              <td><select id="cardtype" name="cardtype" class="rinpsty" disabled="disabled"> 
+              		<option value=""></option>
+              		#dict("CARDTYPE", $!customerInfor.cardtype)
+              	  </select>
+              </td>
+              <td class="titlefc3"><label for="zjhm">证件号码:</label></td>
+              <td><input class="rinpsty"  type="text" id="cardnum" name="cardnum" value="$!customerInfor.cardnum" disabled="disabled"/></td>
+            </tr>
+             <tr>
+              <td class="titlefc3"><label for="qfjg">性别:</label></td>
+             <!--  <td><input class="rinpsty"  type="text" id="qfjg" name="qfjg" value="$!customerInfor.sex" /></td> -->
+             <td><select id="sex" name="sex" class="rinpsty" disabled="disabled"> 
+              		<option value=""></option>
+              		#dict("SEX", $!customerInfor.sex)
+              	  </select>
+              </td>
+              <td class="titlefc3"><label for="sfcq">民族:</label></td>
+              <!-- <td><input class="rinpsty"  type="text" id="sfcq" name="sfcq" value="$!customerInfor.ethical" /></td> -->
+               <td><select id="ethical" name="ethical" class="rinpsty" disabled="disabled"> 
+              		<option value=""></option>
+              		#dict("MINGZHU", $!customerInfor.ethical)
+              	  </select>
+              </td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="hyzk">婚姻状况:</label></td>
+              <!-- <td><input class="rinpsty"  type="text" id="hyzk" name="hyzk" value="$!customerInfor.marrige" /></td> -->
+              <td><select id="marrige" name="marrige" class="rinpsty"> 
+              		<option value=""></option>
+              		#dict("MARRIGE", $!customerInfor.marrige)
+              	  </select>
+              </td>
+              <td class="titlefc3"><label for="dqrq">出生日期:</label></td>
+              <td><input class="rinpsty"  type="text" id="birthday" name="birthday" value="$!customerInfor.birthday" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="gltx">住址:</label></td>
+              <td><input class="rinpsty"  type="text" id="syaddr" name="syaddr" value="$!customerInfor.syaddr" /></td>
+              <td class="titlefc3"><label for="pqdz">有效期限:</label></td>
+              <td><input class="rinpsty"  type="text" id="usefullife" name="usefullife" value="$!customerInfor.usefullife" /></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="csrq">工作单位名称:</label></td>
+              <td><input class="rinpsty"  type="text" id="employer" name="employer" value="$!customerInfor.employer" /></td>
+              <td class="titlefc3"><label for="xb">工作单位地址:</label></td>
+              <td><input class="rinpsty"  type="text" id="employeraddr" name="employeraddr" value="$!customerInfor.employeraddr" /></td>
+            </tr>
+           <!--  <tr>
+              <td class="titlefc3"><label for="gtspmc">行政区划（市）:</label></td>
+              <td><input class="rinpsty"  type="text" id="city" name="city" value="$!customerInfor.city" disabled="disabled"/></td>
+              <td class="titlefc3"><label for="gtyyzzhm">行政区划（县/区）:</label></td>
+              <td><input class="rinpsty"  type="text" id="districtcounty" name="districtcounty" value="$!customerInfor.districtcounty" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="zxyzsj">所属区域（乡镇/街道）:</label></td>
+              <td><input class="rinpsty"  type="text" id="town" name="town" value="$!customerInfor.town" disabled="disabled"/></td>
+              <td class="titlefc3"><label for="yydz">所属区域（村/社区）:</label></td>
+              <td><input class="rinpsty"  type="text" id="community" name="community" value="$!customerInfor.community" disabled="disabled"/></td>
+            </tr> -->
+            <tr>
+              <td class="titlefc3"><label for="xxdz">联系方式(手机):</label></td>
+              <td><input class="rinpsty"  type="text" id="contactmobiletel" name="contactmobiletel" value="$!customerInfor.contactmobiletel" /></td>
+              <td class="titlefc3"><label for="yzbm">联系方式(固话):</label></td>
+              <td><input class="rinpsty"  type="text" id="contacttel" name="contacttel" value="$!customerInfor.contacttel" /></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="hjdz">居住状况:</label></td>
+              <!-- <td><input class="rinpsty"  type="text" id="hjdz" name="hjdz" value="$!customerInfor.reside" /></td> -->
+              <td><select id="reside" name="reside" class="rinpsty"> 
+              		<option value=""></option>
+              		#dict("RESIDE", $!customerInfor.reside)
+              	  </select>
+              </td>
+              <td class="titlefc3"><label for="jtdh">评级结果（对应评级的信用等级）:</label></td>
+              <td><input class="rinpsty"  type="text" id="levelcal" name="levelcal" value="$!customerInfor.levelcal" /></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="cz">家庭总资产:</label></td>
+              <td><input class="rinpsty"  type="text" id="famasset" name="famasset" value="$!customerInfor.famasset" /></td>
+              <td class="titlefc3"><label for="sj">家庭总负债:</label></td>
+              <td><input class="rinpsty"  type="text" id="famdebt" name="famdebt" value="$!customerInfor.famdebt" /></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="dzyx">家庭年收入:</label></td>
+              <td><input class="rinpsty"  type="text" id="famannuincome" name="famannuincome" value="$!customerInfor.famannuincome" /></td>
+              <td class="titlefc3"><label for="gj">家庭年支出:</label></td>
+              <td><input class="rinpsty"  type="text" id="famannupayout" name="famannupayout" value="$!customerInfor.famannupayout" /></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="mz">最高学位:</label></td>
+              <!-- <td><input class="rinpsty"  type="text" id="mz" name="mz" value="$!customerInfor.educationlevel" /></td> -->
+              <td><select id="educationlevel" name="educationlevel" class="rinpsty"> 
+              		<option value=""></option>
+              		#dict("EDUCATIONLEVEL", $!customerInfor.educationlevel)
+              	  </select>
+              </td>
+              <td class="titlefc3"><label for="zzmm">最高学历:</label></td>
+              <!-- <td><input class="rinpsty"  type="text" id="zzmm" name="zzmm" value="$!customerInfor.degree" /></td> -->
+              <td><select id="degree" name="degree" class="rinpsty"> 
+              		<option value=""></option>
+              		#dict("DEGREE", $!customerInfor.degree)
+              	  </select>
+              </td>
+            </tr>
+          
+          </table>
+        </div>
+      </form>
+      <div class="submit">
+     		<input type="button" onclick="updateClick();" value="修改" />
+ 			<input type="button" onclick="returnClick();" value="返回" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout = new FormsLayout("formsId");
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	
+	$(document).ready(function() {		
+		/* $("input[type='text']").attr("disabled",true);
+		$("input[type='radio']").attr("disabled",true);
+		$("input[type='checkbox']").attr("disabled",true);
+		$("select").attr("disabled",true); */
+		
+	});
+	
+	//返回
+	function returnClick(){
+		window.location.href= contextPath + "/customer/customerInfor_wh_ty/browse.page";
+		// window.location.href= contextPath + "/customer/firsthend/browse.page" ;
+	}
+	
+	//修改
+	function updateClick(){
+		$('#id_module_form').ajaxSubmit({
+			dataType : 'json',
+			type : "post",
+			success : function(data) {
+				if (data.success) {
+					Dialog.message(data.message,"提示", function() {
+						window.location.reload(true);
+					 });
+				} else {
+					Dialog.message(data.errors.errors[0].message);
+					return false;
+				}
+			},
+			error : function(data) {
+				Dialog.closeLoad();
+				Dialog.message("操作失败");
+				return false;
+			}
+		});
+	}
+  </script>
+   <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
+  
+</body>
+#parse ("common/iframe_page_footer.htm")

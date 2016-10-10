@@ -1,0 +1,176 @@
+
+       #if ($result.totalPages > 0)
+			#set ($baseURI = $request.getRequestURI())
+			
+				<div class="page">
+					#set ($pageNo = $result.startPage)
+					#set ($dispPageNo = $result.currentPage + 1)
+					#set ($start = $pageNo*$result.pageSize)
+					#if ($result.currentPage == 0)
+					#set ($previousPageNo = 0 )
+					#else
+					#set ($previousPageNo = $result.currentPage - 1)
+					#end
+					#set ($previous =$previousPageNo*$result.pageSize)
+					#if ($result.currentPage == $result.totalPages - 1)
+					#set ($nextPageNo = $result.currentPage )
+					#else
+					#set ($nextPageNo = $dispPageNo )
+					#end
+					#set ($next =$nextPageNo*$result.pageSize)
+					#set ($endPageNo = $result.totalPages - 1)
+					#set ($end = $endPageNo*$result.pageSize)
+				        <span>共<b>$result.totalCount</b>条数据，当前第<b>$dispPageNo</b>页</span>
+						<a href="javascript:void(0);" id="first" class="first"></a>
+						<a href="javascript:void(0);" id="previous" class="previous"></a>
+						<input type="text"  name="num" id="num" style="width:25px;" onkeyup="this.value=this.value.replace(/[^\d]/g,''); var totalPageSize = $result.totalPages; if(this.value > totalPageSize || this.value < 1 )this.value=''; " onafterpaste="this.value=this.value.replace(/[^\d]/g,'') "/>
+						<input type="button" value="GO" class="btn" onclick="submitForm($('#num').val());"/>
+						<span>/$result.totalPages页</span>	
+						<a href="javascript:void(0);" id="next" class="next"></a>
+						<a href="javascript:void(0);" id="end" class="end"></a>
+				</div>
+			#else
+			<div class="page">	共<b>0</b>条数据，当前第<b>0</b>页</div>
+			#end
+			
+<script language="javascript" type="text/javascript">
+
+			
+	window.top.$('input[name="checkbox"]').click(function(){
+		var selectval ="";
+		if($(this).attr("checked")){
+			var val = window.top.$("#selectval").val();	
+			if(val == ""){
+				val +=  $(this).val();	
+			}else{
+			val +=  "," + $(this).val();
+			}
+			selectval = val;
+		}else{
+			 var val = window.top.$("#selectval").val();	
+			 var thisval= $(this).val();
+			 arr=val.split(',');//注split可以用字符或字符串分割
+			 arr.splice($.inArray(thisval,arr),1);
+		    selectval = arr.join(",");
+			
+		}
+		window.top.$("#selectval").val(selectval);
+	});		
+			
+$("#id_browse_button").click(function(){
+	var  url = window.top.$("#url").val();
+	$.ajax({
+		url : url,
+		type : "get",
+		data : window.top.$("#submitForm").serialize(),
+		dataType : "html",
+		success : function(data) {
+			if (data) {
+						window.top.$("#content").html("");
+					    window.top.$("#content").html(data);
+						 }else{
+							Dialog.message("签到出现错误！");
+							    }
+							}
+						});
+			});
+  
+  $("#first").click(function(){
+	 var  selectval = window.top.$("#selectval").val();
+	 var  url = window.top.$("#url").val();
+	  $.ajax({
+			url : url +"?page=0&limit=$result.pageSize&selectval=" + selectval,
+				type : "get",
+				data : window.top.$("#submitForm").serialize(),
+			dataType : "html",
+			 success : function(data) {
+					if (data) {
+						window.top.$("#content").html("");
+						window.top.$("#content").html(data);
+	
+				    }
+				}
+			});
+});
+  $("#previous").click(function(){
+	  var selectval = "";
+	   selectval = window.top.$("#selectval").val();
+	   var  url = window.top.$("#url").val();
+	  $.ajax({
+			url : url +"?page=$previousPageNo&limit=$result.pageSize&selectval=" + selectval,
+				type : "get",
+				data : window.top.$("#submitForm").serialize(),
+			dataType : "html",
+			 success : function(data) {
+					if (data) {
+						window.top.$("#content").html("");
+						//window.top.$("#selectval").val("");
+						window.top.$("#content").html(data);
+	
+				    }
+				}
+			});
+});
+  $("#next").click(function(){
+	  var selectval = "";
+	   selectval = window.top.$("#selectval").val();
+	   var  url = window.top.$("#url").val();
+	  $.ajax({
+			url : url +"?page=$nextPageNo&limit=$result.pageSize&selectval=" + selectval,
+				type : "get",
+				data : window.top.$("#submitForm").serialize(),
+			dataType : "html",
+			 success : function(data) {
+					if (data) {
+						window.top.$("#content").html("");
+						//window.top.$("#selectval").val("");
+						window.top.$("#content").html(data);
+	
+				    }
+				}
+			});
+});
+  $(".end").click(function(){
+	  var selectval = "";
+	   selectval = window.top.$("#selectval").val();
+	   var  url = window.top.$("#url").val();
+	  $.ajax({
+			url : url +"?page=$endPageNo&limit=$result.pageSize&selectval=" + selectval,
+				type : "get",
+				data : window.top.$("#submitForm").serialize(),
+			dataType : "html",
+			 success : function(data) {
+					if (data) {
+						window.top.$("#content").html("");
+						//window.top.$("#selectval").val("");
+						window.top.$("#content").html(data);
+	
+				    }
+				}
+			});
+});
+function submitForm(pageNo) {
+	  var selectval = "";
+	   selectval = window.top.$("#selectval").val();
+	   var  url = window.top.$("#url").val();
+	if( $.trim(pageNo)!=''&& $.trim(pageNo) > 0){	
+		var page = pageNo -1 ;
+		
+		 $.ajax({
+				url : url +"?limit=$result.pageSize&page="+page+"&selectval=" + selectval,
+					type : "get",
+					data : window.top.$("#submitForm").serialize(),
+				dataType : "html",
+				 success : function(data) {
+						if (data) {
+							window.top.$("#content").html("");
+							//window.top.$("#selectval").val("");
+							window.top.$("#content").html(data);
+		
+					    }
+					}
+				});
+		//navigateTo("$!{baseURI}${result.baseQueryString}&limit=$result.pageSize&page="+page);
+	}
+}	
+</script>
