@@ -1,11 +1,13 @@
 package com.cardpay.pccredit.jnpad.web;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
@@ -59,9 +61,30 @@ public class JnIpadUserLoginController {
 	@ResponseBody
 	@RequestMapping(value = "/ipad/user/JnLogin.json")
 	public String login(HttpServletRequest request) {
+		Map<String,Object> map = new LinkedHashMap<String,Object>();
 		String login = RequestHelper.getStringValue(request, "login");
 		String passwd = RequestHelper.getStringValue(request, "password");
-		Map<String,Object> map = new LinkedHashMap<String,Object>();
+		HttpSession session=request.getSession();
+		String time= (String) session.getAttribute("loginTime");
+		if(time==null){
+			Date loginTime =new Date();
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String time1=sdf.format(loginTime);
+			session.setAttribute("loginTime", time1);
+			session.setMaxInactiveInterval(1440*60);
+			String noTime="无";
+			map.put("noTime", noTime);
+		}else{
+			Date loginTime1 =new Date();
+			SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String time2=sdf1.format(loginTime1);
+			session.setAttribute("loginTime", time2);
+			session.setMaxInactiveInterval(1440*60);
+			String noTime="有";
+			map.put("noTime", noTime);
+			map.put("time", time);
+		}
+		
 		Result result = null;
 		JnUserLoginResult loginResult = null;
 		if(StringUtils.isEmpty(login) || StringUtils.isEmpty(passwd)){
