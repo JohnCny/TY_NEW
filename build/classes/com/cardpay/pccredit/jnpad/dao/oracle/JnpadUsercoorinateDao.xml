@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.jnpad.dao.JnpadUsercoorinateDao">
+
+
+<resultMap type="com.cardpay.pccredit.jnpad.model.usercoorinate" id="selectCustomerinfo">
+<result property="id" column="id" />
+<result property="userid" column="user_id" />
+<result property="lon" column="lon" />
+<result property="lat" column="lat" />
+<result property="create_time" column="create_time" />
+</resultMap>
+
+    <!--添加当前客户经理的位置信息 -->
+	<insert id="addusercoorinate"  parameterType="java.lang.Integer" >
+			insert into USER_COORDINATE (id,user_id,lon,lat,create_time) values (#{id},#{userid},#{lon},#{lat},#{create_time})
+	</insert>
+	<!--当前客户位置信息超过8条时 ,开始覆盖第一条数据-->
+	<insert id="updateUser"  parameterType="java.lang.Integer" >
+			update
+			       USER_COORDINATE
+			set
+			       lon=#{lon},
+			       lat=#{lat},
+			       create_time=#{create_time}
+			 where create_time=(select min(create_time) from USER_COORDINATE)
+	</insert>
+	
+	<!-- 根据userid查询客户经理的地理信息 -->
+	<select id="selectUserByUserid" resultType="com.cardpay.pccredit.jnpad.model.usercoorinate"  parameterType="com.cardpay.pccredit.jnpad.model.usercoorinate">
+	   select 
+             user_id,lon,lat,create_time
+       from 
+             USER_COORDINATE  
+       where 
+             user_id=#{userid}
+	</select>
+	<!-- 根据userid查询客户经理的地理数量-->
+	<select id="selectUserByUseridCount" resultType="int" parameterType="java.lang.String">
+		select 
+		      count(*)
+		from 
+		      USER_COORDINATE
+        where  
+               user_id=#{userid} 
+     </select>
+
+</mapper> 

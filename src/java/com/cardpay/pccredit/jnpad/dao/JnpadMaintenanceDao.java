@@ -35,5 +35,6 @@ public interface JnpadMaintenanceDao {
 	public int findMaintenancePlansCountList(MaintenanceFilter filter);
 
 	public List<MaintenanceForm> findMaintenancePlansList(MaintenanceFilter filter);
+	public List<MaintenanceForm> findMaintenancePlans1(MaintenanceFilter filter);
 
 }

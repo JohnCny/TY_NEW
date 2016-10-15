@@ -109,4 +109,10 @@ public interface MaintenanceDao {
 	 * 找 字节点
 	 */
 	public List<ManagerBelongMapForm> findChildId(@Param("id") String userId);
+	/**
+	 * 添加维护计划
+	 * @param m
+	 * @return
+	 */
+	int addNewWh(MaintenanceForm m);
 }

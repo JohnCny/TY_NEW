@@ -562,4 +562,10 @@
 					WHERE ROWNUM_ > #{limit}*#{page}
 					]]>
 	</select>
+	<!-- 添加维护计划 -->
+	<insert id="addNewWh"   parameterType="java.lang.Integer">
+	    insert into MAINTENANCE_PLAN (id,customer_id ,customer_manager_id,maintenance_goal,maintenance_way,
+	    maintenance_day,create_way,end_result,created_by,app_id,created_time,maintenance_endtime) values (#{pid},#{customerId},#{customerManagerId},#{maintenanceGoal},
+	    #{maintenanceWay},#{maintenanceDay},#{createWay},#{endResult},#{createdBy},#{appId},#{maintenanceStarttime},#{maintenanceEndtime})
+	</insert>
 </mapper>

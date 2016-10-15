@@ -8,6 +8,7 @@ import com.cardpay.pccredit.riskControl.filter.RiskCustomerCollectionPlanFilter;
 import com.cardpay.pccredit.riskControl.filter.RiskCustomerFilter;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
 import com.cardpay.pccredit.riskControl.web.RiskCustomerCollectionPlanForm;
+import com.cardpay.pccredit.system.model.Dict;
 import com.wicresoft.util.annotation.Mapper;
 @Mapper
 public interface JnpadRiskCustomerCollectionDao {
@@ -23,6 +24,17 @@ public interface JnpadRiskCustomerCollectionDao {
 	//风险客户名单
 	public List<RiskCustomer> findRiskCustomersByFilter(RiskCustomerFilter filter);
 	
-	
+	/**
+	 * 通过客户经理id得到名下的逾期客户id和name
+	 * @param userId
+	 * @return
+	 */
+	List<Dict> getCustomerIdAndName(@Param("userId") String userId);
+	/**
+	 * 通过客户经理id得到名下的逾期客户id和name数量
+	 * @param userId
+	 * @return
+	 */
+	int getCustomerIdAndNameCount(@Param("userId") String userId);
 
 }

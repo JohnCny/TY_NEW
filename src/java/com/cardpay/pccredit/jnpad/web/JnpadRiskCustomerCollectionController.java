@@ -1,21 +1,27 @@
 package com.cardpay.pccredit.jnpad.web;
 
+import java.io.PrintWriter;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.jnpad.service.JnpadRiskCustomerCollectionService;
 import com.cardpay.pccredit.riskControl.filter.RiskCustomerCollectionPlanFilter;
 import com.cardpay.pccredit.riskControl.web.RiskCustomerCollectionPlanForm;
+import com.cardpay.pccredit.system.model.Dict;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.jrad.base.web.controller.BaseController;
 import com.wicresoft.util.web.RequestHelper;
+
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 
@@ -100,5 +106,24 @@ public class JnpadRiskCustomerCollectionController extends BaseController{
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);
 		return json.toString();
 	}
-
+	/**
+	 * 得到当前客户经理的逾期客户
+	 * @param request
+	 * @param printWriter
+	 * @return 
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/product/getCustomer.json")
+	public String getCustomer(HttpServletRequest request){
+		Map<String, Object> map =new LinkedHashMap<String, Object>();
+		String userId = RequestHelper.getStringValue(request, ID);
+		List<Dict> riskCustomers = riskCustomerCollectionService.findCustomerIdAndName(userId);
+		int size =riskCustomerCollectionService.getCustomerIdAndNameCount(userId);
+		map.put("result", riskCustomers);
+		map.put("size", size);
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+	}
 }
