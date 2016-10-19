@@ -137,5 +137,26 @@ public String selectCustomerInfoByCardId(HttpServletRequest request){
 		
 		
 	}
+	
+	/**
+	 * 查询当前客户经理未申请荣耀卡的用户
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/product/selectByserIdOnRy.json", method = { RequestMethod.GET })
+	public String selectByserIdOnRy(HttpServletRequest request){
+		String ProductName="融耀卡";
+		String userId=request.getParameter("userId");
+		 List<CustomerInfo> result=customerSelectSercice.selectByserIdOnRy(userId,ProductName);
+		 //int size=customerSelectSercice.selectByserIdOnRyCount(userId,ProductName);
+		Map<String,Object> map = new LinkedHashMap<String,Object>();
+		map.put("result", result);
+		map.put("size", result.size());
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+	}
 }
 

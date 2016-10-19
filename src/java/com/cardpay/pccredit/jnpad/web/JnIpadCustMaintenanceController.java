@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -34,6 +35,7 @@ import com.cardpay.pccredit.riskControl.service.RiskCustomerCollectionService;
 import com.cardpay.pccredit.riskControl.web.RiskCustomerCollectionPlanForm;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.web.security.LoginManager;
+import com.wicresoft.util.date.DateHelper;
 import com.wicresoft.util.spring.Beans;
 
 /**
@@ -53,6 +55,57 @@ public class JnIpadCustMaintenanceController {
 	
 	@Autowired
 	private RiskCustomerCollectionService riskCustomerCollectionService;
+	
+	
+	/**
+	 * 添加客户维护计划
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/custAppInfo/TyinsertMaintenance1.json", method = { RequestMethod.GET })
+	public String insertMaintenance1( HttpServletRequest request) {
+		Map<String,Object> result = new LinkedHashMap<String,Object>();
+		
+			MaintenanceForm maintenance =new MaintenanceForm();
+//			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+			
+			String createdBy = request.getParameter("customerManagerId");
+			maintenance.setCustomerManagerId(request.getParameter("customerManagerId"));
+			maintenance.setCreatedBy(createdBy);
+			maintenance.setCustomerId(request.getParameter("customerId"));
+			maintenance.setAppId(request.getParameter("appId"));
+			maintenance.setMaintenanceGoal(request.getParameter("maintenanceGoal"));
+			maintenance.setMaintenanceWay(request.getParameter("createWay"));
+			maintenance.setMaintenanceDay(request.getParameter("maintenanceDay"));
+			Date createdTime = new Date();
+			String maintenanceDay = maintenance.getMaintenanceDay()==null?"":maintenance.getMaintenanceDay();
+			Date maintenanceEndtime = DateHelper.shiftDay(createdTime, Integer.parseInt(maintenanceDay.equals("")?"0":maintenanceDay));
+			maintenance.setMaintenanceStarttime(createdTime);
+			maintenance.setMaintenanceEndtime(maintenanceEndtime);
+			String pid=null;
+			if(null==pid){
+				pid=UUID.randomUUID().toString();
+			}
+			maintenance.setPid(pid);
+			maintenance.setEndResult("Maintaining");
+			String customerManagerId = maintenance.getCustomerManagerId();
+			if(customerManagerId!=null && customerManagerId.equals(createdBy)){
+				maintenance.setCreateWay(MarketingCreateWayEnum.myself.toString());;
+			}else{
+				maintenance.setCreateWay(MarketingCreateWayEnum.manager.toString());;
+			}
+			int a = maintenanceService.addNewWh(maintenance);
+			if(a>0){
+				result.put("result", "增加成功");
+			}else{
+				result.put("result", "增加失败");
+			}
+		
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(result, jsonConfig);
+		return json.toString();
+	}
+	
 	/**
 	 * 添加客户维护计划
 	 */

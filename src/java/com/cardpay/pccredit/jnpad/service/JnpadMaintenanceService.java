@@ -83,7 +83,16 @@ public class JnpadMaintenanceService {
 		QueryResult<MaintenanceLog> qr = new QueryResult<MaintenanceLog>(size,plans);
 		return qr;
 	}
+	/**
+	 * 获取客户维护计划列表
+	 */
 	
+	public List<MaintenanceForm> findMaintenancePlans1(MaintenanceFilter filter){
+		List<MaintenanceForm> plans = maintenanceDao.findMaintenancePlans1(filter);
+//		int size = maintenanceDao.findMaintenancePlansCountList(filter);
+//		QueryResult<MaintenanceForm> qr = new QueryResult<MaintenanceForm>(size,plans);
+		return plans;
+	}
 	/**
 	 * 获取客户维护计划列表
 	 */

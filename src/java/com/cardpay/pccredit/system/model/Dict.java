@@ -16,7 +16,41 @@ public class Dict extends BusinessModel{
 	private String TypeCode;
 	private String TypeName;
 	private String bankCode;
-	
+	private String yqMoney;
+	private String cardId;
+	private String tel;
+	private String productId;
+	private String actual_quote;
+	public String getProductId() {
+		return productId;
+	}
+	public void setProductId(String productId) {
+		this.productId = productId;
+	}
+	public String getActual_quote() {
+		return actual_quote;
+	}
+	public void setActual_quote(String actual_quote) {
+		this.actual_quote = actual_quote;
+	}
+	public String getCardId() {
+		return cardId;
+	}
+	public void setCardId(String cardId) {
+		this.cardId = cardId;
+	}
+	public String getTel() {
+		return tel;
+	}
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
+	public String getYqMoney() {
+		return yqMoney;
+	}
+	public void setYqMoney(String yqMoney) {
+		this.yqMoney = yqMoney;
+	}
 	public String getTypeCode() {
 		return TypeCode;
 	}

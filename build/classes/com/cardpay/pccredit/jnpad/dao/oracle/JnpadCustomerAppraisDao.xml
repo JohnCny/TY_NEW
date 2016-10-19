@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.jnpad.dao.JnpadCustomerAppraisDao" >
+	<resultMap id="CustomerApprais" type="com.cardpay.pccredit.jnpad.model.CustomerApprais">
+		<result property="id" column="id" />
+		<result property="chinesename" column="chinesename" />
+		<result property="cardid" column="cardid" />
+		<result property="zfqk" column="zfqk" />
+		<result property="zcqk" column="zcqk" />
+		<result property="yyqk" column="yyqk" />
+		<result property="dwxz" column="dwxz" />
+		<result property="dwgl" column="dwgl" />
+		<result property="jzsj" column="jzsj" />
+		<result property="hyzk" column="hyzk" />
+		<result property="jycd" column="jycd" />
+		<result property="zgzs" column="zgzs" />
+		<result property="zc" column="zc" />
+		<result property="age" column="age" />
+		<result property="jkqk" column="jkqk" />
+		<result property="ggjl" column="ggjl" />
+		<result property="zw" column="zw" />
+		<result property="grsr" column="grsr" />
+		<result property="zwsrb" column="zwsrb" />
+		<result property="syrk" column="syrk" />
+		<result property="tjr" column="tjr" />
+		<result property="khjlzgyx" column="khjlzgyx" />
+		<result property="khdysr" column="khdysr" />
+		<result property="cykh" column="cykh" />
+		<result property="zf" column="zf" />
+		<result property="jyed" column="jyed" />
+		<result property="time" column="time" />
+		<result property="pfdj" column="pfdj" />
+	</resultMap>
+	<!-- 添加客户评估信息 -->
+	<insert id="addCustomerApprais"  parameterType="java.lang.Integer" >
+			insert into CUSTOMER_APPRAIS (id,chinesename,cardid,zfqk,zcqk,yyqk,dwxz,dwgl,jzsj,hyzk,jycd,zgzs,zc,age,jkqk,ggjl,zw,grsr,zwsrb,syrk,tjr,khjlzgyx,cykh,zf,jyed,time,pfdj,hjzk,khdysr) 
+			values (#{id},#{chinesename},#{cardid},#{zfqk},#{zcqk},#{yyqk},#{dwxz},#{dwgl},#{jzsj},#{hyzk},#{jycd},#{zgzs},#{zc},#{age},#{jkqk},#{ggjl},#{zw},#{grsr},#{zwsrb},#{syrk},#{tjr},#{khjlzgyx},#{cykh},#{zf},#{jyed},#{time},#{pfdj},#{hjzk},#{khdysr})
+	</insert>
+	<select id="selectCustomerAppraisCount" resultType="int" parameterType="java.lang.String">
+		select count(*)
+		   from CUSTOMER_APPRAIS
+             where cardid=#{cardid}
+    </select>
+    <select id="selectCustomerApprais" resultType="com.cardpay.pccredit.jnpad.model.CustomerApprais" parameterType="com.cardpay.pccredit.jnpad.model.CustomerApprais">
+		select id
+		   from CUSTOMER_APPRAIS
+             where cardid=#{cardid}
+    </select>
+	
+	<update id="updateCustomerApprais"   parameterType="java.lang.Integer">
+	    update CUSTOMER_APPRAIS set chinesename=#{chinesename},cardid=#{cardid} ,zfqk=#{zfqk} ,zcqk=#{zcqk} ,yyqk=#{yyqk} 
+	    ,dwxz=#{dwxz} ,dwgl=#{dwgl} ,jzsj=#{jzsj} ,hyzk=#{hyzk} ,jycd=#{jycd} ,zgzs=#{zgzs} 
+	    ,zc=#{zc} ,age=#{age} ,jkqk=#{jkqk} ,ggjl=#{ggjl} ,zw=#{zw} ,grsr=#{grsr} 
+	    ,zwsrb=#{zwsrb} ,syrk=#{syrk} ,tjr=#{tjr} ,khjlzgyx=#{khjlzgyx} ,cykh=#{cykh} ,zf=#{zf}
+	    ,jyed=#{jyed} ,time=#{time} ,pfdj=#{pfdj},hjzk=#{hjzk},khdysr=#{khdysr}
+	      where cardid=#{cardid}
+	</update>
+	
+	    <select id="selectAllCustomerApprais" resultType="com.cardpay.pccredit.jnpad.model.CustomerApprais" parameterType="com.cardpay.pccredit.jnpad.model.CustomerApprais">
+		select id,chinesename,cardid,zfqk,zcqk,yyqk,dwxz,dwgl,jzsj,hyzk,jycd,zgzs,zc,age,jkqk,ggjl,zw,grsr,zwsrb,syrk,tjr,khjlzgyx,cykh,zf,jyed,time,pfdj,hjzk,khdysr
+		   from CUSTOMER_APPRAIS
+             where cardid=#{cardid}
+    </select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</mapper>

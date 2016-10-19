@@ -82,6 +82,7 @@ public class IntoPiecesService {
 	 */
 	public QueryResult<IntoPieces> findintoPiecesByFilter(
 			IntoPiecesFilter filter) {
+		
 		QueryResult<IntoPieces> queryResult = intoPiecesComdao.findintoPiecesByFilter(filter);
 		//List<IntoPieces> queryResult = intoPiecesComdao.findintoPiecesListByFilter(filter);
 		int sum = intoPiecesComdao.findintoPiecesByFilterCount(filter);
