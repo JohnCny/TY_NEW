@@ -1,4 +1,10 @@
 eclipse.preferences.version=1
+encoding//WebContent/WEB-INF/vmcase2/riskcontrol/riskCustomerCollection=UTF-8
+encoding//WebContent/WEB-INF/vmcase2/riskcontrol/riskCustomerCollection/collection_plan_action_change.htm=UTF-8
+encoding//WebContent/WEB-INF/vmcase2/riskcontrol/riskCustomerCollection/collection_plan_action_create.htm=UTF-8
+encoding//WebContent/WEB-INF/vmcase2/riskcontrol/riskCustomerCollection/collection_plan_browse.htm=UTF-8
+encoding//WebContent/WEB-INF/vmcase2/riskcontrol/riskCustomerCollection/collection_plan_change.htm=UTF-8
+encoding//WebContent/WEB-INF/vmcase2/riskcontrol/riskCustomerCollection/collection_plan_create.htm=UTF-8
 encoding//src/resources/i18n/customer/customer.properties=UTF-8
 encoding//src/resources/i18n/messages.properties=UTF-8
 encoding//src/resources/i18n/modules=UTF-8

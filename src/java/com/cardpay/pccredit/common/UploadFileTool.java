@@ -153,7 +153,39 @@ public class UploadFileTool {
 		map.put("url", Constant.FILE_PATH + newFileName);
 		return map;
 	}
-
+	/* pad上传影像资料专用 */
+	public static Map<String, String> uploadYxzlFileBySpring1(MultipartFile file,String customerId,String fileName_1) {
+		String newFileName = null;
+		String fileName = null;
+		Map<String, String> map = new HashMap<String, String>();
+		String path = Constant.FILE_PATH + customerId + File.separator;
+		File tempDir = new File(path);
+		if (!tempDir.isDirectory()) {
+			tempDir.mkdirs();
+		}
+		try {
+			// 取得上传文件
+			if (file != null && !file.isEmpty()) {
+//				fileName = file.getOriginalFilename();
+				fileName = fileName_1;
+				File tempFile = new File(path
+						+ fileName_1);
+				if (tempFile.exists()) {
+					newFileName = IDGenerator.generateID() + "."
+							+ fileName_1.split("\\.")[1];
+				} else {
+					newFileName = fileName_1;
+				}
+				File localFile = new File(path + newFileName);
+				file.transferTo(localFile);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		map.put("fileName", fileName);
+		map.put("url", path + newFileName);
+		return map;
+	}
 	/* 上传影像资料专用 */
 	public static Map<String, String> uploadYxzlFileBySpring(MultipartFile file,String customerId) {
 		String newFileName = null;

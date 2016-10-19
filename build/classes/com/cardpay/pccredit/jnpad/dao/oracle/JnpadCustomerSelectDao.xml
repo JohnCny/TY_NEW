@@ -28,6 +28,8 @@
 <result property="customerBusinessAptitude" column="CUSTOMER_BUSINESS_APTITUDE" />
 <result property="tyCustomerId" column="TY_CUSTOMER_ID" />
 <result property="spmc" column="SPMC" />
+<result property="ProductName" column="ProductName" />
+<result property="productId" column="productId" />
 </resultMap>
 
 
@@ -124,9 +126,87 @@
 
 
 
-
-
 </resultMap>
+
+<!-- 根据userId查询当前客户经理没有申请荣耀卡的客户-->
+<select id="selectByserIdOnRy" resultMap="selectCustomerinfo">
+ <!--  select DISTINCT
+   b. id as id,
+   b.chinese_name as chineseName,
+    b.card_id as cardId,
+    b.TELEPHONE as telephone,
+    pp.productId as productId
+  from 
+    customer_application_info  t,
+        basic_customer_information b,
+     product_attribute           p,
+     (select id as productId from product_attribute where product_name=#{ProductName}) pp
+     
+	where 
+                   
+         ( b.user_id=#{userId} and
+            b.id not in (select customer_id from  customer_application_info)  )
+         
+ or
+ 
+          (t.customer_id=b.id
+          and p.id=t.product_id and
+          b.user_id=#{userId} and
+           t.product_id not in (select id from product_attribute where  product_name=#{ProductName})
+          
+          )
+           -->
+		  
+  SELECT * 
+    FROM (
+      select 
+      id,
+      chinese_name as chineseName,
+    
+      card_id as cardId,
+   pp.productid as productId
+      from
+        (select id as productId from product_attribute where product_name=#{ProductName}) pp,
+       BASIC_CUSTOMER_INFORMATION T1 
+      
+      
+      
+      
+      where 1 = 1
+        AND user_id=#{userId}
+      
+             and not exists 
+             (
+            
+               select 1 from RISK_LIST T2 where T1.id = T2.CUSTOMER_ID and T2.product_id =(select id as productId from product_attribute where product_name=#{ProductName})
+             )
+             
+             and  not exists 
+             (
+               select 1 from CUSTOMER_APPLICATION_INFO T2 where T1.id = T2.customer_id and T2.product_id =(select id as productId from product_attribute where product_name=#{ProductName})
+                and T2.REPAY_STATUS  != '1' and status !='refuse'
+              
+             ) )
+        
+         
+</select>
+<!-- 根据userId查询当前客户经理没有申请荣耀卡的客户数量-->
+<select id="selectByserIdOnRyCount" resultType="int" parameterType="java.lang.String">	
+  select 
+  count(*)
+ from 
+    customer_application_info  t,
+        basic_customer_information b,
+     product_attribute           p
+     
+	where 
+       ( b.user_id=#{userId} and
+            b.id not in (select customer_id from  customer_application_info)  )
+         
+
+		  
+
+</select>
 <!-- 根据cardId -->
 <select id="selectCustomerInforByCardId" resultMap="selectCustomerinfo">
 

@@ -22,7 +22,11 @@ public interface JnpadCustomerSelectDao {
 	public CIPERSONBASINFO selectCustomerByNm(@Param(value = "custid")String custid);
 	//根据姓名和经理Id查询
 	public List<CustomerInfo> selectCustomerInfo(@Param(value = "cardId")String cardId,@Param(value = "chineseName")String chineseName, @Param(value = "userId")String userId);
+	//当前客户没有申请荣耀卡的客户
+	public List<CustomerInfo> selectByserIdOnRy( @Param(value = "userId")String userId,@Param(value = "ProductName")String ProductName);
 	
+	//当前客户没有申请荣耀卡的客户
+	int selectByserIdOnRyCount( @Param(value = "userId")String userId,@Param(value = "ProductName")String ProductName);
 
 
 

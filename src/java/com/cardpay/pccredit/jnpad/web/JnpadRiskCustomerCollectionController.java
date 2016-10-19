@@ -12,13 +12,27 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.cardpay.pccredit.customer.constant.MarketingCreateWayEnum;
+import com.cardpay.pccredit.datapri.constant.DataPriConstants;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.jnpad.service.JnpadRiskCustomerCollectionService;
+import com.cardpay.pccredit.riskControl.constant.RiskCustomerCollectionConstant;
+import com.cardpay.pccredit.riskControl.constant.RiskCustomerCollectionEndResultEnum;
 import com.cardpay.pccredit.riskControl.filter.RiskCustomerCollectionPlanFilter;
+import com.cardpay.pccredit.riskControl.model.RiskCustomerCollectionPlan;
+import com.cardpay.pccredit.riskControl.service.RiskCustomerCollectionService;
 import com.cardpay.pccredit.riskControl.web.RiskCustomerCollectionPlanForm;
 import com.cardpay.pccredit.system.model.Dict;
+import com.wicresoft.jrad.base.auth.IUser;
+import com.wicresoft.jrad.base.auth.JRadOperation;
+import com.wicresoft.jrad.base.constant.JRadConstants;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.jrad.base.web.controller.BaseController;
+import com.wicresoft.jrad.base.web.result.JRadReturnMap;
+import com.wicresoft.jrad.base.web.security.LoginManager;
+import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
+import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.web.RequestHelper;
 
 import net.sf.json.JSONArray;
@@ -30,6 +44,9 @@ public class JnpadRiskCustomerCollectionController extends BaseController{
 	@Autowired
 	private JnpadRiskCustomerCollectionService riskCustomerCollectionService;
 	
+
+	@Autowired
+	private RiskCustomerCollectionService riskCustomerCollectionService1;
 	/**
 	 * 通过id得到逾期客户催收计划
 	 * @param request
@@ -126,4 +143,50 @@ public class JnpadRiskCustomerCollectionController extends BaseController{
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);
 		return json.toString();
 	}
+	/**
+	 * 添加催收计划
+	 * @param form
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/product/insert.json")
+	public String insert(@ModelAttribute RiskCustomerCollectionPlanForm form, HttpServletRequest request) {
+		Map<String, Object> map =new LinkedHashMap<String, Object>();
+		form.setCustomerId(request.getParameter("customerId"));
+		form.setProductId(request.getParameter("prodcctId"));
+		form.setCollectionMethod(request.getParameter("way"));
+		form.setImplementationObjective("csmb");
+		form.setCollectionTime(request.getParameter("csts"));
+		form.setCustomerManagerId(request.getParameter("userId"));
+		boolean flag = riskCustomerCollectionService1.checkCollectionPlan(form.getCustomerId(),form.getProductId(),RiskCustomerCollectionEndResultEnum.collection,RiskCustomerCollectionEndResultEnum.repaymentcommitments);
+		JRadReturnMap returnMap = WebRequestHelper.requestValidation(getModuleName(), form);
+		if(!flag){
+			if (returnMap.isSuccess()) {
+					RiskCustomerCollectionPlan riskCustomerCollectionPlan = form.createModel(RiskCustomerCollectionPlan.class);
+					IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+					String createdBy = user.getId();
+					String customerManagerId = riskCustomerCollectionPlan.getCustomerManagerId();
+					if(createdBy!=null && createdBy.equals(customerManagerId)){
+						riskCustomerCollectionPlan.setCreateWay(MarketingCreateWayEnum.myself.toString());
+					}else{
+						riskCustomerCollectionPlan.setCreateWay(MarketingCreateWayEnum.manager.toString());
+					}
+					riskCustomerCollectionPlan.setCreatedBy(createdBy);
+					riskCustomerCollectionService1.insertRiskCustomerCollectionPlan(riskCustomerCollectionPlan);
+					map.put("message", "添加成功");
+			
+	}else{
+			map.put("message", "添加失败");
+		}}
+	else{
+			map.put("message", "该客户已经添加逾期客户");
+		}
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+		
+	}
+	
 }
