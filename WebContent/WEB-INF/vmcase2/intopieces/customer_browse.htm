@@ -98,6 +98,7 @@
                 
                 //当客户处于风险名单中时，无法进行新增进件操作
                 var isInRisk = false;
+                var isonBlackList=false;
   				$.ajax({
 						url : "${contextPath}/intopieces/addIntopieces/isInRiskList.json?id="+rowid[0],
 						type : "get",
@@ -106,6 +107,18 @@
 							if (data.success) {
 								if(data.isInList){
 									isInRisk = true;
+								}else{
+									var url1 = "/PCCredit/riskcontrol/custormerblacklist/isonBlackList.json?customerId="+rowid[0];
+									$.ajax({
+										url : url1,
+										type : "get",
+										async: false,
+										success : function(data) {
+											if (data.success) {
+												if(data.isonBlackList){
+													isonBlackList = true;
+												}
+											}}});
 								}
 							}else{
 								window.top.Dialog.message("系统出现异常,请联系管理员");
@@ -116,6 +129,9 @@
   				if(isInRisk){
   				   window.top.Dialog.message("亲,该客户为风险客户,请重新选择!");
   				   return;
+  				}else if(isonBlackList){
+  					 window.top.Dialog.message("亲,该客户为黑名单客户,请重新选择!");
+    				   return;
   				}
                 
                 var url = "${contextPath}/intopieces/addIntopieces/reportImport.page?customerId="+rowid[0]+"&productId="+productId;

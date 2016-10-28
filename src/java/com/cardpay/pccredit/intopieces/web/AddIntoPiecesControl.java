@@ -138,9 +138,21 @@ public class AddIntoPiecesControl extends BaseController {
 	public AbstractModelAndView browseProduct(@ModelAttribute ProductFilter filter, HttpServletRequest request) {
 		filter.setRequest(request);
 
+		
 		QueryResult<ProductAttribute> result = productService.findProductsByFilter(filter);
+		/*for(int i=0;i<result.getTotalCount();i++){
+			if(result.getItems().get(i).getProductName()=="融耀卡"){
+				result.getItems().get(i).setProductName("");
+				result.getItems().get(i).setId("");
+				result.getItems().get(i).setPurposeLoan("");
+				result.getItems().get(i).setCreditLine("");
+				result.getItems().get(i).setRateRange("");
+				result.getItems().get(i).setLoanTimeLimit("");
+				result.getItems().get(i).setLoanPrincipal("");;
+				result.getItems().get(i).setLetterPaymentWay("");
+			}
+		}*/
 		JRadPagedQueryResult<ProductAttribute> pagedResult = new JRadPagedQueryResult<ProductAttribute>(filter, result);
-
 		JRadModelAndView mv = new JRadModelAndView("/intopieces/product_browse", request);
 		mv.addObject(PAGED_RESULT, pagedResult);
 

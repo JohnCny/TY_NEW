@@ -13,18 +13,26 @@ import com.wicresoft.jrad.base.web.filter.BaseQueryFilter;
 public class ProductFilter extends BaseQueryFilter {
 
 	private String productName;
+	private String productName1;
 	
 	private String type;
 	
 	private String status;
-	
-	
-	public String getStatus() {
-		return status;
+
+	public String getProductName1() {
+		return productName1;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setProductName1(String productName1) {
+		this.productName1 = productName1;
+	}
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
 	}
 
 	public String getType() {
@@ -35,13 +43,15 @@ public class ProductFilter extends BaseQueryFilter {
 		this.type = type;
 	}
 
-	public String getProductName() {
-		return productName;
+	public String getStatus() {
+		return status;
 	}
 
-	public void setProductName(String productName) {
-		this.productName = productName;
+	public void setStatus(String status) {
+		this.status = status;
 	}
+	
+
 
 
 }

@@ -14,6 +14,7 @@ import net.sf.json.JsonConfig;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,10 +26,12 @@ import com.cardpay.pccredit.jnpad.filter.CustomerApprovedFilter;
 import com.cardpay.pccredit.jnpad.filter.NotificationMessageFilter;
 import com.cardpay.pccredit.jnpad.model.AppInfoListVo;
 import com.cardpay.pccredit.jnpad.model.JnpadCustomerBianGeng;
+import com.cardpay.pccredit.jnpad.model.NODEAUDIT;
 import com.cardpay.pccredit.jnpad.model.NotifyMsgListVo;
 import com.cardpay.pccredit.jnpad.model.RetrainUserVo;
 import com.cardpay.pccredit.jnpad.model.RetrainingVo;
 import com.cardpay.pccredit.jnpad.service.JnIpadCustAppInfoXxService;
+import com.cardpay.pccredit.jnpad.service.JnipadNodeService;
 import com.cardpay.pccredit.manager.filter.RetrainingFilter;
 import com.cardpay.pccredit.manager.model.AccountManagerRetraining;
 import com.cardpay.pccredit.manager.model.Retraining;
@@ -52,7 +55,8 @@ public class JnIpadCustAppInfoXxController {
 	
 	@Autowired
 	private JnIpadCustAppInfoXxService appInfoXxService;
-
+	@Autowired
+	private JnipadNodeService nodeservice;
 	
 	/**
 	 * 进件信息查询 
@@ -303,10 +307,10 @@ public class JnIpadCustAppInfoXxController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/ipad/custAppInfo/notifiyMessageNum.json", method = { RequestMethod.GET })
-	public String notifiyMessageNum(HttpServletRequest request) {
+	public String notifiyMessageNum(@ModelAttribute NODEAUDIT NODEAUDIT,HttpServletRequest request) {
 		//当前登录用户ID
 		String userId=request.getParameter("userId");
-	
+		NODEAUDIT.setUser_id(request.getParameter("userId"));
 		NotificationMessageFilter filter = new NotificationMessageFilter();
 		filter.setUserId(userId);
 		filter.setNoticeType("shendaihui");
@@ -319,7 +323,7 @@ public class JnIpadCustAppInfoXxController {
 		int count4 = appInfoXxService.findNotificationCountMessageByFilter(filter);
 		filter.setNoticeType("qita");
 		int count5 = appInfoXxService.findNotificationCountMessageByFilter(filter);
-		
+		int  Pcount=nodeservice.selectProductUserCount(NODEAUDIT);
 		//拒绝进件数量
 		filter.setNoticeType("refuse");
 		int refuseCount= appInfoXxService.findNoticeCountByFilter(filter);
@@ -335,7 +339,7 @@ public class JnIpadCustAppInfoXxController {
 		//客户资料变更
 		List<JnpadCustomerBianGeng> cuslist=appInfoXxService.findbiangengCountByManagerId(userId);
 		int count6 = cuslist.size();
-		int sum=count1+count2+count3+count4+count5+refuseCount+returnCount+risk+count6;
+		int sum=count1+count2+count3+count4+count5+refuseCount+returnCount+risk+count6+Pcount;
 		NotifyMsgListVo vo  = new NotifyMsgListVo();
 		vo.setShendaihui(count1);
 		vo.setYuanshiziliao(count2);
@@ -348,6 +352,7 @@ public class JnIpadCustAppInfoXxController {
 		vo.setSum(sum);
 		vo.setZiliaobiangeng(count6);
 		vo.setBianggeng(cuslist);
+		vo.setPcount(Pcount);
 		
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());

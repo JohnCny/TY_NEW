@@ -20,12 +20,19 @@ public class NotifyMsgListVo {
 	private int returnCount;/*补充调查*/
 	private int risk;/*风险客户数量*/
 	private int sum;/*总和*/
+	private int Pcount;
 	
 	private int ziliaobiangeng;
 	private List<JnpadCustomerBianGeng> bianggeng;
 	
 	
 	
+	public int getPcount() {
+		return Pcount;
+	}
+	public void setPcount(int pcount) {
+		Pcount = pcount;
+	}
 	public int getZiliaobiangeng() {
 		return ziliaobiangeng;
 	}

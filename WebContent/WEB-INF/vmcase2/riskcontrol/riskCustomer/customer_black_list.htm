@@ -1,0 +1,193 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">黑名单客户列表</div>
+      </div>
+      <div class="inquiry">
+        <div class="search_tag">#i18n("label.browse.filter")</div>
+        <div class="search">
+        <!--   <form id="submitForm">
+            <ul>
+              <li>
+                <span>客户名称：<input type="text" name="customerName" value="$!result.filter.customerName" /></span>
+              </li>
+              <li>
+                <span>证件类型：
+                	<select id="type" name="cardType">
+	                   <option value="">请选择...</option>
+	                   #dict("CARDTYPE", $!result.filter.cardType)
+                  	</select>
+                  </span>
+              </li>
+              <li>
+                <span>证件号码：<input type="text" name="cardId" value="$!result.filter.cardId" /></span>
+              </li>
+              
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form> -->
+        </div>
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="15%" />
+              <col width="10%" />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">客户名称</th>
+              <th nowrap="nowrap">证件号码</th>
+              <th nowrap="nowrap">拉黑原因</th>
+              <th nowrap="nowrap">上报人</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="15%" />
+              <col width="10%" />
+            </colgroup>
+            #foreach ($riskCustomer in $result.items)
+            <tr >
+                <td class="checkbox"><input type="radio" name="checkbox" value="$!riskCustomer.customer_id"
+                  /></td>
+              <td nowrap="nowrap">$!riskCustomer.chinese_name</td>
+              <td nowrap="nowrap">$!riskCustomer.card_id</td>
+              <td nowrap="nowrap">$!riskCustomer.reason</td>
+              <td nowrap="nowrap">$!riskCustomer.display_name</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+      		<a id="creat" class="btn_g" href="javascript:void(0);" title="创建黑名单">创建黑名单</a>
+      		<a id="delete" class="btn_g"  title="移除出黑名单">移除出黑名单</a>
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.createUrl = "${modulePath}/create.page";
+		opsObj.displayUrl = "${modulePath}/display.page";
+		opsObj.changeUrl = "${modulePath}/change.page";
+		opsObj.deleteUrl = "${modulePath}/delete.json";
+		opsObj.browseUrl = "${modulePath}/browse.page";
+		opsObj.exportUrl = "${modulePath}/export.page";
+
+		prepareOperations(opsObj);
+		
+		 $("#id_report_button").click(function() {
+			 if($(this).attr("class") == "btn_g"){
+				 report();
+			 }
+	      });
+	});
+	
+	$('input[name=checkbox]').bind("click", function(event, a){
+		$(this).parent().parent().trigger("click");
+	});
+	
+	$('#downDiv table tr').bind("click", function(){
+		var status = $(this).attr("status");
+		if(status == "UNREPORTED"){
+			// 可点击
+			$("#id_report_button").attr("class","btn_g");
+		} else {
+			// 不可点击
+			$("#id_report_button").attr("class","btn_gr");
+		}
+	});
+	
+	/*
+	 * 上报
+	 */
+	function report(){
+		var rowId = getCurrentRowId();
+		Dialog.load();
+		$.ajax({
+			type:'GET',
+			url:"${contextPath}/riskcontrol/riskcustomer/report.json",
+			data:'id='+rowId,
+			success:function(msg){
+				Dialog.closeLoad();
+				if(msg.success == true){
+					Dialog.message(msg.message);
+				}else{
+					Dialog.message(msg.message);
+				}
+				window.location.href="${modulePath}/managerbrowse.page";
+			}
+		});
+	}
+	//创建黑名单
+	 $("#creat").click(function() {
+		 var url = "${modulePath}/findAllNoCustormerBlackList.json";
+		 window.location.href = url;
+		/*  $.ajax({
+				type:'GET',
+				url:url,
+				success:function(msg){
+					if(msg.success == true){
+						
+					}else{
+						Dialog.message(msg.message);
+					}
+				}
+			}); */
+	 });
+		
+	 
+	//移出黑名单
+	 $("#delete").click(function() {
+		 var rowId = getCurrentRowId();
+		 Dialog.message(rowId);
+			var url = "${modulePath}/deleteByCoustorId.json";
+			if ($(".checkbox :checked").length == 1) {
+				var id = $($(".checkbox :checked")[0]).attr("value");
+				Dialog.confirm("确定要移除吗？", "提示",
+		     		function() {
+		     			$.ajax({
+		      				url : url,
+		      				type : "get",
+		      				data : "customer_id=" + rowId,//要发送的数据
+		      				success : function(data) {
+		      					
+		      					if (data.success) {
+		      					window.location.href="${modulePath}/custormerblacklist.page";
+		      					}
+		      					else{
+		      						topWin.Dialog.message(data.message);
+		      				    }
+		      					submitFlag = 0;
+		      				}
+		      			});
+			 	});
+			} else {
+                Dialog.message("请选客户名单");
+            } 
+     });
+</script>
+#parse ("common/iframe_page_footer.htm")
