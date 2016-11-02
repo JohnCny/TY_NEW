@@ -295,15 +295,25 @@ public class AddIntoPiecesControl extends BaseController {
 			 	//显示担保连上的信息   Applicationid.getCustomerId();   根据传过来的customerid
 			 	String customerid=Applicationid.getCustomerId();
 			 	List<CustomerApplicationGuarantor>lists1=service.findguarantorcustomer(customerid);
+			 	List<CustomerApplicationGuarantor>lists2=null;
+			 	List<CustomerApplicationGuarantor>lists3=null;
+			 	List<CustomerApplicationGuarantor>lists4=null;
+			 	int a=lists1.size();
 			 	//根据查出来的customerid
-			 	customerid=lists1.get(0).getId();
-			 	List<CustomerApplicationGuarantor>lists2=service.findguarantorcustomer(customerid);
+			 	if(lists1!=null&&lists1.size()!=0){
+			 		customerid=lists1.get(0).getId();
+			 		lists2=service.findguarantorcustomer(customerid);
+			 	}
 			 	//4
-			 	customerid=lists2.get(0).getId();
-			 	List<CustomerApplicationGuarantor>lists3=service.findguarantorcustomer(customerid);
+			 	if(lists2!=null&&lists2.size()!=0){
+			 		customerid=lists2.get(0).getId();
+			 		lists3=service.findguarantorcustomer(customerid);
+			 	}
 			 	//5
-			 	customerid=lists3.get(0).getId();
-			 	List<CustomerApplicationGuarantor>lists4=service.findguarantorcustomer(customerid);
+			 	if(lists2!=null&&lists3.size()!=0){
+			 		customerid=lists3.get(0).getId();
+			 		lists4=service.findguarantorcustomer(customerid);
+			 	}
 				
 			 	QueryResult<LocalImageForm> result =  addIntoPiecesService.findLocalImageByProductAndCustomer(Applicationid);
 				JRadPagedQueryResult<LocalImageForm> pagedResult = new JRadPagedQueryResult<LocalImageForm>(Applicationid, result);
