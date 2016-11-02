@@ -1,0 +1,119 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      	<div class="place">
+      		<div class="title">审批进件</div>
+      	</div>
+        <div id="topDiv" >
+        	<form id=id_module_form action="${contextPath}/customer/amountadjustment/apply.json" method="post">
+		      <div class="forms" id="formsId">
+		          <input type="hidden" name="serialNumber" value="$!adjustmentForm.serialNumber">
+		          <input type="hidden" name="productId" value="$!adjustmentForm.productId">
+		          <input type="hidden" name="id" value="$!adjustmentForm.id">
+		          <table class="rule" id="customerCareersInfo" border="1" bordercolor="#CCCCCC">
+		            <caption>调额信息</caption>
+		            <colgroup>
+		              <col width="10%">
+		              <col width="40%">
+		              <col width="10%">
+		              <col width="40%">
+		            </colgroup>
+		            <tr>
+		            <td><label>客户名称</label></td>
+		            <td><input type="text" name="customerName" value="$!adjustmentForm.customerName" disabled="disabled"  ></td>
+		
+		            <td><label>证件类型</label></td>
+		            <td>
+		            	<select name="cardType" id="cardType" disabled="disabled">
+							#dict("CARDTYPE", $!adjustmentForm.cardType)
+						</select>
+		            </td>
+		            </tr>
+		
+		            <tr >
+		            <td><label>证件号码</label></td>
+		            <td>
+		            <input type="text" name="cardId" value="$!adjustmentForm.cardId"  disabled="disabled"  >
+		            </td>
+		            <td><label>产品名称</label></td>
+		            <td>
+		               <input type="text" name="productName" value="$!adjustmentForm.productName"  disabled="disabled"  >
+		            </td>
+		            </tr>
+		            <tr >
+		            <td><label>调整类型</label></td>
+		            <td>
+			            <select name="adjustmentType" id="adjustmentType" disabled="disabled">
+							#dict("QuotaAdjustType", $!adjustmentForm.adjustmentType)
+						</select>
+					</td>
+		            <td><label>原始额度</label></td>
+		            <td><input type="text"  value="$format.formatNumber($!adjustmentForm.originalAmount, 2, 100)" name="originalAmount"  disabled="disabled"  ></td>
+		            </tr>
+		            <tr >
+		            <td><label>评估额度</label></td>
+		            <td><input type="text"  value="$format.formatNumber($!adjustmentForm.assessAmount, 2, 100)" name="assessAmount"  disabled="disabled"  ></td>
+		            <td><label>实际金额</label></td>
+		            <td><input type="text"  value="$format.formatNumber($!adjustmentForm.actualAmount, 2, 100)" name="actualAmount"  disabled="disabled"></td>
+		            </tr>
+		            <tr >
+		            <td><label>审批额度</label></td>
+		            <td><input type="text"  value="$format.formatNumber($!adjustmentForm.approvalLimit, 2, 100)" name="approvalLimit"></td>
+		            <td colspan="2">&nbsp;</td>
+		            </tr>
+		          </table>
+		          <table class="rule" id="other" border="1" bordercolor="#CCCCCC">
+		           	<caption>审批信息</caption>
+		           	<colgroup>
+		              <col width="10%">
+		              <col width="40%">
+		              <col width="10%">
+		              <col width="40%">
+		            </colgroup>
+		            <tr>
+		            <td><label>审批结果</label></td> 
+		            <td>
+		            <select id="approveStatus" name="approveStatus" onchange="checkStatus();">
+						<option value='0'>请选择..</option>
+						#dict("approveOperationNormalStatus", '')
+					</select>
+		            
+		            </td>
+		            <td><label>原因</label></td>
+		            <td><textarea class="w200" rows="3"  id="reason"  name="reason"></textarea></td>
+		            </tr>
+		          </table>
+			</div>
+	        </form>
+        </div>
+        <div class="submit">
+	       <input id="id_save_button" type="button" value="提交" class="current" />
+	       <input type="button" onclick="javascript:history.go(-1);" value="#i18n("button.cancel")" />
+        </div>  
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout=new TableLayout(2);	
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	#validator($formName)
+	$(document).ready(function() {	
+		#parse("common/part_create.js")
+	});
+/*
+* 改变筛选表
+*/
+ function checkStatus() {
+	
+		var applicationStatus = $("#formsId select[name='approveStatus'] option:selected").val();
+		if (applicationStatus=="APPROVE") {
+			$('#reason').attr("disabled",true); 
+		}else{
+			$('#reason').removeAttr("disabled"); 
+		}
+		
+}
+</script>
+</html>

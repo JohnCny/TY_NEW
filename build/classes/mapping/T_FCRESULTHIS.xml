@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="GBK"?>
+
+<resultMap>
+    <result column="KEYCODE"   	            jdbcType="VARCHAR" index="1" />
+    <result column="TYPEID"   	            jdbcType="VARCHAR" index="2" />
+    <result column="CUSTTYPE"   	        jdbcType="VARCHAR" index="3" />
+    <result column="CUSTID"   	            jdbcType="VARCHAR" index="4" />
+    <result column="YEAR"   	            jdbcType="VARCHAR" index="5" />
+    <result column="TIMES"   	            jdbcType="VARCHAR" index="6" />
+    <result column="CONTRACTCODE"   	    jdbcType="VARCHAR" index="7" />
+    <result column="BUSICODE"   	        jdbcType="VARCHAR" index="8" />
+    <result column="SORTINSTCODE"   	    jdbcType="VARCHAR" index="9" />
+    <result column="SORTDEPTCODE"   	    jdbcType="VARCHAR" index="10" />
+    <result column="BUSISTATE"   	        jdbcType="VARCHAR" index="11" />
+    <result column="BUSITYPE"   	        jdbcType="VARCHAR" index="12" />
+    <result column="MONEY"   	            jdbcType="VARCHAR" index="13" />
+    <result column="LOANDATE"   	        jdbcType="VARCHAR" index="14" />
+    <result column="ENDDATE"   	            jdbcType="VARCHAR" index="15" />
+    <result column="LOANPURPOSE"   	        jdbcType="VARCHAR" index="16" />
+    <result column="DELAYAMTDAYS"   	    jdbcType="VARCHAR" index="17" />
+    <result column="DELAYINTERESTDAYS"   	jdbcType="VARCHAR" index="18" />
+    <result column="DEBTINTEREST"   	    jdbcType="VARCHAR" index="19" />
+    <result column="CREDITLEVEL"   	        jdbcType="VARCHAR" index="20" />
+    <result column="INITSORTINSTCODE"   	jdbcType="VARCHAR" index="21" />
+    <result column="INITSORTDEPTCODE"   	jdbcType="VARCHAR" index="22" />
+    <result column="CREATOR"   	            jdbcType="VARCHAR" index="23" />
+    <result column="CREATORTIMES"   	    jdbcType="VARCHAR" index="24" />
+    <result column="APPROVER"   	        jdbcType="VARCHAR" index="25" />
+    <result column="BUSIMANAGER"   	        jdbcType="VARCHAR" index="26" />
+    <result column="SORTDATE"   	        jdbcType="VARCHAR" index="27" />
+    <result column="SORTRESULT"   	        jdbcType="VARCHAR" index="28" />
+    <result column="TOBADLOANREASON"   	    jdbcType="VARCHAR" index="29" />
+    <result column="REASONSTATUS"   	    jdbcType="VARCHAR" index="30" />
+    <result column="PRESORTRESULT"   	    jdbcType="VARCHAR" index="31" />
+    <result column="REMARK"   	            jdbcType="VARCHAR" index="32" />
+    <result column="STATE"   	            jdbcType="VARCHAR" index="33" />
+    <result column="INSTCODE"   	        jdbcType="VARCHAR" index="34" />
+    <result column="DEPTCODE"   	        jdbcType="VARCHAR" index="35" />
+    <result column="INSTCITYCODE"   	    jdbcType="VARCHAR" index="36" />
+    <result column="OPERDATETIME"           jdbcType="VARCHAR" index="37" />
+    <result column="OPERATOR"   	        jdbcType="VARCHAR" index="38" />
+    <result column="ISTRANS"   	            jdbcType="VARCHAR" index="39" />
+    <result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/>
+</resultMap>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="GBK"?>
+<CFX>
+	<HEAD>
+		<VER>1.0</VER>
+		<SRC>202010000000</SRC>
+		<DES>100000000000</DES>
+		<APP>联网核查公民身份信息系统</APP>
+		<MsgNo>0002</MsgNo>
+		<MsgID>20051024092733000440</MsgID>
+		<MsgRef>20051024092733000440</MsgRef>
+		<WorkDate>20051024</WorkDate>
+		<Reserve>String</Reserve>
+	</HEAD>
+	<MSG>
+		<SingleCheckResultHead0002>
+			<EntrustDate>20051024093012</EntrustDate>
+		</SingleCheckResultHead0002>
+		<SingleCheckResultMessage0002>
+			<CheckResult>00</CheckResult>
+			<IssueOffice>北京市东城区公安局</IssueOffice>
+			<Name>张三</Name>
+			<ID>120103198506020016</ID>
+			<Photo>010001111010011010111100011100</Photo>
+		</SingleCheckResultMessage0002>
+	</MSG>
+</CFX>

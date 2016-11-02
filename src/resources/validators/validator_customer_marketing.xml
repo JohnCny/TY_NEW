@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validators>
+	<validator id="customer.customermarketingplan">
+ 		<control name="implementationObjective"> 
+ 			<entry type="maxlength" value="500" />
+ 		</control> 
+ 		
+		<control name="marketingStartTime">
+			<entry type="required" value="true"/>
+		</control>
+		<control name="marketingTime">
+			<entry type="number" value="true" />
+		</control>
+		<!--
+		<control name="nationality">
+			<entry type="required" value="true" />
+			<entry type="maxlength" value="500" />
+		</control>
+		-->
+		<!--
+		<control name="birthday">
+			<entry type="required" value="true" />
+			<entry type="datetime" value="yyyy-MM-dd" />
+		</control>
+		-->
+		<!--
+		<control name="cardType">
+			<entry type="required" value="true" />
+			<entry type="maxlength" value="500" />
+		</control>
+		-->
+		<!--
+		<control name="cardId">
+			<entry type="required" value="true" />
+			<entry type="maxlength" value="500" />
+		</control>
+		<control name="telephone">
+			<entry type="required" value="true" />
+			<entry type="maxlength" value="500" />
+		</control>
+		<control name="homePhone">
+			<entry type="required" value="true" />
+			<entry type="maxlength" value="500" />
+		</control>
+		<control name="residentialAddress">
+			<entry type="required" value="true" />
+			<entry type="maxlength" value="500" />
+		</control>
+		-->
+		<!--
+		<control name="mail">
+			<entry type="required" value="true" />
+			<entry type="maxlength" value="500" />
+		</control>
+		<control name="maritalStatus">
+			<entry type="required" value="true" />
+			<entry type="maxlength" value="500" />
+		</control>
+		<control name="degreeEducation">
+			<entry type="required" value="true" />
+			<entry type="maxlength" value="500" />
+		</control>
+		<control name="householdAddress">
+			<entry type="required" value="true" />
+			<entry type="maxlength" value="500" />
+		</control>
+		<control name="zipCodeAddress">
+			<entry type="required" value="true" />
+			<entry type="maxlength" value="500" />
+		</control>
+		<control name="finalApproval">
+			<entry type="required" value="true" />
+			<entry type="maxlength" value="500" />
+		</control>
+		<control name="applyCredit">
+			<entry type="required" value="true" />
+			<entry type="maxlength" value="500" />
+		</control>
+		<control name="actualAmount">
+			<entry type="required" value="true" />
+			<entry type="maxlength" value="500" />
+		</control>
+		<control name="temporaryQuota">
+			<entry type="required" value="true" />
+			<entry type="maxlength" value="500" />
+		</control>
+		<control name="cashAdvanceRatio">
+			<entry type="required" value="true" />
+			<entry type="maxlength" value="500" />
+		</control>
+		<control name="cardStatus">
+			<entry type="required" value="true" />
+			<entry type="maxlength" value="500" />
+		</control>
+		-->
+	</validator>
+</validators>

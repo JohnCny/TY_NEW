@@ -1,0 +1,1303 @@
+#parse ("common/iframe_page_header.htm")
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+     <div class="place">
+         <div class="title">客户维护信息>损益</div>
+      </div>
+       
+       <div class="tabplace">
+            <ul class="com-tab" >
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/changewh.page?id=${customerId}">基本信息</a></li>
+            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_zyxx.page?id=${customerId}">职业信息</a></li>
+            <li class="tab " ><a href="${contextPath}/customer/basiccustomerinforUpdate/create_mbxx.page?id=${customerId}">陌拜信息</a></li>
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_zcfz.page?id=${customerId}">资产负债</a></li>
+            <li class="tab activeTab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_syb.page?id=${customerId}">损益</a></li>
+            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_xjl.page?id=${customerId}">现金流量</a></li>
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_jcjy.page?id=${customerId}">交叉检验</a></li>
+			<li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_swpg.page?id=${customerId}">四维评估</a></li>
+			<li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_sxpg.page?id=${customerId}">授信评估</a></li>
+            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_wjdc.page?id=${customerId}">问卷调查</a></li>
+            <li class="tab" ><a href="${contextPath}/customer/basiccustomerinforUpdate/create_khtz.page?id=${customerId}">台账信息</a></li>
+            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_yxzl.page?id=${customerId}">影像资料</a></li>  
+         </ul>
+         </div>
+           <div id="parenDiv" >
+		<div id='div1' class="div1" style="position:absolute;"> </div>
+		</div>
+      <form id="id_module_form" action="${modulePath}/incomeupdateInsert.page" method="post">
+      <input type="hidden" name="customerId" value="${customerId}">
+        
+        <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
+          #if($customerInforUpdateIncomeStatement.size()!=0)
+      <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc">
+            <colgroup>
+              <col width="16%" />
+              <col width="6%" />
+              <col width="6%" />
+              <col width="6%" />
+              <col width="6%" />
+              <col width="6%" />
+              <col width="6%" />
+              <col width="6%" />
+              <col width="6%" />
+              <col width="6%" />
+              <col width="6%" />
+              <col width="6%" />
+              <col width="6%" />
+              <col width="6%" />
+              <col width="6%" />
+            </colgroup>
+             #foreach($balanceSheet in $!customerInforUpdateIncomeStatement)
+             #if($balanceSheet.loanType==0)
+             <tr><td class="titlec"colspan="15">损益</td></tr>
+            <tr>
+               <td class="titlefc"><label >项目</label></td>
+               <td><input class="rinpstyname" type="text" id="month_1" name="month_1_0" value="$!{balanceSheet.january}" onclick="showTime(this,'div1')"/></td>
+               <td><input class="rinpstyname" type="text" id="month_2" name="month_2_0" value="$!{balanceSheet.february}" onclick="showTime(this,'div1')"/></td>
+               <td><input class="rinpstyname" type="text" id="month_3" name="month_3_0" value="$!{balanceSheet.march}" onclick="showTime(this,'div1')"/></td>
+               <td><input class="rinpstyname" type="text" id="month_4" name="month_4_0" value="$!{balanceSheet.april}" onclick="showTime(this,'div1')"/></td>
+               <td><input class="rinpstyname" type="text" id="month_5" name="month_5_0" value="$!{balanceSheet.may}" onclick="showTime(this,'div1')"/></td>
+               <td><input class="rinpstyname" type="text" id="month_6" name="month_6_0" value="$!{balanceSheet.june}" onclick="showTime(this,'div1')"/></td>
+               <td><input class="rinpstyname" type="text" id="month_7" name="month_7_0" value="$!{balanceSheet.july}" onclick="showTime(this,'div1')"/></td>
+               <td><input class="rinpstyname" type="text" id="month_8" name="month_8_0" value="$!{balanceSheet.august}" onclick="showTime(this,'div1')"/></td>
+               <td><input class="rinpstyname" type="text" id="month_9" name="month_9_0" value="$!{balanceSheet.september}" onclick="showTime(this,'div1')"/></td>
+               <td><input class="rinpstyname" type="text" id="month_10" name="month_10_0" value="$!{balanceSheet.october}" onclick="showTime(this,'div1')"/></td>
+               <td><input class="rinpstyname" type="text" id="month_11" name="month_11_0" value="$!{balanceSheet.november}" onclick="showTime(this,'div1')"/></td>
+               <td><input class="rinpstyname" type="text" id="month_12" name="month_12_0" value="$!{balanceSheet.december}" onclick="showTime(this,'div1')"/></td>
+               <td ><label style="font-weight: bold;">总计</label></td>
+               <td ><label style="font-weight: bold;">月平均</label></td>
+            </tr>
+            #end
+            #end
+              
+            <tr id="1">
+              <td ><label class="labelsty">收入</label> <a href="#" class="delbtn"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtn"><img src="${contextPath}/images/add.png" /></a></td>
+               <td colspan="14" >&nbsp;</td>
+            </tr>
+            #foreach($balanceSheet in $!customerInforUpdateIncomeStatement)
+              #if($balanceSheet.loanType==1)
+            <tr id="1_1">
+            	<td><input class="rinpstyname" type="text" name="items_name_1" value="$!{balanceSheet.names}" style="text-align: center;" onchange="isempty(this)"/></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_1_1" value="$format.formatNumber($!{balanceSheet.january},2,100)" onchange="count0(this,'1',1)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_2_1" value="$format.formatNumber($!{balanceSheet.february},2,100)" onchange="count0(this,'1',2)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_3_1" value="$format.formatNumber($!{balanceSheet.march},2,100)" onchange="count0(this,'1',3)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_4_1" value="$format.formatNumber($!{balanceSheet.april},2,100)" onchange="count0(this,'1',4)"  /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_5_1" value="$format.formatNumber($!{balanceSheet.may},2,100)" onchange="count0(this,'1',5)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_6_1" value="$format.formatNumber($!{balanceSheet.june},2,100)" onchange="count0(this,'1',6)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_7_1" value="$format.formatNumber($!{balanceSheet.july},2,100)" onchange="count0(this,'1',7)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_8_1" value="$format.formatNumber($!{balanceSheet.august},2,100)" onchange="count0(this,'1',8)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_9_1" value="$format.formatNumber($!{balanceSheet.september},2,100)" onchange="count0(this,'1',9)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_10_1" value="$format.formatNumber($!{balanceSheet.october},2,100)" onchange="count0(this,'1',10)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_11_1" value="$format.formatNumber($!{balanceSheet.november},2,100)" onchange="count0(this,'1',11)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_12_1" value="$format.formatNumber($!{balanceSheet.december},2,100)" onchange="count0(this,'1',12)"/> </td>
+            	<td><input class="rinpstybc" type="text" id="" name="total_1" value="$format.formatNumber($!{balanceSheet.totalAll},2,100)"  readonly="readonly"/></td>
+            	<td><input class="rinpstybc" type="text" id="" name="pre_month_1" value="$format.formatNumber($!{balanceSheet.monthlyAverage},2,100)" readonly="readonly"/></td>
+            </tr>
+             #end
+             #end
+             #foreach($balanceSheet in $!customerInforUpdateIncomeStatement)
+              #if($balanceSheet.loanType==2)
+            <tr id="2">
+              <td><label class="labelsty" >总额（1）</label></td>
+              <td><input class="rinpstybc" type="text" id="" name="month_1_2" value="$format.formatNumber($!{balanceSheet.january},2,100)" readonly="readonly" /></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_2_2" value="$format.formatNumber($!{balanceSheet.february},2,100)" readonly="readonly" /></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_3_2" value="$format.formatNumber($!{balanceSheet.march},2,100)" readonly="readonly"/></td>
+              <td><input class="rinpstybc" type="text" id="" name="month_4_2" value="$format.formatNumber($!{balanceSheet.april},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_5_2" value="$format.formatNumber($!{balanceSheet.may},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_6_2" value="$format.formatNumber($!{balanceSheet.june},2,100)" readonly="readonly"/></td>
+              <td><input class="rinpstybc" type="text" id="" name="month_7_2" value="$format.formatNumber($!{balanceSheet.july},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_8_2" value="$format.formatNumber($!{balanceSheet.august},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_9_2" value="$format.formatNumber($!{balanceSheet.september},2,100)" readonly="readonly"/></td>
+              <td><input class="rinpstybc" type="text" id="" name="month_10_2" value="$format.formatNumber($!{balanceSheet.october},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_11_2" value="$format.formatNumber($!{balanceSheet.november},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_12_2" value="$format.formatNumber($!{balanceSheet.december},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="total_2" value="$format.formatNumber($!{balanceSheet.totalAll},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="pre_month_2" value="$format.formatNumber($!{balanceSheet.monthlyAverage},2,100)" readonly="readonly"/></td>
+            </tr>
+            #end
+            #end
+             <tr id="3">
+              <td ><label class="labelsty">可变成本</label> <a href="#" class="delbtn"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtn"><img src="${contextPath}/images/add.png" /></a></td>
+              <td colspan="14" >&nbsp;</td>
+            </tr>
+              #foreach($balanceSheet in $!customerInforUpdateIncomeStatement)
+              #if($balanceSheet.loanType==3)
+              <tr id="3_1">
+            	<td><input class="rinpstyname" type="text" name="items_name_3" value="$!{balanceSheet.names}" style="text-align: center;" onchange="isempty(this)"/></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_1_3" value="$format.formatNumber($!{balanceSheet.january},2,100)" onchange="count0(this,count,1)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_2_3" value="$format.formatNumber($!{balanceSheet.february},2,100)" onchange="count0(this,'3',2)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_3_3" value="$format.formatNumber($!{balanceSheet.march},2,100)" onchange="count0(this,'3',3)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_4_3" value="$format.formatNumber($!{balanceSheet.april},2,100)" onchange="count0(this,'3',4)"  /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_5_3" value="$format.formatNumber($!{balanceSheet.may},2,100)" onchange="count0(this,'3',5)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_6_3" value="$format.formatNumber($!{balanceSheet.june},2,100)" onchange="count0(this,'3',6)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_7_3" value="$format.formatNumber($!{balanceSheet.july},2,100)" onchange="count0(this,'3',7)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_8_3" value="$format.formatNumber($!{balanceSheet.august},2,100)" onchange="count0(this,'3',8)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_9_3" value="$format.formatNumber($!{balanceSheet.september},2,100)" onchange="count0(this,'3',9)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_10_3" value="$format.formatNumber($!{balanceSheet.october},2,100)" onchange="count0(this,'3',10)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_11_3" value="$format.formatNumber($!{balanceSheet.november},2,100)" onchange="count0(this,'3',11)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_12_3" value="$format.formatNumber($!{balanceSheet.december},2,100)" onchange="count0(this,'3',12)"/> </td>
+            	<td><input class="rinpstybc" class="rinpsty" type="text" id="" name="total_3" value="$format.formatNumber($!{balanceSheet.totalAll},2,100)" readonly="readonly" /></td>
+            	<td><input class="rinpstybc" class="rinpsty" type="text" id="" name="pre_month_3" value="$format.formatNumber($!{balanceSheet.monthlyAverage},2,100)" readonly="readonly"/></td>
+            </tr>
+              #end
+              #end
+               #foreach($balanceSheet in $!customerInforUpdateIncomeStatement)
+              #if($balanceSheet.loanType==4)
+            <tr id="4">
+              <td><label class="labelsty">总额（2）</label></td>
+              <td><input class="rinpstybc" type="text" id="" name="month_1_4" value="$format.formatNumber($!{balanceSheet.january},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_2_4" value="$format.formatNumber($!{balanceSheet.february},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_3_4" value="$format.formatNumber($!{balanceSheet.march},2,100)" readonly="readonly"/></td>
+              <td><input class="rinpstybc" type="text" id="" name="month_4_4" value="$format.formatNumber($!{balanceSheet.april},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_5_4" value="$format.formatNumber($!{balanceSheet.may},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_6_4" value="$format.formatNumber($!{balanceSheet.june},2,100)" readonly="readonly"/></td>
+              <td><input class="rinpstybc" type="text" id="" name="month_7_4" value="$format.formatNumber($!{balanceSheet.july},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_8_4" value="$format.formatNumber($!{balanceSheet.august},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_9_4" value="$format.formatNumber($!{balanceSheet.september},2,100)" readonly="readonly"/></td>
+              <td><input class="rinpstybc" type="text" id="" name="month_10_4" value="$format.formatNumber($!{balanceSheet.october},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_11_4" value="$format.formatNumber($!{balanceSheet.november},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_12_4" value="$format.formatNumber($!{balanceSheet.december},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="total_4" value="$format.formatNumber($!{balanceSheet.totalAll},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="pre_month_4" value="$format.formatNumber($!{balanceSheet.monthlyAverage},2,100)" readonly="readonly"/></td>
+            </tr>
+            #end
+            #end
+             #foreach($balanceSheet in $!customerInforUpdateIncomeStatement)
+              #if($balanceSheet.loanType==5)
+              
+            <tr>
+              <td><label class="labelsty">毛利（3）= （1）-（2）</label></td>
+             <td><input class="rinpstybc" type="text" id="" name="month_1_5" value="$format.formatNumber($!{balanceSheet.january},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_2_5" value="$format.formatNumber($!{balanceSheet.february},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_3_5" value="$format.formatNumber($!{balanceSheet.march},2,100)" readonly="readonly"/></td>
+              <td><input class="rinpstybc" type="text" id="" name="month_4_5" value="$format.formatNumber($!{balanceSheet.april},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_5_5" value="$format.formatNumber($!{balanceSheet.may},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_6_5" value="$format.formatNumber($!{balanceSheet.june},2,100)" readonly="readonly"/></td>
+              <td><input class="rinpstybc" type="text" id="" name="month_7_5" value="$format.formatNumber($!{balanceSheet.july},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_8_5" value="$format.formatNumber($!{balanceSheet.august},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_9_5" value="$format.formatNumber($!{balanceSheet.september},2,100)" readonly="readonly"/></td>
+              <td><input class="rinpstybc" type="text" id="" name="month_10_5" value="$format.formatNumber($!{balanceSheet.october},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_11_5" value="$format.formatNumber($!{balanceSheet.november},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_12_5" value="$format.formatNumber($!{balanceSheet.december},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="total_5" value="$format.formatNumber($!{balanceSheet.totalAll},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="pre_month_5" value="$format.formatNumber($!{balanceSheet.monthlyAverage},2,100)" readonly="readonly"/></td>
+            </tr>
+            #end
+            #end
+           <tr>
+              <td class="titlefc" ><label style="font-weight: bold;  " >营业费用</label></td>
+              <td colspan="14"></td>
+            </tr>
+             #foreach($balanceSheet in $!customerInforUpdateIncomeStatement)
+              #if($balanceSheet.loanType==6)
+               <tr>
+              <td><label class="labelstynb">工资</label></td>
+                <td><input class="rinpsty" type="text" id="" name="month_1_6" value="$format.formatNumber($!{balanceSheet.january},2,100)" onchange="count(this,6,1)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_2_6" value="$format.formatNumber($!{balanceSheet.february},2,100)" onchange="count(this,6,2)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_3_6" value="$format.formatNumber($!{balanceSheet.march},2,100)" onchange="count(this,6,3)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_4_6" value="$format.formatNumber($!{balanceSheet.april},2,100)" onchange="count(this,6,4)"  /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_5_6" value="$format.formatNumber($!{balanceSheet.may},2,100)" onchange="count(this,6,5)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_6_6" value="$format.formatNumber($!{balanceSheet.june},2,100)" onchange="count(this,6,6)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_7_6" value="$format.formatNumber($!{balanceSheet.july},2,100)" onchange="count(this,6,7)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_8_6" value="$format.formatNumber($!{balanceSheet.august},2,100)" onchange="count(this,6,8)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_9_6" value="$format.formatNumber($!{balanceSheet.september},2,100)" onchange="count(this,6,9)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_10_6" value="$format.formatNumber($!{balanceSheet.october},2,100)" onchange="count(this,6,10)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_11_6" value="$format.formatNumber($!{balanceSheet.november},2,100)" onchange="count(this,6,11)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_12_6" value="$format.formatNumber($!{balanceSheet.december},2,100)" onchange="count(this,6,12)"/> </td>
+            	<td><input class="rinpstybc"  type="text" id="" name="total_6" value="$format.formatNumber($!{balanceSheet.totalAll},2,100)"  readonly="readonly"/></td>
+            	<td><input class="rinpstybc" type="text" id="" name="pre_month_6" value="$format.formatNumber($!{balanceSheet.monthlyAverage},2,100)" readonly="readonly"/></td>
+            </tr>
+            #end
+            #end
+             #foreach($balanceSheet in $!customerInforUpdateIncomeStatement)
+              #if($balanceSheet.loanType==7)
+               <tr>
+              <td><label class="labelstynb">经营性房屋租赁费</label></td>
+                  <td><input class="rinpsty" type="text" id="" name="month_1_7" value="$format.formatNumber($!{balanceSheet.january},2,100)" onchange="count(this,7,1)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_2_7" value="$format.formatNumber($!{balanceSheet.february},2,100)" onchange="count(this,7,2)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_3_7" value="$format.formatNumber($!{balanceSheet.march},2,100)" onchange="count(this,7,3)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_4_7" value="$format.formatNumber($!{balanceSheet.april},2,100)" onchange="count(this,7,4)"  /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_5_7" value="$format.formatNumber($!{balanceSheet.may},2,100)" onchange="count(this,7,5)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_6_7" value="$format.formatNumber($!{balanceSheet.june},2,100)" onchange="count(this,7,6)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_7_7" value="$format.formatNumber($!{balanceSheet.july},2,100)" onchange="count(this,7,7)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_8_7" value="$format.formatNumber($!{balanceSheet.august},2,100)" onchange="count(this,7,8)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_9_7" value="$format.formatNumber($!{balanceSheet.september},2,100)" onchange="count(this,7,9)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_10_7" value="$format.formatNumber($!{balanceSheet.october},2,100)" onchange="count(this,7,10)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_11_7" value="$format.formatNumber($!{balanceSheet.november},2,100)" onchange="count(this,7,11)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_12_7" value="$format.formatNumber($!{balanceSheet.december},2,100)" onchange="count(this,7,12)"/> </td>
+            	<td><input class="rinpstybc" type="text" id="" name="total_7" value="$format.formatNumber($!{balanceSheet.totalAll},2,100)"  readonly="readonly"/></td>
+            	<td><input class="rinpstybc" type="text" id="" name="pre_month_7" value="$format.formatNumber($!{balanceSheet.monthlyAverage},2,100)" readonly="readonly"/></td>
+            </tr>
+            #end
+            #end
+            #foreach($balanceSheet in $!customerInforUpdateIncomeStatement)
+              #if($balanceSheet.loanType==8)
+             <tr>
+              <td><label class="labelstynb">水费</label></td>
+                 <td><input class="rinpsty" type="text" id="" name="month_1_8" value="$format.formatNumber($!{balanceSheet.january},2,100)" onchange="count(this,8,1)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_2_8" value="$format.formatNumber($!{balanceSheet.february},2,100)" onchange="count(this,8,2)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_3_8" value="$format.formatNumber($!{balanceSheet.march},2,100)" onchange="count(this,8,3)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_4_8" value="$format.formatNumber($!{balanceSheet.april},2,100)" onchange="count(this,8,4)"  /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_5_8" value="$format.formatNumber($!{balanceSheet.may},2,100)" onchange="count(this,8,5)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_6_8" value="$format.formatNumber($!{balanceSheet.june},2,100)" onchange="count(this,8,6)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_7_8" value="$format.formatNumber($!{balanceSheet.july},2,100)" onchange="count(this,8,7)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_8_8" value="$format.formatNumber($!{balanceSheet.august},2,100)" onchange="count(this,8,8)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_9_8" value="$format.formatNumber($!{balanceSheet.september},2,100)" onchange="count(this,8,9)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_10_8" value="$format.formatNumber($!{balanceSheet.october},2,100)" onchange="count(this,8,10)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_11_8" value="$format.formatNumber($!{balanceSheet.november},2,100)" onchange="count(this,8,11)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_12_8" value="$format.formatNumber($!{balanceSheet.december},2,100)" onchange="count(this,8,12)"/> </td>
+            	<td><input class="rinpstybc" type="text" id="" name="total_8" value="$format.formatNumber($!{balanceSheet.totalAll},2,100)"  readonly="readonly"/></td>
+            	<td><input class="rinpstybc" type="text" id="" name="pre_month_8" value="$format.formatNumber($!{balanceSheet.monthlyAverage},2,100)" readonly="readonly"/></td>
+            </tr>
+             #end
+            #end
+            #foreach($balanceSheet in $!customerInforUpdateIncomeStatement)
+              #if($balanceSheet.loanType==9)
+             <tr>
+              <td><label class="labelstynb">电费</label></td>
+                  <td><input class="rinpsty" type="text" id="" name="month_1_9" value="$format.formatNumber($!{balanceSheet.january},2,100)" onchange="count(this,9,1)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_2_9" value="$format.formatNumber($!{balanceSheet.february},2,100)" onchange="count(this,9,2)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_3_9" value="$format.formatNumber($!{balanceSheet.march},2,100)" onchange="count(this,9,3)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_4_9" value="$format.formatNumber($!{balanceSheet.april},2,100)" onchange="count(this,9,4)"  /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_5_9" value="$format.formatNumber($!{balanceSheet.may},2,100)" onchange="count(this,9,5)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_6_9" value="$format.formatNumber($!{balanceSheet.june},2,100)" onchange="count(this,9,6)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_7_9" value="$format.formatNumber($!{balanceSheet.july},2,100)" onchange="count(this,9,7)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_8_9" value="$format.formatNumber($!{balanceSheet.august},2,100)" onchange="count(this,9,8)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_9_9" value="$format.formatNumber($!{balanceSheet.september},2,100)" onchange="count(this,9,9)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_10_9" value="$format.formatNumber($!{balanceSheet.october},2,100)" onchange="count(this,9,10)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_11_9" value="$format.formatNumber($!{balanceSheet.november},2,100)" onchange="count(this,9,11)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_12_9" value="$format.formatNumber($!{balanceSheet.december},2,100)" onchange="count(this,9,12)"/> </td>
+            	<td><input class="rinpstybc" type="text" id="" name="total_9" value="$format.formatNumber($!{balanceSheet.totalAll},2,100)"  readonly="readonly"/></td>
+            	<td><input class="rinpstybc" type="text" id="" name="pre_month_9" value="$format.formatNumber($!{balanceSheet.monthlyAverage},2,100)" readonly="readonly"/></td>
+            </tr>
+            #end
+            #end
+            #foreach($balanceSheet in $!customerInforUpdateIncomeStatement)
+              #if($balanceSheet.loanType==10)
+             <tr>
+              <td><label class="labelstynb">设备损耗</label></td>
+               <td><input class="rinpsty" type="text" id="" name="month_1_10" value="$format.formatNumber($!{balanceSheet.january},2,100)" onchange="count(this,10,1)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_2_10" value="$format.formatNumber($!{balanceSheet.february},2,100)" onchange="count(this,10,2)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_3_10" value="$format.formatNumber($!{balanceSheet.march},2,100)" onchange="count(this,10,3)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_4_10" value="$format.formatNumber($!{balanceSheet.april},2,100)" onchange="count(this,10,4)"  /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_5_10" value="$format.formatNumber($!{balanceSheet.may},2,100)" onchange="count(this,10,5)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_6_10" value="$format.formatNumber($!{balanceSheet.june},2,100)" onchange="count(this,10,6)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_7_10" value="$format.formatNumber($!{balanceSheet.july},2,100)" onchange="count(this,10,7)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_8_10" value="$format.formatNumber($!{balanceSheet.august},2,100)" onchange="count(this,10,8)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_9_10" value="$format.formatNumber($!{balanceSheet.september},2,100)" onchange="count(this,10,9)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_10_10" value="$format.formatNumber($!{balanceSheet.october},2,100)" onchange="count(this,10,10)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_11_10" value="$format.formatNumber($!{balanceSheet.november},2,100)" onchange="count(this,10,11)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_12_10" value="$format.formatNumber($!{balanceSheet.december},2,100)" onchange="count(this,10,12)"/> </td>
+            	<td><input class="rinpstybc" type="text" id="" name="total_10" value="$format.formatNumber($!{balanceSheet.totalAll},2,100)"  readonly="readonly"/></td>
+            	<td><input class="rinpstybc" type="text" id="" name="pre_month_10" value="$format.formatNumber($!{balanceSheet.monthlyAverage},2,100)" readonly="readonly"/></td>
+            </tr>
+             #end
+            #end
+            #foreach($balanceSheet in $!customerInforUpdateIncomeStatement)
+              #if($balanceSheet.loanType==11)
+             <tr>
+              <td><label class="labelstynb">伙食费</label></td>
+                <td><input class="rinpsty" type="text" id="" name="month_1_11" value="$format.formatNumber($!{balanceSheet.january},2,100)" onchange="count(this,11,1)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_2_11" value="$format.formatNumber($!{balanceSheet.february},2,100)" onchange="count(this,11,2)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_3_11" value="$format.formatNumber($!{balanceSheet.march},2,100)" onchange="count(this,11,3)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_4_11" value="$format.formatNumber($!{balanceSheet.april},2,100)" onchange="count(this,11,4)"  /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_5_11" value="$format.formatNumber($!{balanceSheet.may},2,100)" onchange="count(this,11,5)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_6_11" value="$format.formatNumber($!{balanceSheet.june},2,100)" onchange="count(this,11,6)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_7_11" value="$format.formatNumber($!{balanceSheet.july},2,100)" onchange="count(this,11,7)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_8_11" value="$format.formatNumber($!{balanceSheet.august},2,100)" onchange="count(this,11,8)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_9_11" value="$format.formatNumber($!{balanceSheet.september},2,100)" onchange="count(this,11,9)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_10_11" value="$format.formatNumber($!{balanceSheet.october},2,100)" onchange="count(this,11,10)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_11_11" value="$format.formatNumber($!{balanceSheet.november},2,100)" onchange="count(this,11,11)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_12_11" value="$format.formatNumber($!{balanceSheet.december},2,100)" onchange="count(this,11,12)"/> </td>
+            	<td><input class="rinpstybc"  type="text" id="" name="total_11" value="$format.formatNumber($!{balanceSheet.totalAll},2,100)"  readonly="readonly"/></td>
+            	<td><input class="rinpstybc" type="text" id="" name="pre_month_11" value="$format.formatNumber($!{balanceSheet.monthlyAverage},2,100)" readonly="readonly"/></td>
+            </tr>
+            #end
+            #end
+            #foreach($balanceSheet in $!customerInforUpdateIncomeStatement)
+              #if($balanceSheet.loanType==12)
+             <tr>
+              <td><label class="labelstynb">电话费</label></td>
+                <td><input class="rinpsty" type="text" id="" name="month_1_12" value="$format.formatNumber($!{balanceSheet.january},2,100)" onchange="count(this,12,1)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_2_12" value="$format.formatNumber($!{balanceSheet.february},2,100)" onchange="count(this,12,2)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_3_12" value="$format.formatNumber($!{balanceSheet.march},2,100)" onchange="count(this,12,3)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_4_12" value="$format.formatNumber($!{balanceSheet.april},2,100)" onchange="count(this,12,4)"  /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_5_12" value="$format.formatNumber($!{balanceSheet.may},2,100)" onchange="count(this,12,5)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_6_12" value="$format.formatNumber($!{balanceSheet.june},2,100)" onchange="count(this,12,6)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_7_12" value="$format.formatNumber($!{balanceSheet.july},2,100)" onchange="count(this,12,7)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_8_12" value="$format.formatNumber($!{balanceSheet.august},2,100)" onchange="count(this,12,8)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_9_12" value="$format.formatNumber($!{balanceSheet.september},2,100)" onchange="count(this,12,9)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_10_12" value="$format.formatNumber($!{balanceSheet.october},2,100)" onchange="count(this,12,10)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_11_12" value="$format.formatNumber($!{balanceSheet.november},2,100)" onchange="count(this,12,11)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_12_12" value="$format.formatNumber($!{balanceSheet.december},2,100)" onchange="count(this,12,12)"/> </td>
+            	<td><input class="rinpstybc" type="text" id="" name="total_12" value="$format.formatNumber($!{balanceSheet.totalAll},2,100)"  readonly="readonly"/></td>
+            	<td><input class="rinpstybc" type="text" id="" name="pre_month_12" value="$format.formatNumber($!{balanceSheet.monthlyAverage},2,100)" readonly="readonly"/></td>
+            </tr>
+             #end
+            #end
+            #foreach($balanceSheet in $!customerInforUpdateIncomeStatement)
+              #if($balanceSheet.loanType==13)
+             <tr>
+              <td><label class="labelstynb">公关费</label></td>
+                  <td><input class="rinpsty" type="text" id="" name="month_1_13" value="$format.formatNumber($!{balanceSheet.january},2,100)" onchange="count(this,13,1)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_2_13" value="$format.formatNumber($!{balanceSheet.february},2,100)" onchange="count(this,13,2)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_3_13" value="$format.formatNumber($!{balanceSheet.march},2,100)" onchange="count(this,13,3)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_4_13" value="$format.formatNumber($!{balanceSheet.april},2,100)" onchange="count(this,13,4)"  /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_5_13" value="$format.formatNumber($!{balanceSheet.may},2,100)" onchange="count(this,13,5)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_6_13" value="$format.formatNumber($!{balanceSheet.june},2,100)" onchange="count(this,13,6)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_7_13" value="$format.formatNumber($!{balanceSheet.july},2,100)" onchange="count(this,13,7)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_8_13" value="$format.formatNumber($!{balanceSheet.august},2,100)" onchange="count(this,13,8)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_9_13" value="$format.formatNumber($!{balanceSheet.september},2,100)" onchange="count(this,13,9)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_10_13" value="$format.formatNumber($!{balanceSheet.october},2,100)" onchange="count(this,13,10)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_11_13" value="$format.formatNumber($!{balanceSheet.november},2,100)" onchange="count(this,13,11)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_12_13" value="$format.formatNumber($!{balanceSheet.december},2,100)" onchange="count(this,13,12)"/> </td>
+            	<td><input class="rinpstybc" type="text" id="" name="total_13" value="$format.formatNumber($!{balanceSheet.totalAll},2,100)"  readonly="readonly"/></td>
+            	<td><input class="rinpstybc" type="text" id="" name="pre_month_13" value="$format.formatNumber($!{balanceSheet.monthlyAverage},2,100)" readonly="readonly"/></td>
+            </tr>
+               #end
+            #end
+            #foreach($balanceSheet in $!customerInforUpdateIncomeStatement)
+              #if($balanceSheet.loanType==14)
+             <tr>
+              <td><label class="labelstynb">汽车维修费</label></td>
+                 <td><input class="rinpsty" type="text" id="" name="month_1_14" value="$format.formatNumber($!{balanceSheet.january},2,100)" onchange="count(this,14,1)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_2_14" value="$format.formatNumber($!{balanceSheet.february},2,100)" onchange="count(this,14,2)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_3_14" value="$format.formatNumber($!{balanceSheet.march},2,100)" onchange="count(this,14,3)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_4_14" value="$format.formatNumber($!{balanceSheet.april},2,100)" onchange="count(this,14,4)"  /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_5_14" value="$format.formatNumber($!{balanceSheet.may},2,100)" onchange="count(this,14,5)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_6_14" value="$format.formatNumber($!{balanceSheet.june},2,100)" onchange="count(this,14,6)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_7_14" value="$format.formatNumber($!{balanceSheet.july},2,100)" onchange="count(this,14,7)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_8_14" value="$format.formatNumber($!{balanceSheet.august},2,100)" onchange="count(this,14,8)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_9_14" value="$format.formatNumber($!{balanceSheet.september},2,100)" onchange="count(this,14,9)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_10_14" value="$format.formatNumber($!{balanceSheet.october},2,100)" onchange="count(this,14,10)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_11_14" value="$format.formatNumber($!{balanceSheet.november},2,100)" onchange="count(this,14,11)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_12_14" value="$format.formatNumber($!{balanceSheet.december},2,100)" onchange="count(this,14,12)"/> </td>
+            	<td><input class="rinpstybc" type="text" id="" name="total_14" value="$format.formatNumber($!{balanceSheet.totalAll},2,100)"  readonly="readonly"/></td>
+            	<td><input class="rinpstybc" type="text" id="" name="pre_month_14" value="$format.formatNumber($!{balanceSheet.monthlyAverage},2,100)" readonly="readonly"/></td>
+            </tr>
+                #end
+            #end
+            #foreach($balanceSheet in $!customerInforUpdateIncomeStatement)
+              #if($balanceSheet.loanType==15)
+             <tr>
+              <td><label class="labelstynb">机器维修费</label></td>
+              <td><input class="rinpsty" type="text" id="" name="month_1_15" value="$format.formatNumber($!{balanceSheet.january},2,100)" onchange="count(this,15,1)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_2_15" value="$format.formatNumber($!{balanceSheet.february},2,100)" onchange="count(this,15,2)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_3_15" value="$format.formatNumber($!{balanceSheet.march},2,100)" onchange="count(this,15,3)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_4_15" value="$format.formatNumber($!{balanceSheet.april},2,100)" onchange="count(this,15,4)"  /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_5_15" value="$format.formatNumber($!{balanceSheet.may},2,100)" onchange="count(this,15,5)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_6_15" value="$format.formatNumber($!{balanceSheet.june},2,100)" onchange="count(this,15,6)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_7_15" value="$format.formatNumber($!{balanceSheet.july},2,100)" onchange="count(this,15,7)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_8_15" value="$format.formatNumber($!{balanceSheet.august},2,100)" onchange="count(this,15,8)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_9_15" value="$format.formatNumber($!{balanceSheet.september},2,100)" onchange="count(this,15,9)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_10_15" value="$format.formatNumber($!{balanceSheet.october},2,100)" onchange="count(this,15,10)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_11_15" value="$format.formatNumber($!{balanceSheet.november},2,100)" onchange="count(this,15,11)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_12_15" value="$format.formatNumber($!{balanceSheet.december},2,100)" onchange="count(this,15,12)"/> </td>
+            	<td><input class="rinpstybc" type="text" id="" name="total_15" value="$format.formatNumber($!{balanceSheet.totalAll},2,100)"  readonly="readonly"/></td>
+            	<td><input class="rinpstybc" type="text" id="" name="pre_month_15" value="$format.formatNumber($!{balanceSheet.monthlyAverage},2,100)" readonly="readonly"/></td>
+            </tr>
+                #end
+            #end
+            #foreach($balanceSheet in $!customerInforUpdateIncomeStatement)
+              #if($balanceSheet.loanType==16)
+             <tr>
+              <td><label class="labelstynb">广告费</label></td>
+                 <td><input class="rinpsty" type="text" id="" name="month_1_16" value="$format.formatNumber($!{balanceSheet.january},2,100)" onchange="count(this,16,1)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_2_16" value="$format.formatNumber($!{balanceSheet.february},2,100)" onchange="count(this,16,2)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_3_16" value="$format.formatNumber($!{balanceSheet.march},2,100)" onchange="count(this,16,3)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_4_16" value="$format.formatNumber($!{balanceSheet.april},2,100)" onchange="count(this,16,4)"  /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_5_16" value="$format.formatNumber($!{balanceSheet.may},2,100)" onchange="count(this,16,5)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_6_16" value="$format.formatNumber($!{balanceSheet.june},2,100)" onchange="count(this,16,6)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_7_16" value="$format.formatNumber($!{balanceSheet.july},2,100)" onchange="count(this,16,7)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_8_16" value="$format.formatNumber($!{balanceSheet.august},2,100)" onchange="count(this,16,8)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_9_16" value="$format.formatNumber($!{balanceSheet.september},2,100)" onchange="count(this,16,9)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_10_16" value="$format.formatNumber($!{balanceSheet.october},2,100)" onchange="count(this,16,10)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_11_16" value="$format.formatNumber($!{balanceSheet.november},2,100)" onchange="count(this,16,11)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_12_16" value="$format.formatNumber($!{balanceSheet.december},2,100)" onchange="count(this,16,12)"/> </td>
+            	<td><input class="rinpstybc" type="text" id="" name="total_16" value="$format.formatNumber($!{balanceSheet.totalAll},2,100)"  readonly="readonly"/></td>
+            	<td><input class="rinpstybc" type="text" id="" name="pre_month_16" value="$format.formatNumber($!{balanceSheet.monthlyAverage},2,100)" readonly="readonly"/></td>
+            </tr>
+                  #end
+            #end
+            #foreach($balanceSheet in $!customerInforUpdateIncomeStatement)
+              #if($balanceSheet.loanType==17)
+             <tr>
+              <td><label class="labelstynb">运输油费</label></td>
+                 <td><input class="rinpsty" type="text" id="" name="month_1_17" value="$format.formatNumber($!{balanceSheet.january},2,100)" onchange="count(this,17,1)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_2_17" value="$format.formatNumber($!{balanceSheet.february},2,100)" onchange="count(this,17,2)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_3_17" value="$format.formatNumber($!{balanceSheet.march},2,100)" onchange="count(this,17,3)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_4_17" value="$format.formatNumber($!{balanceSheet.april},2,100)" onchange="count(this,17,4)"  /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_5_17" value="$format.formatNumber($!{balanceSheet.may},2,100)" onchange="count(this,17,5)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_6_17" value="$format.formatNumber($!{balanceSheet.june},2,100)" onchange="count(this,17,6)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_7_17" value="$format.formatNumber($!{balanceSheet.july},2,100)" onchange="count(this,17,7)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_8_17" value="$format.formatNumber($!{balanceSheet.august},2,100)" onchange="count(this,17,8)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_9_17" value="$format.formatNumber($!{balanceSheet.september},2,100)" onchange="count(this,17,9)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_10_17" value="$format.formatNumber($!{balanceSheet.october},2,100)" onchange="count(this,17,10)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_11_17" value="$format.formatNumber($!{balanceSheet.november},2,100)" onchange="count(this,17,11)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_12_17" value="$format.formatNumber($!{balanceSheet.december},2,100)" onchange="count(this,17,12)"/> </td>
+            	<td><input class="rinpstybc" type="text" id="" name="total_17" value="$format.formatNumber($!{balanceSheet.totalAll},2,100)"  readonly="readonly"/></td>
+            	<td><input class="rinpstybc" type="text" id="" name="pre_month_17" value="$format.formatNumber($!{balanceSheet.monthlyAverage},2,100)" readonly="readonly"/></td>
+            </tr>
+                   #end
+            #end
+            #foreach($balanceSheet in $!customerInforUpdateIncomeStatement)
+              #if($balanceSheet.loanType==18)
+              <tr>
+              <td><label class="labelstynb">物业管理费</label></td>
+                 <td><input class="rinpsty" type="text" id="" name="month_1_18" value="$format.formatNumber($!{balanceSheet.january},2,100)" onchange="count(this,18,1)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_2_18" value="$format.formatNumber($!{balanceSheet.february},2,100)" onchange="count(this,18,2)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_3_18" value="$format.formatNumber($!{balanceSheet.march},2,100)" onchange="count(this,18,3)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_4_18" value="$format.formatNumber($!{balanceSheet.april},2,100)" onchange="count(this,18,4)"  /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_5_18" value="$format.formatNumber($!{balanceSheet.may},2,100)" onchange="count(this,18,5)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_6_18" value="$format.formatNumber($!{balanceSheet.june},2,100)" onchange="count(this,18,6)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_7_18" value="$format.formatNumber($!{balanceSheet.july},2,100)" onchange="count(this,18,7)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_8_18" value="$format.formatNumber($!{balanceSheet.august},2,100)" onchange="count(this,18,8)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_9_18" value="$format.formatNumber($!{balanceSheet.september},2,100)" onchange="count(this,18,9)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_10_18" value="$format.formatNumber($!{balanceSheet.october},2,100)" onchange="count(this,18,10)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_11_18" value="$format.formatNumber($!{balanceSheet.november},2,100)" onchange="count(this,18,11)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_12_18" value="$format.formatNumber($!{balanceSheet.december},2,100)" onchange="count(this,18,12)"/> </td>
+            	<td><input class="rinpstybc" type="text" id="" name="total_18" value="$format.formatNumber($!{balanceSheet.totalAll},2,100)"  readonly="readonly"/></td>
+            	<td><input class="rinpstybc" type="text" id="" name="pre_month_18" value="$format.formatNumber($!{balanceSheet.monthlyAverage},2,100)" readonly="readonly"/></td>
+            </tr>
+        #end
+            #end
+            #foreach($balanceSheet in $!customerInforUpdateIncomeStatement)
+              #if($balanceSheet.loanType==19)
+              <tr>
+              <td><label class="labelstynb">生产许可合格证</label></td>
+                   <td><input class="rinpsty" type="text" id="" name="month_1_19" value="$format.formatNumber($!{balanceSheet.january},2,100)" onchange="count(this,19,1)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_2_19" value="$format.formatNumber($!{balanceSheet.february},2,100)" onchange="count(this,19,2)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_3_19" value="$format.formatNumber($!{balanceSheet.march},2,100)" onchange="count(this,19,3)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_4_19" value="$format.formatNumber($!{balanceSheet.april},2,100)" onchange="count(this,19,4)"  /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_5_19" value="$format.formatNumber($!{balanceSheet.may},2,100)" onchange="count(this,19,5)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_6_19" value="$format.formatNumber($!{balanceSheet.june},2,100)" onchange="count(this,19,6)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_7_19" value="$format.formatNumber($!{balanceSheet.july},2,100)" onchange="count(this,19,7)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_8_19" value="$format.formatNumber($!{balanceSheet.august},2,100)" onchange="count(this,19,8)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_9_19" value="$format.formatNumber($!{balanceSheet.september},2,100)" onchange="count(this,19,9)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_10_19" value="$format.formatNumber($!{balanceSheet.october},2,100)" onchange="count(this,19,10)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_11_19" value="$format.formatNumber($!{balanceSheet.november},2,100)" onchange="count(this,19,11)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_12_19" value="$format.formatNumber($!{balanceSheet.december},2,100)" onchange="count(this,19,12)"/> </td>
+            	<td><input class="rinpstybc" type="text" id="" name="total_19" value="$format.formatNumber($!{balanceSheet.totalAll},2,100)"  readonly="readonly"/></td>
+            	<td><input class="rinpstybc" type="text" id="" name="pre_month_19" value="$format.formatNumber($!{balanceSheet.monthlyAverage},2,100)" readonly="readonly"/></td>
+            </tr>
+            #end
+            #end
+            #foreach($balanceSheet in $!customerInforUpdateIncomeStatement)
+              #if($balanceSheet.loanType==20)
+              <tr>
+              <td><label class="labelstynb">保险费</label></td>
+                 <td><input class="rinpsty" type="text" id="" name="month_1_20" value="$format.formatNumber($!{balanceSheet.january},2,100)" onchange="count(this,20,1)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_2_20" value="$format.formatNumber($!{balanceSheet.february},2,100)" onchange="count(this,20,2)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_3_20" value="$format.formatNumber($!{balanceSheet.march},2,100)" onchange="count(this,20,3)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_4_20" value="$format.formatNumber($!{balanceSheet.april},2,100)" onchange="count(this,20,4)"  /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_5_20" value="$format.formatNumber($!{balanceSheet.may},2,100)" onchange="count(this,20,5)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_6_20" value="$format.formatNumber($!{balanceSheet.june},2,100)" onchange="count(this,20,6)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_7_20" value="$format.formatNumber($!{balanceSheet.july},2,100)" onchange="count(this,20,7)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_8_20" value="$format.formatNumber($!{balanceSheet.august},2,100)" onchange="count(this,20,8)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_9_20" value="$format.formatNumber($!{balanceSheet.september},2,100)" onchange="count(this,20,9)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_10_20" value="$format.formatNumber($!{balanceSheet.october},2,100)" onchange="count(this,20,10)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_11_20" value="$format.formatNumber($!{balanceSheet.november},2,100)" onchange="count(this,20,11)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_12_20" value="$format.formatNumber($!{balanceSheet.december},2,100)" onchange="count(this,20,12)"/> </td>
+            	<td><input class="rinpstybc"  type="text" id="" name="total_20" value="$format.formatNumber($!{balanceSheet.totalAll},2,100)"  readonly="readonly"/></td>
+            	<td><input class="rinpstybc" type="text" id="" name="pre_month_20" value="$format.formatNumber($!{balanceSheet.monthlyAverage},2,100)" readonly="readonly"/></td>
+            </tr >
+              <tr id="21">
+               <td><label class="labelstynb">其他</label> <a href="#" class="delbtn"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtn"><img src="${contextPath}/images/add.png" /></a></td>
+              <td colspan="14" >&nbsp;</td>
+            </tr>
+            #end
+            #end
+            #foreach($balanceSheet in $!customerInforUpdateIncomeStatement)
+              #if($balanceSheet.loanType==21)
+               <tr id='21_1'>
+               <td><input class="rinpstyname" type="text" name="items_name_21" value="$!{balanceSheet.names}" style="text-align: center;"onchange="isempty(this)"/></td>
+                 <td><input class="rinpsty" type="text" id="" name="month_1_21" value="$format.formatNumber($!{balanceSheet.january},2,100)" onchange="count1(this,21,1)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_2_21" value="$format.formatNumber($!{balanceSheet.february},2,100)" onchange="count1(this,21,2)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_3_21" value="$format.formatNumber($!{balanceSheet.march},2,100)" onchange="count1(this,21,3)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_4_21" value="$format.formatNumber($!{balanceSheet.april},2,100)" onchange="count1(this,21,4)"  /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_5_21" value="$format.formatNumber($!{balanceSheet.may},2,100)" onchange="count1(this,21,5)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_6_21" value="$format.formatNumber($!{balanceSheet.june},2,100)" onchange="count1(this,21,6)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_7_21" value="$format.formatNumber($!{balanceSheet.july},2,100)" onchange="count1(this,21,7)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_8_21" value="$format.formatNumber($!{balanceSheet.august},2,100)" onchange="count1(this,21,8)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_9_21" value="$format.formatNumber($!{balanceSheet.september},2,100)" onchange="count1(this,21,9)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_10_21" value="$format.formatNumber($!{balanceSheet.october},2,100)" onchange="count1(this,21,10)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_11_21" value="$format.formatNumber($!{balanceSheet.november},2,100)" onchange="count1(this,21,11)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_12_21" value="$format.formatNumber($!{balanceSheet.december},2,100)" onchange="count1(this,21,12)"/> </td>
+            	<td><input class="rinpstybc" type="text" id="" name="total_21" value="$format.formatNumber($!{balanceSheet.totalAll},2,100)"  readonly="readonly"/></td>
+            	<td><input class="rinpstybc" type="text" id="" name="pre_month_21" value="$format.formatNumber($!{balanceSheet.monthlyAverage},2,100)" readonly="readonly"/></td>
+            </tr >
+               #end
+            #end
+            #foreach($balanceSheet in $!customerInforUpdateIncomeStatement)
+              #if($balanceSheet.loanType==22)
+              <tr id="22">
+              <td><label class="labelstynb">税收</label></td>
+              	<td><input class="rinpsty" type="text" id="" name="month_1_22" value="$format.formatNumber($!{balanceSheet.january},2,100)" onchange="count(this,22,1)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_2_22" value="$format.formatNumber($!{balanceSheet.february},2,100)" onchange="count(this,22,2)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_3_22" value="$format.formatNumber($!{balanceSheet.march},2,100)" onchange="count(this,22,3)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_4_22" value="$format.formatNumber($!{balanceSheet.april},2,100)" onchange="count(this,22,4)"  /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_5_22" value="$format.formatNumber($!{balanceSheet.may},2,100)" onchange="count(this,22,5)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_6_22" value="$format.formatNumber($!{balanceSheet.june},2,100)" onchange="count(this,22,6)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_7_22" value="$format.formatNumber($!{balanceSheet.july},2,100)" onchange="count(this,22,7)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_8_22" value="$format.formatNumber($!{balanceSheet.august},2,100)" onchange="count(this,22,8)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_9_22" value="$format.formatNumber($!{balanceSheet.september},2,100)" onchange="count(this,22,9)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_10_22" value="$format.formatNumber($!{balanceSheet.october},2,100)" onchange="count(this,22,10)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_11_22" value="$format.formatNumber($!{balanceSheet.november},2,100)" onchange="count(this,22,11)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_12_22" value="$format.formatNumber($!{balanceSheet.december},2,100)" onchange="count(this,22,12)"/> </td>
+            	<td><input class="rinpstybc" type="text" id="" name="total_22" value="$format.formatNumber($!{balanceSheet.totalAll},2,100)"  readonly="readonly"/></td>
+            	<td><input class="rinpstybc" type="text" id="" name="pre_month_22" value="$format.formatNumber($!{balanceSheet.monthlyAverage},2,100)" readonly="readonly"/></td>
+            </tr>
+                 #end
+            #end
+            #foreach($balanceSheet in $!customerInforUpdateIncomeStatement)
+              #if($balanceSheet.loanType==23)
+             <tr>
+              <td><label  class="labelsty">总额（3）</label></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_1_23" value="$format.formatNumber($!{balanceSheet.january},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_2_23" value="$format.formatNumber($!{balanceSheet.february},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_3_23" value="$format.formatNumber($!{balanceSheet.march},2,100)" readonly="readonly"/></td>
+              <td><input class="rinpstybc"  type="text" id="" name="month_4_23" value="$format.formatNumber($!{balanceSheet.april},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_5_23" value="$format.formatNumber($!{balanceSheet.may},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_6_23" value="$format.formatNumber($!{balanceSheet.june},2,100)" readonly="readonly"/></td>
+              <td><input class="rinpstybc"  type="text" id="" name="month_7_23" value="$format.formatNumber($!{balanceSheet.july},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_8_23" value="$format.formatNumber($!{balanceSheet.august},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_9_23" value="$format.formatNumber($!{balanceSheet.september},2,100)" readonly="readonly"/></td>
+              <td><input class="rinpstybc"  type="text" id="" name="month_10_23" value="$format.formatNumber($!{balanceSheet.october},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_11_23" value="$format.formatNumber($!{balanceSheet.november},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_12_23" value="$format.formatNumber($!{balanceSheet.december},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="total_23" value="$format.formatNumber($!{balanceSheet.totalAll},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="pre_month_23" value="$format.formatNumber($!{balanceSheet.monthlyAverage},2,100)" readonly="readonly"/></td>
+            </tr>
+                 #end
+            #end
+            #foreach($balanceSheet in $!customerInforUpdateIncomeStatement)
+              #if($balanceSheet.loanType==24)
+              <tr>
+              <td><label  class="labelsty">分期还款（4）</label></td>
+               	<td><input class="rinpsty" type="text" id="" name="month_1_24" value="$format.formatNumber($!{balanceSheet.january},2,100)" onchange="count(this,24,1)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_2_24" value="$format.formatNumber($!{balanceSheet.february},2,100)" onchange="count(this,24,2)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_3_24" value="$format.formatNumber($!{balanceSheet.march},2,100)" onchange="count(this,24,3)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_4_24" value="$format.formatNumber($!{balanceSheet.april},2,100)" onchange="count(this,24,4)"  /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_5_24" value="$format.formatNumber($!{balanceSheet.may},2,100)" onchange="count(this,24,5)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_6_24" value="$format.formatNumber($!{balanceSheet.june},2,100)" onchange="count(this,24,6)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_7_24" value="$format.formatNumber($!{balanceSheet.july},2,100)" onchange="count(this,24,7)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_8_24" value="$format.formatNumber($!{balanceSheet.august},2,100)" onchange="count(this,24,8)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_9_24" value="$format.formatNumber($!{balanceSheet.september},2,100)" onchange="count(this,24,9)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_10_24" value="$format.formatNumber($!{balanceSheet.october},2,100)" onchange="count(this,24,10)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_11_24" value="$format.formatNumber($!{balanceSheet.november},2,100)" onchange="count(this,24,11)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_12_24" value="$format.formatNumber($!{balanceSheet.december},2,100)" onchange="count(this,24,12)"/> </td>
+            	<td><input class="rinpstybc"  type="text" id="" name="total_24" value="$format.formatNumber($!{balanceSheet.totalAll},2,100)"  readonly="readonly"/></td>
+            	<td><input class="rinpstybc"  type="text" id="" name="pre_month_24" value="$format.formatNumber($!{balanceSheet.monthlyAverage},2,100)" readonly="readonly"/></td>
+            </tr>
+                   #end
+            #end
+            #foreach($balanceSheet in $!customerInforUpdateIncomeStatement)
+              #if($balanceSheet.loanType==25)
+               <tr>
+              <td><label   class="labelsty">净利润 =1-2-3-4</label></td>
+                <td><input class="rinpstybc" type="text" id="" name="month_1_25" value="$format.formatNumber($!{balanceSheet.january},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_2_25" value="$format.formatNumber($!{balanceSheet.february},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_3_25" value="$format.formatNumber($!{balanceSheet.march},2,100)" readonly="readonly"/></td>
+              <td><input class="rinpstybc"  type="text" id="" name="month_4_25" value="$format.formatNumber($!{balanceSheet.april},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_5_25" value="$format.formatNumber($!{balanceSheet.may},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_6_25" value="$format.formatNumber($!{balanceSheet.june},2,100)" readonly="readonly"/></td>
+              <td><input class="rinpstybc"  type="text" id="" name="month_7_25" value="$format.formatNumber($!{balanceSheet.july},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_8_25" value="$format.formatNumber($!{balanceSheet.august},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_9_25" value="$format.formatNumber($!{balanceSheet.september},2,100)" readonly="readonly"/></td>
+              <td><input class="rinpstybc"  type="text" id="" name="month_10_25" value="$format.formatNumber($!{balanceSheet.october},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_11_25" value="$format.formatNumber($!{balanceSheet.november},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_12_25" value="$format.formatNumber($!{balanceSheet.december},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="total_25" value="$format.formatNumber($!{balanceSheet.totalAll},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="pre_month_25" value="$format.formatNumber($!{balanceSheet.monthlyAverage},2,100)" readonly="readonly"/></td>
+            </tr>
+                    #end
+            #end
+           
+               <tr >
+              <td class="titlefc"><label style="font-weight: bold; ">其他</label></td>
+            <td colspan="14" ></td>
+            </tr>
+             #foreach($balanceSheet in $!customerInforUpdateIncomeStatement)
+              #if($balanceSheet.loanType==26)
+              <tr id='26'>
+               <td><label class="labelstynb">家庭开支</label></td>
+              <td><input class="rinpsty" type="text" id="" name="month_1_26" value="$format.formatNumber($!{balanceSheet.january},2,100)" onchange="count(this,26,1)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_2_26" value="$format.formatNumber($!{balanceSheet.february},2,100)" onchange="count(this,26,2)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_3_26" value="$format.formatNumber($!{balanceSheet.march},2,100)" onchange="count(this,26,3)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_4_26" value="$format.formatNumber($!{balanceSheet.april},2,100)" onchange="count(this,26,4)"  /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_5_26" value="$format.formatNumber($!{balanceSheet.may},2,100)" onchange="count(this,26,5)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_6_26" value="$format.formatNumber($!{balanceSheet.june},2,100)" onchange="count(this,26,6)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_7_26" value="$format.formatNumber($!{balanceSheet.july},2,100)" onchange="count(this,26,7)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_8_26" value="$format.formatNumber($!{balanceSheet.august},2,100)" onchange="count(this,26,8)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_9_26" value="$format.formatNumber($!{balanceSheet.september},2,100)" onchange="count(this,26,9)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_10_26" value="$format.formatNumber($!{balanceSheet.october},2,100)" onchange="count(this,26,10)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_11_26" value="$format.formatNumber($!{balanceSheet.november},2,100)" onchange="count(this,26,11)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_12_26" value="$format.formatNumber($!{balanceSheet.december},2,100)" onchange="count(this,26,12)"/> </td>
+            	<td><input class="rinpstybc" type="text" id="" name="total_26" value="$format.formatNumber($!{balanceSheet.totalAll},2,100)"  readonly="readonly"/></td>
+            	<td><input class="rinpstybc" type="text" id="" name="pre_month_26" value="$format.formatNumber($!{balanceSheet.monthlyAverage},2,100)" readonly="readonly"/></td>
+            </tr>
+                    #end
+            #end
+             #foreach($balanceSheet in $!customerInforUpdateIncomeStatement)
+              #if($balanceSheet.loanType==27)
+              <tr>
+              <td><label class="labelstynb">分期付款(私人用途)</label></td>
+              <td><input class="rinpsty" type="text" id="" name="month_1_27" value="$format.formatNumber($!{balanceSheet.january},2,100)" onchange="count(this,27,1)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_2_27" value="$format.formatNumber($!{balanceSheet.february},2,100)" onchange="count(this,27,2)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_3_27" value="$format.formatNumber($!{balanceSheet.march},2,100)" onchange="count(this,27,3)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_4_27" value="$format.formatNumber($!{balanceSheet.april},2,100)" onchange="count(this,27,4)"  /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_5_27" value="$format.formatNumber($!{balanceSheet.may},2,100)" onchange="count(this,27,5)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_6_27" value="$format.formatNumber($!{balanceSheet.june},2,100)" onchange="count(this,27,6)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_7_27" value="$format.formatNumber($!{balanceSheet.july},2,100)" onchange="count(this,27,7)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_8_27" value="$format.formatNumber($!{balanceSheet.august},2,100)" onchange="count(this,27,8)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_9_27" value="$format.formatNumber($!{balanceSheet.september},2,100)" onchange="count(this,27,9)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_10_27" value="$format.formatNumber($!{balanceSheet.october},2,100)" onchange="count(this,27,10)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_11_27" value="$format.formatNumber($!{balanceSheet.november},2,100)" onchange="count(this,27,11)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_12_27" value="$format.formatNumber($!{balanceSheet.december},2,100)" onchange="count(this,27,12)"/> </td>
+            	<td><input class="rinpstybc" type="text" id="" name="total_27" value="$format.formatNumber($!{balanceSheet.totalAll},2,100)"  readonly="readonly"/></td>
+            	<td><input class="rinpstybc" type="text" id="" name="pre_month_27" value="$format.formatNumber($!{balanceSheet.monthlyAverage},2,100)" readonly="readonly"/></td>
+            </tr>
+                    #end
+            #end
+            <tr id="28">
+              <td><label class="labelstynb">其它开支</label> <a href="#" class="delbtn"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtn"><img src="${contextPath}/images/add.png" /></a></td>
+              <td colspan="14" >&nbsp;</td>
+            </tr>
+             #foreach($balanceSheet in $!customerInforUpdateIncomeStatement)
+              #if($balanceSheet.loanType==28)
+               <tr id="28_1">
+              <td><input class="rinpstyname" type="text" name="items_name_28" value="$!{balanceSheet.names}" style="text-align: center;"onchange="isempty(this)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_1_28" value="$format.formatNumber($!{balanceSheet.january},2,100)" onchange="count1(this,28,1)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_2_28" value="$format.formatNumber($!{balanceSheet.february},2,100)" onchange="count1(this,28,2)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_3_28" value="$format.formatNumber($!{balanceSheet.march},2,100)" onchange="count1(this,28,3)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_4_28" value="$format.formatNumber($!{balanceSheet.april},2,100)" onchange="count1(this,28,4)"  /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_5_28" value="$format.formatNumber($!{balanceSheet.may},2,100)" onchange="count1(this,28,5)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_6_28" value="$format.formatNumber($!{balanceSheet.june},2,100)" onchange="count1(this,28,6)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_7_28" value="$format.formatNumber($!{balanceSheet.july},2,100)" onchange="count1(this,28,7)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_8_28" value="$format.formatNumber($!{balanceSheet.august},2,100)" onchange="count1(this,28,8)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_9_28" value="$format.formatNumber($!{balanceSheet.september},2,100)" onchange="count1(this,28,9)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_10_28" value="$format.formatNumber($!{balanceSheet.october},2,100)" onchange="count1(this,28,10)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_11_28" value="$format.formatNumber($!{balanceSheet.november},2,100)" onchange="count1(this,28,11)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_12_28" value="$format.formatNumber($!{balanceSheet.december},2,100)" onchange="count1(this,28,12)"/> </td>
+            	<td><input class="rinpstybc" type="text" id="" name="total_28" value="$format.formatNumber($!{balanceSheet.totalAll},2,100)"  readonly="readonly"/></td>
+            	<td><input class="rinpstybc" type="text" id="" name="pre_month_28" value="$format.formatNumber($!{balanceSheet.monthlyAverage},2,100)" readonly="readonly"/></td>
+            </tr>
+            #end
+            #end
+            <tr id="29">
+              <td><label class="labelstynb">其他收入</label> <a href="#" class="delbtn"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtn"><img src="${contextPath}/images/add.png" /></a></td>
+               <td colspan="14" >&nbsp;</td>
+            </tr>
+              #foreach($balanceSheet in $!customerInforUpdateIncomeStatement)
+              #if($balanceSheet.loanType==29)
+              <tr id="29_1">
+              <td><input class="rinpstyname" type="text" name="items_name_29" value="$!{balanceSheet.names}" style="text-align: center;"onchange="isempty(this)"/></td>
+                <td><input class="rinpsty" type="text" id="" name="month_1_29" value="$format.formatNumber($!{balanceSheet.january},2,100)" onchange="count1(this,29,1)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_2_29" value="$format.formatNumber($!{balanceSheet.february},2,100)" onchange="count1(this,29,2)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_3_29" value="$format.formatNumber($!{balanceSheet.march},2,100)" onchange="count1(this,29,3)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_4_29" value="$format.formatNumber($!{balanceSheet.april},2,100)" onchange="count1(this,29,4)"  /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_5_29" value="$format.formatNumber($!{balanceSheet.may},2,100)" onchange="count1(this,29,5)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_6_29" value="$format.formatNumber($!{balanceSheet.june},2,100)" onchange="count1(this,29,6)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_7_29" value="$format.formatNumber($!{balanceSheet.july},2,100)" onchange="count1(this,29,7)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_8_29" value="$format.formatNumber($!{balanceSheet.august},2,100)" onchange="count1(this,29,8)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_9_29" value="$format.formatNumber($!{balanceSheet.september},2,100)" onchange="count1(this,29,9)" /></td>
+            	<td><input class="rinpsty" type="text" id="" name="month_10_29" value="$format.formatNumber($!{balanceSheet.october},2,100)" onchange="count1(this,29,10)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_11_29" value="$format.formatNumber($!{balanceSheet.november},2,100)" onchange="count1(this,29,11)"/> </td>
+            	<td><input class="rinpsty" type="text" id="" name="month_12_29" value="$format.formatNumber($!{balanceSheet.december},2,100)" onchange="count1(this,29,12)"/> </td>
+            	<td><input class="rinpstybc" type="text" id="" name="total_29" value="$format.formatNumber($!{balanceSheet.totalAll},2,100)"  readonly="readonly"/></td>
+            	<td><input class="rinpstybc" type="text" id="" name="pre_month_29" value="$format.formatNumber($!{balanceSheet.monthlyAverage},2,100)" readonly="readonly"/></td>
+            </tr>
+            #end
+            #end
+             #foreach($balanceSheet in $!customerInforUpdateIncomeStatement)
+              #if($balanceSheet.loanType==30)
+              <tr id="30">
+              <td><label class="labelsty">每月可支配资金</label></td>
+             <td><input class="rinpstybc"  type="text" id="" name="month_1_30" value="$format.formatNumber($!{balanceSheet.january},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_2_30" value="$format.formatNumber($!{balanceSheet.february},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_3_30" value="$format.formatNumber($!{balanceSheet.march},2,100)" readonly="readonly"/></td>
+              <td><input class="rinpstybc"  type="text" id="" name="month_4_30" value="$format.formatNumber($!{balanceSheet.april},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_5_30" value="$format.formatNumber($!{balanceSheet.may},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_6_30" value="$format.formatNumber($!{balanceSheet.june},2,100)" readonly="readonly"/></td>
+              <td><input class="rinpstybc"  type="text" id="" name="month_7_30" value="$format.formatNumber($!{balanceSheet.july},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_8_30" value="$format.formatNumber($!{balanceSheet.august},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_9_30" value="$format.formatNumber($!{balanceSheet.september},2,100)" readonly="readonly"/></td>
+              <td><input class="rinpstybc"  type="text" id="" name="month_10_30" value="$format.formatNumber($!{balanceSheet.october},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_11_30" value="$format.formatNumber($!{balanceSheet.november},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_12_30" value="$format.formatNumber($!{balanceSheet.december},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="total_30" value="$format.formatNumber($!{balanceSheet.totalAll},2,100)" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="pre_month_30" value="$format.formatNumber($!{balanceSheet.monthlyAverage},2,100)" readonly="readonly"/></td>
+            </tr>
+            #end
+            #end
+          </table>
+          #else
+          	  <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc">
+            <colgroup>
+              <col width="400px" />
+              <col width="6%" />
+              <col width="6%" />
+              <col width="6%" />
+              <col width="6%" />
+              <col width="6%" />
+              <col width="6%" />
+              <col width="6%" />
+              <col width="6%" />
+              <col width="6%" />
+              <col width="6%" />
+              <col width="6%" />
+              <col width="6%" />
+              <col width="6%" />
+              <col width="6%" />
+            </colgroup>
+              <tr><td class="titlec"colspan="15">损益</td></tr>
+            <tr>
+              <td class="titlefc"><label >项目</label></td>
+                <td><input class="rinpstyname" type="text" id="month_1" name="month_1_0" value="" onclick="showTime(this,'div1')"/></td>
+               <td><input class="rinpstyname" type="text" id="month_2" name="month_2_0" value="" onclick="showTime(this,'div1')"/></td>
+               <td><input class="rinpstyname" type="text" id="month_3" name="month_3_0" value="" onclick="showTime(this,'div1')"/></td>
+              <td><input class="rinpstyname" type="text" id="month_4" name="month_4_0" value="" onclick="showTime(this,'div1')"/></td>
+               <td><input class="rinpstyname" type="text" id="month_5" name="month_5_0" value="" onclick="showTime(this,'div1')"/></td>
+               <td><input class="rinpstyname" type="text" id="month_6" name="month_6_0" value="" onclick="showTime(this,'div1')"/></td>
+              <td><input class="rinpstyname" type="text" id="month_7" name="month_7_0" value="" onclick="showTime(this,'div1')"/></td>
+               <td><input class="rinpstyname" type="text" id="month_8" name="month_8_0" value="" onclick="showTime(this,'div1')"/></td>
+               <td><input class="rinpstyname" type="text" id="month_9" name="month_9_0" value="" onclick="showTime(this,'div1')"/></td>
+              <td><input class="rinpstyname" type="text" id="month_10" name="month_10_0" value="" onclick="showTime(this,'div1')"/></td>
+               <td><input class="rinpstyname" type="text" id="month_11" name="month_11_0" value="" onclick="showTime(this,'div1')"/></td>
+               <td><input class="rinpstyname" type="text" id="month_12" name="month_12_0" value="" onclick="showTime(this,'div1')"/></td>
+               <td><label style="font-weight: bold;">总计</label></td>
+               <td><label style="font-weight: bold;">月平均</label></td>
+            </tr>
+            <tr id="1">
+              <td ><label  class="labelsty" >收入</label> <a href="#" class="delbtn"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtn"><img src="${contextPath}/images/add.png" /></a></td>
+               <td colspan="14" >&nbsp;</td>
+            </tr>
+            <tr id="2">
+              <td><label  class="labelsty" >总额（1）</label></td>
+              <td><input class="rinpstybc"  type="text" id="" name="month_1_2" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_2_2" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_3_2" value="" readonly="readonly"/></td>
+              <td><input class="rinpstybc"  type="text" id="" name="month_4_2" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_5_2" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_6_2" value="" readonly="readonly"/></td>
+              <td><input class="rinpstybc"  type="text" id="" name="month_7_2" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_8_2" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_9_2" value="" readonly="readonly"/></td>
+              <td><input class="rinpstybc"  type="text" id="" name="month_10_2" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_11_2" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_12_2" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="total_2" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="pre_month_2" value="" readonly="readonly"/></td>
+            </tr>
+             <tr id="3">
+              <td ><label  class="labelsty" >可变成本</label><a href="#" class="delbtn"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtn"><img src="${contextPath}/images/add.png" /></a></td>
+               <td colspan="14" >&nbsp;</td>
+            </tr>
+            <tr id="4">
+              <td><label  class="labelsty"  >总额（2）</label></td>
+              <td><input class="rinpstybc"  type="text" id="" name="month_1_4" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_2_4" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_3_4" value="" readonly="readonly"/></td>
+              <td><input class="rinpstybc"  type="text" id="" name="month_4_4" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_5_4" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_6_4" value="" readonly="readonly"/></td>
+              <td><input class="rinpstybc"  type="text" id="" name="month_7_4" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_8_4" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_9_4" value="" readonly="readonly"/></td>
+              <td><input class="rinpstybc"  type="text" id="" name="month_10_4" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_11_4" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_12_4" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="total_4" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="pre_month_4" value="" readonly="readonly"/></td>
+            </tr>
+            <tr>
+              <td><label  class="labelsty" >毛利（3）= 1-2</label></td>
+              <td><input class="rinpstybc"  type="text" id="" name="month_1_5" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_2_5" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_3_5" value="" readonly="readonly"/></td>
+              <td><input class="rinpstybc"  type="text" id="" name="month_4_5" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_5_5" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_6_5" value="" readonly="readonly"/></td>
+              <td><input class="rinpstybc"  type="text" id="" name="month_7_5" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_8_5" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_9_5" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_10_5" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_11_5" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_12_5" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="total_5" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="pre_month_5" value="" readonly="readonly"/></td>
+            </tr>
+           <tr>
+             <td class="titlefc" ><label style="font-weight: bold;  " >营业费用</label></td>
+              <td colspan="14"></td>
+            </tr>
+               <tr>
+              <td><label class="labelstynb">工资</label></td>
+                <td><input class="rinpsty" type="text" id="" name="month_1_6" value=""  onchange="count(this,6,1)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_2_6" value=""  onchange="count(this,6,2)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_3_6" value="" onchange="count(this,6,3)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_4_6" value="" onchange="count(this,6,4)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_5_6" value="" onchange="count(this,6,5)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_6_6" value="" onchange="count(this,6,6)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_7_6" value="" onchange="count(this,6,7)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_8_6" value="" onchange="count(this,6,8)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_9_6" value="" onchange="count(this,6,9)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_10_6" value="" onchange="count(this,6,10)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_11_6" value="" onchange="count(this,6,11)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_12_6" value="" onchange="count(this,6,12)"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="total_6" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="pre_month_6" value="" readonly="readonly"/></td>
+            </tr>
+               <tr>
+              <td><label class="labelstynb">经营性房屋租赁费</label></td>
+                 <td><input class="rinpsty" type="text" id="" name="month_1_7" value="" onchange="count(this,7,1)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_2_7" value="" onchange="count(this,7,2)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_3_7" value="" onchange="count(this,7,3)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_4_7" value="" onchange="count(this,7,4)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_5_7" value="" onchange="count(this,7,5)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_6_7" value="" onchange="count(this,7,6)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_7_7" value="" onchange="count(this,7,7)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_8_7" value="" onchange="count(this,7,8)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_9_7" value="" onchange="count(this,7,9)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_10_7" value="" onchange="count(this,7,10)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_11_7" value="" onchange="count(this,7,11)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_12_7" value="" onchange="count(this,7,12)"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="total_7" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="pre_month_7" value="" readonly="readonly"/></td>
+            </tr>
+             <tr>
+              <td><label class="labelstynb">水费</label></td>
+                  <td><input class="rinpsty" type="text" id="" name="month_1_8" value="" onchange="count(this,8,1)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_2_8" value="" onchange="count(this,8,2)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_3_8" value="" onchange="count(this,8,3)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_4_8" value="" onchange="count(this,8,4)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_5_8" value="" onchange="count(this,8,5)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_6_8" value="" onchange="count(this,8,6)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_7_8" value="" onchange="count(this,8,7)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_8_8" value="" onchange="count(this,8,8)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_9_8" value="" onchange="count(this,8,9)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_10_8" value="" onchange="count(this,8,10)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_11_8" value="" onchange="count(this,8,11)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_12_8" value="" onchange="count(this,8,12)"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="total_8" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="pre_month_8" value="" readonly="readonly"/></td>
+            </tr>
+             <tr>
+              <td><label class="labelstynb">电费</label></td>
+                  <td><input class="rinpsty" type="text" id="" name="month_1_9" value="" onchange="count(this,9,1)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_2_9" value="" onchange="count(this,9,2)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_3_9" value="" onchange="count(this,9,3)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_4_9" value="" onchange="count(this,9,4)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_5_9" value="" onchange="count(this,9,5)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_6_9" value="" onchange="count(this,9,6)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_7_9" value="" onchange="count(this,9,7)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_8_9" value="" onchange="count(this,9,8)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_9_9" value="" onchange="count(this,9,9)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_10_9" value="" onchange="count(this,9,10)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_11_9" value="" onchange="count(this,9,11)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_12_9" value="" onchange="count(this,9,12)"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="total_9" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="pre_month_9" value="" readonly="readonly"/></td>
+            </tr>
+             <tr>
+              <td><label class="labelstynb">设备损耗</label></td>
+                  <td><input class="rinpsty" type="text" id="" name="month_1_10" value="" onchange="count(this,10,1)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_2_10" value="" onchange="count(this,10,2)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_3_10" value="" onchange="count(this,10,3)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_4_10" value="" onchange="count(this,10,4)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_5_10" value="" onchange="count(this,10,5)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_6_10" value="" onchange="count(this,10,6)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_7_10" value="" onchange="count(this,10,7)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_8_10" value="" onchange="count(this,10,8)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_9_10" value="" onchange="count(this,10,9)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_10_10" value="" onchange="count(this,10,10)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_11_10" value="" onchange="count(this,10,11)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_12_10" value="" onchange="count(this,10,12)"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="total_10" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="pre_month_10" value="" readonly="readonly"/></td>
+            </tr>
+             <tr>
+              <td><label class="labelstynb">伙食费</label></td>
+                 <td><input class="rinpsty" type="text" id="" name="month_1_11" value="" onchange="count(this,11,1)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_2_11" value="" onchange="count(this,11,2)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_3_11" value="" onchange="count(this,11,3)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_4_11" value="" onchange="count(this,11,4)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_5_11" value="" onchange="count(this,11,5)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_6_11" value="" onchange="count(this,11,6)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_7_11" value="" onchange="count(this,11,7)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_8_11" value="" onchange="count(this,11,8)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_9_11" value="" onchange="count(this,11,9)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_10_11" value="" onchange="count(this,11,10)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_11_11" value="" onchange="count(this,11,11)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_12_11" value="" onchange="count(this,11,12)"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="total_11" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="pre_month_11" value="" readonly="readonly"/></td>
+            </tr>
+             <tr>
+              <td><label class="labelstynb">电话费</label></td>
+                <td><input class="rinpsty" type="text" id="" name="month_1_12" value="" onchange="count(this,12,1)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_2_12" value="" onchange="count(this,12,2)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_3_12" value="" onchange="count(this,12,3)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_4_12" value="" onchange="count(this,12,4)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_5_12" value="" onchange="count(this,12,5)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_6_12" value="" onchange="count(this,12,6)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_7_12" value="" onchange="count(this,12,7)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_8_12" value="" onchange="count(this,12,8)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_9_12" value="" onchange="count(this,12,9)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_10_12" value="" onchange="count(this,12,10)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_11_12" value="" onchange="count(this,12,11)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_12_12" value="" onchange="count(this,12,12)"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="total_12" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="pre_month_12" value="" readonly="readonly"/></td>
+            </tr>
+             <tr>
+              <td><label class="labelstynb">公关费</label></td>
+                <td><input class="rinpsty" type="text" id="" name="month_1_13" value="" onchange="count(this,13,1)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_2_13" value="" onchange="count(this,13,2)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_3_13" value="" onchange="count(this,13,3)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_4_13" value="" onchange="count(this,13,4)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_5_13" value="" onchange="count(this,13,5)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_6_13" value="" onchange="count(this,13,6)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_7_13" value="" onchange="count(this,13,7)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_8_13" value="" onchange="count(this,13,8)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_9_13" value="" onchange="count(this,13,9)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_10_13" value="" onchange="count(this,13,10)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_11_13" value="" onchange="count(this,13,11)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_12_13" value="" onchange="count(this,13,12)"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="total_13" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="pre_month_13" value="" readonly="readonly"/></td>
+            </tr>
+             <tr>
+              <td><label class="labelstynb">汽车维修费</label></td>
+                 <td><input class="rinpsty" type="text" id="" name="month_1_14" value="" onchange="count(this,14,1)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_2_14" value="" onchange="count(this,14,2)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_3_14" value="" onchange="count(this,14,3)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_4_14" value="" onchange="count(this,14,4)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_5_14" value="" onchange="count(this,14,5)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_6_14" value="" onchange="count(this,14,6)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_7_14" value="" onchange="count(this,14,7)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_8_14" value="" onchange="count(this,14,8)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_9_14" value="" onchange="count(this,14,9)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_10_14" value="" onchange="count(this,14,10)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_11_14" value="" onchange="count(this,14,11)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_12_14" value="" onchange="count(this,14,12)"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="total_14" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="pre_month_14" value="" readonly="readonly"/></td>
+            </tr>
+             <tr>
+              <td><label class="labelstynb">机器维修费</label></td>
+                 <td><input class="rinpsty" type="text" id="" name="month_1_15" value="" onchange="count(this,15,1)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_2_15" value="" onchange="count(this,15,2)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_3_15" value="" onchange="count(this,15,3)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_4_15" value="" onchange="count(this,15,4)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_5_15" value="" onchange="count(this,15,5)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_6_15" value="" onchange="count(this,15,6)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_7_15" value="" onchange="count(this,15,7)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_8_15" value="" onchange="count(this,15,8)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_9_15" value="" onchange="count(this,15,9)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_10_15" value="" onchange="count(this,15,10)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_11_15" value="" onchange="count(this,15,11)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_12_15" value="" onchange="count(this,15,12)"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="total_15" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="pre_month_15" value="" readonly="readonly"/></td>
+            </tr>
+             <tr>
+              <td><label class="labelstynb">广告费</label></td>
+                 <td><input class="rinpsty" type="text" id="" name="month_1_16" value="" onchange="count(this,16,1)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_2_16" value="" onchange="count(this,16,2)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_3_16" value="" onchange="count(this,16,3)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_4_16" value="" onchange="count(this,16,4)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_5_16" value="" onchange="count(this,16,5)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_6_16" value="" onchange="count(this,16,6)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_7_16" value="" onchange="count(this,16,7)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_8_16" value="" onchange="count(this,16,8)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_9_16" value="" onchange="count(this,16,9)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_10_16" value="" onchange="count(this,16,10)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_11_16" value="" onchange="count(this,16,11)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_12_16" value="" onchange="count(this,16,12)"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="total_16" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="pre_month_16" value="" readonly="readonly"/></td>
+            </tr>
+             <tr>
+              <td><label class="labelstynb">运输油费</label></td>
+                  <td><input class="rinpsty" type="text" id="" name="month_1_17" value="" onchange="count(this,17,1)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_2_17" value="" onchange="count(this,17,2)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_3_17" value="" onchange="count(this,17,3)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_4_17" value="" onchange="count(this,17,4)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_5_17" value="" onchange="count(this,17,5)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_6_17" value="" onchange="count(this,17,6)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_7_17" value="" onchange="count(this,17,7)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_8_17" value="" onchange="count(this,17,8)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_9_17" value="" onchange="count(this,17,9)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_10_17" value="" onchange="count(this,17,10)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_11_17" value="" onchange="count(this,17,11)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_12_17" value="" onchange="count(this,17,12)"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="total_17" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="pre_month_17" value="" readonly="readonly"/></td>
+            </tr>
+              <tr>
+              <td><label class="labelstynb">物业管理费</label></td>
+                 <td><input class="rinpsty" type="text" id="" name="month_1_18" value="" onchange="count(this,18,1)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_2_18" value="" onchange="count(this,18,2)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_3_18" value="" onchange="count(this,18,3)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_4_18" value="" onchange="count(this,18,4)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_5_18" value="" onchange="count(this,18,5)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_6_18" value="" onchange="count(this,18,6)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_7_18" value="" onchange="count(this,18,7)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_8_18" value="" onchange="count(this,18,8)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_9_18" value="" onchange="count(this,18,9)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_10_18" value="" onchange="count(this,18,10)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_11_18" value="" onchange="count(this,18,11)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_12_18" value="" onchange="count(this,18,12)"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="total_18" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="pre_month_18" value="" readonly="readonly"/></td>
+            </tr>
+
+              <tr>
+              <td><label class="labelstynb">生产许可合格证</label></td>
+                 <td><input class="rinpsty" type="text" id="" name="month_1_19" value="" onchange="count(this,19,1)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_2_19" value="" onchange="count(this,19,2)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_3_19" value="" onchange="count(this,19,3)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_4_19" value="" onchange="count(this,19,4)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_5_19" value="" onchange="count(this,19,5)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_6_19" value="" onchange="count(this,19,6)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_7_19" value="" onchange="count(this,19,7)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_8_19" value="" onchange="count(this,19,8)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_9_19" value="" onchange="count(this,19,9)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_10_19" value="" onchange="count(this,19,10)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_11_19" value="" onchange="count(this,19,11)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_12_19" value="" onchange="count(this,19,12)"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="total_19" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="pre_month_19" value="" readonly="readonly"/></td>
+            </tr>
+            
+              <tr>
+              <td><label class="labelstynb">保险费</label></td>
+               <td><input class="rinpsty" type="text" id="" name="month_1_20" value="" onchange="count(this,20,1)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_2_20" value="" onchange="count(this,20,2)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_3_20" value="" onchange="count(this,20,3)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_4_20" value="" onchange="count(this,20,4)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_5_20" value="" onchange="count(this,20,5)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_6_20" value="" onchange="count(this,20,6)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_7_20" value="" onchange="count(this,20,7)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_8_20" value="" onchange="count(this,20,8)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_9_20" value="" onchange="count(this,20,9)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_10_20" value="" onchange="count(this,20,10)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_11_20" value="" onchange="count(this,20,11)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_12_20" value="" onchange="count(this,20,12)"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="total_20" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="pre_month_20" value="" readonly="readonly"/></td>
+            </tr >
+              <tr id="21">
+               <td><label class="labelstynb">其他</label><a href="#" class="delbtn"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtn"><img src="${contextPath}/images/add.png" /></a></td>
+              <td colspan="14">&nbsp;</td>
+            </tr>
+            
+              <tr id="22">
+              <td><label class="labelstynb">税收</label></td>
+                <td><input class="rinpsty" type="text" id="" name="month_1_22" value="" onchange="count(this,22,1)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_2_22" value="" onchange="count(this,22,2)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_3_22" value="" onchange="count(this,22,3)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_4_22" value="" onchange="count(this,22,4)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_5_22" value="" onchange="count(this,22,5)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_6_22" value="" onchange="count(this,22,6)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_7_22" value="" onchange="count(this,22,7)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_8_22" value="" onchange="count(this,22,8)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_9_22" value="" onchange="count(this,22,9)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_10_22" value="" onchange="count(this,22,10)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_11_22" value="" onchange="count(this,22,11)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_12_22" value="" onchange="count(this,22,12)"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="total_22" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="pre_month_22" value="" readonly="readonly"/></td>
+            </tr>
+            
+             <tr>
+              <td><label class="labelsty">总额（3）</label></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_1_23" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_2_23" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_3_23" value="" readonly="readonly"/></td>
+              <td><input class="rinpstybc"  type="text" id="" name="month_4_23" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_5_23" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_6_23" value="" readonly="readonly"/></td>
+              <td><input class="rinpstybc"  type="text" id="" name="month_7_23" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_8_23" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_9_23" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_10_23" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_11_23" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_12_23" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="total_23" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="pre_month_23" value="" readonly="readonly"/></td>
+            </tr>
+            
+              <tr>
+              <td><label class="labelsty">分期还款（4）</label></td>
+                <td><input class="rinpsty"  type="text" id="" name="month_1_24" value="" onchange="count(this,24,1)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_2_24" value="" onchange="count(this,24,2)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_3_24" value="" onchange="count(this,24,3)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_4_24" value="" onchange="count(this,24,4)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_5_24" value="" onchange="count(this,24,5)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_6_24" value="" onchange="count(this,24,6)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_7_24" value="" onchange="count(this,24,7)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_8_24" value="" onchange="count(this,24,8)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_9_24" value="" onchange="count(this,24,9)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_10_24" value="" onchange="count(this,24,10)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_11_24" value="" onchange="count(this,24,11)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_12_24" value="" onchange="count(this,24,12)"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="total_24" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="pre_month_24" value="" readonly="readonly"/></td>
+            </tr>
+            
+               <tr>
+              <td><label class="labelsty">净利润 =1-2-3-4</label></td>
+                <td><input class="rinpstybc"  type="text" id="" name="month_1_25" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_2_25" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_3_25" value="" readonly="readonly"/></td>
+              <td><input class="rinpstybc"  type="text" id="" name="month_4_25" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_5_25" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_6_25" value="" readonly="readonly"/></td>
+              <td><input class="rinpstybc" type="text" id="" name="month_7_25" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_8_25" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_9_25" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_10_25" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_11_25" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_12_25" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="total_25" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="pre_month_25" value="" readonly="readonly"/></td>
+            </tr>
+            
+               <tr>
+              <td class="titlefc" ><label >其他</label></td>
+              <td colspan="14" >&nbsp;</td>
+            </tr>
+              <tr>
+              <td><label class="labelstynb">家庭开支</label></td>
+                <td><input class="rinpsty" type="text" id="" name="month_1_26" value="" onchange="count(this,26,1)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_2_26" value="" onchange="count(this,26,2)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_3_26" value="" onchange="count(this,26,3)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_4_26" value="" onchange="count(this,26,4)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_5_26" value="" onchange="count(this,26,5)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_6_26" value="" onchange="count(this,26,6)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_7_26" value="" onchange="count(this,26,7)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_8_26" value="" onchange="count(this,26,8)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_9_26" value="" onchange="count(this,26,9)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_10_26" value="" onchange="count(this,26,10)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_11_26" value="" onchange="count(this,26,11)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_12_26" value="" onchange="count(this,26,12)"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="total_26" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="pre_month_26" value="" readonly="readonly"/></td>
+            </tr>
+              <tr>
+              <td><label class="labelstynb">分期付款(私人用途)</label></td>
+                <td><input class="rinpsty" type="text" id="" name="month_1_27" value="" onchange="count(this,27,1)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_2_27" value="" onchange="count(this,27,2)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_3_27" value="" onchange="count(this,27,3)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_4_27" value="" onchange="count(this,27,4)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_5_27" value="" onchange="count(this,27,5)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_6_27" value="" onchange="count(this,27,6)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_7_27" value="" onchange="count(this,27,7)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_8_27" value="" onchange="count(this,27,8)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_9_27" value="" onchange="count(this,27,9)"/></td>
+              <td><input class="rinpsty" type="text" id="" name="month_10_27" value="" onchange="count(this,27,10)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_11_27" value="" onchange="count(this,27,11)"/></td>
+               <td><input class="rinpsty" type="text" id="" name="month_12_27" value="" onchange="count(this,27,12)"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="total_27" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="pre_month_27" value="" readonly="readonly"/></td>
+            </tr>
+            <tr id="28">
+              <td><label class="labelstynb">其它开支</label><a href="#" class="delbtn"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtn"><img src="${contextPath}/images/add.png" /></a></td>
+              <td colspan="14">&nbsp;</td>
+            </tr>
+            <tr id="29">
+              <td><label class="labelstynb">其他收入</label><a href="#" class="delbtn"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtn"><img src="${contextPath}/images/add.png" /></a></td>
+              <td colspan="14">&nbsp;</td>
+            </tr>
+            
+               <tr id="30">
+              <td><label class="labelsty">每月可支配资金</label></td>
+                <td><input class="rinpstybc"  type="text" id="" name="month_1_30" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_2_30" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_3_30" value="" readonly="readonly"/></td>
+              <td><input class="rinpstybc"  type="text" id="" name="month_4_30" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_5_30" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_6_30" value="" readonly="readonly"/></td>
+              <td><input class="rinpstybc"  type="text" id="" name="month_7_30" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_8_30" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_9_30" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_10_30" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="month_11_30" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc"  type="text" id="" name="month_12_30" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="total_30" value="" readonly="readonly"/></td>
+               <td><input class="rinpstybc" type="text" id="" name="pre_month_30" value="" readonly="readonly"/></td>
+            </tr>
+          </table>
+        </div>
+      </form>
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n("button.save")" class="current" />
+        <input type="button" onclick="returnClick();" value="#i18n("button.cancel")" />
+      </div>
+    </div>
+  </div>
+ <div id="addDialog" style="display: none; resize: none; z-index: 2000; ">
+      <form  id="addform" >
+        <div class="forms" >
+          <table class="rule">
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+            </colgroup>
+            <tr>
+             <td>名称:</td>
+              <td><input id="name" name="name"/></td>
+            </tr>
+              <td>金额:</td>
+              <td> <input id="num" name="num"/></td>
+             </tr>
+          </table>
+          #end
+        </div>
+       </form>
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n("button.save")" class="current" />
+        <input type="button" onclick="returnClick();" value="#i18n("button.cancel")" />
+      </div>
+    </div>
+  </div>
+   <link rel="stylesheet" type="text/css" href="${contextPath}/css/selectMonth.css" />
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+  <script src='${contextPath}/js/customerInforUpdate/customerinfoupdate_syb.js'></script>
+   <script src='${contextPath}/js/selectMonth.js'></script>
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");	
+	window.top.currentWindow.setLayout(layout);
+	$(document).ready(function() {	
+	     $("#id_save_button").click(function() {
+	    	var leng = 0;
+	    	 leng = $(".error").length;
+	    	if(leng > 0){
+	    		return;
+	    	}else{
+			  $("#id_module_form").submit();  
+	    	}
+	       });
+
+	});
+	function returnClick(){
+		
+		 window.location.href= contextPath + "/customer/basiccustomerinforUpdate/browse.page" ;
+	}
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")
+

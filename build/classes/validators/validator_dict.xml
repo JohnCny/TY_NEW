@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validators>
+	<validator id="system.dict">
+		<control name="dictType">
+			<entry type="required" value="true" />
+		</control>
+		<control name="typeCode">
+			<entry type="required" value="true" />
+		</control>
+		<control name="typeName">
+			<entry type="required" value="true" />
+		</control>
+	</validator>
+</validators>

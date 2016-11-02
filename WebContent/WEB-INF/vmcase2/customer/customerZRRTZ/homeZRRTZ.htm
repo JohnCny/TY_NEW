@@ -1,0 +1,321 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/customerInfor.htm")
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/home_style.css" />
+<body >
+<div class="place">
+        <div class="title">自然人台账</div>
+      </div>
+   <div class="/ui-main">
+      <div class="wrap clearfix">
+	     <div class="/ui-left f_l">
+		    <ul class="tabs clearfix">
+			   <li class="first selectTag">
+                  <!--   <a href="javascript:void(0)">客户状态搜索</a> -->
+               </li>
+			   <li>
+                  <!--   <a href="javascript:void(0)">放款时间搜索</a> -->
+               </li>
+			</ul>
+			
+			   	<div class="tabContent" style="display:block;">
+			   <div class="ui-item slide-item">
+			      <!-- <div class="/hd clearfix">
+				     <span></span>
+					 <em></em>
+				  </div> -->
+				  <div class="bd">
+				  <div class="/search">
+				  <form id="submitForm" action="${contextPath}/customer/customer_ZRRTZ/zrrtz.json">
+							<ul>
+								<li><span>客户状态：<select id="status" name="status"
+										value="$!result.filter.status">
+											<option value="">ALL</option>
+											<option #if($!result.filter.status=='audit') selected="selected" #end value="audit">正常
+											</option>
+											<option #if($!result.filter.status==
+												'refuse') selected="selected" #end value="refuse">逾期</option>
+											<option #if($!result.filter.status=='approved') selected="selected" #end value="approved">不良</option>
+											<option #if($!result.filter.status=='end') selected="selected" #end value="end">空</option>
+									</select></br></br>
+									 起始日期:<input type="text" id="first" >
+										 结束日期:<input type="text" id="last" >
+								<input id="id_browse_button"
+									type="button" value="搜索"
+									class="search_button"
+									title="#i18n('button.browse.hint')"
+									style="height: 26px; line-height: 4px;" />
+								</span>
+								</li>
+								<!-- 	<li class="search_button"><input id="id_browse_button"
+										type="button" value="#i18n('button.browse')"
+										class="/search_button_inquiry"
+										title="#i18n('button.browse.hint')"
+										style="height: 26px; line-height: 24px;" /></li> -->
+								</ul>
+							</form>
+							</div>
+							  </div>
+			   </div>
+			   
+		<div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="8%" />
+              <col width="18%" />
+              <col width="17%"/>
+              <col width="40%" />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">所属经理</th>
+              <th nowrap="nowrap">客户名称</th>
+              <th nowrap="nowrap">身份证号码</th>
+              <th nowrap="nowrap">产品名称</th>
+              <th nowrap="nowrap">金额</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="8%" />
+              <col width="18%" />
+              <col width="17%"/>
+              <col width="40%" />
+            </colgroup>
+           <!--  $!{customer} in $result.items -->
+            #foreach ($intoPieces in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" id="checkbox" value="$!customer.tyCustomerId@$!customer.chineseName@$!customer.cardId"
+                   /></td>
+              <td nowrap="nowrap">$!intoPieces.displayName</td>
+              <td nowrap="nowrap">$!intoPieces.chineseName</td>
+              <td nowrap="nowrap">$!intoPieces.cardId</td>
+              <td nowrap="nowrap">$!intoPieces.productName</td>
+              <td nowrap="nowrap">$format.formatNumber($!intoPieces.applyQuota, 2, 1)</td>
+            </tr>
+            #end
+          </table>
+        </div>
+        <div class="pagebar">
+        <div class="controlbtn">
+          <a id="id_create_button" class="btn_g" href="javascript:void(0);" title="查看原始信息">查看原始信息</a>
+          <!-- <a id="id_reject_button" class="btn_g" href="javascript:void(0);" title="拒绝">拒绝</a> -->
+       	  <a id="id_create_button" class="btn_g" href="javascript:void(0);" title="数据填补">数据填补</a>
+          <a id="id_create_button2" class="btn_g2" href="javascript:void(0);" title="excle导出">excle导出</a>
+        </div>
+        #parse ("common/pagination.htm")
+      </div>
+      </div>
+      
+      
+      
+      
+
+
+	<!-- <div class="tabContent" >
+			
+			   <div class="ui-item slide-item">
+			      <div class="hd clearfix">
+				     <span></span>
+					 <em></em>
+				  </div>
+				  <div class="bd">
+				  <div class="/search">
+				  <form id="submitForm" action="${contextPath}/customer/firsthend/browse.page">
+							<ul>
+								<li><span> 起始日期:<input type="text" id="first" >
+										 结束日期:<input type="text" id="last" >
+								<input id="id_browse_button"
+									type="button" value="搜索"
+									class="search_button"
+									title="#i18n('button.browse.hint')"
+									style="height: 26px; line-height: 4px;" />
+								</span>
+								</li>
+									<li class="search_button"><input id="id_browse_button"
+										type="button" value="#i18n('button.browse')"
+										class="/search_button_inquiry"
+										title="#i18n('button.browse.hint')"
+										style="height: 26px; line-height: 24px;" /></li>
+								</ul>
+							</form>
+							</div>
+							  </div>
+			   </div>
+			   
+		<div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="8%" />
+              <col width="18%" />
+              <col width="17%"/>
+              <col width="40%" />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">中文姓名</th>
+              <th nowrap="nowrap">证件类型</th>
+              <th nowrap="nowrap">证件号码</th>
+              <th nowrap="nowrap">客户经理工号</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="8%" />
+              <col width="18%" />
+              <col width="17%"/>
+              <col width="40%" />
+            </colgroup>
+            #foreach ($!{customer} in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" id="checkbox" value="$!customer.tyCustomerId@$!customer.chineseName@$!customer.cardId"
+                   /></td>
+              <td nowrap="nowrap">$!customer.chineseName</td>
+              <td nowrap="nowrap">#customerInfor($request.getAttribute("cardTypeList"),$!customer.cardType)</td>
+              <td nowrap="nowrap">$!customer.cardId</td>
+              <td nowrap="nowrap">$!customer.tyUserId</td>
+            </tr>
+            #end
+          </table>
+        </div>
+        <div class="pagebar">
+        <div class="controlbtn">
+          <a id="id_create_button" class="btn_g" href="javascript:void(0);" title="查看原始信息">查看原始信息</a>
+          <a id="id_create_button" class="btn_g" href="javascript:void(0);" title="数据填补">数据填补</a>
+          <a id="id_create_button" class="btn_g" href="javascript:void(0);" title="excle导出">excle导出</a>
+        </div>
+        #parse ("common/pagination.htm")
+      </div>
+      </div> -->
+		
+			   
+
+			
+			
+			
+		 </div>
+	  </div>
+   </div>
+   
+</body>
+
+<script>
+	     $(".tabs li").click(function() {
+				if (this.className != "selectTag") {
+					$(this).siblings(".selectTag").removeClass("selectTag");
+					var tabContents = $(this).parent().siblings("div.tabContent");
+					tabContents.hide();
+					var tabContent = tabContents.eq($(this).index());
+					var i= $(this).index();
+					
+					(function(){
+						var lis = tabContent.children(":first-child").find("ul.list li");
+						$.ajax({
+							type:"GET",
+							data:{day:i},
+							url:"${contextPath}/homeData.json",
+							dataType:"json",
+							success:function(json){
+								if(i==0){
+									$.each(json,function(i,v){
+										lis.eq(0).find("em").html(v.marketing);
+										lis.eq(1).find("em").html(v.divisional);
+										lis.eq(2).find("em").html(v.applicationInfo);
+										lis.eq(3).find("em").html(v.applicationReject);
+										lis.eq(4).find("em").html(v.maintenance);
+										lis.eq(5).find("em").html(v.officerChannels);
+										lis.eq(6).find("em").html(v.collection);
+									});
+								}else{
+									$.each(json,function(i,v){
+										lis.eq(2).find("em").html(v.collection);
+										lis.eq(3).find("em").html(v.marketing);
+										lis.eq(4).find("em").html(v.maintenance);
+										lis.eq(5).find("em").html(v.promise);
+									});
+								}
+							}
+						});
+					}());
+					
+					tabContent.show();
+					$(this).addClass("selectTag");
+				}
+			});
+			
+		    $(".slide-item .hd").click(function() {
+				$(this).next().slideToggle();
+				$(this).children("em").toggleClass("up")
+			}); 
+		    
+		    /*还款提醒*/
+		    $(document).ready(function() {
+				var repay = $("#repay").val();
+				if(repay.length>0){
+					topWin.Dialog.message(repay);
+				}
+			});
+</script> 
+
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+	url = "${modulePath}/browse.page";
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+
+		opsObj.displayUrl = "${modulePath}/display.page";
+		opsObj.changeUrl = "${modulePath}/change.page";
+		opsObj.deleteUrl = "${modulePath}/delete.json";
+		opsObj.browseUrl = "${modulePath}/browse.page";
+		prepareOperations(opsObj);
+		
+		$("#id_create_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var value = $("input[name='checkbox']:checked").val();
+				var rowid = value.split("@")[0];
+				if(rowid==''||rowid==null){
+					Dialog.message("无原始信息!");
+					return;
+				}
+				var url = "${modulePath}/showInfo.page?id=" + rowid;
+				window.location.href = url;
+			}else{
+				Dialog.message("请选择记录!");
+			}
+	    });
+	/* 	$("#id_reject_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var value = $("input[name='checkbox']:checked").val();
+				var name = value.split("@")[1];
+				var cardId = value.split("@")[2];
+				  Dialog.form("#rejectDataDialog", 
+						'拒绝客户 ', 
+						function(){
+						}, function(){；
+							
+							$("#form_diaog").dialog("close");
+						}, 
+						500, 200);  
+				  window.top.$("#xm").val(name);
+				  window.top.$("#card_id").val(cardId);
+				
+			}else{
+				Dialog.message("请选择记录!");
+			}
+	    }); */
+
+	});
+	
+	
+</script>
+
+</html>

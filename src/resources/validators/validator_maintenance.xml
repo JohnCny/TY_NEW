@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validators>
+	<validator id="customer.maintenance">
+	  <control name="customerId">
+			<entry type="maxlength" value="222"/>
+		</control>
+		<control name="maintenanceStartTime">
+			<entry type="required" value="true"/>
+		</control>
+	</validator>
+</validators>

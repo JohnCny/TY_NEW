@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.intopieces.dao.BalanceSheetDao" >
+  <resultMap id="BaseResultMap" type="com.cardpay.pccredit.intopieces.model.BalanceSheet" >
+    <id column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="LOAN_APPLY_ID" property="loanApplyId" jdbcType="DECIMAL" />
+    <result column="LOAN_TYPE" property="loanType" jdbcType="DECIMAL" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="NO" property="no" jdbcType="DECIMAL" />
+    <result column="CONTENTS_TEXT_NUMBER" property="contentsTextNumber" jdbcType="VARCHAR" />
+    <result column="CREATED_PEOPLE" property="createdPeople" jdbcType="DECIMAL" />
+    <result column="CREATED_TIME" property="createdTime" jdbcType="DATE" />
+    <result column="MODIFY_PEOPLE" property="modifyPeople" jdbcType="DECIMAL" />
+    <result column="MODIFIED" property="modified" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, LOAN_APPLY_ID, LOAN_TYPE, NAME, NO, CONTENTS_TEXT_NUMBER, CREATED_PEOPLE, CREATED_TIME, 
+    MODIFY_PEOPLE, MODIFIED
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from BALANCE_SHEET
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from BALANCE_SHEET
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="com.cardpay.pccredit.intopieces.model.BalanceSheet" >
+    insert into BALANCE_SHEET (ID, LOAN_APPLY_ID, LOAN_TYPE, 
+      NAME, NO, CONTENTS_TEXT_NUMBER, 
+      CREATED_PEOPLE, CREATED_TIME, MODIFY_PEOPLE, 
+      MODIFIED)
+    values (#{id,jdbcType=DECIMAL}, #{loanApplyId,jdbcType=DECIMAL}, #{loanType,jdbcType=DECIMAL}, 
+      #{name,jdbcType=VARCHAR}, #{no,jdbcType=DECIMAL}, #{contentsTextNumber,jdbcType=VARCHAR}, 
+      #{createdPeople,jdbcType=DECIMAL}, #{createdTime,jdbcType=DATE}, #{modifyPeople,jdbcType=DECIMAL}, 
+      #{modified,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cardpay.pccredit.intopieces.model.BalanceSheet" >
+    insert into BALANCE_SHEET
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="loanApplyId != null" >
+        LOAN_APPLY_ID,
+      </if>
+      <if test="loanType != null" >
+        LOAN_TYPE,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="no != null" >
+        NO,
+      </if>
+      <if test="contentsTextNumber != null" >
+        CONTENTS_TEXT_NUMBER,
+      </if>
+      <if test="createdPeople != null" >
+        CREATED_PEOPLE,
+      </if>
+      <if test="createdTime != null" >
+        CREATED_TIME,
+      </if>
+      <if test="modifyPeople != null" >
+        MODIFY_PEOPLE,
+      </if>
+      <if test="modified != null" >
+        MODIFIED,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=DECIMAL},
+      </if>
+      <if test="loanApplyId != null" >
+        #{loanApplyId,jdbcType=DECIMAL},
+      </if>
+      <if test="loanType != null" >
+        #{loanType,jdbcType=DECIMAL},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="no != null" >
+        #{no,jdbcType=DECIMAL},
+      </if>
+      <if test="contentsTextNumber != null" >
+        #{contentsTextNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="createdPeople != null" >
+        #{createdPeople,jdbcType=DECIMAL},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=DATE},
+      </if>
+      <if test="modifyPeople != null" >
+        #{modifyPeople,jdbcType=DECIMAL},
+      </if>
+      <if test="modified != null" >
+        #{modified,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cardpay.pccredit.intopieces.model.BalanceSheet" >
+    update BALANCE_SHEET
+    <set >
+      <if test="loanApplyId != null" >
+        LOAN_APPLY_ID = #{loanApplyId,jdbcType=DECIMAL},
+      </if>
+      <if test="loanType != null" >
+        LOAN_TYPE = #{loanType,jdbcType=DECIMAL},
+      </if>
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="no != null" >
+        NO = #{no,jdbcType=DECIMAL},
+      </if>
+      <if test="contentsTextNumber != null" >
+        CONTENTS_TEXT_NUMBER = #{contentsTextNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="createdPeople != null" >
+        CREATED_PEOPLE = #{createdPeople,jdbcType=DECIMAL},
+      </if>
+      <if test="createdTime != null" >
+        CREATED_TIME = #{createdTime,jdbcType=DATE},
+      </if>
+      <if test="modifyPeople != null" >
+        MODIFY_PEOPLE = #{modifyPeople,jdbcType=DECIMAL},
+      </if>
+      <if test="modified != null" >
+        MODIFIED = #{modified,jdbcType=DATE},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cardpay.pccredit.intopieces.model.BalanceSheet" >
+    update BALANCE_SHEET
+    set LOAN_APPLY_ID = #{loanApplyId,jdbcType=DECIMAL},
+      LOAN_TYPE = #{loanType,jdbcType=DECIMAL},
+      NAME = #{name,jdbcType=VARCHAR},
+      NO = #{no,jdbcType=DECIMAL},
+      CONTENTS_TEXT_NUMBER = #{contentsTextNumber,jdbcType=VARCHAR},
+      CREATED_PEOPLE = #{createdPeople,jdbcType=DECIMAL},
+      CREATED_TIME = #{createdTime,jdbcType=DATE},
+      MODIFY_PEOPLE = #{modifyPeople,jdbcType=DECIMAL},
+      MODIFIED = #{modified,jdbcType=DATE}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+</mapper>

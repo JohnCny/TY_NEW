@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.jnpad.dao.JnPadProductSelectDao">
+	<resultMap id="ProductSelectResultMap"
+		type="com.cardpay.pccredit.jnpad.model.ProductAttributes">
+		<result property="id" column="ID" />
+		<result property="productName" column="PRODUCT_NAME" />
+		<result property="purposeLoan" column="PURPOSE_LOAN" />
+		<result property="creditLine" column="CREDIT_LINE" />
+		<result property="rateRange" column="RATE_RANGE" />
+		<result property="loanTimeLimit" column="LOAN_TIME_LIMIT" />
+		<result property="loanPrincipal" column="LOAN_PRINCIPAL" />
+		<result property="letterPaymentWay" column="LETTER_PAYMENT_WAY" />
+		<result property="numbererestSettlementWay" column="NUMBEREREST_SETTLEMENT_WAY" />
+		<result property="assureMeans" column="ASSURE_MEANS" />
+		<result property="penaltyNumbererest" column="PENALTY_NUMBEREREST" />
+		<result property="productRiskTolerance" column="PRODUCT_RISK_TOLERANCE" />
+		<result property="productTypeCode" column="PRODUCT_TYPE_CODE" />
+		<result property="status" column="STATUS" />
+		<result property="createdTime" column="CREATED_TIME" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="modifiedTime" column="MODIFIED_TIME" />
+		<result property="modifiedBy" column="MODIFIED_BY" />
+		<result property="seqno" column="SEQNO" />
+		<result property="pictureUrl" column="PICTURE_URL" />
+		<result property="pictureName" column="PICTURE_NAME" />
+	</resultMap>
+
+	<!-- 通过ID查询 -->
+	<select id="selectProductById" resultMap="ProductSelectResultMap">
+
+		SELECT * FROM
+		(SELECT
+		ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		select *
+		from PRODUCT_ATTRIBUTE p
+		where 1=1
+		AND
+		( p.ID=#{id})
+		) ROW_)
+
+	</select>
+
+	<!-- 查询产品数量 -->
+	<select id="selectProductsCount" resultType="int">
+		select count(*)
+		from
+		PRODUCT_ATTRIBUTE p
+		where 1=1
+		AND (
+		p.STATUS = 'Published'
+		OR p.STATUS =
+		'Screen'
+		)
+	</select>
+
+	<!-- 根据过滤条件查询 -->
+	<select id="selectProductByFilter" resultMap="ProductSelectResultMap"
+		parameterType="map">
+
+		SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		SELECT * from
+		product_attribute t
+		WHERE 1=1
+		<if test="productName != null and productName != '' ">
+			AND PRODUCT_NAME = #{productName}
+		</if>
+		And t.prod_limit_time >= sysdate
+		<if test="status != null and status != '' ">
+			And t.status = #{status}
+		</if> 
+								) ROW_)
+						
+	</select>
+
+
+
+</mapper> 

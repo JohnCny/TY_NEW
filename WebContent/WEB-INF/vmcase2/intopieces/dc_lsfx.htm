@@ -1,0 +1,1422 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">进件新增>流水分析</div>
+      </div>
+        <div class="tabplace">
+            <ul class="com-tab" >
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/changewh.page?customerId=$!customerId&productId=$!productId">建议</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/findJbzk.page?customerId=$!customerId&productId=$!productId">基本状况</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/findJyzt.page?customerId=$!customerId&productId=$!productId">经营状态</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/findSczt.page?customerId=$!customerId&productId=$!productId">生存状态</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/findDdpz.page?customerId=$!customerId&productId=$!productId">道德品质</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_zcfz.page?customerId=$!customerId&productId=$!productId">资产负债</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_lrjb.page?customerId=$!customerId&productId=$!productId">利润简表</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_bzlr.page?customerId=$!customerId&productId=$!productId">标准利润表</a></li>
+	            <li class="tab "><a href="${contextPath}/intopieces/addIntopieces/create_xjl.page?customerId=$!customerId&productId=$!productId">现金流量</a></li>
+				<li class="tab "><a href="${contextPath}/intopieces/addIntopieces/create_jcjy.page?customerId=$!customerId&productId=$!productId">交叉检验</a></li>
+				<li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_dhd.page?customerId=$!customerId&productId=$!productId">点货单</a></li>
+				<li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_gdzc.page?customerId=$!customerId&productId=$!productId">固定资产清单</a></li>
+				<li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_yfys.page?customerId=$!customerId&productId=$!productId">应付预收</a></li>
+				<li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_ysyf.page?customerId=$!customerId&productId=$!productId">应收预付</a></li>
+				<li class="tab activeTab"><a href="${contextPath}/intopieces/addIntopieces/create_lsfx.page?customerId=$!customerId&productId=$!productId">流水分析</a></li>
+				
+	            
+           </ul>
+         </div>
+         <div class="tabplace"></div>
+			<form id="id_module_form">
+			 	 <input type="hidden" id="customer_id" name="customer_id" value="$!customerId">
+    			 <input type="hidden" id="product_id" name="product_id" value="$!productId">
+				<div class="form-bd" id="formsId"
+					style="margin-top: 0px; padding-top: 0px;">
+					<table id='MyTable' style='border-collapse: collapse;' width='100%'>
+						<tr>
+							<td rowspan='1' colspan='19' name='A1' align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 140%; width: 2272px; border-top: solid #d0d7e5 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #d0d7e5 1px; border-left: solid #d0d7e5 1px;'>银行流水分析表</td>
+						</tr>
+						<tr>
+							<td name='A2' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>开户行</td>
+							<td rowspan='1' colspan='3' name='B2'
+								 align='center' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="" style="width: 70px;height: 14px;" type="text" id="B2" name="B2" value="$!lsfx.b2" /></td>
+							<td name='E2' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>账户</td>
+							<td rowspan='1' colspan='9' name='F2'
+								 align='center' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 70px;height: 14px;" type="text" id="F2" name="F2" value="$!lsfx.f2" /></td>
+							<td name='O2' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>分析日期：</td>
+							<td rowspan='1' colspan='2' name='P2'
+								 align='center' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 70px;height: 14px;" type="text" id="P2" name="P2" value="$!lsfx.p2" /></td>
+							<td name='R2' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>单位：</td>
+							<td name='S2'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 70px;height: 14px;" type="text" id="S2" name="S2" value="$!lsfx.s2" /></td>
+						</tr>
+						<tr>
+							<td rowspan='1' colspan='2' name='A3' align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>分析周期现金流入总计</td>
+							<td rowspan='1' colspan='3' name='C3'
+								 align='center' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 70px;height: 14px;" type="text" id="C3" name="C3" value="$!lsfx.c3" /></td>
+							<td rowspan='1' colspan='3' name='F3' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>分析周期现金流出总计</td>
+							<td rowspan='1' colspan='3' name='I3'
+								 align='center' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 70px;height: 14px;" type="text" id="I3" name="I3" value="$!lsfx.i3" /></td>
+							<td name='L3' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>调查当日余额</td>
+							<td rowspan='1' colspan='3' name='M3'
+								 align='center' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 70px;height: 14px;" type="text" id="M3" name="M3" value="$!lsfx.m3" /></td>
+							<td name='P3' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>主要交易对手数量</td>
+							<td name='Q3'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 70px;height: 14px;" type="text" id="Q3" name="Q3" value="$!lsfx.q3" /></td>
+							<td name='R3' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>流水页数</td>
+							<td name='S3'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 70px;height: 14px;" type="text" id="S3" name="S3" value="$!lsfx.s3" /></td>
+						</tr>
+						<tr>
+							<td rowspan='1' colspan='2' name='A4' align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>项目</td>
+							<td name='C4'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="C4" name="C4" value="$!lsfx.c4" /></td>
+							<td name='D4'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="D4" name="D4" value="$!lsfx.d4" /></td>
+							<td name='E4'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="E4" name="E4" value="$!lsfx.e4" /></td>
+							<td name='F4'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="F4" name="F4" value="$!lsfx.f4" /></td>
+							<td name='G4'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="G4" name="G4" value="$!lsfx.g4" /></td>
+							<td name='H4'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="H4" name="H4" value="$!lsfx.h4" /></td>
+							<td name='I4'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="I4" name="I4" value="$!lsfx.i4" /></td>
+							<td name='J4'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="J4" name="J4" value="$!lsfx.j4" /></td>
+							<td name='K4'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="K4" name="K4" value="$!lsfx.k4" /></td>
+							<td name='L4'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="L4" name="L4" value="$!lsfx.l4" /></td>
+							<td name='M4'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="M4" name="M4" value="$!lsfx.m4" /></td>
+							<td name='N4'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="N4" name="N4" value="$!lsfx.n4" /></td>
+							<td name='O4' align='center' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>总计</td>
+							<td rowspan='1' colspan='4' name='P4' align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>分析</td>
+						</tr>
+						<tr>
+							<td rowspan='1' colspan='2' name='A5' align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>月初金额</td>
+							<td name='C5'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="C5" name="C5" value="$!lsfx.c5" /></td>
+							<td name='D5'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="D5" name="D5" value="$!lsfx.d5" /></td>
+							<td name='E5'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="E5" name="E5" value="$!lsfx.e5" /></td>
+							<td name='F5'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="F5" name="F5" value="$!lsfx.f5" /></td>
+							<td name='G5'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="G5" name="G5" value="$!lsfx.g5" /></td>
+							<td name='H5'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="H5" name="H5" value="$!lsfx.h5" /></td>
+							<td name='I5'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="I5" name="I5" value="$!lsfx.i5" /></td>
+							<td name='J5'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="J5" name="J5" value="$!lsfx.j5" /></td>
+							<td name='K5'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="K5" name="K5" value="$!lsfx.k5" /></td>
+							<td name='L5'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="L5" name="L5" value="$!lsfx.l5" /></td>
+							<td name='M5'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="M5" name="M5" value="$!lsfx.m5" /></td>
+							<td name='N5'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="N5" name="N5" value="$!lsfx.n5" /></td>
+							<td name='O5'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="O5" name="O5" value="$!lsfx.o5" /></td>
+							<td rowspan='1' colspan='4' name='P5'
+								 align='center' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="P5" name="P5" value="$!lsfx.p5" /></td>
+						</tr>
+						<tr>
+							<td rowspan='1' colspan='2' name='A6' align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>流入金额</td>
+							<td name='C6'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="C6" name="C6" value="$!lsfx.c6" /></td>
+							<td name='D6'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="D6" name="D6" value="$!lsfx.d6" /></td>
+							<td name='E6'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="E6" name="E6" value="$!lsfx.e6" /></td>
+							<td name='F6'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="F6" name="F6" value="$!lsfx.f6" /></td>
+							<td name='G6'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="G6" name="G6" value="$!lsfx.g6" /></td>
+							<td name='H6'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="H6" name="H6" value="$!lsfx.h6" /></td>
+							<td name='I6'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="I6" name="I6" value="$!lsfx.i6" /></td>
+							<td name='J6'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="J6" name="J6" value="$!lsfx.j6" /></td>
+							<td name='K6'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="K6" name="K6" value="$!lsfx.k6" /></td>
+							<td name='L6'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="L6" name="L6" value="$!lsfx.l6" /></td>
+							<td name='M6'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="M6" name="M6" value="$!lsfx.m6" /></td>
+							<td name='N6'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="N6" name="N6" value="$!lsfx.n6" /></td>
+							<td name='O6'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="O6" name="O6" value="$!lsfx.o6" /></td>
+							<td rowspan='1' colspan='4' name='P6'
+								 align='center' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="P6" name="P6" value="$!lsfx.p6" /></td>
+						</tr>
+						<tr>
+							<td rowspan='1' colspan='2' name='A7' align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>流出金额</td>
+							<td name='C7'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="C7" name="C7" value="$!lsfx.c7" /></td>
+							<td name='D7'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="D7" name="D7" value="$!lsfx.d7" /></td>
+							<td name='E7'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="E7" name="E7" value="$!lsfx.e7" /></td>
+							<td name='F7'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="F7" name="F7" value="$!lsfx.f7" /></td>
+							<td name='G7'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="G7" name="G7" value="$!lsfx.g7" /></td>
+							<td name='H7'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="H7" name="H7" value="$!lsfx.h7" /></td>
+							<td name='I7'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="I7" name="I7" value="$!lsfx.i7" /></td>
+							<td name='J7'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="J7" name="J7" value="$!lsfx.j7" /></td>
+							<td name='K7'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="K7" name="K7" value="$!lsfx.k7" /></td>
+							<td name='L7'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="L7" name="L7" value="$!lsfx.l7" /></td>
+							<td name='M7'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="M7" name="M7" value="$!lsfx.m7" /></td>
+							<td name='N7'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="N7" name="N7" value="$!lsfx.n7" /></td>
+							<td name='O7'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="O7" name="O7" value="$!lsfx.o7" /></td>
+							<td rowspan='1' colspan='4' name='P7'
+								 align='center' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="P7" name="P7" value="$!lsfx.p7" /></td>
+						</tr>
+						<tr>
+							<td rowspan='1' colspan='2' name='A8' align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>月末余额</td>
+							<td name='C8'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="C8" name="C8" value="$!lsfx.c8" /></td>
+							<td name='D8'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="D8" name="D8" value="$!lsfx.d8" /></td>
+							<td name='E8'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="E8" name="E8" value="$!lsfx.e8" /></td>
+							<td name='F8'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="F8" name="F8" value="$!lsfx.f8" /></td>
+							<td name='G8'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="G8" name="G8" value="$!lsfx.g8" /></td>
+							<td name='H8'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="H8" name="H8" value="$!lsfx.h8" /></td>
+							<td name='I8'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="I8" name="I8" value="$!lsfx.i8" /></td>
+							<td name='J8'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="J8" name="J8" value="$!lsfx.j8" /></td>
+							<td name='K8'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="K8" name="K8" value="$!lsfx.k8" /></td>
+							<td name='L8'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="L8" name="L8" value="$!lsfx.l8" /></td>
+							<td name='M8'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="M8" name="M8" value="$!lsfx.m8" /></td>
+							<td name='N8'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="N8" name="N8" value="$!lsfx.n8" /></td>
+							<td name='O8' align='center' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="O8" name="O8" value="$!lsfx.o8" /></td>
+							<td rowspan='1' colspan='4' name='P8'
+								 align='center' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="P8" name="P8" value="$!lsfx.p8" /></td>
+						</tr>
+						<tr>
+							<td rowspan='1' colspan='19' name='A9' align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>主要交易对手流水分析</td>
+						</tr>
+						<tr>
+							<td name='A10' align='center' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>对象</td>
+							<td name='B10' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>项目</td>
+							<td name='C10'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="C10" name="C10" value="$!lsfx.c10" /></td>
+							<td name='D10'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="D10" name="D10" value="$!lsfx.d10" /></td>
+							<td name='E10'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="E10" name="E10" value="$!lsfx.e10" /></td>
+							<td name='F10'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="F10" name="F10" value="$!lsfx.f10" /></td>
+							<td name='G10'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="G10" name="G10" value="$!lsfx.g10" /></td>
+							<td name='H10'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="H10" name="H10" value="$!lsfx.h10" /></td>
+							<td name='I10'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="I10" name="I10" value="$!lsfx.i10" /></td>
+							<td name='J10'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="J10" name="J10" value="$!lsfx.j10" /></td>
+							<td name='K10'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="K10" name="K10" value="$!lsfx.k10" /></td>
+							<td name='L10'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="L10" name="L10" value="$!lsfx.l10" /></td>
+							<td name='M10'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="M10" name="M10" value="$!lsfx.m10" /></td>
+							<td name='N10'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="N10" name="N10" value="$!lsfx.n10" /></td>
+							<td name='O10' align='center' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>总计</td>
+							<td rowspan='1' colspan='4' name='P10' align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>分析</td>
+						</tr>
+						<tr>
+							<td rowspan='3' colspan='1' name='A11' align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='B11' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>流入</td>
+							<td name='C11'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="C11" name="C11" value="$!lsfx.c11" /></td>
+							<td name='D11'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="D11" name="D11" value="$!lsfx.d11" /></td>
+							<td name='E11'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="E11" name="E11" value="$!lsfx.e11" /></td>
+							<td name='F11'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="F11" name="F11" value="$!lsfx.f11" /></td>
+							<td name='G11'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="G11" name="G11" value="$!lsfx.g11" /></td>
+							<td name='H11'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="H11" name="H11" value="$!lsfx.h11" /></td>
+							<td name='I11'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="I11" name="I11" value="$!lsfx.i11" /></td>
+							<td name='J11'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="J11" name="J11" value="$!lsfx.j11" /></td>
+							<td name='K11'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="K11" name="K11" value="$!lsfx.k11" /></td>
+							<td name='L11'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="L11" name="L11" value="$!lsfx.l11" /></td>
+							<td name='M11'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="M11" name="M11" value="$!lsfx.m11" /></td>
+							<td name='N11'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="N11" name="N11" value="$!lsfx.n11" /></td>
+							<td name='O11'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="O11" name="O11" value="$!lsfx.o11" /></td>
+							<td rowspan='3' colspan='4' name='P11'
+								 align='center' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="P11" name="P11" value="$!lsfx.p11" /></td>
+						</tr>
+						<tr>
+							<td name='B12' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>流出</td>
+							<td name='C12'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="C12" name="C12" value="$!lsfx.c12" /></td>
+							<td name='D12'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="D12" name="D12" value="$!lsfx.d12" /></td>
+							<td name='E12'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="E12" name="E12" value="$!lsfx.e12" /></td>
+							<td name='F12'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="F12" name="F12" value="$!lsfx.f12" /></td>
+							<td name='G12'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="G12" name="G12" value="$!lsfx.g12" /></td>
+							<td name='H12'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="H12" name="H12" value="$!lsfx.h12" /></td>
+							<td name='I12'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="I12" name="I12" value="$!lsfx.i12" /></td>
+							<td name='J12'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="J12" name="J12" value="$!lsfx.j12" /></td>
+							<td name='K12'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="K12" name="K12" value="$!lsfx.k12" /></td>
+							<td name='L12'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="L12" name="L12" value="$!lsfx.l12" /></td>
+							<td name='M12'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="M12" name="M12" value="$!lsfx.m12" /></td>
+							<td name='N12'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="N12" name="N12" value="$!lsfx.n12" /></td>
+							<td name='O12'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="O12" name="O12" value="$!lsfx.o12" /></td>
+						</tr>
+						<tr>
+							<td name='B13' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>净流量</td>
+							<td name='C13'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="C13" name="C13" value="$!lsfx.c13" /></td>
+							<td name='D13'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="D13" name="D13" value="$!lsfx.d13" /></td>
+							<td name='E13'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="E13" name="E13" value="$!lsfx.e13" /></td>
+							<td name='F13'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="F13" name="F13" value="$!lsfx.f13" /></td>
+							<td name='G13'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="G13" name="G13" value="$!lsfx.g13" /></td>
+							<td name='H13'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="H13" name="H13" value="$!lsfx.h13" /></td>
+							<td name='I13'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="I13" name="I13" value="$!lsfx.i13" /></td>
+							<td name='J13'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="J13" name="J13" value="$!lsfx.j13" /></td>
+							<td name='K13'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="K13" name="K13" value="$!lsfx.k13" /></td>
+							<td name='L13'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="L13" name="L13" value="$!lsfx.l13" /></td>
+							<td name='M13'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="M13" name="M13" value="$!lsfx.m13" /></td>
+							<td name='N13'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="N13" name="N13" value="$!lsfx.n13" /></td>
+							<td name='O13'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="O13" name="O13" value="$!lsfx.o13" /></td>
+						</tr>
+						<tr>
+							<td rowspan='3' colspan='1' name='A14' align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='B14' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>流入</td>
+							<td name='C14'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="C14" name="C14" value="$!lsfx.c14" /></td>
+							<td name='D14'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="D14" name="D14" value="$!lsfx.d14" /></td></td>
+							<td name='E14'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="E14" name="E14" value="$!lsfx.e14" /></td></td>
+							<td name='F14'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="F14" name="F14" value="$!lsfx.f14" /></td></td>
+							<td name='G14'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="G14" name="G14" value="$!lsfx.g14" /></td></td>
+							<td name='H14'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="H14" name="H14" value="$!lsfx.h14" /></td></td>
+							<td name='I14'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="I14" name="I14" value="$!lsfx.i14" /></td></td>
+							<td name='J14'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="J14" name="J14" value="$!lsfx.j14" /></td>
+							<td name='K14'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="K14" name="K14" value="$!lsfx.k14" /></td>
+							<td name='L14'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="L14" name="L14" value="$!lsfx.l14" /></td>
+							<td name='M14'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="M14" name="M14" value="$!lsfx.m14" /></td>
+							<td name='N14'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="N14" name="N14" value="$!lsfx.n14" /></td>
+							<td name='O14'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="O14" name="O14" value="$!lsfx.o14" /></td>
+							<td rowspan='3' colspan='4' name='P14'
+								 align='center' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="P14" name="P14" value="$!lsfx.p14" /></td>
+						</tr>
+						<tr>
+							<td name='B15' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>流出</td>
+							<td name='C15'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="C15" name="C15" value="$!lsfx.c15" /></td>
+							<td name='D15'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="D15" name="D15" value="$!lsfx.d15" /></td>
+							<td name='E15'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="E15" name="E15" value="$!lsfx.e15" /></td>
+							<td name='F15'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="F15" name="F15" value="$!lsfx.f15" /></td>
+							<td name='G15'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="G15" name="G15" value="$!lsfx.g15" /></td>
+							<td name='H15'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="H15" name="H15" value="$!lsfx.h15" /></td>
+							<td name='I15'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="I15" name="I15" value="$!lsfx.i15" /></td>
+							<td name='J15'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="J15" name="J15" value="$!lsfx.j15" /></td>
+							<td name='K15'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="K15" name="K15" value="$!lsfx.k15" /></td>
+							<td name='L15'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="L15" name="L15" value="$!lsfx.l15" /></td>
+							<td name='M15'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="M15" name="M15" value="$!lsfx.m15" /></td>
+							<td name='N15'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="N15" name="N15" value="$!lsfx.n15" /></td>
+							<td name='O15'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="O15" name="O15" value="$!lsfx.o15" /></td>
+						</tr>
+						<tr>
+							<td name='B16' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>净流量</td>
+							<td name='C16'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="C16" name="C16" value="$!lsfx.c16" /></td>
+							<td name='D16'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="D16" name="D16" value="$!lsfx.d16" /></td>
+							<td name='E16'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="E16" name="E16" value="$!lsfx.e16" /></td>
+							<td name='F16'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="F16" name="F16" value="$!lsfx.f16" /></td>
+							<td name='G16'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="G16" name="G16" value="$!lsfx.g16" /></td>
+							<td name='H16'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="H16" name="H16" value="$!lsfx.h16" /></td>
+							<td name='I16'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="I16" name="I16" value="$!lsfx.i16" /></td>
+							<td name='J16'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="J16" name="J16" value="$!lsfx.j16" /></td>
+							<td name='K16'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="K16" name="K16" value="$!lsfx.k16" /></td>
+							<td name='L16'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="L16" name="L16" value="$!lsfx.l16" /></td>
+							<td name='M16'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="M16" name="M16" value="$!lsfx.m16" /></td>
+							<td name='N16'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="N16" name="N16" value="$!lsfx.n16" /></td>
+							<td name='O16'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="O16" name="O16" value="$!lsfx.o16" /></td>
+						</tr>
+						<tr>
+							<td rowspan='3' colspan='1' name='A17' align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='B17' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>流入</td>
+							<td name='C17'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="C17" name="C17" value="$!lsfx.c17" /></td>
+							<td name='D17'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="D17" name="D17" value="$!lsfx.d17" /></td>
+							<td name='E17'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="E17" name="E17" value="$!lsfx.e17" /></td>
+							<td name='F17'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="F17" name="F17" value="$!lsfx.f17" /></td>
+							<td name='G17'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="G17" name="G17" value="$!lsfx.g17" /></td>
+							<td name='H17'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="H17" name="H17" value="$!lsfx.h17" /></td>
+							<td name='I17'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="I17" name="I17" value="$!lsfx.i17" /></td>
+							<td name='J17'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="J17" name="J17" value="$!lsfx.j17" /></td>
+							<td name='K17'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="K17" name="K17" value="$!lsfx.k17" /></td>
+							<td name='L17'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="L17" name="L17" value="$!lsfx.l17" /></td>
+							<td name='M17'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="M17" name="M17" value="$!lsfx.m17" /></td>
+							<td name='N17'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="N17" name="N17" value="$!lsfx.n17" /></td>
+							<td name='O17'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="O17" name="O17" value="$!lsfx.o17" /></td>
+							<td rowspan='3' colspan='4' name='P17'
+								 align='center' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="P17" name="P17" value="$!lsfx.p17" />
+								</td>
+						</tr>
+						<tr>
+							<td name='B18' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>流出</td>
+							<td name='C18'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="C18" name="C18" value="$!lsfx.c18" /></td>
+							<td name='D18'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="D18" name="D18" value="$!lsfx.d18" /></td>
+							<td name='E18'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="E18" name="E18" value="$!lsfx.e18" /></td>
+							<td name='F18'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="F18" name="F18" value="$!lsfx.f18" /></td>
+							<td name='G18'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="G18" name="G18" value="$!lsfx.g18" /></td>
+							<td name='H18'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="H18" name="H18" value="$!lsfx.h18" /></td>
+							<td name='I18'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="I18" name="I18" value="$!lsfx.i18" /></td>
+							<td name='J18'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="J18" name="J18" value="$!lsfx.j18" /></td>
+							<td name='K18'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="K18" name="K18" value="$!lsfx.k18" /></td>
+							<td name='L18'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="L18" name="L18" value="$!lsfx.l18" /></td>
+							<td name='M18'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="M18" name="M18" value="$!lsfx.m18" /></td>
+							<td name='N18'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="N18" name="N18" value="$!lsfx.n18" /></td>
+							<td name='O18'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="O18" name="O18" value="$!lsfx.o18" /></td>
+						</tr>
+						<tr>
+							<td name='B19' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>净流量</td>
+							<td name='C19'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="C19" name="C19" value="$!lsfx.c19" /></td>
+							<td name='D19'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="D19" name="D19" value="$!lsfx.d19" /></td>
+							<td name='E19'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="E19" name="E19" value="$!lsfx.e19" /></td>
+							<td name='F19'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="F19" name="F19" value="$!lsfx.f19" /></td>
+							<td name='G19'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="G19" name="G19" value="$!lsfx.g19" /></td>
+							<td name='H19'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="H19" name="H19" value="$!lsfx.h19" /></td>
+							<td name='I19'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="I19" name="I19" value="$!lsfx.i19" /></td>
+							<td name='J19'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="J19" name="J19" value="$!lsfx.j19" /></td>
+							<td name='K19'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="K19" name="K19" value="$!lsfx.k19" /></td>
+							<td name='L19'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="L19" name="L19" value="$!lsfx.l19" /></td>
+							<td name='M19'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="M19" name="M19" value="$!lsfx.m19" /></td>
+							<td name='N19'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="N19" name="N19" value="$!lsfx.n19" /></td>
+							<td name='O19'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="O19" name="O19" value="$!lsfx.o19" /></td>
+						</tr>
+						<tr>
+							<td rowspan='3' colspan='1' name='A20' align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='B20' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>流入</td>
+							<td name='C20'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="C20" name="C20" value="$!lsfx.c20" /></td>
+							<td name='D20'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="D20" name="D20" value="$!lsfx.d20" /></td>
+							<td name='E20'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="E20" name="E20" value="$!lsfx.e20" /></td>
+							<td name='F20'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="F20" name="F20" value="$!lsfx.f20" /></td>
+							<td name='G20'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="G20" name="G20" value="$!lsfx.g20" /></td>
+							<td name='H20'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="H20" name="H20" value="$!lsfx.h20" /></td>
+							<td name='I20'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="I20" name="I20" value="$!lsfx.i20" /></td>
+							<td name='J20'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="J20" name="J20" value="$!lsfx.j20" /></td>
+							<td name='K20'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="K20" name="K20" value="$!lsfx.k20" /></td>
+							<td name='L20'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="L20" name="L20" value="$!lsfx.l20" /></td>
+							<td name='M20'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="M20" name="M20" value="$!lsfx.m20" /></td>
+							<td name='N20'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="N20" name="N20" value="$!lsfx.n20" /></td>
+							<td name='O20'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="O20" name="O20" value="$!lsfx.o20" /></td>
+							<td rowspan='3' colspan='4' name='P20'
+								 align='center' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="P20" name="P20" value="$!lsfx.p20" /></td>
+						</tr>
+						<tr>
+							<td name='B21' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>流出</td>
+							<td name='C21'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="C21" name="C21" value="$!lsfx.c21" /></td>
+							<td name='D21'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="D21" name="D21" value="$!lsfx.d21" /></td>
+							<td name='E21'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="E21" name="E21" value="$!lsfx.e21" /></td>
+							<td name='F21'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="F21" name="F21" value="$!lsfx.f21" /></td>
+							<td name='G21'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="G21" name="G21" value="$!lsfx.g21" /></td>
+							<td name='H21'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="H21" name="H21" value="$!lsfx.h21" /></td>
+							<td name='I21'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="I21" name="I21" value="$!lsfx.i21" /></td>
+							<td name='J21'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="J21" name="J21" value="$!lsfx.j21" /></td>
+							<td name='K21'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="K21" name="K21" value="$!lsfx.k21" /></td>
+							<td name='L21'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="L21" name="L21" value="$!lsfx.l21" /></td>
+							<td name='M21'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="M21" name="M21" value="$!lsfx.m21" /></td>
+							<td name='N21'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="N21" name="N21" value="$!lsfx.n21" /></td>
+							<td name='O21'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="O21" name="O21" value="$!lsfx.o21" /></td>
+						</tr>
+						<tr>
+							<td name='B22' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>净流量</td>
+							<td name='C22'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="C22" name="C22" value="$!lsfx.c22" /></td>
+							<td name='D22'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="D22" name="D22" value="$!lsfx.d22" /></td>
+							<td name='E22'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="E22" name="E22" value="$!lsfx.e22" /></td>
+							<td name='F22'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="F22" name="F22" value="$!lsfx.f22" /></td>
+							<td name='G22'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="G22" name="G22" value="$!lsfx.g22" /></td>
+							<td name='H22'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="H22" name="H22" value="$!lsfx.h22" /></td>
+							<td name='I22'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="I22" name="I22" value="$!lsfx.i22" /></td>
+							<td name='J22'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="J22" name="J22" value="$!lsfx.j22" /></td>
+							<td name='K22'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="K22" name="K22" value="$!lsfx.k22" /></td>
+							<td name='L22'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="L22" name="L22" value="$!lsfx.l22" /></td>
+							<td name='M22'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="M22" name="M22" value="$!lsfx.m22" /></td>
+							<td name='N22'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="N22" name="N22" value="$!lsfx.n22" /></td>
+							<td name='O22'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="O22" name="O22" value="$!lsfx.o22" /></td>
+						</tr>
+						<tr>
+							<td rowspan='3' colspan='1' name='A23' align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='B23' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>流入</td>
+							<td name='C23'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="C23" name="C23" value="$!lsfx.c23" /></td>
+							<td name='D23'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="D23" name="D23" value="$!lsfx.d23" /></td>
+							<td name='E23'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="E23" name="E23" value="$!lsfx.e23" /></td>
+							<td name='F23'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="F23" name="F23" value="$!lsfx.f23" /></td>
+							<td name='G23'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="G23" name="G23" value="$!lsfx.g23" /></td>
+							<td name='H23'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="H23" name="H23" value="$!lsfx.h23" /></td>
+							<td name='I23'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="I23" name="I23" value="$!lsfx.i23" /></td>
+							<td name='J23'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="J23" name="J23" value="$!lsfx.j23" /></td>
+							<td name='K23'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="K23" name="K23" value="$!lsfx.k23" /></td>
+							<td name='L23'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="L23" name="L23" value="$!lsfx.l23" /></td>
+							<td name='M23'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="M23" name="M23" value="$!lsfx.m23" /></td>
+							<td name='N23'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="N23" name="N23" value="$!lsfx.n23" /></td>
+							<td name='O23'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="O23" name="O23" value="$!lsfx.o23" /></td>
+							<td rowspan='3' colspan='4' name='P23'
+								 align='center' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="P23" name="P23" value="$!lsfx.p23" /></td>
+						</tr>
+						<tr>
+							<td name='B24' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>流出</td>
+							<td name='C24'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="C24" name="C24" value="$!lsfx.c24" /></td>
+							<td name='D24'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="D24" name="D24" value="$!lsfx.d24" /></td>
+							<td name='E24'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="E24" name="E24" value="$!lsfx.e24" /></td>
+							<td name='F24'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="F24" name="F24" value="$!lsfx.f24" /></td>
+							<td name='G24'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="G24" name="G24" value="$!lsfx.g24" /></td>
+							<td name='H24'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="H24" name="H24" value="$!lsfx.h24" /></td>
+							<td name='I24'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="I24" name="I24" value="$!lsfx.i24" /></td>
+							<td name='J24'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="J24" name="J24" value="$!lsfx.j24" /></td>
+							<td name='K24'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="K24" name="K24" value="$!lsfx.k24" /></td>
+							<td name='L24'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="L24" name="L24" value="$!lsfx.l24" /></td>
+							<td name='M24'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="M24" name="M24" value="$!lsfx.m24" /></td>
+							<td name='N24'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="N24" name="N24" value="$!lsfx.n24" /></td>
+							<td name='O24'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="O24" name="O24" value="$!lsfx.o24" /></td>
+						</tr>
+						<tr>
+							<td name='B25' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>净流量</td>
+							<td name='C25'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="C25" name="C25" value="$!lsfx.c25" /></td>
+							<td name='D25'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="D25" name="D25" value="$!lsfx.d25" /></td>
+							<td name='E25'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="E25" name="E25" value="$!lsfx.e25" /></td>
+							<td name='F25'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="F25" name="F25" value="$!lsfx.f25" /></td>
+							<td name='G25'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="G25" name="G25" value="$!lsfx.g25" /></td>
+							<td name='H25'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="H25" name="H25" value="$!lsfx.h25" /></td>
+							<td name='I25'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="I25" name="I25" value="$!lsfx.i25" /></td>
+							<td name='J25'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="J25" name="J25" value="$!lsfx.j25" /></td>
+							<td name='K25'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="K25" name="K25" value="$!lsfx.k25" /></td>
+							<td name='L25'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="L25" name="L25" value="$!lsfx.l25" /></td>
+							<td name='M25'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="M25" name="M25" value="$!lsfx.m25" /></td>
+							<td name='N25'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="N25" name="N25" value="$!lsfx.n25" /></td>
+							<td name='O25'  align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="O25" name="O25" value="$!lsfx.o25" /></td>
+						</tr>
+						<tr>
+							<td rowspan='1' colspan='19' name='A26' align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>银行流水总体分析</td>
+						</tr>
+						<tr>
+							<td name='A27' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>可疑的大项流水进出分析</td>
+							<td rowspan='1' colspan='9' name='B27'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<textarea  placeholder="" id="kyfx" name="kyfx" cols="50"  >$!lsfx.kyfx</textarea></td>
+							<td name='K27' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>银行流水与报表数据的反应</td>
+							<td rowspan='1' colspan='8' name='L27'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 1792px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<textarea  placeholder="备注：例如应收、应付的印证，进销货的印证，工资、费用的印证等" id="sjfy" name="sjfy" cols="50"  >$!lsfx.sjfy</textarea></td>
+						</tr>
+						<tr>
+							<td rowspan='5' colspan='1' name='A28' align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>银行流水其他分析</td>
+							<td rowspan='5' colspan='18' name='B28'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2272px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<textarea  placeholder="" id="qtfy" name="qtfy" cols="50"  >$!lsfx.qtfy</textarea></td>
+						</tr>
+						<tr></tr>
+						<tr></tr>
+						<tr></tr>
+						<tr></tr>
+					</table>
+				</div>
+			</form>
+
+
+			<div class="submit">
+             <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
+             <input type="button" onclick="returnClick();" value="#i18n('button.cancel')" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout = new FormsLayout("formsId");
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	#parse ("customer/customerInforInsert/customerInforCreate_validation.js")
+	
+	$(document).ready(function() {
+		//save
+		$("#id_save_button").click(function() {
+			var url = "${modulePath}/addLsfx.json";
+			var formjson = $($formName).serialize();
+			$.ajax({
+				url : url,
+				type : "get",
+				data : formjson,
+				success : function(data) {
+					if (data.success) {
+						topWin.Dialog.message("保存成功！");
+					} else {
+						topWin.Dialog.message(data.message);
+					}
+				}
+			});
+		});
+		
+	});
+	
+	//取消
+	function returnClick(){
+		 window.location.href= contextPath + "/customer/basiccustomerinforUpdate/browse.page" ;
+	}
+  </script>
+   <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
+  
+</body>
+#parse ("common/iframe_page_footer.htm")

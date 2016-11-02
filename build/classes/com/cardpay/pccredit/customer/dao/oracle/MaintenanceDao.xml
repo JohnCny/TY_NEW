@@ -1,0 +1,565 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.customer.dao.MaintenanceDao">
+	
+	<resultMap id="MaintenanceResultMap" type="com.cardpay.pccredit.customer.web.MaintenanceForm">
+		<result property="customerId" column="customer_id" />
+		<result property="chineseName" column="chinese_name" />
+		<result property="customerManagerId" column="customer_manager_id" />
+		<result property="maintenanceGoal" column="maintenance_goal" />
+		<result property="maintenanceWay" column="maintenance_way" />
+		<result property="maintenanceDay" column="maintenance_day" />
+		<result property="createWay" column="create_way" />
+		<result property="endResult" column="end_result" />
+		<result property="remarksCreateReason" column="remarks_create_reason" />
+		<result property="maintenanceEndtime" column="maintenance_endtime" />
+		<result property="maintenancePlanId" column="maintenance_plan_id" />
+		<result property="maintenanceResult" column="maintenance_result" />
+		<result property="maintenanceStartTime" column="maintenance_start_time" />
+		<result property="maintenanceEndTime" column="maintenance_end_time" />
+		<result property="userName" column="display_name" />
+		<result property="productName" column="product_name" />
+		<result property="cardId" column="card_id" />
+		<result property="actualQuote" column="APPLY_QUOTA" />
+		<result property="debitWay" column="debit_way" />
+		<result property="displayName" column="DISPLAY_NAME" />
+		<result property="userId" column="USER_ID" />
+		<result property="repayWay" column="REPAY_WAY" />
+		<result property="repayStatus" column="REPAY_STATUS" />
+	</resultMap>
+	<resultMap id="MaintenanceWebResultMap" type="com.cardpay.pccredit.customer.web.MaintenanceWeb">
+		<result property="id" column="id" />
+		<result property="customerId" column="customer_id" />
+		<result property="chineseName" column="chinese_name" />
+		<result property="customerManagerId" column="customer_manager_id" />
+		<result property="maintenanceGoal" column="maintenance_goal" />
+		<result property="maintenanceWay" column="maintenance_way" />
+		<result property="maintenanceDay" column="maintenance_day" />
+		<result property="createWay" column="create_way" />
+		<result property="endResult" column="end_result" />
+		<result property="remarksCreateReason" column="remarks_create_reason" />
+		<result property="maintenanceEndtime" column="maintenance_endtime" />
+		<result property="maintenancePlanId" column="maintenance_plan_id" />
+		<result property="maintenanceResult" column="maintenance_result" />
+		<result property="maintenanceStartTime" column="maintenance_start_time" />
+		<result property="maintenanceEndTime" column="maintenance_end_time" />
+		<result property="userName" column="display_name" />
+		<result property="size" column="countAction" />
+		<result property="productName" column="product_name" />
+		<result property="cardId" column="card_id" />
+		
+		<result property="startDay" column="startDay" />
+		<result property="endDay" column="endDay" />
+		<result property="appId" column="appId" />
+		<result property="customerManagerId" column="user_id" />
+		
+		<result property="dkye" column="dkye" />
+	</resultMap>
+	
+	<resultMap id="managerChildIdMap" type="com.cardpay.pccredit.manager.web.ManagerBelongMapForm">
+		 <result property="childId" column="child_id" />
+	</resultMap>
+	
+	
+		<select id="findMaintenancePlansList" resultMap="MaintenanceWebResultMap" 
+			parameterType="com.cardpay.pccredit.customer.filter.MaintenanceFilter">
+					SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					  select  b.chinese_name,
+          					  b.card_id,
+          					  p.product_name,
+          					  --m.maintenance_endtime-m.maintenance_day as startDay,
+          					  --m.maintenance_endtime as endDay,
+				  			  u.display_name,
+          					  c.id as appId,
+          					  --m.id,
+          					  b.user_id,
+          					  nvl(yehz.dkye,0) as dkye
+				       from customer_application_info c
+				       inner join product_attribute p on c.product_id = p.id
+				       inner join basic_customer_information b  on c.customer_id=b.id
+				       inner join sys_user u on b.user_id = u.id
+				       left join ty_customer_base base on  b.TY_CUSTOMER_ID = base.ID
+				       left join ty_repay_tkmx tkmx	   on base.KHH = tkmx.KHH  and p.product_type_code = tkmx.cpmc
+				       left join ty_repay_yehz  yehz  on yehz.JJH = tkmx.JJH
+				       --left join MAINTENANCE_PLAN m on m.app_id = c.id
+					  WHERE 1=1 
+					  --and c.status in ('approved','end')
+					<if test="customerManagerIds != null and customerManagerIds != '' ">  
+ 					  	AND b.user_id in  
+	 					<foreach collection="customerManagerIds" index="index" item="item" open="(" separator="," close=")"> 
+							#{item.userId} 
+						</foreach>
+					</if>
+					<if test="cardId != null and cardId != '' ">
+						AND b.CARD_ID=#{cardId}
+					 </if>
+					 
+					 <if test="customerName != null and customerName != '' ">
+						AND b.CHINESE_NAME=#{customerName}
+					 </if>
+					  
+					  <if test="customerId != null and customerId != '' ">
+						AND b.id=#{customerId}
+					 </if>
+					 <if test="productId != null and productId != '' ">
+						AND c.product_id=#{productId}
+					 </if>
+					 
+					 <if test="customerManagerId != null and customerManagerId != '' ">
+						AND b.user_id = #{customerManagerId}
+					 </if>
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	<select id="findMaintenancePlansCountList" resultType="int"
+			parameterType="com.cardpay.pccredit.customer.filter.MaintenanceFilter">
+		  select  	   count(*)
+				       from customer_application_info c
+				       inner join product_attribute p on c.product_id = p.id
+				       inner join basic_customer_information b  on c.customer_id=b.id
+				       inner join sys_user u on b.user_id = u.id
+				       --left join MAINTENANCE_PLAN m on m.app_id = c.id
+				       left join ty_customer_base base on  b.TY_CUSTOMER_ID = base.ID
+				       left join ty_repay_tkmx tkmx	   on base.KHH = tkmx.KHH  and p.product_type_code = tkmx.cpmc
+				       left join ty_repay_yehz  yehz  on yehz.JJH = tkmx.JJH
+					  WHERE 1=1 
+					 	  --and c.status in ('approved','end')
+		<if test="customerManagerIds != null and customerManagerIds != '' ">  
+ 			AND b.user_id in  
+	 		<foreach collection="customerManagerIds" index="index" item="item" open="(" separator="," close=")"> 
+				#{item.userId} 
+			</foreach>
+		</if>
+		<if test="cardId != null and cardId != '' ">
+			AND b.CARD_ID=#{cardId}
+		</if>
+					 
+		<if test="customerName != null and customerName != '' ">
+		    AND b.CHINESE_NAME=#{customerName}
+		</if>
+					  
+		<if test="customerManagerId != null and customerManagerId != '' ">
+			AND b.user_id=#{customerManagerId}
+		</if>
+		<if test="customerId != null and customerId != '' ">
+			AND b.id=#{customerId}
+		 </if>
+		 <if test="productId != null and productId != '' ">
+			AND c.product_id=#{productId}
+		 </if>
+	</select>
+	
+	<select id="findMaintenancePlansByFilter" resultMap="MaintenanceWebResultMap" 
+			parameterType="com.cardpay.pccredit.customer.filter.MaintenanceFilter">
+		<!-- SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					SELECT m.*,
+						   b.chinese_name,
+						   (select count(*) from maintenance_plans_action a where a.maintenance_plan_id=m.id) as countAction
+					  FROM MAINTENANCE_PLAN m
+					  inner join
+					  basic_customer_information b
+					  on m.customer_id=b.id
+					  WHERE 1=1
+					 <if test="customerManagerId != null and customerManagerId != '' ">
+						AND m.customer_manager_id=#{customerManagerId}
+					 </if>
+					 <if test="maintenanceGoal != null and maintenanceGoal != '' ">
+						AND m.maintenance_goal=#{maintenanceGoal}
+					 </if>
+					 <if test="maintenanceWay != null and maintenanceWay != ''">
+					 and m.maintenance_way=#{maintenanceWay}
+					 </if>
+					 <if test="maintenanceDay != null and maintenanceDay != ''">
+						AND m.maintenance_dy=#{maintenanceDay}
+					 </if>
+					 <if test="createWay != null and createWay != ''">
+						AND m.create_way=#{createWay}
+					 </if>
+					 <if test="endResult != null and endResult != ''">
+						AND m.end_result=#{endResult}
+					 </if>
+					 <if test="remarksCreateReason != null and remarksCreateReason != '' ">
+						AND m.remarks_create_reason=#{remarksCreateReason}
+					 </if>
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]> -->
+					SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					  select  b.chinese_name,
+          					  b.card_id,
+          					  p.product_name,
+          					  m.maintenance_endtime-m.maintenance_day as startDay,
+          					  m.maintenance_endtime as endDay,
+				  			  u.display_name,
+          					  c.id as appId,
+          					  m.id,
+          					  b.user_id,
+          					  m.END_RESULT
+				       from customer_application_info c
+				       inner join product_attribute p on c.product_id = p.id
+				       inner join basic_customer_information b  on c.customer_id=b.id
+				       inner join sys_user u on b.user_id = u.id
+				       left join MAINTENANCE_PLAN m on m.app_id = c.id
+					  WHERE 1=1 
+					<if test="customerManagerIds != null and customerManagerIds != '' ">  
+ 					  	AND b.user_id in  
+	 					<foreach collection="customerManagerIds" index="index" item="item" open="(" separator="," close=")"> 
+							#{item.userId} 
+						</foreach>
+					</if>
+					<if test="cardId != null and cardId != '' ">
+						AND b.CARD_ID=#{cardId}
+					 </if>
+					 
+					 <if test="customerName != null and customerName != '' ">
+						AND b.CHINESE_NAME=#{customerName}
+					 </if>
+					  
+					  <if test="customerId != null and customerId != '' ">
+						AND b.id=#{customerId}
+					 </if>
+					 <if test="productId != null and productId != '' ">
+						AND c.product_id=#{productId}
+					 </if>
+					 
+					 <if test="customerManagerId != null and customerManagerId != '' ">
+						AND b.user_id = #{customerManagerId}
+					 </if>
+					 
+					 <if test="appId != null and appId != '' ">
+						AND m.app_id = #{appId}
+					 </if>
+					 
+					 
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	<select id="findMaintenancePlansCountByFilter" resultType="int"
+			parameterType="com.cardpay.pccredit.customer.filter.MaintenanceFilter">
+		  select  	   count(*)
+				       from customer_application_info c
+				       inner join product_attribute p on c.product_id = p.id
+				       inner join basic_customer_information b  on c.customer_id=b.id
+				       inner join sys_user u on b.user_id = u.id
+				       left join MAINTENANCE_PLAN m on m.app_id = c.id
+					  WHERE 1=1 
+		<if test="customerManagerIds != null and customerManagerIds != '' ">  
+ 			AND b.user_id in  
+	 		<foreach collection="customerManagerIds" index="index" item="item" open="(" separator="," close=")"> 
+				#{item.userId} 
+			</foreach>
+		</if>
+		<if test="cardId != null and cardId != '' ">
+			AND b.CARD_ID=#{cardId}
+		</if>
+					 
+		<if test="customerName != null and customerName != '' ">
+		    AND b.CHINESE_NAME=#{customerName}
+		</if>
+					  
+		<if test="customerManagerId != null and customerManagerId != '' ">
+			AND b.user_id=#{customerManagerId}
+		</if>
+		<if test="customerId != null and customerId != '' ">
+			AND b.id=#{customerId}
+		 </if>
+		 <if test="productId != null and productId != '' ">
+			AND c.product_id=#{productId}
+		 </if>
+		 
+		 <if test="appId != null and appId != '' ">
+			AND m.app_id = #{appId}
+		 </if>
+		 
+	</select>
+	<select id="findMaintenanceById" resultMap="MaintenanceResultMap">
+		select m.*,b.chinese_name
+		from 
+		MAINTENANCE_PLAN m
+		inner join
+		basic_customer_information b
+		on m.customer_id=b.id
+		where 1=1
+		<if test="maintenanceId != null and maintenanceId != '' ">
+			and m.id=#{maintenanceId}
+		</if>
+	</select>
+	
+	<select id="findMaintenance" resultMap="MaintenanceResultMap">
+		 select   b.chinese_name,
+		 		  b.id as customer_id,
+		          b.card_id,
+		          p.product_name,
+		          c.APPLY_QUOTA,
+		          c.repay_way,
+		          c.repay_status,
+		          m.*,
+		          u.DISPLAY_NAME,
+		          b.user_id,c.product_id as productId
+        from customer_application_info c
+        inner join product_attribute p on c.product_id = p.id
+        inner join basic_customer_information b  on c.customer_id=b.id
+        inner join sys_user u on b.user_id = u.id
+        left join MAINTENANCE_PLAN m on m.customer_id = c.customer_id
+ 		where 1=1
+ 		<if test="id != null and id != '' ">
+			and m.id=#{id}
+		</if>
+        <if test="appId != null and appId != '' ">
+			and c.id=#{appId}
+		</if>
+	</select>
+	
+	<select id="findMaintenAndAppInfo" resultMap="MaintenanceResultMap">
+		 select   b.chinese_name,
+		 		  b.id as customer_id,
+		          b.card_id,
+		          p.product_name,
+		          c.APPLY_QUOTA,
+		          c.repay_way,
+		          c.repay_status,
+		          u.DISPLAY_NAME,
+		          b.user_id,c.product_id as productId
+        from customer_application_info c
+        inner join product_attribute p on c.product_id = p.id
+        inner join basic_customer_information b  on c.customer_id=b.id
+        inner join sys_user u on b.user_id = u.id
+        --left join MAINTENANCE_PLAN m on m.customer_id = c.customer_id
+ 		where 1=1
+        <if test="appId != null and appId != '' ">
+			and c.id=#{appId}
+		</if>
+	</select>
+	
+	
+	
+	<select id="findMaintenanceActionByMaintenanceId" resultMap="MaintenanceWebResultMap" >
+		select m.*
+		from 
+		MAINTENANCE_PLANS_ACTION m
+		where 1=1
+		<if test="id !=null and id != '' ">
+			and m.maintenance_plan_id=#{id}
+		</if>
+	</select>
+	<select id="checkRepeat" resultType="int">
+		select count(*)
+		from 
+		MAINTENANCE_PLAN m
+		where m.customer_id=#{id}
+		and (m.end_result=#{endResult} or m.end_result is null)
+	</select>
+	<select id="findSubMaintenancePlansByFilter" resultMap="MaintenanceWebResultMap" >
+		SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					SELECT m.*,
+						   b.chinese_name,
+						   u.display_name,
+						   (select count(*) from maintenance_plans_action a where a.maintenance_plan_id=m.id) as countAction
+					  FROM MAINTENANCE_PLAN m
+					  inner join
+					  basic_customer_information b
+					  on m.customer_id=b.id
+					  inner join
+					  sys_user u
+					  on m.customer_manager_id = u.id
+					  WHERE 1=1 AND m.customer_manager_id in 
+					  <foreach collection="customerManagerIds" index="index" item="item" open="(" separator="," close=")">
+						#{item.userId}
+					  </foreach>
+					 <if test="maintenanceGoal != null and maintenanceGoal != '' ">
+						AND m.maintenance_goal=#{maintenanceGoal}
+					 </if>
+					 <if test="maintenanceWay != null and maintenanceWay != ''">
+					 and m.maintenance_way=#{maintenanceWay}
+					 </if>
+					 <if test="maintenanceDay != null and maintenanceDay != ''">
+						AND m.maintenance_dy=#{maintenanceDay}
+					 </if>
+					 <if test="createWay != null and createWay != ''">
+						AND m.create_way=#{createWay}
+					 </if>
+					 <if test="endResult != null and endResult != ''">
+						AND m.end_result=#{endResult}
+					 </if>
+					 <if test="remarksCreateReason != null and remarksCreateReason != '' ">
+						AND m.remarks_create_reason=#{remarksCreateReason}
+					 </if>
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	<select id="findSubMaintenancePlansCountByFilter" resultType="int">
+		SELECT count(*)
+					  FROM MAINTENANCE_PLAN m
+					  where m.customer_manager_id in 
+					  <foreach collection="customerManagerIds" index="index" item="item" open="(" separator="," close=")">
+						#{item.userId}
+					  </foreach>
+	</select>
+	<select id="findMaintenanceCountToday" resultType="int">
+		select count(*)
+		from MAINTENANCE_PLAN m
+		where m.customer_manager_id=#{customerManagerId}
+		and m.end_result=#{result}
+		<if test="startTime!=null and startTime!=''">
+			<![CDATA[
+			and m.created_time<to_date(#{startTime},'yyyy-mm-dd hh24:mi:ss')
+			]]>
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			<![CDATA[
+			and m.maintenance_endtime>to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+			]]>
+		</if>
+	</select>
+	
+	
+	<select id="findChildId" resultMap="managerChildIdMap">
+		select  mbm.*
+  	    from manager_belong_map mbm
+ 		start with child_id =
+            (select amp.id
+               from manager_belong_map t
+               left join account_manager_parameter amp  on amp.id = t.child_id
+               left join sys_user su ON su.id = amp.user_id    
+              where amp.user_id = #{id}
+             ) 
+		connect by prior child_id = parent_id
+	</select>
+	
+	<select id="findMaintenanceByCustomerId" resultMap="MaintenanceResultMap">
+		 select   b.chinese_name,
+		 		  b.id as customer_id,
+		          b.card_id,
+		          p.product_name,
+		          c.actual_quote,
+		          c.repay_way,
+		          c.repay_status,
+		          m.*,
+		          u.DISPLAY_NAME,
+		          b.user_id
+        from customer_application_info c
+        inner join product_attribute p on c.product_id = p.id
+        inner join basic_customer_information b  on c.customer_id=b.id
+        inner join sys_user u on b.user_id = u.id
+        left join MAINTENANCE_PLAN m on m.customer_id = c.customer_id
+ 		where 1=1
+ 		<if test="id != null and id != '' ">
+			and m.id=#{id}
+		</if>
+	</select>
+	
+	
+	<select id="findMaintenanceWebPlansByFilter" resultMap="MaintenanceWebResultMap" 
+			parameterType="com.cardpay.pccredit.customer.filter.MaintenanceFilter">
+		<!-- SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					SELECT m.*,
+						   b.chinese_name,
+						   (select count(*) from maintenance_plans_action a where a.maintenance_plan_id=m.id) as countAction
+					  FROM MAINTENANCE_PLAN m
+					  inner join
+					  basic_customer_information b
+					  on m.customer_id=b.id
+					  WHERE 1=1
+					 <if test="customerManagerId != null and customerManagerId != '' ">
+						AND m.customer_manager_id=#{customerManagerId}
+					 </if>
+					 <if test="maintenanceGoal != null and maintenanceGoal != '' ">
+						AND m.maintenance_goal=#{maintenanceGoal}
+					 </if>
+					 <if test="maintenanceWay != null and maintenanceWay != ''">
+					 and m.maintenance_way=#{maintenanceWay}
+					 </if>
+					 <if test="maintenanceDay != null and maintenanceDay != ''">
+						AND m.maintenance_dy=#{maintenanceDay}
+					 </if>
+					 <if test="createWay != null and createWay != ''">
+						AND m.create_way=#{createWay}
+					 </if>
+					 <if test="endResult != null and endResult != ''">
+						AND m.end_result=#{endResult}
+					 </if>
+					 <if test="remarksCreateReason != null and remarksCreateReason != '' ">
+						AND m.remarks_create_reason=#{remarksCreateReason}
+					 </if>
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]> -->
+					SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					  select  b.chinese_name,
+          					  b.card_id,
+          					  p.product_name,
+          					  m.maintenance_endtime-m.maintenance_day as startDay,
+          					  m.maintenance_endtime as endDay,
+				  			  u.display_name,
+          					  c.id as appId,
+          					  m.id,
+          					  b.user_id,
+          					  m.END_RESULT
+				       from customer_application_info c
+				       inner join product_attribute p on c.product_id = p.id
+				       inner join basic_customer_information b  on c.customer_id=b.id
+				       inner join sys_user u on b.user_id = u.id
+				       left join MAINTENANCE_PLAN m on m.app_id = c.id
+					  WHERE 1=1 
+					<if test="customerManagerIds != null and customerManagerIds != '' ">  
+ 					  	AND b.user_id in  
+	 					<foreach collection="customerManagerIds" index="index" item="item" open="(" separator="," close=")"> 
+							#{item.userId} 
+						</foreach>
+					</if>
+					<if test="cardId != null and cardId != '' ">
+						AND b.CARD_ID=#{cardId}
+					 </if>
+					 
+					 <if test="customerName != null and customerName != '' ">
+						AND b.CHINESE_NAME=#{customerName}
+					 </if>
+					  
+					  <if test="customerId != null and customerId != '' ">
+						AND b.id=#{customerId}
+					 </if>
+					 <if test="productId != null and productId != '' ">
+						AND c.product_id=#{productId}
+					 </if>
+					 
+					 <if test="customerManagerId != null and customerManagerId != '' ">
+						AND b.user_id = #{customerManagerId}
+					 </if>
+					 
+					 <if test="appId != null and appId != '' ">
+						AND m.app_id = #{appId}
+					 </if>
+					 
+					 
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+</mapper>

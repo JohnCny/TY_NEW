@@ -1,0 +1,118 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+				<div class="title">客户信息智能报表</div>
+			</div>
+
+			<div class="inquiry">
+				<!-------------- 信息显示 ------------------------------------->
+				<div id="topDiv" class="inquiry_list inquiry_top" >
+					<table>
+						<colgroup>
+							<col width="100" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+							<col width="200" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+						</colgroup>
+						<tr class="title" align="center">
+							<th nowrap="nowrap">姓名</th>
+							<th nowrap="nowrap">身份证</th>
+							<th nowrap="nowrap">授信额度</th>
+							<th nowrap="nowrap">临时授信额度</th>
+							<th nowrap="nowrap">户籍地</th>
+							<th nowrap="nowrap">在户籍地有无商品房产</th>
+							<th nowrap="nowrap">从事行业/职业</th>
+							<th nowrap="nowrap">单位性质</th>
+							<th nowrap="nowrap">婚姻状况</th>
+							<th nowrap="nowrap">教育程度</th>
+							<th nowrap="nowrap">职务</th>
+							<th nowrap="nowrap">职称</th>
+							<th nowrap="nowrap">年收入（睡前）</th>
+							<th nowrap="nowrap">现单位工作年限</th>
+							<th nowrap="nowrap">参加工作时间</th>
+							<th nowrap="nowrap">性别</th>
+						</tr>
+					</table>
+				</div>
+
+				<div id="downDiv" class="inquiry_list inquiry_down" >
+					<table>
+						<colgroup>
+							<col width="100" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+							<col width="200" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+							<col width="140" />
+						</colgroup>
+						#foreach ($customer in $result)
+						<tr id="$customer.id" >
+							<td nowrap="nowrap">$!customer.name</td>
+							<td nowrap="nowrap">$!customer.cardId</td>
+							<td nowrap="nowrap">$format.formatNumber(2,$!customer.creditAmount)</td>
+							<td nowrap="nowrap">$format.formatNumber(2,$!customer.tempAmount)</td>
+							<td nowrap="nowrap">$!customer.householdAddress</td>
+							<td nowrap="nowrap">$!customer.customerBusinessAptitude</td>
+							<td nowrap="nowrap">#dictVal("HYLB_CODE",$!customer.industryType)</td>
+							<td nowrap="nowrap">#dictVal("CMMSCCOM",$!customer.unitNature)</td>
+							<td nowrap="nowrap">#dictVal("CMMSCMRC",$!customer.maritalStatus)</td>
+							<td nowrap="nowrap">#dictVal("DEGREEEDUCATION",$!customer.degreeEducation)</td>
+							<td nowrap="nowrap">$!customer.positio</td>
+							<td nowrap="nowrap">$!customer.title</td>
+							<td nowrap="nowrap">$format.formatNumber(2,$!customer.annualIncome)</td>
+							<td nowrap="nowrap">$!customer.yearWorkUnit</td>
+							<td nowrap="nowrap">$!customer.workTime</td>
+							<td nowrap="nowrap">#dictVal("Gender",$!customer.sex)</td>
+						</tr>
+						#end
+					</table>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+</body>
+<style type="text/css">
+ tr td{text-align: center;}
+</style>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.createUrl = "${modulePath}/create.page";
+		opsObj.changeUrl = "${modulePath}/change.page";
+		opsObj.displayUrl = "${modulePath}/display.page";
+		opsObj.browseUrl = "${modulePath}/browse.page";
+
+		prepareOperations(opsObj);
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")

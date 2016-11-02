@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validators>
+	<validator id="riskcontrol.accountabilityrecordmanager">
+	  <control name="money">
+			<entry type="required" value="true" />
+		</control>
+
+	</validator>
+</validators>

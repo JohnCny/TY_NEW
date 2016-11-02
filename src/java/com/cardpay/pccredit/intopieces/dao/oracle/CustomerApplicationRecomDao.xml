@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.intopieces.dao.CustomerApplicationRecomDao" >
+  <resultMap id="BaseResultMap" type="com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom" >
+    <id column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="MAIN_APPLICATION_FORM_ID" property="mainApplicationFormId" jdbcType="DECIMAL" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="OUTLET" property="outlet" jdbcType="VARCHAR" />
+    <result column="CONTACT_PHONE" property="contactPhone" jdbcType="VARCHAR" />
+    <result column="RECOMMENDED_IDENTITY_CARD_NUMB" property="recommendedIdentityCardNumb" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, MAIN_APPLICATION_FORM_ID, NAME, OUTLET, CONTACT_PHONE, RECOMMENDED_IDENTITY_CARD_NUMB
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from CUSTOMER_APPLICATION_RECOM
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from CUSTOMER_APPLICATION_RECOM
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom" >
+    insert into CUSTOMER_APPLICATION_RECOM (ID, MAIN_APPLICATION_FORM_ID, NAME, 
+      OUTLET, CONTACT_PHONE, RECOMMENDED_IDENTITY_CARD_NUMB
+      )
+    values (#{id,jdbcType=DECIMAL}, #{mainApplicationFormId,jdbcType=DECIMAL}, #{name,jdbcType=VARCHAR}, 
+      #{outlet,jdbcType=VARCHAR}, #{contactPhone,jdbcType=VARCHAR}, #{recommendedIdentityCardNumb,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom" >
+    insert into CUSTOMER_APPLICATION_RECOM
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="mainApplicationFormId != null" >
+        MAIN_APPLICATION_FORM_ID,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="outlet != null" >
+        OUTLET,
+      </if>
+      <if test="contactPhone != null" >
+        CONTACT_PHONE,
+      </if>
+      <if test="recommendedIdentityCardNumb != null" >
+        RECOMMENDED_IDENTITY_CARD_NUMB,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=DECIMAL},
+      </if>
+      <if test="mainApplicationFormId != null" >
+        #{mainApplicationFormId,jdbcType=DECIMAL},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="outlet != null" >
+        #{outlet,jdbcType=VARCHAR},
+      </if>
+      <if test="contactPhone != null" >
+        #{contactPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="recommendedIdentityCardNumb != null" >
+        #{recommendedIdentityCardNumb,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom" >
+    update CUSTOMER_APPLICATION_RECOM
+    <set >
+      <if test="mainApplicationFormId != null" >
+        MAIN_APPLICATION_FORM_ID = #{mainApplicationFormId,jdbcType=DECIMAL},
+      </if>
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="outlet != null" >
+        OUTLET = #{outlet,jdbcType=VARCHAR},
+      </if>
+      <if test="contactPhone != null" >
+        CONTACT_PHONE = #{contactPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="recommendedIdentityCardNumb != null" >
+        RECOMMENDED_IDENTITY_CARD_NUMB = #{recommendedIdentityCardNumb,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom" >
+    update CUSTOMER_APPLICATION_RECOM
+    set MAIN_APPLICATION_FORM_ID = #{mainApplicationFormId,jdbcType=DECIMAL},
+      NAME = #{name,jdbcType=VARCHAR},
+      OUTLET = #{outlet,jdbcType=VARCHAR},
+      CONTACT_PHONE = #{contactPhone,jdbcType=VARCHAR},
+      RECOMMENDED_IDENTITY_CARD_NUMB = #{recommendedIdentityCardNumb,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+</mapper>

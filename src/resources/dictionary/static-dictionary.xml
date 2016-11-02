@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dictionaries>
+	<dictionary name="ProductType" title="产品类型">
+		<item name="asset" title="资产类" />
+		<item name="debt" title="负债类" />
+		<item name="finance" title="理财类" />
+		
+	</dictionary>
+
+	<dictionary name="OrderType" title="订单类型">
+		<item name="single" title="单签" />
+		<item name="group" title="团签" />
+	</dictionary>
+
+	<dictionary name="Quarter" title="季度">
+		<item name="q1" title="第一季度" />
+		<item name="q2" title="第二季度" />
+		<item name="q3" title="第三季度" />
+		<item name="q4" title="第四季度" />
+	</dictionary>
+
+	<dictionary name="Gender" title="性别">
+		<item name="Male" title="男" />
+		<item name="Female" title="女" />
+	</dictionary>
+	
+	<dictionary name="SystemRole" title="是否为系统角色">
+		<item name="true" title="是" />
+		<item name="false" title="否" />
+	</dictionary>
+	
+	<dictionary name="RiskCustomerStatus" title="风险客户状态">
+		<item name="UNREPORTED" title="未上报" />
+		<item name="UNREPORTED_CARDCENTER" title="未上报" />
+		<item name="REPORTED_SUPERVISOR" title="上报机构主管" />
+		<item name="REPORTED_CARDCENTER" title="上报卡中心" />
+		<item name="CONFIRMED_SUPERVISOR" title="机构主管确认" />
+		<item name="CONFIRMED_CARDCENTER" title="卡中心确认" />
+		<item name="REJECT_SUPERVISOR" title="机构主管拒绝" />
+		<item name="REJECT_CARDCENTER" title="卡中心拒绝" />
+	</dictionary>
+	<dictionary name="CustomerRiskRating" title="风险等级">
+		<item name="1" title="1" />
+		<item name="2" title="2" />
+		<item name="3" title="3" />
+		<item name="4" title="4" />
+	</dictionary>
+	<dictionary name="RiskReviewProcessAuditResults" title="风险等级">
+		<item name="PASS" title="通过" />
+		<item name="REJECT" title="驳回" />
+		<item name="supervisorPASS" title="主管审核通过" />
+		<item name="supervisorREJECT" title="主管驳回" />
+		<item name="cardcenterPASS" title="卡中心通过" />
+		<item name="cardcenterREJECT" title="卡中心驳回" /> 
+		<item name="REPORTED" title="已上报" /> 
+	</dictionary>
+	
+	
+	<dictionary name="DivisionalStatus" title="客户移交状态">
+		<item name="turn" title="移交中" />
+		<item name="complete" title="移交完成" />
+	</dictionary>
+	<dictionary name="DivisionalResult" title="分案结果">
+		<item name="received" title="已接受" />
+		<item name="distribution" title="已分配" />
+		<item name="reject" title="已拒绝" />
+	</dictionary>
+	<dictionary name="ProductStatus" title="产品状态">
+		<item name="Published" title="已发布" />
+		<item name="Unpublished" title="未发布" />
+		<item name="Approved" title="审核通过" />
+		<item name="Screen" title="已筛选" />
+	</dictionary>
+	<dictionary name="CreateMethod" title="创建方式">
+		<item name="auto" title="系统自动匹配" />
+		<item name="manual" title="卡中心手动" />
+	</dictionary>
+	<dictionary name="ReviewResults" title="审核状态">
+		<item name="new" title="新建" />
+		<item name="confirm" title="通过" />
+		<item name="refuse" title="拒绝" />
+		<item name="verification" title="已核销" />
+	</dictionary>
+	<dictionary name="userType" title="用户类型">
+		<item name="0" title="系统用户" />
+		<item name="1" title="客户经理" />
+		<item name="2" title="部门主管" />
+		<item name="3" title="机构主管" />
+		<item name="4" title="微贷团队" />
+		<item name="5" title="风险岗" />
+	</dictionary>
+	<dictionary name="MarketingEndResult" title="营销计划最终结果">
+		<item name="marketing" title="营销中" />
+		<item name="reject" title="拒绝" />
+		<item name="hang" title="挂起" />
+		<item name="continuemarketing" title="继续营销" />
+		<item name="complete" title="营销完成" />
+	</dictionary>
+	<dictionary name="MarketingCreateWay" title="营销计划创建方式">
+		<item name="system" title="系统创建" />
+		<item name="manager" title="主管创建" />
+		<item name="myself" title="自己创建" />
+	</dictionary>
+	<dictionary name="CollectionPlanEndResult" title="催收计划最终结果">
+		<item name="collection" title="催收中" />
+		<item name="repaymentcommitments" title="承诺还款" />
+		<item name="losecontact" title="失联" />
+		<item name="reject" title="拒绝" />
+		<item name="hang" title="挂起" />
+		<item name="continuecollection" title="继续催收" />
+		<item name="complete" title="催收完成" />
+	</dictionary>
+	<dictionary name="MaintenanceEndResult" title="维护计划最终结果">
+		<item name="maintaining" title="维护中" />
+		<item name="nextmaintain" title="继续维护" />
+		<item name="complete" title="维护完成" />
+	</dictionary>
+	<dictionary name="ReturnReceipt" title="警示书回执">
+		<item name="0" title="未反馈" />
+		<item name="1" title="已反馈" />
+	</dictionary>
+	<dictionary name="AssessmentScore" title="客户经理评估总评价">
+		<item name="0" title="未通过(80分以下)" />
+		<item name="1" title="通过(80分及以上)" />
+	</dictionary>
+	<dictionary name="systemAdvice" title="级别调整建议">
+		<item name="up" title="晋级" />
+		<item name="down" title="降级" />
+	</dictionary>
+	<dictionary name="ifHandled" title="是否处理">
+		<item name="0" title="未处理" />
+		<item name="1" title="已处理" />
+	</dictionary>
+	<dictionary name="tableName" title="产品筛选表名">
+		<item name="customer_careers_information" title="客户职业资料" />
+		<item name="basic_customer_information" title="客户基本信息资料" />
+	</dictionary>
+	<dictionary name="columnName" title="产品筛选表名">
+		<item name="RESIDENTIAL_PROPERTIE" title="住宅性质" />
+		<item name="DEGREE_EDUCATION" title="教育程度" />
+		<item name="UNIT_NATURE" title="单位性质" />
+		<item name="INDUSTRY_TYPE" title="行业类型" />
+		<item name="POSITIO" title="职务" />
+		<item name="TITLE" title="职称" />
+		<item name="YEAR_WORK_UNIT" title="现工作单位年限" />
+		<item name="WORK_TIME" title="参加工作时间" />
+	</dictionary>
+	<dictionary name="customerTableColumnName" title="客户基本信息表">
+		<item name="RESIDENTIAL_PROPERTIE" title="住宅性质" />
+		<item name="DEGREE_EDUCATION" title="教育程度" />
+	</dictionary>
+	<dictionary name="carrerTableColumnName" title="客户职业信息表">
+		<item name="UNIT_NATURE" title="单位性质" />
+		<item name="INDUSTRY_TYPE" title="行业类型" />
+		<item name="POSITIO" title="职务" />
+		<item name="TITLE" title="职称" />
+		<item name="YEAR_WORK_UNIT" title="现工作单位年限" />
+		<item name="WORK_TIME" title="参加工作时间" />
+	</dictionary>
+	<dictionary name="operateName" title="产品筛选操作名">
+		<item name="&gt;" title="大于" />
+		<item name="&lt;" title="小于" />
+		<item name="&gt;=" title="大于等于" />
+		<item name="&lt;=" title="小于等于" />
+		<item name="=" title="等于" />
+		<item name="!=" title="不等于" />
+	</dictionary>
+	<dictionary name="ifPassStandard" title="是否达标">
+		<item name="0" title="未达标" />
+		<item name="1" title="已达标" />
+	</dictionary>
+		
+	<dictionary name="YESNO" title="是否">
+		<item name="YES" title="是" />
+		<item name="NO" title="否" />
+	</dictionary>
+	
+	<dictionary name="NODETYPE" title="节点类型">
+		<item name="Product" title="产品进件" />
+		<item name="ProductAmountAdjust" title="产品调额" />
+	</dictionary>
+	<dictionary name="applicationStatus" title="申请件状态">
+		<item name="UNAPPROVE" title="未审核" />
+		<item name="APPROVE" title="审核通过" />
+		<item name="RETURNAPPROVE" title="审核退回" />
+		<item name="REJECTAPPROVE" title="审核拒绝" />
+		<item name="save" title="未申请" />
+		<item name="audit" title="已申请" />
+		<item name="nopass" title="申请未通过" />
+		<item name="refuse" title="被拒接" />
+		<item name="approved" title="审批结束" />
+		<item name="succeed" title="申请成功" />
+		<item name="end" title="放款成功" />
+	</dictionary>
+	<dictionary name="QuotaAdjustType" title="调额类型">
+		<item name="up" title="升额" />
+		<item name="down" title="降额" />
+	</dictionary>
+	
+	<dictionary name="approveOperationSpecialStatus" title="申请件状态">
+		<item name="APPROVE" title="审核通过" />
+		<item name="RETURNAPPROVE" title="审核退回" />
+		<item name="REJECTAPPROVE" title="审核拒绝" />
+		<item name="OBJECTION" title="异议" />
+	</dictionary>
+	<dictionary name="approveOperationNormalStatus" title="申请件状态">
+		<item name="APPROVE" title="审核通过" />
+		<item name="RETURNAPPROVE" title="审核退回" />
+		<item name="REJECTAPPROVE" title="审核拒绝" />
+	</dictionary>
+	<dictionary name="AmountAdjustmentApprovalStatus" title="调额状态">
+		<item name="Audit" title="审批中" />
+		<item name="Refuse" title="拒绝" />
+		<item name="Success" title="审批成功" />
+		<item name="Back" title="退回" />
+	</dictionary>
+	<dictionary name="RiskCreateType" title="风险类型">
+		<item name="system" title="系统" />
+		<item name="manual" title="手动" />
+	</dictionary>
+	<dictionary name="NODEOPTYPE" title="节点操作类型">
+		<item name="entering" title="录入" />
+		<item name="approved" title="审核" />
+	</dictionary>
+	<dictionary name="NODEOPSTATUS" title="节点关系状态">
+		<item name="APPROVE" title="通过" />
+		<item name="OBJECTION" title="异议" />
+	</dictionary>
+	<dictionary name="BillingMethod" title="账单寄送方式">
+		<item name="0" title="纸质账单" />
+		<item name="1" title="电子账单" />
+	</dictionary>
+	
+	<dictionary name="CollarCardMode" title="领卡方式">
+		<item name="0" title="到网点领取" />
+		<item name="1" title="普通邮寄" />
+		<item name="2" title="快递" />
+	</dictionary>
+	
+	<dictionary name="UseSecondCard" title="附卡是否开通">
+		<item name="1" title="是" />
+		<item name="0" title="否" />
+	</dictionary>
+	
+	<dictionary name="repayWay" title="还款方式">
+		<item name="1" title="现金" />
+		<item name="0" title="银行卡" />
+	</dictionary>
+	
+	<dictionary name="repayStatus" title="还款状态">
+		<item name="1" title="是" />
+		<item name="0" title="否" />
+	</dictionary>
+	
+	<dictionary name="intopieces_decision" title="审议结论">
+		<item name="APPROVE" title="通过" />
+		<item name="REJECTAPPROVE" title="拒绝" />
+		<item name="RETURNAPPROVE" title="退回" />
+		<!-- <item name="approved" title="通过" />
+		<item name="refuse" title="拒绝" /> -->
+		<!-- <item name="nopass_replenish" title="补充调查" />
+		<item name="nopass_re" title="退回重新调查" /> -->
+	</dictionary>
+	
+	<dictionary name="intopieces_decision_chusheng" title="审议结论">
+		<item name="APPROVE" title="通过" />
+		<item name="REJECTAPPROVE" title="拒绝" />
+		<!-- <item name="approved" title="通过" />
+		<item name="refuse" title="拒绝" /> -->
+		<!-- <item name="nopass_replenish" title="补充调查" />
+		<item name="nopass_re" title="退回重新调查" /> -->
+	</dictionary>
+	
+	<dictionary name="decision_term" title="期限">
+		<item name="1" title="1个月" />
+		<item name="2" title="2个月" />
+		<item name="3" title="3个月" />
+		<item name="4" title="4个月" />
+		<item name="5" title="5个月" />
+		<item name="6" title="6个月" />
+		<item name="7" title="7个月" />
+		<item name="8" title="8个月" />
+		<item name="9" title="9个月" />
+		<item name="10" title="10个月" />
+		<item name="11" title="11个月" />
+		<item name="12" title="12个月" />
+		<item name="13" title="13个月" />
+		<item name="14" title="14个月" />
+		<item name="15" title="15个月" />
+		<item name="16" title="16个月" />
+		<item name="17" title="17个月" />
+		<item name="18" title="18个月" />
+		<item name="19" title="19个月" />
+		<item name="20" title="20个月" />
+		<item name="21" title="21个月" />
+		<item name="22" title="22个月" />
+		<item name="23" title="23个月" />
+		<item name="24" title="24个月" />
+		<item name="25" title="25个月" />
+		<item name="26" title="26个月" />
+		<item name="27" title="27个月" />
+		<item name="28" title="28个月" />
+		<item name="29" title="29个月" />
+		<item name="30" title="30个月" />
+		<item name="31" title="31个月" />
+		<item name="32" title="32个月" />
+		<item name="33" title="33个月" />
+		<item name="34" title="34个月" />
+		<item name="35" title="35个月" />
+		<item name="36" title="36个月" />
+	</dictionary>
+	
+	<!-- 原始信息-基本信息数据字典 -->
+	<dictionary name="rh" title="是否入户">
+		<item name="" title="是" />
+		<item name="0" title="否" />
+	</dictionary>
+	<dictionary name="khlx" title="客户类型">
+		<item name="11" title="企业法人" />
+		<item name="12" title="事业单位" />
+		<item name="13" title="其他经济组织" />
+		<item name="14" title="农民专业合作社" />
+		<item name="25" title="农户" />
+		<item name="26" title="商户" />
+		<item name="27" title="其他自然人" />
+		<item name="2" title="个人" />
+		<item name="1" title="企业" />
+		<item name="15" title="金融机构" />
+	</dictionary>
+	<dictionary name="zjlx" title="证件类型">
+		<item name="0" title="身份证" />
+		<item name="3" title="军官证" />
+	</dictionary>
+	<dictionary name="sfcq" title="是否长期">
+		<item name="1" title="是" />
+		<item name="0" title="否" />
+	</dictionary>
+	<dictionary name="xb" title="性别">
+		<item name="1" title="男" />
+		<item name="2" title="女" />
+	</dictionary>
+	<dictionary name="gj" title="国籍">
+		<item name="1" title="国籍1" />
+		<item name="2" title="国籍2" />
+	</dictionary>
+	<dictionary name="mz" title="民族">
+		<item name="01" title="汉族" />
+		<item name="02" title="回族" />
+	</dictionary>
+	<dictionary name="zzmm" title="政治面貌">
+		<item name="1" title="面貌1" />
+		<item name="2" title="面貌2" />
+	</dictionary>
+	<dictionary name="xl" title="学历">
+		<item name="20" title="大学本科" />
+		<item name="30" title="大学专科和专科学校" />
+		<item name="40" title="中等专业学校或中等技术学校" />
+		<item name="50" title="技术学校" />
+		<item name="60" title="高中" />
+		<item name="70" title="初中" />
+		<item name="80" title="小学" />
+		<item name="90" title="文盲与半文盲" />
+		<item name="99" title="未知" />
+		<item name="10" title="研究生" />
+	</dictionary>
+	<dictionary name="xw" title="学位">
+		<item name="3" title="硕士" />
+		<item name="2" title="博士" />
+		<item name="1" title="名誉博士" />
+		<item name="0" title="其他" />
+		<item name="4" title="学士" />
+		<item name="9" title="未知" />
+	</dictionary>
+	<dictionary name="jkzk" title="健康状况">
+		<item name="01" title="良好" />
+		<item name="02" title="一般" />
+		<item name="03" title="差" />
+		<item name="04" title="未知" />
+	</dictionary>
+	<dictionary name="hyzk" title="婚姻状况">
+		<item name="30" title="未知" />
+		<item name="10" title="未婚" />
+		<item name="20" title="已婚" />
+		<item name="40" title="离婚" />
+		<item name="50" title="丧偶" />
+	</dictionary>
+	<dictionary name="cygx" title="成员关系">
+		<item name="20" title="兄弟" />
+		<item name="21" title="姐妹" />
+		<item name="22" title="亲属" />
+		<item name="23" title="合伙人" />
+		<item name="24" title="其他" />
+		<item name="01" title="父亲" />
+		<item name="02" title="母亲" />
+		<item name="03" title="兄弟" />
+		<item name="04" title="姐妹" />
+		<item name="05" title="配偶" />
+		<item name="06" title="子女" />
+		<item name="07" title="其他亲属" />
+		<item name="08" title="孙子女" />
+		<item name="25" title="同事" />
+		<item name="26" title="儿媳" />
+		<item name="27" title="叔侄" />
+		<item name="28" title="朋友" />
+		<item name="29" title="企业关联客户" />
+	</dictionary>
+	
+	<dictionary name="status" title="批处理状态">
+		<item name="000" title="初始" />
+		<item name="001" title="失败" />
+		<item name="100" title="成功" />
+	</dictionary>
+	
+	<!--  济南下发数据数据字典 start -->
+	<dictionary name="SEX" title="性别">
+		<item name="1" title="男" />
+		<item name="2" title="女" />
+	</dictionary>
+	
+	<dictionary name="CARDTYPE" title="证件类型">
+		<item name="0" title="身份证" />
+		<item name="1" title="军官证" />
+		<item name="2" title="护照" />
+		<item name="3" title="香港身份证" />
+		<item name="4" title="澳门身份证" />
+		<item name="5" title="台湾身份证" />
+	</dictionary>
+	
+	<dictionary name="MARRIGE" title="婚姻状况">
+		<item name="0" title="未婚" />
+		<item name="1" title="已婚" />
+		<item name="2" title="丧偶" />
+		<item name="3" title="离婚" />
+	</dictionary>
+	
+	
+	<dictionary name="RESIDE" title="居住状况">
+		<item name="0" title="自置" />
+		<item name="1" title="按揭" />
+		<item name="2" title="租房" />
+		<item name="3" title="集体宿舍" />
+		<item name="4" title="亲属楼宇" />
+		<item name="5" title="共有住宅" />
+		<item name="6" title="其他" />
+		<item name="7" title="未知" />
+	</dictionary>
+	
+	
+	<dictionary name="EDUCATIONLEVEL" title="最高学位">
+		<item name="0" title="博士" />
+		<item name="1" title="名誉博士" />
+		<item name="2" title="硕士" />
+		<item name="3" title="学士" />
+		<item name="4" title="其他" />
+		<item name="5" title="无" />
+		<item name="6" title="未知" />
+	</dictionary>
+	
+	<dictionary name="DEGREE" title="最高学历">
+		<item name="1" title="研究生" />
+		<item name="2" title="大学本科" />
+		<item name="3" title="大学专科或专科学校" />
+		<item name="4" title="中等专业或技术学校" />
+		<item name="5" title="高中" />
+		<item name="6" title="初中" />
+		<item name="7" title="小学" />
+		<item name="8" title="文盲或半文盲" />
+		<item name="9" title="未知" />
+	</dictionary>
+	
+	<dictionary name="ISBACK" title="是否是退回借据">
+		<item name="0" title="否" />
+		<item name="1" title="是" />
+	</dictionary>
+	
+	<dictionary name="STATE" title="状态">
+		<item name="1" title="清分完成(未认定)" />
+		<item name="2" title="初分完成（认定未提交）" />
+		<item name="3" title="审批中（已提交）" />
+		<item name="4" title="认定结束" />
+		<item name="5" title="重分完成" />
+		<item name="6" title="重分审批中" />
+	</dictionary>
+	
+	<dictionary name="SQUAREMODEL" title="清收方式">
+		<item name="XJQS"   title="正常清收" />
+		<item name="JXHJ"   title="借新还旧" />
+		<item name="QTQS"   title="其他清收" />
+		<item name="NBZB"   title="内部招标" />
+		<item name="FXDL"   title="风险代理" />
+		<item name="ZQZR"   title="债权转让" />
+		<item name="ZWCZ"   title="债务重组" />
+		<item name="SSTC"   title="损失退出" />
+		<item name="DZZCJS" title="以资抵债" />
+		<item name="FLSS"   title="诉讼清收" />
+	</dictionary>
+	
+	
+	<dictionary name="DKZT" title="贷款状态">
+		<item name="BN"     title="表内" />
+		<item name="HX"     title="已核销" />
+		<item name="ZTSG"   title="整体收购" />
+		<item name="ZCZH"   title="资产置换" />
+		<item name="PJZH"   title="票据置换" />
+		<item name="SSTC"   title="损失退出" />
+		<item name="GDGM"   title="股东购买" />
+		<item name="DBCZ"   title="打包处置" />
+	</dictionary>
+	
+	 <dictionary name="CARDTYPEJN" title="证件类型">
+		<item name="0"     title="身份证" />
+		<item name="1"     title="军官证" />
+		<item name="2"     title="护照" />
+		<item name="3"     title="香港身份证" />
+		<item name="4"     title="澳门身份证" />
+		<item name="5"     title="台湾身份证" />
+	</dictionary>
+	
+	
+	<dictionary name="ORGANJN" title="济南机构">
+		<item name="高新支行"     title="高新支行" />
+		<item name="天桥支行"     title="天桥支行" />
+		<item name="槐荫支行"     title="槐荫支行" />
+		<item name="长清支行"     title="长清支行" />
+		<item name="历城支行"     title="历城支行" />
+		<item name="历下支行"     title="历下支行" />
+		<item name="润丰支行"     title="润丰支行" />
+	</dictionary>
+	
+	<dictionary name="CUSTTYPEJN" title="客户类型">
+		<item name="01"     title="农户" />
+		<item name="02"     title="个体工商户" />
+		<item name="03"     title="城镇居民" />
+		<item name="04"     title="学生" />
+		<item name="05"     title="军官" />
+		<item name="06"     title="港澳台同胞" />
+		<item name="07"     title="外籍人士" />
+	</dictionary>
+	
+	<dictionary name="ACCOUNTSTATE" title="账户状态（核心）">
+		<item name="1"     title="正常" />
+		<item name="2"     title="逾放" />
+		<item name="3"     title="非应计" />
+		<item name="5"     title="结清" />
+		<item name="6"     title="部分逾期" />
+	</dictionary>
+	
+	
+	<dictionary name="MINGZHU" title="">
+	    <item name="1"  	title="汉族"			/>
+		<item name="10" 	title="朝鲜族"		/>
+		<item name="11" 	title="满族"			/>
+		<item name="12" 	title="侗族"			/>
+		<item name="13" 	title="瑶族"			/>
+		<item name="14" 	title="白族"			/>
+		<item name="15" 	title="土家族"		/>
+		<item name="16" 	title="哈尼族"		/>
+		<item name="17" 	title="哈萨克族"		/>
+		<item name="18" 	title="傣族"			/>
+		<item name="19" 	title="黎族"			/>
+		<item name="2"  	title="蒙古族"		/>
+		<item name="20" 	title="傈僳族"		/>
+		<item name="21" 	title="佤族"			/>
+		<item name="22" 	title="畲族"			/>
+		<item name="23" 	title="高山族"		/>
+		<item name="24" 	title="拉祜族"		/>
+		<item name="25" 	title="水族"			/>
+		<item name="26" 	title="东乡族"		/>
+		<item name="27" 	title="纳西族"		/>
+		<item name="28" 	title="景颇族"		/>
+		<item name="29" 	title="柯尔克孜族"		/>
+		<item name="3"  	title="回族"			/>
+		<item name="30" 	title="土族"			/>
+		<item name="31" 	title="达斡尔族"		/>
+		<item name="32" 	title="仫佬族"		/>
+		<item name="33" 	title="羌族"			/>
+		<item name="34" 	title="布朗族"		/>
+		<item name="35" 	title="撒拉族"		/>
+		<item name="36" 	title="毛南族"		/>
+		<item name="37" 	title="仡佬族"		/>
+		<item name="38" 	title="锡伯族"		/>
+		<item name="39" 	title="阿昌族"		/>
+		<item name="4"  	title="藏族"			/>
+		<item name="40" 	title="普米族"		/>
+		<item name="41" 	title="塔吉克族"		/>
+		<item name="42" 	title="怒族"			/>
+		<item name="43" 	title="乌兹别克族"		/>
+		<item name="44" 	title="俄罗斯族"		/>
+		<item name="45" 	title="鄂温克族"		/>
+		<item name="46" 	title="德昂族"		/>
+		<item name="47" 	title="保安族"		/>
+		<item name="48" 	title="裕固族"		/>
+		<item name="49" 	title="京族"			/>
+		<item name="5"  	title="维吾尔族"		/>
+		<item name="50" 	title="塔塔尔族"		/>
+		<item name="51" 	title="独龙族"		/>
+		<item name="52" 	title="鄂伦春族"		/>
+		<item name="53" 	title="赫哲族"		/>
+		<item name="54" 	title="门巴族"		/>
+		<item name="55" 	title="珞巴族"		/>
+		<item name="56" 	title="基诺族"		/>
+		<item name="6"  	title="苗族"			/>
+		<item name="7"  	title="彝族"			/>
+		<item name="8"  	title="壮族"			/>
+		<item name="9"  	title="布依族"		/>
+	</dictionary>
+	
+	<dictionary name="APPMANAGERLOG" title="">
+	   <item name="1"  	title="初审"		/>
+	   <item name="2"  	title="审贷"		/>
+	   <item name="3"  	title="小微负责人审批"		/>
+	   <item name="4"  	title="零售业务部负责人审批"/>
+	   <item name="5"  	title="行长审批"		/> 
+	</dictionary> 
+	
+	<dictionary name="HKFS" title="还款方式">
+	   <item name="01"  	title="定期结息，到期日利随本清"		/>
+	   <item name="02"  	title="定期结息，按合同约定分期还本"		/>
+	   <item name="03"  	title="等额本息"		/>
+	   <item name="04"  	title="等额本金"/>
+	   <item name="05"  	title="利随本清"		/> 
+	   <item name="06"  	title="其他还款方法"		/> 
+	</dictionary>    
+	
+	
+	<dictionary name="MANAGER_TYPE" title="客户经理类型">
+	   <item name="1"  	title="行编客户经理"/>
+	   <item name="2"  	title="外聘客户经理"/>
+	   <item name="3"  	title="风险管理岗"/>
+	  <!--  <item name="4"  	title="信贷内勤岗"/> -->
+	</dictionary>  
+</dictionaries>

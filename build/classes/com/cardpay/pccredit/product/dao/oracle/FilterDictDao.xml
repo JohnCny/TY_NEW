@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.product.dao.FilterDictDao">
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.product.model.FilterDict">
+		<result property="id" column="ID" />
+		<result property="tableName" column="TABLE_NAME" />
+		<result property="columnName" column="COLUMN_NAME" />
+		<result property="value" column="VALUE" />
+		<result property="type" column="TYPE" />
+		<result property="operate" column="OPERATE" />
+	</resultMap>
+	
+	<resultMap id="ProductFilterResultMap" type="com.cardpay.pccredit.product.model.ProductFilterMap">
+		<result property="id" column="ID" />
+		<result property="productId" column="PRODUCT_ID" />
+		<result property="filterDictId" column="FILTER_DICT_ID" />
+	</resultMap>
+
+	<select id="findAllFilterDict" resultMap="ResultMap">
+		SELECT * from filter_dict t
+		WHERE 1=1
+	</select>
+	
+	<select id="findProductFilterMapByProductId" resultMap="ProductFilterResultMap" parameterType="java.lang.String">
+		SELECT * from product_filter_map
+		WHERE PRODUCT_ID=#{productId}
+	</select>
+	<delete id="deleteProductFilterMapByProductId" parameterType="java.lang.String">
+	DELETE
+	FROM
+	product_filter_map A
+	WHERE
+	A .PRODUCT_ID = #{productId}
+	</delete>
+
+</mapper>

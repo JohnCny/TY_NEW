@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.jnpad.dao.JnpadMaintenanceDao">
+	
+
+<resultMap id="managerChildIdMap" type="com.cardpay.pccredit.manager.web.ManagerBelongMapForm">
+		 <result property="childId" column="child_id" />
+	</resultMap>
+	
+	
+<resultMap id="AccountManagerParameterFormMap"
+		type="com.cardpay.pccredit.manager.web.AccountManagerParameterForm">
+		<result property="id" column="ID" />
+		<result property="userId" column="USER_ID" />
+		<result property="displayName" column="DISPLAY_NAME" />
+		<result property="rewardIncentiveInformation" column="REWARD_INCENTIVE_INFORMATION" />
+		<result property="levelInformation" column="LEVEL_INFORMATION" />
+		<result property="creditLine" column="CREDIT_LINE" />
+		<result property="monthlyOverdraftBalance" column="MONTHLY_OVERDRAFT_BALANCE" />
+		<result property="teamOverdraftBalance" column="TEAM_OVERDRAFT_BALANCE" />
+		<result property="tubeNumber" column="TUBE_NUMBER" />
+		<result property="activationRate" column="ACTIVATION_RATE" />
+		<result property="activeRate" column="ACTIVE_RATE" />
+		<result property="entryTime" column="ENTRY_TIME" />
+		<result property="riskTolerance" column="RISK_TOLERANCE" />
+		<result property="createdTime" column="CREATED_TIME" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="modifiedTime" column="MODIFIED_TIME" />
+		<result property="modifiedBy" column="MODIFIED_BY" />
+	</resultMap>
+	
+	<resultMap id="MaintenanceWebResultMap" type="com.cardpay.pccredit.customer.web.MaintenanceForm">
+		<result property="id" column="id" />
+		<result property="customerId" column="customer_id" />
+		<result property="chineseName" column="chinese_name" />
+		<result property="customerManagerId" column="customer_manager_id" />
+		<result property="maintenanceGoal" column="maintenance_goal" />
+		<result property="maintenanceWay" column="maintenance_way" />
+		<result property="maintenanceDay" column="maintenance_day" />
+		<result property="createWay" column="create_way" />
+		<result property="endResult" column="end_result" />
+		<result property="remarksCreateReason" column="remarks_create_reason" />
+		<result property="maintenanceEndtime" column="maintenance_endtime" />
+		<result property="maintenancePlanId" column="maintenance_plan_id" />
+		<result property="maintenanceResult" column="maintenance_result" />
+		<result property="maintenanceStartTime" column="maintenance_start_time" />
+		<result property="maintenanceEndTime" column="maintenance_end_time" />
+		<result property="userName" column="display_name" />
+		<result property="size" column="countAction" />
+		<result property="productName" column="product_name" />
+		<result property="cardId" column="card_id" />
+		
+		<result property="startDay" column="startDay" />
+		<result property="endDay" column="endDay" />
+		<result property="appId" column="appId" />
+		<result property="customerManagerId" column="user_id" />
+		
+		<result property="dkye" column="dkye" />
+	</resultMap>
+	
+	
+	<select id="findChildId" resultMap="managerChildIdMap">
+		select  mbm.*
+  	    from manager_belong_map mbm
+ 		start with child_id =
+            (select amp.id
+               from manager_belong_map t
+               left join account_manager_parameter amp  on amp.id = t.child_id
+               left join sys_user su ON su.id = amp.user_id    
+              where amp.user_id = #{id}
+             ) 
+		connect by prior child_id = parent_id
+	</select>
+	
+	
+	
+		<select id="findAccountManagerParameterByChildIds" resultMap="AccountManagerParameterFormMap">
+		SELECT T.*, s.DISPLAY_NAME
+		FROM ACCOUNT_MANAGER_PARAMETER T
+		LEFT JOIN SYS_USER s ON s.id = T.USER_ID
+		WHERE  s.USER_TYPE = '1'
+		and t.id in ${childIdInStr}
+		ORDER BY t.CREATED_TIME DESC
+	</select>
+	
+		<select id="findCustomerCountByFilter" resultType="int"
+		parameterType="com.cardpay.pccredit.customer.filter.CustomerInforFilter">
+		select count(*)
+		from basic_customer_information a,customer_application_info
+		b,PRODUCT_ATTRIBUTE c,sys_user d
+		WHERE 1=1 and a.id=b.customer_id and b.product_id=c.id and d.id=a.user_id
+		and b.status in ('approved','end')
+		<if test="cardId != null and cardId != '' ">
+			AND a.card_id=#{cardId}
+		</if>
+
+		<if test="chineseName != null and chineseName != '' ">
+			AND a.CHINESE_NAME=#{chineseName}
+		</if>
+
+		
+		<if test="productId != null and productId != '' ">
+			AND c.id = #{productId}
+		</if>
+		<if test="customerManagerIds != null and customerManagerIds != '' ">
+			AND a.user_id in
+			<foreach collection="customerManagerIds" index="index" item="item"
+				open="(" separator="," close=")">
+				#{item.userId}
+			</foreach>
+			<if test="userId != null and userId != '' ">
+			AND a.user_id = #{userId}
+		</if>
+		</if>
+	</select>
+	
+	
+	
+	
+	<select id="findMaintenancePlansList" resultMap="MaintenanceWebResultMap" 
+			parameterType="com.cardpay.pccredit.customer.filter.MaintenanceFilter">
+					SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					  select  b.chinese_name,
+					  		  b.id as customerId,
+          					  b.card_id,
+          					  p.product_name,
+          					  --m.maintenance_endtime-m.maintenance_day as startDay,
+          					  --m.maintenance_endtime as endDay,
+				  			  u.display_name,
+          					  c.id as appId,
+          					  --m.id,
+          					  b.user_id,
+          					  nvl(yehz.dkye,0) as dkye
+				       from customer_application_info c
+				       inner join product_attribute p on c.product_id = p.id
+				       inner join basic_customer_information b  on c.customer_id=b.id
+				       inner join sys_user u on b.user_id = u.id
+				       left join ty_customer_base base on  b.TY_CUSTOMER_ID = base.ID
+				       left join ty_repay_tkmx tkmx	   on base.KHH = tkmx.KHH  and p.product_type_code = tkmx.cpmc
+				       left join ty_repay_yehz  yehz  on yehz.JJH = tkmx.JJH
+				       --left join MAINTENANCE_PLAN m on m.app_id = c.id
+					  WHERE 1=1 
+					  --and c.status in ('approved','end')
+					<if test="customerManagerIds != null and customerManagerIds != '' ">  
+ 					  	AND b.user_id in  
+	 					<foreach collection="customerManagerIds" index="index" item="item" open="(" separator="," close=")"> 
+							#{item.userId} 
+						</foreach>
+					</if>
+					<if test="cardId != null and cardId != '' ">
+						AND b.CARD_ID=#{cardId}
+					 </if>
+					 
+					 <if test="customerName != null and customerName != '' ">
+						AND b.CHINESE_NAME=#{customerName}
+					 </if>
+					  
+					  <if test="customerId != null and customerId != '' ">
+						AND b.id=#{customerId}
+					 </if>
+					 <if test="productId != null and productId != '' ">
+						AND c.product_id=#{productId}
+					 </if>
+					 
+					 <if test="customerManagerId != null and customerManagerId != '' ">
+						AND b.user_id = #{customerManagerId}
+					 </if>
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	
+	<select id="findMaintenancePlansCountList" resultType="int"
+			parameterType="com.cardpay.pccredit.customer.filter.MaintenanceFilter">
+		  select  	   count(*)
+				       from customer_application_info c
+				       inner join product_attribute p on c.product_id = p.id
+				       inner join basic_customer_information b  on c.customer_id=b.id
+				       inner join sys_user u on b.user_id = u.id
+				       --left join MAINTENANCE_PLAN m on m.app_id = c.id
+				       left join ty_customer_base base on  b.TY_CUSTOMER_ID = base.ID
+				       left join ty_repay_tkmx tkmx	   on base.KHH = tkmx.KHH  and p.product_type_code = tkmx.cpmc
+				       left join ty_repay_yehz  yehz  on yehz.JJH = tkmx.JJH
+					  WHERE 1=1 
+					 	  --and c.status in ('approved','end')
+		<if test="customerManagerIds != null and customerManagerIds != '' ">  
+ 			AND b.user_id in  
+	 		<foreach collection="customerManagerIds" index="index" item="item" open="(" separator="," close=")"> 
+				#{item.userId} 
+			</foreach>
+		</if>
+		<if test="cardId != null and cardId != '' ">
+			AND b.CARD_ID=#{cardId}
+		</if>
+					 
+		<if test="customerName != null and customerName != '' ">
+		    AND b.CHINESE_NAME=#{customerName}
+		</if>
+					  
+		<if test="customerManagerId != null and customerManagerId != '' ">
+			AND b.user_id=#{customerManagerId}
+		</if>
+		<if test="customerId != null and customerId != '' ">
+			AND b.id=#{customerId}
+		 </if>
+		 <if test="productId != null and productId != '' ">
+			AND c.product_id=#{productId}
+		 </if>
+	</select>
+	
+	</mapper>

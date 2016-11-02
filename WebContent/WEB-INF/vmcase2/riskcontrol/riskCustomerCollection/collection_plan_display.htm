@@ -1,0 +1,156 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">催收计划信息详情</div>
+      </div>
+      <form id="id_form_sample" action="">
+        <div class="forms" id="formsId">
+          <input type="hidden" name="id" value="$!collectionPlan.id" />
+          <table class="rule">
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="30%" />
+            </colgroup>
+            <tr>
+              <td>客户名称:</td>
+              <td><input type="text" value="$!collectionPlan.chineseName" disabled="disabled" /></td>
+              <td>&nbsp;</td>
+              <td>创建方式:</td>
+              <td><input type="text" value="#dictVal('MarketingCreateWay',$!collectionPlan.createWay)" disabled="disabled" /></td>
+            </tr>
+            <tr>
+              <td>产品名称:</td>
+              <td><input type="text" value="$!collectionPlan.productName"
+                  disabled="disabled" /></td>
+              <td>&nbsp;</td>
+              <td>催收目标:</td>
+              <td><input type="text" value="$!collectionPlan.implementationObjective" disabled="disabled" /></td>
+            </tr>
+            <tr>
+              <td>催收天数:</td>
+              <td><input type="text" value="$!collectionPlan.collectionTime" disabled="disabled" /></td>
+              <td>&nbsp;</td>
+              <td>催收方式:</td>
+              <td><select disabled="disabled">
+              #customerInfo($request.getAttribute('collectionMethodList'),$!collectionPlan.collectionMethod)
+              </select> </td>
+            </tr>
+            <tr>
+              <td>催收结果:</td>
+              <td><input type="text" value="#dictVal('CollectionPlanEndResult',$!collectionPlan.endResult)" disabled="disabled" /></td>
+              <td>&nbsp;</td>
+              <td>催收结束时间:</td>
+              <td><input type="text" value="$!date.format('yyyy-MM-dd HH:mm:ss',$!collectionPlan.collectionEndtime)" disabled="disabled" /></td>
+            </tr>
+            <tr>
+              <td>承诺还款时间:</td>
+              <td><input type="text" value="$!date.format('yyyy-MM-dd HH:mm:ss',$!collectionPlan.collectionPromiseDate)" disabled="disabled" /></td>
+              <td>&nbsp;</td>
+              <td>承诺还款金额:</td>
+              <td><input type="text" value="$!collectionPlan.collectionAmount" disabled="disabled" /></td>
+            </tr>
+          </table>
+        </div>
+      </form>
+      <div class="inquiry">
+      <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="15%"/>
+              <col width="30%" />
+              <col width="20%" />
+              <col width="20%"/>
+              <col width="5%" />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">实施催收方式</th>
+              <th nowrap="nowrap">实施催收结果描述</th>
+              <th nowrap="nowrap">实施催收开始时间</th>
+              <th nowrap="nowrap">实施催收结束时间</th>
+              <th nowrap="nowrap">&nbsp;</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="15%"/>
+              <col width="30%" />
+              <col width="20%" />
+              <col width="20%"/>
+              <col width="5%" />
+            </colgroup>
+            #foreach ($!collectionAction in $collectionActions)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!collectionAction.id"
+                  #if ($!request.getParameter("recordId") == $collectionAction.id) checked="checked" #end />
+                  <input type="hidden" value="$!customer.divisionalStatus"/></td>
+              <td nowrap="nowrap">#customerInfor($request.getAttribute("collectionMethodList"),$!collectionAction.collection)</td>
+              <td nowrap="nowrap">$!collectionAction.collectionResult</td>
+              <td nowrap="nowrap">$!date.format('yyyy-MM-dd HH:mm:ss',$!collectionAction.collectionStartTime)</td>
+              <td nowrap="nowrap">$!date.format('yyyy-MM-dd HH:mm:ss',$!collectionAction.collectionEndTime)</td>
+              <td nowrap="nowrap">$!collectionAction.whetherImplement</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="submit">
+      #if($!collectionPlan.endResult!="continuecollection")
+      #if($!collectionPlan.endResult!="complete")
+        <input class="current" type="button" onclick="createAction();" value="创建实施" />
+      #end
+        #if($!collectionPlan.endResult=="collection")
+        <input id="id_change_button" class="current" type="button" value="修改实施" />
+        #end
+      #end
+        <input class="btn_g" type="button" onclick="toBrowse();"  value="#i18n('button.back')" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout = new FormsLayout("formsId");
+	window.top.currentWindow.setLayout(layout);
+	function createAction(){
+		var url = "${modulePath}/createAction.page?id=$!collectionPlan.id";
+		navigateTo(url);
+	}
+	function toBrowse(){
+		var url = "${modulePath}/browse.page?recordId=$!collectionPlan.id";
+		navigateTo(url);
+	}
+	$(function(){
+		initClickEvent();
+		var opsObj = new Object();
+		opsObj.changeUrl="${modulePath}/changeAction.page"
+		if (opsObj.changeUrl) {
+	        $("#id_change_button").click(function() {
+	            if ($(".checkbox :checked").length == 1) {
+	                $("#id_change_button").unbind();
+	                var rowid = $($(".checkbox :checked")[0]).attr("value");
+	                var url ="";
+	                
+	                if(opsObj.changeUrl.indexOf("?")>=0){
+	                	url = opsObj.changeUrl + "&id=" + rowid;
+	                }else{
+	                	url = opsObj.changeUrl + "?id=" + rowid;
+	                }
+	                window.location.href = url;
+	            } else {
+	                Dialog.message("请选择一行");
+	            }
+	        });
+	    }
+	});
+  </script>
+</body>
+#parse ("common/iframe_page_footer.htm")

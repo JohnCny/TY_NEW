@@ -1,0 +1,183 @@
+#parse ("common/iframe_page_header.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
+
+<body>
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+				  <div class="dvTab">
+            <ul class="com-tab">
+         <li class="tab " ><a href="${contextPath}/product/productinformation/display.page?id=${productId}">产品属性</a></li>
+            <li class="tab"><a href="${contextPath}/product/productinformation/display_cpfjqd.page?id=${productId}">附件清单</a></li>
+            <li class="tab activeTab"><a href="${contextPath}/product/productinformation/display_cpgz.page?id=${productId}">产品规则</a></li>
+            <li class="tab"><a href="${contextPath}/product/productinformation/display_csgz.page?id=${productId}">催收规则</a></li>
+<!--             <li class="tab"><a href="${contextPath}/product/productinformation/display_cpsxgz.page?id=${productId}">筛选规则</a></li>
+ -->         </ul>
+        </div>
+			</div>
+			<form id="id_module_form" action="">
+				<div class="forms" id="formsId">
+					<input type="hidden" name="id" value="$!productId" />
+				
+					<table style="border: 1px solid #dcdcdc;margin-bottom: 10px;">
+						<colgroup>
+							<col width="10%" />
+							<col width="30%" />
+							<col width="10%" />
+							<col width="10%" />
+							<col width="30%" />
+						</colgroup>
+						<caption>产品营销规则</caption>
+						<tr>
+						
+							<td><label for="name">营销时间(几天内):</label></td>
+							<td><input type="text" id="marketingTime" name="marketingTime"
+								value="$!marketingrules.marketingTime" disabled="true"/></td>
+							<td></td>
+							<td><label for="name">营销方式:</label></td>
+							<td>
+								<select id="marketingMethod" name="marketingMethod" disabled="true">
+							    #customerInfo($request.getAttribute("collectionMethodList"),$!marketingrules.marketingMethod)
+                			  </select></td>
+								</td>
+						</tr>
+						
+						</table>
+							<table class="table-bd"  bordercolor="#cccccc" border="1" style="width: 100%">
+						<colgroup>
+							<col width="10%" />
+							<col width="30%" />
+							<col width="10%" />
+							<col width="10%" />
+							<col width="30%" />
+						</colgroup>
+						<caption>产品维护规则</caption>
+						<tr>
+							<td><label for="name">维护时间(几天内):</label></td>
+							<td><input type="text" id="day" name="day"
+								value="$!productMaintain.day" disabled="true"/></td>
+							<td></td>
+							<td><label for="name">维护方式:</label></td>
+							<td>	 <select id="maintenanceWay" name="maintenanceWay" disabled="true">
+							    #customerInfo($request.getAttribute("collectionMethodList"),$!productMaintain.maintenanceWay)
+                			  </select></td>
+						</tr>
+					</table>
+					<table class="table-bd"  bordercolor="#cccccc" border="1" style="width: 100%">
+						<colgroup>
+							<col width="10%" />
+							<col width="30%" />
+							<col width="10%" />
+							<col width="10%" />
+							<col width="30%" />
+						</colgroup>
+						<caption>产品问责规则</caption>
+						<tr>
+							<td><label for="name">账龄:</label></td>
+							<td><input type="text" id="aging" name="aging"
+								value="$!productAccountability.aging" disabled="true" /></td>
+							<td></td>
+							<td><label for="name">逾期天数:</label></td>
+							<td><input type="text" id="overdueDay" name="overdueDay"
+								value="$!productAccountability.overdueDay" disabled="true"/></td>
+						</tr>
+						<tr>
+							<td><label for="name">逾期金额:</label></td>
+							<td><input type="text" id="overdueAmount" name="overdueAmount"
+								value="$!productAccountability.overdueAmount" disabled="true"/></td>
+							<td></td>
+							<td><label for="name">累计逾期次数:</label></td>
+							<td><input type="text" id="overdueTotalTime" name="overdueTotalTime"
+								value="$!productAccountability.overdueTotalTime" disabled="true"/></td>
+						</tr>
+						<tr>
+							<td><label for="name">累计逾期金额:</label></td>
+							<td><input type="text" id="overdueTotalAmount" name="overdueTotalAmount"
+								value="$!productAccountability.overdueTotalAmount" disabled="true"/></td>
+							
+						</tr>
+					</table>
+				
+					<table style="border: 1px solid #dcdcdc;margin-bottom: 10px;">
+						<colgroup>
+							<col width="10%" />
+							<col width="30%" />
+							<col width="10%" />
+							<col width="10%" />
+							<col width="30%" />
+						</colgroup>
+						<caption>产品奖励激励参数</caption>
+						<tr>
+							<td><label for="name">奖励收益基数参数-循环利息收入:</label></td>
+							<td><input type="text" id="nterestIncomeParameter" name="nterestIncomeParameter"
+								value="$!productRewardIncentive.nterestIncomeParameter" disabled="true"/></td>
+								<td></td>
+								<td><label for="name">奖励收益基数参数-手续费:</label></td>
+							<td><input type="text" id="feeSparameter" name="feeSparameter"
+								value="$!productRewardIncentive.feeSparameter" disabled="true"/></td>
+						</tr>
+						<tr>
+							<td><label for="name">奖励收益基数参数-滞纳金:</label></td>
+							<td><input type="text" id="parametersFine" name="parametersFine"
+								value="$!productRewardIncentive.parametersFine" disabled="true"/></td>
+								<td></td>
+								<td><label for="name">奖励收益基数参数-年费:</label></td>
+							<td><input type="text" id="parametersAnnualFee" name="parametersAnnualFee"
+								value="$!productRewardIncentive.parametersAnnualFee" disabled="true" /></td>
+						</tr>
+						<tr>
+							<td><label for="name">扣除项参数-资金成本:</label></td>
+							<td><input type="text" id="parametersCost" name="parametersCost"
+								value="$!productRewardIncentive.parametersCost" disabled="true"/></td>
+							<td></td>
+							<td><label for="name">扣除项参数-风险成本:</label></td>
+							<td><input type="text" id="parametersRiskCost" name="parametersRiskCost"
+								value="$!productRewardIncentive.parametersRiskCost" disabled="true"/></td>
+						</tr>
+					</table>
+					
+					<table class="table-bd"  bordercolor="#cccccc" border="1" style="width: 100%">
+						<colgroup>
+							<col width="25%" />
+							<col width="25%" />
+							<col width="25%" />
+							<col width="25%" />
+							<col width="25%" />
+						</colgroup>
+						<tr>
+					    <td class="titlec" >客户经理层级</td>
+                         <td class="titlec" >授信额度(元)</td>
+                            <td class="titlec" >客户经理风险保证金提取比例信息</td>
+                              <td class="titlec" >客户经理风险容忍度信息</td>	
+                        </tr>
+		   #foreach($managerProductsConfiguration in $!managerProductsConfigurationlist)
+		    #set($total = $!{dictItems.size()}) 
+              <tr>
+              <td ><input type="hidden" name="id$!{velocityCount}" value="$!managerProductsConfiguration.id"><input type="hidden" name="customerManagerLevel$!{velocityCount}" value="$!managerProductsConfiguration.customerManagerLevel">#dictVal("CUSTOMERMANAGERLEVEL", "$!managerProductsConfiguration.customerManagerLevel")</td>
+              <td><input  type="text" id="creditLine" name="creditLine$!{velocityCount}" value="$format.formatNumber($!managerProductsConfiguration.creditLine,2,100)" /></td>
+              <td><input  type="text" id="marginExtractInfo" name="marginExtractInfo$!{velocityCount}" value="$!managerProductsConfiguration.marginExtractInfo" /></td>
+              <td><input  type="text" id="riskToleranceInformation" name="riskToleranceInformation$!{velocityCount}" value="$!managerProductsConfiguration.riskToleranceInformation" /></td>
+            </tr>
+            #end
+					
+			  </table>
+				</div>
+			</form>
+		
+			<div class="submit">
+				<input class="current" type="button" onclick="javascript:history.go(-1);" value="#i18n('button.back')" />
+			</div>
+		</div>
+	</div>
+	<style type="text/css">
+	.table-bd .titlec{
+	background-color:#135AA4;font-weight: bold;font-size: 16px;color:#fff; text-align:center;
+	}
+	</style>
+	<script type="text/javascript">
+		var layout = new FormsLayout("formsId");
+		window.top.currentWindow.setLayout(layout);
+	</script>
+</body>
+
+</html>

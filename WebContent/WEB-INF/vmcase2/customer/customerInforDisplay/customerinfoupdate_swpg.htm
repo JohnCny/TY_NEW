@@ -1,0 +1,336 @@
+#parse ("common/iframe_page_header.htm")
+<link rel="stylesheet" type="text/css"
+	href="${contextPath}/css/customer/style.css" />
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
+<style>
+.form-l .form-r{height:32px;}
+</style>
+<body class="whitebg">
+	<div class="content_main">
+		<div class="contentinner">
+		 <div class="place">
+		<div class="title">客户维护信息快照>四维评估</div>	
+    </div>
+			 #parse ("common/place_tab.htm")
+			<form id="id_module_form">
+			  <input type="hidden" id="applicationId" name="applicationId" value="$!applicationId" />
+			<input type="hidden" id="customerId" name="customerId" value="$!customerId"/>
+				<input type="hidden" id="dimensionalId" name="dimensionalId" value="$!dimensional.id"/>
+			<div class="form-bd" id="formsId" style="border: 0px;">
+
+					<table class="table-bd"  bordercolor="#cccccc" border="1" style="width: 100%">
+						<colgroup>
+						
+							<col width="55%" />
+							<col width="15%" />
+							<col width="15%" />
+						</colgroup>
+						
+						<tr>
+							
+							<th class="h3color"><h3>生存状况</h3></th>
+							<th>得分值</th>
+							<th>权重值</th>
+						</tr>
+						<tr>
+							<td ><select id="huji" name="" onchange="caculateHJ()" disabled="disabled">
+							  <option value="">个人户籍情况</option>
+                 			   <option #if($!dimensional.registerValue==90) selected="selected" #end value="90">本地户口（90分）</option>
+                			    <option #if($!dimensional.registerValue==100) selected="selected" #end  value="100">家庭2人以上本地户口（100分）</option>
+                			    <option #if($!dimensional.registerValue==65) selected="selected" #end  value="65">本省它市户口（65分）</option>
+                			    <option #if($!dimensional.registerValue==35) selected="selected" #end  value="35">非本省户籍（35分）</option>
+                			    <option #if($!dimensional.registerValue==15) selected="selected" #end  value="15">非中国国籍（15分）</option>
+                			    <option #if($!dimensional.registerValue==0) selected="selected" #end  value="0">无户籍（0分）</option>
+                			  </select>
+                			  </td>
+                			<td><input class="rinpstybc" id="registerValue" type="text" onblur="" value="$!dimensional.registerValue" name="registerValue" readonly="readonly"></td>
+							<td><input class="rinpstybc" id="registerWeight" type="text" onblur="" value="$!dimensional.registerWeight" name="registerWeight" readonly="readonly"></td>
+						</tr>
+						<tr>
+							<td><select id="fcqk" name="" onchange="caculateFC()" disabled="disabled">
+							  <option value="">个人房产情况</option>
+                 			   <option #if($!dimensional.houseValue==100) selected="selected" #end  value="100">房产2套以上（100分）</option>
+                			    <option #if($!dimensional.houseValue==90) selected="selected" #end value="90">本市核心地段房产一套2.5-4万元/平米（≧60平米得分90）</option>
+                			    <option #if($!dimensional.houseValue==80) selected="selected" #end value="80">本市房产1.5万元-2.5万元/平米,（≧60平米得分80）</option>
+                			    <option #if($!dimensional.houseValue==70) selected="selected" #end value="70">本市房产0.5元-1.5万元/平米,（≧60平米得分70）</option>
+                			    <option #if($!dimensional.houseValue==60) selected="selected" #end value="60">本市房产小于0.5元万元/平米,宅基地（≧60平米得分60）</option>
+                			    <option #if($!dimensional.houseValue==20) selected="selected" #end value="20">无房产（20分）</option>
+                			  </select>
+                			  </td>
+                			<td><input class="rinpstybc" id="houseValue" type="text" onblur="" value="$!dimensional.houseValue" name="houseValue" readonly="readonly"></td>
+							<td><input class="rinpstybc" id="houseWeight" type="text" onblur="" value="$!dimensional.houseWeight" name="houseWeight" readonly="readonly"></td>
+						</tr>
+						<tr>
+							<td><select id="hyzk" name="" onchange="caculateHYZK()" disabled="disabled">
+							  <option value="">家庭婚姻状况</option>
+                 			   <option #if($!dimensional.marriageValue==100) selected="selected" #end value="100">已婚，有子女（100分）</option>
+                			    <option #if($!dimensional.marriageValue==85) selected="selected" #end value="85">离异，有子女（85分）</option>
+                			    <option #if($!dimensional.marriageValue==50) selected="selected" #end value="50">离异，无子女（50分）</option>
+                			    <option #if($!dimensional.marriageValue==80) selected="selected" #end value="80">未婚，有子女（80分）</option>
+                			    <option#if($!dimensional.marriageValue==70) selected="selected" #end value="70">未婚，热恋中（70分）</option>
+                			    <option #if($!dimensional.marriageValue==60) selected="selected" #end value="60">未婚（60分）</option>
+                			  </select>
+                			  </td>
+                			<td><input class="rinpstybc" id="marriageValue"  onblur="" value="$!dimensional.marriageValue" name="marriageValue" readonly="readonly"></td>
+							<td><input class="rinpstybc" id="marriageWeight"  onblur="" value="$!dimensional.marriageWeight" name="$!dimensional.marriageWeight" readonly="readonly"></td>
+						</tr>
+						<tr>
+							<td><select id="zwzc" name="" onchange="caculateZWZC()" disabled="disabled">
+							  <option value="">职位职称状况</option>
+                 			   <option #if($!dimensional.titleValue==100) selected="selected" #end value="100">高级职称（100分）</option>
+                			    <option #if($!dimensional.titleValue==85) selected="selected" #end value="85">中级职称（85分）</option>
+                			    <option #if($!dimensional.titleValue==50) selected="selected" #end value="50">初级职称（50分）</option>
+                			    <option #if($!dimensional.titleValue==100) selected="selected" #end value="100">高层管理（100分）</option>
+                			    <option #if($!dimensional.titleValue==85) selected="selected" #end value="85">中层管理（85分）</option>
+                			    <option #if($!dimensional.titleValue==60) selected="selected" #end value="60">无职称（60分）</option>
+                			  </select>
+                			  </td>
+                			<td><input class="rinpstybc" id="titleValue" type="text" onblur="" value="$!dimensional.titleValue" name="titleValue" readonly="readonly"></td>
+							<td><input class="rinpstybc" id="titleWeight" type="text" onblur="" value="$!dimensional.titleWeight" name="titleWeight" readonly="readonly"></td>
+						</tr>
+					    <tr>
+							<td>生存状况合并值 </td>
+                			<td colspan="2"><input class="rinpstybc" id="livingCombinedValue" type="text" onclick="sczkhbz()" value="$!dimensional.livingCombinedValue" name="livingCombinedValue" readonly="readonly"></td>
+							
+						</tr>
+						 <tr>
+							<td>生存状况T值 </td>
+                			<td colspan="2"><input class="rinpstybc" id="livingT" type="text" onblur="" value="$!dimensional.livingT" name="livingT" disabled="disabled"></td>
+						</tr>
+						 <tr>
+							<td>生存状况终值</td>
+                			<td colspan="2"><input class="rinpstybc" id="livingFinal" type="text" onblur="" value="$!dimensional.livingFinal" name="livingFinal" onclick="sczkhzz()" readonly="readonly"></td>
+						</tr>
+						
+						</table>
+					<br>
+					<table class="table-bd"  bordercolor="#cccccc" border="1" style="width: 100%">
+						<colgroup>
+						
+							<col width="55%" />
+							<col width="15%" />
+							<col width="15%" />
+						</colgroup>
+						
+						<tr>
+							
+							<th class="h3color"><h3>道德品德</h3></th>
+							<th>得分值</th>
+							<th>权重值</th>
+						</tr>
+						<tr>
+							
+							<td><select id="bnyq" name="" onchange="caculateBNYQ()" disabled="disabled">
+							  <option value="">半年逾期次数</option>
+                 			   <option  #if($!dimensional.sixMonthsOverdueValue==100) selected="selected" #end  value="100">0次（100分）</option>
+                			    <option #if($!dimensional.sixMonthsOverdueValue==75) selected="selected" #end value="75">1次（75分）</option>
+                			    <option #if($!dimensional.sixMonthsOverdueValue==50) selected="selected" #end value="50">2次（50分）</option>
+                			    <option #if($!dimensional.sixMonthsOverdueValue==0) selected="selected" #end value="0">3次以上包括3次（0分）</option>
+                			  </select>
+                			  </td>
+                			<td><input class="rinpstybc" id="sixMonthsOverdueValue" type="text" onblur="" value="$!dimensional.sixMonthsOverdueValue" name="sixMonthsOverdueValue" readonly="readonly"></td>
+							<td><input class="rinpstybc" id="sixMonthsOverdueWeight" type="text" onblur="" value="$!dimensional.sixMonthsOverdueWeight" name="sixMonthsOverdueWeight" readonly="readonly"></td>
+						</tr>
+						<tr>
+							<td><select id="lxyq" name="" onchange="caculateLXYQ()" disabled="disabled">
+							  <option value="">连续逾期次数</option>
+                 			   <option #if($!dimensional.successiveLateValue==100) selected="selected" #end  value="100">0次（100分）</option>
+                			    <option #if($!dimensional.successiveLateValue==75) selected="selected" #end value="75">1——2次（75分）</option>
+                			    <option #if($!dimensional.successiveLateValue==50) selected="selected" #end value="50">3次（50分）</option>
+                			    <option #if($!dimensional.successiveLateValue==0) selected="selected" #end value="0">3次以上（0分）</option>
+                			  </select>
+                			  </td>
+                			<td><input class="rinpstybc" id="successiveLateValue" type="text" onblur="" value="$!dimensional.successiveLateValue" name="successiveLateValue" readonly="readonly"></td>
+							<td><input class="rinpstybc" id="successiveLateWeight" type="text" onblur="" value="$!dimensional.successiveLateWeight" name="successiveLateWeight" readonly="readonly"></td>
+						</tr>
+						<tr>
+							<td><select id="dcyq" name="" onchange="caculateDCYQ()" disabled="disabled">
+							  <option value="">单次逾期金额</option>
+                 			   <option #if($!dimensional.singleLateValue==100) selected="selected" #end value="100">500元以下（100分）</option>
+                			    <option #if($!dimensional.singleLateValue==75) selected="selected" #end value="75">500元——2000元（75分）</option>
+                			    <option #if($!dimensional.singleLateValue==50) selected="selected" #end value="50">2000元——5000元（50分）</option>
+                			    <option #if($!dimensional.singleLateValue==0) selected="selected" #end value="0">5000元以上（0分）</option>
+                			  </select>
+                			  </td>
+                			<td><input class="rinpstybc" id="singleLateValue" type="text" onblur="" value="$!dimensional.singleLateValue" name="singleLateValue" readonly="readonly"></td>
+							<td><input class="rinpstybc" id="singleLateWeight" type="text" onblur="" value="$!dimensional.singleLateWeight" name="singleLateWeight" readonly="readonly"></td>
+						</tr>
+						<tr>
+							<td><select id="yqzqs" name="" onchange="caculateYQZQS()" disabled="disabled">
+							  <option  value="">逾期总期数</option>
+                 			   <option #if($!dimensional.allLateValue==100) selected="selected" #end value="100">2期以下（100分）</option>
+                			    <option #if($!dimensional.allLateValue==75) selected="selected" #end value="75">3期——6期（75分）</option>
+                			    <option #if($!dimensional.allLateValue==50) selected="selected" #end value="50">6期——10期（50分）</option>
+                			    <option #if($!dimensional.allLateValue==0) selected="selected" #end value="0">10期以上（0分）</option>
+                			  </select>
+                			  </td>
+                			<td><input class="rinpstybc" id="allLateValue" type="text" onblur="" value="$!dimensional.allLateValue" name="allLateValue" readonly="readonly"></td>
+							<td><input class="rinpstybc" id="allLateWeight" type="text" onblur="" value="$!dimensional.allLateWeight" name="allLateWeight" readonly="readonly"></td>
+						</tr>
+						<tr>
+							<td><select id="fzb" name="" onchange="caculateFZB()" disabled="disabled">
+							  <option value="">负债比</option>
+                 			   <option #if($!dimensional.responsibleValue==100) selected="selected" #end value="100">＜30%（100分）</option>
+                			    <option #if($!dimensional.responsibleValue==75) selected="selected" #end value="75">30%——50%（75分）</option>
+                			    <option #if($!dimensional.responsibleValue==50) selected="selected" #end value="50">50%——70%（50分）</option>
+                			    <option #if($!dimensional.responsibleValue==0) selected="selected" #end value="0">70%以上（0分）</option>
+                			  </select>
+                			  </td>
+                			<td><input class="rinpstybc" id="responsibleValue" type="text" onblur="" value="$!dimensional.responsibleValue" name="responsibleValue" readonly="readonly"></td>
+							<td><input class="rinpstybc" id="responsibleWeight" type="text" onblur="" value="$!dimensional.responsibleWeight" name="responsibleWeight" readonly="readonly"></td>
+						</tr>
+							<tr>
+							<td><select id="gzzz" name="" onchange="caculateGZZZ()" disabled="disabled">
+							  <option value="">工作/住宅更换频率</option>
+                 			   <option #if($!dimensional.homeJobChangeValue==100) selected="selected" #end value="100">2次以下（100分）</option>
+                			    <option #if($!dimensional.homeJobChangeValue==50) selected="selected" #end value="50">3——4次（50分）</option>
+                			    <option #if($!dimensional.homeJobChangeValue==0) selected="selected" #end value="0">5次以上包括5次（0分）</option>
+                			  </select>
+                			  </td>
+                			<td><input class="rinpstybc" id="homeJobChangeValue" type="text" onblur="" value="$!dimensional.homeJobChangeValue" name="homeJobChangeValue" readonly="readonly"></td>
+							<td><input class="rinpstybc" id="homeJobChangeWeight" type="text" onblur="" value="$!dimensional.homeJobChangeWeight" name="homeJobChangeWeight" readonly="readonly"></td>
+						</tr>
+						<tr>
+							<td><select id="bnncx" name="" onchange="caculateBNNCX()" disabled="disabled">
+							  <option value="">半年内被查询记录成功的比例</option>
+                 			   <option #if($!dimensional.sixMonthsSucceValue==100) selected="selected" #end value="100">大于等于60%（100分）</option>
+                			    <option #if($!dimensional.sixMonthsSucceValue==0) selected="selected" #end value="0">小于60%（0分）</option>
+                			  </select>
+                			  </td>
+                			<td><input class="rinpstybc" id="sixMonthsSucceValue" type="text" onblur="" value="$!dimensional.sixMonthsSucceValue" name="sixMonthsSucceValue" readonly="readonly"></td>
+							<td><input class="rinpstybc" id="sixMonthsSucceWeight" type="text" onblur="" value="$!dimensional.sixMonthsSucceWeight" name="sixMonthsSucceWeight" readonly="readonly"></td>
+						</tr>
+					    <tr>
+							<td>道德品质合值 </td>
+                			<td colspan="2"><input class="rinpstybc" id="charaterAllValue" type="text" onclick="ddpzhz()" value="$!dimensional.charaterAllValue" name="charaterAllValue" readonly="readonly"></td>
+						</tr>
+						 <tr>
+							<td>道德品质T值</td>
+                			<td colspan="2"><input class="rinpstybc"  id="charaterT" type="text" value="$!dimensional.charaterT" name="charaterT" disabled="disabled"> </td>
+						</tr>
+						 <tr>
+							<td>道德品质终值</td>
+                			<td colspan="2"><input class="rinpstybc" id="charaterFinalValue" type="text" onclick="ddpzzz()" value="$!dimensional.charaterFinalValue" name="charaterFinalValue" readonly="readonly"></td>
+						</tr>
+						
+						</table>
+					<br>
+					<table class="table-bd"  bordercolor="#cccccc" border="1" style="width: 100%">
+					<caption>还款能力</caption>
+						<colgroup>
+						
+							<col width="50%" />
+							<col width="50%" />
+						</colgroup>
+						<tr>
+						
+							<td>年度净收入:</td>
+							<td><input class="rinpstybc"  id="annualNetIncome" type="text" onkeydown="hknlzz()" value="$!dimensional.annualNetIncome" name="annualNetIncome" disabled="disabled"></td>
+						</tr>
+						<tr>
+							<td>客户经理级数:</td>
+							<td><input class="rinpstybc"  id="accountManagerSeries" type="text" onblur="" value="$!dimensional.accountManagerSeries" name="accountManagerSeries" disabled="disabled"></td>
+						</tr>
+						<tr>
+							<td>还款能力T值（0.5——0.7）:</td>
+							<td><input class="rinpstybc"  id="capacityT" type="text" onkeydown="hknlzz()" value="$!dimensional.capacityT" name="capacityT" disabled="disabled"></td>
+						</tr>
+						<tr>
+							<td>还款能力终值:</td>
+                			<td><input class="rinpstybc"  id="capacityFinal" type="text" onclick="hknlzz()" value="$!dimensional.capacityFinal" name="capacityFinal" disabled="disabled"></td>
+						</tr>
+						</table>
+					<br>
+					<table class="table-bd"  bordercolor="#cccccc" border="1" style="width: 100%">
+					<caption>行业情况</caption>
+						<colgroup>
+							
+							<col width="50%" />
+							<col width="50%" />
+						</colgroup>
+						<tr>
+							
+							<td>从事行业:</td>
+							<td> <select id="industryRiskFactor" name="industryRiskFactor" onchange="hyzz()" disabled="disabled">
+                 			   <option  value="">请选择</option>
+                			    #dict("HYLB","$!dimensional.industryRiskFactor")
+                			  </select></td>
+						</tr>
+						<tr>
+							<td>行业T值（0.2）:</td>
+							<td><input class="rinpstybc"  id="industryT" type="text" onblur="hyzz()" value="$!dimensional.industryT" name="industryT" disabled="disabled"></td>
+						</tr>
+						<tr>
+							<td>行业终值:</td>
+                			<td><input class="rinpstybc" id="industryFinalValue" type="text"  value="$!dimensional.industryFinalValue" name="industryFinalValue" readonly="readonly"></td>
+						</tr>
+						</table>
+					<br>
+					<table class="table-bd"  bordercolor="#cccccc" border="1" style="width: 100%">
+					<caption>拒绝值\最终额度</caption>
+						<colgroup>
+							<col width="50%" />
+							<col width="50%" />
+						</colgroup>
+						<tr>
+							<td>拒绝值</td>
+							<td><input class="rinpstybc"  id="denialValue" type="text" onkeydown="zzed()" value="$!dimensional.denialValue" name="denialValue" disabled="disabled"></td>
+						</tr>
+						<tr>
+							<td>最终额度</td>
+							<td><input class="rinpstybc" id="finalValue" type="text" onblur="zzed()" value="$!dimensional.finalValue" name="finalValue" readonly="readonly"></td>
+						</tr>
+						</table>
+			</div>
+			</form>
+
+			<div class="submit">
+			  <input class="current" type="button" onclick="javascript:history.go(-1);" value="#i18n('button.back')" />
+			</div>
+		</div>
+	</div>
+
+	<script src='${contextPath}/js/customerInforUpdate/customerinfoupdate_swpg.js'></script>
+  <script type="text/javascript">
+	var layout=new FormsLayout("id_module_form");	
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	$(document).ready(function() {	
+		$("li").removeClass("activeTab");
+		$("li:eq(4)").addClass("activeTab");
+	     $("#id_save_button").click(function() {
+		    
+			  if( $("#dimensionalId").attr("value") == "")	{
+			  var formjson = $($formName).serialize();
+	     	    $.get("${contextPath}/customer/dimensional/insert.json", formjson, function(data, textStatus, jqXhr) {
+		            if (data.success) {
+		              #if ($request.getParameter('callBackUrl').indexOf('?') != -1)
+		            	  navigateTo("${contextPath}/customer/dimensional/create_swpg.page?id=${customerId}") ;
+		              #end
+		            }
+		          });}	
+	     	    else{
+	     	    	var formjson = $($formName).serialize();
+	     	    $.get("${contextPath}/customer/dimensional/update.json", formjson, function(data, textStatus, jqXhr) {
+		            if (data.success) {
+		              #if ($request.getParameter('callBackUrl').indexOf('?') != -1)
+		            	  navigateTo("${contextPath}/customer/dimensional/create_swpg.page?id=${customerId}") ;
+		              #end
+		            }
+		          });
+	     	    }
+	     	    	
+	     	    
+	     	    
+	     	    
+	       });
+
+
+	});
+	
+	</script>
+	<script type="text/javascript">
+	
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

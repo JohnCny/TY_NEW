@@ -1,0 +1,36 @@
+#macro( customerInfor $paramValues $value)
+   #foreach($param in $paramValues.keySet())
+        #if($param==$value)  
+        $paramValues.get($param)
+        #end
+   #end  
+#end
+
+<!-- 页面接受数据 -->
+#macro( web $paramValues $value)
+   #foreach($param in $paramValues)
+        #if($param.userId==$value)  
+        <option value ="$param.userId" selected="selected">$param.displayName</option>
+        #else
+        <option value ="$param.userId">$param.displayName</option>
+        #end
+   #end  
+#end
+
+#macro( webVal $paramValues $value)
+   #foreach($param in $paramValues)
+        #if($param.userId==$value)  
+        $param.displayName
+        #end
+   #end  
+#end
+
+#macro( product $paramValues $value)
+   #foreach($param in $paramValues)
+        #if($param.id==$value)  
+        <option value ="$param.id" selected="selected">$param.productName</option>
+        #else
+        <option value ="$param.id">$param.productName</option>
+        #end
+   #end  
+#end

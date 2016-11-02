@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.report.dao.WorkQualityDao">
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.report.model.WorkQuality">
+		<result property="applicationId" column="applicationId" />
+		<result property="chineseName" column="customerName" />
+		<result property="cardId" column="cardId" />
+		<result property="writeName" column="writeName" />
+		<result property="approvedName" column="approvedName" />
+		<result property="cardIdNum" column="cardNumber" />
+		<result property="chineseNameNum" column="chineseNameNumber" />
+		<result property="telephoneNum" column="telephoneNumber" />
+		
+	</resultMap>
+	<select id="getCountWorkQuality" resultMap="ResultMap" >
+	select f.id as applicationId, (select n.chinese_name
+          from basic_customer_information n
+         where n.id = f.customer_id) as customerName,
+         (select n.card_id
+          from basic_customer_information n
+         where n.id = f.customer_id) as cardId ,
+       (select u.display_name from sys_user u where u.id = r.examine_user) as approvedName,
+       (select u.display_name
+          from sys_user u
+         where u.id = (select q.examine_user
+                         from wf_status_queue_record q, node_audit a
+                        where r.current_status = a.id
+                          and a.seq_no = 2
+                          and a.node_type = 'product'
+                          and r.current_process = q.current_process)) as writeName,
+       (select count(1)
+          from customer_maintenancee_log g
+         where g.created_by = r.examine_user
+           and g.modify_table_name = 'basic_customer_information'
+           and g.modify_field_name = 'card_id'
+           and g.customer_id = f.customer_id
+           and g.created_by =
+               (select q.examine_user
+                  from wf_status_queue_record q, node_audit a
+                 where r.current_status = a.id
+                   and a.seq_no = 2
+                   and a.node_type = 'product'
+                   and r.current_process = q.current_process)
+           and g.created_time >=
+               (select q.start_examine_time
+                  from wf_status_queue_record q, node_audit a
+                 where r.current_status = a.id
+                   and a.seq_no = 1
+                   and a.node_type = 'product'
+                   and q.current_process = r.current_process)
+           and g.created_time <![CDATA[ < = ]]> r.start_examine_time) as cardNumber,
+       (select count(1)
+          from customer_maintenancee_log g
+         where g.created_by = r.examine_user
+           and g.modify_table_name = 'basic_customer_information'
+           and g.modify_field_name = 'chinese_name'
+           and g.customer_id = f.customer_id
+           and g.created_by =
+               (select q.examine_user
+                  from wf_status_queue_record q, node_audit a
+                 where r.current_status = a.id
+                   and a.seq_no = 2
+                   and a.node_type = 'product'
+                   and r.current_process = q.current_process)
+           and g.created_time >=
+               (select q.start_examine_time
+                  from wf_status_queue_record q, node_audit a
+                 where r.current_status = a.id
+                   and a.seq_no = 1
+                   and a.node_type = 'product'
+                   and q.current_process = r.current_process)
+           and g.created_time <![CDATA[ < = ]]> r.start_examine_time) as chineseNameNumber,
+       (select count(1)
+          from customer_maintenancee_log g
+         where g.created_by = r.examine_user
+           and g.modify_table_name = 'basic_customer_information'
+           and g.modify_field_name = 'telephone'
+           and g.customer_id = f.customer_id
+           and g.created_by =
+               (select q.examine_user
+                  from wf_status_queue_record q, node_audit a
+                 where r.current_status = a.id
+                   and a.seq_no = 2
+                   and a.node_type = 'product'
+                   and r.current_process = q.current_process)
+           and g.created_time >=
+               (select q.start_examine_time
+                  from wf_status_queue_record q, node_audit a
+                 where r.current_status = a.id
+                   and a.seq_no = 1
+                   and a.node_type = 'product'
+                   and q.current_process = r.current_process)
+           and g.created_time <![CDATA[ < = ]]> r.start_examine_time) as telephoneNumber
+  from wf_status_queue_record       r,
+       node_audit                   a,
+       customer_application_process s,
+       customer_application_info    f
+ where r.current_status = a.id
+   and a.seq_no = 3
+   and a.node_type = 'product'
+   and s.serial_number = r.current_process
+   and f.id = s.application_id
+ <if test="productId != null and productId != '' ">
+	AND f.product_id=#{productId}
+ </if>
+  <if test="startDate != null and startDate != '' ">
+	 <![CDATA[ and r.start_examine_time >= #{startDate}]]>
+ </if>
+  <if test="endDate != null and endDate != '' ">
+	<![CDATA[ and r.start_examine_time <= #{endDate}]]>
+ </if>
+	</select>
+	
+</mapper>

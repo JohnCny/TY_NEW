@@ -1,0 +1,41 @@
+			#if ($result.totalPages > 0)
+			#set ($baseURI = $request.getRequestURI())
+			
+				<div class="page">
+					#set ($pageNo = $result.startPage)
+					#set ($dispPageNo = $result.currentPage + 1)
+					#set ($start = $pageNo*$result.pageSize)
+					#if ($result.currentPage == 0)
+					#set ($previousPageNo = 0 )
+					#else
+					#set ($previousPageNo = $result.currentPage - 1)
+					#end
+					#set ($previous =$previousPageNo*$result.pageSize)
+					#if ($result.currentPage == $result.totalPages - 1)
+					#set ($nextPageNo = $result.currentPage )
+					#else
+					#set ($nextPageNo = $dispPageNo )
+					#end
+					#set ($next =$nextPageNo*$result.pageSize)
+					#set ($endPageNo = $result.totalPages - 1)
+					#set ($end = $endPageNo*$result.pageSize)
+				        <span>共<b>$result.totalCount</b>条数据，当前第<b>$dispPageNo</b>页</span>
+						<a href="$!{baseURI}${result.baseQueryString}&page=0&limit=$result.pageSize" class="first"></a>
+						<a href="$!{baseURI}${result.baseQueryString}&page=$previousPageNo&limit=$result.pageSize" class="previous"></a>
+						<input type="text"  name="num" id="num" style="width:25px;" onkeyup="this.value=this.value.replace(/[^\d]/g,''); var totalPageSize = $result.totalPages; if(this.value > totalPageSize || this.value < 1 )this.value=''; " onafterpaste="this.value=this.value.replace(/[^\d]/g,'') "/>
+						<input type="button" value="GO" class="btn" onclick="submitForm($('#num').val());"/>
+						<span>/$result.totalPages页</span>	
+						<a href="$!{baseURI}${result.baseQueryString}&page=$nextPageNo&limit=$result.pageSize" class="next"></a>
+						<a href="$!{baseURI}${result.baseQueryString}&page=$endPageNo&limit=$result.pageSize" class="end"></a>
+				</div>
+			#else
+			<div class="page">	共<b>0</b>条数据，当前第<b>0</b>页</div>
+			#end
+<script language="javascript" type="text/javascript">
+function submitForm(pageNo) {  
+	if( $.trim(pageNo)!=''&& $.trim(pageNo) > 0){	
+		var page = pageNo -1 ;
+		navigateTo("$!{baseURI}${result.baseQueryString}&limit=$result.pageSize&page="+page);
+	}
+}	
+</script>

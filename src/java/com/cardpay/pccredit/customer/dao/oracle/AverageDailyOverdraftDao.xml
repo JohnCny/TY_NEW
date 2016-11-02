@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.customer.dao.AverageDailyOverdraftDao">
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.customer.model.AverageDailyOverdraft">
+		<result property="id" column="ID" />
+		<result property="accountNumber" column="ACCOUNT_NUMBER" />
+		<result property="averageDailyOverdraft" column="AVERAGE_DAILY_OVERDRAFT" />
+		<result property="principalOverdraft" column="PRINCIPAL_OVERDRAFT" />
+		<result property="totalAmountOverdraft" column="TOTAL_AMOUNT_OVERDRAFT" />
+		<result property="allDueStatus" column="ALL_DUE_STATUS" />
+		<result property="lowDueStatus" column="LOW_DUE_STATUS" />
+		<result property="periods" column="PERIODS" />
+		<result property="month" column="MONTH" />
+		<result property="year" column="YEAR" />
+		<result property="createdTime" column="CREATED_TIME" />
+		<result property="customerId" column="CUSTOMER_ID" />
+	
+	</resultMap>
+<select id="findAllDueStatusTrue" resultMap="ResultMap">
+SELECT
+	A .ACCOUNT_NUMBER,
+	A .ALL_DUE_STATUS,
+	A .AVERAGE_DAILY_OVERDRAFT,
+	A .TOTAL_AMOUNT_OVERDRAFT,
+	A .LOW_DUE_STATUS,
+	A .PERIODS,
+	A . MONTH,
+	A . YEAR
+FROM
+	AVERAGE_DAILY_OVERDRAFT A
+WHERE
+	A .ALL_DUE_STATUS = '1'
+</select>
+	<select id="findHalfYearAverageDailyOverdraft" resultMap="ResultMap">
+    SELECT
+	b.CUSTOMER_ID
+	FROM
+	AVERAGE_DAILY_OVERDRAFT c,
+	CUSTOMER_ACCOUNT_INFORMATION b,
+	card_information E
+	WHERE
+	TO_DATE (c. YEAR || c. MONTH, 'YYYYMM') <![CDATA[ < ]]>SYSDATE
+	AND TO_DATE (c. YEAR || c. MONTH, 'YYYYMM') <![CDATA[ >= ]]>ADD_MONTHS (SYSDATE, - 7)
+	AND NOT EXISTS (
+	SELECT
+		*
+	FROM
+		AVERAGE_DAILY_OVERDRAFT A
+	WHERE
+		A .ACCOUNT_NUMBER = c.ACCOUNT_NUMBER
+	AND A .ALL_DUE_STATUS = 0
+	)
+	AND c.ACCOUNT_NUMBER = b.ACCOUNT_NUMBER
+	AND E .card_number = b.CARD_NUMBER
+	AND E .product_id = #{productId}
+	AND c.TOTAL_AMOUNT_OVERDRAFT / b.CREDIT_AMOUNT >= 0.5
+	GROUP BY
+	b.CUSTOMER_ID
+	HAVING
+	COUNT (DISTINCT c. MONTH) >= 5
+	UNION
+	SELECT
+		b.CUSTOMER_ID
+	FROM
+		AVERAGE_DAILY_OVERDRAFT c,
+		CUSTOMER_ACCOUNT_INFORMATION b,
+		card_information E
+	WHERE
+		TO_DATE (c. YEAR || c. MONTH, 'YYYYMM') <![CDATA[ = ]]> SYSDATE
+	AND TO_DATE (c. YEAR || c. MONTH, 'YYYYMM') <![CDATA[ >= ]]> ADD_MONTHS (SYSDATE, - 6)
+	AND NOT EXISTS (
+		SELECT
+			*
+		FROM
+			AVERAGE_DAILY_OVERDRAFT A
+		WHERE
+			A .ACCOUNT_NUMBER = c.ACCOUNT_NUMBER
+		AND A .ALL_DUE_STATUS = 0
+	)
+	AND c.ACCOUNT_NUMBER = b.ACCOUNT_NUMBER
+	AND E .card_number = b.CARD_NUMBER
+	AND E .product_id = #{productId}
+	AND c.TOTAL_AMOUNT_OVERDRAFT / b.CREDIT_AMOUNT >= 0.5
+	GROUP BY
+		b.CUSTOMER_ID
+	HAVING
+		COUNT (DISTINCT c. MONTH) >= 5
+
+	</select>
+	
+	
+	<select id="findHalfYearAverageDailyOverdraftZDHK" resultMap="ResultMap">
+   select i.customer_id
+  from customer_account_information i,card_information c,
+       (select a.account_number 
+          from average_daily_overdraft a
+         WHERE
+    TO_DATE (a.YEAR||a.MONTH, 'YYYYMM') <![CDATA[ <= ]]>SYSDATE
+    AND TO_DATE (a.YEAR||a.MONTH, 'YYYYMM') > ADD_MONTHS (SYSDATE, - 6)
+           and a.low_due_status = 1 ) tt
+where tt.account_number=i.account_number and c.card_number=i.card_number and c.product_id=#{productId}
+group by i.customer_id having(count(0)>=6)
+
+	</select>
+	
+
+</mapper>

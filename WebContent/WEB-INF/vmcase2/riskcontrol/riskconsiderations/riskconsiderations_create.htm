@@ -1,0 +1,86 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">新建风险事项</div>
+      </div>
+      <form id="id_module_form" action="${modulePath}/insert.json">
+      	<input type="hidden" id="province" name="province" value="" />
+        <input type="hidden" id="city" name="city" value="" />
+        <input type="hidden" id="country" name="country" value="" />
+        <div class="forms" id="formsId">
+          <table class="rule" border="1" bordercolor="#CCCCCC">
+          <caption>风险事项</caption>
+            <colgroup>
+              <col width="10%" />
+              <col width="40%" />
+              <col width="10%" />
+              <col width="40%" />
+            </colgroup>
+            <tr>
+              <td><label for="institutions">机构:</label></td>
+              <td>
+              	<select id="institutions" name="institutions">
+              		#foreach($!flatTreeNode in $!orgList)
+						<option value="$!flatTreeNode.id">$!flatTreeNode.name</option>
+					#end
+                </select>
+              </td>
+              
+              <td><label for="area">区域:</label></td>
+              <td >
+	              <div >
+		            <select style="width:100px; " id="Select1" name="area" runat="server" onChange="selectCity();">
+		                <option value="" selected="true" >省/直辖市</option>
+		            </select>
+		            <select style="width:100px; " id="Select2" name="area" runat="server" onChange="selectcounty()">
+		                <option value="" selected="true">请选择</option>
+		            </select>
+		            <select style="width:110px; " id="Select3" name="area" runat="server">
+		                <option value="" selected="true">请选择</option>
+		            </select>
+		          </div>
+              </td>
+            </tr>
+            <tr>
+              <td><label>行业:</label></td>
+              <td>
+              	<select id="industry" name="industry">
+              	#dict("HYLB_", $!result.filter.cardType)
+                </select>
+              
+              <td><label>风险等级:</label></td>
+              <td>
+              	<select id="riskLevel" name="riskLevel">
+              	#dict("CustomerRiskRating", $!result.filter.cardType)
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><label>风险事项描述:</label></td>
+              <td colspan="3">
+               <textarea id="riskIssuesDescribed" name="riskIssuesDescribed" rows="5"></textarea>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </form>
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n("button.save")" class="current" />
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n("button.cancel")" />
+      </div>
+    </div>
+  </div>
+  <script src='${contextPath}/js/customerInforUpdate/customerinfoupdate_mbxx.js'></script>
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");	
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	#validator($formName)
+	$(document).ready(function() {	
+		#parse("common/part_create.js")
+	});
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

@@ -1,0 +1,80 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">不良资产显示</div>
+      </div>
+      <form id="id_module_form" action="">
+        <div class="forms" id="formsId">
+          <table class="rule">
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="30%" />
+            </colgroup>
+            <tr>
+              <td><label for="customerName">客户名称:</label></td>
+              <td><input type="text" id="customerName" name="customerName" value="$!nplsInfomation.customerName" disabled="disabled"/></td>
+              <td>&nbsp;</td>
+              <td><label for="accountNumber">账号:</label></td>
+              <td><input type="text" id="accountNumber" name="accountNumber" value="$!nplsInfomation.accountNumber" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label for="cardNumber">卡号:</label></td>
+              <td><input type="text" id="cardNumber" name="cardNumber" value="$!nplsInfomation.cardNumber" disabled="disabled"/></td>
+              <td>&nbsp;</td>
+              <td><label for="accountStatus">账户状态:</label></td>
+              <td>
+              	<select id="accountStatus" name="accountStatus" disabled="disabled">
+                #dict("ACCOUNTSTATUS", $!nplsInfomation.accountStatus)
+                </select>
+              </td>
+            </tr>
+			<tr>
+			  <td><label for="overdueAmount">逾期金额:</label></td>
+              <td><input type="text" name="overdueAmount" id="overdueAmount" value="$!nplsInfomation.overdueAmount" disabled="disabled"/></td>
+			  <td>&nbsp;</td>
+			  <td><label for="overdueTime">逾期天数:</label></td>
+              <td><input type="text" name="overdueTime" id="overdueTime" value="$!nplsInfomation.overdueTime" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td><label for="createMethod">创建类型:</label></td>
+              <td>
+               <select id="createMethod" name="createMethod" disabled="disabled">
+                #dict("CreateMethod", $!nplsInfomation.createMethod)
+               </select>
+              </td>
+              <td>&nbsp;</td>
+              <td><label for="verificationType">核销类型:</label></td>
+              <td>
+               <select id="verificationType" name="verificationType" disabled="disabled">
+                #dict("VERIFICATIONTYPE", $!nplsInfomation.verificationType)
+               </select>
+              </td>
+            </tr>
+            <tr>
+              <td><label for="reviewResults">审核状态:</label></td>
+              <td>
+               	<select id="reviewResults" name="reviewResults" disabled="disabled">
+                  #dict("ReviewResults", $!nplsInfomation.reviewResults)
+                </select>
+              </td>
+              <td colspan="3">&nbsp;</td>
+            </tr>
+          </table>
+        </div>
+      </form>
+      <div class="submit">
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n("button.cancel")" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");	
+	window.top.currentWindow.setLayout(layout);
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

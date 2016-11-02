@@ -1,0 +1,18 @@
+.box{margin:0 auto; background-color:#FFF; width:450px;  margin-top:100px;}
+.box_head{ background:url(../images/box_head_bg.png) repeat-x; width:450px; height:35px;}
+.box_head span{ line-height:35px; margin-left:20px; font-size:14px; font-weight:bold; font-family: "Microsoft YaHei" , Arial, Helvetica, sans-serif;}
+.box_head button{ background:url(../images/box_delete_nor.png) no-repeat; width:35px; height:35px; display:block; float:right; cursor:pointer; border:none;}
+.box_head button:hover{ background:url(../images/box_delete_hov.png) no-repeat; width:35px; height:35px; display:block; float:right;}
+.box_content{ margin:10px 20px; height:200px;}
+.box_content span{ line-height:30px; font-size:12px;}
+.box_bottom{ border-top:1px solid #dcdcdc; height:40px; text-align:center;}
+.box_bottom  button.submit{ padding:0px 20px; height:24px;line-height:24px;text-align:center; margin:5px 10px 0 158px; background:url(../images/icon_button_normal.png) repeat-x; color:#fff;  border:1px solid #117877; cursor:pointer;float:left; }
+.box_bottom  button.submit:hover{ background: url(../images/icon_button_hover.png) repeat-x;}
+.box_bottom  button.delete{padding:0px 20px; height:24px; line-height:24px; text-align:center; margin:5px 10px 0 0; background:url(../images/icon_button_qx_normal.png) repeat-x; color:#333;  border:1px solid #818181; cursor:pointer;float:left;}
+.box_bottom  button.delete:hover{ background:url(../images/icon_button_qx_hover.png) repeat-x;}
+
+
+
+
+
+

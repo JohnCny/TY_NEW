@@ -1,0 +1,793 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">进件新增>基本状况</div>
+      </div>
+        <div class="tabplace">
+            <ul class="com-tab" >
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/changewh.page?customerId=$!customerId&productId=$!productId">建议</a></li>
+	            <li class="tab activeTab"><a href="${contextPath}/intopieces/addIntopieces/findJbzk.page?customerId=$!customerId&productId=$!productId">基本状况</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/findJyzt.page?customerId=$!customerId&productId=$!productId">经营状态</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/findSczt.page?customerId=$!customerId&productId=$!productId">生存状态</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/findDdpz.page?customerId=$!customerId&productId=$!productId">道德品质</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_zcfz.page?customerId=$!customerId&productId=$!productId">资产负债</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_lrjb.page?customerId=$!customerId&productId=$!productId">利润简表</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_bzlr.page?customerId=$!customerId&productId=$!productId">标准利润表</a></li>
+	            <li class="tab "><a href="${contextPath}/intopieces/addIntopieces/create_xjl.page?customerId=$!customerId&productId=$!productId">现金流量</a></li>
+				<li class="tab "><a href="${contextPath}/intopieces/addIntopieces/create_jcjy.page?customerId=$!customerId&productId=$!productId">交叉检验</a></li>
+				<li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_dhd.page?customerId=$!customerId&productId=$!productId">点货单</a></li>
+				<li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_gdzc.page?customerId=$!customerId&productId=$!productId">固定资产清单</a></li>
+				<li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_yfys.page?customerId=$!customerId&productId=$!productId">应付预收</a></li>
+				<li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_ysyf.page?customerId=$!customerId&productId=$!productId">应收预付</a></li>
+				<li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_lsfx.page?customerId=$!customerId&productId=$!productId">流水分析</a></li>
+	            <!-- <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/changewh.page?id=${customerId}">基本信息</a></li>
+	            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_zyxx.page?id=${customerId}">职业信息</a></li>
+	            <li class="tab " ><a href="${contextPath}/customer/basiccustomerinforUpdate/create_mbxx.page?id=${customerId}">陌拜信息</a></li>
+	            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_zcfz.page?id=${customerId}">资产负债</a></li>
+	            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_syb.page?id=${customerId}">损益</a></li>
+	            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_xjl.page?id=${customerId}">现金流量</a></li>
+	            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_jcjy.page?id=${customerId}">交叉检验</a></li>
+				<li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_swpg.page?id=${customerId}">四维评估</a></li>
+				<li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_sxpg.page?id=${customerId}">授信评估</a></li>
+	            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_wjdc.page?id=${customerId}">问卷调查</a></li>
+	            <li class="tab" ><a href="${contextPath}/customer/basiccustomerinforUpdate/create_khtz.page?id=${customerId}">台账信息</a></li>
+	            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_yxzl.page?id=${customerId}">影像资料</a></li>    -->
+           </ul>
+         </div>
+         <div class="tabplace"></div>
+			<form id="id_module_form">
+			<input type="hidden" id="customerId" name="customerId" value="$!customerId" />
+			<input type="hidden" id="productId" name="productId" value="$!productId" />
+				<div class="form-bd" id="formsId"
+					style="margin-top: 0px; padding-top: 0px;">
+					<table id='MyTable' style='border-collapse: collapse;' width='100%'>
+						<tr>
+							<td rowspan='1' colspan='10' name='A1' align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2976px; background-color: #135AA4; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #d0d7e5 1px; border-left: solid #000000 1px;'>申请人生存状况——经营信息</td>
+						</tr>
+						<tr>
+							<td name='A2' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2976px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>店铺/企业名称</td>
+							<td rowspan='1' colspan='3' name='B2'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 150px;height: 14px;" type="text" id="mx" name="mx" value="$!jbzk.mx" />&nbsp;</td>
+							<td name='E2' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>组织类型</td>
+							<td name='F2' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 150px;height: 14px;" type="text" id="zj_type" name="zj_type" value="$!jbzk.zj_type" />&nbsp;</td>
+							<td name='G2' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>经营场所面积</td>
+							<td name='H2'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 150px;height: 14px;" type="text" id="mj" name="mj" value="$!jbzk.mj" />&nbsp;</td>
+							<td name='I2' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>法定代表人</td>
+							<td name='J2'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="fr" name="fr" value="$!jbzk.fr" />&nbsp;</td>
+						</tr>
+						<tr>
+							<td name='A3' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2976px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>实际控制人</td>
+							<td rowspan='1' colspan='2' name='B3'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 75px;height: 14px;" type="text" id="kzr" name="kzr" value="$!jbzk.kzr" />&nbsp;</td>
+							<td name='D3' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3200px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>股东占比情况</td>
+							<td name='E3'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="zb" name="zb" value="$!jbzk.zb" />&nbsp;</td>
+							<td name='F3' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>雇员人数</td>
+							<td name='G3'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 30px;height: 14px;" type="text" id="gy" name="gy" value="$!jbzk.gy" />&nbsp;</td>
+							<td name='H3' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>主营业务范围</td>
+							<td rowspan='1' colspan='2' name='I3'
+								align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="ywfw" name="ywfw" value="$!jbzk.ywfw" />&nbsp;</td>
+						</tr>
+						<tr>
+							<td name='A4' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2976px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>营业执照</td>
+							<td name='B4'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 70px;height: 14px;" type="text" id="yezz" name="yezz" value="$!jbzk.yezz" />&nbsp;</td>
+							<td name='C4' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input type="checkbox" name="yezz_select" value="1" style="width: 25px;height: 14px;"
+								#if($!jbzk.yezz_select == 1)checked="checked" #end>&nbsp;1.有&nbsp;&nbsp;&nbsp;
+					  			<input type="checkbox" name="yezz_select" style="width: 25px;height: 14px;"
+								#if($!jbzk.yezz_select == 2)checked="checked" #end value="2">&nbsp;2.无
+								</td>
+							<td name='D4' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3200px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>无营业执照的生意时间证明</td>
+							<td rowspan='1' colspan='4' name='E4'
+								align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="zm" name="zm" value="$!jbzk.zm" />&nbsp;</td>
+							<td name='I4' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>业务开始日期</td>
+							<td name='J4'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="ksrq" name="ksrq" value="$!jbzk.ksrq" />&nbsp;</td>
+						</tr>
+						<tr>
+							<td name='A5' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2976px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>地址</td>
+							<td rowspan='1' colspan='7' name='B5'
+							    align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 200px;height: 14px;" type="text" id="address" name="address" value="$!jbzk.address" />&nbsp;</td>
+							<td name='I5' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>固定电话</td>
+							<td name='J5'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 150px;height: 14px;" type="text" id="phone" name="phone" value="$!jbzk.phone" />&nbsp;</td>
+						</tr>
+						<tr>
+							<td rowspan='2' colspan='1' name='A6' align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2976px; border-top: solid #d0d7e5 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>店铺情况</td>
+							<td name='B6' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>类型</td>
+							<td name='C6'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="dp_type" name="dp_type" value="$!jbzk.dp_type" />&nbsp;</td>
+							<td rowspan='1' colspan='7' name='D6'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3200px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input type="checkbox" name="dp_select" value="1" style="width: 25px;height: 14px;"
+								#if($!jbzk.dp_select == 1)checked="checked" #end>&nbsp;1.自有产权&nbsp;&nbsp;&nbsp;
+					  			<input type="checkbox" name="dp_select" style="width: 25px;height: 14px;"
+								#if($!jbzk.dp_select == 2)checked="checked" #end value="2">&nbsp;2.按揭商铺
+								<input type="checkbox" name="dp_select" style="width: 25px;height: 14px;"
+								#if($!jbzk.dp_select == 3)checked="checked" #end value="3">&nbsp;3.租住（合同期限
+								<input type="text" id ="dp_qx" name="dp_qx" style="width: 25px;height: 14px;" value ="$!jbzk.dp_qx">租金
+								<input type="text" id ="dp_zj" name="dp_zj" style="width: 25px;height: 14px;" value ="$!jbzk.dp_zj">元）
+								<input type="checkbox" name="dp_select" style="width: 25px;height: 14px;"
+								#if($!jbzk.dp_select == 4)checked="checked" #end value="4">&nbsp;4.其他<input type="text" id = "dp_other" name="dp_other" style="width: 50px;height: 14px;" value ="$!jbzk.dp_other"></td>
+						</tr>
+						<tr>
+							<td rowspan='1' colspan='2' name='B7' align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>店铺装修情况</td>
+							<td name='D7'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3200px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="dp_zx" name="dp_zx" value="$!jbzk.dp_zx" />&nbsp;</td>
+							<td rowspan='1' colspan='2' name='E7' align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input type="checkbox" name="dp_zx_select" value="1" style="width: 25px;height: 14px;"
+								#if($!jbzk.dp_zx_select == 1)checked="checked" #end>&nbsp;1.好&nbsp;&nbsp;&nbsp;
+					  			<input type="checkbox" name="dp_zx_select" style="width: 25px;height: 14px;"
+								#if($!jbzk.dp_zx_select == 2)checked="checked" #end value="2">&nbsp;2.中
+								<input type="checkbox" name="dp_zx_select" style="width: 25px;height: 14px;"
+								#if($!jbzk.dp_zx_select == 3)checked="checked" #end value="3">&nbsp;3.差
+								<input type="checkbox" name="dp_zx_select" style="width: 25px;height: 14px;"
+								#if($!jbzk.dp_zx_select == 4)checked="checked" #end value="4">&nbsp;4.其他</td>
+							<td name='G7' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>店铺启用日期</td>
+							<td rowspan='1' colspan='3' name='H7'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="dp_qy_rq" name="dp_qy_rq" value="$!jbzk.dp_qy_rq" />&nbsp;</td>
+						</tr>
+						<tr>
+							<td rowspan='2' colspan='1' name='A8' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2976px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #d0d7e5 1px; border-left: solid #000000 1px;'>生意账户数</td>
+							<td rowspan='2' colspan='1' name='B8'
+							    align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #d0d7e5 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="zh" name="zh" value="$!jbzk.zh" />&nbsp;</td>
+							<td name='C8' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>主要开户行</td>
+							<td name='D8'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3200px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="m_bank" name="m_bank" value="$!jbzk.m_bank" />&nbsp;</td>
+							<td name='E8' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>开户账号</td>
+							<td rowspan='1' colspan='5' name='F8' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="m_zh" name="m_zh" value="$!jbzk.m_zh" />&nbsp;</td>
+						</tr>
+						<tr>
+							<td name='C9' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>开户行2</td>
+							<td name='D9'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3200px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="bank2" name="bank2" value="$!jbzk.bank2" />&nbsp;</td>
+							<td name='E9' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>开户账号2</td>
+							<td rowspan='1' colspan='5' name='F9'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="zh2" name="zh2" value="$!jbzk.zh2" />&nbsp;</td>
+						</tr>
+						<tr>
+							<td name='A10' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2976px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>经营历史和资本积累</td>
+							<td rowspan='1' colspan='4' name='B10'
+								align='left' valign='middle'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<textarea cols="50" id="jl" name="jl"  >$!jbzk.jl</textarea>&nbsp;</td>
+							<td name='F10' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>生意经营模式</td>
+							<td rowspan='1' colspan='4' name='G10'
+								 align='left' valign='middle'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<textarea placeholder="备注：组织架构、生产流程、财务及其他等" cols="50" id="ms" name="ms"  >$!jbzk.ms</textarea></td>
+						</tr>
+						<tr>
+							<td rowspan='1' colspan='10' name='A11' align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2976px; background-color: #135AA4; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>申请人生存状况——征信报告</td>
+						</tr>
+						<tr>
+							<td name='A12' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2976px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>信用状况</td>
+							<td name='B12'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 150px;height: 14px;" type="text" id="zx_zk" name="zx_zk" value="$!jbzk.zx_zk" />
+								&nbsp;</td>
+							<td rowspan='1' colspan='2' name='C12' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>1.正常
+								2.不正常 3.无记录</td>
+							<td rowspan='1' colspan='2' name='E12' align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>信用状况不正常说明</td>
+							<td rowspan='1' colspan='4' name='G12'
+							    align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="zx_sm" name="zx_sm" value="$!jbzk.zx_sm" />
+								&nbsp;</td>
+						</tr>
+						<tr>
+							<td name='A13' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2976px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>信用卡总数</td>
+							<td name='B13'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="zx_card_num" name="zx_card_num" value="$!jbzk.zx_card_num" />&nbsp;</td>
+							<td name='C13' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>授信总额</td>
+							<td name='D13'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3200px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="zx_creddit" name="zx_creddit" value="$!jbzk.zx_creddit" />&nbsp;</td>
+							<td name='E13' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>已用额度</td>
+							<td name='F13'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="zx_yy" name="zx_yy" value="$!jbzk.zx_yy" />&nbsp;</td>
+							<td name='G13' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>月均透支额</td>
+							<td name='H13'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="zx_tz" name="zx_tz" value="$!jbzk.zx_tz" />&nbsp;</td>
+							<td name='I13' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>逾期情况</td>
+							<td name='J13'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="zx_yq" name="zx_yq" value="$!jbzk.zx_yq" />&nbsp;</td>
+						</tr>
+						<tr>
+							<td name='A14' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2976px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>历史贷款笔数</td>
+							<td name='B14' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="zx_ls_num" name="zx_ls_num" value="$!jbzk.zx_ls_num" />&nbsp;</td>
+							<td name='C14' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>尚未到期笔数</td>
+							<td name='D14'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3200px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="zx_wdq_num" name="zx_wdq_num" value="$!jbzk.zx_wdq_num" />&nbsp;</td>
+							<td name='E14' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>贷款余额</td>
+							<td name='F14' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="zx_dk_yy" name="zx_dk_yy" value="$!jbzk.zx_dk_yy" />&nbsp;</td>
+							<td name='G14' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>逾期情况</td>
+							<td rowspan='1' colspan='3' name='H14'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="zx_yq_qk" name="zx_yq_qk" value="$!jbzk.zx_yq_qk" />&nbsp;</td>
+						</tr>
+						<tr>
+							<td name='A15' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2976px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>是否为他人担保</td>
+							<td name='B15'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="zx_dbr_ornot" name="zx_dbr_ornot" value="$!jbzk.zx_dbr_ornot" />&nbsp;</td>
+							<td name='C15' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>担保余额</td>
+							<td name='D15' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3200px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="zx_db_ye" name="zx_db_ye" value="$!jbzk.zx_db_ye" />&nbsp;</td>
+							<td name='E15' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>担保贷款用途</td>
+							<td name='F15'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="zx_db_yt" name="zx_db_yt" value="$!jbzk.zx_db_yt" />&nbsp;</td>
+							<td name='G15' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>担保期限</td>
+							<td name='H15'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="zx_db_qx" name="zx_db_qx" value="$!jbzk.zx_db_qx" />&nbsp;</td>
+							<td name='I15' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>征信被查询次数</td>
+							<td name='J15'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="zx_zx_seach_num" name="zx_zx_seach_num" value="$!jbzk.zx_zx_seach_num" />&nbsp;</td>
+						</tr>
+						<tr>
+							<td rowspan='1' colspan='10' name='A16' align='center'
+								valign='center'
+								style='font-weight: 700; font-size: 90%; width: 2976px; background-color: #135AA4; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>申请人道德品质（根据能够调查到的软信息进行填写）</td>
+						</tr>
+						<tr>
+							<td name='A17' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2976px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>家庭成员</td>
+							<td name='B17'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="sqr_family" name="sqr_family" value="$!jbzk.sqr_family" />&nbsp;</td>
+							<td name='C17' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>家庭是否和睦</td>
+							<td name='D17'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3200px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="sqr_family_relation" name="sqr_family_relation" value="$!jbzk.sqr_family_relation" />&nbsp;</td>
+							<td name='E17' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>经济上依赖的人数</td>
+							<td name='F17'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="sqr_eco_num" name="sqr_eco_num" value="$!jbzk.sqr_eco_num" />&nbsp;</td>
+							<td name='G17' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>不良嗜好</td>
+							<td name='H17'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="sqr_bad_hobby" name="sqr_bad_hobby" value="$!jbzk.sqr_bad_hobby" />&nbsp;</td>
+							<td name='I17' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>不良公共记录</td>
+							<td name='J17'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="sqr_bad_habit" name="sqr_bad_habit" value="$!jbzk.sqr_bad_habit" />&nbsp;</td>
+						</tr>
+						<tr>
+							<td name='A18' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2976px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>工作更换频率</td>
+							<td name='B18'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 110%; width: 2048px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="sqr_work_pl" name="sqr_work_pl" value="$!jbzk.sqr_work_pl" />&nbsp;</td>
+							<td name='C18' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>住宅更换频率</td>
+							<td name='D18'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 110%; width: 3200px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="sqr_zz_change_pl" name="sqr_zz_change_pl" value="$!jbzk.sqr_zz_change_pl" />&nbsp;</td>
+							<td name='E18' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>获奖情况</td>
+							<td name='F18'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="sqr_mark" name="sqr_mark" value="$!jbzk.sqr_mark" />&nbsp;</td>
+							<td name='G18' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>政治情况</td>
+							<td name='H18'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="sqr_zz_qk" name="sqr_zz_qk" value="$!jbzk.sqr_zz_qk" />&nbsp;</td>
+							<td name='I18' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>商业保险情况</td>
+							<td name='J18'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="sqr_bx" name="sqr_bx" value="$!jbzk.sqr_bx" />&nbsp;</td>
+						</tr>
+						<tr>
+							<td name='A19' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2976px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>子女状况子</td>
+							<td name='B19'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="sqr_child_qk" name="sqr_child_qk" value="$!jbzk.sqr_child_qk" />&nbsp;</td>
+							<td name='C19' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>女教育状况</td>
+							<td name='D19'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3200px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="sqr_child_edu" name="sqr_child_edu" value="$!jbzk.sqr_child_edu" />&nbsp;</td>
+							<td name='E19' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>子女工作单位</td>
+							<td rowspan='1' colspan='3' name='F19'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="sqr_child_unit" name="sqr_child_unit" value="$!jbzk.sqr_child_unit" />&nbsp;</td>
+							<td name='I19' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>社会关系</td>
+							<td name='J19'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="sqr_society_gx" name="sqr_society_gx" value="$!jbzk.sqr_society_gx" />&nbsp;</td>
+						</tr>
+						<tr>
+							<td name='A20' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2976px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>社会公益状况</td>
+							<td name='B20'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="sqr_soc_gy" name="sqr_soc_gy" value="$!jbzk.sqr_soc_gy" />&nbsp;</td>
+							<td name='C20' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>违法违纪情况</td>
+							<td name='D20'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3200px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="sqr_wf" name="sqr_wf" value="$!jbzk.sqr_wf" />&nbsp;</td>
+							<td name='E20' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>赡养父母状况</td>
+							<td rowspan='1' colspan='2' name='F20'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="sqr_syfm" name="sqr_syfm" value="$!jbzk.sqr_syfm" />&nbsp;</td>
+							<td name='H20' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>亲属和睦状况</td>
+							<td rowspan='1' colspan='2' name='I20'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="sqr_qq_zk" name="sqr_qq_zk" value="$!jbzk.sqr_qq_zk" />&nbsp;</td>
+						</tr>
+						<tr>
+							<td name='A21' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2976px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>家人对申请人评价</td>
+							<td rowspan='1' colspan='4' name='B21'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<textarea cols="50" id="sqr_jr_pj" name="sqr_jr_pj"  >$!jbzk.sqr_jr_pj</textarea>&nbsp;</td>
+							<td name='F21' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>邻居对申请人评价</td>
+							<td rowspan='1' colspan='4' name='G21'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<textarea cols="50" id="sqr_lj_pj" name="sqr_lj_pj"  >$!jbzk.sqr_lj_pj</textarea>&nbsp;</td>
+						</tr>
+						<tr>
+							<td name='A22' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2976px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>重要联系人对申请人评价</td>
+							<td rowspan='1' colspan='4' name='B22'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<textarea cols="50" id="sqr_lxr_pj" name="sqr_lxr_pj"  >$!jbzk.sqr_lxr_pj</textarea>&nbsp;</td>
+							<td name='F22' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>生意关联人对申请人评价</td>
+							<td rowspan='1' colspan='4' name='G22'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<textarea cols="50" id="sqr_sy_pj" name="sqr_sy_pj"  >$!jbzk.sqr_sy_pj</textarea>&nbsp;</td>
+						</tr>
+						<tr>
+							<td rowspan='1' colspan='5' name='A23' align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2976px; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>过去12个月的投资情况</td>
+							<td rowspan='1' colspan='5' name='F23' align='center'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>未来12个月的投资计划</td>
+						</tr>
+						<tr>
+							<td name='A24' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2976px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>个人方面</td>
+							<td rowspan='1' colspan='4' name='B24'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="sqr_q_person" name="sqr_q_person" value="$!jbzk.sqr_q_person" />&nbsp;</td>
+							<td name='F24' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>个人方面</td>
+							<td rowspan='1' colspan='4' name='G24'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="sqr_w_person" name="sqr_w_person" value="$!jbzk.sqr_w_person" />&nbsp;</td>
+						</tr>
+						<tr>
+							<td name='A25' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2976px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>经营方面</td>
+							<td rowspan='1' colspan='4' name='B25'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="sqr_q_bus" name="sqr_q_bus" value="$!jbzk.sqr_q_bus" />&nbsp;</td>
+							<td name='F25' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>经营方面</td>
+							<td rowspan='1' colspan='4' name='G25'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="sqr_w_bus" name="sqr_w_bus" value="$!jbzk.sqr_w_bus" />&nbsp;</td>
+						</tr>
+						<tr>
+							<td name='A26' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2976px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>软信息总体评价</td>
+							<td rowspan='1' colspan='9' name='B26'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<textarea cols="50" id="sqr_ztpj" name="sqr_ztpj"  >$!jbzk.sqr_ztpj</textarea>&nbsp;</td>
+						</tr>
+						<tr>
+							<td rowspan='1' colspan='10' name='A27' align='center'
+								valign='center'
+								style='font-weight: 100; font-size: 90%; width: 2976px; background-color: #135AA4; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>行业分析</td>
+						</tr>
+						<tr>
+							<td name='A28' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2976px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>所属行业</td>
+							<td name='B28'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="hy_work" name="hy_work" value="$!jbzk.hy_work" />&nbsp;</td>
+							<td name='C28' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>行业现状</td>
+							<td name='D28'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3200px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="hy_xz" name="hy_xz" value="$!jbzk.hy_xz" />&nbsp;</td>
+							<td name='E28' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>行业风险状况</td>
+							<td rowspan='1' colspan='2' name='F28'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="hy_fx" name="hy_fx" value="$!jbzk.hy_fx" />&nbsp;</td>
+							<td name='H28' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>行业发展趋势</td>
+							<td rowspan='1' colspan='2' name='I28'
+								 align='left' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="hy_qs" name="hy_qs" value="$!jbzk.hy_qs" />&nbsp;</td>
+						</tr>
+						<tr>
+							<td name='A29' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2976px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>平均存货周转情况</td>
+							<td name='B29'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="hy_zz" name="hy_zz" value="$!jbzk.hy_zz" />&nbsp;</td>
+							<td name='C29' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>行业应收账款规律</td>
+							<td name='D29'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3200px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="hy_ys_gl" name="hy_ys_gl" value="$!jbzk.hy_ys_gl" />&nbsp;</td>
+							<td name='E29' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>固定资产占比规律</td>
+							<td name='F29'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="hy_gd_gl" name="hy_gd_gl" value="$!jbzk.hy_gd_gl" />&nbsp;</td>
+							<td name='G29' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>平均年销售额</td>
+							<td name='H29'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="hy_pj_sale" name="hy_pj_sale" value="$!jbzk.hy_pj_sale" />&nbsp;</td>
+							<td name='I29' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>平均毛利率</td>
+							<td name='J29'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="hy_pj_ml" name="hy_pj_ml" value="$!jbzk.hy_pj_ml" />&nbsp;</td>
+						</tr>
+						<tr>
+							<td name='A30' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2976px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>平均净利率</td>
+							<td name='B30'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="hy_pj_jl" name="hy_pj_jl" value="$!jbzk.hy_pj_jl" />&nbsp;</td>
+							<td name='C30' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>行业工资水平</td>
+							<td name='D30'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 3200px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="hy_gz" name="hy_gz" value="$!jbzk.hy_gz" />&nbsp;</td>
+							<td name='E30' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>行业费用水平</td>
+							<td name='F30'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2592px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="hy_fy" name="hy_fy" value="$!jbzk.hy_fy" />&nbsp;</td>
+							<td name='G30' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>原材料价格水平</td>
+							<td name='H30'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="hy_yclje" name="hy_yclje" value="$!jbzk.hy_yclje" />&nbsp;</td>
+							<td name='I30' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>政策、环境影响</td>
+							<td name='J30'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2048px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 50px;height: 14px;" type="text" id="hy_policy" name="hy_policy" value="$!jbzk.hy_policy" />&nbsp;</td>
+						</tr>
+						<tr>
+							<td name='A31' align='center' valign='center'
+								style='font-weight: 400; font-size: 90%; width: 2976px; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>行业其他描述</td>
+							<td rowspan='1' colspan='9' name='B31'
+								 align='left' valign='top'
+								style='font-weight: 400; font-size: 100%; width: 2048px; color: #000000; border-top: solid #000000 1px; border-right: solid #d0d7e5 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<textarea placeholder="备注：从产品定价水平、服务水平、员工稳定情况、主要技术工人构成、主要设备运转效率、销售团队结构、组织分工情况、内部管理水平、财务管理水平等方面描述" id="hy_desc" name="hy_desc"  cols="50"   >$!jbzk.hy_desc</textarea></td>
+						</tr>
+					</table>
+				</div>
+			</form>
+
+
+			<div class="submit">
+        <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
+        <input type="button" onclick="returnClick();" value="#i18n('button.cancel')" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout = new FormsLayout("formsId");
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	#parse ("customer/customerInforInsert/customerInforCreate_validation.js")
+	
+	$(document).ready(function() {
+		//save
+		$("#id_save_button").click(function() {
+			var url = "${modulePath}/addJbzk.json";
+			$.ajax({
+				url : url,
+				type : "get",
+				data : {
+					  "customerId": $("#customerId").val(),
+					  "productId": $("#productId").val(),
+					  "mx"                 : $("#mx").val(),                 
+					  "zj_type"            : $("#zj_type").val(),            
+					  "mj"                 : $("#mj").val(),                 
+					  "fr"                 : $("#fr").val(),                 
+					  "kzr"                : $("#kzr").val(),                
+					  "zb"                 : $("#zb").val(),                 
+					  "gy"                 : $("#gy").val(),                 
+					  "ywfw"               : $("#ywfw").val(),               
+					  "yezz"               : $("#yezz").val(),               
+					  "yezz_select"        : $('input[name="yezz_select"]:checked').val(), 
+					  "zm"                 : $("#zm").val(),                 
+					  "ksrq"               : $("#ksrq").val(),               
+					  "address"            : $("#address").val(),            
+					  "phone"              : $("#phone").val(),              
+					  "dp_type"            : $("#dp_type").val(),            
+					  "dp_select"          : $('input[name="dp_select"]:checked').val(),          
+					  "dp_qx"              : $("#dp_qx").val(),              
+					  "dp_zj"              : $("#dp_zj").val(),              
+					  "dp_other"           : $("#dp_other").val(),           
+					  "dp_zx"              : $("#dp_zx").val(),              
+					  "dp_zx_select"       : $('input[name="dp_zx_select"]:checked').val(),       
+					  "dp_qy_rq"           : $("#dp_qy_rq").val(),           
+					  "zh"                 : $("#zh").val(),                 
+					  "m_bank"             : $("#m_bank").val(),             
+					  "m_zh"               : $("#m_zh").val(),               
+					  "bank2"              : $("#bank2").val(),              
+					  "zh2"                : $("#zh2").val(),                
+					  "jl"                 : $("#jl").val(),                 
+					  "ms"                 : $("#ms").val(),                 
+					  "zx_zk"              : $("#zx_zk").val(),              
+					  "zx_select"          : $("#zx_select").val(),          
+					  "zx_sm"              : $("#zx_sm").val(),              
+					  "zx_card_num"        : $("#zx_card_num").val(),        
+					  "zx_creddit"         : $("#zx_creddit").val(),         
+					  "zx_yy"              : $("#zx_yy").val(),              
+					  "zx_tz"              : $("#zx_tz").val(),              
+					  "zx_yq"              : $("#zx_yq").val(),              
+					  "zx_ls_num"          : $("#zx_ls_num").val(),          
+					  "zx_wdq_num"         : $("#zx_wdq_num").val(),         
+					  "zx_dk_yy"           : $("#zx_dk_yy").val(),           
+					  "zx_yq_qk"           : $("#zx_yq_qk").val(),           
+					  "zx_dbr_ornot"       : $("#zx_dbr_ornot").val(),       
+					  "zx_db_ye"           : $("#zx_db_ye").val(),           
+					  "zx_db_yt"           : $("#zx_db_yt").val(),           
+					  "zx_db_qx"           : $("#zx_db_qx").val(),           
+					  "zx_zx_seach_num"    : $("#zx_zx_seach_num").val(),    
+					  "sqr_family"         : $("#sqr_family").val(),         
+					  "sqr_family_relation": $("#sqr_family_relation").val(),
+					  "sqr_eco_num"        : $("#sqr_eco_num").val(),        
+					  "sqr_bad_hobby"      : $("#sqr_bad_hobby").val(),      
+					  "sqr_bad_habit"      : $("#sqr_bad_habit").val(),      
+					  "sqr_work_pl"        : $("#sqr_work_pl").val(),        
+					  "sqr_zz_change_pl"   : $("#sqr_zz_change_pl").val(),   
+					  "sqr_mark"           : $("#sqr_mark").val(),           
+					  "sqr_zz_qk"          : $("#sqr_zz_qk").val(),          
+					  "sqr_bx"             : $("#sqr_bx").val(),             
+					  "sqr_child_qk"       : $("#sqr_child_qk").val(),       
+					  "sqr_child_edu"      : $("#sqr_child_edu").val(),      
+					  "sqr_child_unit"     : $("#sqr_child_unit").val(),     
+					  "sqr_society_gx"     : $("#sqr_society_gx").val(),     
+					  "sqr_soc_gy"         : $("#sqr_soc_gy").val(),         
+					  "sqr_wf"             : $("#sqr_wf").val(),             
+					  "sqr_syfm"           : $("#sqr_syfm").val(),           
+					  "sqr_qq_zk"          : $("#sqr_qq_zk").val(),          
+					  "sqr_jr_pj"          : $("#sqr_jr_pj").val(),          
+					  "sqr_lj_pj"          : $("#sqr_lj_pj").val(),         
+					  "sqr_lxr_pj"         : $("#sqr_lxr_pj").val(),         
+					  "sqr_sy_pj"          : $("#sqr_sy_pj").val(),          
+					  "sqr_q_person"       : $("#sqr_q_person").val(),       
+					  "sqr_q_bus"          : $("#sqr_q_bus").val(),          
+					  "sqr_w_person"       : $("#sqr_w_person").val(),       
+					  "sqr_w_bus"          : $("#sqr_w_bus").val(),          
+					  "sqr_ztpj"           : $("#sqr_ztpj").val(),           
+					  "hy_work"            : $("#hy_work").val(),            
+					  "hy_xz"              : $("#hy_xz").val(),              
+					  "hy_fx"              : $("#hy_fx").val(),              
+					  "hy_qs"              : $("#hy_qs").val(),              
+					  "hy_zz"              : $("#hy_zz").val(),              
+					  "hy_ys_gl"           : $("#hy_ys_gl").val(),           
+					  "hy_gd_gl"           : $("#hy_gd_gl").val(),           
+					  "hy_pj_sale"         : $("#hy_pj_sale").val(),         
+					  "hy_pj_jl"           : $("#hy_pj_jl").val(),           
+					  "hy_gz"              : $("#hy_gz").val(),              
+					  "hy_fy"              : $("#hy_fy").val(),              
+					  "hy_yclje"           : $("#hy_yclje").val(),           
+					  "hy_policy"          : $("#hy_policy").val(),         
+					  "hy_desc"            : $("#hy_desc").val(),            
+					  "hy_pj_ml"           : $("#hy_pj_ml").val() 
+				      },
+				success : function(data) {
+					if (data.success) {
+						topWin.Dialog.message("保存成功！");
+					} else {
+						topWin.Dialog.message(data.message);
+					}
+				}
+			});
+		});
+		
+	});
+	
+	//取消
+	function returnClick(){
+		 window.location.href= contextPath + "/customer/basiccustomerinforUpdate/browse.page" ;
+	}
+  </script>
+   <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
+  
+</body>
+#parse ("common/iframe_page_footer.htm")

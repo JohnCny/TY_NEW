@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.product.dao.ProductRewardIncentiveDao">
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.product.model.ProductRewardIncentive">
+		<result property="id" column="ID" />
+		<result property="productId" column="PRODUCT_ID" />
+		<result property="pieceCardStatus" column="PIECE_CARD_STATUS" />
+		<result property="rewardSheet" column="REWARD_SHEET" />
+		<result property="rewardIncentivesProportion" column="REWARD_INCENTIVES_PROPORTION" />
+		<result property="nterestIncomeParameter" column="NTEREST_INCOME_PARAMETER" />
+		<result property="feeSparameter" column="FEE_SPARAMETER" />
+		<result property="parametersFine" column="PARAMETERS_FINE" />
+		<result property="earningsParameters" column="EARNINGS_PARAMETERS" />
+		<result property="parametersAnnualFee" column="PARAMETERS_ANNUAL_FEE" />
+		<result property="parametersCost" column="PARAMETERS_COST" />
+		<result property="parametersRiskCost" column="PARAMETERS_RISK_COST" />
+		<result property="deductionsParameters" column="DEDUCTIONS_PARAMETERS" />
+		<result property="createTime" column="CREATED_TIME" />
+		<result property="createBy" column="CREATED_BY" />
+		<result property="modifyTime" column="MODIFIED_TIME" />
+		<result property="modifyBy" column="MODIFIED_BY" />
+	
+	</resultMap>
+
+	<select id="findProductRewardIncentiveByProductId" resultMap="ResultMap" parameterType="java.lang.String">
+		SELECT * from product_reward_incentive
+		WHERE PRODUCT_ID=#{productId}
+	</select>
+	<delete id="deleteProductRewardIncentiveByProductId" parameterType="java.lang.String">
+		DELETE
+		FROM
+		product_reward_incentive A
+		WHERE
+		A .PRODUCT_ID=#{productId}
+	</delete>
+
+</mapper>

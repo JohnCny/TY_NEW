@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.manager.dao.ManagerLevelAdjustmentDao" >
+
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.manager.web.ManagerLevelAdjustmentForm">
+		<result property="id" column="ID" />
+		<result property="customerManagerId" column="CUSTOMER_MANAGER_ID" />
+		<result property="systemAdvice" column="SYSTEM_ADVICE" />
+		<result property="ifHandled" column="IF_HANDLED" />
+		<result property="customerManagerName" column="DISPLAY_NAME" />
+		<result property="originalLevel" column="ORIGINAL_LEVEL" />
+		<result property="adjustAfterLevel" column="ADJUST_AFTER_LEVEL" />
+		<result property="dataYear" column="DATA_YEAR" />
+		<result property="dataMonth" column="DATA_MONTH" />
+	</resultMap>
+	
+	<resultMap id="AccountManagerParameterFormNewMap" type="com.cardpay.pccredit.manager.model.AccountManagerParameter">
+		<result property="id" column="ID" />
+		<result property="userId" column="USER_ID" />
+		<result property="levelInformation" column="LEVEL_INFORMATION" />
+		<result property="entryTime" column="ENTRY_TIME" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="createdTime" column="CREATED_TIME" />
+		<result property="modifiedBy" column="MODIFIED_BY" />
+		<result property="modifiedTime" column="MODIFIED_TIME" />
+		<result property="basePay" column="BASE_PAY" />
+	</resultMap>
+	
+	
+	<resultMap id="BatchResultMap" type="com.cardpay.pccredit.manager.model.BatchTask">
+		<result property="id" column="ID" />
+		<result property="batchCode" column="BATCH_CODE" />
+		<result property="batchName" column="BATCH_NAME" />
+		<result property="status" column="STATUS" />
+		<result property="createdTime" column="CREATED_TIME" />
+		<result property="modifiedTime" column="MODIFIED_TIME" />
+	</resultMap>
+	
+	<select id="findManagerLevelAdjustmentByFilter" resultMap="ResultMap" 
+		parameterType="com.cardpay.pccredit.manager.filter.ManagerLevelAdjustmentFilter">
+		SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					 SELECT mla.*,
+							su.DISPLAY_NAME
+					 FROM  manager_level_adjustment mla
+					 LEFT JOIN sys_user su
+					    ON su.id = mla.CUSTOMER_MANAGER_ID
+					 WHERE 1=1 
+					 <if test="customerManagerName != null and customerManagerName != '' ">
+						<![CDATA[ and su.DISPLAY_NAME like '%'||#{customerManagerName}||'%']]>
+					</if>
+					order by mla.modified_time desc
+  			<![CDATA[		
+					) ROW_
+				WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+			WHERE ROWNUM_ > #{limit}*#{page}
+			]]>
+	</select>
+	
+	<select id="findManagerLevelAdjustmentCountByFilter" resultType="int" 
+		parameterType="com.cardpay.pccredit.manager.filter.ManagerLevelAdjustmentFilter">
+		SELECT count(*)
+		 FROM  manager_level_adjustment mla
+		 LEFT JOIN sys_user su
+		    ON su.id = mla.CUSTOMER_MANAGER_ID
+		 WHERE 1=1 
+		 <if test="customerManagerName != null and customerManagerName != '' ">
+			<![CDATA[ and su.DISPLAY_NAME like '%'||#{customerManagerName}||'%']]>
+		</if>
+	</select>
+	 
+	<select id="findManagerAssessmentScoreById" resultMap="ResultMap">
+		 SELECT mla.*,
+				su.DISPLAY_NAME
+		 FROM  manager_level_adjustment mla
+		 LEFT JOIN sys_user su
+		    ON su.id = mla.CUSTOMER_MANAGER_ID
+		 WHERE mas.id = #{id}
+	</select>
+	
+	<select id="findAccountManagerByUserId" resultMap="AccountManagerParameterFormNewMap">
+		select * from account_manager_parameter t where t.user_id = #{userId}
+	</select>
+	
+	<!-- 批处理重跑 -->
+	<select id="findBatchListFilter" resultMap="BatchResultMap">
+		SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					 select * from t_batch_task 
+					 where CREATED_TIME between #{startDate} and #{endDate}
+					 <if test="status != null and status != '' ">
+						and status = #{status}
+					 </if>
+					 order by CREATED_TIME DESC
+  			<![CDATA[		
+					) ROW_
+				WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+			WHERE ROWNUM_ > #{limit}*#{page}
+			]]>
+	</select>
+	
+	<select id="findBatchCountFilter" resultType="int">
+		select count(*) from t_batch_task 
+		where CREATED_TIME between #{startDate} and #{endDate}
+		<if test="status != null and status != '' ">
+			and status = #{status}
+		</if>
+	</select>
+
+</mapper>

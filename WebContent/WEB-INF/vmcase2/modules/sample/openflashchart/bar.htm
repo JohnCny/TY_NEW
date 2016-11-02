@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/css.css" />
+<link rel="stylesheet" type="text/css"	href="${contextPath}/common/css/jquery-ui-1.10.3.custom.css" />
+<script type="text/javascript" src="${contextPath}/common/js/common/json2.js"></script>
+<script src='${contextPath}/common/js/common/jquery.min.js'></script>
+<script src='${contextPath}/common/js/common/JTimer_2.0.js'></script>
+<script src="${contextPath}/common/js/common/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="${contextPath}/common/js/common/common.js"></script>
+<script src="${contextPath}/common/js/common/dialog.js"></script>
+<script type="text/javascript" src="${uicasePath}/js/common/layoutInfo.js"></script>
+<script src="${contextPath}/common/openflashchart/swfobject.js"></script>
+<script type="text/javascript">
+
+	 swfobject.embedSWF("${contextPath}/common/openflashchart/open-flash-chart-SimplifiedChinese.swf", "my_chart1",
+			"400", "300", "9.0.0", "expressInstall.swf", {
+				"data-file" : "${contextPath}/openflashchart/demo/bar1.json"
+			}); 
+	swfobject.embedSWF("${contextPath}/common/openflashchart/open-flash-chart-SimplifiedChinese.swf", "my_chart2",
+			"600", "300", "9.0.0", "expressInstall.swf", {
+				"data-file" : "${contextPath}/openflashchart/demo/bar2.json"
+			}); 
+	
+	 swfobject.embedSWF("${contextPath}/common/openflashchart/open-flash-chart-SimplifiedChinese.swf", "my_chart3",
+			"600", "300", "9.0.0", "expressInstall.swf", {
+				"data-file" : "${contextPath}/openflashchart/demo/bar3.json"
+			});  
+	/* function getDemoData(){
+	var barData={
+	"y_axis":{"max":26,"steps":2.5},
+	"title":{"text":"每周水果产量"},
+	"is_decimal_separator_comma":0,
+	"elements":[{"values":[
+	{"colour":"0x336699","tip":"16.0 吨 ","top":16},
+	{"colour":"0x336699","tip":"8.0 吨 ","top":8},
+	{"colour":"0x336699","tip":"18.0 吨 ","top":18},
+	{"colour":"0x336699","tip":"12.0 吨 ","top":12},
+	{"colour":"0x336699","tip":"16.0 吨 ","top":16},
+	{"colour":"0x336699","tip":"24.0 吨 ","top":24},
+	{"colour":"0x336699","tip":"6.0 吨 ","top":6}
+	],
+	"type":"bar_glass"}
+	],
+	"num_decimals":2,
+	"is_fixed_num_decimals_forced":0,
+	"x_axis":{"labels":{"labels":["星期1","星期2","星期3","星期4","星期5","星期6","星期日"]}},
+	"is_thousand_separator_disabled":0
+	};
+	return JSON.stringify(barData);
+	}  */
+</script>
+</head>
+<body>
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+				<span>当前位置：openflashchart > 柱状图</span>
+				<div class="control">
+					<a id="id_create_button" href='javascript:swfobject.embedSWF("${contextPath}/js/open-flash-chart.swf", "my_chart1",
+			"400", "300", "9.0.0", "expressInstall.swf", {
+				"data-file" : "${contextPath}/openflashchart/demo/bar.json"
+			}); '>刷新</a>
+				</div>
+			</div>
+			<div id="my_chart1"></div>
+			<div id="my_chart2"></div>
+			<div id="my_chart3"></div>
+			<div id="my_chart4"></div>
+		</div>
+	</div>
+</body>
+
+<script language="javascript" type="text/javascript">
+$(document).ready(function() {
+	
+});
+</script>
+</html>

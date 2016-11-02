@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.jnpad.dao.JnpadCustomerSelectDao">
+
+
+<resultMap type="com.cardpay.pccredit.jnpad.model.CustomerInfo" id="selectCustomerinfo">
+<result property="id" column="ID" />
+<result property="chineseName" column="CHINESE_NAME" />
+<result property="nationality" column="NATIONALITY" />
+<result property="sex" column="SEX" />
+<result property="pinyinenglishName" column="PINYINENGLISH_NAME" />
+<result property="birthday" column="BIRTHDAY" />
+<result property="cardType" column="CARD_TYPE" />
+<result property="cardId" column="CARD_ID" />
+<result property="residentialAddress" column="RESIDENTIAL_ADDRESS" />
+<result property="zipCode" column="ZIP_CODE" />
+<result property="homePhone" column="HOME_PHONE" />
+<result property="telephone" column="TELEPHONE" />
+<result property="mail" column="MAIL" />
+<result property="residentialPropertie" column="RESIDENTIAL_PROPERTIE" />
+<result property="maritalStatus" column="MARITAL_STATUS" />
+<result property="degreeEducation" column="DEGREE_EDUCATION" />
+<result property="householdAddress" column="HOUSEHOLD_ADDRESS" />
+<result property="zipCodeAddress" column="ZIP_CODE_ADDRESS" />
+<result property="userId" column="USER_ID" />
+<result property="divisionalStatus" column="DIVISIONAL_STATUS" />
+<result property="customerBusinessType" column="CUSTOMER_BUSINESS_TYPE" />
+<result property="customerBusinessAptitude" column="CUSTOMER_BUSINESS_APTITUDE" />
+<result property="tyCustomerId" column="TY_CUSTOMER_ID" />
+<result property="spmc" column="SPMC" />
+</resultMap>
+
+
+<resultMap type="com.cardpay.pccredit.jnpad.model.CIPERSONBASINFO" id="selectCustomerJnInfo">
+
+<result property="id" column="ID" />
+<result property="initid" column="INITID" />
+<result property="custid" column="CUSTID" />
+<result property="typeid" column="TYPEID" />
+<result property="custtype" column="CUSTTYPE" />
+<result property="cname" column="CNAME" />
+<result property="sex" column="SEX" />
+<result property="cardtype" column="CARDTYPE" />
+<result property="cardnum" column="CARDNUM" />
+<result property="ethical" column="ETHICAL" />
+<result property="country" column="COUNTRY" />
+<result property="birthday" column="birthday" />
+<result property="syaddr" column="syaddr" />
+<result property="usefullife" column="usefullife" />
+<result property="signorg" column="signorg" />
+<result property="custproperty" column="custproperty" />
+<result property="employer" column="employer" />
+<result property="employeraddr" column="employeraddr" />
+<result property="employerpostcode" column="employerpostcode" />
+<result property="employertime" column="employertime" />
+<result property="categoryid" column="categoryid" />
+<result property="title" column="title" />
+<result property="vocation" column="vocation" />
+<result property="duty" column="duty" />
+<result property="registercode" column="registercode" />
+<result property="codename" column="codename" />
+<result property="managername" column="managername" />
+<result property="manageplace" column="manageplace" />
+<result property="manageextent" column="manageextent" />
+<result property="founddate" column="founddate" />
+<result property="annucheck" column="annucheck" />
+<result property="school" column="school" />
+<result property="schooladdr" column="schooladdr" />
+<result property="schoolattrib" column="schoolattrib" />
+<result property="schooltel" column="schooltel" />
+<result property="marrige" column="marrige" />
+<result property="isreferagricultural" column="isreferagricultural" />
+<result property="city" column="city" />
+<result property="districtcounty" column="districtcounty" />
+<result property="town" column="town" />
+<result property="community" column="community" />
+<result property="contactmobiletel" column="contactmobiletel" />
+<result property="contacttel" column="contacttel" />
+<result property="address" column="address" />
+<result property="postcode" column="postcode" />
+<result property="messageaddr" column="messageaddr" />
+<result property="commpostcode" column="commpostcode" />
+<result property="educationlevel" column="educationlevel" />
+<result property="degree" column="degree" />
+<result property="industry" column="industry" />
+<result property="reside" column="reside" />
+<result property="levelcal" column="levelcal" />
+<result property="joinring" column="joinring" />
+<result property="famasset" column="famasset" />
+<result property="famdebt" column="famdebt" />
+<result property="famannuincome" column="famannuincome" />
+<result property="famannupayout" column="famannupayout" />
+<result property="relaman" column="relaman" />
+<result property="email" column="email" />
+<result property="incomeaccount" column="incomeaccount" />
+<result property="incomebank" column="incomebank" />
+<result property="busimanager" column="busimanager" />
+<result property="instcode" column="instcode" />
+<result property="deptcode" column="deptcode" />
+<result property="instcitycode" column="instcitycode" />
+<result property="istmp" column="istmp" />
+<result property="version" column="version" />
+<result property="disposalstatus" column="disposalstatus" />
+<result property="status" column="status" />
+<result property="remark" column="remark" />
+<result property="inputman" column="inputman" />
+<result property="inputdate" column="inputdate" />
+<result property="groupid" column="groupid" />
+<result property="operator" column="operator" />
+<result property="operdatetime" column="operdatetime" />
+<result property="custstatus" column="custstatus" />
+<result property="assistbusimanage" column="assistbusimanage" />
+<result property="famnum" column="famnum" />
+<result property="firstmanager" column="firstmanager" />
+<result property="governmanager" column="firstmanager" />
+<result property="istrans" column="istrans" />
+<result property="hukou" column="hukou" />
+<result property="backoperator" column="backoperator" />
+<result property="busiflag" column="busiflag" />
+<result property="create_time" column="create_time" />
+
+
+
+
+
+
+
+
+</resultMap>
+<!-- 根据cardId -->
+<select id="selectCustomerInforByCardId" resultMap="selectCustomerinfo">
+
+
+		SELECT * FROM
+		(SELECT
+		ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		select *
+		from BASIC_CUSTOMER_INFORMATION c
+		where 1=1
+		AND
+		( c.CARD_ID=#{cardId})
+		) ROW_)
+
+</select>
+<!-- 根据cardId 和 经理id-->
+<select id="selectCustomerInfo" resultMap="selectCustomerinfo">
+
+
+		SELECT * FROM
+		(SELECT
+		ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		select *
+		from BASIC_CUSTOMER_INFORMATION c
+		where 1=1
+		<if test="cardId != null and cardId != '' ">
+		AND c.CARD_ID=#{cardId}
+		</if>
+		<if test="chineseName != null and chineseName != '' ">
+		AND c.CHINESE_NAME=#{chineseName}
+		</if>
+		 AND 
+		c.USER_ID=#{userId}
+		) ROW_)
+
+</select>
+<!-- 根据姓名 和 经理id-->
+<select id="selectCustomerInforByNameAndUserId" resultMap="selectCustomerinfo" resultType="ArrayList">
+
+
+		SELECT * FROM
+		(SELECT
+		ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		select *
+		from BASIC_CUSTOMER_INFORMATION c
+		where 1=1
+		AND
+		c.CHINESE_NAME=#{chineseName}
+		 AND 
+		c.USER_ID=#{userId}
+		) ROW_)
+
+</select>
+<!-- 根据id -->
+<select id="selectCustomerInfoById" resultMap="selectCustomerJnInfo">
+		SELECT * FROM
+		(SELECT
+		ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		select *
+		from T_CIPERSONBASINFO c
+		where 1=1
+		AND
+		( c.ID=#{id})
+		) ROW_)
+
+</select>
+<!-- 根据内码 -->
+<select id="selectCustomerByNm" resultMap="selectCustomerJnInfo">
+		SELECT * FROM
+		(SELECT
+		ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		select *
+		from T_CIPERSONBASINFO c
+		where 1=1
+		AND
+		( c.CUSTID=#{custid})
+		) ROW_)
+
+</select>
+
+</mapper> 

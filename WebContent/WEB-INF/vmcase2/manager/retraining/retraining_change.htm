@@ -1,0 +1,130 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">修改再培训计划</div>
+      </div>
+      <form id="id_module_form" action="${modulePath}/update.json">
+      	<input type="hidden" name="id" value="$!recordId" id="retrainId"/>
+        <div class="forms" id="formsId">
+          <table class="rule" border="1" bordercolor="#CCCCCC">
+          <caption>再培训计划</caption>
+            <colgroup>
+              <col width="10%" />
+              <col width="40%" />
+              <col width="10%" />
+              <col width="40%" />
+            </colgroup>
+            <tr>
+              <td><label>培训目标:</label></td>
+              <td>
+              	<input type="text" id="trainingObjective" name="trainingObjective" value="$!retraining.trainingObjective" />
+             
+              <td><label>培训方式:</label></td>
+              <td>
+              	<input type="text" id="trainingMethod" name="trainingMethod" value="$!retraining.trainingMethod" />
+              </td>
+            </tr>
+            <tr>
+              <td><label>培训地点:</label></td>
+              <td>
+              	<input type="text" id="trainingLocation" name="trainingLocation" value="$!retraining.trainingLocation" />
+             
+              <td><label>培训时间:</label></td>
+              <td>
+              	<input type="text" name="trainingTime" id="trainingTime"  value="$!date.format("yyyy-MM-dd", $!retraining.trainingTime)" onmouseover="_calendar()"/>
+              </td>
+            </tr>
+            <tr>
+              <td><label>实施人:</label></td>
+              <td>
+              	<input type="text" id="trainingPeople" name="trainingPeople" value="$!retraining.trainingPeople" />
+             
+              <td><label>是否废弃:</label></td>
+              <td>
+              	<input type="radio" name="whetherAbandoned" value="false" #if($!retraining.whetherAbandoned == "false") checked #end/>否
+				    &nbsp;&nbsp;&nbsp;
+				<input type="radio" name="whetherAbandoned" value="true" #if($!retraining.whetherAbandoned == "true") checked #end/>是
+              </td>
+            </tr>
+            <tr>
+              <td><label>培训内容:</label></td>
+              <td colspan="4">
+               <textarea id="trainingContent" name="trainingContent" rows="3">$!retraining.trainingContent</textarea>
+              </td>
+            </tr>
+          </table>
+          </br>
+          <iframe id="displayIframe" width="100%" height="570px;"style="margin-top:-40px;"
+		      frameborder="0" marginheight="0" marginwidth="0" scrolling="no"
+		      src="${contextPath}/manager/retraining/browseRetrainingMananger.page?retrainId=$!retraining.id" name="displayIframe" allowtransparency="true" >
+	   	    </iframe>
+        </div>
+      </form>
+      
+      <div class="submit">
+      <input id="id_change_retraining_button" type="button" value="培训评价" class="current" style="width:120px;"/>
+      	<input id="id_add_manager_button" type="button" value="添加培训客户经理" class="current" style="width:120px;"/>
+        <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
+        <input type="button" onclick="javascript:navigateTo('${contextPath}/manager/retraining/browse.page');" value="#i18n('button.cancel')" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");			
+	window.top.currentWindow.setLayout(layout);
+			
+	#set ($formName = "'#id_module_form'")
+	#parse ("/manager/retraining/retraining_validation.js")
+	$(document).ready(function() {		
+		
+		$("#id_add_manager_button").click(function() {
+			var url = "${contextPath}/manager/retraining/choosemanager.page?retrainId=" + $("#retrainId").val();
+			navigateTo(url + "&callBackUrl=" + window.location.href);
+	     });
+		
+		$("#id_change_retraining_button").click(function() {
+			var checkObj = $("#displayIframe").contents().find(".checkbox :checked");
+			if (checkObj.length == 1) {
+		        var rowid = $(checkObj[0]).attr("value");
+		        if (rowid != null && rowid.length > 0) {
+		        	var url = "${contextPath}/manager/retraining/changeRetrainingMananger.page?id=" + rowid;
+		        	url = url + "&callBackUrl=${contextPath}/manager/retraining/browse.page";
+					navigateTo(url);
+		        }
+		    }else{
+		    	Dialog.message("请选择一行"); 
+		    }
+		});
+		
+			//保存
+		$("#id_save_button").click(function() {
+			if(submitFlag == 1){
+				alert("请勿重复提交!")
+				return;
+			}
+			submitFlag = 1;
+	        if ($('#id_module_form').valid()) {
+	          var formjson = $('#id_module_form').serialize();
+		      	$.ajax({
+					url : $('#id_module_form').attr("action"),
+					type : "get",
+					data : formjson,
+					success : function(data) {
+						if (data.success) {
+							var url = "${contextPath}/manager/retraining/browse.page";
+			            	navigateTo(url);
+						}
+						submitFlag = 0;
+					}
+				});
+	        }else{
+				submitFlag = 0;
+			}
+	      });
+		
+	});
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

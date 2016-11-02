@@ -1,0 +1,131 @@
+#parse ("common/iframe_page_header.htm")
+ <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+<body class="whitebg">
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+				<div class="title">客户经理业绩进度总览</div>
+			</div>
+			<div class="search">
+          <form id="submitForm" >
+            <ul>
+              <li>
+	          	<span>开始日期:&nbsp;<input type="text" id ="date" name="startdate" value='$!date.format("yyyy-MM-dd",$!satrtDate)' 
+	          		onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span>
+              </li>
+              <li>
+	          	<span>结束日期:&nbsp;<input type="text" id ="enddate" name="enddate" value='$!date.format("yyyy-MM-dd",$!endDate)' 
+	          		onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span>
+              </li>
+              <li class="search_button">
+                <input id="export_button" type="button" value="导出Excel" class="search_button_inquiry"
+                  title="导出Excel" style="height: 26px; line-height: 24px;" />
+              </li>
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
+			<form id="id_module_form"
+				action="${contextPath}/manager/performmance/update.json" />
+			
+				<table cellpadding="0" cellspacing="0" class="table-bd" border="1"
+					bordercolor="#cccccc" style="width: 99.96%">
+					<colgroup>
+						<col width="7.14%" />
+						<col width="7.14%" />
+						<col width="7.14%" />
+						<col width="7.14%" />
+						<col width="7.14%" />
+						<col width="7.14%" />
+						<col width="7.14%" />
+						<col width="7.14%" />
+						<col width="7.14%" />
+						<col width="7.14%" />
+						<col width="7.14%" />
+						<col width="7.14%" />
+						<col width="7.14%" />
+						<col width="7.14%" />
+						
+					</colgroup>
+					<tr>
+						<td class="titlefc3"><label for="visitcount">管辖行:</label></td>
+						<td class="titlefc3"><label for="visitcount">客户经理:</label></td>
+						<td class="titlefc3"><label for="visitcount">拜访数:</label></td>
+						<td class="titlefc3"><label for="applycount">申请数:</label></td>
+						<td class="titlefc3"><label for="applyrefuse">申请拒绝数:</label></td>
+						<td class="titlefc3"><label for="creditcount">征信数:</label></td>
+						<td class="titlefc3"><label for="creditrefuse">征信拒绝数:</label></td>
+						<td class="titlefc3"><label for="realycount">实调数:</label></td>
+						<td class="titlefc3"><label for="reportcount">报告数:</label></td>
+						<td class="titlefc3"><label for="internalcount">内审数:</label></td>
+						<td class="titlefc3"><label for="meetingcout">上会数:</label></td>
+						<td class="titlefc3"><label for="passcount">通过数:</label></td>
+						<td class="titlefc3"><label for="signcount">签约数:</label></td>
+						<td class="titlefc3"><label for="givemoneycount">放款数:</label></td>
+						</tr>
+						 #foreach($gxperformList in $!gxperformList)
+						 #if($gxperformList.managerName=="汇总" || $gxperformList.managerName=="总计")
+						<td class="titlefc3">$gxperformList.name</td>
+						<td class="titlefc3">$gxperformList.managerName</td>
+						<td class="titlefc3">$gxperformList.visitcount_s ( $gxperformList.visitcount )</td>
+						<td class="titlefc3">$gxperformList.applycount_s ( $gxperformList.applycount )</td>
+						<td class="titlefc3">$gxperformList.applyrefuse_s ( $gxperformList.applyrefuse )</td>
+						<td class="titlefc3">$gxperformList.creditcount_s ( $gxperformList.creditcount )</td>
+						<td class="titlefc3">$gxperformList.creditrefuse_s ( $gxperformList.creditrefuse )</td>
+						<td class="titlefc3">$gxperformList.realycount_s ( $gxperformList.realycount )</td>
+						<td class="titlefc3">$gxperformList.reportcount_s ( $gxperformList.reportcount )</td>
+						<td class="titlefc3">$gxperformList.internalcount_s ( $gxperformList.internalcount )</td>
+						<td class="titlefc3">$gxperformList.meetingcout_s ( $gxperformList.meetingcout )</td>
+						<td class="titlefc3">$gxperformList.passcount_s ( $gxperformList.passcount )</td>
+						<td class="titlefc3">$gxperformList.signcount_s ( $gxperformList.signcount )</td>
+						<td class="titlefc3">$gxperformList.givemoneycount_s ( $gxperformList.givemoneycount )</td>
+						#else
+						<td>$gxperformList.name</td>
+						<td>$gxperformList.managerName</td>
+						<td>$gxperformList.visitcount_s ( $gxperformList.visitcount )</td>
+						<td>$gxperformList.applycount_s ( $gxperformList.applycount )</td>
+						<td>$gxperformList.applyrefuse_s ( $gxperformList.applyrefuse )</td>
+						<td>$gxperformList.creditcount_s ( $gxperformList.creditcount )</td>
+						<td>$gxperformList.creditrefuse_s ( $gxperformList.creditrefuse )</td>
+						<td>$gxperformList.realycount_s ( $gxperformList.realycount )</td>
+						<td>$gxperformList.reportcount_s ( $gxperformList.reportcount )</td>
+						<td>$gxperformList.internalcount_s ( $gxperformList.internalcount )</td>
+						<td>$gxperformList.meetingcout_s ( $gxperformList.meetingcout )</td>
+						<td>$gxperformList.passcount_s ( $gxperformList.passcount )</td>
+						<td>$gxperformList.signcount_s ( $gxperformList.signcount )</td>
+						<td>$gxperformList.givemoneycount_s ( $gxperformList.givemoneycount )</td>
+						#end
+					</tr>
+					#end
+				</table>
+			</form>
+			<div class="submit" style="text-align: left;">
+				<!-- <input id="id_save_button" type="button"
+					value="修改业绩进度" class="current" /> -->
+					<a class="btn_g" href="${contextPath}/manager/performmance/performUpdate.page" title="修改业绩进度" 
+					>修改业绩进度</a>
+					<!-- <a class="btn_g" href="${contextPath}/manager/performmance/performexport.json?startdate=" title="导出Excle" 
+					>导出Excle</a> -->
+			</div>
+		</div>
+	</div>
+</body>
+ <script type="text/javascript">
+ $(document).ready(function() {
+ $("#id_browse_button").click(function() {
+     var url = "${contextPath}/manager/performmance/browse.page";
+     document.getElementById("submitForm").action = url;
+     document.getElementById("submitForm").submit();
+ });
+ $("#export_button").click(function() {
+     var exporturl = "${contextPath}/manager/performmance/performexport.json?startdate="+$("#date").val()+"&enddate="+$("#enddate").val();
+     window.location.href = exporturl;
+
+ });
+ 
+ })
+ </script>
+#parse ("common/iframe_page_footer.htm")

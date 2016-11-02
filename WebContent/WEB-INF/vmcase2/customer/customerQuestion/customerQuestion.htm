@@ -1,0 +1,117 @@
+#parse ("common/iframe_page_header.htm")
+<link rel="stylesheet" type="text/css"
+	href="${contextPath}/css/customer/style.css" />
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
+<style>
+.form-l .form-r{height:32px;}
+</style>
+<body class="whitebg">
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+        <div class="title">客户维护信息>问卷调查</div>
+      		</div>
+				 <div class="tabplace">
+            <ul class="com-tab" >
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/changewh.page?id=${customerId}">基本信息</a></li>
+            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_zyxx.page?id=${customerId}">职业信息</a></li>
+            <li class="tab " ><a href="${contextPath}/customer/basiccustomerinforUpdate/create_mbxx.page?id=${customerId}">陌拜信息</a></li>
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_zcfz.page?id=${customerId}">资产负债</a></li>
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_syb.page?id=${customerId}">损益</a></li>
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_xjl.page?id=${customerId}">现金流量</a></li>
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_jcjy.page?id=${customerId}">交叉检验</a></li>
+			<li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_swpg.page?id=${customerId}">四维评估</a></li>
+			<li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_sxpg.page?id=${customerId}">授信评估</a></li>
+            <li class="tab activeTab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_wjdc.page?id=${customerId}">问卷调查</a></li>
+            <li class="tab" ><a href="${contextPath}/customer/basiccustomerinforUpdate/create_khtz.page?id=${customerId}">台账信息</a></li>
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_yxzl.page?id=${customerId}">影像资料</a></li>  
+         </ul>
+         </div>
+			<form id="id_module_form">
+            <input type="hidden" name="customerId" value="${customerId}">
+			<div class="form-bd" id="formsId" style="border: 0px;">
+			  <table class="form-bd-info" >					
+						<tr>
+							<td width="10%"><label for="name">客户姓名:</label></td>
+							<td width="10%"><input class="rinpsty" type="text" id="chineseName" name="chineseName" value="$!customer.chineseName" readonly="readonly"/></td>
+							<td width="10%"><label for="name">性别:</label></td>
+							<td width="10%"><input class="rinpsty" type="text" id="sex" name="sex" value="#dictVal('Gender', $!customer.sex)" readonly="readonly"/></td>
+							<td width="10%"><label for="name">身份证号:</label></td>
+							<td width="15%"><input class="rinpsty w180" type="text" id="cardId" name="cardId" value="$!customer.cardId" readonly="readonly"/></td>
+							<td width="35%"></td>
+						</tr>
+						
+						</table>
+					
+					<h2 style="width:20%;">问题</h2><h2 style="width:80%;">请将答案填入下列表格</h2>
+				
+					<table class="table-bd"  bordercolor="#cccccc" border="1" style="width: 100%">
+						<colgroup>
+							<col width="20%" />
+							<col width="80%" />
+						
+						</colgroup>
+						#foreach ($cqi in $customerQuestionInfo)
+						<tr>
+							<input type="hidden" id="id" name="questionCode_$!cqi.questionCode" value="$!cqi.questionCode"/>
+							<td class="titlec" style="min-width:180px;"><label id="questionName" name="" > $!cqi.questionName</label>
+							<input type="hidden" id="questionCode" name="questionCode_$!cqi.questionCode" value="$!cqi.questionCode"/>
+							</td>
+							<td><input id="anwser" name="${cqi.questionCode}_questionAnswer"  value="$!cqi.questionAnswer"></td>
+						</tr>
+						#end
+					</table>
+					
+					</div>
+					
+			</form>
+
+			<div class="submit">
+				<input id="id_save_button" type="button" value='#i18n("button.save")' class="current" /> 
+				<input type="button" onclick="returnClick();" value='#i18n("button.cancel")' />
+			</div>
+		</div>
+	</div>
+
+  <script type="text/javascript">
+	var layout=new FormsLayout("id_module_form");	
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	$(document).ready(function() {	
+	     $("#id_save_button").click(function() {
+		    
+			  if( $("#questionCustomerId").attr("value") == "")	{
+			  var formjson = $($formName).serialize();
+	     	    $.get("${contextPath}/customer/basiccustomerinforUpdate/insertwjdc.json", formjson, function(data, textStatus, jqXhr) {
+		            if (data.success) {
+		              #if ($request.getParameter('callBackUrl').indexOf('?') != -1)
+		            	  navigateTo("${contextPath}/customer/basiccustomerinforUpdate/create_wjdc.page?id=$!customer.id") ;
+		              #end
+		            }
+		          });}	
+	     	    else{
+	     	    	var formjson = $($formName).serialize();
+	     	    $.get("${contextPath}/customer/basiccustomerinforUpdate/insertwjdc.json", formjson, function(data, textStatus, jqXhr) {
+		            if (data.success) {
+		              #if ($request.getParameter('callBackUrl').indexOf('?') != -1)
+		            	  navigateTo("${contextPath}/customer/basiccustomerinforUpdate/create_wjdc.page?id=$!customer.id") ;
+		              #end
+		            }
+		          });
+	     	    }
+	     	    	
+	     	    
+	     	    
+	     	    
+	       });
+
+
+	});
+	function returnClick(){
+		
+		 window.location.href= contextPath + "/customer/basiccustomerinforUpdate/browse.page" ;
+	}
+	</script>
+	
+</body>
+#parse ("common/iframe_page_footer.htm")

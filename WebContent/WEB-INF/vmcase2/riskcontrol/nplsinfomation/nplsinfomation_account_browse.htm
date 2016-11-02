@@ -1,0 +1,107 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">不良资产账户筛选</div>
+      </div>
+      <div class="inquiry">
+        <div class="search_tag">#i18n("label.browse.filter")</div>
+        <div class="search">
+          <form id="submitForm">
+            <ul>
+              <li>
+                <span>客户名称：<input type="text" name="customerName" value="$!result.filter.customerName" /></span>
+              </li>
+              <li>
+                <span>账户状态：
+                	<select id="accountStatus" name="accountStatus">
+	                   <option value="">请选择...</option>
+	                   #dict("ACCOUNTSTATUS", $!result.filter.accountStatus)
+                  	</select>
+                  </span>
+              </li>
+              
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">客户名称</th>
+              <th nowrap="nowrap">卡号</th>
+              <th nowrap="nowrap">账户状态</th>
+              <th nowrap="nowrap">信用额度</th>
+              <th nowrap="nowrap">逾期金额</th>
+              <th nowrap="nowrap">核销标志</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col />
+            </colgroup>
+            #foreach ($accountInfo in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!accountInfo.id"
+                  #if ($!request.getParameter("recordId") == $!accountInfo.id) checked="checked" #end /></td>
+              <td nowrap="nowrap">$!accountInfo.customerName</td>
+              <td nowrap="nowrap">$!accountInfo.cardNumber</td>
+              <td nowrap="nowrap">#dictVal("ACCOUNTSTATUS","$!accountInfo.accountStatus")</td>
+              <td nowrap="nowrap">$!accountInfo.creditAmount</td>
+              <td nowrap="nowrap">$!accountInfo.overdueAmount</td>
+              <td nowrap="nowrap">$!accountInfo.chargeLogo</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+         <a id="id_change_button" class="btn_g" href="javascript:void(0);" title="确认选中账户创建不良资产">确认</a>
+         <a id="id_display_button" class="btn_gr" href="javascript:void(0);" title="查看选中账户的详细信息">显示</a>
+         <a id="id_return_button" class="btn_gr" href="${contextPath}/riskcontrol/nplsinfomation//browse.page" >返回</a>
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.browseUrl = "${modulePath}/browse.page";
+		opsObj.changeUrl = "${modulePath}/nplsinfocreate.page";
+		opsObj.displayUrl = "${contextPath}/customer/basiccustomerinfor/displayaccountinfo.page";
+
+		prepareOperations(opsObj);
+		
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")

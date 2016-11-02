@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.ipad.dao.CustomerInforIpadDao" >
+	<resultMap id="CustomerInforIpadMap" type="com.cardpay.pccredit.ipad.model.CustomerInforIpad">
+		<result property="id" column="ID" />
+        <result property="code" column="CODE" />
+		<result property="chineseName" column="CHINESE_NAME" />
+		<result property="nationality" column="NATIONALITY" />
+		<result property="sex" column="SEX" />
+		<result property="pinyinenglishName" column="PINYINENGLISH_NAME" />
+		<result property="birthday" column="BIRTHDAY" />
+		<result property="cardType" column="CARD_TYPE" />
+		<result property="cardId" column="CARD_ID" />  
+		<result property="residentialAddress" column="RESIDENTIAL_ADDRESS" />
+		<result property="zipCode" column="ZIP_CODE" />
+		<result property="homePhone" column="HOME_PHONE" />
+		<result property="telephone" column="TELEPHONE" />
+		<result property="mail" column="MAIL" />
+		<result property="residentialPropertie" column="RESIDENTIAL_PROPERTIE" />
+		<result property="maritalStatus" column="MARITAL_STATUS" />
+		<result property="degreeEducation" column="DEGREE_EDUCATION" />
+		<result property="householdAddress" column="HOUSEHOLD_ADDRESS" />
+		<result property="zipCodeAddress" column="ZIP_CODE_ADDRESS" />
+		<result property="userId" column="USER_ID" />
+		<result property="divisionalStatus" column="DIVISIONAL_STATUS" />
+		<result property="createdTime" column="CREATED_TIME" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="modifiedTime" column="MODIFIED_TIME" />
+		<result property="modifiedBy" column="MODIFIED_BY" />
+	</resultMap>
+	<select id="getCustomerInforByUserId" resultMap="CustomerInforIpadMap">
+		SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		select *
+		from
+		basic_customer_information
+		where 
+		user_id=#{userId}
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	<select id="getCustomerInforCountByUserId" resultType="int">
+		select count(*)
+		from
+		basic_customer_information
+		where 
+		user_id=#{userId}
+	</select>
+	<select id="findCustomerInforById" resultMap="CustomerInforIpadMap">
+		select *
+		from
+		basic_customer_information
+		where id=#{id}
+	</select>
+	<select id="findCustomerInforByCardId" resultMap="CustomerInforIpadMap">
+		select *
+		from
+		basic_customer_information
+		where card_id=#{id}
+	</select>
+</mapper>

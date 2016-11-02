@@ -1,0 +1,217 @@
+#parse ("common/iframe_page_header.htm")
+<script src="${contextPath}/common/js/common/jquery.form.js"></script>
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
+<body>
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+				  <div class="dvTab">
+            <ul class="com-tab">
+           <li class="tab activeTab" ><a href="${contextPath}/product/productinformation/create.page">产品属性</a></li>
+         <!--    <li class="tab">附件清单</li>
+            <li class="tab">产品规则</li>
+            <li class="tab">催收规则</li> -->
+         <!--    <li class="tab">筛选规则</li> -->
+         </ul>
+        </div>
+			</div>
+			<form id="id_module_form"
+				action="${contextPath}/product/productinformation/insert.json"  method="post">
+				<div class="forms" id="formsId">
+					<table class="rule" border="1" bordercolor="#CCCCCC">
+					<caption>产品属性</caption>
+						<colgroup>
+             			<col width="10%" />
+              			<col width="40%" />
+             			<col width="10%" />
+              			<col width="40%" />
+						</colgroup>
+						<tr>
+							<td><label for="name">产品名称:</label></td>
+							<td><input type="text" id="productName" name="productName"
+								value="$!product.productName" /></td>
+							
+							<td><label for="name">贷款用途:</label></td>
+							<td><input type="text" id="purposeLoan" name="purposeLoan"
+								value="$!product.purposeLoan" /></td>
+						</tr>
+						
+						<tr>
+							<td><label for="name">产品授信区间:</label></td>
+							<td><input type="text" id="prodCreditRange" name="prodCreditRange"
+								value="$!product.prodCreditRange" /></td>
+							
+							<td><label for="name">产品期限:</label></td>
+						    <td><input type="text" id="prodLimitTime" name="prodLimitTime" 
+						   			   onmouseover="_calendar({format:'yyyy-MM-dd HH:mm:ss'})" 
+						    		   readonly="readonly"/>
+						</tr>
+
+						<tr>
+							<td><label for="name">信用额度:</label></td>
+							<td><input type="text" id="creditLine" name="creditLine"
+								value="$!product.creditLine" /></td>
+							
+							<td><label for="name">利率区间(%):</label></td>
+							<td><input type="text" id="rateRange" name="rateRange"
+								value="$!product.rateRange" /></td>
+						</tr>
+						<tr>
+							<td><label for="name">贷款期限:</label></td>
+							<td>
+							 <select id="type" name="loanTimeLimit">
+							  <option value=""></option>
+                 			   <option value="1个月">1个月</option>
+                			    <option value="2个月">2个月</option>
+                			     <option value="3个月">3个月</option>
+                			      <option value="4个月">4个月</option>
+                			       <option value="5个月">5个月</option>
+                			        <option value="6个月">6个月</option>
+                			         <option value="7个月">7个月</option>
+                			          <option value="8个月">8个月</option>
+                			           <option value="9个月">9个月</option>
+                			            <option value="10个月">10个月</option>
+                			             <option value="11个月">11个月</option>
+                			              <option value="12个月">12个月</option>
+                			               <option value="13个月">13个月</option>
+                			                <option value="14个月">14个月</option>
+                			                 <option value="15个月">15个月</option>
+                			                  <option value="16个月">16个月</option>
+                			                   <option value="17个月">17个月</option>
+                			                    <option value="18个月">18个月</option>
+                			                     <option value="19个月">19个月</option>
+                			                      <option value="20个月">20个月</option>
+                			                      <option value="21个月">21个月</option>
+                			                       <option value="22个月">22个月</option>
+                			                        <option value="23个月">23个月</option>
+                			                         <option value="24个月">24个月</option>
+                			                         <option value="25个月">25个月</option>
+													<option value="26个月">26个月</option>
+													<option value="27个月">27个月</option>
+													<option value="28个月">28个月</option>
+													<option value="29个月">29个月</option>
+													<option value="30个月">30个月</option>
+													<option value="31个月">31个月</option>
+													<option value="32个月">32个月</option>
+													<option value="33个月">33个月</option>
+													<option value="34个月">34个月</option>
+													<option value="35个月">35个月</option>
+													<option value="36个月">36个月</option>
+                			  </select>
+							</td>
+							
+							<td><label for="name">产品种类:</label></td>
+							<td>
+							   <select id="productTypeCode" name="productTypeCode">
+                 			   <option value=""></option>
+                			    #foreach($obj in $productList)
+                			    	<option value="$!obj.productCode">$!obj.productName ($!obj.productCode)</option>
+                			    #end
+                			  </select>
+							</td>
+						</tr>
+
+						<tr>
+							<td><label for="name">贷款主体:</label></td>
+							<td><input type="text" id="loanPrincipal" name="loanPrincipal"
+								value="$!product.loanPrincipal" /></td>
+							
+							<td><label for="name">信用(还款）方式:</label></td>
+							<td>
+								<select id="letterPaymentWay" name="letterPaymentWay">
+                 			   <option value=""></option>
+                			    #dict("CMMHKFS",'')
+                			  </select>
+								
+								</td>
+						</tr>
+
+						<tr>
+							<td><label for="name">结息方式:</label></td>
+							<td>
+								<select id="numbererestSettlementWay" name="numbererestSettlementWay">
+                 			   <option value=""></option>
+                			    #dict("CMMJXFS",'')
+                			  </select>
+								</td>
+							
+							<td><label for="name">担保方式:</label></td>
+							<td>
+							 <select id="assureMeans" name="assureMeans">
+                 			   <option value=""></option>
+                			    #dict("CMMSCLNM",'')
+                			  </select>
+								
+								</td>
+						</tr>
+
+						<tr>
+							<td><label for="name">罚息:</label></td>
+							<td><input type="text" id="penaltyNumbererest" name="penaltyNumbererest"
+								value="$!product.penaltyNumbererest" /></td>
+							
+							<td><label for="name">该产品风险容忍度:</label></td>
+							<td><input type="text" id="productRiskTolerance" name="productRiskTolerance"
+								value="$!product.productRiskTolerance" /></td>
+					<!-- 	</tr>
+							<td><label>产品图片：</label></td>
+            				<td>
+              					 <input type="file" name="file">
+            				</td>
+						<tr> -->
+						</tr>
+					</table>
+					
+				</div>
+			</form>
+
+			<div class="submit">
+				<input id="id_save_button" type="button"
+					value="保存" class="current"/> <input
+					type="button" onclick="javascript:history.go(-1);"
+					value="#i18n('button.cancel')" />
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	
+	function mySave() {
+		$('#id_module_form').ajaxSubmit({
+			dataType : 'json',
+			type : "post",
+			success : function(data) {
+				if (data.success) {
+					Dialog.message(data.message,"提示", function() {
+						/* navigateTo("${contextPath}/product/productinformation/create_cpfjqd.page"+"?productId=" +data.productId); */
+						navigateTo("${contextPath}/product/productinformation/browse.page");
+					 });
+				} else {
+					Dialog.message(data.errors.errors[0].message);
+					return false;
+				}
+			},
+			error : function(data) {
+				Dialog.closeLoad();
+				Dialog.message("操作失败");
+				return false;
+			}
+		});
+	}
+	
+	
+	
+	var layout=new FormsLayout("formsId");			
+	window.top.currentWindow.setLayout(layout);
+
+	 #set ($formName = "'#id_module_form'")
+	 #parse ("product/product_create_validation.js")
+	 $(document).ready(function() {
+		 $("#id_save_button").click(function() {
+		        if ($($formName).valid()) {
+		        	mySave();
+		        }
+		      });
+	});  
+	</script>
+</body>
+</html>

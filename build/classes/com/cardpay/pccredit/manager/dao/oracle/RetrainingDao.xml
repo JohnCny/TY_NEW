@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.manager.dao.RetrainingDao">
+	
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.manager.model.Retraining">
+		<result property="id" column="id" />
+		<result property="trainingObjective" column="training_objective" />
+		<result property="trainingContent" column="training_content" />
+		<result property="trainingMethod" column="training_method" />
+		<result property="trainingLocation" column="training_location" />
+		<result property="trainingTime" column="training_time" />
+		<result property="trainingPeople" column="training_people" />
+		<result property="whetherAbandoned" column="whether_abandoned" />
+		<result property="createdTime" column="created_time" />
+		<result property="modifiedBy" column="modified_by" />
+		<result property="modifiedTime" column="modified_time" />
+		<result property="createdBy" column="created_by" />
+	</resultMap>
+	
+	<resultMap id="ResultMap1" type="com.cardpay.pccredit.jnpad.model.RetrainingVo">
+		<result property="id" column="id" />
+		<result property="trainingObjective" column="training_objective" />
+		<result property="trainingContent" column="training_content" />
+		<result property="trainingMethod" column="training_method" />
+		<result property="trainingLocation" column="training_location" />
+		<result property="trainingTime" column="training_time" />
+		<result property="trainingPeople" column="training_people" />
+		<result property="whetherAbandoned" column="whether_abandoned" />
+		<result property="createdBy" column="CREATED_BY" />
+	</resultMap>
+	
+	<select id="findRetrainingsByFilter" resultMap="ResultMap" 
+			parameterType="com.cardpay.pccredit.manager.filter.RetrainingFilter">
+		SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					SELECT retrain.*
+					  FROM retraining retrain
+					 WHERE 1=1
+					 <if test="trainingContent != null and trainingContent != '' ">
+						AND retrain.training_content=#{trainingContent}
+					 </if>
+					  <if test="trainingMethod != null and trainingMethod != '' ">
+						AND retrain.training_method like '%${trainingMethod}%'
+					 </if>
+					 <if test="trainingLocation != null and trainingLocation != '' ">
+						AND retrain.training_location like '%${trainingLocation}%'
+					 </if>
+					 <if test="trainingPeople != null and trainingPeople != '' ">
+						AND retrain.training_people=#{trainingPeople}
+					 </if>
+					 <if test="whetherAbandoned != null and whetherAbandoned != '' ">
+						AND retrain.whether_abandoned=#{whetherAbandoned}
+					 </if>
+					 <if test="trainingObjective != null and trainingObjective != '' ">
+						AND retrain.training_objective like '%${trainingObjective}%'
+					 </if>
+					 <if test="trainingTime != null and trainingTime != ''">
+						AND retrain.training_time=#{trainingTime}
+					 </if>
+		 		<![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	<select id="findRetrainingsCountByFilter" resultType="int"
+			parameterType="com.cardpay.pccredit.manager.filter.RetrainingFilter">
+		SELECT count(*)
+		   FROM retraining retrain
+		  WHERE 1=1
+		 <if test="trainingContent != null and trainingContent != '' ">
+			AND retrain.training_content=#{trainingContent}
+		 </if>
+		  <if test="trainingMethod != null and trainingMethod != '' ">
+			AND retrain.training_method like '%${trainingMethod}%'
+		 </if>
+		 <if test="trainingLocation != null and trainingLocation != '' ">
+			AND retrain.training_location like '%${trainingLocation}%'
+		 </if>
+		 <if test="trainingPeople != null and trainingPeople != '' ">
+			AND retrain.training_people=#{trainingPeople}
+		 </if>
+		 <if test="whetherAbandoned != null and whetherAbandoned != '' ">
+			AND retrain.whether_abandoned=#{whetherAbandoned}
+		 </if>
+		 <if test="trainingObjective != null and trainingObjective != '' ">
+			AND retrain.training_objective like '%${trainingObjective}%'
+		 </if>
+		 <if test="trainingTime != null and trainingTime != ''">
+			AND retrain.training_time=#{trainingTime}
+		 </if>
+	</select>
+	
+	<select id="findRetrainingsVoByFilter" resultMap="ResultMap1" 
+			parameterType="com.cardpay.pccredit.manager.filter.RetrainingFilter">
+		SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					SELECT retrain.*
+					  FROM retraining retrain
+					 WHERE 1=1
+					 <if test="trainingContent != null and trainingContent != '' ">
+						AND retrain.training_content=#{trainingContent}
+					 </if>
+					  <if test="trainingMethod != null and trainingMethod != '' ">
+						AND retrain.training_method like '%${trainingMethod}%'
+					 </if>
+					 <if test="trainingLocation != null and trainingLocation != '' ">
+						AND retrain.training_location like '%${trainingLocation}%'
+					 </if>
+					 <if test="trainingPeople != null and trainingPeople != '' ">
+						AND retrain.training_people=#{trainingPeople}
+					 </if>
+					 <if test="whetherAbandoned != null and whetherAbandoned != '' ">
+						AND retrain.whether_abandoned=#{whetherAbandoned}
+					 </if>
+					 <if test="trainingObjective != null and trainingObjective != '' ">
+						AND retrain.training_objective like '%${trainingObjective}%'
+					 </if>
+					 <if test="trainingTime != null and trainingTime != ''">
+						AND retrain.training_time=#{trainingTime}
+					 </if>
+		 		<![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+</mapper>

@@ -1,0 +1,237 @@
+#parse ("common/iframe_page_header.htm")
+<link rel="stylesheet" type="text/css"
+	href="${contextPath}/css/style.css" />
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
+<style>
+.form-l .form-r{height:32px;}
+</style>
+<body class="whitebg" style="">
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+        <div class="title">客户维护信息>交叉检验</div>
+      		</div>
+				   <div class="tabplace">
+           <ul class="com-tab" >
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/changewh.page?id=${customerId}">基本信息</a></li>
+            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_zyxx.page?id=${customerId}">职业信息</a></li>
+            <li class="tab " ><a href="${contextPath}/customer/basiccustomerinforUpdate/create_mbxx.page?id=${customerId}">陌拜信息</a></li>
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_zcfz.page?id=${customerId}">资产负债</a></li>
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_syb.page?id=${customerId}">损益</a></li>
+            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_xjl.page?id=${customerId}">现金流量</a></li>
+            <li class="tab activeTab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_jcjy.page?id=${customerId}">交叉检验</a></li>
+			<li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_swpg.page?id=${customerId}">四维评估</a></li>
+			<li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_sxpg.page?id=${customerId}">授信评估</a></li>
+            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_wjdc.page?id=${customerId}">问卷调查</a></li>
+            <li class="tab" ><a href="${contextPath}/customer/basiccustomerinforUpdate/create_khtz.page?id=${customerId}">台账信息</a></li>
+            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_yxzl.page?id=${customerId}">影像资料</a></li>  
+         </ul>
+         </div>
+			
+
+			<form id="id_module_form" action="${modulePath}/update.json">
+				<input type="hidden" id="customerId" name="customerId" value="$!customerId"/>
+				<div  id="formsId">
+				 <div class="form-bd" style="min-width:1000px;">
+				 <!-- 交叉检验  -->
+				 
+					<div class="form-block clearfix" loan_type="1">
+					<span></span><h2>交叉检验</h2>
+						<div>
+							<div class="form-l"><span name="NAMES">销售额交叉检验</span>：</div>
+							<div class="form-r">
+								<textarea class="w700" name="CONTENTS_TEXT_NUMBERS" maxlength="120"></textarea>
+							</div>
+						</div>
+					</div>
+					<div class="form-block clearfix" loan_type="2">
+						<div>
+							<div class="form-l"><span name="NAMES">毛利润/成本交叉检验</span>：</div>
+							<div class="form-r">
+								<textarea class="w700" name="CONTENTS_TEXT_NUMBERS" maxlength="120"></textarea>
+							</div>
+						</div>
+					</div>
+					<div class="form-block clearfix" loan_type="3">
+						<div>
+							<div class="form-l"><span name="NAMES">毛利润/成本交叉检验</span>：</div>
+							<div class="form-r">
+								<textarea class="w700" name="CONTENTS_TEXT_NUMBERS" maxlength="120"></textarea>
+							</div>
+						</div>
+					</div>
+					<!-- 交叉检验 End -->
+					
+					<!-- 权益交叉检验 Start -->
+					<span></span><h2>权益交叉检验</h2>
+					<div class="form-block clearfix">
+						<div class="form-bd-l" loan_type="4">
+							<div class="form-block clearfix">
+								<div class="form-l"><span name="NAMES">初期权益合计</span>：</div>
+								<div class="form-r">
+									<a href="#" class="btn" onclick="deleteRowItem($(this).parent().parent().parent())"><img src="${contextPath}/images/del.png" /></a> 
+									<a href="#" class="btn" onclick="addRowItem($(this).parent().parent().parent())"><img src="${contextPath}/images/add.png" /></a> 
+									<input  class="rinpstybc w100" name="CONTENTS_TEXT_NUMBERS" type="text" class="w100" readonly="readonly"/> 元
+								</div>
+							</div>
+							<div class="form-block clearfix">
+								<div class="form-l"><span name="NAMES">开店时的流动资金</span>：</div>
+								<div class="form-r">
+									<input class="w100" name="CONTENTS_TEXT_NUMBERS" type="text" onblur="collectItem($(this).parent().parent().parent())"/> 元
+								</div>
+							</div>
+						</div>
+						<div class="form-bd-r" loan_type="5">
+							<div class="form-block clearfix">
+								<div class="form-l"><span name="NAMES">分析期间收入合计</span>：</div>
+								<div class="form-r">
+									<a href="#" class="btn" onclick="deleteRowItem($(this).parent().parent().parent())"><img src="${contextPath}/images/del.png" /></a> 
+									<a href="#" class="btn" onclick="addRowItem($(this).parent().parent().parent())"><img src="${contextPath}/images/add.png" /></a> 
+									<input class="w100" name="CONTENTS_TEXT_NUMBERS" type="text" readonly="readonly"/> 元
+								</div>
+							</div>
+
+							<div class="form-block clearfix">
+								<div class="form-l"><span name="NAMES">2012年10-12月的收入</span>：</div>
+								<div class="form-r">
+									<input class="w100" name="CONTENTS_TEXT_NUMBERS" type="text" onblur="collectItem($(this).parent().parent().parent())"/> 元
+								</div>
+							</div>
+
+							<div class="form-block clearfix">
+								<div class="form-l"><span name="NAMES">2013年的经营收入</span>：</div>
+								<div class="form-r">
+									<input class="w100" name="CONTENTS_TEXT_NUMBERS" type="text" onblur="collectItem($(this).parent().parent().parent())"/> 元
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-block clearfix">
+						<div class="form-bd-l" loan_type="6">
+							<div class="form-block clearfix">
+								<div class="form-l"><span name="NAMES">大项支出合计</span>：</div>
+								<div class="form-r">
+									<a href="#" class="btn" onclick="deleteRowItem($(this).parent().parent().parent())"><img src="${contextPath}/images/del.png" /></a> 
+									<a href="#" class="btn" onclick="addRowItem($(this).parent().parent().parent())"><img src="${contextPath}/images/add.png" /></a> 
+									<input name="CONTENTS_TEXT_NUMBERS" type="text" class="w100" readonly="readonly"/> 元
+								</div>
+							</div>
+							<div class="form-block clearfix">
+								<div class="form-l"><span name="NAMES">买了一台TCL电视</span>：</div>
+								<div class="form-r">
+									<input name="CONTENTS_TEXT_NUMBERS" type="text" class="w100" onblur="collectItem($(this).parent().parent().parent())"/> 元
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-block clearfix">
+						<div class="form-bd-l" loan_type="7">
+							<div class="form-block clearfix">
+								<div class="form-l"><span name="NAMES">其他收入</span>：</div>
+								<div class="form-r">
+									<input name="CONTENTS_TEXT_NUMBERS" type="text" class="w100" onblur="calculate()"/> 元
+								</div>
+							</div>
+							<div class="form-block clearfix">
+								<div class="form-l"><span name="NAMES">折旧(资产负债表内折旧)</span>：</div>
+								<div class="form-r">
+									<input name="CONTENTS_TEXT_NUMBERS" type="text" class="w100" onblur="calculate()"/> 元
+								</div>
+							</div>
+						</div>
+						<div class="form-bd-r" loan_type="8">
+							<div class="form-block clearfix">
+								<div class="form-l"><span name="NAMES">升值</span>：</div>
+								<div class="form-r">
+									<input name="CONTENTS_TEXT_NUMBERS" type="text" class="w100" onblur="calculate()"/> 元
+								</div>
+							</div>
+							<div class="form-block clearfix">
+								<div class="form-l"><span name="NAMES">表外资产</span>：</div>
+								<div class="form-r">
+									<input name="CONTENTS_TEXT_NUMBERS" type="text" class="w100" onblur="calculate()"/> 元
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+					<div class="form-block clearfix">
+						<div class="form-bd-l" loan_type="9">
+							<div class="form-block clearfix">
+								<div class="form-l"><span name="NAMES">应有权益</span>：</div>
+								<div class="form-r">
+									<input name="CONTENTS_TEXT_NUMBERS" type="text" class="w100" /> 元
+								</div>
+							</div>
+							<div class="form-block clearfix">
+								<div class="form-l"><span name="NAMES">权益差额(应有权益-实际权益)</span>：</div>
+								<div class="form-r">
+									<input name="CONTENTS_TEXT_NUMBERS" type="text" class="w100" /> 元
+								</div>
+							</div>
+							<div class="form-block clearfix">
+								<div class="form-l"><span name="NAMES">权益交叉检验比率</span>：</div>
+								<div class="form-r">
+									<input name="CONTENTS_TEXT_NUMBERS" type="text" class="w100" /> %
+								</div>
+							</div>
+						</div>
+						<div class="form-bd-r" loan_type="10">
+
+							<div class="form-block clearfix">
+								<div class="form-l"><span name="NAMES">实际权益</span>：</div>
+								<div class="form-r">
+									<input class="rinpstybc w100" type="text" class="w100" name="CONTENTS_TEXT_NUMBERS" value="$!sjsy" readonly="readonly"/> 元
+								</div>
+							</div>
+							<div class="form-block clearfix">
+								<div class="form-l"><span name="NAMES">分析期间累计收入</span>：</div>
+								<div class="form-r">
+									<input name="CONTENTS_TEXT_NUMBERS" type="text" class="w100" readonly="readonly"/> 元
+								</div>
+							</div>
+						</div>
+
+					</div>
+                 </div>
+				</div>
+			</form>
+
+			<div class="submit">
+				<input id="id_save_button" type="button" value='#i18n("button.save")' class="current" /> 
+				<input type="button" onclick="returnClick();" value='#i18n("button.cancel")' />
+			</div>
+		</div>
+	</div>
+
+	<script src='${contextPath}/js/customerInforUpdate/customerinfoupdate_jcjy.js'></script>
+	<script type="text/javascript">
+		var layout = new FormsLayout("formsId");
+		window.top.currentWindow.setLayout(layout);
+
+		var msg = '#i18n("validator.required")';
+		$(document).ready(function() {
+			
+			$("input:enabled[name]").each(function (index, domEle) { 
+				  // domEle == this 
+				  $(domEle).moneyFormat();
+			});
+			
+			$("#id_save_button").click(function() {
+				if(!validate())return;
+				// 获取页面数据
+				var jsonArrObj = getData();
+				var customerId = $("#customerId").val();
+				window.location.href = "${contextPath}/customer/basiccustomerinforUpdate//saveCrossExamination.page?crossExaminationInfo=" + JSONstringify(jsonArrObj) + "&customerId="+customerId;
+			});
+		});
+		function returnClick(){
+			
+			 window.location.href= contextPath + "/customer/basiccustomerinforUpdate/browse.page" ;
+		}
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

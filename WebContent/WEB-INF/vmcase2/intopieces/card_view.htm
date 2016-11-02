@@ -1,0 +1,69 @@
+#parse ("common/iframe_page_header.htm") #parse ("common/macro.htm")
+#parse ("common/macro.htm")
+<script src="${contextPath}/js/intopieces/intopieces.js"></script>
+<body>
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+				<div>卡片查看</div>
+			</div>
+
+			<div id="topDiv">
+				<form id="allInfoForm">
+					<div class="forms">
+						<table class="rule" id="customerBaseInfo" border="1" bordercolor="#CCCCCC">
+							<caption>卡片新增</caption>
+							<colgroup>
+								<col width="10%">
+								<col width="40%">
+								<col width="10%">
+								<col width="40%">
+							</colgroup>
+							<tr>
+								<td><label>客户姓名:</label></td>
+								<td><input type="text" name="customerName" value="$!makeCard.customerName" disabled="disabled"></td>
+								<td><label>客户证件类型:</label></td>
+								<td>
+								   <select name="identityType" disabled="disabled">
+                                   <option value="">--请选择--</option>
+                                    #customerInfo($request.getAttribute("cardTypeList"),$!makeCard.identityType)
+                                   </select>
+								</td>
+							</tr>
+							
+							<tr>
+							    <td><label>客户证件号码:</label></td>
+								<td><input type="text" name="customerIdentity" value="$!makeCard.customerIdentity" disabled="disabled"></td>
+								<td><label>卡号:</label></td>
+								<td><input type="text" name="cardNumber" value="$!makeCard.cardNumber" disabled="disabled"></td>
+							</tr>
+							<tr>
+								<td><label>组织机构:</label></td>
+								<td><input type="text" name="customerIdentity" value='#dictVal("Organizations", $!makeCard.cardOrganization)' disabled="disabled"/>
+								</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+							</tr>
+						</table>
+					</div>
+				</form>
+			</div>
+			<div class="controlbtn" style="padding-left: 15px;">
+				<a class="btn_g" href="javascript:void(0);" onclick="javascript :history.back(-1)">关闭</a>
+			</div>
+		</div>
+	</div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+	$(document).ready(function() {
+	        $("#list input[type='checkbox']").click(function() {
+	            if (jQuery(this).attr("checked") == true) {
+	                jQuery("#list input[type='checkbox']").attr("checked", false);
+	                jQuery(this).attr("checked", true);
+	            }
+	        });
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")

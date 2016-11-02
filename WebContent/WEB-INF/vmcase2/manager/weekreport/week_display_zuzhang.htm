@@ -1,0 +1,99 @@
+#parse ("common/iframe_page_header.htm")
+
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">周报管理>周业务总结及计划显示</div>
+      </div>
+      <form id="id_module_form" action="${modulePath}/insert.json">
+      <input type="hidden" id="marketingPlanId" name="marketingPlanId" value="$!ID">
+
+        <div class="forms" id="formsId">
+           <!--本周工作回顾-->
+          <table class="rule" border="1" bordercolor="#CCCCCC">
+          <caption>本周工作回顾</caption>
+            <colgroup>
+              <col width="10%" />
+              <col width="40%" />
+              <col width="10%" />
+              <col width="40%" />
+            </colgroup>
+            <tr>
+              <td><label>本周实际授信额度:</label></td>
+              <td><input type="text" value="$!weeklyAccountManager.actualCredit" name="actualCredit" readonly="readonly"/></td>
+              
+              <td><label>本周实际进件数:</label></td>
+              <td><input type="text" value="$!weeklyAccountManager.actualNumber" name="actualNumber" readonly="readonly"/></td>
+            </tr>
+            <tr>
+              <td><label>实际拜访次数:</label></td>
+              <td><input type="text" value="$!weeklyAccountManager.actualNumberVisit" name="actualNumberVisit" readonly="readonly"/></td>
+              
+              <td><label>实际拜访客户数:</label></td>
+              <td><input type="text" value="$!weeklyAccountManager.actualNumberCustomers" name="actualNumberCustomers" readonly="readonly"/></td>
+            </tr>
+            
+            <tr>
+              <td><label>月度进件指标完成比例</label></td>
+              <td><input type="text" value="$!weeklyAccountManager.monthlyNumber" name="monthlyNumber" readonly="readonly"/></td>
+              
+              <td><label>月度实际授信额度完成比例</label></td>
+              <td><input type="text" value="$!weeklyAccountManager.monthlyCredit" name="monthlyCredit" readonly="readonly"/></td>
+            </tr>            
+            <tr>
+              <td><label>组进件数</label></td>
+              <td><input type="text" value="$!weeklyAccountManager.groupNumber" name="groupNumber" readonly="readonly"/></td>
+              
+              <td><label>组授信额度</label></td>
+              <td><input type="text" value="$!weeklyAccountManager.groupCredit" name="groupCredit" readonly="readonly"/></td>
+            </tr>
+              <tr>
+              <td><label>阻力及困难汇总</label></td>
+              <td><textarea rows="5" name="resistanceDifficultCollect" readonly="readonly">$!weeklyAccountManager.resistanceDifficultCollect</textarea></td>
+              
+              <td><label>改进建议及措施</label></td>
+              <td><textarea rows="5" name="improvementSuggestions" readonly="readonly">$!weeklyAccountManager.improvementSuggestions</textarea></td>
+            </tr>
+          </table>
+          
+         
+          
+          <!--组长点评/团队负责人点评-->
+      	  <table class="rule" border="1" bordercolor="#CCCCCC">
+          <caption>微贷经理周总结</caption>
+            <colgroup>
+              <col width="10%" />
+              <col width="40%" />
+              <col width="10%" />
+              <col width="40%" />
+            </colgroup>
+            <tr>
+              <td><label>微贷经理周总结:</label></td>
+              <td><textarea rows="5" name="managerWeeklySummary" readonly="readonly">$!weeklyAccountManager.managerWeeklySummary</textarea></td>
+              
+              <td><label>组长点评:</label></td>
+              <td><textarea rows="5" readonly="readonly" name="leaderReview">$!weeklyAccountManager.leaderReview</textarea></td>
+            </tr>
+            <tr>
+              <td><label>团队负责人点评:</label></td>
+              <td><textarea rows="5" readonly="readonly" name="teamLeaderReview">$!weeklyAccountManager.teamLeaderReview</textarea></td>
+              
+              <td></td>
+              <td></td>
+            </tr>
+          </table>
+        </div>
+        
+      </form>
+      <div class="submit">
+        <input type="button" onclick="javascript:history.go(-1);" value="取消" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");	
+	window.top.currentWindow.setLayout(layout);
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

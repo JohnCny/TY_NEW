@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validators>
+	<validator id="product.productinformation">
+		<control name="productName">
+			<entry type="required" value="true" />
+			<entry type="maxlength" value="500" />
+		</control>
+	</validator>
+</validators>

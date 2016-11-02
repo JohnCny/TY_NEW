@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.riskControl.dao.RiskReviewProcessDao">
+	
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.riskControl.model.RiskReviewProcess">
+		<result property="id" column="id" />
+		<result property="riskIssuesId" column="risk_issues_id" />
+		<result property="reportedManagerId" column="reported_manager_id" />
+		<result property="auditPeople" column="audit_people" />
+		<result property="auditTime" column="audit_time" />
+		<result property="note" column="NOTE" />
+		<result property="resultsOfAudit" column="results_of_audit" />
+		<result property="phase" column="phase" />
+		<result property="createdTime" column="created_time" />
+		<result property="modifiedBy" column="modified_by" />
+		<result property="modifiedTime" column="modified_time" />
+		<result property="createdBy" column="created_by" />
+		
+		<result property="reportedManagerName" column="reportedManagerName" />
+		<result property="riskIssuesDescribed" column="riskIssuesDescribed" />
+	</resultMap>
+	
+	<select id="findRiskReviewProcessByFilter" resultMap="ResultMap" 
+			parameterType="com.cardpay.pccredit.riskControl.filter.RiskReviewProcessFilter">
+		SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					SELECT risk.*,
+						   consider.risk_issues_described as riskIssuesDescribed,
+						   sysuser.display_name as reportedManagerName
+						   <if test="phase == 'manager'">
+					 		,nvl((select max((case
+					                     when t.phase = 'supervisor' and t.results_of_audit = 'PASS' then
+					                      t.phase || t.results_of_audit
+					                     when t.phase = 'supervisor' and
+					                          t.results_of_audit = 'REJECT' then
+					                      t.phase || t.results_of_audit
+					                     when t.phase = 'cardcenter' and t.results_of_audit = 'PASS' then
+					                      t.phase || t.results_of_audit
+					                     when t.phase = 'cardcenter' and
+					                          t.results_of_audit = 'REJECT' then
+					                      t.phase || t.results_of_audit
+					                     else
+					                      null
+					                   end))
+					          from risk_review_process t
+					         where t.risk_issues_id = risk.risk_issues_id
+					           and t.reported_manager_id = risk.reported_manager_id
+					           and t.created_time = risk.created_time
+					           and t.modified_time =
+				                  (select max(a.modified_time)
+				                     from risk_review_process a
+				                    where a.risk_issues_id = t.risk_issues_id
+				                      and a.created_time = t.created_time
+				                      and a.reported_manager_id = t.reported_manager_id)
+					           and t.audit_people is not null
+					           and t.phase != 'manager'), 'REPORTED') status
+					 		</if>
+					  FROM risk_review_process risk
+					 INNER JOIN risk_considerations consider
+					  ON risk.risk_issues_id = consider.id
+					 INNER JOIN sys_user sysuser
+					    ON sysuser.id = risk.reported_manager_id
+					 WHERE 1=1
+					 <if test="riskIssuesId != null and riskIssuesId != '' ">
+						AND risk.riskissues_id=#{riskIssuesId}
+					 </if>
+					 <if test="reportedManagerId != null and reportedManagerId != '' ">
+						AND risk.reported_manager_id=#{reportedManagerId}
+					 </if>
+					 <if test="auditPeople != null and auditPeople != ''">
+						AND risk.audit_people=#{auditPeople}
+					 </if>
+					 <if test="createdTime != null">
+						AND risk.created_time=#{createdTime}
+					 </if>
+					 <if test="auditTime != null and auditTime != ''">
+						AND risk.audit_time=#{auditTime}
+					 </if>
+					 <if test="reportedManagerName != null and reportedManagerName != ''">
+						AND sysuser.display_name like '%${reportedManagerName}%'
+					 </if>
+					 
+					 <if test="phase != null and phase != ''">
+					 	AND risk.created_by IS NOT NULL
+						AND risk.phase=#{phase}
+					 </if>
+					 
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	
+	<select id="findRiskReviewProcessCountByFilter" resultType="int"
+			parameterType="com.cardpay.pccredit.riskControl.filter.RiskReviewProcessFilter">
+		SELECT count(*)
+		   FROM risk_review_process risk
+		  INNER JOIN sys_user sysuser
+			ON sysuser.id = risk.reported_manager_id
+		  WHERE 1=1
+		 <if test="riskIssuesId != null and riskIssuesId != '' ">
+			AND risk.riskissues_id=#{riskIssuesId}
+		 </if>
+		 <if test="reportedManagerId != null and reportedManagerId != '' ">
+			AND risk.reported_manager_id=#{reportedManagerId}
+		 </if>
+		 <if test="auditPeople != null and auditPeople != ''">
+			AND risk.audit_people=#{auditPeople}
+		 </if>
+		 <if test="auditTime != null and auditTime != ''">
+			AND risk.audit_time=#{auditTime}
+		 </if>
+		 <if test="reportedManagerName != null and reportedManagerName != ''">
+			AND sysuser.display_name like '%${reportedManagerName}%'
+		 </if>
+		 <if test="phase != null and phase != ''">
+		 	AND risk.created_by IS NOT NULL
+			AND risk.phase=#{phase}
+		 </if>
+		 ORDER BY risk.created_time DESC
+	</select>
+	
+	<update id="updateStatusToUnreportedCardcenter">
+		update risk_review_process risk
+		   set risk.results_of_audit = (case
+		                                 when risk.phase = 'manager' then
+		                                  'UNREPORTED'
+		                                 else
+		                                  risk.results_of_audit
+		                               end),
+		       risk.created_by = (case
+		                           when risk.phase = 'supervisor' then
+		                            null
+		                           else
+		                            risk.created_by
+		                         end)
+		 WHERE risk.id in
+		       (select b.id
+		          from risk_review_process b
+		         inner join (select a.*
+		                      from risk_review_process a
+		                     where a.results_of_audit != 'FINISH'
+		                       and a.phase = 'manager'
+		                       and a.created_time = a.modified_time
+		                       and exists
+		                     (select t.*
+		                              from risk_review_process t
+		                             where t.phase = 'supervisor'
+		                            	
+										and t.modified_time  <![CDATA[ < ]]> sysdate - #{maxDay}
+									
+		                               )) c
+		            on c.created_time = b.created_time
+		           and c.risk_issues_id = b.risk_issues_id
+		           and c.reported_manager_id = b.reported_manager_id
+		           and (b.phase = 'manager' or b.phase = 'supervisor'))
+	</update>
+</mapper>

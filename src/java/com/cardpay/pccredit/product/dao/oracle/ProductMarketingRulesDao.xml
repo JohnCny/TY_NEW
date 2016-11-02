@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.product.dao.ProductMarketingRulesDao">
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.product.model.ProductMarketingRules">
+		<result property="id" column="ID" />
+		<result property="productId" column="PRODUCT_ID" />
+		<result property="marketingTime" column="MARKETING_TIME" />
+		<result property="marketingMethod" column="MARKETING_METHOD" />
+		<result property="createTime" column="CREATED_TIME" />
+		<result property="createBy" column="CREATED_BY" />
+		<result property="modifyTime" column="MODIFIED_TIME" />
+		<result property="modifyBy" column="MODIFIED_BY" />
+	
+	</resultMap>
+
+	<select id="findProductMarketingRulesByProductId" resultMap="ResultMap" parameterType="java.lang.String">
+		SELECT * from PRODUCT_MARKETING_RULES
+		WHERE PRODUCT_ID=#{productId}
+	</select>
+	<delete id="deleteProductMarketingRulesByProductId" parameterType="java.lang.String">
+		DELETE
+		FROM
+		PRODUCT_MARKETING_RULES A
+		WHERE
+		A .PRODUCT_ID=#{productId}
+	</delete>
+
+</mapper>

@@ -1,0 +1,122 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/customerInfor.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">待审批进件</div>
+      </div>
+      <div class="inquiry">
+       <div class="search_tag">进件查询</div>
+        <div class="search">
+          <!--<form id="submitForm" action="${contextPath}/">
+          <ul>
+              <li>
+                <span>进件编号：<input type="text" name="bianhao"  maxlength="30" /></span>
+              </li>
+              <li class="search_button">
+                <input type="button" value="筛选" class="search_button_inquiry" title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" onclick="javascript:this.form.submit();"/>
+              </li>
+          </ul>
+          </form>-->
+        </div>
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+             <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%"/>
+              <col width="15%"/>
+              <col width="17%"/>
+              <col width="10%"/>
+              <col width="10%"/>
+              <col width="13%"/>
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">客户名称</th>
+              <th nowrap="nowrap">申请金额</th>
+              <th nowrap="nowrap">证件类型</th>
+              <th nowrap="nowrap">证件号码</th>
+              <th nowrap="nowrap">地址</th>
+              <th nowrap="nowrap">审核状态</th>
+              <th nowrap="nowrap">申请时间</th>
+              <th nowrap="nowrap">节点名称</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%"/>
+              <col width="15%"/>
+              <col width="17%"/>
+              <col width="10%"/>
+              <col width="10%"/>
+              <col width="13%"/>
+            </colgroup>
+           #foreach ($wait in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.serialNumber@$!wait.customerId@$!wait.id@$!wait.applyQuota"/></td>
+              <td nowrap="nowrap">$!wait.chineseName</td>
+              <td nowrap="nowrap">$format.formatNumber($!wait.applyQuota, 2, 100)</td>
+              <td nowrap="nowrap">#customerInfor($request.getAttribute("cardTypeList"),$!wait.cardType)</td>
+              <td nowrap="nowrap">$!wait.cardId</td>
+              <td nowrap="nowrap">$!wait.residentialAddress</td>
+              <td nowrap="nowrap">#dictVal("applicationStatus",$!wait.status) </td>
+              <td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:ss",$!wait.auditTime)</td>
+              <td nowrap="nowrap">$!wait.nodeName</td>
+            </tr>
+            #end
+
+
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+        #btnpriv("approve")<a id="id_change_button" class="btn_g" href="javascript:void(0);" title="审批">审核</a>#end
+        #btnpriv("applyapprove")<a id="id_apply_button" class="btn_g" href="javascript:void(0);" title="申请审核">申请审核</a>#end
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+        	
+      </div>
+    </div>
+  </div>
+
+
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.changeUrl = "${modulePath}change.page";
+		opsObj.browseUrl = "${modulePath}/browse.page";
+		
+		$("#id_apply_button").click(function() {
+			$.post("${modulePath}/apply.json", {},
+            function(data, textStatus, jqXhr) {
+                if (data.success) {
+                    window.location.reload(true);
+                } else {
+                    //Dialog.message(data.message);
+                }
+            });
+      });
+
+		prepareOperations(opsObj);
+		
+	});
+</script>
+
+</body>
+</html>
+#parse ("common/iframe_page_footer.htm")

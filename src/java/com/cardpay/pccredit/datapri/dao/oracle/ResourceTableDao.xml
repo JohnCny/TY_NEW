@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.datapri.dao.ResourceTableDao">
+
+	<resultMap id="resourceTableDataRuleMap" type="com.cardpay.pccredit.datapri.model.ResourceTableDataRule">  
+   		<result property="id" column="ID" />
+		<result property="resTblId" column="RES_TBL_ID" />
+		<result property="ruleSql" column="RULE_SQL" />
+		<result column="DIV_HTML" property="divHtml" jdbcType="BLOB" javaType="byte[]" typeHandler="org.apache.ibatis.type.BlobTypeHandler"/>
+		<result property="createdTime" column="CREATED_TIME" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="modifiedTime" column="MODIFIED_TIME" />
+		<result property="modifiedBy" column="MODIFIED_BY" />
+  	</resultMap>
+  	
+  	<resultMap id="resourceTableFieldMap" type="com.cardpay.pccredit.datapri.model.ResourceTableField">  
+   		<result property="id" column="ID" />
+		<result property="resTblId" column="RES_TBL_ID" />
+		<result property="resTblField" column="RES_TBL_FIELD" />
+		<result property="resTblFieldCn" column="RES_TBL_FIELD_CN" />
+		<result property="resTblFieldType" column="RES_TBL_FIELD_TYPE" />
+		<result property="createdTime" column="CREATED_TIME" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="modifiedTime" column="MODIFIED_TIME" />
+		<result property="modifiedBy" column="MODIFIED_BY" />
+  	</resultMap>
+
+	<insert id="insert" parameterType="com.cardpay.pccredit.datapri.model.ResourceTableDataRule" >
+    	insert into sys_resource_table_data_rule (ID, RES_TBL_ID, RULE_SQL, DIV_HTML, CREATED_TIME, CREATED_BY, MODIFIED_TIME, MODIFIED_BY)
+    	values (#{id},#{resTblId},#{ruleSql},#{divHtml,javaType=byte[],jdbcType=BLOB,typeHandler=org.apache.ibatis.type.BlobTypeHandler},
+    		#{createdTime},#{createdBy},#{modifiedTime},#{modifiedBy})
+  	</insert>
+	
+	<select id="findDataRuleByTblId" resultMap="resourceTableDataRuleMap" parameterType="java.lang.String" >
+	   select * from sys_resource_table_data_rule where RES_TBL_ID = #{resTblId}
+  	</select>
+	
+	<select id="findDataRuleById" resultMap="resourceTableDataRuleMap" parameterType="java.lang.String" >
+	   select * from sys_resource_table_data_rule where ID = #{id}
+  	</select>
+	
+	<select id="findDataRuleByTbl" resultMap="resourceTableDataRuleMap" parameterType="java.lang.String" >
+	   select * from sys_resource_table_data_rule where res_tbl_id in (select id from sys_resource_table where res_tbl = #{resTbl})
+  	</select>
+  	
+  	<select id="findDataRuleSqlByTbl" resultType="java.lang.String" parameterType="java.lang.String" >
+	   select RULE_SQL from sys_resource_table_data_rule where res_tbl_id in (select id from sys_resource_table where res_tbl = #{resTbl})
+  	</select>
+	
+	<update id="update" parameterType="com.cardpay.pccredit.datapri.model.ResourceTableDataRule"> 
+		update sys_resource_table_data_rule
+		<set>
+			<if test="resTblId!=null and resTblId != ''">
+				RES_TBL_ID=#{resTblId},
+			</if>
+			<if test="ruleSql!=null and ruleSql != ''">
+				RULE_SQL=#{ruleSql},
+			</if>
+			<if test="divHtml!=null">
+				DIV_HTML=#{divHtml,javaType=byte[],jdbcType=BLOB,typeHandler=org.apache.ibatis.type.BlobTypeHandler},
+			</if>
+			<if test="modifiedTime!=null">
+				MODIFIED_TIME=#{modifiedTime},
+			</if>
+			<if test="modifiedBy!=null and modifiedBy != ''">
+				MODIFIED_BY=#{modifiedBy},
+			</if>
+		</set>
+		where ID = #{id}
+	</update>
+	
+	<select id="findResTblFieldByTblId" resultMap="resourceTableFieldMap" parameterType="java.lang.String" >
+  		select * from sys_resource_table_field where res_tbl_id = #{resTblId}
+  	</select>
+	
+
+</mapper>

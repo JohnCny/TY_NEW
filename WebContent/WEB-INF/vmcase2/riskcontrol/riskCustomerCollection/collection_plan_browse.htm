@@ -1,0 +1,95 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/customerInfor.htm")
+
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">逾期客户催收计划信息</div>
+      </div>
+      
+      <div class="inquiry">
+<!-----------搜索------------------------------------------->  
+ 
+<!-------------- 信息显示 ------------------------------------->        
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+             <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="15%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">客户名称</th>
+              <th nowrap="nowrap">产品名称</th>
+              <th nowrap="nowrap">催收目标</th>
+              <th nowrap="nowrap">催收天数</th>
+              <th nowrap="nowrap">催收方式</th>
+              <th nowrap="nowrap">催收结果</th>
+              <th nowrap="nowrap">催收结束时间</th>
+              <th nowrap="nowrap">创建方式</th>
+              <th nowrap="nowrap">实施记录数目</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="15%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+            </colgroup>
+            #foreach ($riskCustomer in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!riskCustomer.id"
+                  #if ($!request.getParameter("recordId") == $!riskCustomer.id) checked="checked" #end /></td>
+              <td nowrap="nowrap">$!riskCustomer.chineseName</td>
+              <td nowrap="nowrap">$!riskCustomer.productName</td>
+              <td nowrap="nowrap">$!riskCustomer.implementationObjective</td>
+              <td nowrap="nowrap">$!riskCustomer.collectionTime</td>
+              <td nowrap="nowrap">#customerInfor($request.getAttribute("collectionMethodList"),$!riskCustomer.collectionMethod)</td>
+              <td nowrap="nowrap">#dictVal("CollectionPlanEndResult",$!riskCustomer.endResult)</td>
+              <td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:ss",$!riskCustomer.collectionEndtime)</td>
+              <td nowrap="nowrap">#dictVal("MarketingCreateWay",$!riskCustomer.createWay)</td>
+              <td nowrap="nowrap">$!riskCustomer.size</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+          #btnpriv("create")<a id="id_create_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.create.hint')">创建</a>#end 
+          #btnpriv("change")<a id="id_change_button" class="btn_g" href="javascript:void(0);" title="修改">修改</a>#end
+          #btnpriv("display")<a id="id_display_button" class="btn_gr" href="javascript:void(0);" title="#i18n('button.display.hint')">显示</a>#end
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+	url = "${modulePath}/browse.page";
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.createUrl = "${modulePath}/create.page";
+		opsObj.displayUrl = "${modulePath}/display.page";
+		opsObj.changeUrl = "${modulePath}/change.page";
+		opsObj.browseUrl = "${modulePath}/browse.page";
+		prepareOperations(opsObj);
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")

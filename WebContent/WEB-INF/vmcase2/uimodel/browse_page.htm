@@ -1,0 +1,44 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">#mi18n("browse")</div>
+      </div>
+      <div class="inquiry" style="width:70%;">
+#parse ("uimodel/browse_page_filter_part.htm")
+#parse ("uimodel/browse_page_table_part.htm")
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+          #btnpriv("create")#if ($uiModel.createAction)<a id="id_create_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.create.hint')">#i18n("button.create")</a>#end#end
+          #btnpriv("change")#if ($uiModel.changeAction)<a id="id_change_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.change.hint')">#i18n("button.change")</a>#end#end
+          #btnpriv("delete")#if ($uiModel.deleteAction)<a id="id_delete_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.delete.hint')">#i18n("button.delete")</a>#end#end
+          #btnpriv("display")#if ($uiModel.displayAction)<a id="id_display_button" class="btn_gr" href="javascript:void(0);" title="#i18n('button.display.hint')">#i18n("button.display")</a>#end#end
+          #btnpriv("export")#if ($uiModel.exportAction)<a id="id_export_button" class="btn_gr" href="javascript:void(0);" title="#i18n('button.export.hint')">#i18n("button.export")</a>#end#end
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+  var layout = new TableLayout(2);
+  window.top.currentWindow.setLayout(layout);
+
+  $(document).ready(function() {
+    var opsObj = new Object();
+    opsObj.formObj = $("#submitForm");
+    #if ($uiModel.createAction)opsObj.createUrl = "${modulePath}/create.page";#end
+    #if ($uiModel.displayAction)opsObj.displayUrl = "${modulePath}/display.page";#end
+    #if ($uiModel.changeAction)opsObj.changeUrl = "${modulePath}/change.page";#end
+    #if ($uiModel.deleteAction)opsObj.deleteUrl = "${modulePath}/delete.json";#end
+    #if ($uiModel.browseAction)opsObj.browseUrl = "${modulePath}/browse.page";#end
+    #if ($uiModel.exportAction)opsObj.exportUrl = "${modulePath}/export.page";#end
+
+    prepareOperations(opsObj);
+  });
+</script>
+</html>
+#parse ("common/iframe_page_footer.htm")

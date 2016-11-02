@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.divisional.dao.DivisionalDao">
+
+<select id="findCustomerManagers" parameterType="String" resultType="com.cardpay.pccredit.system.model.Dict">
+	select su.id as TypeCode, su.display_name as TypeName
+    from sys_user su,
+    (select tt.id from 
+    (select u.user_id as id
+    from sys_dept_user u
+    where u.dept_id in (select d.id
+    from sys_department d
+    where 1 = 1
+    and d.org_id =#{id})) tt,account_manager_parameter p where tt.id=p.user_id) t
+    where su.id = t.id
+</select>
+<select id="findCustomerIdById" parameterType="String" resultType="String">
+	select customer_id from divisional_application 
+	where id=#{id}
+</select>
+<update id="updateDivisional">
+	update divisional_application
+	set 
+	current_organization_id=#{orgId},
+	customer_manager_id=#{customerManagerId},
+	divisional_result=#{result}
+	where id=#{id}
+</update>
+<select id="findDivisionalResultById" resultType="String">
+	select Divisional_result 
+	from divisional_application
+	where 1=1
+	<if test="id!=null and id != ''">
+		and id=#{id}
+	</if>
+</select>
+<select id="findDivisionalProcessById" resultType="String">
+	select divisional_progress 
+	from divisional_application
+	where 1=1
+	<if test="id!=null and id != ''">
+		and id=#{id}
+	</if>
+</select>
+<update id="updateDivisionalProcess">
+	update divisional_application
+	set divisional_progress=#{process}
+	where id=#{id}
+</update>
+<update id="updateDivisionalProcessToCardCenter">
+	update divisional_application
+	set divisional_progress=#{process},
+	current_organization_id=null
+	where id=#{id}
+</update>
+<update id="updateDivisionalResultAndProcess">
+	update divisional_application
+	set 
+	<if test="process!=null and process!= ''">
+	divisional_progress=#{process},
+    </if>
+    <if test="result!=null and result!= ''">
+	divisional_result=#{result}
+    </if>
+	where id=#{id}
+</update>
+<update id="updateDivisionalProcessAndOrg">
+	update divisional_application
+	set current_organization_id=#{orgId},
+	divisional_progress=#{process}
+	where id=#{id}
+</update>
+
+<select id="getUserNameByUserId" resultType="String">
+	select u.display_name
+	from sys_user u
+	where u.id=#{id}
+</select>
+<select id="findDivisionalCounsToday" resultType="int">
+	select count(*)
+	from divisional_application
+	where customer_manager_id=#{customerManagerId}
+	and divisional_result=#{result}
+	and divisional_progress=#{process}
+</select>
+</mapper> 

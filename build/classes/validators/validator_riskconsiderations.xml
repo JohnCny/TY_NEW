@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validators>
+	<validator id="riskcontrol.riskconsiderations">
+		<control name="institutions">
+			<entry type="required" value="true" />
+		</control>
+		<control name="riskIssuesDescribed">
+			<entry type="maxlength" value="600" />
+		</control>
+	</validator>
+</validators>

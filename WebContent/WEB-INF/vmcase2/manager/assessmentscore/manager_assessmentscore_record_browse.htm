@@ -1,0 +1,140 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户经理评估</div>
+      </div>
+      <div class="inquiry">
+        <div class="search_tag">筛选过滤条件</div>
+        <div class="search">
+          <form id="submitForm">
+            <ul>
+              <li>
+                <span>客户经理姓名：<input type="text" name="assessedName" value="$!result.filter.assessedName" maxlength="30" /></span>
+              </li>
+              <li>
+                <span>年份：<select id="dataYear" name="dataYear">
+                    <option value="">请选择</option>
+                    #dict("KHJLPGNFLB", $!result.filter.dataYear)
+                  </select>
+                </span>
+              </li>
+              <li>
+                <span>月份：<select id="dataMonth" name="dataMonth">
+                    <option value="">请选择</option>
+                    <option value="1" #if($!result.filter.dataMonth==1) selected="selected" #end>01月</option>
+                    <option value="2" #if($!result.filter.dataMonth==2) selected="selected" #end>02月</option>
+                    <option value="3" #if($!result.filter.dataMonth==3) selected="selected" #end>03月</option>
+                    <option value="4" #if($!result.filter.dataMonth==4) selected="selected" #end>04月</option>
+                    <option value="5" #if($!result.filter.dataMonth==5) selected="selected" #end>05月</option>
+                    <option value="6" #if($!result.filter.dataMonth==6) selected="selected" #end>06月</option>
+                    <option value="7" #if($!result.filter.dataMonth==7) selected="selected" #end>07月</option>
+                    <option value="8" #if($!result.filter.dataMonth==8) selected="selected" #end>08月</option>
+                    <option value="9" #if($!result.filter.dataMonth==9) selected="selected" #end>09月</option>
+                    <option value="10" #if($!result.filter.dataMonth==10) selected="selected" #end>10月</option>
+                    <option value="11" #if($!result.filter.dataMonth==11) selected="selected" #end>11月</option>
+                    <option value="12" #if($!result.filter.dataMonth==12) selected="selected" #end>12月</option>
+                  </select>
+                </span>
+              </li>
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="5%" />
+              <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">年份</th>
+              <th nowrap="nowrap">月份</th>
+              <th nowrap="nowrap">客户经理</th>
+              <th nowrap="nowrap">贷款使用率</th>
+              <th nowrap="nowrap">利息收回率</th>
+              <th nowrap="nowrap">逾期率</th>
+              <th nowrap="nowrap">逾期回收率</th>
+              <th nowrap="nowrap">逾期余额</th>
+              <th nowrap="nowrap">瑕疵贷款率</th>
+              <th nowrap="nowrap">总分</th>
+              <th nowrap="nowrap">总评价</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="5%" />
+              <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col />
+            </colgroup>
+            #foreach ($managerScore in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!managerScore.id"
+                  #if ($!request.getParameter("recordId") == $managerScore.id) checked="checked" #end /></td>
+              <td nowrap="nowrap">$!{managerScore.dataYear}</td>
+              <td nowrap="nowrap">$!{managerScore.dataMonth}</td>
+              <td nowrap="nowrap">$!{managerScore.assessedName}</td>
+              <td nowrap="nowrap">$!{managerScore.creditUtilizationRate}%</td>
+              <td nowrap="nowrap">$!{managerScore.numbererestRecoveryRate}%</td>  
+              <td nowrap="nowrap">$!{managerScore.overdueRate}%</td>            
+              <td nowrap="nowrap">$!{managerScore.lateRecoveryRate}%</td>   
+              <td nowrap="nowrap">$!{managerScore.overdueBalanceRate}万</td>
+              <td nowrap="nowrap">$!{managerScore.defectiveLoansRate}%</td>
+              <td nowrap="nowrap">$!managerScore.totalScore</td>
+              <td nowrap="nowrap">#dictVal("AssessmentScore", $!managerScore.totalEvaluation)</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+          #btnpriv("display")<a id="id_display_button" class="btn_gr" href="javascript:void(0);" title="#i18n('button.display.hint')">#i18n("button.display")</a>#end
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.displayUrl = "${modulePath}/display.page";
+		opsObj.browseUrl = "${modulePath}/browse.page";
+
+		prepareOperations(opsObj);
+		
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")

@@ -1,0 +1,155 @@
+#parse ("common/iframe_page_header.htm")
+<link rel="stylesheet" type="text/css"
+	href="${contextPath}/css/customer/style.css" />
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
+<style>
+.form-l .form-r{height:32px;}
+</style>
+<body class="whitebg">
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+				 <div class="title">客户维护信息>台账信息</div>
+			</div>
+				 <div class="tabplace">
+          <ul class="com-tab" >
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/changewh.page?id=${customerId}">基本信息</a></li>
+            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_zyxx.page?id=${customerId}">职业信息</a></li>
+            <li class="tab " ><a href="${contextPath}/customer/basiccustomerinforUpdate/create_mbxx.page?id=${customerId}">陌拜信息</a></li>
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_zcfz.page?id=${customerId}">资产负债</a></li>
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_syb.page?id=${customerId}">损益</a></li>
+            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_xjl.page?id=${customerId}">现金流量</a></li>
+            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_jcjy.page?id=${customerId}">交叉检验</a></li>
+			<li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_swpg.page?id=${customerId}">四维评估</a></li>
+			<li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_sxpg.page?id=${customerId}">授信评估</a></li>
+            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_wjdc.page?id=${customerId}">问卷调查</a></li>
+            <li class="tab activeTab" ><a href="${contextPath}/customer/basiccustomerinforUpdate/create_khtz.page?id=${customerId}">台账信息</a></li>
+            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_yxzl.page?id=${customerId}">影像资料</a></li>   
+         </ul>
+         </div>
+			<form id="id_module_form">
+             <input type="hidden" name="customerId" value="${customerId}">
+			<div class="form-bd" id="formsId" style="border: 0px;">
+			  <table class="form-bd-info" >
+						
+						<tr>
+							<td width="10%" class=""><label for="name">客户姓名:</label></td>
+							<td width="10%"><input class="rinpstybc" type="text" id="chineseName" name="chineseName" value="$!customer.chineseName" readonly="readonly"/></td>
+							<td width="10%"><label for="name">性别:</label></td>
+							<td width="10%"><input class="rinpstybc" type="text" id="sex" name="sex" value="#dictVal('Gender', $!customer.sex)" readonly="readonly"/></td>
+							<td width="10%"><label for="name">身份证号:</label></td>
+							<td width="15%"><input class="rinpstybc" type="text" id="cardId" name="cardId" value="$!customer.cardId" readonly="readonly"/></td>
+							<td width="35%"></td>
+						</tr>
+						
+			  </table>
+				
+					<table class="table-bd"  bordercolor="#cccccc" border="1" style="width: 100%">
+						<caption>还款能力</caption>
+						<tr>
+							<td width="15%" class="titlec"><label>经营异常情况：</label></td>
+							<td width="35%"><input id="manageException" name="manageException"  value="$!customerMainManager.manageException"></td>
+							<td width="15%" class="titlec"><label>非常态大额支出：</label></td>
+							<td width="35%"><input id="unnormalBigaccountout" name="unnormalBigaccountout"  value="$!customerMainManager.unnormalBigaccountout"></td>
+						</tr>
+						<tr>
+							<td class="titlec"><label>经营提升情况：</label></td>
+							<td><input id="managerImprove" name="managerImprove"  value="$!customerMainManager.managerImprove"></td>
+							<td></td>
+							<td></td>
+						</tr>						
+					</table>
+					
+					<table class="table-bd"  bordercolor="#cccccc" border="1" style="width: 100%">		
+						<caption>生存状况</caption>
+						<tr>
+							<td width="15%" class="titlec"><label>婚姻状况：</label></td>
+							<td width="35%"><input id="marriageCircs" name="marriageCircs"  value="$!customerMainManager.marriageCircs"></td>
+							<td width="15%" class="titlec"><label>资产负债情况：</label></td>
+							<td width="35%"><input id="assetsAndLiabilities" name="assetsAndLiabilities"  value="$!customerMainManager.assetsAndLiabilities"></td>
+						</tr>
+						<tr>
+		
+							<td width="15%" class="titlec"><label>个人提升情况：</label></td>
+							<td><input id="personImprove" name="personImprove"  value="$!customerMainManager.personImprove"></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</table>
+					
+					<table class="table-bd"  bordercolor="#cccccc" border="1" style="width: 100%">
+						<caption>风险防范</caption>
+						<tr>
+							<td width="15%" class="titlec"><label>每月还款情况：</label></td>
+							<td width="35%"><input id="monthBackCircs" name="monthBackCircs"  value="$!customerMainManager.monthBackCircs"></td>
+							<td width="15%" class="titlec"><label>异常表现：</label></td>
+							<td width="35%"><input id="exceptionDisplay" name="exceptionDisplay"  value="$!customerMainManager.exceptionDisplay"></td>
+						</tr>
+						<tr>
+							<td width="15%" class="titlec"><label>行业风险：</label></td>
+							<td><input id="industryRisk" name="industryRisk"  value="$!customerMainManager.industryRisk"></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</table>
+					
+					<table class="table-bd"  bordercolor="#cccccc" border="1" style="width: 100%">
+						<caption>道德品德</caption>
+						<tr>
+							<td width="15%" class="titlec"><label>家庭情况：</label></td>
+							<td width="35%"><input id="familyCircs" name="familyCircs"  value="$!customerMainManager.familyCircs"></td>
+							<td width="15%" class="titlec"><label>子女父母情况：</label></td>
+							<td width="35%"><input id="childrenCircs" name="childrenCircs"  value="$!customerMainManager.childrenCircs"></td>
+						</tr>
+						<tr>
+							<td width="15%" class="titlec"><label>个人行为情况：</label></td>
+							<td><input id="personBehaviour" name="personBehaviour"  value="$!customerMainManager.personBehaviour"></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</table>
+					
+					<table class="table-bd"  bordercolor="#cccccc" border="1" style="width: 100%; height:100px;">
+						<tr>
+							<td width="20%" class="titlec"><label>贷后维护人员进行客户维护后的主观描述：</label></td>
+							<td colspan="4">
+     							<textarea id="loanAfterCircs" value="" rows="5" clos name="loanAfterCircs">$!customerMainManager.loanAfterCircs</textarea>
+							</td>
+						</tr>
+					</table>
+					</div>
+					
+			</form>
+
+			<div class="submit">
+				<input id="id_save_button" type="button" value='#i18n("button.save")' class="current" /> 
+				<input type="button" onclick="returnClick();" value='#i18n("button.cancel")' />
+			</div>
+		</div>
+	</div>
+
+  <script type="text/javascript">
+	var layout=new FormsLayout("id_module_form");	
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	$(document).ready(function() {	
+	     $("#id_save_button").click(function() {
+			  var formjson = $($formName).serialize();
+	     	    $.get("${contextPath}/customer/basiccustomerinforUpdate/insertkhtz.json", formjson, function(data, textStatus, jqXhr) {
+		            if (data.success) {
+		              #if ($request.getParameter('callBackUrl').indexOf('?') != -1)
+		            	  navigateTo("${contextPath}/customer/basiccustomerinforUpdate/create_khtz.page?id=$!customer.id") ;
+		              #end
+		            }
+		          });
+	       });
+
+	});
+	function returnClick(){
+		
+		 window.location.href= contextPath + "/customer/basiccustomerinforUpdate/browse.page" ;
+	}
+	</script>
+	
+</body>
+#parse ("common/iframe_page_footer.htm")

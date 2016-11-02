@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validators>
+	<validator id="intopieces.applyintopiecewait">
+	<control name="examineAmount">
+			<entry type="required" value="true" />
+			<entry type="number" value="true" />
+		</control>
+	<control name="tableName">
+			<entry type="required" value="true" />
+		</control>
+	</validator>
+</validators>

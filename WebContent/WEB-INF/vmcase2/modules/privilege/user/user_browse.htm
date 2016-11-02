@@ -1,0 +1,147 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+	<div class="inquiry" style="padding-top: 0px;">
+		<div class="search_tag">#i18n("label.browse.filter")</div>
+		<div class="search" style="margin-top: 5px;">
+			<form id="submitForm">
+				<input type="hidden" name="deptId" value="$!{deptId}" id="deptId">
+				<ul>
+
+					<li><span>#mi18n("displayName",4)：<input type="text"
+							name="displayName" value='$!result.filter.displayName'
+							maxlength="30" /></span></li>
+					<li class="search_button"><input id="id_browse_button"
+						type="button" value="#i18n('button.browse')"
+						class="search_button_inquiry" title="#i18n('button.browse.hint')"
+						style="height: 26px; line-height: 24px;" /></li>
+				</ul>
+			</form>
+		</div>
+		<div id="topDiv" class="inquiry_list inquiry_top">
+			<table>
+				<colgroup>
+					<col width="5%" />
+					<!-- <col width="5%" /> -->
+					<col width="10%" />
+					<col width="5%" />
+					<col width="5%" />
+					<col width="10%" />
+					<col width="20%" />
+					<col width="20%" />
+					<col />
+				</colgroup>
+				<tr class="title">
+					<th nowrap="nowrap"></th>
+					<!-- <th nowrap="nowrap">#mi18n("seqNo")</th> -->
+					<th nowrap="nowrap">#mi18n("displayName")</th>
+					<th nowrap="nowrap">#mi18n("age")</th>
+					<th nowrap="nowrap">#mi18n("gender")</th>
+					<th nowrap="nowrap">#mi18n("phone")</th>
+					<th nowrap="nowrap">#mi18n("createdTime")</th>
+					<th nowrap="nowrap">#mi18n("modifiedTime")</th>
+					<th nowrap="nowrap">#mi18n("description")</th>
+
+				</tr>
+			</table>
+		</div>
+		<div id="downDiv" class="inquiry_list inquiry_down">
+			<table>
+				<colgroup>
+					<col width="5%" />
+					<!-- <col width="5%" /> -->
+					<col width="10%" />
+					<col width="5%" />
+					<col width="5%" />
+					<col width="10%" />
+					<col width="20%" />
+					<col width="20%" />
+					<col />
+
+				</colgroup>
+				#foreach ($user in $result.items)
+				<tr>
+					<td class="checkbox"><input type="radio" name="checkbox"
+						value="$!user.id" #if ($!request.getParameter("recordId") ==
+						$user.id) checked="checked" #end /></td>
+					<!-- <td nowrap="nowrap">$!user.seqNo</td> -->
+					<td nowrap="nowrap">$!user.displayName</td>
+					<td nowrap="nowrap">$!user.age</td>
+					<td nowrap="nowrap">$!user.gender</td>
+					<td nowrap="nowrap">$!user.phone</td>
+					<td nowrap="nowrap">$!date.format("yyyy-MM-dd
+						HH:mm:ss",$!user.createdTime)</td>
+					<td nowrap="nowrap">$!date.format("yyyy-MM-dd
+						HH:mm:ss",$!user.modifiedTime)</td>
+					<td nowrap="nowrap">$!user.description</td>
+				</tr>
+				#end
+			</table>
+		</div>
+	</div>
+	<div class="pagebar">
+		<div class="controlbtn">
+			#btnpriv("create")<a id="id_create_button" class="btn_g" href="javascript:void(0);"
+				title="#i18n('button.create.hint')">#i18n("button.create")</a> #end
+			#btnpriv("change")	<a
+				id="id_change_button" class="btn_g" href="javascript:void(0);"
+				title="#i18n('button.change.hint')">#i18n("button.change")</a> #end 
+			#btnpriv("delete")	<a
+				id="id_delete_button" class="btn_g" href="javascript:void(0);"
+				title="#i18n('button.delete.hint')">#i18n("button.delete")</a> #end
+				<a
+				id="id_config_button" class="btn_g" href="javascript:void(0);"
+				title="重置选中的密码">重置密码</a>
+			#btnpriv("display")	<a
+				id="id_display_button" class="btn_gr" href="javascript:void(0);"
+				title="#i18n('button.display.hint')">#i18n("button.display")</a> #end
+		</div>
+		#parse ("common/pagination.htm")
+		<div class="clear"></div>
+	</div>
+	</div>
+	</div>
+</body>
+<script language="javascript" type="text/javascript">
+	var p_place = window.parent.document.getElementById('place');
+	var placeHeight = $(p_place).outerHeight(true);
+	var layout = new TableLayout(3, placeHeight, 0.73);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document)
+			.ready(
+					function() {
+						var opsObj = new Object();
+						opsObj.formObj = $("#submitForm");
+						opsObj.createUrl = "${contextPath}/system/user/create.page?deptId=$!{deptId}";
+						opsObj.displayUrl = "${contextPath}/system/user/display.page?deptId=$!{deptId}";
+						opsObj.changeUrl = "${contextPath}/system/user/change.page?deptId=$!{deptId}";
+						opsObj.deleteUrl = "${contextPath}/system/user/delete.json?deptId=$!{deptId}";
+						opsObj.browseUrl = "${contextPath}/system/user/displayUserList.page?deptId=$!{deptId}";
+
+						prepareOperations(opsObj);
+						
+						
+						$("#id_config_button").click(function() {
+				            if ($(".checkbox :checked").length == 1) {
+				                var rowid = $($(".checkbox :checked")[0]).attr("value");
+				                Dialog.confirm("确定重置所选行的密码吗？", "提示",
+				                function() {
+				                    $.post("${contextPath}/system/user/config.json", {
+				                        id: rowid
+				                    },
+				                    function(data, textStatus, jqXhr) {
+				                        if (data.success) {
+				                        	window.location.url = "${contextPath}/system/user/displayUserList.page?deptId=${deptId}";
+				                        } else {
+				                            //Dialog.message(data.message);
+				                        }
+				                    });
+				                });
+				            } else {
+				                Dialog.message("请选择一行");
+				            }
+				        });
+						
+					});
+</script>
+</html>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.intopieces.dao.LocalExcelDao" >
+  <resultMap id="BaseResultMap" type="com.cardpay.pccredit.intopieces.web.LocalExcelForm" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="CUSTOMER_ID" property="customerId" jdbcType="VARCHAR" />
+    <result column="CHINESE_NAME" property="customerName" jdbcType="VARCHAR" />
+    <result column="PRODUCT_ID" property="productId" jdbcType="VARCHAR" />
+    <result column="PRODUCT_NAME" property="productName" jdbcType="VARCHAR" />
+    <result column="APPLICATION_ID" property="applicationId" jdbcType="VARCHAR" />
+    <result column="ATTACHMENT" property="attachment" jdbcType="VARCHAR" />
+    <result column="URI" property="uri" jdbcType="VARCHAR" />
+    <result column="CREATED_TIME" property="createdTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="BaseResultMap1" type="com.cardpay.pccredit.intopieces.model.LocalExcel" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="CUSTOMER_ID" property="customerId" jdbcType="VARCHAR" />
+    <result column="PRODUCT_ID" property="productId" jdbcType="VARCHAR" />
+    <result column="APPLICATION_ID" property="applicationId" jdbcType="VARCHAR" />
+    <result column="SHEET_JY" property="sheetJy" jdbcType="VARCHAR" />
+    <result column="SHEET_JJBS" property="sheetJjbs" jdbcType="VARCHAR" />
+    <result column="SHEET_JBZK" property="sheetJbzk" jdbcType="VARCHAR" />
+    <result column="SHEET_JYZT" property="sheetJyzt" jdbcType="VARCHAR" />
+    <result column="SHEET_SCZT" property="sheetSczt" jdbcType="VARCHAR" />
+    <result column="SHEET_DDPZ" property="sheetDdpz" jdbcType="VARCHAR" />
+    <result column="SHEET_FZ" property="sheetFz" jdbcType="VARCHAR" />
+    <result column="SHEET_LRJB" property="sheetLrjb" jdbcType="VARCHAR" />
+    <result column="SHEET_BZLRB" property="sheetBzlrb" jdbcType="VARCHAR" />
+    <result column="SHEET_XJLLB" property="sheetXjllb" jdbcType="VARCHAR" />
+    <result column="SHEET_JC" property="sheetJc" jdbcType="VARCHAR" />
+    <result column="SHEET_DHD" property="sheetDhd" jdbcType="VARCHAR" />
+    <result column="SHEET_GDZC" property="sheetGdzc" jdbcType="VARCHAR" />
+    <result column="SHEET_YFYS" property="sheetYfys" jdbcType="VARCHAR" />
+    <result column="SHEET_YSYF" property="sheetYsyf" jdbcType="VARCHAR" />
+    <result column="SHEET_LSFX" property="sheetLsfx" jdbcType="VARCHAR" />
+    <result column="APPROVE_VALUE" property="approveValue" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="findByProductAndCustomer" resultMap="BaseResultMap">
+      SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		    select t.*,bci.chinese_name,pa.product_name
+		    from local_excel t
+		    left join BASIC_CUSTOMER_INFORMATION bci on t.customer_id = bci.id
+		    left join PRODUCT_ATTRIBUTE pa on t.product_id = pa.id
+		    where 
+		    product_id=#{productId} and customer_id=#{customerId}
+		    
+		    <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+  </select>
+  
+  <select id="findByProductAndCustomer1" resultMap="BaseResultMap">
+      SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		    select t.id,
+		    t.customer_id, 
+		    t.product_id,
+		    t.attachment,
+		    t.uri,
+		    t.application_id,
+		    t.created_time,         
+		    bci.chinese_name,pa.product_name
+		    from local_excel t
+		    left join BASIC_CUSTOMER_INFORMATION bci on t.customer_id = bci.id
+		    left join PRODUCT_ATTRIBUTE pa on t.product_id = pa.id
+		    where 
+		    product_id=#{productId} and customer_id=#{customerId}
+		    
+		    <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+  </select>
+  
+  <select id="findCountByProductAndCustomer" resultType="int">
+    select count(0) from local_excel
+    where 
+    product_id=#{productId} and customer_id=#{customerId}
+  </select>
+  <select id="findById" resultMap="BaseResultMap1">
+      select t.*
+	    from local_excel t
+	    where 
+	    id=#{id}
+  </select>
+  <select id="findByApplication" resultType="com.cardpay.pccredit.intopieces.model.LocalExcel">
+    select
+    id,
+    application_id as applicationId, 
+    customer_id as customerId,
+    product_id as productId,
+    sheet_jy as sheetJy,
+	sheet_jjbs as sheetJjbs,
+	sheet_jbzk as sheetJbzk,
+	sheet_jyzt as sheetJyzt,
+	sheet_sczt as sheetSczt,
+	sheet_ddpz as sheetDdpz,
+	sheet_fz as sheetFz,
+	sheet_lrjb as sheetLrjb,
+	sheet_bzlrb as sheetBzlrb,
+	sheet_xjllb as sheetXjllb,
+	sheet_jc as sheetJc,
+	sheet_dhd as sheetDhd,
+	sheet_gdzc as sheetGdzc,
+	sheet_yfys as sheetYfys,
+	sheet_ysyf as sheetYsyf,
+	sheet_lsfx as sheetLsfx,
+    zyyw,
+    jyb 
+    from local_excel
+    where application_id=#{applicationId}
+  </select>
+</mapper>

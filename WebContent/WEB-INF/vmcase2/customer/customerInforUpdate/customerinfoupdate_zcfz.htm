@@ -1,0 +1,645 @@
+#parse ("common/iframe_page_header.htm")
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+     <div class="place">
+       
+         <div class="title">客户维护信息>资产负债</div>
+      
+      </div>
+      
+       <div class="tabplace">
+            <ul class="com-tab" >
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/changewh.page?id=${customerId}">基本信息</a></li>
+            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_zyxx.page?id=${customerId}">职业信息</a></li>
+            <li class="tab " ><a href="${contextPath}/customer/basiccustomerinforUpdate/create_mbxx.page?id=${customerId}">陌拜信息</a></li>
+            <li class="tab activeTab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_zcfz.page?id=${customerId}">资产负债</a></li>
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_syb.page?id=${customerId}">损益</a></li>
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_xjl.page?id=${customerId}">现金流量</a></li>
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_jcjy.page?id=${customerId}">交叉检验</a></li>
+			<li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_swpg.page?id=${customerId}">四维评估</a></li>
+			<li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_sxpg.page?id=${customerId}">授信评估</a></li>
+            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_wjdc.page?id=${customerId}">问卷调查</a></li>
+            <li class="tab" ><a href="${contextPath}/customer/basiccustomerinforUpdate/create_khtz.page?id=${customerId}">台账信息</a></li>
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_yxzl.page?id=${customerId}">影像资料</a></li>  
+         </ul>
+         </div>
+      <form id="id_module_form" action="${modulePath}/balanceSheetInsert.json" method="post">
+        <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
+        <input type="hidden" id="balanceSheet" name="balanceSheet" value="">
+        <input type="hidden" id="customerId" name="customerId" value="${customerId}">
+       
+       
+        #if($customerInforUpdateBalanceSheet.size()!=0)
+      <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" >
+	     <colgroup>
+              <col width="20%" />
+              <col width="20%" />
+              <col width="20%" />
+              <col width="20%" />
+            </colgroup>
+            <tr>
+              <td class="titlec" colspan="2"><label >资产</label></td>
+              <td class="titlec" colspan="2"><label >负债</label></td>
+            </tr>
+           #foreach($balanceSheet in $!customerInforUpdateBalanceSheet)
+            	#if($balanceSheet.loanType==0)
+            	<tr>
+            	  <td ><input class="titlefc" id="0" name="items_name_0" value="流动资产(元)" readonly="readonly"/></td>
+	              <td><input class="rinpstybc" type="text" id="0" name="0" value="$format.formatNumber($!{balanceSheet.contentsTextNumbers},2,100)" readonly="readonly"/></td>
+            	#end
+            	#if($balanceSheet.loanType==1)
+            	  <td ><input  class="titlefc" id="1" name="items_name_1" value="短期负债(元)" readonly="readonly"/></td>
+	              <td><input class="rinpstybc" type="text" id="1" name="1" value="$format.formatNumber($!{balanceSheet.contentsTextNumbers},2,100)" readonly="readonly"/></td>
+	               </tr>
+            	#end
+            #end
+            
+            #set($num=0)
+            
+            #foreach($balanceSheet in $!customerInforUpdateBalanceSheet)
+            #if($balanceSheet.loanType==2)
+           	 	#if($num==0)
+           	 	   <tr id="20">
+           	 	   #set($num=1)
+           		#else
+           		   <tr id="201">
+           		#end
+            	  <td >
+            	  	#if($balanceSheet.no==0)
+						<input  class="titlefc1" id="2" name="items_name_2" value="现金及银行存款(元)" style="width:50%;float: left;" readonly="readonly"/>
+						<a href="#" class="delbtnl"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtnl" ><img src="${contextPath}/images/add.png" /></a>
+					#else
+						<input id="2" name="items_name_2" class="labl" value="$!{balanceSheet.names}" #if(!${balanceSheet.names}) style="display: none;" #end onchange="isempty(this)"/>
+					#end
+            	  </td>
+	              #if($balanceSheet.no==0)
+					<td><input class="rinpstybc" type="text" id="2" name="2"  value="$format.formatNumber($!{balanceSheet.contentsTextNumbers},2,100)" readonly="readonly"/></td>
+					
+				  #else
+					<td><input type="text" id="2" name="2_1" class="inpl" value="$format.formatNumber($!{balanceSheet.contentsTextNumbers},2,100)"  onchange="count(this,'2_1','2')" #if(!${balanceSheet.names}) style="display: none;" #end/></td>
+				  #end
+            	#end
+            	#if($balanceSheet.loanType==3)
+            	  <td >
+            	  	#if($balanceSheet.no==0)
+						<input  class="titlefc1" id="3" name="items_name_3" value="应付账款(元)" style="width:40%;float: left;" readonly="readonly"/>
+							<a href="#" class="delbtnr"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtnr" ><img src="${contextPath}/images/add.png" /></a>
+					#else
+						<input id="3" name="items_name_3" class="labr" value="$!{balanceSheet.names}" #if(!${balanceSheet.names}) style="display: none;" #end onchange="isempty(this)"/>
+					#end
+					</td>
+					#if($balanceSheet.no==0)
+		              <td><input class="rinpstybc" type="text" id="3" name="3"  value="$format.formatNumber($!{balanceSheet.contentsTextNumbers},2,100)" readonly="readonly"/></td>
+            		#else
+            		  <td><input type="text" id="3" name="3_1"  class="inpr" value="$format.formatNumber($!{balanceSheet.contentsTextNumbers},2,100)" onchange="count(this,'3_1','3')" #if(!${balanceSheet.names}) style="display: none;" #end/></td>
+            		#end
+            	</tr>
+            	#end
+            #end
+            #set($num=0)
+               #foreach($balanceSheet in $!customerInforUpdateBalanceSheet)
+            	#if($balanceSheet.loanType==4) 
+            	#if($num==0)
+           	 	   <tr id="40">
+           	 	   #set($num=1)
+           		#else
+           		   <tr id="401">
+           		#end
+            	  <td >
+            	  	#if($balanceSheet.no==0)
+						<input   class="titlefc1" id="4" name="items_name_4" value="应收账款(元)" style="width:40%;float: left;" readonly="readonly"/>
+							<a href="#" class="delbtnl"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtnl" ><img src="${contextPath}/images/add.png" /></a>
+					#else
+						<input id="4" name="items_name_4" class="labl" value="$!{balanceSheet.names}" #if(!${balanceSheet.names}) style="display: none;" #end onchange="isempty(this)"/>
+					#end
+            	  </td>
+            	  #if($balanceSheet.no==0)
+	              <td><input class="rinpstybc" type="text" id="4" name="4"  value="$format.formatNumber($!{balanceSheet.contentsTextNumbers},2,100)" readonly="readonly"/></td>
+	              #else
+	              <td><input type="text" id="4" name="4_1" class="inpl" onchange="count(this,'4_1','4')" value="$format.formatNumber($!{balanceSheet.contentsTextNumbers},2,100)" #if(!${balanceSheet.names}) style="display: none;" #end/></td>
+	              #end
+            	#end
+            	#if($balanceSheet.loanType==5)
+            	  <td>
+            	  	#if($balanceSheet.no==0)
+						<input  class="titlefc1" id="5" name="items_name_5" value="预收账款(元)" style="width:40%;float: left;" readonly="readonly"/>
+								<a href="#" class="delbtnr"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtnr" ><img src="${contextPath}/images/add.png" /></a>
+					#else
+						<input id="5" name="items_name_5" class="labr" value="$!{balanceSheet.names}" #if(!${balanceSheet.names}) style="text-align: center; display: none;" #end onchange="isempty(this)"/> 
+					#end
+					</td>
+					#if($balanceSheet.no==0)
+	              <td><input class="rinpstybc" type="text" id="5" name="5" value="$format.formatNumber($!{balanceSheet.contentsTextNumbers},2,100)" readonly="readonly"/></td>
+	              #else
+	               <td><input type="text" id="5" name="5_1" class="inpr" onchange="count(this,'5_1','5')" value="$format.formatNumber($!{balanceSheet.contentsTextNumbers},2,100)" #if(!${balanceSheet.names}) style="display: none;" #end/></td>
+	              #end
+            	</tr>
+            	#end
+            #end
+            #set($num=0)
+               #foreach($balanceSheet in $!customerInforUpdateBalanceSheet)
+            	#if($balanceSheet.loanType==6)
+            	#if($num==0)
+           	 	   <tr id="60">
+           	 	   #set($num=1)
+           		#else
+           		   <tr id="601">
+           		#end
+            	  <td>
+            	  	#if($balanceSheet.no==0)
+						<input  class="titlefc1" id="6" name="items_name_6" value="预付账款(元)" style="width:40%;float: left;"readonly="readonly"/>
+							<a href="#" class="delbtnl"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtnl" ><img src="${contextPath}/images/add.png" /></a>
+					#else
+						<input id="6" name="items_name_6" class="labl" value="$!{balanceSheet.names}" #if(!${balanceSheet.names}) style="display: none;" #end onchange="isempty(this)"/>
+					#end
+            	  </td>
+            	  #if($balanceSheet.no==0)
+	              <td><input class="rinpstybc" type="text" id="6" name="6"  value="$format.formatNumber($!{balanceSheet.contentsTextNumbers},2,100)" readonly="readonly"/></td>
+	              #else
+	               <td><input type="text" id="6" name="6_1" class="inpl" onchange="count(this,'6_1','6')"  value="$format.formatNumber($!{balanceSheet.contentsTextNumbers},2,100)" #if(!${balanceSheet.names}) style="display: none;" #end/></td>
+	              #end 
+            	#end
+            	#if($balanceSheet.loanType==7)
+            	  <td>
+            	  	#if($balanceSheet.no==0)
+						<input   class="titlefc1" id="7" name="items_name_7" value="短期贷款(元)" style="width:40%;float: left;"readonly="readonly"/>
+								<a href="#" class="delbtnr"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtnr" ><img src="${contextPath}/images/add.png" /></a>
+					#else
+						<input id="7" name="items_name_7" class="labr" value="$!{balanceSheet.names}" #if(!${balanceSheet.names}) style="display: none;" #end onchange="isempty(this)"/>
+					#end
+					</td>
+				  #if($balanceSheet.no==0)
+	               <td><input class="rinpstybc" type="text" id="7" name="7" value="$format.formatNumber($!{balanceSheet.contentsTextNumbers},2,100)" readonly="readonly"/></td>
+	              #else
+	               <td><input type="text" id="7" name="7_1" class="inpl" onchange="count(this,'7_1','7')"value="$format.formatNumber($!{balanceSheet.contentsTextNumbers},2,100)" #if(!${balanceSheet.names}) style="display: none;" #end/></td>
+				  #end
+            	 </tr>
+            	#end
+            #end
+            #set($num=0)
+             #foreach($balanceSheet in $!customerInforUpdateBalanceSheet)
+            	#if($balanceSheet.loanType==8)
+            	#if($num==0)
+           	 	   <tr id="80">
+           	 	   #set($num=1)
+           		#else
+           		   <tr id="801">
+           		#end
+            	  <td >
+            	  	#if($balanceSheet.no==0)
+						<input   class="titlefc1" id="8" name="items_name_8" value="存货和原材料(元)" style="width:45%;float: left;"readonly="readonly"/>
+								<a href="#" class="delbtnl"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtnl" ><img src="${contextPath}/images/add.png" /></a>
+					#else
+						<input id="8" name="items_name_8" class="labl" value="$!{balanceSheet.names}" #if(!${balanceSheet.names}) style="display: none;" #end onchange="isempty(this)"/>
+					#end
+            	  </td>
+            	   #if($balanceSheet.no==0)
+	              <td><input class="rinpstybc" type="text" id="8" name="8"  value="$format.formatNumber($!{balanceSheet.contentsTextNumbers},2,100)" readonly="readonly"/></td>
+            	   #else
+            	    <td><input type="text" id="8" name="8_1" class="inpl" onchange="count(this,'8_1','8')" value="$format.formatNumber($!{balanceSheet.contentsTextNumbers},2,100)" #if(!${balanceSheet.names}) style="display: none;" #end/></td>
+            	   #end
+            	#end
+            	#if($balanceSheet.loanType==9)
+            	  <td >
+            	  	#if($balanceSheet.no==0)
+						<input  class="titlefc2" id="9" name="tems_name_9" value="长期负债(元)" style="width:40%;float: left;" readonly="readonly"/>
+								<a href="#" class="delbtnr"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtnr" ><img src="${contextPath}/images/add.png" /></a>
+					#else
+						<input id="9" name="items_name_9" class="labr" value="$!{balanceSheet.names}" #if(!${balanceSheet.names}) style="display: none;" #end onchange="isempty(this)"/>
+					#end
+					</td>
+					 #if($balanceSheet.no==0)
+	              <td><input class="rinpstybc" type="text" id="9" name="9"  value="$format.formatNumber($!{balanceSheet.contentsTextNumbers},2,100)" readonly="readonly"/></td>
+            	 #else
+            	  <td><input type="text" id="9" name="9_1" class="inpr" onchange="count(this,'9_1','9')" value="$format.formatNumber($!{balanceSheet.contentsTextNumbers},2,100)" #if(!${balanceSheet.names}) style="display: none;" #end/></td>
+            	 #end
+            	 </tr>
+            	#end
+            #end
+            #set($num=0)
+              #foreach($balanceSheet in $!customerInforUpdateBalanceSheet)
+            	#if($balanceSheet.loanType==10)
+            	#if($num==0)
+           	 	   <tr id="100">
+           	 	   #set($num=1)
+           		#else
+           		   <tr id="1001">
+           		#end
+            	  <td >
+            	  	#if($balanceSheet.no==0)
+						<input  class="titlefc2" id="10" name="tems_name_10" value="固定资产(元)" style="width:40%;float: left;"readonly="readonly"/>
+								<a href="#" class="delbtnl"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtnl" ><img src="${contextPath}/images/add.png" /></a>
+					#else
+						<input id="10" name="items_name_10" class="labl" value="$!{balanceSheet.names}" #if(!${balanceSheet.names}) style="display: none;" #end onchange="isempty(this)"/>
+					#end
+            	  </td>
+            	   #if($balanceSheet.no==0)
+	              <td><input class="rinpstybc" type="text" id="10" name="10"  value="$format.formatNumber($!{balanceSheet.contentsTextNumbers},2,100)"readonly="readonly" /></td>
+	              #else
+	               <td><input type="text" id="10" name="10_1" class="inpl" onchange="count(this,'10_1','10')" value="$format.formatNumber($!{balanceSheet.contentsTextNumbers},2,100)" #if(!${balanceSheet.names}) style="display: none;" #end /></td>
+	              #end
+            	#end
+            	#if($balanceSheet.loanType==11)
+            	  <td >
+            	  	#if($balanceSheet.no==0)
+						<input  class="titlefc2" id="11" name="tems_name_11" value="其他负债(元)" style="width:40%;float: left;" readonly="readonly"/>
+								<a href="#" class="delbtnr"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtnr" ><img src="${contextPath}/images/add.png" /></a>
+					#else
+						<input id="11" name="items_name_11" class="labr" value="$!{balanceSheet.names}" #if(!${balanceSheet.names}) style="display: none;" #end onchange="isempty(this)"></label>
+					#end
+					</td>
+				#if($balanceSheet.no==0)
+	              <td><input class="rinpstybc" type="text" id="11" name="11"  value="$format.formatNumber($!{balanceSheet.contentsTextNumbers},2,100)" readonly="readonly"/></td>
+            	#else
+            	  <td><input type="text" id="11" name="11_1" class="inpr" onchange="count(this,'11_1','11')"value="$format.formatNumber($!{balanceSheet.contentsTextNumbers},2,100)" #if(!${balanceSheet.names}) style="display: none;" #end/></td>
+            	#end
+            	</tr>
+            	#end
+            #end
+            #set($num=0)
+               #foreach($balanceSheet in $!customerInforUpdateBalanceSheet)
+            	#if($balanceSheet.loanType==12)
+            	#if($num==0)
+           	 	   <tr id="120">
+           	 	   #set($num=1)
+           		#else
+           		   <tr id="1201">
+           		#end
+            	  <td >
+            	  	#if($balanceSheet.no==0)
+						<input  class="titlefc2" id="12" name="tems_name_12" value="其他资产(元)"  style="width:40%;float: left;"readonly="readonly"/>
+								<a href="#" class="delbtnl"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtnl" ><img src="${contextPath}/images/add.png" /></a>
+					#else
+						<input  id="12" name="items_name_12" class="labl" value="$!{balanceSheet.names}" #if(!${balanceSheet.names}) style="display: none;" #end onchange="isempty(this)"/>
+					#end
+            	  </td>
+            	  #if($balanceSheet.no==0)
+	              <td><input class="rinpstybc" type="text" id="12" name="12"  value="$format.formatNumber($!{balanceSheet.contentsTextNumbers},2,100)" readonly="readonly" /></td>
+            	 #else
+            	  <td><input type="text" id="12" name="12_1" class="inpl" onchange="count(this,'12_1','12')" value="$format.formatNumber($!{balanceSheet.contentsTextNumbers},2,100)" #if(!${balanceSheet.names}) style="display: none;" #end/></td>
+            	 #end 
+            	#end
+            	#if($balanceSheet.loanType==13)
+            	  <td >
+            	  	#if($balanceSheet.no==0)
+						<input class="titlefc" id="13" name="tems_name_13" value="负债总计(元)" readonly="readonly"/>
+					#else
+						<label id="13" name="13" > $!{balanceSheet.names} </label>
+					#end
+					</td>
+					#if($balanceSheet.no==0)
+	              <td><input class="rinpstybc" type="text" id="13" name="13" value="$format.formatNumber($!{balanceSheet.contentsTextNumbers},2,100)" readonly="readonly"/></td>
+	              #else
+	               <td><input type="text" id="13" name="13" value="$format.formatNumber($!{balanceSheet.contentsTextNumbers},2,100)" readonly="readonly"/></td>
+	              #end 
+            	 </tr>
+            	#end
+            #end
+            #set($num=0)
+               #foreach($balanceSheet in $!customerInforUpdateBalanceSheet)
+            	#if($balanceSheet.loanType==14)
+            	 #if($num==0)
+           	 	   <tr id="140">
+           	 	   #set($num=1)
+           		#else
+           		   <tr id="1401">
+           		#end
+            	  <td >
+            	  	#if($balanceSheet.no==0)
+						<input  class="titlefc" id="14" name="tems_name_14" value="资产总计(元)" readonly="readonly"/>
+					#else
+					<label id="14" name="14" >$!{balanceSheet.names}</label>
+					#end
+            	  </td>
+            	  #if($balanceSheet.no==0)
+	              <td><input class="rinpstybc" type="text" id="14" name="14"  value="$format.formatNumber($!{balanceSheet.contentsTextNumbers},2,100)" readonly="readonly"/></td>
+            	  #else
+            	  <td><input type="text" id="14" name="14" value="$format.formatNumber($!{balanceSheet.contentsTextNumbers},2,100)" readonly="readonly"/></td>
+            	  #end
+            	#end
+            	#if($balanceSheet.loanType==15)
+            	  <td >
+            	  	#if($balanceSheet.no==0)
+						<input class="titlefc" id="15" name="tems_name_15" value="所有者权益" readonly="readonly"/>
+					#else
+						<label id="15" name="15" >$!{balanceSheet.names}</label>
+					#end
+					</td>
+					 #if($balanceSheet.no==0)
+	              <td><input class="rinpstybc" type="text" id="15" name="15"  value="$format.formatNumber($!{balanceSheet.contentsTextNumbers},2,100)" readonly="readonly"/></td>
+            	   #else
+            	   <td><input type="text" id="15" name="15" value="$format.formatNumber($!{balanceSheet.contentsTextNumbers},2,100)" readonly="readonly"/></td>
+            	   #end
+            	</tr>
+            	#end
+            #end
+            #set($num=0)
+               #foreach($balanceSheet in $!customerInforUpdateBalanceSheet)
+            	#if($balanceSheet.loanType==16)
+            	  #if($num==0)
+           	 	  <tr id="160">
+           	 	   #set($num=1)
+           		#else
+           		   <tr id="1601">
+           		#end
+            	  <td >
+            	  	#if($balanceSheet.no==0)
+						<input class="titlefc" id="16" name="tems_name_16" value="流动比率" readonly="readonly"/>
+					#else
+					<label id="16"  name="16">$!{balanceSheet.names}</label>
+					#end
+            	  </td>
+            	  #if($balanceSheet.no==0)
+	              <td><input class="rinpstybc" type="text" id="16" name="16"  value="$format.formatNumber($!{balanceSheet.contentsTextNumbers},2,100)" readonly="readonly"/></td>
+            	  #else
+            	  <td><input type="text" id="16" name="16" value="$format.formatNumber($!{balanceSheet.contentsTextNumbers},2,100)" readonly="readonly"/></td>
+            	  #end
+            	#end
+            	#if($balanceSheet.loanType==17 && $balanceSheet.no==0)
+            	    <td > 
+						<input class="titlefc" id="17" name="tems_name_17" value="负债和所有者权益总计" readonly="readonly"/>
+					</td>
+	               	<td><input class="rinpstybc" type="text" id="17" name="17" value="$format.formatNumber($!{balanceSheet.contentsTextNumbers},2,100)" readonly="readonly"/></td>
+            	</tr>
+            	#end
+            #end
+             #foreach($balanceSheet in $!customerInforUpdateBalanceSheet)
+              #if($balanceSheet.loanType==17 && $balanceSheet.no==1)
+            <tr id="170">
+              <td></td>
+              <td></td>
+              <td ><label for="name" id="" name="fzbl">负债率(%)</label></td>
+              <td><input class="rinpstybc" type="text" id="" name="fzbl" value="$!{balanceSheet.contentsTextNumbers}" readonly="readonly"/></td>
+            </tr>
+             #end
+            #end
+            #foreach($balanceSheet in $!customerInforUpdateBalanceSheet)
+             #if($balanceSheet.loanType==17&&$balanceSheet.no==2)
+            <tr>
+              <td></td>
+              <td></td>
+              <td ><label for="name" id="" name="zdbl">速动比率(%)</label></td>
+              <td><input class="rinpstybc" type="text" id="" name="zdbl" value="$!{balanceSheet.contentsTextNumbers}" readonly="readonly"/></td>
+            </tr>
+              #end
+            #end
+             #foreach($balanceSheet in $!customerInforUpdateBalanceSheet)
+             #if($balanceSheet.loanType==18)
+             <tr>
+                <td class="titlefc"><label for="name" id="" name="pj">表外资产负债情况及评价</label></td>
+                <td colspan="3"> <textarea rows="3" id="pingjia" name="pj" onkeyup="cls(this,200)" oncontextmenu="cls(this,200)" >$!{balanceSheet.contentsTextNumbers}</textarea></td>
+            </tr>
+             #end
+            #end
+          </table>
+          #else
+      <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc">
+	     <colgroup>
+             <col width="20%" />
+              <col width="20%" />
+              <col width="20%" />
+              <col width="20%" />
+            </colgroup>
+             <tr>
+              <td class="titlec" colspan="2"><label >资产</label></td>
+              <td class="titlec" colspan="2"><label >负债</label></td>
+            </tr>
+            <tr id="0" >
+              <td ><input class="titlefc " id="0" name="items_name_0" value="流动资产(元)" readonly="readonly"/></td>
+              <td><input class="rinpstybc" type="text" id="0" name="0" value="" readonly="readonly"/></td>
+              <td ><input  class="titlefc" id="1" name="items_name_1" value="短期负债(元)" readonly="readonly"/></td>
+              <td><input class="rinpstybc" type="text" id="1" name="1" value="" readonly="readonly"/></td>
+            </tr>
+            <tr id="20" >
+             	<td><input class="titlefc1" id="2" name="items_name_2" value="现金及银行存款(元)" style="width:50%;float: left;" readonly="readonly"/>
+				<a href="#" class="delbtnl"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtnl" ><img src="${contextPath}/images/add.png" /></a></td>
+			  <td><input  class="rinpstybc" type="text" id="2" name="2" value="" readonly="readonly"/></td>
+              <td><input class="titlefc1" id="3" name="items_name_3" value="应收账款(元)" style="width:40%;float: left;" readonly="readonly"/>
+							<a href="#" class="delbtnr"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtnr" ><img src="${contextPath}/images/add.png" /></a></td>
+              <td><input class="rinpstybc" type="text" id="3" name="3" value="" readonly="readonly"/></td>
+            </tr>
+            <tr id="40">
+               <td><input class="titlefc1" id="4" name="items_name_4" value="应收账款(元)" style="width:40%;float: left;" readonly="readonly"/>
+				<a href="#" class="delbtnl"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtnl" ><img src="${contextPath}/images/add.png" /></a></td>
+			  <td><input class="rinpstybc" type="text" id="4" name="4" value="" readonly="readonly"/></td>
+              <td><input  class="titlefc1" id="5" name="items_name_5" value="预收账款(元)" style="width:40%;float: left;" readonly="readonly"/>
+							<a href="#" class="delbtnr"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtnr" ><img src="${contextPath}/images/add.png" /></a></td>
+              <td><input class="rinpstybc" type="text" id="5" name="5" value="" readonly="readonly"/></td>
+            </tr>
+            
+            <tr id="60">
+              <td><input  class="titlefc1" id="6" name="items_name_6" value="预付账款(元)" style="width:40%;float: left;" readonly="readonly"/>
+				<a href="#" class="delbtnl"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtnl" ><img src="${contextPath}/images/add.png" /></a></td>
+			  <td><input class="rinpstybc" type="text" id="6" name="6" value="" readonly="readonly"/></td>
+              <td><input class="titlefc1" id="7" name="items_name_7" value="短期贷款(元)" style="width:40%;float: left;" readonly="readonly"/>
+							<a href="#" class="delbtnr"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtnr" ><img src="${contextPath}/images/add.png" /></a></td>
+              <td><input class="rinpstybc" type="text" id="7" name="7" value="" readonly="readonly"/></td>
+            </tr>
+            <tr id="80">
+             <td><input  class="titlefc1" id="8" name="items_name_8" value="存货和原材料(元)" style="width:45%;float: left;" readonly="readonly"/>
+				<a href="#" class="delbtnl"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtnl" ><img src="${contextPath}/images/add.png" /></a></td>
+			  <td><input class="rinpstybc" type="text" id="8" name="8" value="" readonly="readonly"/></td>
+              <td><input  class="titlefc2" id="9" name="items_name_9" value="长期负债(元)" style="width:40%;float: left;" readonly="readonly"/>
+							<a href="#" class="delbtnr"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtnr" ><img src="${contextPath}/images/add.png" /></a></td>
+              <td><input class="rinpstybc" type="text" id="9" name="9" value="" readonly="readonly"/></td>
+            </tr>
+            
+       
+            <tr id="100">
+            
+             <td><input class="titlefc2" id="10" name="items_name_10" value="固定资产(元)" style="width:40%;float: left;" readonly="readonly"/>
+				<a href="#" class="delbtnl"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtnl" ><img src="${contextPath}/images/add.png" /></a></td>
+			  <td><input class="rinpstybc" type="text" id="10" name="10" value="" readonly="readonly"/></td>
+              <td><input class="titlefc2" id="11" name="items_name_11" value="其他负债(元)" style="width:40%;float: left;" readonly="readonly"/>
+							<a href="#" class="delbtnr"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtnr" ><img src="${contextPath}/images/add.png" /></a></td>
+              <td><input class="rinpstybc" type="text" id="11" name="11" value="" readonly="readonly"/></td>
+            </tr>
+            <tr id="120">
+             <td><input  class="titlefc2" id="12" name="items_name_12" value="其他资产(元)" style="width:40%;float: left;" readonly="readonly"/>
+				<a href="#" class="delbtnl"><img src="${contextPath}/images/del.png" /></a>
+			   <a href="#" class="addbtnl" ><img src="${contextPath}/images/add.png" /></a></td>
+			  <td><input class="rinpstybc" type="text" id="12" name="12" value="" readonly="readonly"/></td>
+              <td ><input class="titlefc" id="13" name="tems_name_13" value="负债总计(元)" readonly="readonly"/></td>
+              <td><input class="rinpstybc" type="text" id="13" name="13" value="" readonly="readonly"/></td>
+            </tr>
+            
+            <tr id="140">
+                <td >	<input class="titlefc" id="14" name="tems_name_14" value="资产总计(元)" readonly="readonly"/></td>
+              <td><input class="rinpstybc" type="text" id="14" name="14" value="" readonly="readonly"/></td>
+             
+              <td ><input class="titlefc" id="15" name="tems_name_15" value="所有者权益" readonly="readonly"/></td>
+              <td><input class="rinpstybc" type="text" id="15" name="15" value="" readonly="readonly"/></td>
+             
+            </tr>
+            <tr id="160">
+                <td ><input  class="titlefc" id="16" name="tems_name_16" value="流动比率" readonly="readonly"/></td>
+              <td><input class="rinpstybc" type="text" id="16" name="16" value="" readonly="readonly"/></td>
+      
+             <td><input  class="titlefc" id="17" name="tems_name_17" value="负债和所有者权益总计" readonly="readonly"/></td>
+              <td><input class="rinpstybc" type="text" id="17" name="17" value="" readonly="readonly"/></td>
+             
+            </tr>
+            <tr id="170">
+               <td></td>
+              <td></td>
+         
+              <td ><label for="name" id="" name="fzbl">负债率%</label></td>
+              <td><input class="rinpstybc" type="text" id="" name="fzbl" value="" readonly="readonly"/></td>
+             
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+             
+             <td ><label for="name" id="" name="zdbl">速动比率%</label></td>
+              <td><input class="rinpstybc" type="text" id="" name="zdbl" value="" readonly="readonly"/></td>
+            
+            </tr>
+             <tr>
+              <td class="titlefc"><label for="name" id="" name="pj">表外资产负债情况及评价</label></td>
+              <td colspan="3"> <textarea rows="3" id="pingjia" name="pj" onkeyup="cls(this,200)" oncontextmenu="cls(this,200)"></textarea> </td>
+            </tr>
+          </table>
+          #end
+        </div>
+      </form>
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n("button.save")" class="current" />
+        <input type="button" onclick="returnClick();" value="#i18n("button.cancel")" />
+      </div>
+    </div>
+  </div>
+
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+  <script src='${contextPath}/js/customerInforUpdate/customerinfoupdate_zcfz.js'></script>
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");	
+	window.top.currentWindow.setLayout(layout);
+	function cls(obj,max,v){
+	    var reg=/[^x00-xff]/gm;
+	    var str=obj.value.replace(reg,'aa');//全换成单字节字符计算
+	    var message = "长度最大为"+ max ;
+	    $(obj).next("label").remove(); 
+	    if(str.length>max){
+	            var n=0,strr=[];
+	            for(var i=0;i<obj.value.length;i++){//得到50字节以内的字符
+	                    /[^x00-xff]/.test(obj.value.charAt(i))?n+=2:n+=1;
+	                    if(n>max)break;
+	                    strr.push(obj.value.charAt(i));
+	            }
+	            obj.value=strr.join('');
+	            var leng = $(obj).next("label").length;
+	            if(leng == 0)
+	            $(obj).after("<label class='error' generated='true' >" + message + "</label>");
+	    }else{
+	    	    $(obj).next("label").remove(); 
+	    	
+	    }
+	}
+	$(document).ready(function() {	
+	     $("#id_save_button").click(function() {
+
+	    		var str ="";
+	    		 var str1 ="";
+	    		 var str2 ="";
+	    		 var flag = true;
+	    		var trlength = $("#formsId table tr").length;
+	    		for(i=1;i<=trlength - 4;i++){
+	    			var no = 0;
+	    			var leng = 0;
+	    			var tr = $("#formsId table tr:eq(" + i +")");
+	    			var trid =tr.attr("id");
+	    			var chilid = trid + 1;
+	    			var td1 = tr.find("td:eq(0)");
+	    			var td2 = tr.find("td:eq(1)");
+	    			var td3 = tr.find("td:eq(2)");
+	    			var td4 = tr.find("td:eq(3)");
+	    			var item1 = td1.find("input").attr("id");
+	    			var item2 = td3.find("input").attr("id");
+	    			var name1 = td1.find("input").val();
+	    			var name2 = td3.find("input").val();
+	    			var value1 = Number(td2.find("input").val())*100;
+	    			var value2 = Number(td4.find("input").val())*100;
+	    			 str1 = "{'loanType':'" + item1 +"','names':'" +name1+"','no':'"  +no+ "','contentsTextNumbers':'" + value1 +"'},";
+	    			 str2 = "{'loanType':'" + item2 +"','names':'" +name2+"','no':'"  +no+ "','contentsTextNumbers':'" + value2 +"'},";
+	    			 leng =tr.nextAll("#" + chilid).length;
+	    			 if(leng > 0) {
+	    					//有子项
+	    				  var nexttr = tr.next();
+	    				  var k=1,p=1;	    				
+	    				 for(j = 1; j <= leng; j++){
+	    					  var nextlab = 0;
+	    					 var namel = nexttr.find(".labl").val();
+	    					 var namer = nexttr.find(".labr").val();
+	    					
+	    					 var valuel = Number(nexttr.find(".inpl").val())*100;
+	    						 str1= str1 + "{'loanType':'" + item1 +"','names':'" +namel+"','no':'" + k + "','contentsTextNumbers':'" + valuel +"'},";
+	    						 k++;
+	    					 
+	    					 var valuer = Number(nexttr.find(".inpr").val())*100;
+	    						 str2= str2 + "{'loanType':'" + item2 +"','names':'" +namer+"','no':'" + p + "','contentsTextNumbers':'" + valuer +"'},";
+	    						 p++;
+	    					nextlab = nexttr.find("label").length;
+	    					 if(nextlab > 0)
+	    					 { 
+	    					    flag = false;
+	    					 }
+	    					 nexttr =  nexttr.next();
+	    				  }
+	    				 
+	    				i= i + leng;
+
+	    			}
+	    			
+	    			str = str + str1 + str2;
+	    			
+	    		}
+	    		 var val2 = 0,val1 = 0,val3 ="";
+	    		 val1 = $("input[name ='fzbl']").val();
+	    		 val2 = $("input[name ='zdbl']").val();
+	    		 val3 = $("textarea[name ='pj']").val();
+	    		 var str3 = "{'loanType':'17','names':'负债率%','no':1,'contentsTextNumbers':'" + val1 +"'},";
+	    		 var str4 = "{'loanType':'17','names':'速动比率%','no':'2','contentsTextNumbers':'" + val2 +"'},";
+	    		 var str5 = "{'loanType':'18','names':'表外资产负债情况及评价','no':'0','contentsTextNumbers':'" + val3 +"'}";
+	    		str = "["+str + str3 + str4 + str5+"]";
+	    		var errleng = $(".error").length;
+				 if(errleng > 0)
+				 { 
+				    flag = false;
+				 }
+	    		if(flag){
+	    		$("#balanceSheet").val(str);
+	    		$("#id_module_form").submit();
+	    		}
+	       });
+
+	});
+	function returnClick(){
+		
+		 window.location.href= contextPath + "/customer/basiccustomerinforUpdate/browse.page" ;
+	}
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

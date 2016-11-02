@@ -1,0 +1,83 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户经理警示书修改</div>
+      </div>
+      <form id="id_module_form" action="${contextPath}/manager/managerrisk/update.json">
+        <input type="hidden" name="id" value="$!managerRiskWarning.id" />
+         <div class="forms" id="formsId">
+          <table class="rule" border="1" bordercolor="#CCCCCC">
+            <caption>客户经理警示书</caption>
+            <colgroup>
+              <col width="10%" />
+              <col width="40%" />
+              <col width="10%" />
+              <col width="40%" />
+            </colgroup>
+            <tr>
+            <td><label>客户经理姓名：</label></td>
+              <td><select id="customerManagerId" name="customerManagerId" value="" disabled="disabled" >
+                  <option value="" ></option>
+                  #dict("ALLMANAGER", "$!managerRiskWarning.customerManagerId")
+                </select>
+                </td>
+                <input type="hidden" id="userId" name="userId" value = "$!managerRiskWarning.customerManagerId">
+            </tr>
+            <tr>
+			<td class="titlec"><label>警示事项：</label></td>
+			<td><textarea id="warningItems" value="" rows="5" clos name="warningItems">$!managerRiskWarning.warningItems</textarea></td>
+            <td class="titlec"><label>主管建议：</label></td>
+				<td><textarea id="competentAdvice" value="" rows="5" clos name="competentAdvice">$!managerRiskWarning.competentAdvice</textarea></td>
+            </tr>
+          </table>
+        </div>
+      </form>
+
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n('button.cancel')" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");			
+	window.top.currentWindow.setLayout(layout);
+			
+	#set ($formName = "'#id_module_form'")
+	#validator($formName)
+	$(document).ready(function() {		
+		$("#id_save_button").click(function() {
+			if(submitFlag == 1){
+				alert("请勿重复提交!")
+				return;
+			}
+			submitFlag = 1;
+			if ($($formName).valid()) {
+				var formjson = $($formName).serialize();
+	   	       var url = "${modulePath}/update.json";
+				$.ajax({
+					url : url,
+					type : "get",
+					data : formjson,
+					success : function(data) {
+						if (data.success) {
+							topWin.Dialog.message("保存成功！");
+							window.location.href= contextPath+"/manager/managerrisk/browse.page" ;
+						}
+						else{
+							topWin.Dialog.message(data.message);
+					    }
+						submitFlag = 0;
+					}
+				});
+					
+			}else{
+				submitFlag = 0;
+			}
+	    });
+	});
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

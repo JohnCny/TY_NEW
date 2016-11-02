@@ -1,0 +1,146 @@
+#parse ("common/iframe_page_header.htm")
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+       <div class="place">
+       <div class="title">客户经理晋级规则配置</div>
+      </div>
+       #parse ("common/place_tab_jlcj.htm")
+      <form id="id_module_form" action="${contextPath}/manager/managerPromotionRule/savejjgz.page" method="post">
+        <div class="form-bd" id="formsId" style="padding-top: 0px;">
+        
+          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%">
+            <colgroup>
+             
+              <col width="15%" />
+              <col width="15%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+
+            </colgroup>
+            <tr>
+            <td class="titlec" >经理级别</td>
+             <td class="titlec" >季度日均透支余额（万）</td>
+              <td class="titlec" >团队日均透支余额（万）</td>
+                <td class="titlec" >团队成员级别</td>
+                <td class="titlec" >人数</td>
+                 <td class="titlec" >管户数（户）</td>
+                  <td class="titlec" >激活率</td>
+                      <td class="titlec" >活跃率</td>
+                      <td class="titlec" >晋升层级</td>
+            </tr>
+            </table>
+            #if($managerPromotionRulelist.size()!=0)
+             <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%">
+            <colgroup>
+              <col width="15%" />
+              <col width="15%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+
+
+            </colgroup>
+             #foreach($managerPromotionRule in $!managerPromotionRulelist)
+            <tr>
+              <td class="titlefc3"><input type="hidden" name="id" value="$!managerPromotionRule.id"><input type="hidden" name="initialLevel" value="$!managerPromotionRule.initialLevel">#dictVal('CUSTOMERMANAGERLEVEL',$!managerPromotionRule.initialLevel)</td>
+              <td><input class="rinpsty" type="text" id="quarterAverageOverBalance" name="quarterAverageOverBalance" value="$format.formatNumber($!managerPromotionRule.quarterAverageOverBalance,2,1000000)" /></td>
+              <td style="text-align: center;"><input  type="hidden" id="teamDailyOverdraftBalance" name="teamDailyOverdraftBalance" value="$format.formatNumber($!managerPromotionRule.teamDailyOverdraftBalance,2,1000000)" />--</td>
+               #if($!managerPromotionRule.initialLevel == "MANA001" || $!managerPromotionRule.initialLevel == "MANA004" || $!managerPromotionRule.promotionLevel == "MANA004")
+                <td style="text-align: center;"><input  type="hidden" id="levelTeamMember" name="levelTeamMember" value="$!managerPromotionRule.levelTeamMember" />--</td>
+                  <td style="text-align: center;"><input  type="hidden" id="subMangerNumber" name="subMangerNumber" value="$!managerPromotionRule.subMangerNumber" />--</td>
+                #else
+              <td>
+              <select class="rinpsty" id="levelTeamMember" name="levelTeamMember" value="$!managerPromotionRule.levelTeamMember">
+                  <option value=""></option>
+                  #dict('CUSTOMERMANAGERLEVEL',$!managerPromotionRule.levelTeamMember)
+                </select></td>
+               
+              <td><input  type="text" class="rinpstynum" id="subMangerNumber" name="subMangerNumber" value="$!managerPromotionRule.subMangerNumber"/></td>
+               #end
+              <td><input  type="text" class="rinpstynum" id="tubeNumber" name="tubeNumber" value="$!managerPromotionRule.tubeNumber" /></td>
+              <td><input class="rinpsty" type="text" id="activationRate" name="activationRate" value="$!managerPromotionRule.activationRate" style="width: 70%"/>%</td>
+              <td><input class="rinpsty" type="text" id="activeRate" name="activeRate" value="$!managerPromotionRule.activeRate" style="width: 70%"/>%</td>
+              <td><input  type="hidden" id="promotionLevel" name="promotionLevel" value="$!managerPromotionRule.promotionLevel" />#dictVal('CUSTOMERMANAGERLEVEL',$!managerPromotionRule.promotionLevel)</td>
+            
+            </tr>
+            #end
+          </table>
+          #else
+          
+            <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%">
+            <colgroup>
+              <col width="15%" />
+              <col width="15%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+
+            </colgroup>
+             #foreach($managerPromotionRulelval in $!managerPromotionRulel)
+            <tr>
+              <td class="titlefc3"><input type="hidden" name="id" value="$!managerPromotionRulelval.id"><input type="hidden" name="initialLevel" value="$!managerPromotionRulelval.initialLevel">#dictVal('CUSTOMERMANAGERLEVEL',$!managerPromotionRulelval.initialLevel)</td>
+             <td><input class="rinpsty" type="text" id="quarterAverageOverBalance" name="quarterAverageOverBalance" value="" /></td>
+              <td style="text-align: center;"><input  type="hidden" id="teamDailyOverdraftBalance" name="teamDailyOverdraftBalance" value="" />--</td>
+                <td>
+              <select class="rinpsty" id="levelTeamMember" name="levelTeamMember" value="">
+                  <option value=""></option>
+                  #dict('CUSTOMERMANAGERLEVEL','')
+                </select></td>
+              <td><input  type="text" class="rinpstynum" id="subMangerNumber" name="subMangerNumber" value=""/></td>
+              <td><input  type="text" class="rinpstynum" id="tubeNumber" name="tubeNumber" value="" /></td>
+              <td><input class="rinpsty" type="text" id="activationRate" name="activationRate" value="" style="width: 70%"/>%</td>
+              <td><input class="rinpsty" type="text" id="activeRate" name="activeRate" value="" style="width: 70%"/>%</td>
+               <td><input  type="hidden" id="promotionLevel" name="promotionLevel" value="$!managerPromotionRulelval.promotionLevel" />#dictVal('CUSTOMERMANAGERLEVEL',$!managerPromotionRulelval.promotionLevel)</td>
+            </tr>
+            #end
+          </table>
+          #end
+        </div>
+      </form>
+
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n('button.cancel')" />
+      </div>
+    </div>
+  </div>
+   <script src='${contextPath}/js/maintenanceAccountManager/maintenanceAccountManager.js'></script> 
+  <script type="text/javascript">
+  
+	var layout=new FormsLayout("formsId");			
+	window.top.currentWindow.setLayout(layout);
+			
+	#set ($formName = "'#id_module_form'")
+	$(document).ready(function() {	
+		
+
+		$("li").removeClass("activeTab");
+		$("li:eq(0)").addClass("activeTab");
+	     $("#id_save_button").click(function() {
+	    	var leng = 0;
+	    	 leng = $(".error").length;
+	    	if(leng > 0){
+	    		return;
+	    	}else{
+			  $("#id_module_form").submit();  
+	    	}
+	       });
+
+	});
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

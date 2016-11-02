@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validators>
+	<validator id="system.person">
+<!-- 		<control name="seqNo"> -->
+<!-- 		<entry type="min" value="0" message="" /> -->
+<!-- 			<entry type="max" value="99999999999" message="" /> -->
+<!-- 			<entry type="required" value="true" /> -->
+<!-- 			<entry type="number" value="true" /> -->
+<!-- 		</control> -->
+		<control name="lastName">
+			<entry type="minlength" value="0" />
+			<entry type="maxlength" value="6" />
+			<entry type="required" value="true" />
+		</control>
+		<control name="firstName">
+		<entry type="minlength" value="0" />
+			<entry type="maxlength" value="6" />
+			<entry type="required" value="true" />
+		</control>
+		<control name="displayName">
+		<entry type="minlength" value="0" />
+			<entry type="maxlength" value="16" />
+			<entry type="required" value="true" />
+		</control>
+		<control name="phone">
+			<entry type="phone" value="true"/>
+		</control>
+		<control name="mobile">
+			<entry type="mobile" value="true"/>
+		</control>
+		<control name="idCard">
+			<entry type="idcard" value="true"/>
+		</control>
+		<control name="age">
+		<entry type="min" value="0" message="" />
+			<entry type="max" value="150" message="" />
+			<entry type="required" value="true" />
+			<entry type="number" value="true" />
+		</control>
+		
+		<control name="homeAddress">
+		<entry type="minlength" value="0" />
+			<entry type="maxlength" value="33" />
+			<entry type="required" value="true" />
+		</control>
+		<control name="unitAddress">
+		  <entry type="minlength" value="0" />
+			<entry type="maxlength" value="33" />
+			<entry type="required" value="true" />
+		</control>
+		
+		<control name="description">
+		<entry type="minlength" value="0" />
+			<entry type="maxlength" value="340" />
+			<entry type="required" value="true" />
+		</control>
+		<control name="remarks">
+		<entry type="minlength" value="0" />
+			<entry type="maxlength" value="85" />
+			<entry type="required" value="true" />
+		</control>
+	</validator>
+</validators>

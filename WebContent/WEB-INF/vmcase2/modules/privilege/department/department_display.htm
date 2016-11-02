@@ -1,0 +1,62 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+	<div class="content_main">
+		<div class="contentinner">
+			<form id="id_module_form" action="${contextPath}/system/department/update.json">
+				<div class="forms" id="formsId">
+				<input type="hidden" name="id" value="$!department.id" />
+					<table class="rule">
+						<colgroup>
+							<col width="10%" />
+							<col width="30%" />
+							<col width="10%" />
+							<col width="10%" />
+							<col width="30%" />
+						</colgroup>
+						<!-- 
+						<tr>
+							<td><label for="seqNo">#mi18n("seqNo"):</label></td>
+							<td><input type="text" id="seqNo" name="seqNo" value="$!department.seqNo" disabled="true"/></td>
+							<td>&nbsp;</td>
+							<td><label for="name">#mi18n("name"):</label></td>
+							<td><input type="text" id="name" name="name" value="$!department.name" disabled="true"/></td>
+						</tr>
+						 -->
+						 <tr>
+							<td><label for="name">#mi18n("name"):</label></td>
+							<td><input type="text" id="name" name="name" value="$!department.name" disabled="true"/></td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td>#mi18n("shortName"):</td>
+							<td><input type="text" id="shortName" name="shortName" value="$!department.shortName" disabled="true"/></td>
+							<td>&nbsp;</td>
+							<td>上级组织:</td>
+							<td>
+							<input type="hidden" id="orgId" name="orgId" value="$!department.orgId" />
+							<input type="text" id="parentName" name="parentName" value="$!parentName" disabled="true"/></td>
+						</tr>
+						<tr>
+							<td>#mi18n("description"):</td>
+							<td colspan="4"><textarea id="description" name="description" rows="5" value="$!department.description" disabled="true">$!department.description</textarea></td>
+						</tr>
+					</table>
+				</div>
+			</form>
+
+			<div class="submit">
+				<input class="current" type="button" onclick="javascript:history.go(-1);" value="#i18n('button.back')" />
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	var p_place = window.parent.document.getElementById('place');
+	var placeHeight = $(p_place).outerHeight(true);
+	var layout=new FormsLayout("formsId",placeHeight,0.73);			
+	window.top.currentWindow.setLayout(layout);
+
+	</script>
+</body>
+</html>

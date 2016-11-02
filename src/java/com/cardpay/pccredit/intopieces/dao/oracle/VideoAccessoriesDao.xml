@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.intopieces.dao.VideoAccessoriesDao" >
+  <resultMap id="BaseResultMap" type="com.cardpay.pccredit.intopieces.model.VideoAccessories" >
+    <id column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="APPLICATION_ID" property="applicationId" jdbcType="DECIMAL" />
+    <result column="SERVER_URL_PATH" property="serverUrlPath" jdbcType="VARCHAR" />
+    <result column="CREATION_TIME" property="creationTime" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="VARCHAR" />
+    <result column="IMAGE_TYPE" property="imageType" jdbcType="VARCHAR" />
+    <result column="FILE_PATH" property="filePath" jdbcType="VARCHAR" />
+    <result column="FILE_NAME" property="fileName" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, APPLICATION_ID, SERVER_URL_PATH, CREATION_TIME, UPDATE_TIME, IMAGE_TYPE, FILE_PATH, 
+    FILE_NAME, REMARK
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from VIDEO_ACCESSORIES
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from VIDEO_ACCESSORIES
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="com.cardpay.pccredit.intopieces.model.VideoAccessories" >
+    insert into VIDEO_ACCESSORIES (ID, APPLICATION_ID, SERVER_URL_PATH, 
+      CREATION_TIME, UPDATE_TIME, IMAGE_TYPE, 
+      FILE_PATH, FILE_NAME, REMARK
+      )
+    values (#{id,jdbcType=DECIMAL}, #{applicationId,jdbcType=DECIMAL}, #{serverUrlPath,jdbcType=VARCHAR}, 
+      #{creationTime,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}, #{imageType,jdbcType=VARCHAR}, 
+      #{filePath,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cardpay.pccredit.intopieces.model.VideoAccessories" >
+    insert into VIDEO_ACCESSORIES
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="applicationId != null" >
+        APPLICATION_ID,
+      </if>
+      <if test="serverUrlPath != null" >
+        SERVER_URL_PATH,
+      </if>
+      <if test="creationTime != null" >
+        CREATION_TIME,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+      <if test="imageType != null" >
+        IMAGE_TYPE,
+      </if>
+      <if test="filePath != null" >
+        FILE_PATH,
+      </if>
+      <if test="fileName != null" >
+        FILE_NAME,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=DECIMAL},
+      </if>
+      <if test="applicationId != null" >
+        #{applicationId,jdbcType=DECIMAL},
+      </if>
+      <if test="serverUrlPath != null" >
+        #{serverUrlPath,jdbcType=VARCHAR},
+      </if>
+      <if test="creationTime != null" >
+        #{creationTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="imageType != null" >
+        #{imageType,jdbcType=VARCHAR},
+      </if>
+      <if test="filePath != null" >
+        #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null" >
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cardpay.pccredit.intopieces.model.VideoAccessories" >
+    update VIDEO_ACCESSORIES
+    <set >
+      <if test="applicationId != null" >
+        APPLICATION_ID = #{applicationId,jdbcType=DECIMAL},
+      </if>
+      <if test="serverUrlPath != null" >
+        SERVER_URL_PATH = #{serverUrlPath,jdbcType=VARCHAR},
+      </if>
+      <if test="creationTime != null" >
+        CREATION_TIME = #{creationTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="imageType != null" >
+        IMAGE_TYPE = #{imageType,jdbcType=VARCHAR},
+      </if>
+      <if test="filePath != null" >
+        FILE_PATH = #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null" >
+        FILE_NAME = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cardpay.pccredit.intopieces.model.VideoAccessories" >
+    update VIDEO_ACCESSORIES
+    set APPLICATION_ID = #{applicationId,jdbcType=DECIMAL},
+      SERVER_URL_PATH = #{serverUrlPath,jdbcType=VARCHAR},
+      CREATION_TIME = #{creationTime,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=VARCHAR},
+      IMAGE_TYPE = #{imageType,jdbcType=VARCHAR},
+      FILE_PATH = #{filePath,jdbcType=VARCHAR},
+      FILE_NAME = #{fileName,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+</mapper>

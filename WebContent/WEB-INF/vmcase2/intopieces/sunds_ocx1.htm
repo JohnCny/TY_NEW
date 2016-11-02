@@ -1,0 +1,124 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/customerInfor.htm")
+<body>
+<div class="content_main">
+   <div class="contentinner">
+ 	<div class="inquiry">
+ 		<div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="5%" />
+              <col width="10%" />
+              <col width="5%" />
+              <col width="10%" />
+              <col width="25%" />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">客户姓名</th>
+              <th nowrap="nowrap">证件号码</th>
+              <th nowrap="nowrap">文件类型</th>
+              <th nowrap="nowrap">状态</th>
+              <th nowrap="nowrap">操作</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="5%" />
+              <col width="10%" />
+              <col width="5%" />
+              <col width="10%" />
+              <col width="25%" />
+            </colgroup>
+            #foreach ($obj in $batch_ls)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!obj.id"/></td>
+              <td nowrap="nowrap">$!customerInfor.chineseName</td>
+              <td nowrap="nowrap">$!customerInfor.cardId</td>
+              <td nowrap="nowrap">$!obj.name</td>
+              <td nowrap="nowrap">
+              #if($!obj.isUpload == $null)
+              	未缓存,未上传
+              #elseif($!obj.isUpload == "0")
+              	已缓存,未上传
+              #elseif($!obj.isUpload == "1")
+              	已上传
+              #end
+              </td>
+              <td nowrap="nowrap">
+              	#if($!obj.isUpload == "0")
+              		上传中,禁止操作！
+              	#elseif($!obj.isUpload == $null)
+              		<a id="id_browse_button" class="btn_g" href="javascript:void(0);" title="上传" onclick="browseFolder('$!{obj.id}','$!obj.isUpload','$!customerInfor.id')">上传</a>
+              		<a id="id_detail_button" class="btn_g" href="javascript:void(0);" title="查看上传" onclick="displayDetail('$!{obj.id}','$!obj.isUpload')">查看上传</a>
+              	#elseif($!obj.isUpload == "1")
+              		<a id="id_browse_button" class="btn_g" href="javascript:void(0);" title="上传" onclick="browseFolder('$!{obj.id}','$!obj.isUpload','$!customerInfor.id')">上传</a>
+              		<a id="id_detail_button" class="btn_g" href="javascript:void(0);" title="查看上传" onclick="displayDetail('$!{obj.id}','$!obj.isUpload','$!customerInfor.id')">查看上传</a>
+              		<a id="id_server_button" class="btn_g" href="javascript:void(0);" title="在线预览" onclick="displayServerPage('$!{obj.id}','$!obj.isUpload')">在线预览</a>
+              		<a id="id_delete_button" class="btn_g" href="javascript:void(0);" title="删除该批次" onclick="deleteBatch('$!{obj.id}')">删除该批次</a>
+              	#end
+              </td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="submit">
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n("button.back")" />
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+	});
+	
+	function browseFolder(id,is_upload,custId){
+		var url = "${contextPath}/postLoan/post/browse_folder.page?batch_id="+id+"&custId="+custId+"&bussType=1";
+		window.location.href = url;
+	}
+	
+	function displayDetail(id,is_upload){
+		var url = "${contextPath}/postLoan/post/display_detail.page?batchId="+id;
+		window.location.href = url;
+	}
+	
+	/* function displayServer(id,is_upload){
+		var url = "${contextPath}/intopieces/intopiecesquery/display_server.page?batchId="+id+"&first_flag=1";
+		window.location.href = url;
+	} */
+	function displayServerPage(id,is_upload){
+		var url = "${contextPath}/postLoan/post/display_server.page?batchId="+id+"&first_flag=1"+"&viewType=1&limit=5";
+		window.open(url,"newwindow");
+	}
+	
+	function deleteBatch(id){
+		Dialog.confirm("确定删除该批次吗？", "提示",
+			function() {
+				Dialog.load();
+				$.ajax({
+					url : "${contextPath}/postLoan/post/delete_batch.json?batchId="+id,
+					type : "get",
+					success : function(data) {
+						Dialog.closeLoad();
+						if (data.success) {
+							topWin.Dialog.message("批次删除成功！");
+							window.location.reload();
+						}
+						else{
+							topWin.Dialog.message("批次删除失败！");
+					    }
+					}
+				});
+			});
+	}
+	
+</script>
+#parse ("common/iframe_page_footer.htm")

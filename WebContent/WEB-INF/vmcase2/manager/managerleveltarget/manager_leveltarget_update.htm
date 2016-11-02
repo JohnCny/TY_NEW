@@ -1,0 +1,239 @@
+#parse ("common/iframe_page_header.htm")
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户经理层级业绩目标配置</div>
+      </div>
+       #parse ("common/place_tab_jlcj.htm")
+      <form id="id_module_form" action="${contextPath}/manager/managerPromotionRule/saveyjmb.page" method="post">
+          <input type="hidden" name="accountManagerParameterId" value="" />
+        <div class="form-bd" id="formsId" style="padding-top: 0px;">
+        
+           <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%;" >
+            <colgroup>
+               <col width="10%" />
+               <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+            </colgroup>
+            <tr>
+            <td class="titlec" >周期</td>
+            <td class="titlec" >客户经理层级</td>
+             <td class="titlec" >目标授信额度(元)</td>
+              <td class="titlec" >目标进件数</td>
+               <td class="titlec" >目标拜访次数</td>
+                <td class="titlec" >目标拜访客户数</td>
+                <td class="titlec" >活跃数</td>
+                 <td class="titlec" >激活数</td>
+                  <td class="titlec" >管户数</td>
+            </tr>
+            </table>
+             #if($weekly.size()!=0)
+             <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%">
+            <colgroup>
+           <col width="10%" />
+               <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+            </colgroup>
+            <tr><td class="titlefc3" style="text-align: center;" rowspan="7">周</td></tr>
+           #foreach($weeklyObj in $!weekly)
+            <tr>
+              <td><input type="hidden" name="id_weekly" value="$!weeklyObj.id"><input type="hidden" name="hierarchy_weekly" value="$!weeklyObj.hierarchy">#dictVal('CUSTOMERMANAGERLEVEL',$!weeklyObj.hierarchy)</td>
+              <td><input class="rinpsty" type="text" id="targetCredit" name="targetCredit_weekly" value="$format.formatNumber($!weeklyObj.targetCredit,2,100)" /></td>
+              <td><input class="rinpsty" type="text" id="targetNumber" name="targetNumber_weekly" value="$!weeklyObj.targetNumber" /></td>
+              <td><input class="rinpsty" type="text" id="targetNumberVisit" name="targetNumberVisit_weekly" value="$!weeklyObj.targetNumberVisit" /></td>
+              <td><input class="rinpsty" type="text" id="targetNumberCustomers" name="targetNumberCustomers_weekly" value="$!weeklyObj.targetNumberCustomers" /></td>
+              <td><input class="rinpsty" type="text" id="activeNumber" name="activeNumber_weekly" value="$!weeklyObj.activeNumber"/></td>
+              <td><input class="rinpsty" type="text" id="activationNumber" name="activationNumber_weekly" value="$!weeklyObj.activationNumber"/></td>
+               <td><input class="rinpsty" type="text" id="tubeNumber" name="tubeNumber_weekly" value="$!weeklyObj.tubeNumber"/></td>
+            </tr>
+            #end
+            </table>
+            #else
+           <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%">
+            <colgroup>
+           
+             <col width="10%" />
+               <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+
+            </colgroup>
+            <tr><td class="titlefc3" style="text-align: center;" rowspan="7">周</td></tr>
+          #foreach($dict in $!dictItems)
+            <tr>
+              <td ><input type="hidden" name="id_weekly" value=""><input type="hidden" name="hierarchy_weekly" value="$!dict.name">$!dict.title</td>
+              <td><input class="rinpsty" type="text" id="targetCredit" name="targetCredit_weekly" value="" /></td>
+              <td><input class="rinpsty" type="text" id="targetNumber" name="targetNumber_weekly" value="" /></td>
+              <td><input class="rinpsty" type="text" id="targetNumberVisit" name="targetNumberVisit_weekly" value="" /></td>
+              <td><input class="rinpsty" type="text" id="targetNumberCustomers" name="targetNumberCustomers_weekly" value="" /></td>
+              <td><input class="rinpsty" type="text" id="activeNumber" name="activeNumber_weekly" value=""/></td>
+              <td><input class="rinpsty" type="text" id="activationNumber" name="activationNumber_weekly" value=""/></td>
+              <td><input class="rinpsty" type="text" id="tubeNumber" name="tubeNumber_weekly" value=""/></td>
+            </tr>
+            #end
+            </table>
+              #end
+              #if($month.size()!=0)
+             <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%">
+            <colgroup>
+           
+             <col width="10%" />
+               <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+            </colgroup>
+            <tr><td class="titlefc3" style="text-align: center;"rowspan="7">月</td></tr>
+           #foreach($monthObj in $!month)
+            <tr>
+              <td><input type="hidden" name="id_month" value="$!monthObj.id"><input type="hidden" name="hierarchy_month" value="$!monthObj.hierarchy">#dictVal('CUSTOMERMANAGERLEVEL',$!monthObj.hierarchy)</td>
+              <td><input class="rinpsty" type="text" id="targetCredit" name="targetCredit_month" value="$format.formatNumber($!monthObj.targetCredit,2,100)" /></td>
+              <td><input class="rinpsty" type="text" id="targetNumber" name="targetNumber_month" value="$!monthObj.targetNumber" /></td>
+              <td><input class="rinpsty" type="text" id="targetNumberVisit" name="targetNumberVisit_month" value="$!monthObj.targetNumberVisit" /></td>
+              <td><input class="rinpsty" type="text" id="targetNumberCustomers" name="targetNumberCustomers_month" value="$!monthObj.targetNumberCustomers" /></td>
+              <td><input class="rinpsty" type="text" id="activeNumber" name="activeNumber_month" value="$!monthObj.activeNumber"/></td>
+              <td><input class="rinpsty" type="text" id="activationNumber" name="activationNumber_month" value="$!monthObj.activationNumber"/></td>
+              <td><input class="rinpsty" type="text" id="tubeNumber" name="tubeNumber_month" value="$!monthObj.tubeNumber"/></td>
+            </tr>
+            #end
+           
+          </table>
+           #else
+          
+            <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%">
+            <colgroup>
+           
+            <col width="10%" />
+               <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+            </colgroup>
+            <tr><td class="titlefc3" style="text-align: center;" rowspan="7">月</td></tr>
+          #foreach($dict in $!dictItems)
+            <tr>
+              <td ><input type="hidden" name="id_month" value=""><input type="hidden" name="hierarchy_month" value="$!dict.name">$!dict.title</td>
+              <td><input class="rinpsty" type="text" id="targetCredit" name="targetCredit_month" value="" /></td>
+              <td><input class="rinpsty" type="text" id="targetNumber" name="targetNumber_month" value="" /></td>
+              <td><input class="rinpsty" type="text" id="targetNumberVisit" name="targetNumberVisit_month" value="" /></td>
+              <td><input class="rinpsty" type="text" id="targetNumberCustomers" name="targetNumberCustomers_month" value="" /></td>
+              <td><input class="rinpsty" type="text" id="activeNumber" name="activeNumber_month" value=""/></td>
+              <td><input class="rinpsty" type="text" id="activationNumber" name="activationNumber_month" value=""/></td>
+               <td><input class="rinpsty" type="text" id="tubeNumber" name="tubeNumber_month" value=""/></td>
+            </tr>
+            #end
+          </table>
+            #end
+           #if($year.size()!=0)
+             <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%">
+            <colgroup>
+           <col width="10%" />
+               <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+
+            </colgroup>
+            <tr><td class="titlefc3" style="text-align: center;" rowspan="7">年</td></tr>
+           #foreach($yearObj in $!year)
+            <tr>
+              <td><input type="hidden" name="id_year" value="$!yearObj.id"><input type="hidden" name="hierarchy_year" value="$!yearObj.hierarchy">#dictVal('CUSTOMERMANAGERLEVEL',$!yearObj.hierarchy)</td>
+              <td><input class="rinpsty" type="text" id="targetCredit" name="targetCredit_year" value="$format.formatNumber($!yearObj.targetCredit,2,100)" /></td>
+              <td><input class="rinpsty" type="text" id="targetNumber" name="targetNumber_year" value="$!yearObj.targetNumber" /></td>
+              <td><input class="rinpsty" type="text" id="targetNumberVisit" name="targetNumberVisit_year" value="$!yearObj.targetNumberVisit" /></td>
+              <td><input class="rinpsty" type="text" id="targetNumberCustomers" name="targetNumberCustomers_year" value="$!yearObj.targetNumberCustomers" /></td>
+              <td><input class="rinpsty" type="text" id="activeNumber" name="activeNumber_year" value="$!yearObj.activeNumber"/></td>
+              <td><input class="rinpsty" type="text" id="activationNumber" name="activationNumber_year" value="$!yearObj.activationNumber"/></td>
+               <td><input class="rinpsty" type="text" id="tubeNumber" name="tubeNumber_year" value="$!yearObj.tubeNumber"/></td>
+            </tr>
+            #end
+            </table>
+            #else
+            <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%">
+            <colgroup>
+           
+              <col width="10%" />
+               <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+
+            </colgroup>
+            <tr><td class="titlefc3" style="text-align: center;" rowspan="7" >年</td></tr>
+            #foreach($dict in $!dictItems)
+            <tr>
+             <td ><input type="hidden" name="id_year" value=""><input type="hidden" name="hierarchy_year" value="$!dict.name">$!dict.title</td>
+              <td><input class="rinpsty" type="text" id="targetCredit" name="targetCredit_year" value="" /></td>
+              <td><input class="rinpsty" type="text" id="targetNumber" name="targetNumber_year" value="" /></td>
+              <td><input class="rinpsty" type="text" id="targetNumberVisit" name="targetNumberVisit_year" value="" /></td>
+              <td><input class="rinpsty" type="text" id="targetNumberCustomers" name="targetNumberCustomers_year" value="" /></td>
+              <td><input class="rinpsty" type="text" id="activeNumber" name="activeNumber_year" value=""/></td>
+              <td><input class="rinpsty" type="text" id="activationNumber" name="activationNumber_year" value=""/></td>
+               <td><input class="rinpsty" type="text" id="tubeNumber" name="tubeNumber_year" value=""/></td>
+            </tr>
+            #end
+          </table>
+          #end
+        </div>
+      </form>
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n("button.save")" class="current" />
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n("button.cancel")" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");	
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	$(document).ready(function() {	
+
+		$("li").removeClass("activeTab");
+		$("li:eq(2)").addClass("activeTab");
+		 $("#id_save_button").click(function() {
+		    	var leng = 0;
+		    	 leng = $(".error").length;
+		    	if(leng > 0){
+		    		return;
+		    	}else{
+				  $("#id_module_form").submit();  
+		    	}
+		       });
+	});
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

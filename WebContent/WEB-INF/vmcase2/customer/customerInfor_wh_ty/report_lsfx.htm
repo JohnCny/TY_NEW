@@ -1,0 +1,164 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+<script src="${contextPath}/common/js/common/Date.js"></script>
+<script src="${contextPath}/common/js/common/Stack.js"></script>
+<script src="${contextPath}/common/js/common/Tokanizer.js"></script>
+<script src="${contextPath}/common/js/common/Evaluator.js"></script>
+<script type="text/javascript">
+	var rules = [
+	            ]
+	var exp = new Expression("");
+
+	function Convert(strExp)
+	{
+	    if (strExp == null || strExp == undefined)
+	    {
+	        alert ("No expression is specified!");
+	        return false;
+	    }
+
+	    exp.Expression(strExp);
+	    return exp.Parse();
+	}
+
+	function Compute(strExp)
+	{
+	    exp.Expression(strExp);
+	    var res = exp.Evaluate()+"";
+	    if(res.indexOf(".")>=0){
+	    	return new Number(parseFloat(res)).toFixed(2);
+	    }
+	    else{
+	    	return res;
+	    }
+	}
+</script>
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">调查报告>流水分析</div>
+      </div>
+        <div class="tabplace">
+            <ul class="com-tab" >
+            <li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_jy.page?appId=${appId}&urlType=${urlType}">建议</a></li>
+			<!-- <li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_jjbs.page?appId=${appId}&urlType=${urlType}">进件标识</a></li> -->
+			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_jbzk.page?appId=${appId}&urlType=${urlType}">基本状况</a></li>
+			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_fz.page?appId=${appId}&urlType=${urlType}">资产负债</a></li>
+			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_bzlrb.page?appId=${appId}&urlType=${urlType}">标准利润</a></li>
+			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_zyyw.page?appId=${appId}&urlType=${urlType}">主营业务明细</a></li>
+			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_xjllb.page?appId=${appId}&urlType=${urlType}">现金流</a></li>
+			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_jc.page?appId=${appId}&urlType=${urlType}">交叉</a></li>
+			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_dhd.page?appId=${appId}&urlType=${urlType}">点货单</a></li>
+			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_gdzc.page?appId=${appId}&urlType=${urlType}">固资</a></li>
+			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_yfys.page?appId=${appId}&urlType=${urlType}">应付预收</a></li>
+			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_ysyf.page?appId=${appId}&urlType=${urlType}">应收预付</a></li>
+			<li class="tab activeTab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_lsfx.page?appId=${appId}&urlType=${urlType}">流水</a></li>
+			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_lrjb.page?appId=${appId}&urlType=${urlType}">利润简表</a></li>
+			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_jyzt.page?appId=${appId}&urlType=${urlType}">经营状态</a></li>
+			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_sczt.page?appId=${appId}&urlType=${urlType}">生存状态</a></li>
+			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_ddpz.page?appId=${appId}&urlType=${urlType}">道德品质</a></li>
+         </ul>
+         </div>
+       <div class="tabplace"></div>
+      <form id="id_module_form">
+         <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">$!{tableContent}</div>
+      </form>
+      <div class="submit">
+      #if(!$!lock)
+      	<input type="button" class="current" id="id_save_button" value="保存" />
+      #end
+      #if($!urlType==1)
+        <input type="button" onclick="window.location.href='${contextPath}/intopieces/intopiecesquery/browse.page'" value="返回" />
+      #else
+      <a href="javascript:history.back();" class="btn_g">返回</a>
+      	<!-- <input type="button" onclick="window.location.href='${contextPath}/customer/customerInfor_wh_ty/browse.page'" value="返回" /> -->
+      #end
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout = new FormsLayout("formsId");
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	#parse ("customer/customerInfor_wh_ty/customer_iframe_1_change_validation.js")
+	
+	$(document).ready(function() {		
+		$("#id_save_button").click(function() {
+			var b = new Base64(); 
+			var content = {'content':b.encode($("#formsId").html())};
+			var url = "${contextPath}/customer/customerInfor_wh_ty/change_report_lsfx.json?appId=${appId}";
+			$.ajax({
+				 url : url,
+				 type : "post",
+				 data:content,
+				 success : function(data) {
+					 if (data.success) {
+						 topWin.Dialog.message("保存成功！");
+						 window.location.reload();
+					 }
+					 else{
+						 topWin.Dialog.message(data.message);
+					 }
+				 }
+			 });
+        });
+		
+		//计算
+		$("#id_count_button").click(function() {
+			for(index in rules){
+				var rule = rules[index];
+				var sum_name = rule.split("=")[0];
+				var strExp = rule.split("=")[1];
+				//将编码换成数值
+				var code = "";
+				var sb = "";
+				for(var i = 0;i<strExp.length;i++){
+					if("^,*,/,%,+,-,(,)".indexOf(strExp[i])<0){
+						code += strExp[i];
+					}
+					else{
+						if(code != ""){
+							var reg= /^[A-Za-z]+$/;
+							if(reg.test(code[0])){
+								if($("td[name='"+code+"']").html() == '&nbsp;')
+								{
+									sb += "0";
+								}
+								else{
+									sb += $("td[name='"+code+"']").html();
+								}
+							}else{
+								sb += code;
+							}
+							code = "";
+						}
+						sb += strExp[i];
+					}
+				}
+				if(code != ""){
+					var reg= /^[A-Za-z]+$/;
+					if(reg.test(code[0])){
+						if($("td[name='"+code+"']").html() == '&nbsp;')
+						{
+							sb += "0";
+						}
+						else{
+							sb += $("td[name='"+code+"']").html();
+						}
+					}else{
+						sb += code;
+					}
+					code = "";
+				}
+				$("td[name='"+sum_name+"']").html(Compute(sb));
+				exp.Reset();
+			}
+		});
+	});
+  </script>
+   <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
+  
+</body>
+#parse ("common/iframe_page_footer.htm")

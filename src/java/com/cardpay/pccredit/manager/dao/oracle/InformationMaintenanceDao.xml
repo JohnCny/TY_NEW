@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.manager.dao.InformationMaintenanceDao">
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.manager.web.InformationMaintenanceForm">
+		<result property="accessInfoId" column="access_info_id" />
+	    <result property="name" column="name" />
+	    <result property="telephone" column="telephone" />
+	    <result property="maintenanceMatter" column="maintenance_matter" />
+	    <result property="maintenanceTime" column="maintenance_time" />
+	    <result property="customerManagerId" column="customer_manager_id" />
+	    <result property="countAction" column="count_action" />
+	</resultMap>
+	<resultMap id="ActionResultMap" type="com.cardpay.pccredit.manager.model.InformationPlansAction">
+		<result property="informationPlanId" column="information_plan_id" />
+	    <result property="informationWay" column="information_way" />
+	    <result property="informationResult" column="information_result" />
+	    <result property="informationStartTime" column="information_start_time" />
+	    <result property="informationEndTime" column="information_end_time" />
+	</resultMap>
+	<select id="findInformationMaintenanceFormByFilter" resultMap="ResultMap">
+		SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+				select i.*,
+				ioc.name,
+				ioc.telephone,
+				(select count(*) from information_plans_action a where a.information_plan_id=i.id) as count_action
+				from information_maintenance_plans i
+				left join 
+				information_officer_channels ioc
+				on i.access_info_id=ioc.id
+				where i.customer_manager_id=#{customerManagerId}
+				<![CDATA[
+				) ROW_
+				WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+			WHERE ROWNUM_ > #{limit}*#{page}
+			]]>
+	</select>
+	<select id="findInformationMaintenanceCountByFilter" resultType="int">
+		select count(*)
+		from 
+		information_maintenance_plans
+		where customer_manager_id=#{customerManagerId}
+	</select>
+	<select id="findInformationMaintenanceFormById" resultMap="ResultMap">
+		select i.*,
+				ioc.name,
+				ioc.telephone
+				from information_maintenance_plans i
+				left join 
+				information_officer_channels ioc
+				on i.access_info_id=ioc.id
+				where i.id=#{id}
+	</select>
+	<select id="findMaintenanceActionByMaintenanceId" resultMap="ActionResultMap">
+		select ipa.*
+		from 
+		information_plans_action ipa
+		where ipa.information_plan_id=#{id}
+	</select>
+	
+	<select id="findInformationPlanCountByDay" resultType="int">
+		select count(*)
+		from 
+		information_maintenance_plans
+		where 
+		customer_manager_id=#{userId}
+	</select>
+</mapper>

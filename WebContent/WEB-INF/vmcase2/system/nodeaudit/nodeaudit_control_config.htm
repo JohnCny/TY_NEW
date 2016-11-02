@@ -1,0 +1,114 @@
+#parse ("common/iframe_page_header.htm")
+<script src="${contextPath}/js/Math.uuid.js" type="text/javascript"></script>
+<body class="whitebg">
+    <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">审批流程节点显示</div>
+      </div>
+      <form id="id_module_form" action="">
+        <input type="hidden" name="productId" value="$!productId">
+        <input type="hidden" name="nodeType" value="$!nodeType">
+        <div class="forms" id="formsId">
+          <table id="id_group_conditions" class="rule">
+            #foreach ($nodeControl in $nodeControls)
+            <tr id="$nodeControl.id">
+              <td width="10%"><label for="currentNode">当前节点:</label></td>
+              <td width="10%">
+              	<select name="currentNode">
+              		#dict("NODECONFIGLIST", "$nodeControl.currentNode", false, $productId, $nodeType)
+              	</select>
+              </td>
+              <td width="10%"><label for="currentStatus">状态:</label></td>
+              <td width="10%">
+              	<select name="currentStatus">
+              		#dict("NODEOPSTATUS", $nodeControl.currentStatus);
+              	</select>
+              </td>
+              <td width="10%"><label for="nextNode">下个节点:</label></td>
+              <td width="10%">
+              	<select name="nextNode">
+              		#dict("NODECONFIGLIST", "$nodeControl.nextNode", false, $!productId, $!nodeType)
+              	</select>
+              </td>
+              <td width="10%"><input type="button" onclick="deleteCondition('$nodeControl.id')" class="current" value="删除"/></td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </form>
+      <div class="submit">
+      	<input id="id_add_button" onclick="addCondition('id_group_conditions')" type="button" value="增加关系" class="current" />
+      	<input id="id_save_button" type="button" value="#i18n("button.save")" class="current" />
+        <input type="button" onclick="returnNodeConfig()" value="返回" />
+      </div>
+    </div>
+  </div>
+  
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");	
+	window.top.currentWindow.setLayout(layout);
+
+	#set ($formName = "'#id_module_form'")
+	
+	function addCondition(conDivId){
+		var uuid = Math.uuid();
+		
+		var addDivHtml = "<tr id=" + uuid + ">"
+			+ "<td width='10%'><label for='currentNode'>当前节点:</label></td>"
+			+ "<td width='10%'>"
+			+ "<select name='currentNode'>";
+		#foreach ($node in $nodeAudits)
+			addDivHtml += "<option value='$node.id'>$node.nodeName</option>"
+		#end
+		addDivHtml += "</select>"
+        	+ "</td>"
+        	+ "<td width='10%'><label for='currentStatus'>状态:</label></td> "
+        	+ "<td width='10%'> "
+        	+ "<select name='currentStatus'> "
+        	+ "	<option value='APPROVE'>通过</option>"
+        	+ " <option value='OBJECTION'>异议</option>"
+        	+ "</select> "
+        	+ "</td> "
+        	+ "<td width='10%'><label for='nextNode'>下个节点:</label></td> "
+        	+ "<td width='10%'> "
+        	+ "<select name='nextNode'>"
+        #foreach ($node in $nodeAudits)
+			addDivHtml += "<option value='$node.id'>$node.nodeName</option>"
+		#end
+		addDivHtml += "</select>"
+			+ "</td>"
+			+ "<td width='10%'><input type='button' onclick='deleteCondition(\""+　uuid +"\")' class='current' value='删除'/></td>"
+			+ "</tr>";
+		
+		$("#" + conDivId).append(addDivHtml);
+		
+		layout.resizeLayout();
+		
+	}
+
+	function deleteCondition(conDivId){
+		$("#" + conDivId).remove();
+		
+		layout.resizeLayout();
+	}
+
+	function returnNodeConfig(){
+		window.location.href="${contextPath}/system/nodeaudit/browse.page?productId=$!productId&nodeType=$!nodeType";
+	}
+	
+	$(document).ready(function() {	
+		$("#id_save_button").click(function() {
+			Dialog.load();
+			var formjson = $($formName).serialize();
+	          $.get("${contextPath}/system/nodeaudit/saveNodeControl.json", formjson, function(data, textStatus, jqXhr) {
+	            if (data.success) {
+	            	Dialog.closeLoad();
+	            	window.location.href = "${contextPath}/system/nodeaudit/nodecontrol.page?productId=$!productId&nodeType=$!nodeType"
+	            }
+	          });
+		});
+	});
+</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

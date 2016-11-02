@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.customer.dao.CustomerOverdueDao">
+
+	<resultMap id="OverdueFormResultMap"
+		type="com.cardpay.pccredit.riskControl.web.CustomerOverdueForm">
+		<result property="customerId" column="CUSTOMER_ID" />
+		<result property="overduePaybackAll" column="overdue_payback_all" />
+		<result property="chineseName" column="CHINESE_NAME" />
+		<result property="productId" column="PRODUCT_ID" />
+		<result property="userId" column="user_id" />
+		<result property="aging" column="aging" />
+		<result property="productName" column="PRODUCT_NAME" />
+		<result property="numberDaysOverdue" column="NUMBER_DAYS_OVERDUE" />
+		<result property="currentBalance" column="CURRENT_BALANCE" />
+		<result property="minimumPayment" column="MINIMUM_PAYMENT" />
+		<result property="reminder" column="REMINDER" />
+		<result property="reminderWay" column="REMINDER_WAY" />
+		<result property="reminderDate" column="REMINDER_DATE" />
+		<result property="overduePaybackAll" column="OVERDUE_PAYBACK_ALL" />
+		<result property="lateDate" column="LATE_DATE" />
+	</resultMap>
+
+	<select id="findCountByFilter" resultType="int"
+		parameterType="com.cardpay.pccredit.customer.filter.CustomerOverdueFilter">
+		SELECT COUNT(*)
+		FROM (select T.ID
+		from customer_overdue t
+		where 1 = 1
+		<if test="customerId != null and customerId != '' ">
+			AND t.customer_id=#{customerId}
+		</if>
+		UNION ALL
+		select T.ID
+		from customer_overdue_history t
+		where 1 = 1
+		<if test="customerId != null and customerId != '' ">
+			AND t.customer_id=#{customerId}
+		</if>
+		)
+
+	</select>
+	<select id="findCustomerOverdueCount" resultType="int"
+		parameterType="com.cardpay.pccredit.customer.filter.CustomerOverdueFilter">
+		SELECT COUNT(*)
+		FROM (	SELECT DISTINCT
+	c.*, P .PRODUCT_NAME,
+	i.chinese_name,
+	D .aging,
+	i.user_id
+FROM
+	CUSTOMER_OVERDUE c,
+	PRODUCT_ATTRIBUTE P,
+	BASIC_CUSTOMER_INFORMATION i,
+	CUSTOMER_ACCOUNT_INFORMATION D
+
+WHERE
+	1 = 1
+AND c.product_id = P . ID
+AND c.customer_id = i. ID
+AND c.customer_id = D .customer_id
+<if test="chineseName != null and chineseName != '' ">
+<![CDATA[ and i.CHINESE_NAME like '%'||#{chineseName}||'%']]>
+</if>
+<if test="cardId != null and cardId != '' ">
+AND i.CARD_ID=#{cardId}
+</if>
+<if test="cardType != null and cardType != '' ">
+And i.CARD_TYPE=#{cardType}
+</if>
+
+		<if test="userId != null and userId != '' ">
+			and i.user_id=#{userId}
+		</if>
+		)
+
+	</select>
+	
+
+	<select id="findCustomerOverdue" resultMap="OverdueFormResultMap">
+		SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+	SELECT DISTINCT
+	c.*, P .PRODUCT_NAME,
+	i.chinese_name,
+	D .aging,
+	i.user_id
+FROM
+	CUSTOMER_OVERDUE c,
+	PRODUCT_ATTRIBUTE P,
+	BASIC_CUSTOMER_INFORMATION i,
+	CUSTOMER_ACCOUNT_INFORMATION D
+
+WHERE
+	1 = 1
+AND c.product_id = P . ID
+AND c.customer_id = i. ID
+AND c.customer_id = D .customer_id
+<if test="chineseName != null and chineseName != '' ">
+<![CDATA[ and i.CHINESE_NAME like '%'||#{chineseName}||'%']]>
+</if>
+<if test="cardId != null and cardId != '' ">
+AND i.CARD_ID=#{cardId}
+</if>
+<if test="cardType != null and cardType != '' ">
+And i.CARD_TYPE=#{cardType}
+</if>
+
+		<if test="userId != null and userId != '' ">
+			and i.user_id=#{userId}
+		</if>
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+
+
+	<select id="findCustomerOverdueAll" resultMap="OverdueFormResultMap">
+		SELECT
+		c.*,
+		P
+		.PRODUCT_NAME,
+		i.chinese_name
+		FROM
+		CUSTOMER_OVERDUE c
+		INNER JOIN
+		PRODUCT_ATTRIBUTE P ON c.product_id = P.ID
+		INNER JOIN
+		BASIC_CUSTOMER_INFORMATION i ON c.customer_id = i.ID
+
+	</select>
+	<select id="findCustomerOverdueCountById" resultType="int">
+	select
+	count(*)
+	from
+	customer_overdue c
+	INNER JOIN
+	BASIC_CUSTOMER_INFORMATION i ON c.customer_id = i.ID
+	where
+	i.user_id=#{id}
+	</select>
+	
+	<select id="findCustomerOverdueCountByCustomerIdAndProductId" resultMap="OverdueFormResultMap">
+		select *
+		from
+		customer_overdue c
+		where 
+		c.customer_id=#{cid}
+		and
+		c.product_id=#{pid}
+	</select>
+</mapper>

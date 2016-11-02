@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.report.dao.CreditPaymentDao">
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.report.model.CreditPayment">
+		<result property="rowIndex" column="row_index" />
+		<result property="name" column="name" />
+		<result property="id" column="id" />
+		<result property="bOverdraftPrincipal" column="b_overdraft_principal" />
+		<result property="bOverdraftAmount" column="b_overdraft_amount" />
+		<result property="rOverdraftPrincipal" column="r_overdraft_principal" />
+		<result property="rOverdraftAmount" column="r_overdraft_amount" />
+		<result property="addOverdraftPrincipal" column="add_overdraft_principal" />
+		<result property="addOverdraftAmount" column="add_overdraft_amount" />
+	</resultMap>
+	
+	<select id="getOrgCreditPayment" resultMap="ResultMap"
+			parameterType="com.cardpay.pccredit.report.filter.StatisticalFilter">
+			select a.*, rownum row_index
+		
+		  from (select result_date.org_id as id,
+		               result_date.org_name as name,
+		               sum(b_overdraft_principal) as b_overdraft_principal,
+		               sum(b_overdraft_amount) as b_overdraft_amount,
+		               
+		               sum(r_overdraft_principal) as r_overdraft_principal,
+		               sum(r_overdraft_amount) as r_overdraft_amount,
+		               
+		               sum(r_overdraft_principal) - sum(b_overdraft_principal) as add_overdraft_principal,
+		               sum(r_overdraft_amount) - sum(b_overdraft_amount) add_overdraft_amount
+		          from (select user_info.org_id,
+		                       user_info.org_name,
+		                       nvl(basic_date_info.overdraft_principal, 0) as b_overdraft_principal,
+		                       nvl(basic_date_info.overdraft_amount, 0) as b_overdraft_amount,
+		                       nvl(report_date_info.overdraft_principal, 0) as r_overdraft_principal,
+		                       nvl(report_date_info.overdraft_amount, 0) as r_overdraft_amount
+		                  from (select sys_org.name     as org_name,
+		                               sys_org.id       as org_id,
+		                               sys_dep.name     as dep_name,
+		                               sys_dep.id       as dep_id,
+		                               usr.id           as user_id,
+		                               usr.display_name
+		                          from (select org.name,
+		                                       org.id,
+		                                       level lev,
+		                                       decode(connect_by_isleaf, 1, 'Y', 'N') is_leaf
+		                                  from SYS_ORGANIZATION org
+		                                 where is_deleted = 0 /*未删除*/
+		                                   and level = 3 /*只查支行*/
+		                                 start with parent_id is null
+		                                connect by prior id = parent_id) sys_org
+		                         inner join sys_department sys_dep
+		                            on sys_org.id = sys_dep.org_id
+		                         inner join sys_dept_user sys_dept_usr
+		                            on sys_dep.id = sys_dept_usr.dept_id
+		                         inner join sys_user usr
+		                            on sys_dept_usr.user_id = usr.id
+		                           and usr.user_type = 1 /*客户经理*/
+		                        ) user_info
+		                
+		                  left join (select t.customer_manager_id as manager_id,
+		                                   sum(nvl(t.overdraft_principal, 0)) as overdraft_principal,
+		                                   sum(nvl(t.overdraft_amount, 0)) as overdraft_amount
+		                              from statistical_table t
+		                             where t.created_date <![CDATA[ <= ]]> #{basicDate}
+		                               and t.product_id=#{productId}
+		                             group by t.customer_manager_id) basic_date_info
+		                    on user_info.user_id = basic_date_info.manager_id
+		                
+		                  left join (select t.customer_manager_id as manager_id,
+		                                   sum(nvl(t.overdraft_principal, 0)) as overdraft_principal,
+		                                   sum(nvl(t.overdraft_amount, 0)) as overdraft_amount
+		                              from statistical_table t
+		                             where t.created_date <![CDATA[ <= ]]> #{reportDate}
+		                               and t.product_id=#{productId}
+		                             group by t.customer_manager_id) report_date_info
+		                    on user_info.user_id = report_date_info.manager_id) result_date
+		        
+		         group by result_date.org_id, result_date.org_name) a
+
+	</select>
+	
+	<select id="getManagerCreditPayment" resultMap="ResultMap"
+			parameterType="com.cardpay.pccredit.report.filter.StatisticalFilter">
+	select a.*, rownum row_index
+
+  from (select result_date.user_id as id,
+               result_date.user_name as name,
+               sum(b_overdraft_principal) as b_overdraft_principal,
+               sum(b_overdraft_amount) as b_overdraft_amount,
+               
+               sum(r_overdraft_principal) as r_overdraft_principal,
+               sum(r_overdraft_amount) as r_overdraft_amount,
+               
+               sum(r_overdraft_principal) - sum(b_overdraft_principal) as add_overdraft_principal,
+               sum(r_overdraft_amount) - sum(b_overdraft_amount) add_overdraft_amount
+          from (select user_info.user_id,
+                       user_info.user_name,
+                       nvl(basic_date_info.overdraft_principal, 0) as b_overdraft_principal,
+                       nvl(basic_date_info.overdraft_amount, 0) as b_overdraft_amount,
+                       nvl(report_date_info.overdraft_principal, 0) as r_overdraft_principal,
+                       nvl(report_date_info.overdraft_amount, 0) as r_overdraft_amount
+                  from (select sys_org.name     as org_name,
+                               sys_org.id       as org_id,
+                               sys_dep.name     as dep_name,
+                               sys_dep.id       as dep_id,
+                               usr.id           as user_id,
+                               usr.display_name as user_name
+                          from (select org.name,
+                                       org.id,
+                                       level lev,
+                                       decode(connect_by_isleaf, 1, 'Y', 'N') is_leaf
+                                  from SYS_ORGANIZATION org
+                                 where is_deleted = 0 /*未删除*/
+                                   and level = 3 /*只查支行*/
+                                 start with parent_id is null
+                                connect by prior id = parent_id) sys_org
+                         inner join sys_department sys_dep
+                            on sys_org.id = sys_dep.org_id
+                         inner join sys_dept_user sys_dept_usr
+                            on sys_dep.id = sys_dept_usr.dept_id
+                         inner join sys_user usr
+                            on sys_dept_usr.user_id = usr.id
+                           and usr.user_type = 1 /*客户经理*/
+                        ) user_info
+                
+                  left join (select t.customer_manager_id as manager_id,
+                                   sum(nvl(t.overdraft_principal, 0)) as overdraft_principal,
+                                   sum(nvl(t.overdraft_amount, 0)) as overdraft_amount
+                              from statistical_table t
+                             where t.created_date <![CDATA[ <= ]]> #{basicDate}
+                               and t.product_id=#{productId}
+                             group by t.customer_manager_id) basic_date_info
+                    on user_info.user_id = basic_date_info.manager_id
+                
+                  left join (select t.customer_manager_id as manager_id,
+                                   sum(nvl(t.overdraft_principal, 0)) as overdraft_principal,
+                                   sum(nvl(t.overdraft_amount, 0)) as overdraft_amount
+                              from statistical_table t
+                             where t.created_date <![CDATA[ <= ]]> #{reportDate}
+                               and t.product_id=#{productId}
+                             group by t.customer_manager_id) report_date_info
+                    on user_info.user_id = report_date_info.manager_id) result_date
+        
+         group by result_date.user_id, result_date.user_name) a
+
+	</select>
+</mapper>

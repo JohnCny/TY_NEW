@@ -1,0 +1,78 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">角色为"${role.name}"的用户</div>
+      </div>
+	<div class="inquiry">
+		<div id="topDiv" class="inquiry_list inquiry_top">
+			<table>
+				<colgroup>
+					<col width="5%" />
+					<col />
+					<col />
+					
+				</colgroup>
+				<tr class="title">
+					<th nowrap="nowrap"></th>
+					<th nowrap="nowrap">#mi18n("displayName")</th>
+					<th nowrap="nowrap">#mi18n("email")</th>
+				
+				</tr>
+			</table>
+		</div>
+		<div id="downDiv" class="inquiry_list inquiry_down">
+			<table>
+				<colgroup>
+					<col width="5%" />
+					<col />
+					<col />
+					
+				</colgroup>
+				#foreach ($us in $user)
+				<tr>
+					<td class="checkbox"><input type="radio" name="checkbox"
+						value="$!us.id" #if ($!request.getParameter("recordId") ==
+						$us.id) checked="checked" #end /></td>
+					<td nowrap="nowrap">$!us.displayName</td>
+					<td nowrap="nowrap">$!us.email</td>
+				</tr>
+				#end
+			</table>
+		</div>
+	</div>
+	<div class="pagebar">
+		<div class="controlbtn">
+		 <a class="btn_g" style="font-weight:bold;margin-right:30px;" href="${contextPath}/system/role/browse.page">#i18n("button.back")</a>
+			<a id="id_update_member" class="btn_g" href="javascript:void(0);"
+				title="#i18n('button.create.hint')">设置用户角色</a>
+				 <a id="id_display_button" class="btn_gr" href="javascript:void(0);"
+				title="#i18n('button.display.hint')">#i18n("button.display")</a>
+
+		</div>
+		<div class="clear"></div>
+	</div>
+	</div>
+	</div>
+</body>
+<script language="javascript" type="text/javascript">
+var layout = new TableLayout(2);
+window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.displayUrl = "${contextPath}/system/role_user/display.page?roleId=$role.id";
+		prepareOperations(opsObj);
+	});
+
+  $("#id_update_member").click(function() {
+	  
+		  var url = "${contextPath}/system/role_user/create.page?roleId=$role.id";
+	      window.location.href = url;
+	  
+  });
+</script>
+</html>
+

@@ -1,0 +1,47 @@
+#parse ("common/iframe_page_header.htm")
+<script src="${contextPath}/common/js/common/jquery.form.js"></script>
+<script src="${contextPath}/js/intopieces/intopieces.js"></script>
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">批量导入进件信息</div>
+      </div>
+      <form id="excelForm" action="${contextPath}/intopieces/intopiecesquery/importSubmit.json" enctype="multipart/form-data" method="post">
+      <div class="inquiry">
+        <div class="search_tag">#i18n("label.browse.filter")</div> 
+        <div class="search">
+            <ul>
+              <li>
+                <span>excel导入:<input type="file" id="file" name="file"/></span>
+              </li>
+            </ul>
+        </div>
+
+        <div class="controlbtn" style="text-align:center">
+          #btnpriv("import")<a class="btn_g" style="float:center;" href="javascript:void(0);" title="导入" onclick="importCustomer('${contextPath}/intopieces/intopiecesquery/browse.page')">导入</a>#end
+        </div>
+        <div class="clear"></div>
+      </div>
+      </form>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.createUrl = "${modulePath}/create.page";
+		opsObj.displayUrl = "${modulePath}/display.page";
+		opsObj.changeUrl = "${modulePath}/change.page";
+		opsObj.deleteUrl = "${modulePath}/delete.json";
+		opsObj.browseUrl = "${modulePath}/browse.page";
+		opsObj.exportUrl = "${modulePath}/export.page";
+        
+		prepareOperations(opsObj);
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")

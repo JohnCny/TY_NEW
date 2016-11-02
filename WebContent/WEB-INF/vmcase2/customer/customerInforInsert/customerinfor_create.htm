@@ -1,0 +1,154 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户基本信息>新增信息</div>
+      </div>
+       
+      <form id="id_module_form" action="${contextPath}/customer/basiccustomerinforCreate/insert.json"/>
+         <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
+          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 50%">
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="30%" />
+            </colgroup>
+              <tr><td class="titlec" colspan="4" style="text-align: center;">基本信息</td></tr>
+            <tr>
+              <td class="titlefc3"><label for="chineseName">姓名:</label></td>
+              <td><input class="rinpsty"  type="text" id="chineseName" name="chineseName" value="" /></td>
+            </tr>
+            <tr>
+			  <td class="titlefc3"><label for="cardType">身份证件类型:</label></td>
+              <td><select class="rinpsty"  id="cardType" name="cardType" >
+                 <option value=""></option>
+              		#dict("CARDTYPEJN", "0")
+                  </select></td>
+            </tr>
+            <tr>
+             	<td class="titlefc3"><label for="cardId">证件号码:</label></td>
+                <td><input class="rinpsty"  type="text" name="cardId" id="cardId"  value="" /></td>
+            </tr>
+            
+            <tr>
+              <td class="titlefc3"><label for="spmc">商铺名称:</label></td>
+              <td><input class="rinpsty"  type="text" name="spmc" id="spmc"  value="" /></td>
+            </tr>
+          </table>
+        </div>
+      </form>
+      <div class="submit" style="text-align:left;">
+        <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
+      </div>
+    </div>
+  </div>
+ 
+  <script type="text/javascript">
+  
+  #set ($formName = "'#id_module_form'")
+	#parse ("customer/customerInforInsert/customerInforCreate_validation.js")
+	var layout = new FormsLayout("formsId");
+	window.top.currentWindow.setLayout(layout);
+	
+	$(document).ready(function() {		
+		$("#id_save_button").click(function() {
+			
+			 $("#cardIde").remove();	
+				var cardType = $("select[name=cardType]").val();
+				if( cardType == "0"){
+			   
+				var cardId = $("#cardId").val();
+				if(cardId !=""){
+				var idReg = /(^\d{15}$)|(^\d{17}([0-9]|[X]|[x])$)/;
+			
+			     if(idReg.test(cardId)){
+			    	 $("#cardIde").remove();	
+			       
+			        }else{
+				       $("input[name='cardId']").after("<label class='error' id='cardIde' generated='true' ><br>请输入正确的身份证号(15/18位)</label>");   
+			     }	
+				 }
+				
+				}
+			var leng = 0;
+	    	 leng = $("#cardIde").length;
+	    	if(leng > 0){
+	    		return;
+	    	}else{
+	   			if ($($formName).valid()) {
+	   				var formjson = $($formName).serialize();
+	   	   	        var url = $($formName).attr("action");
+	   				$.ajax({
+	   					url : url,
+	   					type : "get",
+	   					data : formjson,
+	   					success : function(data) {
+	   						if (data.success) {
+	   							topWin.Dialog.message("保存成功!");
+	   		   	            	window.location.reload() ;
+	   						}else{
+	   							topWin.Dialog.message(data.message);
+	   					    }
+	   					}
+	   				});
+	   			}
+	   	        
+	    	}
+	      });
+		$("#cardId").change(function (){
+			 
+			 $("#cardIde").remove();	
+			var cardType = $("select[name=cardType]").val();
+			if( cardType == "0"){
+		   
+			var cardId = $("#cardId").val();
+			if(cardId !=""){
+			var idReg = /(^\d{15}$)|(^\d{17}([0-9]|[X]|[x])$)/;
+		
+		     if(idReg.test(cardId)){
+		    	 $("#cardIde").remove();	
+		       
+		        }else{
+			       $("input[name='cardId']").after("<label class='error' id='cardIde' generated='true' ><br>请输入正确的身份证号(15/18位)</label>");   
+		     }	
+			 }
+			
+			}
+			});
+		
+		$("#cardType").change(function(){
+			 $("#cardIde").remove();
+			var cardType = $("select[name=cardType]").val();
+			if( cardType == "0"){
+				var cardId = $("#cardId").val();
+				if(cardId !=""){
+				var idReg = /(^\d{15}$)|(^\d{17}([0-9]|[X]|[x])$)/;
+			
+			     if(idReg.test(cardId)){
+			    	 $("#cardIde").remove();	
+			       
+			        }else{
+				       $("input[name='cardId']").after("<label class='error' id='cardIde' generated='true' ><br>请输入正确的身份证号(15/18位)</label>");   
+			     }	
+				 }	
+				
+			}
+			
+		});
+		
+	});
+	
+	//返回
+	function returnClick(){
+		window.location.href= contextPath + "/customer/basiccustomerinforCreate/insert.page";
+	}
+	
+	
+  </script>
+  
+</body>
+#parse ("common/iframe_page_footer.htm")

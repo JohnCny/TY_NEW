@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.zrrtz.dao.ZrrtzDao">
+   <resultMap id="SHILIMap" type="com.cardpay.pccredit.zrrtz.model.IncomingData">
+		<result property="chinese_name" column="chinese_name" />
+		<result property="card_id" column="card_id" />
+		<result property="product_name" column="product_name" />
+		<result property="apply_quota" column="apply_quota" />
+	</resultMap>
+	
+	<resultMap id="IntoPiecesResultMap" type="com.cardpay.pccredit.intopieces.model.IntoPieces">
+		<result property="id" column="ID" />
+		<result property="customerId" column="CUSTOMER_ID" />
+		<result property="tyCustomerId" column="TY_CUSTOMER_ID" />
+		<result property="chineseName" column="CHINESE_NAME" />
+		<result property="productId" column="PRODUCT_ID" />
+		<result property="productName" column="PRODUCT_NAME" />
+		<result property="cardId" column="CARD_ID" />
+		<result property="applyQuota" column="APPLY_QUOTA" />
+		<result property="actualQuote" column="ACTUAL_QUOTE" />
+		<result property="status" column="STATUS" />
+		<result property="decisionRefuseReason" column="DECISION_REFUSEREASON" />
+		<result property="displayName" column="DISPLAY_NAME" />
+	</resultMap>
+	
+	<resultMap type="com.cardpay.pccredit.zrrtz.model.IncomingData" id="shiliMap">
+	    <result property="chinese_name" column="CHINESE_NAME"/>
+		<result property="card_id" column="CARD_ID"/>
+		<result property="product_name" column="PRODUCT_NAME"/>
+		<result property="actual_quote" column="ACTUAL_QUOTE"/>
+	</resultMap>
+	
+	<resultMap id="aLLResultMap" type="com.cardpay.pccredit.customer.model.CustomerParameter">
+		<result property="customerParameterId" column="ID" />
+		<result property="customerManagerId" column="CUSTOMERMANAGERID" />
+		<result property="customername" column="CUSTOMERNAME" />
+		<result property="managername" column="MANAGERNAME" />
+		<result property="customerId" column="CUSTOMERID" />
+		<result property="idcard" column="IDCARD" />
+		<result property="productname" column="PRODUCTNAME" />
+		<result property="money" column="MONEY" />
+		<result property="deadline" column="DEADLINE" />
+		<result property="interstrate" column="INTERSTRATE" />
+		<result property="loantype" column="LOANTYPE" />
+		<result property="providedate" column="PROVIDEDATE" />
+		<result property="expiredate" column="EXPIREDATE" />
+		<result property="bondsman" column="BONDSMAN" />
+		<result property="classification" column="CLASSIFICATION" />
+		<result property="scopeoperation" column="SCOPEOPERATION" />
+		<result property="operationaddress" column="OPERATIONADDRESS" />
+		<result property="principal" column="PRINCIPAL" />
+		<result property="assist" column="ASSIST" />
+		<result property="groupes" column="GROUPES" />
+		<result property="members" column="MEMBERS" />
+		<result property="patternslend" column="PATTERNSLEND" />
+		<result property="ratepaying" column="RATEPAYING" />
+		<result property="giveback" column="GIVEBACK" />
+		<result property="batchs" column="BATCHS" />
+		<result property="phonenumber" column="PHONENUMBER" />
+		<result property="enlending" column="ENLENDING" />
+		<result property="remark" column="REMARK" />
+		
+	</resultMap>
+	
+	<select id="findIntoPiecesList" resultMap="SHILIMap" parameterType="com.cardpay.pccredit.zrrtz.model.ZrrtzFilter">
+		  SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+				select 
+                   b.chinese_name as chinese_name,
+                   b.card_id as card_id,
+                   p.product_name as product_name,
+                   t.actual_quote as actual_quote,
+                   a.display_name as display_name
+              from customer_application_info  t,
+                   basic_customer_information b,
+                   product_attribute          p,
+                   sys_user a,
+                   TY_REPAY_LSZ D 
+             where t.customer_id = b.id
+                   and t.product_id = p.id and a.id=b.user_id and D.JJH=t.JJH
+                   <if test="fdate!=null and ldate!=null and fdate!='' and ldate!=''">
+						    and D.QXRX=#{fdate}
+						</if>
+				   <if test="status!=null and status!=''">
+				       and t.ACCOUNT_STATUS=#{status}
+				   </if>
+				   order by D.QXRX desc
+                   <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+
+	</select>
+	
+	<select id="findIntoPiecesCountList" resultType="int" parameterType="com.cardpay.pccredit.zrrtz.model.ZrrtzFilter">
+		  select count(*)
+		          from (SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+				select 
+                   b.chinese_name as chinese_name,
+                   b.card_id as card_id,
+                   p.product_name as product_name,
+                   t.actual_quote as actual_quote,
+                   a.display_name as display_name
+              from customer_application_info  t,
+                   basic_customer_information b,
+                   product_attribute          p,
+                   sys_user a,
+                   TY_REPAY_LSZ D 
+             where t.customer_id = b.id
+                   and t.product_id = p.id and a.id=b.user_id and D.JJH=t.JJH
+                   <if test="fdate!=null and ldate!=null and fdate!='' and ldate!=''">
+						    and D.QXRX=#{fdate}
+						</if>
+				   <if test="status!=null and status!=''">
+				       and t.ACCOUNT_STATUS=#{status}
+				   </if>
+				   order by D.QXRX desc
+                   <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+
+					
+	</select>
+	
+	<select id="findate" resultMap="SHILIMap">
+		 select QXRX as fdate,ZXRQ as ldate from TY_REPAY_LSZ D 
+	</select>
+	
+	<select id="findpiecesList" resultMap="aLLResultMap" parameterType="String">
+		 select * from CUSTOMER_PARAMETER where 1=1 
+		 <if test="card_id!=null and card_id!=''">
+				       and IDCARD=#{card_id}
+		 </if>
+	</select>
+	
+</mapper>

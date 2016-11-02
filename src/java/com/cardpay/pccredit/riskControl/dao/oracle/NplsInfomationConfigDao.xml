@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.riskControl.dao.NplsInfomationConfigDao">
+	
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.riskControl.model.NplsInfomationConfiguration">
+		<result property="id" column="id" />
+		<result property="aging" column="AGING" />
+		<result property="overdueMoney" column="OVERDUE_MONEY" />
+		<result property="numberDaysOverdue" column="NUMBER_DAYS_OVERDUE" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="createdTime" column="CREATED_TIME" />
+		<result property="modifiedBy" column="MODIFIED_BY" />
+		<result property="modifiedTime" column="MODIFIED_TIME" />
+	</resultMap>
+	
+	<update id="updateNplsInfomationConfig" parameterType="com.cardpay.pccredit.riskControl.model.NplsInfomationConfiguration">
+	update NPLS_INFORMATION_CONFIGURATION
+	set AGING=#{aging},
+	OVERDUE_MONEY=#{overdueMoney},
+	NUMBER_DAYS_OVERDUE=#{numberDaysOverdue},
+	MODIFIED_BY=#{modifiedBy},
+	MODIFIED_TIME=#{modifiedTime}
+	
+	where id=#{id}
+</update>
+	
+</mapper>

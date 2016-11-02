@@ -1,0 +1,121 @@
+<div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">查询</div>
+      </div>
+ <div class="inquiry">
+      <div class="search_tag">#i18n("label.browse.filter")</div>
+         <div class="search">
+          <form id="submitForm">
+          <input type="hidden" class="date" id="orgSelectId" name="orgSelectId" value="$!result.filter.orgId"/>
+            <ul>
+              <li>
+                <span>单位：
+                	<select name="orgId" id="orgId" value="$!result.filter.orgId">
+	           
+		         </select>
+                  </span>
+              </li>
+               <li class="search_button">
+                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
+       
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="10%" />
+              <col width="20%" />
+              <col width="20%" />
+              <col width="20%" />
+              <col width="30%" />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">员工编号</th>
+              <th nowrap="nowrap">员工名称</th>
+              <th nowrap="nowrap">部门名称</th>
+              <th nowrap="nowrap">单位名称</th>
+            
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+             <col width="10%" />
+              <col width="20%" />
+              <col width="20%" />
+              <col width="20%" />
+              <col width="30%" />
+            </colgroup>
+            #foreach ($systemuser in $result.items)
+             
+            <tr>
+              <td class="checkbox"><input type="checkbox" name="checkbox" value="$!{systemuser.id}_$!{systemuser.displayName}"
+             #foreach( $selectval in $selectvalList )
+              #if ($selectval == "$!{systemuser.id}_$!{systemuser.displayName}")
+              checked="checked"
+              #end
+              #end
+              />
+              </td>
+              <td nowrap="nowrap">$!systemuser.externalId</td>
+              <td nowrap="nowrap">$!systemuser.displayName</td>
+              <td nowrap="nowrap">$!systemuser.oname</td>
+              <td nowrap="nowrap">$!systemuser.name</td>
+            </tr>
+            
+            #end
+          </table>
+        </div>
+      </div>
+      
+        <div class="pagebar">
+ 
+       #parse ("common/pagination3.htm")
+        <div class="clear"></div>
+      </div>
+
+      
+    </div>
+  </div>
+  <script type="text/javascript">
+
+
+ $(document).ready(function(){
+	
+	//获得单位名称
+	searchOrgId();
+		
+	
+});
+ function searchOrgId(){
+	 var orgSelectId =$("#orgSelectId").val();
+	  $.ajax({
+			url : contextPath+"/system/approvaluser/selectOrgId.json",
+				type : "post",
+				data : {},
+			dataType : "json",
+			 success : function(data) {
+				 $("#submitForm select[name='orgId'] option").remove();
+				 $("#submitForm select[name='orgId']").append("<option value=''>ALL</option>");
+				    $.each(data.results,function(index, ele){
+				    	$("#submitForm select[name='orgId']").append("<option value="+ele.id+">" + ele.name + "</option>");
+				    	
+				    });
+				    if(orgSelectId != ""){
+				    	$("#submitForm option[value='"+ orgSelectId +"']").attr("selected", true);
+				    	}
+				}
+			});
+   }
+
+
+
+
+
+</script>

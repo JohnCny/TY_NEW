@@ -1,0 +1,98 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/customerInfor.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">问责记录审核</div>
+      </div>
+      <form id="id_module_form" action="${contextPath}/accountabilitycontrol/accountability/update.json?auditStatus=cfccaudit">
+        <div class="forms" id="formsId">
+          <input type="hidden" name="id" value="$!accountabilityRecord.id" />
+          <table class="rule" border="1" bordercolor="#CCCCCC">
+          <caption>问责记录</caption>
+             <colgroup>
+              <col width="10%" />
+              <col width="40%" />
+              <col width="10%" />
+              <col width="40%" />
+            </colgroup>
+            <tr>
+              <td><label>中文姓名:</label></td>
+              <td><input type="text" id="chineseName" name="chineseName" value="$!customer.chineseName" readonly="readonly"/></td>
+              
+              <td><label>经理名称:</label></td>
+              <td><input type="text" id="displayName" name="displayName" value="$!customerManager.displayName" readonly="readonly"/></td>
+
+            </tr>
+            <tr>
+              <td><label>证件类型:</label></td>
+              <td><select  disabled="disabled" id="cardType" name="cardType">
+	                   <option value="">请选择...</option>
+	                   #dict("CARDTYPE", $!customer.cardType)
+                  </select></td>
+                
+                <td><label>证件号码:</label></td>
+                <td><input type="text" id="cardId" name="cardId" value="$!customer.cardId" readonly="readonly"/></td>
+            </tr>
+             <tr>
+              <td><label>#mi18n("money"):</label></td>
+              <td><input type="text" id="money" name="money" value="$format.formatNumber($!accountabilityRecord.money,2,100)" /></td>
+              
+               <td><label>是否复议:</label></td>
+              <td><input type="radio" name="reconsideration" value="1"
+						#if($!accountabilityRecord.reconsideration == 1)checked="checked"  #end	disabled="disabled">&nbsp;是 
+								&nbsp;&nbsp;&nbsp;
+					<input type="radio" name="reconsideration"
+						#if($!accountabilityRecord.reconsideration == 0)checked="checked"  #end value="0" disabled="disabled">&nbsp;否 </td>
+            </tr>
+            
+             <tr>
+              <td><label>问责方式:</label></td>
+              <td><input type="text" id="createWay" name="createWay" value='#mi18n("$!accountabilityRecord.createWay")' readonly="readonly"/></td>
+              
+              <td colspan="2"></td>
+           
+            </tr>
+              <tr>
+              <td><label>问责原因:</label></td>
+              <td colspan="3"><textarea id="createReason" name="createReason" rows="5" >$!accountabilityRecord.createReason</textarea></td>
+            </tr>
+            <tr>
+              <td><label>问责结论:</label></td>
+              <td colspan="3"><textarea id="accountabilityConclusion" name="accountabilityConclusion" rows="5">$!accountabilityRecord.accountabilityConclusion</textarea></td>
+            </tr>
+         
+          </table>
+        </div>
+      </form>
+
+      <div class="submit">
+        <input id="id_confirm_button" type="button" value="确认" class="current" />
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n('button.cancel')" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");			
+	window.top.currentWindow.setLayout(layout);
+			
+	#set ($formName = "'#id_module_form'")
+	#validator($formName)
+	$(document).ready(function() {		
+		$("#id_confirm_button").click(function() {
+	        if ($($formName).valid()) {
+	          var formjson = $($formName).serialize();
+	          $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
+	            if (data.success) {
+	            	window.location.href = contextPath+"/accountabilitycontrol/accountability/cfccbrowse.page";
+	            	Dialog.message("确认成功!");
+	            	
+	            }
+	          });
+	        }
+	      });
+	});
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

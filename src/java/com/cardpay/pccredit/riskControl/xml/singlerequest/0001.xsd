@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="GBK"?>
+<!-- 编辑使用 XMLSpy v2006 U (http://www.altova.com) 由 any (any) -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<!--整个Schema的主节点-->
+	<xsd:element name="CFX" type="CFX"/>
+	<!--报文(恒包含一个报文头,一个报文体)-->
+	<xsd:complexType name="CFX">
+		<xsd:sequence>
+			<!--报文头(节点)-->
+			<xsd:element name="HEAD" type="HEAD"/>
+			<!--报文体(节点)-->
+			<xsd:element name="MSG" type="MSG"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--报文头-->
+	<xsd:complexType name="HEAD">
+		<xsd:sequence>
+			<!--版本号-->
+			<xsd:element name="VER">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:length value="3"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<!--发起节点代码-->
+			<xsd:element name="SRC">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:pattern value="\d{12}"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<!--接收节点代码-->
+			<xsd:element name="DES">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:pattern value="\d{12}"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<!--应用名称-->
+			<xsd:element name="APP">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="1"/>
+						<xsd:maxLength value="80"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<!--报文编号-->
+			<xsd:element name="MsgNo">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:pattern value="\d{4}"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<!--报文标识号-->
+			<xsd:element name="MsgID">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:pattern value="\d{20}"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<!--报文参考号-->
+			<xsd:element name="MsgRef">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:pattern value="\d{20}"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<!--工作日期-->
+			<xsd:element name="WorkDate">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:pattern value="\d{8}"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<!--预留字段-->
+			<xsd:element name="Reserve" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="20"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- 报文体 -->
+	<xsd:complexType name="MSG">
+		<xsd:sequence>
+			<!-- 单笔核对业务头 -->
+			<xsd:element name="SingleCheckBusinessHead0001" type="SingleCheckBusinessHead0001"/>
+			<!-- 单笔核对请求信息 -->
+			<xsd:element name="SingleCheckRequestMessage0001" type="SingleCheckRequestMessage0001" maxOccurs="5"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--单笔核对业务头-->
+	<xsd:complexType name="SingleCheckBusinessHead0001">
+		<xsd:sequence>
+			<!--核对机构代码-->
+			<xsd:element name="BankCode">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:length value="12"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<!--发送时间-->
+			<xsd:element name="EntrustDate">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:length value="14"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<!--业务种类-->
+			<xsd:element name="BusinessCode">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:length value="2"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<!--操作用户-->
+			<xsd:element name="UserCode">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="40"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--单笔核对请求信息-->
+	<xsd:complexType name="SingleCheckRequestMessage0001">
+		<xsd:sequence>
+			<!--身份证号码-->
+			<xsd:element name="ID">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:length value="18"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<!--被核对人姓名-->
+			<xsd:element name="Name">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="30"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.product.dao.AppendixDictDao">
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.product.model.AppendixDict">
+		<result property="id" column="ID" />
+		<result property="typeName" column="TYPE_NAME" />
+		<result property="typeCode" column="TYPE_CODE" />
+		<result property="createTime" column="CREATED_TIME" />
+		<result property="createBy" column="CREATED_BY" />
+		<result property="modifyTime" column="MODIFIED_TIME" />
+		<result property="modifyBy" column="MODIFIED_BY" />
+	
+	</resultMap>
+
+	<select id="findAllAppendix" resultMap="ResultMap">
+		SELECT * from APPENDIX_DICT t
+		WHERE 1=1
+	</select>
+
+</mapper>

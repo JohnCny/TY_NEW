@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.customer.dao.CustomerOverdueHistoryDao">
+
+    <resultMap id="OverdueResultMap"
+		type="com.cardpay.pccredit.customer.model.CustomerOverdueHistory">
+		<result property="customerId" column="CUSTOMER_ID" />
+		<result property="productId" column="PRODUCT_ID" />
+		<result property="numberDaysOverdue" column="NUMBER_DAYS_OVERDUE" />
+		<result property="overdueAmount" column="OVERDUE_AMOUNT" />
+		<result property="lateDate" column="LATE_DATE" />
+	</resultMap>
+	<select id="findCountById" resultType="int"
+		parameterType="com.cardpay.pccredit.customer.filter.CustomerOverdueHistoryFilter">
+		select
+		count(*)
+		from(
+		select t.customer_id from
+		 customer_overdue_history t
+		where 1=1
+		<if test="customerId != null and customerId != '' ">
+			AND t.customer_id=#{customerId}
+		</if>
+		<if test="productId != null and productId != '' ">
+			AND t.product_id=#{productId}
+		</if>
+		union all
+		select t.customer_id
+	    from customer_overdue t 
+	    where 1=1
+	    <if test="customerId != null and customerId != '' ">
+			AND t.customer_id=#{customerId}
+		</if>
+		<if test="productId != null and productId != '' ">
+			AND t.product_id=#{productId}
+		</if>
+		)
+	</select>
+    <select id="findOverdueAmountById" resultType="String"
+		parameterType="com.cardpay.pccredit.customer.filter.CustomerOverdueHistoryFilter">
+		select
+		sum(tt.overdue_amount)
+		from( 
+		select  t.overdue_amount 
+		from
+		customer_overdue_history t
+		where 1=1
+		<if test="customerId != null and customerId != '' ">
+			AND t.customer_id=#{customerId}
+		</if>
+		<if test="productId != null and productId != '' ">
+			AND t.product_id=#{productId}
+		</if>
+		union all
+		select t.CURRENT_BALANCE  as overdue_amount
+	    from customer_overdue t 
+	    where 1=1
+	    <if test="customerId != null and customerId != '' ">
+			AND t.customer_id=#{customerId}
+		</if>
+		<if test="productId != null and productId != '' ">
+			AND t.product_id=#{productId}
+		</if>
+		) tt
+	 </select>
+	 <select id="findHalfYearOverdueByProductId" resultMap="OverdueResultMap">
+	 select customer_id 
+	 from  
+	 (select t.customer_id, 
+	 t.number_days_overdue,
+	 t.late_date 
+	 from customer_overdue t 
+	 where t.product_id=#{productId} 
+     union all
+     select t.customer_id,
+     t.number_days_overdue,
+     t.late_date from 
+     customer_overdue_history t 
+     where t.product_id=#{productId}) tt  where 
+      tt.late_date  <![CDATA[ <= ]]>SYSDATE
+     AND tt.late_date > ADD_MONTHS (SYSDATE, - 6)
+     group by customer_id having(count(0)>=3)
+	 
+	 </select>
+	  <select id="findHalfYearOverdueTwoByProductId" resultMap="OverdueResultMap">
+	 select tt.customer_id ,tt.late_date
+	 from  
+	 (select t.customer_id, 
+	 t.number_days_overdue,
+	 t.late_date 
+	 from customer_overdue t 
+	 where t.product_id=#{productId} 
+     union all
+     select t.customer_id,
+     t.number_days_overdue,
+     t.late_date from 
+     customer_overdue_history t 
+     where t.product_id=#{productId}) tt  where 
+     tt.late_date  <![CDATA[ <= ]]>SYSDATE
+     AND tt.late_date > ADD_MONTHS (SYSDATE, - 6)
+     group by tt.customer_id ,tt.late_date order by tt.customer_id,tt.late_date asc
+	 
+	 </select>
+	 
+	  <select id="findHalfYearOverdueDayByProductId" resultMap="OverdueResultMap">
+	 select customer_id 
+	 from  
+	 (select t.customer_id, 
+	 t.number_days_overdue,
+	 t.late_date 
+	 from customer_overdue t 
+	 where t.product_id=#{productId} 
+     union all
+     select t.customer_id,
+     t.number_days_overdue,
+     t.late_date from 
+     customer_overdue_history t 
+     where t.product_id=#{productId}) tt  where 
+       tt.late_date  <![CDATA[ <= ]]>SYSDATE
+     AND tt.late_date > ADD_MONTHS (SYSDATE, - 6) and
+      tt.number_days_overdue>=60 group by customer_id 
+	 
+	 </select>
+</mapper>

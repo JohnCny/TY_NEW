@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.manager.dao.ManagerAssessmentScoreDao" >
+
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.manager.web.ManagerAssessmentScoreForm">
+		<result property="id" column="ID" />
+		<result property="creditUtilizationRate" column="CREDIT_UTILIZATION_RATE" />
+		<result property="numbererestRecoveryRate" column="NUMBEREREST_RECOVERY_RATE" />
+		<result property="overdueRate" column="OVERDUE_RATE" />
+		<result property="lateRecoveryRate" column="LATE_RECOVERY_RATE" />
+		<result property="overdueBalanceRate" column="OVERDUE_BALANCE_RATE" />
+		<result property="defectiveLoansRate" column="DEFECTIVE_LOANS_RATE" />
+		<result property="creditUtilizationScore" column="CREDIT_UTILIZATION_SCORE" />
+		<result property="numbererestRecoveryScore" column="NUMBEREREST_RECOVERY_SCORE" />
+		<result property="overdueScore" column="OVERDUE_SCORE" />
+		<result property="lateRecoveryScore" column="LATE_RECOVERY_SCORE" />
+		<result property="overdueBalanceScore" column="OVERDUE_BALANCE_SCORE" />
+		<result property="defectiveLoansScore" column="DEFECTIVE_LOANS_SCORE" />
+		<result property="customerPotentialValue" column="CUSTOMER_POTENTIAL_VALUE" />
+		<result property="selfTrainingAbility" column="SELF_TRAINING_ABILITY" />
+		<result property="teamCooperationAbility" column="TEAM_COOPERATION_ABILITY" />
+		<result property="customerManagementAbility" column="CUSTOMER_MANAGEMENT_ABILITY" />
+		<result property="orgaCoordinationAbility" column="ORGA_COORDINATION_ABILITY" />
+		<result property="deposit" column="DEPOSIT" />
+		<result property="lastDeposit" column="LAST_DEPOSIT" />
+		<result property="bankingProduct" column="BANKING_PRODUCT" />
+		<result property="lastBankingProduct" column="LAST_BANKING_PRODUCT" />
+		<result property="totalScore" column="TOTAL_SCORE" />
+		<result property="totalEvaluation" column="TOTAL_EVALUATION" />
+		<result property="otherEvaluation" column="OTHER_EVALUATION" />
+		<result property="assessed" column="ASSESSED" />
+		<result property="assessedConfirmDate" column="ASSESSED_CONFIRM_DATE" />
+		<result property="assessor" column="ASSESSOR" />
+		<result property="assessmentDate" column="ASSESSMENT_DATE" />
+		<result property="assessedName" column="DISPLAY_NAME" />
+		<result property="assessmentDate" column="ASSESSMENT_DATE" />
+		<result property="dataYear" column="DATA_YEAR" />
+		<result property="dataMonth" column="DATA_MONTH" />
+		<result property="customerManagerLevel" column="CUSTOMER_MANAGER_LEVEL" />
+	</resultMap>
+	
+		<resultMap id="ResultMap1" type="com.cardpay.pccredit.manager.model.TyManagerAssessment">
+		<result property="id" column="ID" />
+		<result property="customerId" column="CUSTOMER_ID" />
+		<result property="totalScore" column="TOTAL_SCORE" />
+		<result property="createTime" column="CREATE_TIME" />
+		<result property="createUser" column="CREATE_USER" />
+		<result property="customerName" column="CUSTOMER_NAME" />
+	</resultMap>
+	
+	<select id="findManagerAssessmentScoreByFilter" resultMap="ResultMap1" 
+		parameterType="com.cardpay.pccredit.manager.filter.ManagerAssessmentScoreFilter">
+		SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					 SELECT mas.*
+					 FROM  ty_manager_assessment mas
+					 WHERE 1=1 
+					 <if test="assessedName != null and assessedName != '' ">
+						<![CDATA[ and mas.customer_name like '%'||#{assessedName}||'%']]>
+					</if>
+					<if test="dataYear != null and dataYear != '' ">
+						and mas.year = #{dataYear}
+					</if>
+					<if test="dataMonth != null and dataMonth != '' ">
+						and mas.month = #{dataMonth}
+					</if>
+					<if test="subManagerIds != null and subManagerIds.size() > 0 ">
+						and mas.customer_id in
+						<foreach item="item" index="index" collection="subManagerIds" open="("  
+				            separator="," close=")">  
+				            #{item}
+				        </foreach>
+					</if>
+					order by mas.CREATE_TIME desc
+  			<![CDATA[		
+					) ROW_
+				WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+			WHERE ROWNUM_ > #{limit}*#{page}
+			]]>
+	</select>
+	
+	<select id="findManagerAssessmentScoreCountByFilter" resultType="int" 
+		parameterType="com.cardpay.pccredit.manager.filter.ManagerAssessmentScoreFilter">
+		SELECT count(*)
+					 FROM  ty_manager_assessment mas
+					 WHERE 1=1 
+		 <if test="assessedName != null and assessedName != '' ">
+						<![CDATA[ and mas.customer_name like '%'||#{assessedName}||'%']]>
+					</if>
+					<if test="dataYear != null and dataYear != '' ">
+						and mas.year = #{dataYear}
+					</if>
+					<if test="dataMonth != null and dataMonth != '' ">
+						and mas.month = #{dataMonth}
+					</if>
+					<if test="subManagerIds != null and subManagerIds.size() > 0 ">
+						and mas.customer_id in
+						<foreach item="item" index="index" collection="subManagerIds" open="("  
+				            separator="," close=")">  
+				            #{item}
+				        </foreach>
+					</if>
+	</select>
+	 
+	<select id="findManagerAssessmentScoreById" resultMap="ResultMap1">
+		 SELECT mas.*
+		 FROM  ty_manager_assessment mas
+		 WHERE mas.id = #{id}
+	</select>
+
+</mapper>

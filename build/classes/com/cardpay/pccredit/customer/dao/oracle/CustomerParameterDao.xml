@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.customer.dao.ICustomerParameterDao">
+	
+	<resultMap id="cardInfomationMap"
+		type="com.cardpay.pccredit.customer.web.CardInfomationFrom">
+		<result property="customerParameterId" column="ID" />
+		<result property="customerManagerId" column="CUSTOMERMANAGERID" />
+		<result property="customerId" column="CUSTOMERID" />
+		<result property="productname" column="PRODUCTNAME" />
+		<result property="loantype" column="LOANTYPE" />
+		<result property="bondsman" column="BONDSMAN" />
+		<result property="scopeoperation" column="SCOPEOPERATION" />
+		<result property="operationaddress" column="OPERATIONADDRESS" />
+		<result property="assist" column="ASSIST" />
+		<result property="groupes" column="GROUPES" />
+		<result property="members" column="MEMBERS" />
+		<result property="patternslend" column="PATTERNSLEND" />
+		<result property="ratepaying" column="RATEPAYING" />
+		<result property="batchs" column="BATCHS" />
+		<result property="phonenumber" column="PHONENUMBER" />
+		<result property="enlending" column="ENLENDING" />
+		<result property="remark" column="REMARK" />
+	</resultMap>
+	
+	
+	<resultMap id="ProductResultMap"
+		type="com.cardpay.pccredit.product.model.ProductAttribute">
+		<result property="id" column="ID" />
+		<result property="productName" column="PRODUCT_NAME" />
+		<result property="purposeLoan" column="PURPOSE_LOAN" />
+		<result property="creditLine" column="CREDIT_LINE" />
+		<result property="rateRange" column="RATE_RANGE" />
+		<result property="loanTimeLimit" column="LOAN_TIME_LIMIT" />
+		<result property="loanPrincipal" column="LOAN_PRINCIPAL" />
+		<result property="letterPaymentWay" column="LETTER_PAYMENT_WAY" />
+		<result property="numbererestSettlementWay" column="NUMBEREREST_SETTLEMENT_WAY" />
+		<result property="assureMeans" column="ASSURE_MEANS" />
+		<result property="penaltyNumbererest" column="PENALTY_NUMBEREREST" />
+		<result property="productRiskTolerance" column="PRODUCT_RISK_TOLERANCE" />
+		<result property="productTypeCode" column="PRODUCT_TYPE_CODE" />
+		<result property="status" column="STATUS" />
+		<result property="createdTime" column="CREATED_TIME" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="modifiedTime" column="MODIFIED_TIME" />
+		<result property="modifiedBy" column="MODIFIED_BY" />
+		<result property="pictureUrl" column="PICTURE_URL" />
+		<result property="pictureName" column="PICTURE_NAME" />
+		<result property="seqno" column="SEQNO" />
+	</resultMap>
+	
+	<resultMap id="queryResultMap" type="com.cardpay.pccredit.customer.model.ParameterInformaion">
+		<result property="customerId" column="customer_id" />
+		<result property="customermanagerId" column="user_id" />
+		<result property="customermanagerName" column="display_name" />
+		<result property="customerName" column="chinese_name" />
+		<result property="idcard" column="card_id" />
+		<result property="money" column="actual_quote" />
+		<result property="deadlinec" column="DKQX" />
+		<result property="interstrate" column="htll" />
+		<result property="providedate" column="JKRQ" />
+		<result property="expiredate" column="DQRQ" />
+		<result property="classification" column="industry_type" />
+		<result property="giveback" column="ACCOUNT_STATUS" />
+	</resultMap>
+	
+	<resultMap id="allResultMap" type="com.cardpay.pccredit.customer.model.CustomerParameter">
+		<result property="customerParameterId" column="ID" />
+		<result property="customerManagerId" column="CUSTOMERMANAGERID" />
+		<result property="customername" column="CUSTOMERNAME" />
+		<result property="managername" column="MANAGERNAME" />
+		<result property="customerId" column="CUSTOMERID" />
+		<result property="idcard" column="IDCARD" />
+		<result property="productname" column="PRODUCTNAME" />
+		<result property="money" column="MONEY" />
+		<result property="deadline" column="DEADLINE" />
+		<result property="interstrate" column="INTERSTRATE" />
+		<result property="loantype" column="LOANTYPE" />
+		<result property="providedate" column="PROVIDEDATE" />
+		<result property="expiredate" column="EXPIREDATE" />
+		<result property="bondsman" column="BONDSMAN" />
+		<result property="classification" column="CLASSIFICATION" />
+		<result property="scopeoperation" column="SCOPEOPERATION" />
+		<result property="operationaddress" column="OPERATIONADDRESS" />
+		<result property="principal" column="PRINCIPAL" />
+		<result property="assist" column="ASSIST" />
+		<result property="groupes" column="GROUPES" />
+		<result property="members" column="MEMBERS" />
+		<result property="patternslend" column="PATTERNSLEND" />
+		<result property="ratepaying" column="RATEPAYING" />
+		<result property="giveback" column="GIVEBACK" />
+		<result property="batchs" column="BATCHS" />
+		<result property="phonenumber" column="PHONENUMBER" />
+		<result property="enlending" column="ENLENDING" />
+		<result property="remark" column="REMARK" />
+		</resultMap>
+	
+	<resultMap id="userResultMap" type="com.cardpay.pccredit.ipad.model.UserIpad">
+		<result property="id" column="ID" />
+		<result property="displayName" column="DISPLAY_NAME" />
+	</resultMap>
+	<!--查询所有的客户经理  -->
+	<select id="queryAllManager" resultMap="userResultMap">
+	    select DISPLAY_NAME from SYS_USER where USER_TYPE=1
+	</select>
+	
+	
+	<insert id="addCustomerParameter" parameterType="com.cardpay.pccredit.customer.model.CustomerParameter">
+	   insert into CUSTOMER_PARAMETER(
+	   ID,PRODUCTNAME,LOANTYPE,BONDSMAN,SCOPEOPERATION,OPERATIONADDRESS,ASSIST,
+	   GROUPES,MEMBERS,PATTERNSLEND,RATEPAYING,BATCHS,PHONENUMBER,ENLENDING,
+	   REMARK,CUSTOMERNAME,MANAGERNAME,IDCARD,MONEY,DEADLINE,INTERSTRATE,
+	   PROVIDEDATE,EXPIREDATE,CLASSIFICATION,PRINCIPAL,GIVEBACK) 
+	   values
+	  (sys_guid(),#{productname},#{loantype},
+	  #{bondsman},#{scopeoperation},#{operationaddress},#{assist},#{groupes},#{members},#{patternslend},
+	  #{ratepaying},#{batchs},#{phonenumber},#{enlending},#{remark},#{customername},#{managername},
+	  #{idcard},#{money},#{deadline},#{interstrate},#{providedate},#{expiredate},#{classification},#{principal},#{giveback})
+	</insert>
+	    
+ 
+	<!--查询所有的产品  -->
+	<select id="queryProduct" resultMap="ProductResultMap">
+		SELECT * from product_attribute 
+	</select>
+	
+	<select id="query" resultMap="queryResultMap">
+	<!--  select 
+    su.display_name,
+    bci.CHINESE_NAME,
+    bci.CARD_ID,
+    cai.ACTUAL_QUOTE,
+    trt.DKQX,
+    trt.htll,
+    trt.JKRQ,
+    trt.DQRQ,
+    tcr.STATUS,
+    cci.industry_type
+    from
+     TY_CUSTOMER_RECORD tcr,
+     CUSTOMER_CAREERS_INFORMATION cci,
+     CUSTOMER_APPLICATION_INFO cai,
+     TY_REPAY_TKMX trt,
+     basic_customer_information bci,
+     product_attribute pa,
+     sys_user su
+     where 
+     trt.JJH=cai.JJH
+     and  cai.customer_id = bci.id
+     and tcr.APPLICATION_ID=cai.id
+     and cai.product_id = pa.id 
+     and cai.customer_id=cci.customer_id
+     and su.id=bci.user_id
+     and bci.CARD_ID=#{idCard} -->
+   <!--  select 
+    su.display_name,
+    bci.CHINESE_NAME,
+    bci.CARD_ID,
+    cai.ACTUAL_QUOTE,
+    cai.STATUS,
+    trt.DKQX,
+    trt.htll,
+    trt.JKRQ,
+    trt.DQRQ,
+    cci.industry_type
+    from
+     CUSTOMER_CAREERS_INFORMATION cci,
+     CUSTOMER_APPLICATION_INFO cai,
+     TY_REPAY_TKMX trt,
+     basic_customer_information bci,
+     sys_user su
+     where 
+     trt.JJH=cai.JJH
+     and  cai.customer_id = bci.id
+     and cai.customer_id=cci.customer_id
+     and su.id=bci.user_id
+     and bci.CARD_ID=#{idCard} -->
+     select 
+    su.display_name,
+    bci.CHINESE_NAME,
+    bci.CARD_ID,
+    cai.ACTUAL_QUOTE,
+    cai.ACCOUNT_STATUS,
+    trt.DKQX,
+    trt.htll,
+    trt.JKRQ,
+    trt.DQRQ,
+    cci.industry_type
+    from
+     CUSTOMER_CAREERS_INFORMATION cci,
+     CUSTOMER_APPLICATION_INFO cai,
+     TY_REPAY_TKMX trt,
+     basic_customer_information bci,
+     sys_user su
+     where 
+     trt.JJH=cai.JJH
+     and  cai.customer_id = bci.id
+     and cai.customer_id=cci.customer_id
+     and su.id=bci.user_id
+     and bci.CARD_ID=#{idCard} 
+	</select>
+	
+	<select id="queryByIdCard" resultMap="allResultMap" >
+	 select * from CUSTOMER_PARAMETER where IDCARD=#{idcard}
+	</select>
+	    
+	    
+</mapper>

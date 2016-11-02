@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/css.css" />
+<link rel="stylesheet" type="text/css"	href="${contextPath}/common/css/jquery-ui-1.10.3.custom.css" />
+<script type="text/javascript" src="${contextPath}/common/js/common/json2.js"></script>
+<script src='${contextPath}/common/js/common/jquery.min.js'></script>
+<script src='${contextPath}/common/js/common/JTimer_2.0.js'></script>
+<script src="${contextPath}/common/js/common/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="${contextPath}/common/js/common/common.js"></script>
+<script src="${contextPath}/common/js/common/dialog.js"></script>
+<script type="text/javascript" src="${uicasePath}/js/common/layoutInfo.js"></script>
+<title></title>
+</head>
+
+
+<body>
+        <div class="content_main">
+           <div class="contentinner">
+               <div class="place">
+					<span>当前位置：显示列表 >table标题行固定 </span>
+				</div>
+						
+               <div  class="inquiry">
+                <div class="search_tag">查询条件</div>
+                 <div class="search">  
+                <form id="submitForm" action="${contextPath}/sample/query.page">
+                     <ul>
+							<li><span>序号：<input type="text" name="seqNo"
+									value='$!result.filter.seqNo' maxlength="30" /></span></li>
+							<li><span>名称：<input type="text" name="name"
+									value='$!result.filter.name' maxlength="30" /></span></li>
+							<li><span>类型：<input type="text" name="type"
+									style="_margin-top: 15px;" value='$!result.filter.type'
+									maxlength="30" /></span></li>
+							<li><span>显示名称<input type="text" name="nativeName"
+									style="_margin-top: 15px;" value='$!result.filter.nativeName'
+									maxlength="30" /></span></li>
+							<li class="search_button"><input type="submit" value="查询"
+								class="search_button_inquiry"
+								style="height: 26px; line-height: 24px;" /></li>
+						</ul>
+                     </form>      
+                    </div>   
+                   
+                  <div id="topDiv" class="inquiry_list inquiry_top" >                    
+                      <table>
+                        <colgroup>
+                              <col width="30">
+                               <col width="80">
+                               <col width="80">
+                               <col width="80">  
+                               <col width="80">
+                               <col width="80">
+                               <col width="90">
+                               <col width="90">   
+                               <col width="90">                                                               
+                        </colgroup>
+                        
+                        <tr class="title">
+                        
+                         <th></th>
+                          <th nowrap="nowrap">序号</th>
+                          <th nowrap="nowrap">名称</th>
+                          <th nowrap="nowrap">类型</th>
+                          <th nowrap="nowrap">显示名称</th>  
+                          <th nowrap="nowrap">日期</th>
+                          <th nowrap="nowrap">描述信息</th>
+                          <th nowrap="nowrap">创建时间</th>
+                          <th nowrap="nowrap">上次修改时间</th>
+                                                                                        
+                        </tr>
+                        </table>
+                       </div>
+                    
+                   <div id="downDiv" class="inquiry_list inquiry_down">
+                       <table>
+                        <colgroup>
+                               <col width="30">
+                               <col width="80">
+                               <col width="80">
+                               <col width="80">  
+                               <col width="80">
+                               <col width="80">
+                               <col width="90">
+                               <col width="90">   
+                               <col width="90">
+                                                                                 
+                        </colgroup>
+                          
+                           #foreach ($sample in $result.items)
+                        <tr>
+	                        <td class="checkbox"><input type="checkbox"  name="checkbox" value="$!sample.id"/></td>
+	                        <td>$!sample.seqNo</td>
+	                        <td>$!sample.name</td>
+	                        <td>$!sample.type</td>
+	                        <td>$!sample.nativeName</td>
+	                        <td>$!sample.sampleDate</td>
+	                        <td>$!sample.description</td>
+	                         <td>$!date.format("yyyy-MM-dd
+								HH:mm:ss",$!sample.timeCreated)</td>
+	                        <td>$!date.format("yyyy-MM-dd
+								HH:mm:ss",$!sample.timeLastModified)</td>
+                        </tr>
+                        #end 
+                        </table>
+                       
+                    </div>
+                   
+                 </div>                                 
+              <div class="pagebar">
+                  <div class="controlbtn">
+					<a id="id_export_button" class="btn_w" href="javascript:void(0);">导出</a>
+					</div>                               
+             #parse ("common/pagination2.htm")
+             <div class="clear"></div>
+               </div> 
+                 
+           </div>
+        </div>
+</body>
+
+<script language="javascript" type="text/javascript">
+var layout=new TableLayout(2);			
+window.top.currentWindow.setLayout(layout);
+$(document).ready(function() {
+	
+	 crudObj = new Object();
+	 crudObj.batchDeleteUrl = "${contextPath}/sample/batchDelete.json";
+	 prepareCRUD(crudObj);
+});
+</script>
+</html>

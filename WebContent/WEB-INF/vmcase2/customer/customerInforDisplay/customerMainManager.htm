@@ -1,0 +1,108 @@
+#parse ("common/iframe_page_header.htm")
+<link rel="stylesheet" type="text/css"
+	href="${contextPath}/css/customer/style.css" />
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
+<style>
+.form-l .form-r{height:32px;}
+</style>
+<body class="whitebg">
+	<div class="content_main">
+		<div class="contentinner">
+		 <div class="place">
+		<div class="title">客户维护信息快照>台账信息</div>	
+    </div>
+		 #parse ("common/place_tab.htm")
+			<form id="id_module_form">
+			<input type="hidden" id="customerId" name="customerId" value="$!customer.id"/>
+			 <input type="hidden" id="applicationId" name="applicationId" value="$!applicationId" />
+			<div class="form-bd" id="formsId" style="border: 0px;">
+			
+					<table class="table-bd"  bordercolor="#cccccc" border="1" style="width: 100%">
+					<caption>台账信息</caption>
+						<colgroup>
+							<col width="10%" />
+							<col width="40%" />
+							<col width="10%" />
+							<col width="40%" />
+						
+						</colgroup>
+						
+						<tr>
+							<td><label>经营异常情况：</label></td>
+							<td><input id="manageException" name="manageException"  value="$!customerMainManager.manageException" disabled="disabled"></td>
+							<td><label>非常态大额支出：</label></td>
+							<td><input id="unnormalBigaccountout" name="unnormalBigaccountout"  value="$!customerMainManager.unnormalBigaccountout" disabled="disabled"></td>
+						</tr>
+						<tr>
+							<td><label>经营提升情况：</label></td>
+							<td><input id="managerImprove" name="managerImprove"  value="$!customerMainManager.managerImprove" disabled="disabled"></td>
+							<td><label>婚姻状况：</label></td>
+							<td><input id="marriageCircs" name="marriageCircs"  value="$!customerMainManager.marriageCircs" disabled="disabled"></td>
+						</tr>
+						<tr>
+							<td><label>资产负债情况：</label></td>
+							<td><input id="assetsAndLiabilities" name="assetsAndLiabilities"  value="$!customerMainManager.assetsAndLiabilities" disabled="disabled"></td>
+							<td><label>个人提升情况：</label></td>
+							<td><input id="personImprove" name="personImprove"  value="$!customerMainManager.personImprove" disabled="disabled"></td>
+						</tr>
+						<tr>
+							<td><label>每月还款情况：</label></td>
+							<td><input id="monthBackCircs" name="monthBackCircs"  value="$!customerMainManager.monthBackCircs" disabled="disabled"></td>
+							<td><label>异常表现：</label></td>
+							<td><input id="exceptionDisplay" name="exceptionDisplay"  value="$!customerMainManager.exceptionDisplay" disabled="disabled"></td>
+						</tr>
+						<tr>
+							<td><label>行业风险：</label></td>
+							<td><input id="industryRisk" name="industryRisk"  value="$!customerMainManager.industryRisk" disabled="disabled"></td>
+							<td><label>家庭情况：</label></td>
+							<td><input id="familyCircs" name="familyCircs"  value="$!customerMainManager.familyCircs" disabled="disabled"></td>
+						</tr>
+						<tr>
+							<td><label>子女父母情况：</label></td>
+							<td><input id="childrenCircs" name="childrenCircs"  value="$!customerMainManager.childrenCircs" disabled="disabled"></td>
+							<td><label>个人行为情况：</label></td>
+							<td><input id="personBehaviour" name="personBehaviour"  value="$!customerMainManager.personBehaviour" disabled="disabled"></td>
+						</tr>
+						<tr>
+							<td><label>贷后维护人员进行客户维护后的主观描述：</label></td>
+							<td colspan="3">
+     							<textarea id="loanAfterCircs" value="" rows="8" name="loanAfterCircs" disabled="disabled">$!customerMainManager.loanAfterCircs</textarea>
+							</td>
+						</tr>
+					</table>
+					</div>
+					
+			</form>
+
+			<div class="submit">
+			  <input class="current" type="button" onclick="javascript:history.go(-1);" value="#i18n('button.back')" />
+			</div>
+		</div>
+	</div>
+
+  <script type="text/javascript">
+	var layout=new FormsLayout("id_module_form");	
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	$(document).ready(function() {
+		$("li").removeClass("activeTab");
+		$("li:eq(5)").addClass("activeTab");
+	     $("#id_save_button").click(function() {
+			  var formjson = $($formName).serialize();
+	     	    $.get("${contextPath}/customer/customermainManager/insert.json", formjson, function(data, textStatus, jqXhr) {
+		            if (data.success) {
+		              #if ($request.getParameter('callBackUrl').indexOf('?') != -1)
+		            	  navigateTo("${contextPath}/customer/customermainManager/create_khtz.page?id=$!customer.id") ;
+		              #end
+		            }
+		          });
+	       });
+
+	});
+	
+	</script>
+	<script type="text/javascript">
+	
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

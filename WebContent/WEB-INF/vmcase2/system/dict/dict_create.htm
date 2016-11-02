@@ -1,0 +1,53 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+				<div class="title">创建</div>
+			</div>
+			<form id="id_module_form" action="${contextPath}/system/dict/insert.json">
+				<div class="forms" id="formsId">
+					<table class="rule">
+						<colgroup>
+							<col width="10%" />
+							<col width="30%" />
+							<col width="10%" />
+							<col width="10%" />
+							<col width="30%" />
+						</colgroup>
+						<tr>
+							<td><label for="dictType">字典类别:</label></td>
+							<td><input type="text" id="dictType" name="dictType" value="" /></td>
+							<td>&nbsp;</td>
+							<td><label for="typeCode">字典代码:</label></td>
+							<td><input type="text" id="typeCode" name="typeCode" value="" /></td>
+						</tr>
+						<tr>
+							<td><label for="typeName">字典名称:</label></td>
+							<td><input type="text" id="typeName" name="typeName" value="" /></td>
+							<td>&nbsp;</td>
+							<td><label for="bankCode">银行代码:</label></td>
+							<td><input type="text" id="bankCode" name="bankCode" value="" /></td>
+						</tr>
+					</table>
+				</div>
+			</form>
+
+			<div class="submit">
+				<input id="id_save_button" type="button" value="#i18n('button.save')" class="current" /> 
+				<input type="button" onclick="javascript:history.go(-1);" value="#i18n('button.cancel')" />
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	var layout=new FormsLayout("formsId");			
+	window.top.currentWindow.setLayout(layout);
+
+	#set ($formName = "'#id_module_form'")
+	#validator($formName)
+	 $(document).ready(function() {
+		#parse("common/part_create.js")
+	}); 
+	</script>
+</body>
+</html>

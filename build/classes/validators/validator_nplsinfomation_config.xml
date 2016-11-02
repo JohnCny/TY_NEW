@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validators>
+	<validator id="riskcontrol.nplsinfomationconfig">
+		<control name="aging">
+			<entry type="number" value="true" />
+		</control>
+		<control name="numberDaysOverdue">
+			<entry type="number" value="true" />
+		</control>
+		<control name="overdueMoney">
+			<entry type="required" value="true" />
+			<entry type="number" value="true" />
+		</control>
+	</validator>
+</validators>

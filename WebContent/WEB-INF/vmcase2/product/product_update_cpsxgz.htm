@@ -1,0 +1,99 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/customerInfor.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
+<body>
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+				  <div class="dvTab">
+            <ul class="com-tab">
+            <li class="tab"><a href="${contextPath}/product/productinformation/change.page?id=${productId}">产品属性</a></li>
+            <li class="tab"><a href="${contextPath}/product/productinformation/change_cpfjqd.page?id=${productId}">附件清单</a></li>
+            <li class="tab"><a href="${contextPath}/product/productinformation/change_cpgz.page?id=${productId}">产品规则</a></li>
+            <li class="tab"><a href="${contextPath}/product/productinformation/change_csgz.page?id=${productId}">催收规则</a></li>
+<!--             <li class="tab activeTab"><a href="${contextPath}/product/productinformation/change_cpsxgz.page?id=${productId}">筛选规则</a></li>
+ -->         </ul>
+        </div>
+			</div>
+			<form id="id_module_form" action="${contextPath}/product/productinformation/update_cpsxgz.json">
+				<div class="forms" id="formsId">
+					<input type="hidden" name="id" value="$!productId" />
+					<table style="border: 1px solid #dcdcdc;margin-bottom: 10px;">
+						<colgroup>
+						    <col width="5%" />
+							<col width="24%" />
+							<col width="24%" />
+							<col width="24%" />
+							<col width="24%" />
+				
+						</colgroup>
+						<tr>
+                          <td colspan="5" style="text-align:center;font-weight: bold;background-color:#ECFDF9;">产品筛选规则</td>
+                         </tr>
+                          #set($test=$args)
+					      #set($total = ($accessorie.size()/4)) 
+					    #foreach ($!index in [0 .. $total])
+					      <tr>
+					      <td>&nbsp;</td>
+						  #set($current = $!index * 4 ) 
+						  #if($current<$accessorie.size())
+						     <td><input type="checkbox"  #if($test.contains($accessorie.get($current).id)) checked="checked" #end name="accessorieId" value="$accessorie.get($current).id" /> #dictVal('tableName',$!accessorie.get($current).tableName)#dictVal('columnName',$accessorie.get($current).columnName)#dictVal('operateName',$accessorie.get($current).operate)#dictVal('allFilterValue',$accessorie.get($current).value)</td>
+						  #end
+						  #set($current = $!index * 4+1 )
+						  #if($current<$accessorie.size())
+						     <td><input type="checkbox" #if($test.contains($accessorie.get($current).id)) checked="checked" #end name="accessorieId" value="$accessorie.get($current).id" /> #dictVal('tableName',$!accessorie.get($current).tableName)#dictVal('columnName',$accessorie.get($current).columnName)#dictVal('operateName',$accessorie.get($current).operate)#dictVal('allFilterValue',$accessorie.get($current).value)</td>
+						  #end
+						  #set($current = $!index * 4+2 )
+						  #if($current<$accessorie.size())
+						     <td><input type="checkbox" #if($test.contains($accessorie.get($current).id)) checked="checked" #end name="accessorieId" value="$accessorie.get($current).id" /> #dictVal('tableName',$!accessorie.get($current).tableName)#dictVal('columnName',$accessorie.get($current).columnName)#dictVal('operateName',$accessorie.get($current).operate)#dictVal('allFilterValue',$accessorie.get($current).value)</td>
+						  #end
+                          #set($current = $!index * 4+3 )
+						  #if($current<$accessorie.size())
+						     <td><input type="checkbox" #if($test.contains($accessorie.get($current).id)) checked="checked" #end  name="accessorieId" value="$accessorie.get($current).id" />#dictVal('tableName',$!accessorie.get($current).tableName)#dictVal('columnName',$accessorie.get($current).columnName)#dictVal('operateName',$accessorie.get($current).operate)#dictVal('allFilterValue',$accessorie.get($current).value)</td>
+						  #end
+                          </tr>
+                        #end
+						</table>
+			<input type="hidden" id="accessorieIds" name="accessorieIds" />
+				</div>
+			</form>
+		
+			<div class="submit">
+			  <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
+				<input class="current" type="button" onclick="javascript:history.go(-1);" value="#i18n('button.back')" />
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		var layout = new FormsLayout("formsId");
+		window.top.currentWindow.setLayout(layout);
+
+		#set ($formName = "'#id_module_form'")
+		#validator($formName)
+		 $(document).ready(function() {
+			 $("#id_save_button").click(function() {
+			        if ($($formName).valid()) {
+			         var accessorieIds = "";
+			     	 $("input[name='accessorieId']:checkbox").each(function(){
+			     		 if ($(this).attr("checked")){
+			     			accessorieIds+=$(this).val()+","; 
+			     		}
+			     	  }
+			         );
+			     	 
+			     	 $("#accessorieIds").val(accessorieIds);
+			     	 var formjson = $($formName).serialize();
+			          $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
+			            if (data.success) {
+			            
+			                navigateTo("${contextPath}/product/productinformation/browse.page");
+			              
+			            }
+			          });
+			        }
+			      });
+		});
+	</script>
+</body>
+
+</html>

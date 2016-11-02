@@ -1,0 +1,132 @@
+#parse ("common/iframe_page_header.htm")
+<body class="whitebg">
+    <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">审批流程节点新增</div>
+      </div>
+      <form id="id_module_form" action="${contextPath}/system/nodeaudit/insert.json">
+      	  <input type="hidden" id="productId" name="productId" value="$!productId" />
+          <input type="hidden" id="nodeType" name="nodeType" value="$!nodeType" />
+          <input type="hidden" id="auditUserIds" name="auditUserIds" value="" />
+        <div class="forms" id="formsId">
+          <table class="rule">
+            <colgroup> 
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="30%" />
+            </colgroup>
+            <tr>
+              <td><label for="seqNo">序号:</label></td>
+              <td><input type="text" id="seqNo" name="seqNo" value=""/></td>
+              <td>&nbsp;</td>
+              <td><label for="nodeName">节点名称:</label></td>
+              <td><input type="text" id="nodeName" name="nodeName" value=""/></td>
+            </tr>
+            <tr>
+              <td><label for="auditUserNames">审批人员:</label></td>
+              <td><input type="text" id="auditUserNames" name="auditUserNames" value="" onclick="selectNodeConfigUsers()" readonly="readonly"/></td>
+              <td>&nbsp;</td>
+              <td><label for="nodeTypeView">节点类型:</label></td>
+              <td>
+               <select id="nodeTypeView" name="nodeTypeView" disabled="disabled">
+                #dict("NODETYPE", $!nodeType)
+               </select>
+              </td>
+            </tr>
+            <tr>
+              <td><label for="isstart">是否开始节点:</label></td>
+              <td>
+              	<select id="isstart" name="isstart">
+                #dict("YESNO", 'NO')
+                </select>
+              </td>
+              <td>&nbsp;</td>
+              <td><label for="isend">是否结束节点:</label></td>
+              <td>
+               <select id="isend" name="isend">
+                #dict("YESNO", 'NO')
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><label for="type">节点操作类型:</label></td>
+              <td>
+               <select id="type" name="type">
+                #dict("NODEOPTYPE", '')
+               </select>
+              </td>
+              <td colspan="3">&nbsp;</td>
+            </tr>
+          </table>
+        </div>
+      </form>
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n("button.save")" class="current" />
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n("button.cancel")" />
+      </div>
+    </div>
+  </div>
+      
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");	
+	window.top.currentWindow.setLayout(layout);
+	
+	#set ($formName = "'#id_module_form'")
+	
+	$(document).ready(function() {	
+		$("#id_save_button").click(function() {
+	        var seqNo = $("#seqNo").val();
+	        var nodeName = $("#nodeName").val();
+			if (seqNo.length != 0 && nodeName.length != 0) {
+	          var formjson = $($formName).serialize();
+	          $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
+	            if (data.success) {
+	               navigateTo("${contextPath}/system/nodeaudit/browse.page?recordId=" + data.recordId + "&productId=$!productId&nodeType=$!nodeType");
+	            }
+	          });
+	        } else {
+	        	Dialog.message("序列号、节点名称必填");
+	        }
+	      });
+	});
+	
+	function selectNodeConfigUsers() {
+		
+		
+ Dialog.tablePage("${contextPath}/system/approvaluser/browse.page","选择审批人员","get","",function(){
+			 
+			 var val = window.top.$("#selectval").val(); 
+			 if(val !=""){
+			 var  arr=val.split(',');
+			 var auditUserNames ="";
+			 var auditUserIds ="";
+			 for(key in arr){
+				 var arry = arr[key].split("_");
+				 if(arry[0] !=""){
+				 auditUserIds +=  arry[0] +"," ;
+				 }
+				 if(arry[1] !=""){
+				 auditUserNames +=  arry[1] +"," ;
+				 }
+			 }
+			 if(auditUserIds !=""){
+				 auditUserIds = auditUserIds.substring(0,auditUserIds.length - 1);
+				 $("#auditUserIds").val(auditUserIds);
+			 }
+              if(auditUserNames !=""){
+            	  auditUserNames =  auditUserNames.substring(0,auditUserNames.length - 1);
+            	  $("#auditUserNames").val(auditUserNames);
+			 }
+			 }
+			 window.top.$("#selectval").val("");
+			 window.top.$("#tablePage_diaog").dialog("close");
+			 
+		 },800,750);
+	}
+	
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

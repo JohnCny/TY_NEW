@@ -1,0 +1,128 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">台帐表信息</div>
+      </div>
+      <div class="inquiry">
+        <div class="search_tag">#i18n("label.browse.filter")</div>
+        <div class="search">
+          <form id="submitForm">
+            <ul>
+            
+              <li>
+                <span>业务编号：<input type="text" name="busiCode" value="$!result.filter.busiCode" /></span>
+              </li>
+              
+              <li>
+                <span>客户名称：<input type="text" name="customerName" value="$!result.filter.customerName" /></span>
+              </li>
+              
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col />
+              <col />
+              <col />
+              <col />
+              <col />
+              <col />
+              <col />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">业务编号</th>
+              <th nowrap="nowrap">客户名称</th>
+              <th nowrap="nowrap">客户证件号(核心)</th>
+              <th nowrap="nowrap">授信金额</th>
+              <th nowrap="nowrap">发放日期(核心)</th>
+              <th nowrap="nowrap">发放金额(核心)</th>
+              <th nowrap="nowrap">贷款余额(核心)</th>
+              <th nowrap="nowrap">账户状态(核心)</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col />
+              <col />
+              <col />
+              <col />
+              <col />
+              <col />
+              <col />
+            </colgroup>
+            #foreach ($obj in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!obj.busicode"/></td>
+              <td nowrap="nowrap">$!obj.busicode</td>
+              <td nowrap="nowrap">$!obj.cname</td>
+              <td nowrap="nowrap">$!obj.custidno</td>
+              <td nowrap="nowrap">$!obj.reqlmt</td>
+              <td nowrap="nowrap">$!obj.loandate</td>
+              <td nowrap="nowrap">$!obj.money</td>
+              <td nowrap="nowrap">$!obj.balamt</td>
+              <td nowrap="nowrap">#dictVal("ACCOUNTSTATE", $!obj.accountstate)</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+       <div class="controlbtn">
+          <a id="id_infor_button" class="btn_g" href="javascript:void(0);" title="查看详细信息">查看详细信息</a>
+          
+          <a id="id_refuse_button" class="btn_g" href="javascript:void(0);" title="被拒绝台帐">被拒绝台帐</a>
+        </div>
+        <div class="controlbtn">
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.createUrl = "${modulePath}/create.page";
+		opsObj.changeUrl = "${modulePath}/change.page";
+		opsObj.displayUrl = "${modulePath}/display.page";
+		opsObj.browseUrl = "${modulePath}/browse.page";
+
+		prepareOperations(opsObj);
+		$("#id_infor_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var value = $("input[name='checkbox']:checked").val();
+				var url = "${modulePath}/tz_information.page?busicode=" + value;
+				window.location.href = url;
+			}else{
+				Dialog.message("请选择记录!");
+			}
+	    });
+		
+		$("#id_refuse_button").click(function() {
+				var url = "${modulePath}"+"refuse.page";
+				window.location.href = url;
+				
+	    });
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")

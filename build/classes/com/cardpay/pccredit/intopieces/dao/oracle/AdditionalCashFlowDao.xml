@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.intopieces.dao.AdditionalCashFlowDao" >
+  <resultMap id="BaseResultMap" type="com.cardpay.pccredit.intopieces.model.AdditionalCashFlow" >
+    <id column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="LOAN_APPLY_ID" property="loanApplyId" jdbcType="DECIMAL" />
+    <result column="BUSINESS_TYPE" property="businessType" jdbcType="CHAR" />
+    <result column="DATA_TYPE" property="dataType" jdbcType="CHAR" />
+    <result column="COST_NAME" property="costName" jdbcType="VARCHAR" />
+    <result column="MONTH" property="month" jdbcType="VARCHAR" />
+    <result column="JANUARY" property="january" jdbcType="VARCHAR" />
+    <result column="FEBRUARY" property="february" jdbcType="VARCHAR" />
+    <result column="MARCH" property="march" jdbcType="VARCHAR" />
+    <result column="APRIL" property="april" jdbcType="VARCHAR" />
+    <result column="MAY" property="may" jdbcType="VARCHAR" />
+    <result column="JUNE" property="june" jdbcType="VARCHAR" />
+    <result column="JULY" property="july" jdbcType="VARCHAR" />
+    <result column="AUGUST" property="august" jdbcType="VARCHAR" />
+    <result column="SEPTEMBER" property="september" jdbcType="VARCHAR" />
+    <result column="OCTOBER" property="october" jdbcType="VARCHAR" />
+    <result column="NOVEMBER" property="november" jdbcType="VARCHAR" />
+    <result column="DECEMBER" property="december" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, LOAN_APPLY_ID, BUSINESS_TYPE, DATA_TYPE, COST_NAME, MONTH, JANUARY, FEBRUARY, 
+    MARCH, APRIL, MAY, JUNE, JULY, AUGUST, SEPTEMBER, OCTOBER, NOVEMBER, DECEMBER
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from ADDITIONAL_CASH_FLOW
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from ADDITIONAL_CASH_FLOW
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="com.cardpay.pccredit.intopieces.model.AdditionalCashFlow" >
+    insert into ADDITIONAL_CASH_FLOW (ID, LOAN_APPLY_ID, BUSINESS_TYPE, 
+      DATA_TYPE, COST_NAME, MONTH, 
+      JANUARY, FEBRUARY, MARCH, 
+      APRIL, MAY, JUNE, JULY, 
+      AUGUST, SEPTEMBER, OCTOBER, 
+      NOVEMBER, DECEMBER)
+    values (#{id,jdbcType=DECIMAL}, #{loanApplyId,jdbcType=DECIMAL}, #{businessType,jdbcType=CHAR}, 
+      #{dataType,jdbcType=CHAR}, #{costName,jdbcType=VARCHAR}, #{month,jdbcType=VARCHAR}, 
+      #{january,jdbcType=VARCHAR}, #{february,jdbcType=VARCHAR}, #{march,jdbcType=VARCHAR}, 
+      #{april,jdbcType=VARCHAR}, #{may,jdbcType=VARCHAR}, #{june,jdbcType=VARCHAR}, #{july,jdbcType=VARCHAR}, 
+      #{august,jdbcType=VARCHAR}, #{september,jdbcType=VARCHAR}, #{october,jdbcType=VARCHAR}, 
+      #{november,jdbcType=VARCHAR}, #{december,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cardpay.pccredit.intopieces.model.AdditionalCashFlow" >
+    insert into ADDITIONAL_CASH_FLOW
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="loanApplyId != null" >
+        LOAN_APPLY_ID,
+      </if>
+      <if test="businessType != null" >
+        BUSINESS_TYPE,
+      </if>
+      <if test="dataType != null" >
+        DATA_TYPE,
+      </if>
+      <if test="costName != null" >
+        COST_NAME,
+      </if>
+      <if test="month != null" >
+        MONTH,
+      </if>
+      <if test="january != null" >
+        JANUARY,
+      </if>
+      <if test="february != null" >
+        FEBRUARY,
+      </if>
+      <if test="march != null" >
+        MARCH,
+      </if>
+      <if test="april != null" >
+        APRIL,
+      </if>
+      <if test="may != null" >
+        MAY,
+      </if>
+      <if test="june != null" >
+        JUNE,
+      </if>
+      <if test="july != null" >
+        JULY,
+      </if>
+      <if test="august != null" >
+        AUGUST,
+      </if>
+      <if test="september != null" >
+        SEPTEMBER,
+      </if>
+      <if test="october != null" >
+        OCTOBER,
+      </if>
+      <if test="november != null" >
+        NOVEMBER,
+      </if>
+      <if test="december != null" >
+        DECEMBER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=DECIMAL},
+      </if>
+      <if test="loanApplyId != null" >
+        #{loanApplyId,jdbcType=DECIMAL},
+      </if>
+      <if test="businessType != null" >
+        #{businessType,jdbcType=CHAR},
+      </if>
+      <if test="dataType != null" >
+        #{dataType,jdbcType=CHAR},
+      </if>
+      <if test="costName != null" >
+        #{costName,jdbcType=VARCHAR},
+      </if>
+      <if test="month != null" >
+        #{month,jdbcType=VARCHAR},
+      </if>
+      <if test="january != null" >
+        #{january,jdbcType=VARCHAR},
+      </if>
+      <if test="february != null" >
+        #{february,jdbcType=VARCHAR},
+      </if>
+      <if test="march != null" >
+        #{march,jdbcType=VARCHAR},
+      </if>
+      <if test="april != null" >
+        #{april,jdbcType=VARCHAR},
+      </if>
+      <if test="may != null" >
+        #{may,jdbcType=VARCHAR},
+      </if>
+      <if test="june != null" >
+        #{june,jdbcType=VARCHAR},
+      </if>
+      <if test="july != null" >
+        #{july,jdbcType=VARCHAR},
+      </if>
+      <if test="august != null" >
+        #{august,jdbcType=VARCHAR},
+      </if>
+      <if test="september != null" >
+        #{september,jdbcType=VARCHAR},
+      </if>
+      <if test="october != null" >
+        #{october,jdbcType=VARCHAR},
+      </if>
+      <if test="november != null" >
+        #{november,jdbcType=VARCHAR},
+      </if>
+      <if test="december != null" >
+        #{december,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cardpay.pccredit.intopieces.model.AdditionalCashFlow" >
+    update ADDITIONAL_CASH_FLOW
+    <set >
+      <if test="loanApplyId != null" >
+        LOAN_APPLY_ID = #{loanApplyId,jdbcType=DECIMAL},
+      </if>
+      <if test="businessType != null" >
+        BUSINESS_TYPE = #{businessType,jdbcType=CHAR},
+      </if>
+      <if test="dataType != null" >
+        DATA_TYPE = #{dataType,jdbcType=CHAR},
+      </if>
+      <if test="costName != null" >
+        COST_NAME = #{costName,jdbcType=VARCHAR},
+      </if>
+      <if test="month != null" >
+        MONTH = #{month,jdbcType=VARCHAR},
+      </if>
+      <if test="january != null" >
+        JANUARY = #{january,jdbcType=VARCHAR},
+      </if>
+      <if test="february != null" >
+        FEBRUARY = #{february,jdbcType=VARCHAR},
+      </if>
+      <if test="march != null" >
+        MARCH = #{march,jdbcType=VARCHAR},
+      </if>
+      <if test="april != null" >
+        APRIL = #{april,jdbcType=VARCHAR},
+      </if>
+      <if test="may != null" >
+        MAY = #{may,jdbcType=VARCHAR},
+      </if>
+      <if test="june != null" >
+        JUNE = #{june,jdbcType=VARCHAR},
+      </if>
+      <if test="july != null" >
+        JULY = #{july,jdbcType=VARCHAR},
+      </if>
+      <if test="august != null" >
+        AUGUST = #{august,jdbcType=VARCHAR},
+      </if>
+      <if test="september != null" >
+        SEPTEMBER = #{september,jdbcType=VARCHAR},
+      </if>
+      <if test="october != null" >
+        OCTOBER = #{october,jdbcType=VARCHAR},
+      </if>
+      <if test="november != null" >
+        NOVEMBER = #{november,jdbcType=VARCHAR},
+      </if>
+      <if test="december != null" >
+        DECEMBER = #{december,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cardpay.pccredit.intopieces.model.AdditionalCashFlow" >
+    update ADDITIONAL_CASH_FLOW
+    set LOAN_APPLY_ID = #{loanApplyId,jdbcType=DECIMAL},
+      BUSINESS_TYPE = #{businessType,jdbcType=CHAR},
+      DATA_TYPE = #{dataType,jdbcType=CHAR},
+      COST_NAME = #{costName,jdbcType=VARCHAR},
+      MONTH = #{month,jdbcType=VARCHAR},
+      JANUARY = #{january,jdbcType=VARCHAR},
+      FEBRUARY = #{february,jdbcType=VARCHAR},
+      MARCH = #{march,jdbcType=VARCHAR},
+      APRIL = #{april,jdbcType=VARCHAR},
+      MAY = #{may,jdbcType=VARCHAR},
+      JUNE = #{june,jdbcType=VARCHAR},
+      JULY = #{july,jdbcType=VARCHAR},
+      AUGUST = #{august,jdbcType=VARCHAR},
+      SEPTEMBER = #{september,jdbcType=VARCHAR},
+      OCTOBER = #{october,jdbcType=VARCHAR},
+      NOVEMBER = #{november,jdbcType=VARCHAR},
+      DECEMBER = #{december,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+</mapper>

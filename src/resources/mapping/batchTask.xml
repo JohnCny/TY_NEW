@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="GBK"?>
+
+<resultMap>
+	<result column="INDEX"   	  jdbcType="VARCHAR" index="1" />
+	<result column="BATCH_CODE"   jdbcType="VARCHAR" index="2" />
+	<result column="BATCH_NAME"   jdbcType="VARCHAR" index="3" />
+	<result column="STATUS" 	  jdbcType="VARCHAR" index="4" />
+	<result column="CREATED_TIME" jdbcType="VARCHAR" index="5" />
+</resultMap>

@@ -1,0 +1,91 @@
+#parse ("common/iframe_page_header.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
+
+<body>
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+				  <div class="dvTab">
+            <ul class="com-tab">
+         <li class="tab " ><a href="${contextPath}/product/productinformation/display.page?id=${productId}">产品属性</a></li>
+            <li class="tab activeTab"><a href="${contextPath}/product/productinformation/display_cpfjqd.page?id=${productId}">附件清单</a></li>
+            <li class="tab"><a href="${contextPath}/product/productinformation/display_cpgz.page?id=${productId}">产品规则</a></li>
+            <li class="tab"><a href="${contextPath}/product/productinformation/display_csgz.page?id=${productId}">催收规则</a></li>
+<!--              <li class="tab"><a href="${contextPath}/product/productinformation/display_cpsxgz.page?id=${productId}">筛选规则</a></li>
+ -->         </ul>
+        </div>
+			</div>
+			<form id="id_module_form" action="">
+				<div class="forms" id="formsId">
+					<input type="hidden" name="id" value="$!productId" />
+				
+					<table style="border: 1px solid #dcdcdc;margin-bottom: 10px;">
+						<colgroup>
+						    <col width="5%" />
+							<col width="24%" />
+							<col width="24%" />
+							<col width="24%" />
+							<col width="24%" />
+				
+						</colgroup>
+						<tr>
+                          <td colspan="5" style="text-align:center;font-weight: bold;background-color:#ECFDF9;">产品附件清单</td>
+                         </tr>
+                         
+                         #set($test=$args)
+					      #set($total = ($accessorie.size()/4)) 
+					      #foreach ($!index in [0 .. $total])
+					       
+					      <tr>
+					      <td>&nbsp;</td>
+						  #set($current = $!index * 4 ) 
+						  #if($current<$accessorie.size())
+						 	#if($test.contains($accessorie.get($current).typeCode))
+						     <td><input type="checkbox" checked="checked" name="accessorieId" value="$accessorie.get($current).typeCode" disabled="true"/> $accessorie.get($current).typeName</td>
+						  
+						    #end
+						  #end
+						 
+						  #set($current = $!index * 4+1 )
+						  #if($current<$accessorie.size())
+						     #if($test.contains($accessorie.get($current).typeCode))
+						     <td><input type="checkbox" checked="checked" name="accessorieId" value="$accessorie.get($current).typeCode" disabled="true"/> $accessorie.get($current).typeName</td>
+						   
+						    #end
+						  #end
+						  
+						  #set($current = $!index * 4+2 )
+						  #if($current<$accessorie.size())
+						     #if($test.contains($accessorie.get($current).typeCode))
+						     <td><input type="checkbox" checked="checked" name="accessorieId" value="$accessorie.get($current).typeCode" disabled="true"/> $accessorie.get($current).typeName</td>
+						 
+						    #end
+						  #end
+                          
+                          #set($current = $!index * 4+3 )
+						  #if($current<$accessorie.size())
+						     #if($test.contains($accessorie.get($current).typeCode))
+						     <td><input type="checkbox" checked="checked" name="accessorieId" value="$accessorie.get($current).typeCode" disabled="true"/> $accessorie.get($current).typeName</td>
+						   
+						    #end
+						  #end
+                        </tr>
+                       
+                        #end
+						</table>
+						
+				</div>
+			</form>
+		
+			<div class="submit">
+				<input class="current" type="button" onclick="javascript:history.go(-1);" value="#i18n('button.back')" />
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		var layout = new FormsLayout("formsId");
+		window.top.currentWindow.setLayout(layout);
+	</script>
+</body>
+
+</html>

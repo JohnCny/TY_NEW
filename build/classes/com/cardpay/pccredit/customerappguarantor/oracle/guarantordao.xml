@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.customerappguarantor.dao.guarantordao">
+ 	 
+ 	  <resultMap id="GuarantorResultMap" type="com.cardpay.pccredit.intopieces.model.CustomerApplicationGuarantor" >
+    <id column="ID" property="id"  />
+    <result column="MAIN_APPLICATION_FORM_ID" property="mainApplicationFormId"  />
+    <result column="GUARANTOR_MORTGAGOR_PLEDGE" property="guarantorMortgagorPledge" jdbcType="VARCHAR" />
+    <result column="SEX" property="sex" jdbcType="VARCHAR" />
+    <result column="RELATIONSHIP_WITH_APPLICANT" property="relationshipWithApplicant" jdbcType="VARCHAR" />
+    <result column="UNIT_NAME" property="unitName" jdbcType="VARCHAR" />
+    <result column="DEPARTMENT" property="department" jdbcType="VARCHAR" />
+    <result column="CONTACT_PHONE" property="contactPhone" jdbcType="VARCHAR" />
+    <result column="CELL_PHONE" property="cellPhone" jdbcType="VARCHAR" />
+    <result column="DOCUMENT_NUMBER" property="documentNumber" jdbcType="VARCHAR" />
+  </resultMap>
+	 	
+	 	<select id="findguarantor"
+		resultMap="GuarantorResultMap">
+		select * from CUSTOMER_APPLICATION_GUARANTOR
+	</select>
+</mapper>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.manager.dao.ManagerRiskWarningDao">
+	<resultMap id="ManagerRiskWarningFormMap"
+		type="com.cardpay.pccredit.manager.web.ManagerRiskWarningForm">
+		<result property="id" column="ID" />
+		<result property="customerManagerId" column="CUSTOMER_MANAGER_ID" />
+		<result property="originatorName" column="ORIGINATOR_NAME" />
+		<result property="managerName" column="MANAGER_NAME" />
+		<result property="originator" column="ORIGINATOR" />
+		<result property="competentAdvice" column="COMPETENT_ADVICE" />
+		<result property="warningItems" column="WARNING_ITEMS" />
+		<result property="returnReceipt" column="RETURN_RECEIPT" />
+		<result property="feedback" column="FEEDBACK" />
+		<result property="feedbackTime" column="FEEDBACK_TIME" />
+		<result property="initiateTime" column="INITIATE_TIME" />
+		<result property="createdTime" column="CREATED_TIME" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="modifiedTime" column="MODIFIED_TIME" />
+		<result property="modifiedBy" column="MODIFIED_BY" />
+	</resultMap>
+
+
+	<select id="findCreateManagerRiskWarningByFilter" resultMap="ManagerRiskWarningFormMap">
+		SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		SELECT
+		k.*
+		FROM
+		(
+		SELECT
+		M .*, s.DISPLAY_NAME as MANAGER_NAME,
+		s1.DISPLAY_NAME AS ORIGINATOR_NAME,
+		(case when m.ORIGINATOR = #{originator} then 1 else 2 end) kk
+		FROM
+		MANAGER_RISK_WARNING M
+		INNER JOIN SYS_USER s ON
+		M .CUSTOMER_MANAGER_ID = s. ID
+		INNER JOIN SYS_USER s1 ON M .originator
+		= s1. ID
+		WHERE 1=1
+		<if test="originator != null and originator != '' ">
+			AND M .ORIGINATOR = #{originator}
+		</if>
+		) K
+		where 1=1
+		<if test="managerName != null and managerName != '' ">
+			AND k.MANAGER_NAME =#{managerName}
+		</if>
+		<if test="originatorName != null and originatorName != '' ">
+			AND k.ORIGINATOR_NAME =#{originatorName}
+		</if>
+
+		ORDER BY
+		K .kk
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+		<select id="findReciveManagerRiskWarningByFilter" resultMap="ManagerRiskWarningFormMap">
+		SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		SELECT
+		k.*
+		FROM
+		(
+		SELECT
+		M .*, s.DISPLAY_NAME as MANAGER_NAME,
+		s1.DISPLAY_NAME AS ORIGINATOR_NAME,
+		(case when m.ORIGINATOR = #{originator} then 1 else 2 end) kk
+		FROM
+		MANAGER_RISK_WARNING M
+		INNER JOIN SYS_USER s ON
+		M.CUSTOMER_MANAGER_ID = s.ID
+		INNER JOIN SYS_USER s1 ON M.originator=s1.ID
+		WHERE 1=1
+		<if test="customerManagerId != null and customerManagerId != '' ">
+			AND M.CUSTOMER_MANAGER_ID = #{customerManagerId}
+		</if>
+		) K
+		where 1=1
+		<if test="managerName != null and managerName != '' ">
+			AND k.MANAGER_NAME =#{managerName}
+		</if>
+		<if test="originatorName != null and originatorName != '' ">
+			AND k.ORIGINATOR_NAME =#{originatorName}
+		</if>
+
+		ORDER BY
+		K.kk
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+
+	<select id="findCreateManagerRiskWarningCountByFilter" resultType="int"
+		parameterType="com.cardpay.pccredit.manager.filter.ManagerRiskWarningFilter">
+		SELECT
+		COUNT (*)
+		FROM
+		(
+		SELECT
+		k.*
+		FROM
+		(
+		SELECT
+		M.*, s.DISPLAY_NAME as MANAGER_NAME,
+		s1.DISPLAY_NAME AS ORIGINATOR_NAME
+		FROM
+		MANAGER_RISK_WARNING M
+		INNER JOIN SYS_USER s ON M .CUSTOMER_MANAGER_ID = s.ID
+		INNER JOIN SYS_USER
+		s1 ON M.originator = s1.ID
+		WHERE 1=1
+		<if test="originator != null and originator != '' ">
+			AND M.ORIGINATOR = #{originator}
+		</if>
+		) K
+		where 1=1
+		<if test="managerName != null and managerName != '' ">
+			AND k.MANAGER_NAME =#{managerName}
+		</if>
+		<if test="originatorName != null and originatorName != '' ">
+			AND k.ORIGINATOR_NAME =#{originatorName}
+		</if>
+		)
+	</select>
+	<select id="findReciveManagerRiskWarningCountByFilter" resultType="int"
+		parameterType="com.cardpay.pccredit.manager.filter.ManagerRiskWarningFilter">
+		SELECT
+		COUNT (*)
+		FROM
+		(
+		SELECT
+		k.*
+		FROM
+		(
+		SELECT
+		M .*, s.DISPLAY_NAME as MANAGER_NAME,
+		s1.DISPLAY_NAME AS ORIGINATOR_NAME
+		FROM
+		MANAGER_RISK_WARNING M
+		INNER JOIN SYS_USER s ON
+		M .CUSTOMER_MANAGER_ID = s. ID
+		INNER JOIN SYS_USER s1 ON M .originator
+		= s1. ID
+		WHERE 1=1
+		<if test="customerManagerId != null and customerManagerId != '' ">
+			AND M .CUSTOMER_MANAGER_ID = #{customerManagerId}
+		</if>
+		) K
+		where 1=1
+		<if test="managerName != null and managerName != '' ">
+			AND k.MANAGER_NAME =#{managerName}
+		</if>
+		<if test="originatorName != null and originatorName != '' ">
+			AND k.ORIGINATOR_NAME =#{originatorName}
+		</if>
+		)
+	</select>
+	<update id="updateFeedBackById">
+	
+		UPDATE MANAGER_RISK_WARNING M
+	    SET M .FEEDBACK = #{feedback}
+	    ,m.RETURN_RECEIPT='1',
+	     m.FEEDBACK_TIME= SYSDATE
+  		  WHERE
+		M ."ID" = #{riskId}
+	</update>
+
+</mapper>

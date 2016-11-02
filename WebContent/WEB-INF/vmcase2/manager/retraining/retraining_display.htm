@@ -1,0 +1,70 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">再培训计划显示</div>
+      </div>
+      <form id="id_module_form" action="">
+        <div class="forms" id="formsId">
+          <table class="rule" border="1" bordercolor="#CCCCCC">
+          <caption>再培训计划</caption>
+            <colgroup>
+              <col width="10%" />
+              <col width="40%" />
+              <col width="10%" />
+              <col width="40%" />
+            </colgroup>
+            <tr>
+              <td><label>培训目标:</label></td>
+              <td>
+              	<input type="text" id="trainingObjective" name="trainingObjective" value="$!retraining.trainingObjective" disabled="disabled"/>
+              
+              <td><label>培训方式:</label></td>
+              <td>
+              	<input type="text" id="trainingMethod" name="trainingMethod" value="$!retraining.trainingMethod" disabled="disabled"/>
+              </td>
+            </tr>
+            <tr>
+              <td><label>培训地点:</label></td>
+              <td>
+              	<input type="text" id="trainingLocation" name="trainingLocation" value="$!retraining.trainingLocation" disabled="disabled"/>
+              
+              <td><label>培训时间:</label></td>
+              <td>
+              	<input type="text" name="trainingTime" id="trainingTime"  value="$!date.format("yyyy-MM-dd", $!retraining.trainingTime)" onmouseover="_calendar()" disabled="disabled"/>
+              </td>
+            </tr>
+            <tr>
+              <td><label>实施人:</label></td>
+              <td>
+              	<input type="text" id="trainingPeople" name="trainingPeople" value="$!retraining.trainingPeople" disabled="disabled"/>
+              
+              <td><label>是否废弃:</label></td>
+              <td>
+              	<input type="radio" name="whetherAbandoned" value="false" #if($!retraining.whetherAbandoned == "false") checked #end/ disabled="disabled">否
+				    &nbsp;&nbsp;&nbsp;
+				<input type="radio" name="whetherAbandoned" value="true" #if($!retraining.whetherAbandoned == "true") checked #end/ disabled="disabled">是
+              </td>
+            </tr>
+            <tr>
+              <td><label>培训内容:</label></td>
+              <td colspan="3">
+               <textarea id="trainingContent" name="trainingContent" rows="3" disabled="disabled">$!retraining.trainingContent</textarea>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </form>
+
+      <div class="submit">
+        <input class="current" type="button" onclick="javascript:history.go(-1);" value="#i18n('button.back')" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");			
+	window.top.currentWindow.setLayout(layout);
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

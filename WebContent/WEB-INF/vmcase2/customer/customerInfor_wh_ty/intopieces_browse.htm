@@ -1,0 +1,199 @@
+#parse ("common/iframe_page_header.htm")
+<script src="${contextPath}/js/intopieces/intopieces.js" charset="utf-8"></script>
+<script type="text/javascript">
+</script>
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户维护信息</div>
+      </div>
+      <div class="inquiry">
+       <div class="search_tag">客户维护信息</div>
+        <div class="search">
+          <form id="queryForm" action="${contextPath}/customer/customerInfor_wh_ty/browse.page">
+          <ul>
+              <li>
+                <span>客户名称：<input type="text" id="chineseName" name="chineseName" value="$!result.filter.chineseName" /></span>
+              </li>
+               <li>
+                <span>证件号码：<input type="text" id="cardId" name="cardId" value="$!result.filter.cardId" /></span>
+              </li>
+               <li>
+                <span>进件状态：<select id="status" name="status" value="$!result.filter.status" >
+                <option  value="" >ALL</option>
+                <option #if($!result.filter.status=='audit') selected="selected" #end value="audit">已申请 </option>
+                <option #if($!result.filter.status=='nopass_replenish') selected="selected" #end value="nopass_replenish">补充调查</option>
+                <option #if($!result.filter.status=='nopass_re') selected="selected" #end value="nopass_re">重新调查</option>
+                <option #if($!result.filter.status=='refuse') selected="selected" #end value="refuse">被拒绝</option>
+                <option #if($!result.filter.status=='approved') selected="selected" #end value="approved">审批通过</option>
+                <option #if($!result.filter.status=='succeed') selected="selected" #end value="succeed">申请成功</option>
+                <option #if($!result.filter.status=='end') selected="selected" #end value="end">放款成功</option>
+                </select>
+                </span>
+              </li>
+              <li class="search_button">
+                <input type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" onclick="javascript:this.form.submit();"/>
+              </li>
+          </ul>
+          </form>
+        </div>
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="15%" />
+              <col width="15%"/>
+              <col width="20%"/>
+              <col width="15%"/>
+              <col />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">客户名称</th>
+              <th nowrap="nowrap">证件号码</th>
+              <th nowrap="nowrap">产品名称</th>
+              <th nowrap="nowrap">申请额度</th>
+              <th nowrap="nowrap">状态</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="15%" />
+              <col width="15%"/>
+              <col width="20%"/>
+              <col width="15%"/>
+              <col />
+            </colgroup>
+            #foreach ($intoPieces in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!{intoPieces.id}_$!{intoPieces.customerId}_$!{intoPieces.tyCustomerId}"/></td>
+              <td nowrap="nowrap">$!intoPieces.chineseName</td>
+              <td nowrap="nowrap">$!intoPieces.cardId</td>
+              <td nowrap="nowrap">$!intoPieces.productName</td>
+              <td nowrap="nowrap">$format.formatNumber($!intoPieces.applyQuota, 2, 1)</td>
+              <td nowrap="nowrap">
+	              #if($!intoPieces.status=='audit')已申请  
+	              #elseif($!intoPieces.status=='refuse')被拒绝
+	              #elseif($!intoPieces.status=='approved')审批通过  
+	              #elseif($!intoPieces.status=='nopass_replenish')补充调查
+	              #elseif($!intoPieces.status=='nopass_re')退回重新调查
+	              #elseif($!intoPieces.status=='end')放款成功
+	              #end
+              </td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+          <a id="id_base_local_button" class="btn_g" href="javascript:void(0);" title="基本信息">基本信息</a>
+         <!--  <a id="id_create_button_1" class="btn_g" href="javascript:void(0);" title="添加客户维护信息">添加客户维护信息</a> -->
+          <a id="id_report_button" class="btn_g" href="javascript:void(0);" title="调查报告">调查报告</a>
+          <a id="id_image_button" class="btn_g" href="javascript:void(0);" title="调查报告">影像资料</a>
+          <a id="id_update_button" class="btn_g" href="javascript:void(0);" title="基本信息">客户基本信息修改</a>
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+	
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.createUrl1 = "${contextPath}/customer/basiccustomerinforUpdate/changewh.page";
+		if (opsObj.createUrl1) {
+	        $("#id_create_button_1").click(function() {
+	            if ($(".checkbox :checked").length == 1) {
+	            	var rowid = $("input[name='checkbox']:checked").val();
+	            	rowid = rowid.split("_")[1];
+	                var url ="";
+	                
+	                if(opsObj.createUrl1.indexOf("?")>=0){
+	                	url = opsObj.createUrl1 + "&id=" + rowid;
+	                }else{
+	                	url = opsObj.createUrl1 + "?id=" + rowid;
+	                }
+	                if (opsObj.formObj) {
+	                    // 回调URL
+	                    var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
+	                    if (callBackUrlObj) {
+	                        url += "&" + $.param({
+	                            'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+	                        });
+	                    }
+	                }
+	                window.location.href = url;
+	            } else {
+	                Dialog.message("请选择一行");
+	            }
+	        });
+	    }
+		prepareOperations(opsObj);
+		
+		$("#id_base_local_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var rowid = $("input[name='checkbox']:checked").val();
+				if(rowid.split("_")[2]==''||rowid.split("_")[2]==null){
+					Dialog.message("基本信息尚未同步!");
+					return;
+				}
+				//var url = "${contextPath}/customer/customerInfor_wh_ty/showInfo.page?id=" + rowid.split("_")[1];
+				var url ="${contextPath}/customer/firsthend/showInfoJn.page?id=" + rowid.split("_")[2];
+				window.location.href = url;
+			}
+			else{
+				Dialog.message("请选择一行!");
+			}
+	    });
+		
+		//客户基本信息修改
+		$("#id_update_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var rowid = $("input[name='checkbox']:checked").val();
+				if(rowid.split("_")[2]==''||rowid.split("_")[2]==null){
+					Dialog.message("基本信息尚未同步!");
+					return;
+				}
+				var url ="${contextPath}/customer/firsthend/showCustomerInfoJn.page?id=" + rowid.split("_")[2];
+				window.location.href = url;
+			}
+			else{
+				Dialog.message("请选择一行!");
+			}
+	    });
+
+		$("#id_report_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var rowid = $("input[name='checkbox']:checked").val();
+				var url = "${contextPath}/customer/customerInfor_wh_ty/report_jy.page?appId=" + rowid.split("_")[0]+"&urlType=2";
+				window.location.href = url;
+			}
+			else{
+				Dialog.message("请选择一行!");
+			}
+	    });
+		
+		$("#id_image_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var rowid = $("input[name='checkbox']:checked").val();
+				var url = "${contextPath}/customer/customerInfor_wh_ty/imageImport.page?applicationId=" + rowid.split("_")[0];
+				window.location.href = url;
+			}
+			else{
+				Dialog.message("请选择一行!");
+			}
+	    });
+	});
+	
+</script>
+#parse ("common/iframe_page_footer.htm")

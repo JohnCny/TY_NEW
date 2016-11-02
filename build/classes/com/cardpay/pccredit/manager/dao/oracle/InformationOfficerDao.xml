@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.manager.dao.InformationOfficerDao" >
+	
+<resultMap id="InformationOfficerEvaluateFormMap" type="com.cardpay.pccredit.manager.web.InformationOfficerEvaluateForm" >
+		<result property="messengerId" column="messenger_id" />
+		<result property="messengerName" column="name" />
+		<result property="researcherAttitude" column="researcher_attitude" />
+		<result property="researcherTimely" column="researcher_timely" />
+		<result property="researcherAccuracy" column="researcher_accuracy" />
+		<result property="evaluationPeople" column="evaluation_people" />
+</resultMap>
+<resultMap id="InformationOfficerResultMap" type="com.cardpay.pccredit.manager.web.InformationOfficerWeb">
+	<result property="name" column="name"/>
+	<result property="telephone" column="telephone" />
+	<result property="idCardNumber" column="id_card_number" />
+	<result property="address" column="address" />
+	<result property="workUnit" column="work_unit" />
+	<result property="jobDuty" column="job_duty" />
+	<result property="infoMaintenanceArea" column="info_maintenance_area" />
+	<result property="infoOfficerJob" column="info_officer_job" />
+	<result property="researcherFeedbackWay" column="researcher_feedback_way" />
+	<result property="researcherPay" column="researcher_pay" />
+	<result property="countNum" column="count_num" />
+</resultMap>
+<select id="findCustomerInforWebsByFilter" resultType="com.cardpay.pccredit.customer.model.CustomerInforWeb">
+	select b.id,b.chinese_name as chineseName,b.nationality,b.sex,b.pinyinenglish_name as pinyinenglishName,
+	b.birthday,b.card_type as cardType,b.card_id as cardId,b.residential_address as residentialAddress,
+	b.zip_code as zipCode,b.home_Phone as homePhone,b.telephone,b.mail,
+	b.residential_propertie residentialPropertie,b.marital_status as maritalStatus,
+	b.degree_education as degreeEducation,b.household_address as householdAddress,
+	b.zip_code_address as zipCodeAddress
+	from manager_information_client m 
+	inner join basic_customer_information b 
+	on m.customer_id=b.id where m.customer_id in (
+    select customer_id from manager_information_client t 
+    where 1=1 
+    <if test="customerManagerId != null and customerManagerId != '' ">
+    and t.customer_manager_id=#{customerManagerId}
+    </if>
+    <if test="messengerId != null and messengerId != '' ">
+    and t.messenger_id=#{messengerId}
+    </if>
+    )
+</select>
+<select id="findCustomerInforWebsCountByFilter" resultType="int">
+	select count(*)
+	from manager_information_client t
+	where 1=1 
+    <if test="customerManagerId != null and customerManagerId != '' ">
+    and t.customer_manager_id= #{customerManagerId}
+    </if>
+    <if test="messengerId != null and messengerId != '' ">
+    and t.messenger_id=#{messengerId}
+    </if>
+</select>
+<select id="findCustomerInforsById" resultType="com.cardpay.pccredit.system.model.Dict">
+	select b.id as TypeCode,b.chinese_name as TypeName
+	from manager_information_client m 
+	left join
+	basic_customer_information b
+	on m.customer_id=b.id
+	where 1=1 
+    <if test="messengerId != null and messengerId != '' ">
+    and m.messenger_id=#{messengerId}
+    </if>
+    <if test="customerManagerId != null and customerManagerId != '' ">
+    and m.customer_manager_id=#{customerManagerId}
+    and b.user_id=#{customerManagerId}
+    </if>
+</select>
+<select id="findCustomerInfors" resultType="com.cardpay.pccredit.system.model.Dict">
+	select b.id as TypeCode,b.chinese_name as TypeName
+	from basic_customer_information b
+	where 1=1 
+	<if test="customerManagerId != null and customerManagerId != '' ">
+	and b.user_id=#{customerManagerId}
+	</if>
+	and b.id not in 
+	(select customer_id from manager_information_client m
+	where 1=1 
+	<if test="customerManagerId != null and customerManagerId != '' ">
+	and m.customer_manager_id=#{customerManagerId} and m.customer_id is not null)
+	</if>
+	
+</select>
+<delete id="deleteById">
+	delete from manager_information_client m
+	where 1=1
+	<if test="customerManagerId != null and customerManagerId != '' ">
+	and m.customer_manager_id=#{customerManagerId}
+	</if>
+	<if test="messengerId != null and messengerId != '' ">
+    and m.messenger_id=#{messengerId}
+    </if>
+</delete>
+<insert id="insertBatchByList">
+	insert into manager_information_client(id, messenger_id, customer_manager_id, customer_id,created_by,created_time)
+    <foreach collection="list" item="item" index ="index" separator="union all">
+    select #{item.id},#{item.messengerId},#{item.customerManagerId}, 
+       #{item.customerId},#{item.createdBy},#{item.createdTime} from dual
+    </foreach >
+</insert>
+<select id="findInformationOfficerEvaluateFormById" resultMap="InformationOfficerEvaluateFormMap">
+	select c.name,c.id,
+	e.researcher_attitude,e.researcher_timely,e.researcher_accuracy,e.evaluation_people
+	from
+	information_officer_channels c
+	left join
+	information_officer_evaluation e
+	on c.id=e.messenger_id
+	where c.id=#{id}
+</select>
+<select id="checkRepeatById" resultType="String">
+	  select id
+	  from 
+	  information_officer_evaluation 
+	  where messenger_id=#{id}
+</select>
+<select id="findInformationOfficerByUserId" resultType="com.cardpay.pccredit.system.model.Dict">
+	select distinct(ioc.id) as typeCode,
+	ioc.name as typeName
+	from 
+	manager_information_client m
+	left join
+	information_officer_channels ioc
+	on m.messenger_id=ioc.id
+	where m.customer_manager_id=#{id}
+</select>
+<select id="findInformationOfficerByFilter" resultMap="InformationOfficerResultMap">
+	SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+	select ioc.*,(select count(*) from manager_information_client t where t.messenger_id=ioc.id and t.customer_manager_id=#{customerManagerId} and t.customer_id is not null) as count_num
+	from
+	(select distinct (messenger_id)
+               from manager_information_client m where m.customer_manager_id= #{customerManagerId}) tt inner join information_officer_channels ioc
+    on ioc.id = tt.messenger_id
+	<![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+</select>
+<select id="findInformationOfficerCountByFilter" resultType="int">
+	select count(*)
+	from
+	information_officer_channels ioc
+	inner join
+	(
+	select distinct(messenger_id) from
+	manager_information_client m
+	where m.customer_manager_id=#{customerManagerId}
+	)tt on ioc.id=tt.messenger_id
+</select>
+</mapper>

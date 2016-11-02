@@ -1,0 +1,85 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户经理警示书显示</div>
+      </div>
+      <form id="id_module_form" action="${contextPath}/manager/managerrisk/updatefeedback.json">
+      <input type="hidden" id= "id" name="id" value="$!id">
+        <div class="forms" id="formsId">
+          <table class="rule" border="1" bordercolor="#CCCCCC">
+            <caption>客户经理警示书</caption>
+            <colgroup>
+              <col width="10%" />
+              <col width="40%" />
+              <col width="10%" />
+              <col width="40%" />
+            </colgroup>
+            <tr>
+            <td><label>接收人：</label></td>
+              <td><select id="userId" name="userId" value="" disabled="disabled">
+                  <option value=""></option>
+                  #dict("ALLMANAGER", "$!managerRiskWarning.customerManagerId")
+                </select>
+                </td>
+                <input type="hidden" id="userId" name="userId" value = "$!managerRiskWarning.customerManagerId">
+               
+                 <td><label for="originatorName">发起人:</label></td>
+              <td>
+              <select id="originatorName" name="originatorName" value="" disabled="disabled">
+                  <option value=""></option>
+                  #dict("ALLMANAGER", "$!managerRiskWarning.originator")
+                </select>
+                 <input type="hidden" id="originator" name="originator" value = "$!managerRiskWarning.originator">
+                
+              </td>
+            </tr>
+             <tr>
+              <td><label for="returnReceipt">回执：</label></td>
+              <td><input type="text" id="returnReceipt" name="returnReceipt" value="#dictVal("ReturnReceipt", $!managerRiskWarning.returnReceipt)" disabled="disabled"/></td>
+             
+              <td><label for="feedbackTime">反馈时间:</label></td>
+              <td>
+              <input type="text" id="feedbackTime" name="feedbackTime" value="$!date.format("yyyy-MM-dd HH:mm:ss",$!managerRiskWarning.feedbackTime)" disabled="disabled" />
+              </td>
+            </tr>
+             <tr>
+			  <td class="titlec"><label>警示事项：</label></td>
+				<td colspan="3">
+     			<textarea id="warningItems" value="" rows="5" clos name="warningItems" readonly="readonly">$!managerRiskWarning.warningItems</textarea>
+				</td>
+            </tr>
+             <tr>
+              <td class="titlec"><label>主管建议：</label></td>
+				<td colspan="3">
+     			<textarea id="competentAdvice" value="" rows="5" clos name="competentAdvice" readonly="readonly">$!managerRiskWarning.competentAdvice</textarea>
+				</td>
+            </tr>
+               <tr>
+             <td class="titlec"><label>反馈：</label></td>
+				<td colspan="3">
+     			<textarea id="feedback" value="" rows="5" clos name="feedback" readonly="readonly">$!managerRiskWarning.feedback</textarea>
+				</td>
+            </tr>
+             
+          </table>
+        </div>
+      </form>
+      <div class="submit">
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n('button.cancel')" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");			
+	window.top.currentWindow.setLayout(layout);
+			
+	#set ($formName = "'#id_module_form'")
+	#validator($formName)
+	$(document).ready(function() {		
+		#parse("common/part_change.js")
+	});
+  </script>
+</body>
+#parse ("common/iframe_page_footer.htm")

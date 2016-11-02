@@ -1,0 +1,62 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">"${group.name}"成员详情</div>
+      </div>
+      <form id="id_module_form" action="${contextPath}/system/user/update.json">
+        <div class="forms" id="formsId">
+          <input type="hidden" name="id" value="$!person.id" />
+          <table class="rule">
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="30%" />
+            </colgroup>
+            <tr>
+              <td><label for="name">#mi18n("displayName"):</label></td>
+              <td><input type="text" id="displayName" name="displayName" value="$!person.displayName"
+                  disabled="true" /></td>
+              <td></td>
+              <td><label for="name">#mi18n("gender"):</label></td>
+              <td><input type="text" id="gender" name="gender" #if($!person.gender==1) value="男" #else value="女"
+                  #end value="$!person.gender" disabled="true" /></td>
+            </tr>
+
+            <tr>
+              <td><label for="name">#mi18n("email"):</label></td>
+              <td><input type="text" id="email" name="email" value="$!person.email" disabled="true" /></td>
+              <td></td>
+              <td><label for="name">#mi18n("mobile"):</label></td>
+              <td><input type="text" id="mobile" name="mobile" value="$!person.mobile" disabled="true" /></td>
+            </tr>
+
+            <tr>
+              <td><label for="name">#mi18n("phone"):</label></td>
+              <td><input type="text" id="phone" name="phone" value="$!person.phone" disabled="true" /></td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>#mi18n("description"):</td>
+              <td colspan="4"><textarea id="description" name="description" rows="5" value="$!person.description"></textarea></td>
+            </tr>
+          </table>
+        </div>
+      </form>
+      </form>
+      <div class="submit">
+        <input class="current" type="button" onclick="javascript:history.go(-1);" value="#i18n('button.back')" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+			var p_place = window.parent.document.getElementById('place');
+		</script>
+</body>
+
+</html>

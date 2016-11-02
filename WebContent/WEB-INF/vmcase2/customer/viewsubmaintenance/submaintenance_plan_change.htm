@@ -1,0 +1,64 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">维护计划修改(下属)</div>
+      </div>
+      <form id="id_module_form" action="${modulePath}/update.json">
+        <div class="forms" id="formsId">
+          <input type="hidden" name="id" value="$!maintenance.id" />
+          <input type="hidden" name="customerId" value="$!maintenance.customerId"/>
+          <table class="rule">
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="30%" />
+            </colgroup>
+            <tr>
+              <td>客户名称:</td>
+              <td><input type="text" value="$!maintenance.chineseName" readonly="readonly"/>
+              </td>
+              <td>&nbsp;</td>
+              <td>维护目标:</td>
+              <td><input  type="text" id="maintenanceGoal" name="maintenanceGoal" value="$!maintenance.maintenanceGoal" />
+              </td>
+            </tr>
+            <tr>
+              <td><label>备注:</label></td>
+              <td><textarea  id="remarksCreateReason" name="remarksCreateReason" >$!maintenance.remarksCreateReason</textarea>
+              <td>&nbsp;</td>
+              <td><label>维护天数:</label></td>
+              <td><input type="text" id="maintenanceDay" name="maintenanceDay" value="$!maintenance.maintenanceDay"/></td>
+            </tr>
+            <tr>
+              <td>维护方式:</td>
+              <td><select name="maintenanceWay" id="maintenanceWay" >
+              #customerInfo($request.getAttribute("collectionMethodList"),$!maintenance.maintenanceWay)
+              </select></td>
+            </tr>
+          </table>
+        </div>
+      </form>
+
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n('button.cancel')" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");			
+	window.top.currentWindow.setLayout(layout);
+			
+	#set ($formName = "'#id_module_form'")
+	#validator($formName)
+	$(document).ready(function() {		
+		#parse("common/part_change.js")
+	});
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

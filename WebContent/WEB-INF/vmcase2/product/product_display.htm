@@ -1,0 +1,176 @@
+#parse ("common/iframe_page_header.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
+
+<body>
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+				  <div class="dvTab">
+        <ul class="com-tab">
+        	<li class="tab activeTab"><a href="${contextPath}/product/productinformation/display.page?id=${productId}">产品属性</a></li>
+            <!-- <li class="tab"><a href="${contextPath}/product/productinformation/display_cpfjqd.page?id=${productId}">附件清单</a></li>
+            <li class="tab"><a href="${contextPath}/product/productinformation/display_cpgz.page?id=${productId}">产品规则</a></li>
+            <li class="tab"><a href="${contextPath}/product/productinformation/display_csgz.page?id=${productId}">催收规则</a></li> -->
+<!--             <li class="tab"><a href="${contextPath}/product/productinformation/display_cpsxgz.page?id=${productId}">筛选规则</a></li>
+ -->         </ul>
+        </div>
+			</div>
+			<form id="id_module_form" action="">
+				<div class="forms" id="formsId">
+					<input type="hidden" name="id" value="$!productId" />
+					<table class="rule">
+						<colgroup>
+							<col width="10%" />
+							<col width="30%" />
+							<col width="10%" />
+							<col width="10%" />
+							<col width="30%" />
+						</colgroup>
+						<tr>
+							<td><label for="name">产品名称:</label></td>
+							<td><input type="text" id="productName" name="productName"
+								value="$!product.productName" disabled="true"/></td>
+							<td></td>
+							<td><label for="name">贷款用途:</label></td>
+							<td><input type="text" id="purposeLoan" name="purposeLoan"
+								value="$!product.purposeLoan" disabled="true"/></td>
+						</tr>
+						
+					    <tr>
+							<td><label for="name">产品授信区间:</label></td>
+							<td><input type="text" id="prodCreditRange" name="prodCreditRange"
+								value="$!product.prodCreditRange" disabled="true"/></td>
+							<td></td>
+							<td><label for="name">产品期限:</label></td>
+						    <td><input type="text" id="prodLimitTime" name="prodLimitTime" 
+						   			   onmouseover="_calendar({format:'yyyy-MM-dd HH:mm:ss'})" 
+						    		   value="$!date.format('yyyy-MM-dd HH:mm:ss',$!product.prodLimitTime)
+						    		   readonly="readonly" disabled="true"/>
+						</tr>
+
+						<tr>
+							<td><label for="name">信用额度:</label></td>
+							<td><input type="text" id="creditLine" name="creditLine"
+								value="$!product.creditLine" disabled="true"/></td>
+							<td></td>
+							<td><label for="name">利率区间:</label></td>
+							<td><input type="text" id="rateRange" name="rateRange"
+								value="$!product.rateRange" disabled="true"/></td>
+						</tr>
+						<tr>
+							<td><label for="name">贷款期限:</label></td>
+							<td><input type="text" id="loanTimeLimit" name="loanTimeLimit"
+								value="$!product.loanTimeLimit" disabled="true"/></td>
+							<td></td>
+							<td><label for="name">产品种类:</label></td>
+							<td>
+							   <select id="productTypeCode" name="productTypeCode">
+                 			   <option value=""></option>
+                			    #foreach($obj in $productList)
+                			    	<option value="$!obj.productCode" disabled="true" #if($!obj.productCode == $!product.productTypeCode) selected="selected"  #end>$!obj.productName ($!obj.productCode)</option>
+                			    #end
+                			  </select>
+							</td>
+						</tr>
+
+						<tr>
+							<td><label for="name">贷款主体:</label></td>
+							<td><input type="text" id="loanPrincipal" name="loanPrincipal"
+								value="$!product.loanPrincipal" disabled="true"/></td>
+							<td></td>
+							<td><label for="name">信用(还款）方式:</label></td>
+							<td>
+								<input type="text" id="loanPrincipal" name="loanPrincipal"
+								value="#dictVal('CMMHKFS', $!product.letterPaymentWay)" disabled="true"/>
+							</td>
+						</tr>
+
+						<tr>
+							<td><label for="name">结息方式:</label></td>
+							<td><input type="text" id="numbererestSettlementWay" name="numbererestSettlementWay"
+								value=" #dictVal('CMMJXFS', $!product.numbererestSettlementWay)" disabled="true"/></td>
+							<td></td>
+							<td><label for="name">担保方式:</label></td>
+							<td><input type="text" id="assureMeans" name="assureMeans"
+								value="  #dictVal('CMMSCLNM', $!product.assureMeans)" disabled="true"/></td>
+						</tr>
+
+						<tr>
+							<td><label for="name">罚息:</label></td>
+							<td><input type="text" id="penaltyNumbererest" name="penaltyNumbererest"
+								value="$!product.penaltyNumbererest" disabled="true"/></td>
+							<td></td>
+							<td><label for="name">该产品风险容忍度:</label></td>
+							<td><input type="text" id="productRiskTolerance" name="productRiskTolerance"
+								value="$!product.productRiskTolerance" disabled="true"/></td>
+						</tr>
+						
+						<tr>
+							<td><label for="name">产品状态:</label></td>
+							<td><input type="text" id="status" name="status"
+								value=" #dictVal("ProductStatus", $!product.status)" disabled="true"/></td>
+							<td></td>
+						</tr>
+					</table>
+				<!--   <input type ="text" value ="$!paa.size()"/> -->
+				  #if ($!paa.size() > 0)
+				  <table style="border: 1px solid #dcdcdc;margin-bottom: 10px;" id="tab";>
+						<colgroup>
+						    <col width="5%" />
+							<col width="24%" />
+							<col width="24%" />
+							<col width="24%" />
+							<col width="24%" />
+						</colgroup>
+						<tr>
+                          <td colspan="5" style="text-align:center;font-weight: bold;background-color:#ECFDF9;">机构清单</td>
+                         </tr>
+					      #set($total = ($organization.size()/4)) 
+					      
+					      #foreach ($!index in [0 .. $total])
+					
+					      <tr>
+					      <td>&nbsp;</td>
+						  #set($current = $!index * 4 ) 
+						  #if($current<$organization.size())
+						  #if($organizationId.contains($organization.get($current).id))
+						     <td><input type="checkbox" checked="checked" disabled="true" name="organizationId" value="$organization.get($current).id"/> $organization.get($current).name</td>
+					    	#end
+						  #end
+						  #set($current = $!index * 4+1 )
+						  #if($current<$organization.size())
+						  #if($organizationId.contains($organization.get($current).id))
+						     <td><input type="checkbox" checked="checked" disabled="true" name="organizationId" value="$organization.get($current).id"/> $organization.get($current).name</td>
+						  #end
+						  #end
+						  #set($current = $!index * 4+2 )
+						  #if($current<$organization.size())
+						  #if($organizationId.contains($organization.get($current).id))
+						     <td><input type="checkbox" checked="checked" disabled="true" name="organizationId" value="$organization.get($current).id"/> $organization.get($current).name</td>
+						  #end
+                          #end
+                          #set($current = $!index * 4+3 )
+						  #if($current<$organization.size())
+						  #if($organizationId.contains($organization.get($current).id))
+						     <td><input type="checkbox" checked="checked" disabled="true" name="organizationId" value="$organization.get($current).id"/> $organization.get($current).name</td>
+						  #end
+						  #end
+                        </tr>
+                        #end
+						</table>
+						#end 
+				</div>
+			</form>
+		
+			<div class="submit">
+				<input class="current" type="button" onclick="javascript:history.go(-1);" value="#i18n('button.back')" />
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		var layout = new FormsLayout("formsId");
+		window.top.currentWindow.setLayout(layout);
+	</script>
+</body>
+
+</html>

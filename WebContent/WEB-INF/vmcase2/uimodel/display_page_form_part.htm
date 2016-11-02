@@ -1,0 +1,57 @@
+			<form id="id_module_form" action="">
+				<div class="forms" id="formsId">
+					<table class="rule">
+						<colgroup>
+							<col width="10%" />
+							<col width="30%" />
+							<col width="10%" />
+							<col width="10%" />
+							<col width="30%" />
+						</colgroup>
+					#set ($currColumn = 0)
+					#foreach ($control in $uiModel.displayAction.form.controls)
+					  #if (!$control.system)
+					    #if ($control.layoutWidth == 2)
+					      #if ($currColumn == 1)
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+						</tr>
+					        #set ($currColumn = 0)
+					      #end
+						<tr>
+                          #if ($control.width == 1)
+                          <td><label for="$control.name">#mi18n($control.name)#if(!$control.column.nullable)(*)#end:</td>
+                          <td>#control($control,$object)</td>
+                          <td>&nbsp;</td>
+                          <td>&nbsp;</td>
+                          <td>&nbsp;</td>
+                          #end
+                          #if ($control.width == 2)
+                          <td><label for="$control.name">#mi18n($control.name)#if(!$control.column.nullable)(*)#end:</td>
+                          <td colspan="4">#control($control,$object)</td>
+                          #end
+						</tr>
+					    #else
+					      #if ($currColumn == 0)
+						<tr>
+							<td><label for="$control.name">#mi18n($control.name)#if(!$control.column.nullable)(*)#end:</label></td>
+							<td>#control($control, $object)</td>
+							<td>&nbsp;</td>
+					        #set ($currColumn = 1)
+					      #elseif ($currColumn == 1)
+							<td><label for="$control.name">#mi18n($control.name)#if(!$control.column.nullable)(*)#end:</label></td>
+							<td>#control($control, $object)</td>
+						</tr>
+					        #set ($currColumn = 0)
+					      #end
+					    #end
+					  #end
+				    #end
+				    #if ($currColumn == 1)
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+						</tr>
+				    #end
+					</table>
+				</div>
+			</form>

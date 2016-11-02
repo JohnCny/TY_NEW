@@ -1,0 +1,46 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">通知信息详情显示</div>
+      </div>
+      <form id="id_form_sample" action="">
+        <div class="forms" id="formsId">
+          <input type="hidden" name="id" value="$!sample2.id" />
+          <table class="rule">
+            <colgroup>
+              <col width="10%" />
+							<col width="30%" />
+							<col width="10%" />
+							<col width="10%" />
+							<col width="30%" />
+            
+            </colgroup>
+            <tr>
+              <td>通知标题:</td>
+              <td><input type="text" value="$!notificationMessage.noticeTitle" disabled="true" /></td>
+              <td>&nbsp;</td>
+              <td>是否查看:</td>
+              <td><input type="text" value="未查看" disabled="true" /></td>
+              
+            </tr>
+            <tr>
+              <td>通知内容:</td>
+              <td colspan="4"><textarea  id="type" name="type" rows="5"
+                  disabled="true">$!notificationMessage.noticeContent</textarea></td>
+            </tr>
+          </table>
+        </div>
+      </form>
+      <div class="submit">
+        <input class="current" type="button" onclick="javascript:history.go(-1);" value="#i18n('button.back')" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout = new FormsLayout("formsId");
+	window.top.currentWindow.setLayout(layout);
+  </script>
+</body>
+#parse ("common/iframe_page_footer.htm")

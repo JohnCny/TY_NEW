@@ -1,0 +1,86 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">"${group.name}"成员列表</div>
+      </div>
+	<div class="inquiry">
+		<div id="topDiv" class="inquiry_list inquiry_top">
+			<table>
+				<colgroup>
+					<col width="5%" />
+					<col />
+					<col />
+				</colgroup>
+				<tr class="title">
+					<th nowrap="nowrap"></th>
+					<th nowrap="nowrap">#mi18n("displayName")</th>
+					<th nowrap="nowrap">#mi18n("email")</th>
+			
+				</tr>
+			</table>
+		</div>
+		<div id="downDiv" class="inquiry_list inquiry_down">
+			<table>
+				<colgroup>
+					<col width="5%" />
+					<col />
+					<col />
+				</colgroup>
+				#foreach ($us in $user)
+				<tr>
+					<td class="checkbox"><input type="radio" name="checkbox" value="$!us.id" #if ($!request.getParameter("recordId") == $us.id) checked="checked" #end /></td>
+					<td nowrap="nowrap">$!us.displayName</td>
+					<td nowrap="nowrap">$!us.email</td>
+				</tr>
+				#end
+			</table>
+		</div>
+	</div>
+	<div class="pagebar">
+		<div class="controlbtn">
+		 <a class="btn_g" style="font-weight:bold;margin-right:30px;" href="${contextPath}/system/group/browse.page">#i18n("button.back")</a>
+			<a id="id_update_member" class="btn_g" href="javascript:void(0);"
+				title="#i18n('button.create.hint')">管理用户组成员</a>
+				 <a id="id_display_button" class="btn_gr" href="javascript:void(0);"
+				title="#i18n('button.display.hint')">#i18n("button.display")</a>
+
+		</div>
+		<div class="clear"></div>
+	</div>
+	</div>
+	</div>
+</body>
+<script language="javascript" type="text/javascript">
+var layout = new TableLayout(2);
+window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.displayUrl = "${contextPath}/system/group_user/display.page?groupId=$group.id";
+		prepareOperations(opsObj);
+	});
+	function getCurrentRowId() {
+	    if ($(".checkbox :checked").length == 1) {
+	        var rowid = $($(".checkbox :checked")[0]).attr("value");
+	        
+	        if (rowid != null && rowid.length > 0) {
+	            return rowid;
+	        }
+	    } 
+	    
+	    Dialog.message("请选择一行");
+	    
+	    return null;
+	}
+  $("#id_update_member").click(function() {
+	  
+		  var url = "${contextPath}/system/group_user/create.page?groupId=$group.id";
+	      window.location.href = url;
+	  
+  });
+</script>
+</html>
+

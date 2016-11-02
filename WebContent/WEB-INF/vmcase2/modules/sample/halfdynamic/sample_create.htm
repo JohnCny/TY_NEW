@@ -1,0 +1,61 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">#mi18n("create")</div>
+      </div>
+      <form id="id_module_form" action="${modulePath}/insert.json">
+        <div class="forms" id="formsId">
+          <table class="rule">
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="30%" />
+            </colgroup>
+            <tr>
+              <td><label for="seqNo">#mi18n("seqNo"):</label></td>
+              <td>#control("seqNo")</td>
+              <td>&nbsp;</td>
+              <td><label for="name">#mi18n("name"):</label></td>
+              <td>#control("name")</td>
+            </tr>
+            <tr>
+              <td>#mi18n("type"):</td>
+              <td>#control("type")
+              <td>&nbsp;</td>
+              <td>#mi18n("nativeName"):</td>
+              <td>#control("nativeName")</td>
+            </tr>
+            <tr>
+              <td>#mi18n("sampleDate"):</td>
+              <td>#control("sampleDate")</td>
+            </tr>
+            <tr>
+              <td>#mi18n("description"):</td>
+              <td colspan="4">#control("description")</td>
+            </tr>
+          </table>
+        </div>
+      </form>
+
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n("button.save")" class="current" />
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n("button.cancel")" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");			
+	window.top.currentWindow.setLayout(layout);
+
+	#set ($formName = "'#id_module_form'")
+    #umvalidator($formName)
+	$(document).ready(function() {
+		#parse("common/part_create.js")
+	});
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

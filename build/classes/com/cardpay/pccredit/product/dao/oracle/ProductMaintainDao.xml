@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.product.dao.ProductMaintainDao">
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.product.model.ProductMaintain">
+		<result property="id" column="ID" />
+		<result property="day" column="DAY" />
+		<result property="maintenanceWay" column="MAINTENANCE_WAY" />
+	</resultMap>
+
+	<select id="findProductMaintainByProductId" resultMap="ResultMap" parameterType="java.lang.String">
+		SELECT * from product_maintain
+		WHERE PRODUCT_ID=#{productId}
+	</select>
+	<delete id="deleteProductMaintainByProductId" parameterType="java.lang.String">
+		DELETE
+		FROM
+		product_maintain A
+		WHERE
+		A .PRODUCT_ID=#{productId}
+	</delete>
+
+</mapper>

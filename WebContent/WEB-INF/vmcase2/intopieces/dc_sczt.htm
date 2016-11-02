@@ -1,0 +1,927 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">进件新增>生存状态</div>
+      </div>
+        <div class="tabplace">
+            <ul class="com-tab" >
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/changewh.page?customerId=$!customerId&productId=$!productId">建议</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/findJbzk.page?customerId=$!customerId&productId=$!productId">基本状况</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/findJyzt.page?customerId=$!customerId&productId=$!productId">经营状态</a></li>
+	            <li class="tab activeTab"><a href="${contextPath}/intopieces/addIntopieces/findSczt.page?customerId=$!customerId&productId=$!productId">生存状态</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/findDdpz.page?customerId=$!customerId&productId=$!productId">道德品质</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_zcfz.page?customerId=$!customerId&productId=$!productId">资产负债</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_lrjb.page?customerId=$!customerId&productId=$!productId">利润简表</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_bzlr.page?customerId=$!customerId&productId=$!productId">标准利润表</a></li>
+	            <li class="tab "><a href="${contextPath}/intopieces/addIntopieces/create_xjl.page?customerId=$!customerId&productId=$!productId">现金流量</a></li>
+				<li class="tab "><a href="${contextPath}/intopieces/addIntopieces/create_jcjy.page?customerId=$!customerId&productId=$!productId">交叉检验</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_dhd.page?customerId=$!customerId&productId=$!productId">点货单</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_gdzc.page?customerId=$!customerId&productId=$!productId">固定资产清单</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_yfys.page?customerId=$!customerId&productId=$!productId">应付预收</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_ysyf.page?customerId=$!customerId&productId=$!productId">应收预付</a></li>
+	            <li class="tab"><a href="${contextPath}/intopieces/addIntopieces/create_lsfx.page?customerId=$!customerId&productId=$!productId">流水分析</a></li>
+           </ul>
+         </div>
+         	<div class="tabplace"></div>
+			<form id="id_module_form">
+			<input type="hidden" id="customer_id" name="customer_id" value="$!customerId" />
+			<input type="hidden" id="product_id" name="product_id" value="$!productId" />
+				<div class="form-bd" id="formsId"
+					style="margin-top: 0px; padding-top: 0px;">
+					<table id='MyTable' style='border-collapse: collapse;' width='100%'>
+						<tr>
+							<td rowspan='22' colspan='1' name='A1' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2304px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>资产状况</td>
+							<td rowspan='13' colspan='1' name='B1' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4896px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>房子</td>
+							<td rowspan='10' colspan='1' name='C1' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>自有</td>
+							<td rowspan='5' colspan='1' name='D1' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>按揭</td>
+							<td name='E1' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>房产数量（按揭）</td>
+							<td name='F1'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jc_fcsl_aj" name="jc_fcsl_aj" value="$!sczt.jc_fcsl_aj" /></td>
+						</tr>
+						<tr>
+							<td name='E2' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>房产当前市价总值（按揭）</td>
+							<td name='F2'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jc_fcsj_aj" name="jc_fcsj_aj" value="$!sczt.jc_fcsj_aj" /></td>
+						</tr>
+						<tr>
+							<td name='E3' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>住房平均面积/套（按揭）</td>
+							<td name='F3'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jc_pjmj_aj" name="jc_pjmj_aj" value="$!sczt.jc_pjmj_aj" /></td>
+						</tr>
+						<tr>
+							<td name='E4' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>住房装修情况（按揭）</td>
+							<td name='F4'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jc_zxqk_aj" name="jc_zxqk_aj" value="$!sczt.jc_zxqk_aj" /></td>
+						</tr>
+						<tr>
+							<td name='E5' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>房子居住年限（按揭）</td>
+							<td name='F5'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jc_jznx_aj" name="jc_jznx_aj" value="$!sczt.jc_jznx_aj" /></td>
+						</tr>
+						<tr>
+							<td rowspan='5' colspan='1' name='D6' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>全额付款</td>
+							<td name='E6' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>房产数量（全额付款）</td>
+							<td name='F6'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jc_fcsl_qe" name="jc_fcsl_qe" value="$!sczt.jc_fcsl_qe" /></td>
+						</tr>
+						<tr>
+							<td name='E7' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>房产当前市价总值（全额付款）</td>
+							<td name='F7'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 30px;" type="text" id="jc_fcsj_qe" name="jc_fcsj_qe" value="$!sczt.jc_fcsj_qe" /></td>
+						</tr>
+						<tr>
+							<td name='E8' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>住房平均面积/套（全额付款）</td>
+							<td name='F8'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 30px;" type="text" id="jc_pjmj_qe" name="jc_pjmj_qe" value="$!sczt.jc_pjmj_qe" /></td>
+						</tr>
+						<tr>
+							<td name='E9' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>住房装修情况（全额付款）</td>
+							<td name='F9'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jc_zxqk_qe" name="jc_zxqk_qe" value="$!sczt.jc_zxqk_qe" /></td>
+						</tr>
+						<tr>
+							<td name='E10' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>住房居住年限（全额付款）</td>
+							<td name='F10'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jc_jznx_qe" name="jc_jznx_qe" value="$!sczt.jc_jznx_qe" /></td>
+						</tr>
+						<tr>
+							<td rowspan='3' colspan='1' name='C11' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>租赁</td>
+							<td name='D11' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>租赁房屋数量</td>
+							<td name='E11' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F11'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jc_zlfc_sl" name="jc_zlfc_sl" value="$!sczt.jc_zlfc_sl" /></td>
+						</tr>
+						<tr>
+							<td name='D12' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>租赁房屋平均面积/套</td>
+							<td name='E12' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F12'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jc_zlfc_mj" name="jc_zlfc_mj" value="$!sczt.jc_zlfc_mj" /></td>
+						</tr>
+						<tr>
+							<td name='D13' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>房屋租赁租金/月</td>
+							<td name='E13' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F13'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jc_zlfc_zj" name="jc_zlfc_zj" value="$!sczt.jc_zlfc_zj" /></td>
+						</tr>
+						<tr>
+							<td rowspan='4' colspan='1' name='B14' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4896px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>车辆</td>
+							<td name='C14' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>车辆数量</td>
+							<td name='D14' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E14' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F14'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jc_cl_sl" name="jc_cl_sl" value="$!sczt.jc_cl_sl" /></td>
+						</tr>
+						<tr>
+							<td name='C15' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>车辆购买总额</td>
+							<td name='D15' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E15' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F15'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jc_cl_gmze" name="jc_cl_gmze" value="$!sczt.jc_cl_gmze" /></td>
+						</tr>
+						<tr>
+							<td name='C16' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>车辆平均使用时间</td>
+							<td name='D16' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E16' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F16'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jc_cl_pjsysj" name="jc_cl_pjsysj" value="$!sczt.jc_cl_pjsysj" /></td>
+						</tr>
+						<tr>
+							<td name='C17' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>车牌购置方式</td>
+							<td name='D17' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E17' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F17'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jc_cl_gmfs" name="jc_cl_gmfs" value="$!sczt.jc_cl_gmfs" />
+							</td>
+						</tr>
+						<tr>
+							<td rowspan='2' colspan='1' name='B18' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4896px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>储蓄账户</td>
+							<td name='C18' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>生意账户金额</td>
+							<td name='D18' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E18' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F18'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jc_zhje" name="jc_zhje" value="$!sczt.jc_zhje" /></td>
+						</tr>
+						<tr>
+							<td name='C19' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>个人账户+理财资产金额</td>
+							<td name='D19' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E19' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F19'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jc_lcje" name="jc_lcje" value="$!sczt.jc_lcje" /></td>
+						</tr>
+						<tr>
+							<td rowspan='3' colspan='1' name='B20' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4896px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>其他应收账款</td>
+							<td name='C20' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>其他应收账款回收期限</td>
+							<td name='D20' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E20' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F20'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jc_sz_qx" name="jc_sz_qx" value="$!sczt.jc_sz_qx" /></td>
+						</tr>
+						<tr>
+							<td name='C21' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>其他应收账款占储蓄比例</td>
+							<td name='D21' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E21' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F21'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jc_sz_zb" name="jc_sz_zb" value="$!sczt.jc_sz_zb" /></td>
+						</tr>
+						<tr>
+							<td name='C22' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>其他应收账款收息</td>
+							<td name='D22' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E22' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F22'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jc_sz_sx" name="jc_sz_sx" value="$!sczt.jc_sz_sx" /></td>
+						</tr>
+						<tr>
+							<td rowspan='8' colspan='1' name='A23' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2304px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>生活环境</td>
+							<td rowspan='4' colspan='1' name='B23' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4896px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>居住区的客观环境</td>
+							<td name='C23' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>小区安全性（安保情况）</td>
+							<td name='D23' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E23' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F23'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="hj_aq" name="hj_aq" value="$!sczt.hj_aq" /></td>
+						</tr>
+						<tr>
+							<td name='C24' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>小区健康性（有无垃圾场、污染源、绿化程度）</td>
+							<td name='D24' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E24' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F24'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="hj_jk" name="hj_jk" value="$!sczt.hj_jk" /></td>
+						</tr>
+						<tr>
+							<td name='C25' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>小区便利性（交通、购物、娱乐、医疗、银行、学校等配套设施）</td>
+							<td name='D25' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E25' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F25'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="hj_bl" name="hj_bl" value="$!sczt.hj_bl" /></td>
+						</tr>
+						<tr>
+							<td name='C26' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>小区舒适性（噪音、感受）</td>
+							<td name='D26' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E26' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F26'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="hj_ss" name="hj_ss" value="$!sczt.hj_ss" /></td>
+						</tr>
+						<tr>
+							<td rowspan='4' colspan='1' name='B27' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4896px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>居住区的人文环境</td>
+							<td name='C27' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>邻居的友好程度</td>
+							<td name='D27' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E27' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F27'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="hj_ljyh" name="hj_ljyh" value="$!sczt.hj_ljyh" /></td>
+						</tr>
+						<tr>
+							<td name='C28' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>邻居平均教育水平</td>
+							<td name='D28' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E28' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F28'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="hj_ljpjedu" name="hj_ljpjedu" value="$!sczt.hj_ljpjedu" /></td>
+						</tr>
+						<tr>
+							<td name='C29' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>邻居职业种类</td>
+							<td name='D29' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E29' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F29'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="hj_ljzy" name="hj_ljzy" value="$!sczt.hj_ljzy" />
+							</td>
+						</tr>
+						<tr>
+							<td name='C30' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>邻居经济收入水平</td>
+							<td name='D30' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E30' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F30'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="hj_ljeco" name="hj_ljeco" value="$!sczt.hj_ljeco" /></td>
+						</tr>
+						<tr>
+							<td rowspan='3' colspan='1' name='A31' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2304px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>生活时间分配</td>
+							<td name='B31' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4896px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>工作时间</td>
+							<td name='C31' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='D31' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E31' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F31'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="sj_work" name="sj_work" value="$!sczt.sj_work" />
+							</td>
+						</tr>
+						<tr>
+							<td rowspan='2' colspan='1' name='B32' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4896px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>休息时间</td>
+							<td name='C32' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>休闲娱乐活动（聊天、读书、上网）</td>
+							<td name='D32' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E32' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F32'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="sj_rest_yl" name="sj_rest_yl" value="$!sczt.sj_rest_yl" /></td>
+						</tr>
+						<tr>
+							<td name='C33' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>户外活动（散步、运动、旅游）</td>
+							<td name='D33' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E33' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F33'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="sj_rest_hw" name="sj_rest_hw" value="$!sczt.sj_rest_hw" /></td>
+						</tr>
+						<tr>
+							<td rowspan='3' colspan='1' name='A34' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2304px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>收入来源</td>
+							<td name='B34' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4896px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>工薪收入占总收入比例</td>
+							<td name='C34' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='D34' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E34' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F34'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="work_income" name="work_income" value="$!sczt.work_income" /></td>
+						</tr>
+						<tr>
+							<td name='B35' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4896px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>经营性收入占总收入比例</td>
+							<td name='C35' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='D35' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E35' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F35'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="business_income" name="business_income" value="$!sczt.business_income" /></td>
+						</tr>
+						<tr>
+							<td name='B36' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4896px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>财产性收入占总收入比例</td>
+							<td name='C36' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='D36' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E36' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F36'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="property_income" name="property_income" value="$!sczt.property_income" /></td>
+						</tr>
+						<tr>
+							<td rowspan='4' colspan='1' name='A37' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2304px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>社会福利</td>
+							<td rowspan='2' colspan='1' name='B37' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4896px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>社会保险</td>
+							<td name='C37' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>社保金额</td>
+							<td name='D37' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E37' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F37'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="social_je" name="social_je" value="$!sczt.social_je" /></td>
+						</tr>
+						<tr>
+							<td name='C38' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>社保年限</td>
+							<td name='D38' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E38' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F38'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="social_nx" name="social_nx" value="$!sczt.social_nx" /></td>
+						</tr>
+						<tr>
+							<td rowspan='2' colspan='1' name='B39' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4896px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>公积金</td>
+							<td name='C39' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>公积金金额</td>
+							<td name='D39' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E39' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F39'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="accufund_je" name="accufund_je" value="$!sczt.accufund_je" /></td>
+						</tr>
+						<tr>
+							<td name='C40' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>公积金年限</td>
+							<td name='D40' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E40' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F40'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="accufund_nx" name="accufund_nx" value="$!sczt.accufund_nx" /></td>
+						</tr>
+						<tr>
+							<td rowspan='5' colspan='1' name='A41' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2304px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>收入分配</td>
+							<td rowspan='4' colspan='1' name='B41' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4896px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>日常生活消费</td>
+							<td rowspan='3' colspan='1' name='C41' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>消费结构</td>
+							<td name='D41' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>生活必需消费占比</td>
+							<td name='E41' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F41'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="distr_sh" name="distr_sh" value="$!sczt.distr_sh" /></td>
+						</tr>
+						<tr>
+							<td name='D42' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>理财占比</td>
+							<td name='E42' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F42'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="distr_lc" name="distr_lc" value="$!sczt.distr_lc" /></td>
+						</tr>
+						<tr>
+							<td name='D43' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>其他占比</td>
+							<td name='E43' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F43'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="distr_qt" name="distr_qt" value="$!sczt.distr_qt" /></td>
+						</tr>
+						<tr>
+							<td name='C44' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>消费习惯</td>
+							<td name='D44' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E44' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F44'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="xfxg" name="xfxg" value="$!sczt.xfxg" /></td>
+						</tr>
+						<tr>
+							<td name='B45' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4896px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>理财结构</td>
+							<td name='C45' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #d0d7e5 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='D45' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E45' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F45'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="lcjg" name="lcjg" value="$!sczt.lcjg" /></td>
+						</tr>
+						<tr>
+							<td rowspan='5' colspan='1' name='A46' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2304px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>健康状况</td>
+							<td rowspan='3' colspan='1' name='B46' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4896px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>生理健康</td>
+							<td name='C46' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>食欲状况</td>
+							<td name='D46' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E46' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F46'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jk_sy" name="jk_sy" value="$!sczt.jk_sy" /></td>
+						</tr>
+						<tr>
+							<td name='C47' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>睡眠质量</td>
+							<td name='D47' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E47' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F47'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jk_sm" name="jk_sm" value="$!sczt.jk_sm" /></td>
+						</tr>
+						<tr>
+							<td name='C48' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>定期体检状况</td>
+							<td name='D48' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E48' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F48'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jk_tj" name="jk_tj" value="$!sczt.jk_tj" /></td>
+						</tr>
+						<tr>
+							<td rowspan='2' colspan='1' name='B49' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4896px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>心理健康</td>
+							<td name='C49' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>记忆状况</td>
+							<td name='D49' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E49' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F49'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jk_jy" name="jk_jy" value="$!sczt.jk_jy" /></td>
+						</tr>
+						<tr>
+							<td name='C50' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>有无消极感受（焦虑、情绪低落、绝望、忧郁）</td>
+							<td name='D50' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E50' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F50'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jk_xjgs" name="jk_xjgs" value="$!sczt.jk_xjgs" /></td>
+						</tr>
+						<tr>
+							<td rowspan='3' colspan='1' name='A51' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2304px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>家庭关系</td>
+							<td name='B51' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4896px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>与配偶的情感关系</td>
+							<td name='C51' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='D51' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E51' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F51'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jt_poqg" name="jt_poqg" value="$!sczt.jt_poqg" /></td>
+						</tr>
+						<tr>
+							<td name='B52' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4896px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>与家庭其他成员关系</td>
+							<td name='C52' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='D52' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E52' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F52'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jt_gx" name="jt_gx" value="$!sczt.jt_gx" /></td>
+						</tr>
+						<tr>
+							<td name='B53' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4896px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>参与家庭事务决策能力</td>
+							<td name='C53' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='D53' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E53' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F53' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="jt_jcnl" name="jt_jcnl" value="$!sczt.jt_jcnl" /></td>
+						</tr>
+						<tr>
+							<td rowspan='3' colspan='1' name='A54' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2304px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>社交状况</td>
+							<td name='B54' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4896px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>聚会频繁程度</td>
+							<td name='C54' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='D54' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E54' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F54'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="sj_jhcs" name="sj_jhcs" value="$!sczt.sj_jhcs" /></td>
+						</tr>
+						<tr>
+							<td rowspan='2' colspan='1' name='B55' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4896px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>交友状况</td>
+							<td name='C55' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>朋友的工作</td>
+							<td name='D55' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E55' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F55'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="sj_pygz" name="sj_pygz" value="$!sczt.sj_pygz" /></td>
+						</tr>
+						<tr>
+							<td name='C56' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>朋友的学历</td>
+							<td name='D56' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E56' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F56'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="sj_pyxl" name="sj_pyxl" value="$!sczt.sj_pyxl" /></td>
+						</tr>
+						<tr>
+							<td rowspan='9' colspan='1' name='A57' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 2304px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>负债</td>
+							<td rowspan='2' colspan='1' name='B57' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4896px; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>银行贷款</td>
+							<td name='C57' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>银行贷款还款计划</td>
+							<td name='D57' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E57' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F57'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="fz_hkjh" name="fz_hkjh" value="$!sczt.fz_hkjh" /></td>
+						</tr>
+						<tr>
+							<td name='C58' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>银行贷款每期还款金额占当期收入比例</td>
+							<td name='D58' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E58' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F58'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="fz_srzb" name="fz_srzb" value="$!sczt.fz_srzb" /></td>
+						</tr>
+						<tr>
+							<td name='B59' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4896px; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>信用卡</td>
+							<td name='C59' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>信用卡月平均还款金额占收入比例</td>
+							<td name='D59' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E59' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F59'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="fz_xyzb" name="fz_xyzb" value="$!sczt.fz_xyzb" /></td>
+						</tr>
+						<tr>
+							<td rowspan='3' colspan='1' name='B60' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4896px; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>其他借款</td>
+							<td name='C60' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>其他借款来源
+							</td>
+							<td name='D60' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E60' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F60'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="fz_ly" name="fz_ly" value="$!sczt.fz_ly" /></td>
+						</tr>
+						<tr>
+							<td name='C61' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>其他借款还款计划</td>
+							<td name='D61' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E61' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F61'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="fz_lyhkjh" name="fz_lyhkjh" value="$!sczt.fz_lyhkjh" /></td>
+						</tr>
+						<tr>
+							<td name='C62' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>其他借款每期还款金额占当期收入比例</td>
+							<td name='D62' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E62' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F62'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="fz_lyzb" name="fz_lyzb" value="$!sczt.fz_lyzb" /></td>
+						</tr>
+						<tr>
+							<td rowspan='3' colspan='1' name='B63' align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4896px; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>担保情况</td>
+							<td name='C63' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>担保金额（占本人自有资产比例）</td>
+							<td name='D63' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E63' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F63'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="fz_db_je" name="fz_db_je" value="$!sczt.fz_db_je" /></td>
+						</tr>
+						<tr>
+							<td name='C64' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>担保贷款用途
+							</td>
+							<td name='D64' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E64' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F64'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="fz_db_yt" name="fz_db_yt" value="$!sczt.fz_db_yt" /></td>
+						</tr>
+						<tr>
+							<td name='C65' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 11488px; background-color: #FFFFFF; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>担保期限</td>
+							<td name='D65' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4448px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='E65' align='left' valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4512px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>&nbsp;</td>
+							<td name='F65'  align='left'
+								valign='center'
+								style='font-weight: 400; font-size: 100%; width: 4000px; color: #000000; border-top: solid #000000 1px; border-right: solid #000000 1px; border-bottom: solid #000000 1px; border-left: solid #000000 1px;'>
+								<input class="rinpsty" style="width: 100px;height: 14px;" type="text" id="fz_db_qx" name="fz_db_qx" value="$!sczt.fz_db_qx" /></td>
+						</tr>
+					</table>
+				</div>
+			</form>
+
+
+	  <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
+        <input type="button" onclick="returnClick();" value="#i18n('button.cancel')" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout = new FormsLayout("formsId");
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	#parse ("customer/customerInforInsert/customerInforCreate_validation.js")
+	
+	$(document).ready(function() {
+		//save
+		$("#id_save_button").click(function() {
+			var url = "${modulePath}/addSczt.json";
+			var formjson = $($formName).serialize();
+			$.ajax({
+				url : url,
+				type : "get",
+				data : formjson,
+				success : function(data) {
+					if (data.success) {
+						topWin.Dialog.message("保存成功！");
+					} else {
+						topWin.Dialog.message(data.message);
+					}
+				}
+			});
+		});
+		
+	});
+	
+	//取消
+	function returnClick(){
+		 window.location.href= contextPath + "/customer/basiccustomerinforUpdate/browse.page" ;
+	}
+  </script>
+   <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
+  
+</body>
+#parse ("common/iframe_page_footer.htm")

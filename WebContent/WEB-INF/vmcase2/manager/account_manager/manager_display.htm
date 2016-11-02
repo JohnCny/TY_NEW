@@ -1,0 +1,64 @@
+#parse ("common/iframe_page_header.htm")
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户经理属性显示</div>
+      </div>
+      <form id="id_module_form" action="${contextPath}/manager/managercreate/save.page" method="post">
+       <input type="hidden" name="accountManagerParameterId" value="$!accountManagerParameter.id" />
+        <div class="forms" id="formsId">
+           <table class="rule" border="1" bordercolor="#CCCCCC" >
+          <caption>客户经理属性</caption>
+            <colgroup>
+              <col width="10%" />
+              <col width="40%" />
+              <col width="10%" />
+              <col width="40%" />
+            </colgroup>
+            <tr>
+            <td><label for="userId">客户经理姓名：</label></td>
+              <td><input type="hidden" id="userId" name="userId" value="$!accountManagerParameter.userId" >
+                  <input type="text" id ="displayName" name="displayName" readonly="readonly" value="$!displayName">
+                </td>
+                 <td><label for="levelInformation">客户经理层级信息:</label></td>
+              <td>  <select disabled="disabled" class="rinpsty"  id="levelInformation" name="levelInformation" >
+                 			   <option value=""></option>
+                			    #dict("CUSTOMERMANAGERLEVEL","$!accountManagerParameter.levelInformation")
+              </td>
+             </tr>
+              <tr>
+              <td><label for="entryTime">入职时间:</label></td>
+             <td><input type="text" id="entryTime" name="entryTime" value="$!date.format("yyyy-MM-dd",$!accountManagerParameter.entryTime)" onmouseover="_calendar()" disabled="disabled"/></td>
+              <!-- <td><label for="basePay">底薪:</label></td>
+             <td><input class="rinpsty"  type="text" id="basePay" name="basePay" value="$format.formatNumber($!accountManagerParameter.basePay,2,100)" readonly="readonly"/></td> -->
+            </tr>
+          </table>
+        
+        </div>
+      </form>
+      <div class="submit">
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n("button.cancel")" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");	
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	#validator($formName)
+	$(document).ready(function() {	
+		 $("#id_save_button").click(function() {
+		    	var leng = 0;
+		    	 leng = $(".error").length;
+		    	if(leng > 0){
+		    		return;
+		    	}else{
+				  $("#id_module_form").submit();  
+		    	}
+		       });
+	});
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

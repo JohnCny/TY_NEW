@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="GBK"?>
+<resultMap>
+  	<result column="KEYCODE"  jdbcType="VARCHAR" index="1"/>            
+	<result column="KEYTYPE"  jdbcType="VARCHAR" index="2"/>            
+	<result column="GCBUSINESSLEVEL"  jdbcType="VARCHAR" index="3"/>    
+	<result column="GCSYSLEVEL"  jdbcType="VARCHAR" index="4"/>         
+	<result column="SEQUENCENO"  jdbcType="VARCHAR" index="5"/>         
+	<result column="CLIENTTYPE"  jdbcType="VARCHAR" index="6"/>         
+	<result column="CUSTID"  jdbcType="VARCHAR" index="7"/>             
+	<result column="CNAME"  jdbcType="VARCHAR" index="8"/>              
+	<result column="ISPRIMARYCLIENT"  jdbcType="VARCHAR" index="9"/>    
+	<result column="SPOKESMAN"  jdbcType="VARCHAR" index="10"/>         
+	<result column="INKDATE"  jdbcType="VARCHAR" index="11"/>           
+	<result column="KEYEFFECTEDSTATE"  jdbcType="VARCHAR" index="12"/>  
+	<result column="KEYDATESTATE"  jdbcType="VARCHAR" index="13"/>      
+	<result column="EDITIONNO"  jdbcType="VARCHAR" index="14"/>         
+	<result column="INSTCITYCODE"  jdbcType="VARCHAR" index="15"/>      
+	<result column="OPERDATETIME"  jdbcType="VARCHAR" index="16"/>      
+	<result column="ISTRANS"  jdbcType="VARCHAR" index="17"/>           
+
+	  
+	  <result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/>        	
+</resultMap>

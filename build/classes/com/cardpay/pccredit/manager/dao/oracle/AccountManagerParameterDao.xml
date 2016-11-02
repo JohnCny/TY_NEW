@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.manager.dao.AccountManagerParameterDao">
+	<resultMap id="AccountManagerParameterFormMap" type="com.cardpay.pccredit.manager.web.AccountManagerParameterForm">
+		<result property="id" column="ID" />
+		<result property="userId" column="USER_ID" />
+		<result property="displayName" column="DISPLAY_NAME" />
+		<result property="levelInformation" column="LEVEL_INFORMATION" />
+		<result property="creditLine" column="CREDIT_LINE" />
+		<result property="basePay" column="BASE_PAY" />
+		<result property="entryTime" column="ENTRY_TIME" />
+		<result property="riskTolerance" column="RISK_TOLERANCE" />
+		<result property="createdTime" column="CREATED_TIME" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="modifiedTime" column="MODIFIED_TIME" />
+		<result property="modifiedBy" column="MODIFIED_BY" />
+		<result property="instcode" column="INSTCODE" />
+		<result property="managerType" column="MANAGER_TYPE" />
+	</resultMap>
+	
+	
+	<resultMap id="resultMap1" type="com.cardpay.pccredit.manager.model.TJxParameters">
+		<result property="id" 				         column="ID" />
+		<result property="monthLoanNum"              column="MONTH_LOAN_NUM" />
+		<result property="monthEffectNum"  	         column="MONTH_EFFECT_NUM" />
+		<result property="monthOverdueLoannum"       column="MONTH_OVERDUE_LOANNUM" />
+		<result property="monthOverdueDays" 		 column="MONTH_OVERDUE_DAYS" />
+		<result property="year" 			         column="YEAR" />
+		<result property="month" 		             column="MONTH" />
+		<result property="customerManagerId"         column="CUSTOMER_MANAGER_ID" />
+		<result property="monthTimes" 		         column="MONTH_TIMES" />
+		<result property="instcode" 		         column="INSTCODE" />
+	</resultMap>
+	
+	<resultMap id="resultMap2" type="com.cardpay.pccredit.manager.model.TJxSpecificParameters">
+		<result property="id" 			     column="ID"   />
+		<result property="year" 			 column="YEAR" />
+		<result property="month" 			 column="MONTH"/>
+		<result property="monthDayAverageCustLoanamt" column="MONTH_DAY_AVERAGE_CUST_LOANAMT" />
+		<result property="prodType"          column="PROD_TYPE" />
+		<result property="prodLimit"         column="PROD_LIMIT" />
+		<result property="customerId"        column="CUSTOMER_ID" />
+		<result property="customerManagerId" column="CUSTOMER_MANAGER_ID" />
+		<result property="instcode" 		 column="INSTCODE" />
+	</resultMap>
+	
+	
+	<select id="findAccountManagerParametersAll" resultMap="AccountManagerParameterFormMap">
+		SELECT
+		T .*, s.DISPLAY_NAME
+		FROM
+		ACCOUNT_MANAGER_PARAMETER T
+		LEFT JOIN SYS_USER s ON T .USER_ID = s. ID
+		WHERE
+		1 = 1
+		AND s.USER_TYPE = '1'
+		ORDER BY t.CREATED_TIME DESC
+	</select>
+
+	<select id="findAccountManagerParametersByFilter" resultMap="AccountManagerParameterFormMap">
+		SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		SELECT
+		T .*, s.DISPLAY_NAME
+		FROM
+		ACCOUNT_MANAGER_PARAMETER T
+		LEFT JOIN SYS_USER s ON T .USER_ID = s. ID
+		WHERE
+		1 = 1
+		<!-- AND s.USER_TYPE = '1' -->
+		<if test="displayName != null and displayName != '' ">
+			AND s.DISPLAY_NAME=#{displayName}
+		</if>
+		ORDER BY t.CREATED_TIME DESC
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+
+	<select id="findAccountManagerParametersCountByFilter"
+		resultType="int"
+		parameterType="com.cardpay.pccredit.manager.filter.AccountManagerParameterFilter">
+		SELECT
+		COUNT (*)
+		FROM
+		(SELECT
+		T .*, s.DISPLAY_NAME
+		FROM
+		ACCOUNT_MANAGER_PARAMETER T
+		INNER JOIN SYS_USER s ON T .USER_ID = s. ID
+		WHERE
+		1 = 1
+		<!-- AND s.USER_TYPE = '1' -->
+		<if test="displayName != null and displayName != '' ">
+			AND s.DISPLAY_NAME=#{displayName}
+		</if>
+		ORDER BY t.CREATED_TIME DESC)
+	</select>
+	
+	<select id="findAccountManagerParameterByUserId" resultMap="AccountManagerParameterFormMap">
+		SELECT T.*, s.DISPLAY_NAME
+		FROM ACCOUNT_MANAGER_PARAMETER T
+		LEFT JOIN SYS_USER s ON T.USER_ID = s.ID
+		WHERE s.USER_TYPE = '1' and t.user_id = #{userId}
+	</select>
+	
+	<!-- 济南绩效相关 -->
+	<select id="findAccountManagerParametersByFilterForJx" resultMap="AccountManagerParameterFormMap" parameterType="com.cardpay.pccredit.manager.filter.AccountManagerParameterFilter">
+		SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		select * from(
+			select b.display_name,
+	        	   a.base_pay,
+	        	   a.MANAGER_TYPE,
+	        	   a.id,
+	       (select org.name
+	          from sys_organization org
+	         where id in (select t.org_id
+	                        from sys_department t
+	                       where t.id in (select tt.dept_id
+	                                        from sys_dept_user tt
+	                                       where tt.user_id = b.id))) as instcode
+			  from account_manager_parameter a, sys_user b
+			 where a.user_id = b.id)
+		 where 1=1
+		<if test="displayName != null and displayName != '' ">
+			AND DISPLAY_NAME=#{displayName}
+		</if>
+		<if test="organName != null and organName != '' ">
+			AND instcode=#{organName}
+		</if>
+		order by instcode
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	<select id="findAccountManagerParametersCountByFilterForJx"
+		resultType="int"
+		parameterType="com.cardpay.pccredit.manager.filter.AccountManagerParameterFilter">
+		SELECT
+		COUNT (*)
+		FROM
+		(
+		select * from (
+			select b.display_name,
+        	   	   a.base_pay,
+       (select org.name
+          from sys_organization org
+         where id in (select t.org_id
+                        from sys_department t
+                       where t.id in (select tt.dept_id
+                                        from sys_dept_user tt
+                                       where tt.user_id = b.id))) as instcode
+		  from account_manager_parameter a, sys_user b
+		 where a.user_id = b.id)
+		 where 1=1
+		<if test="displayName != null and displayName != '' ">
+			AND DISPLAY_NAME=#{displayName}
+		</if>
+		<if test="organName != null and organName != '' ">
+			AND instcode=#{organName}
+		</if>
+		order by instcode
+		)
+	</select>
+	
+	
+	<!-- 1.查询客户经理绩效参数 -->
+	<select id="findMonthJx" resultMap="resultMap1" parameterType="com.cardpay.pccredit.manager.filter.ManagerSalaryFilter">
+		SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+			 select * from(
+			     select a.id,
+			         a.MONTH_LOAN_NUM,
+			         a.MONTH_EFFECT_NUM,
+			         a.MONTH_OVERDUE_LOANNUM,
+			         a.MONTH_OVERDUE_DAYS,
+			         a.YEAR,
+			         a.MONTH,
+			         b.display_name as CUSTOMER_MANAGER_ID,
+			         a.MONTH_TIMES,
+			         b.id as USER_ID,
+			         (select org.name
+          from sys_organization org
+         where id in (select t.org_id
+                        from sys_department t
+                       where t.id in (select tt.dept_id
+                                        from sys_dept_user tt
+                                       where tt.user_id = b.id))) as instcode
+			    from T_JX_PARAMETERS a,
+			         SYS_USER b
+			   where a.customer_manager_id = b.id)
+	    where 1=1
+		<if test="managerName != null and managerName != '' ">
+			AND CUSTOMER_MANAGER_ID =#{managerName}
+		</if>
+		<if test="organName != null and organName != '' ">
+			AND instcode=#{organName}
+		</if>
+		<if test="year != null and year != '' ">
+			AND YEAR=#{year}
+		</if>
+		<if test="month != null and month != '' ">
+			AND MONTH=#{month}
+		</if>
+		<if test="customerId != null and customerId != '' ">
+			AND USER_ID=#{customerId}
+		</if>
+		order by instcode
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	<select id="findCountMonthJx" resultType="int" parameterType="com.cardpay.pccredit.manager.filter.ManagerSalaryFilter">
+		SELECT
+		COUNT (*)
+		FROM
+		(
+		select * from(
+		  select 	 a.id,
+			         a.MONTH_LOAN_NUM,
+			         a.MONTH_EFFECT_NUM,
+			         a.MONTH_OVERDUE_LOANNUM,
+			         a.MONTH_OVERDUE_DAYS,
+			         a.YEAR,
+			         a.MONTH,
+			         b.display_name as CUSTOMER_MANAGER_ID,
+			         a.MONTH_TIMES,
+			         b.id as USER_ID,
+			         (select org.name
+          from sys_organization org
+         where id in (select t.org_id
+                        from sys_department t
+                       where t.id in (select tt.dept_id
+                                        from sys_dept_user tt
+                                       where tt.user_id = b.id))) as instcode
+			    from T_JX_PARAMETERS a,
+			         SYS_USER b
+			   where a.customer_manager_id = b.id)
+	    where 1=1
+		<if test="managerName != null and managerName != '' ">
+			AND CUSTOMER_MANAGER_ID =#{managerName}
+		</if>
+		<if test="organName != null and organName != '' ">
+			AND instcode=#{organName}
+		</if>
+		<if test="year != null and year != '' ">
+			AND YEAR=#{year}
+		</if>
+		<if test="month != null and month != '' ">
+			AND MONTH=#{month}
+		</if>
+		<if test="customerId != null and customerId != '' ">
+			AND USER_ID=#{customerId}
+		</if>
+		order by instcode
+		)
+	</select>
+	
+	
+	<!-- 2.客户每月日均贷款余额 -->
+	<select id="findCustDayBalamt" resultMap="resultMap2" parameterType="com.cardpay.pccredit.manager.filter.ManagerSalaryFilter">
+		SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		select * from(
+			select a.id,
+				   a.year,
+			       a.month,
+			       a.month_day_average_cust_loanamt,
+			       a.prod_limit,
+			       a.prod_type,
+			       c.chinese_name as customer_id,
+			       b.display_name as customer_manager_id,
+			       b.id as manger_id,
+			       (select org.name
+          from sys_organization org
+         where id in (select t.org_id
+                        from sys_department t
+                       where t.id in (select tt.dept_id
+                                        from sys_dept_user tt
+                                       where tt.user_id = b.id))) as instcode
+			 from 
+			       t_jx_specific_parameters a,
+			       sys_user b,
+			       basic_customer_information c
+			where a.CUSTOMER_MANAGER_ID= b.id
+			  and c.id = a.customer_id )
+	     where 1=1 
+		<if test="managerName != null and managerName != '' ">
+			AND CUSTOMER_MANAGER_ID =#{managerName}
+		</if>
+		<if test="organName != null and organName != '' ">
+			AND instcode=#{organName}
+		</if>
+		<if test="year != null and year != '' ">
+			AND YEAR=#{year}
+		</if>
+		<if test="month != null and month != '' ">
+			AND MONTH=#{month}
+		</if>
+		<if test="customerId != null and customerId != '' ">
+			AND MANGER_ID=#{customerId}
+		</if>
+		order by instcode
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	
+	<select id="findCountCustDayBalamt" resultType="int" parameterType="com.cardpay.pccredit.manager.filter.ManagerSalaryFilter">
+		SELECT
+		COUNT (*)
+		FROM
+		(
+		select * from(
+			select a.id,
+				   a.year,
+			       a.month,
+			       a.month_day_average_cust_loanamt,
+			       a.prod_limit,
+			       a.prod_type,
+			       c.chinese_name as customer_id,
+			       b.display_name as customer_manager_id,
+			       b.id as manger_id,
+			       (select org.name
+          from sys_organization org
+         where id in (select t.org_id
+                        from sys_department t
+                       where t.id in (select tt.dept_id
+                                        from sys_dept_user tt
+                                       where tt.user_id = b.id))) as instcode
+			 from 
+			       t_jx_specific_parameters a,
+			       sys_user b,
+			       basic_customer_information c
+			where a.CUSTOMER_MANAGER_ID= b.id
+			  and c.id = a.customer_id )
+	     where 1=1 
+		<if test="managerName != null and managerName != '' ">
+			AND CUSTOMER_MANAGER_ID =#{managerName}
+		</if>
+		<if test="organName != null and organName != '' ">
+			AND instcode=#{organName}
+		</if>
+		<if test="year != null and year != '' ">
+			AND YEAR=#{year}
+		</if>
+		<if test="month != null and month != '' ">
+			AND MONTH=#{month}
+		</if>
+		<if test="customerId != null and customerId != '' ">
+			AND MANGER_ID=#{customerId}
+		</if>
+		order by instcode
+		)
+	</select>
+	
+	
+</mapper>

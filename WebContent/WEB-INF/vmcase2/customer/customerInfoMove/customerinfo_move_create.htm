@@ -1,0 +1,86 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">转交申请</div>
+      </div>
+       
+      <form id="id_module_form" action="${contextPath}/customer/basiccustomerinforMove/save.json">
+      	<input type="hidden" value="$!result.id" name="customerId" />
+      	<input type="hidden" value="$!user.id" name="approveId" />
+         <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
+          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%">
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="30%" />
+            </colgroup>
+              <tr><td class="titlec" colspan="4" style="text-align: center;">基本信息</td></tr>
+            <tr>
+              <td class="titlefc3"><label for="chineseName">客户姓名:</label></td>
+              <td><input class="rinpsty"  type="text" id="chineseName" name="chineseName" value="$!result.chineseName" readonly/></td>
+              <td class="titlefc3"><label for="cardType">身份证件类型:</label></td>
+              <td><select class="rinpsty"  id="cardType" name="cardType" disabled>
+                  #customerInfo($request.getAttribute("cardTypeList"),"CST0000000000A")
+                  </select></td>
+            </tr>
+            <tr>
+			  
+              <td class="titlefc3"><label for="cardId">证件号码:</label></td>
+              <td><input class="rinpsty"  type="text" name="cardId" id="cardId"  value="$!result.cardId" readonly/></td>
+              <td class="titlefc3"><label for="chineseName">申请人工号:</label></td>
+              <td><input class="rinpsty"  type="text" id="chineseName" name="chineseName" value="$!user.displayName" readonly/></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="chineseName">选择转交人:</label></td>
+              <td><select class="rinpsty" name="moveId">
+              	#foreach($obj in $Userlist)
+              	<option value="$!obj.id">$!obj.displayName $!obj.externalId</option>
+              	#end
+              </select></td>
+            </tr>
+          </table>
+        </div>
+      </form>
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
+        <input id="id_save_button" type="button" onclick="javascript:history.back();" value="返回" />
+      </div>
+    </div>
+  </div>
+ 
+  <script type="text/javascript">
+  
+  #set ($formName = "'#id_module_form'")
+	#parse ("customer/customerInforInsert/customerInforCreate_validation.js")
+	var layout = new FormsLayout("formsId");
+	window.top.currentWindow.setLayout(layout);
+	
+	$(document).ready(function() {		
+		$("#id_save_button").click(function() {
+			
+	    	  if ($($formName).valid()) {
+	   	          var formjson = $($formName).serialize();
+	   	          $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
+	   	            if (data.success) {
+	   	            	topWin.Dialog.message("申请成功!");
+	   	            	window.location.href = "${contextPath}/customer/basiccustomerinforMove/browse.page";
+	   	            }
+	   	            else{
+	   	            	topWin.Dialog.message(data.message);
+	   	            }
+	   	          });
+	   	        }
+	       
+	      });
+	});
+	
+	
+  </script>
+  
+</body>
+#parse ("common/iframe_page_footer.htm")

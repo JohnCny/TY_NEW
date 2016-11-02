@@ -1,0 +1,246 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+				<div class="title">客户经理警示书创建</div>
+			</div>
+			<div class="inquiry">
+				<div class="search_tag">#i18n("label.browse.filter")</div>
+				<div class="search">
+					<form id="submitForm">
+						<ul>
+							<li><span>发起人姓名：<input type="text"
+									name="originatorName" value="" maxlength="30" /></span></li>
+							<li class="search_button"><input id="id_browse_button"
+								type="button" value="#i18n('button.browse')"
+								class="search_button_inquiry"
+								title="#i18n('button.browse.hint')"
+								style="height: 26px; line-height: 24px;" /></li>
+						</ul>
+					</form>
+				</div>
+				<div id="topDiv" class="inquiry_list inquiry_top">
+					<table>
+						<colgroup>
+							<col width="5%" />
+							<col width="10%" />
+							<col width="8%" />
+							<col width="15%" />
+							<col width="15%" />
+							<col width="5%" />
+							<col width="14%" />
+							<col width="13%" />
+						</colgroup>
+						<tr class="title">
+							<th nowrap="nowrap"></th>
+							<th nowrap="nowrap">发起人</th>
+							<th nowrap="nowrap">发起时间</th>
+							<th nowrap="nowrap">主管建议</th>
+							<th nowrap="nowrap">警示事项</th>
+							<th nowrap="nowrap">回执</th>
+							<th nowrap="nowrap">反馈</th>
+							<th nowrap="nowrap">反馈时间</th>
+						</tr>
+					</table>
+				</div>
+				<div id="downDiv" class="inquiry_list inquiry_down">
+					<table>
+						<colgroup>
+							<col width="5%" />
+							<col width="10%" />
+							<col width="8%" />
+							<col width="15%" />
+							<col width="15%" />
+							<col width="5%" />
+							<col width="14%" />
+							<col width="13%" />
+						</colgroup>
+						#foreach ($risk in $result.items)
+						<tr>
+							<td class="checkbox"><input type="radio" name="checkbox"
+								value="$!risk.id" #if ($!request.getParameter("recordId") ==
+								$risk.id) checked="checked" #end /></td>
+				            #if($!loginId ==$!risk.originator)
+							<td nowrap="nowrap">$!risk.originatorName <b>（自己）</b></td> #else
+							<td nowrap="nowrap">$!risk.originatorName</td> #end
+							<input type="hidden" id="$!risk.id" name="originator"
+								value="$!risk.originator@$!risk.returnReceipt" />
+							<td nowrap="nowrap">$!date.format("yyyy-MM-dd
+								HH:mm:ss",$!risk.initiateTime)</td>
+							<td nowrap="nowrap">$!risk.competentAdvice</td>
+							<td nowrap="nowrap">$!risk.warningItems</td>
+							<td nowrap="nowrap">#dictVal("ReturnReceipt",
+								$!risk.returnReceipt)</td>
+							<td nowrap="nowrap">$!risk.feedback</td>
+							<td nowrap="nowrap">$!date.format("yyyy-MM-dd
+								HH:mm:ss",$!risk.feedbackTime)</td>
+						</tr>
+						#end
+					</table>
+				</div>
+			</div>
+			<div class="pagebar">
+				<div class="controlbtn">
+				
+					#btnpriv("feedback")<a id="id_change_button" class="btn_g"
+						href="javascript:void(0);" title="填写反馈">反馈</a>#end
+					#btnpriv("display")<a id="id_display_button" class="btn_gr"
+						href="javascript:void(0);" title="#i18n('button.display.hint')">查看</a>#end
+				</div>
+				#parse ("common/pagination.htm")
+				<div class="clear"></div>
+			</div>
+		</div>
+	</div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.createUrl = "${modulePath}create.page";
+		opsObj.displayUrl = "${modulePath}display.page";
+		opsObj.changeUrl = "${modulePath}change.page";
+		opsObj.deleteUrl = "${modulePath}/delete.json";
+		opsObj.browseUrl = "${modulePath}/browse.page";
+		opsObj.exportUrl = "${modulePath}/export.page";
+		
+		if (opsObj.browseUrl) {
+	        $("#id_browse_button").click(function() {
+	            var url = opsObj.browseUrl;
+	            if (opsObj.formObj) {
+	                opsObj.formObj.action = opsObj.browseUrl;
+	                opsObj.formObj.submit();
+	            }
+	        });
+	    }
+
+		 if (opsObj.createUrl) {
+		        $("#id_create_button").click(function() {
+		            var url = opsObj.createUrl;
+		            if (opsObj.formObj) {
+		                // 回调URL
+		                var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
+		                if (callBackUrlObj) {
+		                	if(url.indexOf("?")>=0){
+		                		url += "&" + $.param({
+			                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+			                    });
+		                	}else{
+			                    url += "?" + $.param({
+			                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+			                    });
+		                	}
+		                }
+		            }
+		            window.location.href = url;
+		        });
+		    }
+		 
+		if (opsObj.changeUrl) {
+	        $("#id_change_button").click(function() {
+	            if ($(".checkbox :checked").length == 1) {
+	                var rowid = $($(".checkbox :checked")[0]).attr("value");
+	                var originator =  document.getElementById(rowid).value;
+	                var originatorId = originator.split("@");
+	                if(originatorId[1]!=1){
+	                
+	                var url ="";
+	                
+	                if(opsObj.changeUrl.indexOf("?")>=0){
+	                	url = opsObj.changeUrl + "&id=" + rowid;
+	                }else{
+	                	url = opsObj.changeUrl + "?id=" + rowid;
+	                }
+	                if (opsObj.formObj) {
+	                    // 回调URL
+	                    var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
+	                    if (callBackUrlObj) {
+	                        url += "&" + $.param({
+	                            'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+	                        });
+	                    }
+	                }
+	                window.location.href = url;
+	                }else {
+	                	Dialog.message("已反馈不能填写反馈");
+	                }
+	            } else {
+	                Dialog.message("请选择一行");
+	            }
+	        });
+	    }
+		
+		 if (opsObj.displayUrl) {
+		        $("#id_display_button").click(function() {
+		            if ($(".checkbox :checked").length == 1) {
+		                var rowid = $($(".checkbox :checked")[0]).attr("value");
+		                var originator =  document.getElementById(rowid).value;
+		                var originatorId = originator.split("@");
+		              
+		                var url ="";
+		                
+		                if(opsObj.displayUrl.indexOf("?")>=0){
+		                	url = opsObj.displayUrl + "&id=" + rowid;
+		                }else{
+		                	url = opsObj.displayUrl + "?id=" + rowid;
+		                }
+		                if (opsObj.formObj) {
+		                    // 回调URL
+		                    var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
+		                    if (callBackUrlObj) {
+		                        url += "&" + $.param({
+		                            'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                        });
+		                    }
+		                }
+		                window.location.href = url;
+		                
+		            } else {
+		                Dialog.message("请选择一行");
+		            }
+		        });
+		    }
+		   if (opsObj.deleteUrl) {
+		        $("#id_delete_button").click(function() {
+		            if ($(".checkbox :checked").length == 1) {
+		                var rowid = $($(".checkbox :checked")[0]).attr("value");
+		                var originator =  document.getElementById(rowid).value;
+		                var returnReceipt = originator.split("@");
+		                if(returnReceipt[0] == '$!loginId'){
+		                if(returnReceipt[1] != 1){
+		                Dialog.confirm("确定删除所选行吗？", "提示",
+		                function() {
+		                    $.post(opsObj.deleteUrl, {
+		                        id: rowid
+		                    },
+		                    function(data, textStatus, jqXhr) {
+		                        if (data.success) {
+		                            window.location.reload(true);
+		                        } else {
+		                            //Dialog.message(data.message);
+		                        }
+		                    });
+		                });
+		            } 
+		             else{
+	                	 Dialog.message("已查看的警示书无法删除");
+	                }
+		                }else{
+		                	 Dialog.message("只能删除自己发起的警示书");
+		                }
+		            }else {
+		                Dialog.message("请选择一行");
+		            }
+		        });
+		    }
+		 
+		
+	});
+
+	initClickEvent();
+</script>
+#parse ("common/iframe_page_footer.htm")

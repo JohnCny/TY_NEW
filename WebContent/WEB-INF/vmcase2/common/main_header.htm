@@ -1,0 +1,143 @@
+<script type="text/javascript">
+	var contextPath = "$!{contextPath}";
+	function oldPasswordCheck() {
+		$.ajax({
+			url : "${contextPath}/system/user/checkOnwerOldPassword.json?oldPassword=" + $("#form_diaog input[name='oldPassword']").val(),
+			type : "post",
+			success : function(data) {
+				if (data.success) {
+					$("#oldPasswordDiv > span").text(data.message);
+// 					$("#oldPasswordDiv").show();
+					$("#form_diaog input[name='password1']").val();
+					$("#form_diaog input[name='password2']").val();
+					$("#form_diaog input[name='password1']").removeAttr("readonly");
+					$("#form_diaog input[name='password2']").removeAttr("readonly");
+				} else {
+					$("#oldPasswordDiv > span").text(data.message);
+// 					$("#oldPasswordDiv").show();
+					$("#form_diaog input[name='password1']").val();
+					$("#form_diaog input[name='password2']").val();
+					$("#form_diaog input[name='password1']").attr("readonly", "readonly");
+					$("#form_diaog input[name='password2']").attr("readonly", "readonly");
+				}
+			},
+			error : function(data) {
+				$("#oldPasswordDiv > span").text(data.message);
+// 				$("#oldPasswordDiv").show();
+				$("#form_diaog input[name='password1']").val();
+				$("#form_diaog input[name='password2']").val();
+				$("#form_diaog input[name='password1']").attr("readonly", "readonly");
+				$("#form_diaog input[name='password2']").attr("readonly", "readonly");
+			}
+		});
+	}
+	
+	function openModifyUserPassword() {
+		$("#oldPasswordDiv > span").text("");
+		$("#password1").removeAttr("readonly");
+		$("#password2").removeAttr("readonly");
+		
+		Dialog.form("#modifyPasswordDataDialog", 
+			'修改密码', 
+			function(){
+				var password1 = $.trim($("#form_diaog input[name='password1']").val());
+				var password2 = $.trim($("#form_diaog input[name='password2']").val());
+				if (password1 == null || password1 == "") {
+					Dialog.message("密码不可以为空!");
+					return;
+				}
+				if (password2 == null || password2 == "") {
+					Dialog.message("密码不可以为空!");
+					return;
+				}
+				if (password1.length < 6 || password2.length < 6) {
+					Dialog.message("密码不能输入空格且长度至少6位数字!");
+					return;
+				}
+				if (password1 != password2) {
+					Dialog.message("两次输入的新密码不一致!");
+					return;
+				}	
+				$.ajax({
+					url : "${contextPath}/system/user/modifyOnwerPasswordSubmit.json?password2=" + password2,
+					type : "post",
+					success : function(data) {
+						if (data.success) {
+							topWin.Dialog.message(data.message);
+							window.location.href = "${contextPath}/logout.page";
+						} else {
+							topWin.Dialog.message(data.message);
+							return false;
+						}
+					},
+					error : function(data) {
+						Dialog.message("操作失败");
+					}
+				});
+			}, function(){
+				$("#form_diaog").dialog("close");
+			}, 
+			500, 200);
+	}
+</script>
+</head>
+<body screen_capture_injected="true" huaban_collector_injected="true">
+  <div class="head">
+    <div class="logo">小微贷款管理系统</div>
+    <div class="head_title">#i18n("system.title")</div>
+    <div class="head_right">
+      <span class="txt">
+        <div class="head_right_text">
+          <span>您好, $!user.displayName</span><span>$date.format("yyyy年MM月dd日", $date)</span><span id="weekDayText"></span><span
+            id="hmsText"></span>
+         <!--    <span>您好, $!user.displayName / $!organizationname开发部</span><span>$date.format("yyyy年MM月dd日", $date)</span><span id="weekDayText"></span><span
+            id="hmsText"></span> -->
+        </div>
+        <div class="head_right_remind">
+          <a href="javascript:void(0);" onclick="openModifyUserPassword()">
+            <img src="${uicasePath}/images/icon_1.png" />
+            修改密码
+          </a>
+          <a href="${contextPath}/logout.page">
+            <img src="${uicasePath}/images/icon_2.png" />
+            退出
+          </a>
+        </div>
+    </div>
+  </div>
+
+  <div id="modifyPasswordDataDialog" title="修改密码" style="display: none; resize: none; z-index: 2000">
+    <div class="inquiry_list">
+      <form name="modifyPasswordForm" id="modifyPasswordForm">
+        <table style="height: auto;">
+          <colgroup>
+            <col width="10%">
+            <col width="20%">
+            <col width="35%">
+            <col width="35%">
+          </colgroup>
+          <tr>
+            <td>&nbsp;</td>
+            <td>原密码:</td>
+            <td><input type="password" name="oldPassword" id="oldPassword" onblur="oldPasswordCheck()" /></td>
+            <td><div id="oldPasswordDiv" style="color: #F00;">
+                <span></span>
+              </div></td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td>新密码:</td>
+            <td><input type="password" name="password1" id="password1" /></td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td>确认新密码:</td>
+            <td><input type="password" name="password2" id="password2" /></td>
+            <td>&nbsp;</td>
+          </tr>
+        </table>
+    </div>
+    </form>
+  </div>
+  </body>

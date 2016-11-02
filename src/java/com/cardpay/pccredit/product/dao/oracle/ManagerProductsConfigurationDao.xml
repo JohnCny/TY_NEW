@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.product.dao.ManagerProductsConfigurationDao">
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.product.model.ManagerProductsConfiguration">
+		<result property="id" column="ID" />
+		<result property="productId" column="PRODUCT_ID" />
+		<result property="customerManagerLevel" column="CUSTOMER_MANAGER_LEVEL" />
+		<result property="creditLine" column="CREDIT_LINE" />
+		<result property="marginExtractInfo" column="MARGIN_EXTRACT_INFO" />
+		<result property="riskToleranceInformation" column="RISK_TOLERANCE_INFORMATION" />
+		<result property="createdTime" column="CREATED_TIME" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="modifiedTime" column="MODIFIED_TIME" />
+		<result property="modifiedBy" column="MODIFIED_BY" />
+	
+	</resultMap>
+
+	<select id="findManagerProductsConfigurationByProductId" resultMap="ResultMap" parameterType="java.lang.String">
+		SELECT * from manager_products_configuration
+		WHERE PRODUCT_ID=#{productId} order by customer_manager_level ASC
+	</select>
+	<delete id="deleteManagerProductsConfigurationByProductId" parameterType="java.lang.String">
+		DELETE
+		FROM
+		manager_products_configuration A
+		WHERE
+		A .PRODUCT_ID=#{productId}
+	</delete>
+	<select id="findConfigurationByProductIdAndLevel" resultMap="ResultMap">
+		SELECT * from manager_products_configuration
+		WHERE PRODUCT_ID=#{productId}
+		and CUSTOMER_MANAGER_LEVEL=#{customerManagerLevel}
+	</select>
+
+</mapper>

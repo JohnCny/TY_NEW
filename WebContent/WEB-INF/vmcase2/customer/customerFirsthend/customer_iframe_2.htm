@@ -1,0 +1,96 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户原始信息>信用信息</div>
+      </div>
+        <div class="tabplace">
+            <ul class="com-tab" >
+            <li class="tab"><a href="${contextPath}/customer/firsthend/iframe_1.page?id=${customerNm}">基本信息</a></li>
+            <li class="tab activeTab"><a href="${contextPath}/customer/firsthend/iframe_2.page?id=${customerNm}">信用信息</a></li>
+            <li class="tab " ><a href="${contextPath}/customer/firsthend/iframe_3.page?id=${customerNm}">其他信息</a></li>
+            <li class="tab "><a href="${contextPath}/customer/firsthend/iframe_4.page?id=${customerNm}">家庭成员信息</a></li>
+            <li class="tab "><a href="${contextPath}/customer/firsthend/iframe_5.page?id=${customerNm}">社会关系成员</a></li>
+            <li class="tab"><a href="${contextPath}/customer/firsthend/iframe_6.page?id=${customerNm}">家庭财产信息</a></li>
+            <li class="tab"><a href="${contextPath}/customer/firsthend/iframe_7.page?id=${customerNm}">生产经营状况</a></li>
+			<li class="tab"><a href="${contextPath}/customer/firsthend/iframe_8.page?id=${customerNm}">学习履历情况</a></li>
+			<li class="tab"><a href="${contextPath}/customer/firsthend/iframe_9.page?id=${customerNm}">工作履历</a></li>
+            <li class="tab"><a href="${contextPath}/customer/firsthend/iframe_10.page?id=${customerNm}">入保信息</a></li>
+
+         </ul>
+         </div>
+      <form id="id_module_form">
+         <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
+          <input type="hidden" id="id" name="id" value="$!{customerId}" />
+          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%">
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="30%" />
+            </colgroup>
+              <tr><td class="titlec" colspan="4" style="text-align: center;">基本信息</td></tr>
+            <tr>
+              <td class="titlefc3"><label for="xydj">信用等级:</label></td>
+              <td><input class="rinpsty"  type="text" id="xydj" name="xydj" value="$!customerInfor.xydj" /></td>
+              <td class="titlefc3"><label for="xydjsxrq">信用等级生效日期:</label></td>
+              <td><input class="rinpsty"  type="text" id="xydjsxrq" name="xydjsxrq" value="$!customerInfor.xydjsxrq" /></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="xydjdqrq">信用等级到期日期:</label></td>
+              <td><input class="rinpsty"  type="text" id="xydjdqrq" name="xydjdqrq" value="$!customerInfor.xydjdqrq" /></td>
+              <td class="titlefc3"><label for="sfxyh">是否信用户:</label></td>
+              <td><input class="rinpsty"  type="text" id="sfxyh" name="sfxyh" value="$!customerInfor.sfxyh" /></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="sxed">授信额度:</label></td>
+              <td><input class="rinpsty"  type="text" id="sxed" name="sxed" value="$!customerInfor.sxed" /></td>
+              <td class="titlefc3"><label for="sxjzrq">授信截至日期:</label></td>
+              <td><input class="rinpsty"  type="text" id="sxjzrq" name="sxjzrq" value="$!customerInfor.sxjzrq" /></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="yxye">用信余额:</label></td>
+              <td><input class="rinpsty"  type="text" id="yxye" name="yxye" value="$!customerInfor.yxye" /></td>
+              <td class="titlefc3"><label for="bldkye">不良贷款余额:</label></td>
+              <td><input class="rinpsty"  type="text" id="bldkye" name="bldkye" value="$!customerInfor.bldkye" /></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="nnjhsxed">年内计划授信额度:</label></td>
+              <td><input class="rinpsty"  type="text" id="nnjhsxed" name="nnjhsxed" value="$!customerInfor.nnjhsxed" /></td>
+              <td class="titlefc3"><label for="jhyssxed">计划压缩授信额度:</label></td>
+              <td><input class="rinpsty"  type="text" id="jhyssxed" name="jhyssxed" value="$!customerInfor.jhyssxed" /></td>
+            </tr>
+          
+          </table>
+        </div>
+      </form>
+      <div class="submit">
+        <input type="button" onclick="returnClick();" value="返回" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout = new FormsLayout("formsId");
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	#parse ("customer/customerInforInsert/customerInforCreate_validation.js")
+	
+	$(document).ready(function() {		
+		$("input[type='text']").attr("disabled",true);
+		$("input[type='radio']").attr("disabled",true);
+		$("input[type='checkbox']").attr("disabled",true);
+		$("select").attr("disabled",true);
+		
+	});
+	function returnClick(){
+		
+		 window.location.href= contextPath + "/customer/firsthend/browse.page" ;
+	}
+  </script>
+   <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
+  
+</body>
+#parse ("common/iframe_page_footer.htm")

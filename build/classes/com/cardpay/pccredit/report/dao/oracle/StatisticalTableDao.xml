@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.report.dao.StatisticalTableDao">
+	<insert id="statisticalTableInfo">
+		insert into statistical_table
+		  (id,
+		   customer_manager_id,
+		   product_id,
+		   send_card_number,
+		   accept_card_number,
+		   activate_card_number,
+		   credit_extension_amount,
+		   activate_extension_amount)
+		   with card_information_tmp as
+			 (select *
+			    from card_information t
+			   where t.card_activate_date <![CDATA[ >  ]]> sysdate - 1
+			     and t.card_activate_date <![CDATA[ <  ]]> sysdate + 1),
+			make_card_tmp as
+			 (select *
+			    from make_card t
+			   where t.created_time <![CDATA[ >  ]]> sysdate - 1
+			     and t.created_time <![CDATA[ <  ]]> sysdate + 1),
+			application_info_tmp as
+			 (select *
+			    from customer_application_info t
+			   where t.upload_status = 'upload'
+			     and t.completion_time <![CDATA[ >  ]]> sysdate - 1
+			     and t.completion_time <![CDATA[ <  ]]> sysdate + 1)
+			select sys_guid() as id,
+			       ucp.user_id as manager_id,
+			       ucp.product_id as product_id,
+			       nvl(sum(cp_send_card.send_card_number), 0) as send_card_number /*发卡数*/,
+			       nvl(sum(activate_info.activate_card_number), 0) as activate_card_number /*激活卡数*/,
+			       nvl(sum(activate_info.activate_extension_amount), 0) as activate_extension_amount /*激活总额度*/,
+			       nvl(sum(accept_info.accept_card_number), 0) as accept_card_number /*到卡数*/,
+			       nvl(sum(accept_info.credit_extension_amount), 0) as credit_extension_amount /*授信总额度*/
+			
+			  from (select customer_info.*, ait.product_id as product_id
+			          from sys_user usr
+			         inner join basic_customer_information customer_info
+			            on usr.id = customer_info.user_id
+			           and usr.user_type = 1
+			         inner join application_info_tmp ait
+			            on customer_info.id = ait.customer_id) ucp
+			
+			  left join (select application_info.customer_id as customer_id,
+			                    application_info.product_id as product_id,
+			                    count(0) as send_card_number /*发卡数*/
+			               from application_info_tmp application_info
+			              group by application_info.customer_id,
+			                       application_info.product_id) cp_send_card
+			    on ucp.id = cp_send_card.customer_id
+			   and ucp.product_id = cp_send_card.product_id
+			
+			  left join (select card_info.customer_id as customer_id,
+			                    pa.id as product_id,
+			                    count(0) as activate_card_number, /*激活卡数*/
+			                    sum(nvl(pa.credit_line, 0)) as activate_extension_amount /*激活总额度*/
+			               from card_information_tmp mct
+			              inner join card_information card_info
+			                 on mct.card_number = card_info.card_number
+			              inner join product_attribute pa
+			                 on pa.id = card_info.product_id
+			              group by card_info.customer_id, pa.id) activate_info
+			    on ucp.id = activate_info.customer_id
+			   and ucp.product_id = activate_info.product_id
+			
+			  left join (select card_info.customer_id as customer_id,
+			                    pa.id as product_id,
+			                    count(0) as accept_card_number, /*到卡数*/
+			                    sum(nvl(pa.credit_line, 0)) as credit_extension_amount /*授信总额度*/
+			               from make_card_tmp mct
+			              inner join card_information card_info
+			                 on mct.card_number = card_info.card_number
+			              inner join product_attribute pa
+			                 on pa.id = card_info.product_id
+			              where mct.card_customer_status = 0
+			              group by card_info.customer_id, pa.id) accept_info
+			    on ucp.id = activate_info.customer_id
+			   and ucp.product_id = accept_info.product_id
+			
+			 group by ucp.user_id, ucp.product_id
+	</insert>
+</mapper>

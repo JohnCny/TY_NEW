@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	default-autowire="byName" default-init-method="init" default-destroy-method="depose"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+	<!-- 邮件配置 start -->
+	<bean id="mailHelper" class="com.wicresoft.util.mail.MailHelper">
+		<property name="from" value="${mail.sender.from}"/>
+		<property name="fromName" value="${mail.sender.fromName}"/>
+		<property name="signalAttachFileMaxSize" value="${mail.attach.file.size}"/>
+		<property name="attachFileMaxCount" value="${mail.attach.max.count}"/>
+		<property name="fileSuffixes" value="${mail.attach.suffixes}"/>
+		<property name="mailSender" ref="mailSender" />
+	</bean>
+	
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="${mail.host}"/>
+		<property name="port" value="${mail.port}"/>
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">${mail.smtp.auth}</prop>
+				<prop key="mail.smtp.timeout">${mail.smtp.timeout}</prop>
+			</props>
+		</property>
+		<property name="username" value="${mail.sender.username}"/>
+		<property name="password" value="${mail.sender.password}"/>
+	</bean>
+	<!-- 邮件配置 end -->
+	
+	<!-- ftp配置 start -->
+	<bean id="sftpHelper" class="com.wicresoft.util.ftp.SftpHelper">
+		<property name="host" value="${jardutil.sftpHost}"/>
+		<property name="port" value="${jardutil.sftpPort}"/>
+		<property name="username" value="${jardutil.sftpUser}"/>
+		<property name="password" value="${jardutil.sftpPass}"/>
+		<property name="privateKey" value="${jardutil.sftpKeyFile}"/>
+		<property name="passphrase" value="${jardutil.sftpKeyPass}"/>
+	</bean>
+	
+	<bean id="ftpHelper" class="com.wicresoft.util.ftp.FtpHelper">
+		<property name="ftpHostName" value="${jardutil.ftpHost}"/>
+		<property name="ftpPort" value="${jardutil.ftpPort}"/>
+		<property name="ftpUserName" value="${jardutil.ftpUser}"/>
+		<property name="ftpPassword" value="${jardutil.ftpPass}"/>
+		<property name="dataTransferMode" value="${jardutil.dataTransfer}"/>
+	</bean>
+	<!-- ftp配置 end -->
+	
+	<!-- 短信配置 start -->
+	<bean id="sms7HttpClientService" class="com.wicresoft.util.sms.httpclient.Sms7HttpClientService">
+		<property name="url" value="${jardutil.httpsms.url}"/>
+		<property name="uid" value="${jardutil.httpsms.uid}"/>
+		<property name="pwd" value="${jardutil.httpsms.pwd}"/>
+<!-- 		<property name="connectTimeout" value="${jardutil.httpsms.connectTimeout}"/> -->
+<!-- 		<property name="socketTimeout" value="${jardutil.httpsms.socketTimeout}"/> -->
+<!-- 		<property name="maxTotalConnections" value="${jardutil.httpsms.maxTotalConnections}"/> -->
+<!-- 		<property name="maxRouteConnections" value="${jardutil.httpsms.maxRouteConnections}"/> -->
+	</bean>
+	
+	<bean id="smsHttpClient" class="com.wicresoft.util.sms.SmsHttpClient">
+		<property name="sms7HttpClientService" ref="sms7HttpClientService"/>
+	</bean>
+	
+	<bean id="smsServiceClient" class="com.wicresoft.util.sms.SmsServiceClient">
+		<property name="locator" value="${jardutil.wssms.locator}"/>
+		<property name="username" value="${jardutil.wssms.username}"/>
+		<property name="password" value="${jardutil.wssms.password}"/>
+		<property name="batch" value="${jardutil.wssms.batch}"/>
+	</bean>
+	
+	<bean id="smsHelper" class="com.wicresoft.util.sms.SmsHelper">
+		<property name="iSms" ref="smsHttpClient"/>
+	</bean>
+	<!-- 短信配置 end -->
+	
+	<!-- =========================================================== 系统定时触发器 ==================================================-->
+	<!-- 客户经理年统计定时 -->
+    <bean id="statisticsYearScheduleServicerJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="statisticsScheduleService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>insertYearSchedule</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="statisticsYearScheduleServicerTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="statisticsYearScheduleServicerJob"/>
+        </property>
+        <!-- cron表达式 -->
+        <property name="cronExpression">
+            <value>0 0 * * * ?</value>
+        </property>
+    </bean>
+    <!-- 客户经理年统计定时  end -->
+	
+	<!-- 客户经理月统计定时 -->
+    <bean id="statisticsMonthScheduleServicerJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="statisticsScheduleService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>insertMonthSchedule</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="statisticsMonthScheduleServicerTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="statisticsMonthScheduleServicerJob"/>
+        </property>
+        <!-- cron表达式 -->
+        <property name="cronExpression">
+            <value>0 0 * * * ?</value>
+        </property>
+    </bean>
+    <!-- 客户经理月统计定时  end -->
+	
+	<!-- 客户经理周统计定时 -->
+    <bean id="statisticsWeekScheduleServicerJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="statisticsScheduleService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>insertWeekSchedule</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="statisticsWeekScheduleServicerTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="statisticsWeekScheduleServicerJob"/>
+        </property>
+        <!-- cron表达式 -->
+        <property name="cronExpression">
+            <value>0 20 14 ? * *</value>
+        </property>
+    </bean>
+    <!-- 客户经理周统计定时  end -->
+	
+	
+	<!-- 系统筛选问责客户 -->
+    <bean id="addAccountabilityRecordJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="accountabilityService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>insertAccountabilityRecordSystem</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="addAccountabilityRecordTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="addAccountabilityRecordJob"/>
+        </property>
+        <!-- cron表达式 -->
+        <property name="cronExpression">
+            <value>0 0 0/1 * * ?</value>
+        </property>
+    </bean>
+    <!-- 系统筛选问责客户  end -->
+	
+	<!-- 系统筛选逾期添加催收计划 -->
+    <bean id="addCollectionPlanJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="riskCustomerCollectionService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>insertConectionSchedulesService</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="addCollectionPlanJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="addCollectionPlanJob"/>
+        </property>
+        <!-- cron表达式 -->
+        <property name="cronExpression">
+            <value>0 0 0/1 * * ?</value>
+        </property>
+    </bean>
+    <!-- 系统筛选逾期添加催收计划  end -->
+	
+	<!-- 自动处理客户信息并加入风险名单 -->
+    <bean id="addRiskCustomerscheduJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="riskControlSchedulesService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>addRiskCustomerschedu</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="addRiskCustomerscheduTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="addRiskCustomerscheduJob"/>
+        </property>
+        <!-- cron表达式 -->
+        <property name="cronExpression">
+            <value>0 0 0/1 * * ?</value>
+        </property>
+    </bean>
+    <!-- 自动处理客户信息并加入风险名单  end -->
+    
+    <!-- 把机构主管拒绝后超过指定天数的记录改为可直接上报卡中心 -->
+    <bean id="updateStatusToUnreportedCardcenterJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="riskControlSchedulesService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>updateStatusToUnreportedCardcenter</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="updateStatusToUnreportedCardcenterTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="updateStatusToUnreportedCardcenterJob"/>
+        </property>
+        <!-- cron表达式 -->
+        <property name="cronExpression">
+            <value>0 0/15 * * * ?</value>
+        </property>
+    </bean>
+    <!-- 把机构主管拒绝后超过指定天数的记录改为可直接上报卡中心  end -->
+    
+    <!-- 每天定时检查客户账户不良资产信息 start -->
+    <bean id="addNplsInfomationJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="nplsInfomationService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>addNplsInfomation</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="addNplsInfomationTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="addNplsInfomationJob"/>
+        </property>
+        <!-- cron表达式 -->
+        <property name="cronExpression">
+            <value>0 0 0/1 * * ?</value>
+        </property>
+    </bean>
+    <!-- 每天定时检查客户账户不良资产信息  end -->
+    
+    <!-- 每月定时生成客户经理评估信息 start -->
+    <bean id="addManagerAssessmentScoreJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="managerAssessmentScoreScheduleService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>addAssessment</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="addManagerAssessmentScoreTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="addManagerAssessmentScoreJob"/>
+        </property>
+        <!-- cron表达式 每月1号1点执行 0 0 1 1 * ? -->
+        <property name="cronExpression">
+            <value>0 09 15 * * ?</value>
+        </property>
+    </bean>
+    <!-- 每月定时生成客户经理评估信息  end -->
+    
+    <!-- 每日执行降级规则信息 start -->
+    <bean id="addDownLevelAdjustmentJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="managerAssessmentScoreScheduleService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>downLevelSchedulesDay</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="addDownLevelAdjustmentTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="addDownLevelAdjustmentJob"/>
+        </property>
+        <!-- cron表达式 每月1号1点执行 0 0 1 1 * ? -->
+        <property name="cronExpression">
+            <value>0 0 0/1 * * ?</value>
+        </property>
+    </bean>
+    <!-- 每月定时生成客户经理评估信息  end -->
+    
+    <!-- 每日执行客户经理统计信息信息 start -->
+    <bean id="addStatisticalTableJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="statisticalTableScheduleService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>addStatisticalTable</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="addStatisticalTableTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="addStatisticalTableJob"/>
+        </property>
+        <!-- cron表达式 每月1号1点执行 0 0 1 1 * ? -->
+        <property name="cronExpression">
+            <value>0 0 0/1 * * ?</value>
+        </property>
+    </bean>
+    
+    
+     <!--每年3,6,9,12月生成客户经理升降级信息 start -->
+    <bean id="addManagerAdjustmentJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="managerAssessmentScoreScheduleService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>generateManagerAdjustment</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="addManagerAdjustmentTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="addManagerAdjustmentJob"/>
+        </property>
+        <!-- cron表达式 每月1号1点执行 0 0 1 1 * ? -->
+        <property name="cronExpression">
+            <value>0 26 17 * * ?</value>
+        </property>
+    </bean>
+    
+         <!--基本信息 start -->
+    <bean id="addbaseJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="customerInforService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>readFile</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="addBaseTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="addbaseJob"/>
+        </property>
+        <!-- cron表达式 每月1号1点执行 0 0 1 1 * ? -->
+        <property name="cronExpression">
+            <value>0 20 17 * * ?</value>
+        </property>
+    </bean>
+       <!--贷款信息 start -->
+    <bean id="addRepayJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="customerInforService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>readFileRepay</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="addRepayTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="addRepayJob"/>
+        </property>
+        <!-- cron表达式 每月1号1点执行 0 0 1 1 * ? -->
+        <property name="cronExpression">
+            <value>0 45 16 * * ?</value>
+        </property>
+    </bean>
+     <!--同步系统中的进件的status 每两个小时跑一次-->
+    <bean id="updateCustomerAppInfoStatusJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="customerApplicationInfoSynchScheduleService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>dosynchMethod</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="updateCustomerAppInfoStatusTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="updateCustomerAppInfoStatusJob"/>
+        </property>
+        <!-- cron表达式 每月1号1点执行 0 0 1 1 * ? -->
+        <property name="cronExpression">
+            <value>0 0 0/2 * * ?</value>
+        </property>
+    </bean>
+    
+         <!--每月初统计客户经理绩效参数-->
+    <bean id="updateCustomerSalaryJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="customerApplicationInfoSynchScheduleService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>monthParmter</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="updateCustomerSalaryTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="updateCustomerSalaryJob"/>
+        </property>
+        <!-- cron表达式 每月1号1点执行 0 0 1 1 * ? -->
+        <property name="cronExpression">
+            <value>0 49 16 * * ?</value>
+        </property>
+    </bean>
+    <!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序  -->
+   
+    <bean id="scheduler" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                  <ref bean="addBaseTigger"/>
+                 <ref bean="addRepayTigger"/>
+                 <ref bean="updateCustomerAppInfoStatusTigger"/> 
+                 <ref bean="updateCustomerSalaryTigger"/> 
+				<!-- <ref bean="addManagerAssessmentScoreTigger"/>
+				
+				<ref bean="addStatisticalTableTigger"/> -->
+            <!-- 	<ref bean="statisticsYearScheduleServicerTrigger"/>
+
+            	<ref bean="statisticsMonthScheduleServicerTrigger"/>
+            	
+            	<ref bean="statisticsWeekScheduleServicerTrigger"/>
+            	<ref bean="addAccountabilityRecordTrigger"/>
+            	
+                <ref bean="addRiskCustomerscheduTrigger"/>
+                <ref bean="updateStatusToUnreportedCardcenterTrigger"/>
+                <ref bean="addCollectionPlanJobTrigger"/>
+               
+                <ref bean="addNplsInfomationTigger"/>
+                <ref bean="addManagerAssessmentScoreTigger"/>
+				<ref bean="addDownLevelAdjustmentTigger"/> 
+				
+				<ref bean="addManagerAdjustmentTigger"/>-->
+				
+			
+            </list>
+        </property>
+    </bean>
+    
+   
+</beans>
