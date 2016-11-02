@@ -21,12 +21,19 @@ public class NotifyMsgListVo {
 	private int risk;/*风险客户数量*/
 	private int sum;/*总和*/
 	private int Pcount;
+	private int blackcount;/*黑名单数量*/
 	
 	private int ziliaobiangeng;
 	private List<JnpadCustomerBianGeng> bianggeng;
 	
 	
 	
+	public int getBlackcount() {
+		return blackcount;
+	}
+	public void setBlackcount(int blackcount) {
+		this.blackcount = blackcount;
+	}
 	public int getPcount() {
 		return Pcount;
 	}

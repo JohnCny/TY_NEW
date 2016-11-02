@@ -35,11 +35,23 @@ public class CustormerBlackListService {
 	public int addCustomerBlackList(String id,String userid,String custormerid,String reason ){
 		return cdao.addCustomerBlackList(id,userid,custormerid,reason);
 	}
-	
+	/**
+	 * 查看当前客户经理的黑名单客户数量
+	 * @param cl
+	 * @return
+	 */
 	public int findAllCustormerBlackListCount(CUSTOMERBLACKLIST cl){
 		return cdao.findAllCustormerBlackListCount(cl);
-		
 	}
+	/**
+	 * 当前客户经理详细黑名单信息
+	 * @param cl
+	 * @return
+	 */
+	public List <CUSTOMERBLACKLIST> findCustormerBlackList(CUSTOMERBLACKLIST cl){
+		return cdao.findAllCustormerBlackList(cl);
+	}
+	
 	/**
 	 * 当前客户经理的黑名单客户
 	 * @param cl
