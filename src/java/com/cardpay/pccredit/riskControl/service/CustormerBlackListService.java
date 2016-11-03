@@ -71,11 +71,13 @@ public class CustormerBlackListService {
 		List <CUSTOMERBLACKLIST> result=cdao.findAllNoCustormerBlackList(cl);
 		int size=cdao.findAllNoCustormerBlackListCount( cl);
 		String card="身份证";
-		for(int a=0;a<size;a++){
+		/*System.out.println(result.size());
+		System.out.println(size);
+		for(int a=0;a<bb;a++){
 			if(result.get(a).getCard_type().equals("0")){
 				result.get(a).setCard_type(card);
 			}
-		}
+		}*/
 		QueryResult<CUSTOMERBLACKLIST> qs = new QueryResult<CUSTOMERBLACKLIST>( size,result);
 		return qs;
 	}

@@ -32,7 +32,7 @@
  	    <property name="user" value="pccredit_jn" />
 		<property name="password" value="pccredit_jn" />   --> 
 		
-		<property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.191.1:1521/orcl" />     <!--正式环境  -->
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@172.16.0.148:1521/orcl" />     <!--正式环境  -->
  	    <property name="user" value="pccredit_jn" />
 		<property name="password" value="pccredit_jn" />
 		

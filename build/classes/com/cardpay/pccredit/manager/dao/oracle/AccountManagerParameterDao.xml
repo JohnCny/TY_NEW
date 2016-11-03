@@ -44,12 +44,7 @@
 		<result property="instcode" 		 column="INSTCODE" />
 	</resultMap>
 	
-			<select id="findAccountManagerParametersByAll" resultMap="AccountManagerParameterFormMap">
-	select * from sys_user where user_type=1
-	</select>
-	<select id="findAccountManagerParametersByAllCount" resultType="int">
-	select count(*) from sys_user where user_type=1
-	</select>
+	
 	<select id="findAccountManagerParametersAll" resultMap="AccountManagerParameterFormMap">
 		SELECT
 		T .*, s.DISPLAY_NAME

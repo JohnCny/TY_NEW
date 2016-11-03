@@ -1,0 +1,67 @@
+#parse ("common/iframe_page_header.htm")
+<script src="${contextPath}/common/js/common/jquery.form.js"></script>
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
+<body>
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+				  <div class="dvTab">
+           <div class="title">业务核查</div>
+        </div>
+			</div>
+	<div class="forms" id="formsId">
+	<table class="rule" border="1" bordercolor="#CCCCCC">
+				<!-- 	<caption>产品属性</caption>
+						<colgroup>
+             			<col width="10%" />
+              			<col width="40%" />
+             			<col width="10%" />
+              			<col width="40%" />
+						</colgroup> -->
+			#foreach ($btlist in $btlist)
+            <tr>
+              <td><label for="name">所属客户经理:</label></td>
+              <td><input type="text" id="chineseName"  value="$!btlist.manager" readonly="readonly"/></td>
+              
+              <td><label for="name">客户姓名:</label></td>
+              <td><input type="text" id="chineseName" value="$!btlist.customerName" readonly="readonly"/></td>
+             </tr>
+            
+             <tr>
+              <td><label for="name">身份证号:</label></td>
+              <td><input type="text" id="chineseName" value="$!btlist.cardId" readonly="readonly"/></td>
+              <td><label for="name">保险类型:</label></td>
+              <td><input type="text" id="chineseName" value="$!btlist.safeType" readonly="readonly"/></td>
+            </tr>
+            
+            <tr>
+              <td><label for="name">保险名称:</label></td>
+              <td><input type="text" id="chineseName" value="$!btlist.safeName" readonly="readonly"/></td>
+              <td><label for="name">入保公司:</label></td>
+              <td><input type="text" id="chineseName" value="$!btlist.safeCompany" readonly="readonly"/></td>
+            </tr>
+            
+            <tr>
+              <td><label for="name">产品名称:</label></td>
+              <td><input type="text" id="chineseName" value="$!btlist.productName" readonly="readonly"/></td>
+              <td><label for="name">利率:</label></td>
+              <td><input type="text" id="chineseName" value="$!btlist.interest" readonly="readonly"/></td>
+            </tr>
+            
+            <tr>
+              <td><label for="name">金额:</label></td>
+              <td><input type="text" id="chineseName" value="$!btlist.money" readonly="readonly"/></td>
+              <td><label for="name">是否结清:</label></td>
+              <td><input type="text" id="chineseName" value="$!btlist.settle" readonly="readonly"/></td>
+            </tr>
+            #end
+	</table>
+	</div>
+
+		<div class="submit">
+			<input type="button" onclick="javascript:history.go(-1);" value="#i18n('button.cancel')" />
+		</div>
+		</div>
+	</div>
+</body>
+</html>

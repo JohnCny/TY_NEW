@@ -86,15 +86,17 @@
             #foreach ($customer in $result.items)
             <tr>
               <td class="checkbox"><input type="radio" name="checkbox" value="$!customer.appId/$!customer.customerManagerId"/>
-              <td nowrap="nowrap">$!customer.cname</td>
-              <td nowrap="nowrap">$!customer.cardtype</td>
-              <td nowrap="nowrap">$!customer.prodName</td>
-              <td nowrap="nowrap">$!customer.money</td>
-              <td nowrap="nowrap">$format.formatNumber($!customer.baserate, 5, 1)</td>
-              <td nowrap="nowrap">$!customer.interest</td>
-              <td nowrap="nowrap">#dictVal("ACCOUNTSTATE", $!customer.accountstate)</td>
-              <td nowrap="nowrap">$!customer.busimanager</td>
-              <td nowrap="nowrap">$!customer.name</td>
+              <td nowrap="nowrap">$!customer.CHINESE_NAME</td>
+              <td nowrap="nowrap">$!customer.CARD_ID</td>
+              <td nowrap="nowrap">$!customer.CPMC</td>
+              <td nowrap="nowrap">$!customer.FFJE</td>
+             <!--  format.formatNumber($!customer.baserate, 5, 1)  -->
+              <td nowrap="nowrap">$customer.HTLL</td>
+              <td nowrap="nowrap">$!customer.QXRX</td>
+             <!--  #dictVal("ACCOUNTSTATE", $!customer.accountstate) -->
+              <td nowrap="nowrap"></td>
+              <td nowrap="nowrap">$!customer.KHJL</td>
+              <td nowrap="nowrap">$!customer.BLJG</td>
             </tr>
             #end
           </table>

@@ -1,0 +1,226 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">进件新增>新增担保人信息</div>
+      </div>
+       
+      <form id="id_module_form" action="${contextPath}/intopieces/addIntopieces/insertguarantor.json?applicationId=$!result.filter.applicationId" method="post"/>
+         <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
+          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 50%">
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="30%" />
+            </colgroup>
+              <tr><td class="titlec" colspan="4" style="text-align: center;">基本信息</td></tr>
+            <tr>
+              <td class="titlefc3"><label for="chineseName">保证人/抵押人/质押人姓名:</label></td>
+              <td><input class="rinpsty"  type="text" id="guarantorMortgagorPledge" name="guarantorMortgagorPledge" value="" /></td>
+            </tr>
+            <tr>
+             	<td class="titlefc3"><label for="cardId">性别:</label></td>
+                <td><input class="rinpsty"  type="text" name="sex" id="sex"  value="" /></td>
+            </tr>
+            <tr>
+             	<td class="titlefc3"><label for="cardId">与申请人关系:</label></td>
+                <td><input class="rinpsty"  type="text" name="relationshipWithApplicant" id="relationshipWithApplicant"  value="" /></td>
+            </tr>
+            <tr>
+             	<td class="titlefc3"><label for="cardId">单位名称:</label></td>
+                <td><input class="rinpsty"  type="text" name="unitName" id="unitName"  value="" /></td>
+            </tr>
+             <tr>
+             	<td class="titlefc3"><label for="cardId">部门:</label></td>
+                <td><input class="rinpsty"  type="text" name="department" id="department"  value="" /></td>
+            </tr>
+            <tr>
+             	<td class="titlefc3"><label for="cardId">联系电话:</label></td>
+                <td><input class="rinpsty"  type="text" name="contactPhone" id="contactPhone"  value="" /></td>
+            </tr>
+            <tr>
+             	<td class="titlefc3"><label for="cardId">手机:</label></td>
+                <td><input class="rinpsty"  type="text" name="cellPhone" id="cellPhone"  value="" /></td>
+            </tr>
+            <tr>
+             	<td class="titlefc3"><label for="cardId">证件号码:</label></td>
+                <td><input class="rinpsty"  type="text" name="documentNumber" id="documentNumber"  value="" /></td>
+            </tr>
+          </table>
+        </div>
+        </form>
+      <div class="submit" style="text-align:left;">
+      <!-- #i18n('button.save') -->
+        <input id="id_save_button" type="button" value="添加" class="current" />
+         <input id="id_find_button" type="button" value="显示当前用户的担保情况" class="current" />
+      <br/><br/><br/>
+      	#foreach ($listss in $lists)
+      	<span id="span1" style="display: none">
+      		 担保人 $!listss.guarantorMortgagorPledge
+      		 为客户 $!listss.chinesename
+      		 担保贷款$!listss.applyquota万.
+       </span>
+      	#end
+      	<br/>
+      	#foreach ($lists1 in $lists1)
+      <span id="span2" style="display: none">
+      	 客户 $!lists1.guarantorMortgagorPledge
+      	 为客户$!lists1.chinesename
+      	 担保贷款$!lists1.applyquota
+      	 万…客户N为客户X担保贷款XX万。
+      	</span>
+      	 #end
+      	 <br/>
+      	#foreach ($lists2 in $lists2)
+      	<span id="span3" style="display: none">
+      	 客户 $!lists2.guarantorMortgagorPledge
+      	 为客户$!lists2.chinesename
+      	 担保贷款$!lists2.applyquota万。
+      	 </span>
+      	  #end
+      	  <br/>
+      	 #foreach ($lists3 in $lists3)
+      	<span id="span4" style="display: none">
+      	 客户 $!lists3.guarantorMortgagorPledge
+      	 为客户$!lists3.chinesename
+      	 担保贷款$!lists3.applyquota万。
+      	 </span>
+      	  #end
+      	  <br/>
+      	 #foreach ($lists4 in $lists4)
+      	<span id="span5" style="display: none">
+      	 客户 $!lists4.guarantorMortgagorPledge
+      	 为客户$!lists4.chinesename
+      	 担保贷款$!lists4.applyquota万。
+      	 </span>
+      	 #end
+      	  <div class="place">
+      	</div>
+      </div>
+      
+    </div>
+  </div>
+ 
+  <script type="text/javascript">
+  
+  #set ($formName = "'#id_module_form'")
+	#parse ("customer/customerInforInsert/customerInforCreate_validation.js")
+	var layout = new FormsLayout("formsId");
+	window.top.currentWindow.setLayout(layout);
+	
+	$(document).ready(function() {		
+		$("#id_save_button").click(function() {
+			
+			 $("#cardIde").remove();	
+				var cardType = $("select[name=cardType]").val();
+				if( cardType == "0"){
+			   
+				var cardId = $("#cardId").val();
+				if(cardId !=""){
+				var idReg = /(^\d{15}$)|(^\d{17}([0-9]|[X]|[x])$)/;
+			
+			     if(idReg.test(cardId)){
+			    	 $("#cardIde").remove();	
+			       
+			        }else{
+				       $("input[name='cardId']").after("<label class='error' id='cardIde' generated='true' ><br>请输入正确的身份证号(15/18位)</label>");   
+			     }	
+				 }
+				
+				}
+			var leng = 0;
+	    	 leng = $("#cardIde").length;
+	    	if(leng > 0){
+	    		return;
+	    	}else{
+	   			if ($($formName).valid()) {
+	   				var formjson = $($formName).serialize();
+	   	   	        var url = $($formName).attr("action");
+	   				$.ajax({
+	   					url : url,
+	   					type : "post",
+	   					data : formjson,
+	   					success : function(data) {
+	   						if (data.success) {
+	   							topWin.Dialog.message("保存成功!");
+	   		   	            	window.location.reload() ;
+	   						}else{
+	   							topWin.Dialog.message(data.message);
+	   					    }
+	   					}
+	   				});
+	   			}
+	   	        
+	    	}
+	      });
+		
+		$("#id_find_button").click(function() {
+			var ui=document.getElementById("span1");
+			ui.style.display="";
+			var ui=document.getElementById("span2");
+			ui.style.display="";
+			var ui=document.getElementById("span3");
+			ui.style.display="";
+			var ui=document.getElementById("span4");
+			ui.style.display="";
+			var ui=document.getElementById("span5");
+			ui.style.display="";
+		})
+		
+		$("#cardId").change(function (){
+			 
+			 $("#cardIde").remove();	
+			var cardType = $("select[name=cardType]").val();
+			if( cardType == "0"){
+		   
+			var cardId = $("#cardId").val();
+			if(cardId !=""){
+			var idReg = /(^\d{15}$)|(^\d{17}([0-9]|[X]|[x])$)/;
+		
+		     if(idReg.test(cardId)){
+		    	 $("#cardIde").remove();	
+		       
+		        }else{
+			       $("input[name='cardId']").after("<label class='error' id='cardIde' generated='true' ><br>请输入正确的身份证号(15/18位)</label>");   
+		     }	
+			 }
+			
+			}
+			});
+		
+		$("#cardType").change(function(){
+			 $("#cardIde").remove();
+			var cardType = $("select[name=cardType]").val();
+			if( cardType == "0"){
+				var cardId = $("#cardId").val();
+				if(cardId !=""){
+				var idReg = /(^\d{15}$)|(^\d{17}([0-9]|[X]|[x])$)/;
+			
+			     if(idReg.test(cardId)){
+			    	 $("#cardIde").remove();	
+			       
+			        }else{
+				       $("input[name='cardId']").after("<label class='error' id='cardIde' generated='true' ><br>请输入正确的身份证号(15/18位)</label>");   
+			     }	
+				 }	
+				
+			}
+			
+		});
+		
+	});
+	
+	//返回
+	function returnClick(){
+		window.location.href= contextPath + "/customer/basiccustomerinforCreate/insert.page";
+	}
+	
+	
+  </script>
+  
+</body>
+#parse ("common/iframe_page_footer.htm")

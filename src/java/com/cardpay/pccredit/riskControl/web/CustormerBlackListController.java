@@ -58,7 +58,7 @@ public class CustormerBlackListController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "custormerblacklist.page", method = { RequestMethod.GET })
+	@RequestMapping(value = "custormerblacklist11.page", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView managerBrowse(@ModelAttribute CUSTOMERBLACKLIST filter,HttpServletRequest request) {
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);

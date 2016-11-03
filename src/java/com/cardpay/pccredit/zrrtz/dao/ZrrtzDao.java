@@ -2,6 +2,8 @@ package com.cardpay.pccredit.zrrtz.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.cardpay.pccredit.customer.model.CustomerParameter;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
@@ -17,6 +19,6 @@ public interface ZrrtzDao {
 
 	List<IncomingData> findate();
 
-	List<CustomerParameter> findpiecesList();
+	List<CustomerParameter> findpiecesList(@Param("card_id")String card_id);
 
 }

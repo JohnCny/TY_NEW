@@ -95,6 +95,7 @@ public class ProductController extends BaseController {
 
 		QueryResult<ProductAttribute> result = productService.findProductsFilter(filter);
 		JRadPagedQueryResult<ProductAttribute> pagedResult = new JRadPagedQueryResult<ProductAttribute>(filter, result);
+
 		JRadModelAndView mv = new JRadModelAndView("/product/product_browse", request);
 		mv.addObject(PAGED_RESULT, pagedResult);
 

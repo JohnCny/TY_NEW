@@ -163,7 +163,6 @@
 	//移出黑名单
 	 $("#delete").click(function() {
 		 var rowId = getCurrentRowId();
-		 Dialog.message(rowId);
 			var url = "${modulePath}/deleteByCoustorId.json";
 			if ($(".checkbox :checked").length == 1) {
 				var id = $($(".checkbox :checked")[0]).attr("value");
@@ -176,7 +175,7 @@
 		      				success : function(data) {
 		      					
 		      					if (data.success) {
-		      					window.location.href="${modulePath}/custormerblacklist.page";
+		      					window.location.href="${modulePath}/custormerblacklist11.page";
 		      					}
 		      					else{
 		      						topWin.Dialog.message(data.message);

@@ -2,6 +2,7 @@ package com.cardpay.pccredit.report.web;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.ParseException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,11 +46,12 @@ public class ExpireLoanController extends BaseController{
 	 * @param filter
 	 * @param request
 	 * @return
+	 * @throws ParseException 
 	 */
 	@ResponseBody
 	@RequestMapping(value = "queryExpireLoan.page", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
-	public AbstractModelAndView queryExpireLoan(@ModelAttribute ReportFilter filter,HttpServletRequest request) {
+	public AbstractModelAndView queryExpireLoan(@ModelAttribute ReportFilter filter,HttpServletRequest request) throws ParseException {
 		JRadModelAndView mv = new JRadModelAndView("/report/expire/expiresLoan", request);
 		filter.setRequest(request);
 		QueryResult<DqzzdktjbbForm> result =  customerTransferFlowService.findDqzzdktjbbFormList(filter);

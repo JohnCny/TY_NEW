@@ -21,6 +21,7 @@ import org.omg.CORBA.COMM_FAILURE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.vngx.jsch.Session;
 
 import com.cardpay.pccredit.common.SFTPUtil;
 import com.cardpay.pccredit.common.UploadFileTool;
@@ -70,12 +71,10 @@ import com.cardpay.workflow.models.WfProcessInfo;
 import com.cardpay.workflow.models.WfStatusInfo;
 import com.cardpay.workflow.models.WfStatusResult;
 import com.cardpay.workflow.service.ProcessService;
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageDecoder;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
 import com.wicresoft.jrad.base.database.model.QueryResult;
+import com.wicresoft.jrad.base.web.message.Messages;
 
 @Service
 public class AddIntoPiecesService {
@@ -306,8 +305,9 @@ public class AddIntoPiecesService {
 		commonDao.insertObject(localImage);
 	}
 
-	public void addIntopieces(AddIntoPiecesForm addIntoPiecesForm,String userId) {
+	public String addIntopieces(AddIntoPiecesForm addIntoPiecesForm,String userId) {
 		// TODO Auto-generated method stub
+		Messages m=new Messages();
 		CustomerApplicationInfo app = new CustomerApplicationInfo();
 		app.setCustomerId(addIntoPiecesForm.getCustomerId());
 		app.setProductId(addIntoPiecesForm.getProductId());
@@ -332,6 +332,8 @@ public class AddIntoPiecesService {
 		
 		//添加流程 20160328 sc
 		addProcess(app.getId(),addIntoPiecesForm.getProductId());
+		m.addGlobalMessage(app.getId());
+		return app.getId();
 	}
 	
 	public void addProcess(String appId,String productId){

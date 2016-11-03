@@ -581,12 +581,7 @@ public class AccountManagerParameterService {
 		return qs;
 	}
 	
-	public List<AccountManagerParameterForm> findAccountManagerParametersByAllUserId(AccountManagerParameterFilter filter) {
-		return accountManagerParameterDao.findAccountManagerParametersByAll(filter);
-	}
-	public  int findAccountManagerParametersCountByFilter(AccountManagerParameterFilter filter){
-		return accountManagerParameterDao.findAccountManagerParametersByAllCount(filter);
-	}
+	
 	//---------------------------------------------------------济南绩效 end------------------------------------------------//
 	
 }

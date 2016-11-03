@@ -28,7 +28,7 @@ public interface AccountManagerParameterDao {
 	 * 根据filter查询所有客户经理信息
 	 */
 	public List<AccountManagerParameterForm> findAccountManagerParametersByFilter(AccountManagerParameterFilter filter);
-	public List<AccountManagerParameterForm> findAccountManagerParametersByAll(AccountManagerParameterFilter filter);
+	
 	/*
 	 * 查询所有客户经理信息
 	 */
@@ -51,8 +51,4 @@ public interface AccountManagerParameterDao {
 	
 	public List<TJxSpecificParameters> findCustDayBalamt(ManagerSalaryFilter filter);
 	public int findCountCustDayBalamt(ManagerSalaryFilter filter);
-	/*
-	 * 根据filter查询所有客户经理信息数量
-	 */
-	public int findAccountManagerParametersByAllCount(AccountManagerParameterFilter filter);
 }

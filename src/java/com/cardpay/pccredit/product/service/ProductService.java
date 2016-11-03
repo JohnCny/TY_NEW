@@ -138,13 +138,13 @@ public class ProductService {
 		//return commonDao.findObjectsByFilter(ProductAttribute.class, filter);
 		filter.setStatus("Published");
 		List<ProductAttribute> productAttribute = productDao.findProductsByFilter(filter);
-		for(int i=0;i<productAttribute.size();i++){
-		if(productAttribute.get(i).getProductName().equals("融耀卡")){
-			productAttribute.remove(i);
-		}
-	}
 		int size = productDao.findProductsCountByFilter(filter);
-		QueryResult<ProductAttribute> qs = new QueryResult<ProductAttribute>(productAttribute.size(), productAttribute);
+		for(int i=0;i<productAttribute.size();i++){
+			if(productAttribute.get(i).getProductName().equals("融耀卡")){
+				productAttribute.remove(i);
+			}
+		}
+		QueryResult<ProductAttribute> qs = new QueryResult<ProductAttribute>(size, productAttribute);
 		return qs;
 	}
 	

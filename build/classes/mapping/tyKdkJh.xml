@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="GBK"?>
+
+<resultMap>
+    <!-- <result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/> -->
+	<result column="YWBH" jdbcType="VARCHAR" index="1" />
+	<result column="JHLX" jdbcType="VARCHAR" index="2" />
+	<result column="QS" jdbcType="VARCHAR" index="3" />
+	<result column="TS" jdbcType="VARCHAR" index="4" />
+	<result column="RQ" jdbcType="VARCHAR" index="5" />
+	<result column="JE" jdbcType="VARCHAR" index="6" />
+	<result column="YHLX" jdbcType="VARCHAR" index="7" />
+	<result column="BXHJ" jdbcType="VARCHAR" index="8" />
+	<result column="DKYE" jdbcType="VARCHAR" index="9" />
+	<result column="BZ" jdbcType="VARCHAR" index="10" />
+	<!-- <result column="ISBG" jdbcType="VARCHAR" index="11" />
+	<result column="XGRY" jdbcType="VARCHAR" index="12" />
+	<result column="XGSJ" jdbcType="VARCHAR" index="13"/>
+	<result column="D_9DSOFT" jdbcType="VARCHAR" index="14"/>
+	<result column="XH" jdbcType="VARCHAR" index="15" /> -->
+</resultMap>

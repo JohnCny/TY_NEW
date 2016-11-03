@@ -52,7 +52,7 @@
 	</bean>
 
 
-	<bean id="xMLMapperLoader" class="com.wicresoft.jrad.base.database.reload.XMLMapperLoader" />
+	<!--<bean id="xMLMapperLoader" class="com.wicresoft.jrad.base.database.reload.XMLMapperLoader" />-->
 	
 	<bean id="dictionaryManager" class="com.wicresoft.jrad.modules.dictionary.DictionaryManager" init-method="init" lazy-init="true" />
 

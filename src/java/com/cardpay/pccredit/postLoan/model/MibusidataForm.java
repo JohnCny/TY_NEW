@@ -1,5 +1,7 @@
 package com.cardpay.pccredit.postLoan.model;
 
+import java.util.Date;
+
 import com.wicresoft.jrad.base.database.model.BusinessModel;
 /**
  * 台帐表Form
@@ -150,6 +152,35 @@ public class MibusidataForm extends BusinessModel {
 	private String clreqlmt;
 	private String busiflag;
 	private String create_time;
+	private String SPMC;
+	private Date audittime;
+	private String refusalreason;
+	private String displayname;
+	
+	public String getDisplayname() {
+		return displayname;
+	}
+	public void setDisplayname(String displayname) {
+		this.displayname = displayname;
+	}
+	public String getRefusalreason() {
+		return refusalreason;
+	}
+	public void setRefusalreason(String refusalreason) {
+		this.refusalreason = refusalreason;
+	}
+	public Date getAudittime() {
+		return audittime;
+	}
+	public void setAudittime(Date audittime) {
+		this.audittime = audittime;
+	}
+	public String getSPMC() {
+		return SPMC;
+	}
+	public void setSPMC(String sPMC) {
+		SPMC = sPMC;
+	}
 	public String getBusicode() {
 		return busicode;
 	}

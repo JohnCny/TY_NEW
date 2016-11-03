@@ -1,5 +1,6 @@
 package com.cardpay.pccredit.postLoan.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +30,7 @@ import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentDetail;
 import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentList;
 import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
+import com.cardpay.pccredit.postLoan.dao.PostLoanDao;
 import com.cardpay.pccredit.postLoan.filter.FcloaninfoFilter;
 import com.cardpay.pccredit.postLoan.filter.PostLoanFilter;
 import com.cardpay.pccredit.postLoan.model.Fcloaninfo;
@@ -140,7 +142,6 @@ public class Loan_TY_JJB_Controller extends BaseController {
 		filter.setRequest(request);
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 		String userId = user.getId();
-
 		QueryResult<MibusidataForm> result = postLoanService.findTzJnListByFilter(filter);
 		JRadPagedQueryResult<MibusidataForm> pagedResult = new JRadPagedQueryResult<MibusidataForm>(filter, result);
 
@@ -171,6 +172,25 @@ public class Loan_TY_JJB_Controller extends BaseController {
 	
 	}
 	
+	/**
+	 * 被拒绝台帐
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "refuse.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView tzrefuse(@ModelAttribute PostLoanFilter filter,HttpServletRequest request) {
+		filter.setRequest(request);
+		QueryResult<MibusidataForm> result = postLoanService.findrefusedMibusidata(filter);
+		JRadPagedQueryResult<MibusidataForm> pagedResult = new JRadPagedQueryResult<MibusidataForm>(filter, result);
+
+		JRadModelAndView mv = new JRadModelAndView("/postLoan/tz_refusedbrowse", request);
+		mv.addObject(PAGED_RESULT, pagedResult);
+
+		return mv;
+	}
 	
 	/**
 	 * 浏览页面

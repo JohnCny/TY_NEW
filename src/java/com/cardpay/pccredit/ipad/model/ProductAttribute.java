@@ -19,7 +19,6 @@ public class ProductAttribute extends BusinessModel{
 	 */
 	private static final long serialVersionUID = -8453126276207509013L;
 	private String id;
-	private String productName1;
 	private String productName;
 	private String purposeLoan;
 	private String creditLine;
@@ -45,12 +44,6 @@ public class ProductAttribute extends BusinessModel{
 	
 	
 	
-	public String getProductName1() {
-		return productName1;
-	}
-	public void setProductName1(String productName1) {
-		this.productName1 = productName1;
-	}
 	public String getProdLiTime() {
 		return prodLiTime;
 	}
