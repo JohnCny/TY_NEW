@@ -41,7 +41,7 @@ import com.wicresoft.util.date.DateHelper;
  */
 public class ImportBankDataFileTools {
 	// 分隔符
-	public static final String SPLITE_CHARS = "\\|";
+	public static final String SPLITE_CHARS = "\\,";
 	
 	public static final String DECIMAL = "DECIMAL";
 	public static final String VARCHAR = "VARCHAR";
@@ -91,14 +91,14 @@ public class ImportBankDataFileTools {
 		List<Map<String, Object>> datas = new ArrayList<Map<String, Object>>();
 		FileInputStream fis = null;
 		InputStreamReader isr = null;
-		//BufferedReader br = null;
-		ReadLine br =null;
+		BufferedReader br = null;
+		//ReadLine br =null;
 		String value = null;
 		try{
 			fis=new FileInputStream(fileName);
 		    isr=new InputStreamReader(fis, "utf-8");
-		   // br = new BufferedReader(isr,10*1024*1024);// 用10M的缓冲读取文本文件  
-		    br = new ReadLine(isr,10*1024*1024);// 用10M的缓冲读取文本文件  
+		    br = new BufferedReader(isr,10*1024*1024);// 用10M的缓冲读取文本文件  
+		   // br = new ReadLine(isr,10*1024*1024);// 用10M的缓冲读取文本文件  
 			String line="", type = null, column = null;
 	        String[] dataArrs=null;
 	        Map<String, Object> map = null;

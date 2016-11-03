@@ -85,6 +85,8 @@
 		$("#id_next_button").click(function() {
             if ($(".checkbox :checked").length == 1) {
                 var rowid = $($(".checkbox :checked")[0]).attr("value");
+                //"${contextPath}/intopieces/addIntopieces/browseCustomer.page?productId=" + rowid;
+               //"${contextPath}/intopieces/addIntopieces/customerappguarantor.page"
                 var url = "${contextPath}/intopieces/addIntopieces/browseCustomer.page?productId=" + rowid;
                 
                 window.location.href = url;

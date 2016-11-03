@@ -131,8 +131,11 @@
 		 select QXRX as fdate,ZXRQ as ldate from TY_REPAY_LSZ D 
 	</select>
 	
-	<select id="findpiecesList" resultMap="aLLResultMap" >
-		 select * from CUSTOMER_PARAMETER
+	<select id="findpiecesList" resultMap="aLLResultMap" parameterType="String">
+		 select * from CUSTOMER_PARAMETER where 1=1 
+		 <if test="card_id!=null and card_id!=''">
+				       and IDCARD=#{card_id}
+		 </if>
 	</select>
 	
 </mapper>

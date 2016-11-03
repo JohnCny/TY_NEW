@@ -4,6 +4,8 @@
 		<menu id="010000" name="home" title="系统首页" url="/home.page" img="images/icon_4.png" operations=""/>
 		<menu id="030000" name="intopieces" title="进件管理" url="" img="images/icon_sys.gif" operations="">
 		    <menu id="030001" name="intopiecesquery" title="进件查询" url="/intopieces/intopiecesquery/browse.page" img="" operations="create|addbatch|change|display|import|approveloguser|approvelog|browse"/>
+		    <!-- browseProduct.page -->
+		    <!-- customerappguarantor.page -->
 		    <menu id="030002" name="addIntopieces" title="进件新增" url="/intopieces/addIntopieces/browseProduct.page" img="" operations="create|change|display|browse"/>
 		    <menu id="030003" name="intopiecesps " title="进件初审" url="/intopieces/intopiecesdecision/csBrowse.page" img="" operations="create|change|display|browse"/>
 			<menu id="030004" name="intopiecesdecision " title="审贷决议" url="/intopieces/intopiecesdecision/browse.page" img="" operations="create|change|display|browse"/>
@@ -13,13 +15,14 @@
 		</menu>
 		<menu id="040000" name="customer" title="客户管理" operations="">
 			<menu id="040001" name="basiccustomerinfor" title="客户原始信息管理" url="/customer/firsthend/browse.page" img="" operations="create|browse"/>
+			<!-- /customer/basiccustomerinforCreate/insert.page -->  
 			<menu id="040002" name="basiccustomerinforCreate" title="客户信息新增" url="/customer/basiccustomerinforCreate/insert.page" img="" operations="create|browse"/>
 			<menu id="040003" name="customer_wh_ty" title="客户维护信息" url="/customer/customerInfor_wh_ty/browse.page" img="" operations="create|change|browse"/>
 			<menu id="040004" name="maintenance" title="客户维护计划列表" url="/customer/maintenance/browse.page" img="" operations="create|change|display|browse"/>
 			<menu id="040005" name="customermaintenancelog" title="客户维护信息日志列表" url="/customer/maintenance/log.page" img="" operations="display|browse|change"/>
 			<menu id="040006" name="basiccustomerinforMove" title="客户移交申请" url="/customer/basiccustomerinforMove/browse.page" img="" operations="create|browse"/>
 			<menu id="040007" name="basiccustomerinforMoveExamine" title="客户移交审批" url="/customer/basiccustomerinforMove/examineBrowse.page" img="" operations="create|browse"/>
-			<menu id="040026" name="customer_ZRRTZ" title="自然人台账" url="/customer/customer_ZRRTZ/zrrtz.json" img="" operations="browse"/>
+			<menu id="040026" name="customer_ZRRTZ" title="自然人台账" url="/customer/customer_ZRRTZ/zrrtz.json" img="" operations="create|browse"/>
 		</menu>
 		
 		<menu id="060000" name="product" title="产品管理" url="" img="images/icon_sys.gif" operations="">
@@ -40,6 +43,8 @@
 		<menu id="080000" name="riskcontrol" title="综合风控管理" operations=""> 
 			<menu id="080001" name="riskcustomermanager" title="风险客户管理" url="/riskcontrol/riskcustomermanager/managerbrowse.page" img="" operations="reported|browse"/>
 			<menu id="080002" name="riskcustomercollection" title="客户催收计划列表" url="/riskcontrol/riskcustomercollection/browse.page" img="" operations="create|change|display|browse"/>
+			<menu id="080003" name="riskcustomermanager1" title="黑名单管理" url="/riskcontrol/custormerblacklist/custormerblacklist11.page" img="" operations="reported|browse"/>
+			
 		</menu>
 		
 		

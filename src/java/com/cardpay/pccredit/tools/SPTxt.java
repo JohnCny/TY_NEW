@@ -24,8 +24,8 @@ public class SPTxt {
 	 */
 	public static void splitTxt(String fileName,int count) {
 		try {
-			//BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(fileName),"utf-8"));
-			ReadLine br = new ReadLine(new InputStreamReader(new FileInputStream(fileName),"utf-8"));
+			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(fileName),"utf-8"));
+			//ReadLine br = new ReadLine(new InputStreamReader(new FileInputStream(fileName),"utf-8"));
 			int to = fileName.lastIndexOf('.');
 	    	fileName = fileName.substring(0, to);
 			String row;

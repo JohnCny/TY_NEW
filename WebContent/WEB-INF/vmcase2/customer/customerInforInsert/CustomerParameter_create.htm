@@ -23,7 +23,7 @@
 			#foreach ($pInfor in $pInfor)
             <tr>
               <td><label for="name">所属客户经理:</label></td>
-              <td><input type="text" id="chineseName" value="$!pInfor.customermanagerName" readonly="readonly"/></td>
+              <td><input type="text" id="chineseName" name="managername" value="$!pInfor.customermanagerName" readonly="readonly"/></td>
               
               <td><label for="name">客户姓名:</label></td>
               <td><input type="text" id="chineseName" name="customername" value="$!pInfor.customerName" readonly="readonly"/></td>
@@ -34,7 +34,6 @@
               <td><input  type="text" id="chineseName" name="idcard" value="$!pInfor.idcard" readonly="readonly"/></td>
               
               <td><label for="name">产品名称:</label></td>
-              
               <td>
 					<select id="type" name="productname">
 							   <option value="">-----请选择------</option>

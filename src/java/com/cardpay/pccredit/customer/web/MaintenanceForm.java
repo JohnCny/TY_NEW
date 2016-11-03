@@ -18,7 +18,6 @@ public class MaintenanceForm extends BaseForm{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String pid;//自动添加ID
 	private String customerId;
 	private String chineseName;
 	private String customerManagerId;
@@ -30,8 +29,6 @@ public class MaintenanceForm extends BaseForm{
 	private String endResult;
 	private String remarksCreateReason;
 	private Date maintenanceEndtime;
-	private Date maintenanceStarttime;
-	
 	private String maintenancePlanId;
 	private String maintenanceResult;
 	private String maintenanceStartTime;
@@ -42,7 +39,6 @@ public class MaintenanceForm extends BaseForm{
 	private String cardId;
 	private String actualQuote;
 	private String debitWay;
-	private String dkye;
 	
 	private String appId;
 	
@@ -52,10 +48,17 @@ public class MaintenanceForm extends BaseForm{
 	private String repayWay;
 	private String repayStatus;
 	private String productId;
+	private String dkye;
 	private String createdBy;
+	private Date maintenanceStarttime;
+	private String pid;
 	
-	
-	
+	public String getPid() {
+		return pid;
+	}
+	public void setPid(String pid) {
+		this.pid = pid;
+	}
 	public Date getMaintenanceStarttime() {
 		return maintenanceStarttime;
 	}
@@ -67,12 +70,6 @@ public class MaintenanceForm extends BaseForm{
 	}
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
-	}
-	public String getPid() {
-		return pid;
-	}
-	public void setPid(String pid) {
-		this.pid = pid;
 	}
 	public String getDkye() {
 		return dkye;

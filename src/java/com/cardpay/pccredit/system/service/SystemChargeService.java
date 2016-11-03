@@ -13,7 +13,6 @@ import com.cardpay.pccredit.system.model.Choujiang;
 import com.cardpay.pccredit.system.model.SystemCharge;
 import com.cardpay.pccredit.system.model.SystemUser;
 import com.cardpay.pccredit.system.web.SystemChargeForm;
-import com.sun.org.apache.bcel.internal.generic.Select;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 

@@ -23,9 +23,11 @@ import org.springframework.web.multipart.MultipartFile;
 import sun.misc.BASE64Decoder;
 
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
+import com.cardpay.pccredit.customer.model.BusinessTackling;
 import com.cardpay.pccredit.customer.model.CustomerFirsthendBaseLocal;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.model.CustomerMarketing;
+import com.cardpay.pccredit.customer.service.BusinessTacklingService;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.customer.service.MaintenanceService;
 import com.cardpay.pccredit.intopieces.filter.AddIntoPiecesFilter;
@@ -75,7 +77,8 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 	@Autowired
 	private MaintenanceService maintenanceService;
 	
-	
+	@Autowired
+	private BusinessTacklingService btService;
 	//太原维护信息
 	@ResponseBody
 	@RequestMapping(value = "browse.page", method = { RequestMethod.GET })
@@ -149,7 +152,23 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 
 		return returnMap;
 	}
-		
+	//显示业务核查信息
+			@ResponseBody
+			@RequestMapping(value = "report_business.page")
+			public AbstractModelAndView report_business(HttpServletRequest request) {
+				JRadModelAndView mv = new JRadModelAndView("/customer/customerInfor_wh_ty/report_business", request);
+				String appId = RequestHelper.getStringValue(request, "appId");
+				String urlType = RequestHelper.getStringValue(request, "urlType");
+				String idcard=RequestHelper.getStringValue(request, "cardId");
+				if (StringUtils.isNotEmpty(appId)) {
+					List<BusinessTackling> btlist=btService.queryByIdCard(idcard);
+					mv.addObject("btlist",btlist);
+					mv.addObject("appId", appId);
+					mv.addObject("urlType", urlType);
+					mv.addObject("cardId", idcard);
+				}
+				return mv;
+			}
 	//显示维护信息--建议
 	@ResponseBody
 	@RequestMapping(value = "report_jy.page")
@@ -157,12 +176,14 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/customer/customerInfor_wh_ty/report_jy", request);
 		String appId = RequestHelper.getStringValue(request, "appId");
 		String urlType = RequestHelper.getStringValue(request, "urlType");
+		String cardId=RequestHelper.getStringValue(request, "cardId");
 		if (StringUtils.isNotEmpty(appId)) {
 			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
 			String tableContent = getFromBASE64(localExcel.getSheetJy()).replaceAll("\n", "<br>").replace("><br><", "><");
 			mv.addObject("tableContent", tableContent);
 			mv.addObject("appId", appId);
 			mv.addObject("urlType", urlType);
+			mv.addObject("cardId",cardId);
 			//查询权限 非本人只能查看 不能操作
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 			String userId = user.getId();
@@ -205,12 +226,14 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/customer/customerInfor_wh_ty/report_jjbs", request);
 		String appId = RequestHelper.getStringValue(request, "appId");
 		String urlType = RequestHelper.getStringValue(request, "urlType");
+		String cardId=RequestHelper.getStringValue(request, "cardId");
 		if (StringUtils.isNotEmpty(appId)) {
 			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
 			String tableContent = getFromBASE64(localExcel.getSheetJjbs()).replaceAll("\n", "<br>").replace("><br><", "><");
 			mv.addObject("tableContent", tableContent);
 			mv.addObject("appId", appId);
 			mv.addObject("urlType", urlType);
+			mv.addObject("cardId",cardId);
 			//查询权限 非本人只能查看 不能操作
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 			String userId = user.getId();
@@ -249,12 +272,14 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/customer/customerInfor_wh_ty/report_jbzk", request);
 		String appId = RequestHelper.getStringValue(request, "appId");
 		String urlType = RequestHelper.getStringValue(request, "urlType");
+		String cardId=RequestHelper.getStringValue(request, "cardId");
 		if (StringUtils.isNotEmpty(appId)) {
 			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
 			String tableContent = getFromBASE64(localExcel.getSheetJbzk()).replaceAll("\n", "<br>").replace("><br><", "><");
 			mv.addObject("tableContent", tableContent);
 			mv.addObject("appId", appId);
 			mv.addObject("urlType", urlType);
+			mv.addObject("cardId",cardId);
 			//查询权限 非本人只能查看 不能操作
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 			String userId = user.getId();
@@ -293,12 +318,14 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/customer/customerInfor_wh_ty/report_jyzt", request);
 		String appId = RequestHelper.getStringValue(request, "appId");
 		String urlType = RequestHelper.getStringValue(request, "urlType");
+		String cardId=RequestHelper.getStringValue(request, "cardId");
 		if (StringUtils.isNotEmpty(appId)) {
 			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
 			String tableContent = getFromBASE64(localExcel.getSheetJyzt()).replaceAll("\n", "<br>").replace("><br><", "><");
 			mv.addObject("tableContent", tableContent);
 			mv.addObject("appId", appId);
 			mv.addObject("urlType", urlType);
+			mv.addObject("cardId",cardId);
 			//查询权限 非本人只能查看 不能操作
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 			String userId = user.getId();
@@ -337,12 +364,14 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/customer/customerInfor_wh_ty/report_sczt", request);
 		String appId = RequestHelper.getStringValue(request, "appId");
 		String urlType = RequestHelper.getStringValue(request, "urlType");
+		String cardId=RequestHelper.getStringValue(request, "cardId");
 		if (StringUtils.isNotEmpty(appId)) {
 			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
 			String tableContent = getFromBASE64(localExcel.getSheetSczt()).replaceAll("\n", "<br>").replace("><br><", "><");
 			mv.addObject("tableContent", tableContent);
 			mv.addObject("appId", appId);
 			mv.addObject("urlType", urlType);
+			mv.addObject("cardId",cardId);
 			//查询权限 非本人只能查看 不能操作
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 			String userId = user.getId();
@@ -381,12 +410,14 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/customer/customerInfor_wh_ty/report_ddpz", request);
 		String appId = RequestHelper.getStringValue(request, "appId");
 		String urlType = RequestHelper.getStringValue(request, "urlType");
+		String cardId=RequestHelper.getStringValue(request, "cardId");
 		if (StringUtils.isNotEmpty(appId)) {
 			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
 			String tableContent = getFromBASE64(localExcel.getSheetDdpz()).replaceAll("\n", "<br>").replace("><br><", "><");
 			mv.addObject("tableContent", tableContent);
 			mv.addObject("appId", appId);
 			mv.addObject("urlType", urlType);
+			mv.addObject("cardId",cardId);
 			//查询权限 非本人只能查看 不能操作
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 			String userId = user.getId();
@@ -425,12 +456,14 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/customer/customerInfor_wh_ty/report_fz", request);
 		String appId = RequestHelper.getStringValue(request, "appId");
 		String urlType = RequestHelper.getStringValue(request, "urlType");
+		String cardId=RequestHelper.getStringValue(request, "cardId");
 		if (StringUtils.isNotEmpty(appId)) {
 			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
 			String tableContent = getFromBASE64(localExcel.getSheetFz()).replaceAll("\n", "<br>").replace("><br><", "><");
 			mv.addObject("tableContent", tableContent);
 			mv.addObject("appId", appId);
 			mv.addObject("urlType", urlType);
+			mv.addObject("cardId",cardId);
 			//查询权限 非本人只能查看 不能操作
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 			String userId = user.getId();
@@ -469,12 +502,14 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/customer/customerInfor_wh_ty/report_lrjb", request);
 		String appId = RequestHelper.getStringValue(request, "appId");
 		String urlType = RequestHelper.getStringValue(request, "urlType");
+		String cardId=RequestHelper.getStringValue(request, "cardId");
 		if (StringUtils.isNotEmpty(appId)) {
 			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
 			String tableContent = getFromBASE64(localExcel.getSheetLrjb()).replaceAll("\n", "<br>").replace("><br><", "><");
 			mv.addObject("tableContent", tableContent);
 			mv.addObject("appId", appId);
 			mv.addObject("urlType", urlType);
+			mv.addObject("cardId",cardId);
 			//查询权限 非本人只能查看 不能操作
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 			String userId = user.getId();
@@ -513,12 +548,14 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/customer/customerInfor_wh_ty/report_bzlrb", request);
 		String appId = RequestHelper.getStringValue(request, "appId");
 		String urlType = RequestHelper.getStringValue(request, "urlType");
+		String cardId=RequestHelper.getStringValue(request, "cardId");
 		if (StringUtils.isNotEmpty(appId)) {
 			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
 			String tableContent = getFromBASE64(localExcel.getSheetBzlrb()).replaceAll("\n", "<br>").replace("><br><", "><");
 			mv.addObject("tableContent", tableContent);
 			mv.addObject("appId", appId);
 			mv.addObject("urlType", urlType);
+			mv.addObject("cardId",cardId);
 			//查询权限 非本人只能查看 不能操作
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 			String userId = user.getId();
@@ -556,12 +593,14 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/customer/customerInfor_wh_ty/report_zyyw", request);
 		String appId = RequestHelper.getStringValue(request, "appId");
 		String urlType = RequestHelper.getStringValue(request, "urlType");
+		String cardId=RequestHelper.getStringValue(request, "cardId");
 		if (StringUtils.isNotEmpty(appId)) {
 			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
 			String tableContent = getFromBASE64(localExcel.getZyyw()).replaceAll("\n", "<br>").replace("><br><", "><");
 			mv.addObject("tableContent", tableContent);
 			mv.addObject("appId", appId);
 			mv.addObject("urlType", urlType);
+			mv.addObject("cardId",cardId);
 			//查询权限 非本人只能查看 不能操作
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 			String userId = user.getId();
@@ -599,12 +638,14 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/customer/customerInfor_wh_ty/report_xjllb", request);
 		String appId = RequestHelper.getStringValue(request, "appId");
 		String urlType = RequestHelper.getStringValue(request, "urlType");
+		String cardId=RequestHelper.getStringValue(request, "cardId");
 		if (StringUtils.isNotEmpty(appId)) {
 			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
 			String tableContent = getFromBASE64(localExcel.getSheetXjllb()).replaceAll("\n", "<br>").replace("><br><", "><");
 			mv.addObject("tableContent", tableContent);
 			mv.addObject("appId", appId);
 			mv.addObject("urlType", urlType);
+			mv.addObject("cardId",cardId);
 			//查询权限 非本人只能查看 不能操作
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 			String userId = user.getId();
@@ -643,12 +684,14 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/customer/customerInfor_wh_ty/report_jc", request);
 		String appId = RequestHelper.getStringValue(request, "appId");
 		String urlType = RequestHelper.getStringValue(request, "urlType");
+		String cardId=RequestHelper.getStringValue(request, "cardId");
 		if (StringUtils.isNotEmpty(appId)) {
 			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
 			String tableContent = getFromBASE64(localExcel.getSheetJc()).replaceAll("\n", "<br>").replace("><br><", "><");
 			mv.addObject("tableContent", tableContent);
 			mv.addObject("appId", appId);
 			mv.addObject("urlType", urlType);
+			mv.addObject("cardId",cardId);
 			//查询权限 非本人只能查看 不能操作
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 			String userId = user.getId();
@@ -687,12 +730,14 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/customer/customerInfor_wh_ty/report_dhd", request);
 		String appId = RequestHelper.getStringValue(request, "appId");
 		String urlType = RequestHelper.getStringValue(request, "urlType");
+		String cardId=RequestHelper.getStringValue(request, "cardId");
 		if (StringUtils.isNotEmpty(appId)) {
 			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
 			String tableContent = getFromBASE64(localExcel.getSheetDhd()).replaceAll("\n", "<br>").replace("><br><", "><");
 			mv.addObject("tableContent", tableContent);
 			mv.addObject("appId", appId);
 			mv.addObject("urlType", urlType);
+			mv.addObject("cardId",cardId);
 			//查询权限 非本人只能查看 不能操作
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 			String userId = user.getId();
@@ -731,12 +776,14 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/customer/customerInfor_wh_ty/report_gdzc", request);
 		String appId = RequestHelper.getStringValue(request, "appId");
 		String urlType = RequestHelper.getStringValue(request, "urlType");
+		String cardId=RequestHelper.getStringValue(request, "cardId");
 		if (StringUtils.isNotEmpty(appId)) {
 			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
 			String tableContent = getFromBASE64(localExcel.getSheetGdzc()).replaceAll("\n", "<br>").replace("><br><", "><");
 			mv.addObject("tableContent", tableContent);
 			mv.addObject("appId", appId);
 			mv.addObject("urlType", urlType);
+			mv.addObject("cardId",cardId);
 			//查询权限 非本人只能查看 不能操作
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 			String userId = user.getId();
@@ -775,12 +822,14 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/customer/customerInfor_wh_ty/report_yfys", request);
 		String appId = RequestHelper.getStringValue(request, "appId");
 		String urlType = RequestHelper.getStringValue(request, "urlType");
+		String cardId=RequestHelper.getStringValue(request, "cardId");
 		if (StringUtils.isNotEmpty(appId)) {
 			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
 			String tableContent = getFromBASE64(localExcel.getSheetYfys()).replaceAll("\n", "<br>").replace("><br><", "><");
 			mv.addObject("tableContent", tableContent);
 			mv.addObject("appId", appId);
 			mv.addObject("urlType", urlType);
+			mv.addObject("cardId",cardId);
 			//查询权限 非本人只能查看 不能操作
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 			String userId = user.getId();
@@ -819,12 +868,14 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/customer/customerInfor_wh_ty/report_ysyf", request);
 		String appId = RequestHelper.getStringValue(request, "appId");
 		String urlType = RequestHelper.getStringValue(request, "urlType");
+		String cardId=RequestHelper.getStringValue(request, "cardId");
 		if (StringUtils.isNotEmpty(appId)) {
 			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
 			String tableContent = getFromBASE64(localExcel.getSheetYsyf()).replaceAll("\n", "<br>").replace("><br><", "><");
 			mv.addObject("tableContent", tableContent);
 			mv.addObject("appId", appId);
 			mv.addObject("urlType", urlType);
+			mv.addObject("cardId",cardId);
 			//查询权限 非本人只能查看 不能操作
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 			String userId = user.getId();
@@ -863,12 +914,14 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/customer/customerInfor_wh_ty/report_lsfx", request);
 		String appId = RequestHelper.getStringValue(request, "appId");
 		String urlType = RequestHelper.getStringValue(request, "urlType");
+		String cardId=RequestHelper.getStringValue(request, "cardId");
 		if (StringUtils.isNotEmpty(appId)) {
 			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
 			String tableContent = getFromBASE64(localExcel.getSheetLsfx()).replaceAll("\n", "<br>").replace("><br><", "><");
 			mv.addObject("tableContent", tableContent);
 			mv.addObject("appId", appId);
 			mv.addObject("urlType", urlType);
+			mv.addObject("cardId",cardId);
 			//查询权限 非本人只能查看 不能操作
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 			String userId = user.getId();
@@ -906,12 +959,14 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/customer/customerInfor_wh_ty/report_jyb", request);
 		String appId = RequestHelper.getStringValue(request, "appId");
 		String urlType = RequestHelper.getStringValue(request, "urlType");
+		String cardId=RequestHelper.getStringValue(request, "cardId");
 		if (StringUtils.isNotEmpty(appId)) {
 			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
 			String tableContent = getFromBASE64(localExcel.getJyb()).replaceAll("\n", "<br>").replace("><br><", "><");
 			mv.addObject("tableContent", tableContent);
 			mv.addObject("appId", appId);
 			mv.addObject("urlType", urlType);
+			mv.addObject("cardId",cardId);
 			//查询权限 非本人只能查看 不能操作
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 			String userId = user.getId();

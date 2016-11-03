@@ -131,7 +131,7 @@ public class JnpadTrainMessageController {
         filter.setRole(RiskControlRole.manager.toString());
 		List<RiskCustomer> result = jnpadRiskCustomerCollectionService.findRiskCustomersByFilter(filter);
 		map.put("result", result);
-		
+		map.put("size", result.size());
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);

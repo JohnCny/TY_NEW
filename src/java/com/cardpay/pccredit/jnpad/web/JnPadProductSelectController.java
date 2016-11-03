@@ -76,13 +76,14 @@ public class JnPadProductSelectController extends BaseController {
 	public String selectProductByFilter(@ModelAttribute JnpadProductFilter filter, HttpServletRequest request) throws UnsupportedEncodingException{
 		filter.setRequest(request);
 		
-//		filter.setProductName(RequestHelper.getStringValue(request, "productName"));
-//		filter.setProductName(request.getParameter("productName"));
-//		filter.setStatus(RequestHelper.getStringValue(request, "status"));
-//		filter.setType(RequestHelper.getStringValue(request, "type"));
 		Map<String,Object> result = new LinkedHashMap<String,Object>();
 		
 		List<ProductAttributes> products = productService.selectProductByFilter(filter);
+		for(int i=0;i<products.size();i++){
+			if(products.get(i).getProductName().equals("融耀卡")){
+				products.remove(i);
+			}
+		}
 		result.put("result", products);
 		
 		JsonConfig jsonConfig = new JsonConfig();

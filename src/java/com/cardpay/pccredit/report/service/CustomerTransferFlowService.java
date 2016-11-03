@@ -1,6 +1,8 @@
 package com.cardpay.pccredit.report.service;
 
-import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +17,6 @@ import com.cardpay.pccredit.report.filter.CustomerMoveFilter;
 import com.cardpay.pccredit.report.filter.ReportFilter;
 import com.cardpay.pccredit.report.model.AccLoanCollectInfo;
 import com.cardpay.pccredit.report.model.BjjdktjbbForm;
-import com.cardpay.pccredit.report.model.CustomerMove;
 import com.cardpay.pccredit.report.model.CustomerMoveForm;
 import com.cardpay.pccredit.report.model.DkyetjbbForm;
 import com.cardpay.pccredit.report.model.DqzzdktjbbForm;
@@ -25,7 +26,6 @@ import com.cardpay.pccredit.report.model.YqdktjbbForm;
 import com.cardpay.pccredit.report.model.YqhkdktjbbForm;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.model.QueryResult;
-import com.wicresoft.jrad.modules.privilege.model.User;
 
 @Service
 public class CustomerTransferFlowService {
@@ -81,8 +81,18 @@ public class CustomerTransferFlowService {
 	
 	/**
 	 *	到期终止贷款统计
+	 * @throws ParseException 
 	 */
-	public QueryResult<DqzzdktjbbForm> findDqzzdktjbbFormList(ReportFilter filter){
+	public QueryResult<DqzzdktjbbForm> findDqzzdktjbbFormList(ReportFilter filter) throws ParseException{
+		//从数据库里得到贷款的到期日起和系统现在日期相比 在系统现在日起之前的可视为已到期贷款
+		/*SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		String DQRQ=customerTransferFlowDao.finddqrq();
+		String xzrq= sdf.format(new Date());
+		Date dqrq=sdf.parse(DQRQ);
+		Date XZRQ=sdf.parse(xzrq);
+		if(dqrq.before(XZRQ)){
+			System.out.println(111);
+		}*/
 		List<DqzzdktjbbForm> list = customerTransferFlowDao.findDqzzdktjbbFormList(filter);
 		int size = customerTransferFlowDao.findDqzzdktjbbFormCountList(filter);
 		QueryResult<DqzzdktjbbForm> result = new QueryResult<DqzzdktjbbForm>(size,list);
