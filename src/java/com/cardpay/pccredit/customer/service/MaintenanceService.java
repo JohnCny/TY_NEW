@@ -344,4 +344,8 @@ public class MaintenanceService {
 		
 		return commonDao.findObjectById(CustomerApplicationInfo.class, appId).getProductId();
 	}
+	public int addNewWh(MaintenanceForm m){
+		return maintenanceDao.addNewWh(m);
+		
+	}
 }

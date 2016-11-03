@@ -20,9 +20,9 @@ public class CardFtpUtils {
 	public static int bank_ftp_port=21;// 制卡ftp端口
 	public static String bank_ftp_username="xdls";// 制卡ftp用户名
 	public static String bank_ftp_password="xdls";// 制卡ftp密码
-	public static String bank_ftp_path="/xdls";// 制卡ftp文件目录
-	public static String bank_ftp_down_path="/usr/local/tmp/";// 下载服务器目录
-//	public static String bank_ftp_down_path="E://jndownload//";// 下载本地目录
+	public static String bank_ftp_path="/xdls/";// 制卡ftp文件目录
+	public static String bank_ftp_down_path="/usr/local/tmp/20161016/";// 下载服务器目录
+//	public static String bank_ftp_down_path="F://sql//";// 下载本地目录
 //	public static String bank_ftp_down_path="f:/";// 下载本地目录
 	public static String bank_ftp_privateKey="";// 密钥文件路径
 	public static String bank_ftp_passphrase="";// 密钥口令

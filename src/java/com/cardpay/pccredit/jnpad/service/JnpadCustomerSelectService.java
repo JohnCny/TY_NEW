@@ -2,6 +2,7 @@ package com.cardpay.pccredit.jnpad.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -82,6 +83,13 @@ public class JnpadCustomerSelectService {
 		
 		
 		return user.getDisplayName();
+	}
+	
+	public List<CustomerInfo> selectByserIdOnRy(String userId,String ProductName){
+		return jnpadCustomerSelectDao.selectByserIdOnRy(userId,ProductName);
+	}
+	public int selectByserIdOnRyCount(String userId,String ProductName){
+		return jnpadCustomerSelectDao.selectByserIdOnRyCount(userId,ProductName);
 	}
 
 

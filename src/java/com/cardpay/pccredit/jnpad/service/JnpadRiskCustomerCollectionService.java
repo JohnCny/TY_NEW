@@ -2,6 +2,7 @@ package com.cardpay.pccredit.jnpad.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import com.cardpay.pccredit.riskControl.filter.RiskCustomerFilter;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
 import com.cardpay.pccredit.riskControl.model.RiskCustomerCollectionPlansAction;
 import com.cardpay.pccredit.riskControl.web.RiskCustomerCollectionPlanForm;
+import com.cardpay.pccredit.system.model.Dict;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 @Service
 public class JnpadRiskCustomerCollectionService {
@@ -53,7 +55,18 @@ public class JnpadRiskCustomerCollectionService {
 		return riskCustomerCollectionDao.findRiskViewSubCollectionPlansCountByFilter(filter);
 		
 	}
-
+	/**
+	 * 得到当前客户经理名下的逾期客户
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	public List<Dict> findCustomerIdAndName(String userId) {
+		return riskCustomerCollectionDao.getCustomerIdAndName(userId);
+	}
+	public int getCustomerIdAndNameCount(@Param("userId") String userId){
+		return riskCustomerCollectionDao.getCustomerIdAndNameCount(userId);
+	}
 
 	public List<RiskCustomerCollectionPlansAction> findRiskCustomerCollectionPlansActionByCollectionPlanId(
 			String collectionPlanId) {

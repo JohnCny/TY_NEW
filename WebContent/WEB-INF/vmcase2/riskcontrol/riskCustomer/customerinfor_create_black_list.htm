@@ -1,0 +1,75 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">黑名单管理>添加黑名单</div>
+      </div>
+       
+         <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
+          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 50%">
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="30%" />
+            </colgroup>
+              <tr><td class="titlec" colspan="4" style="text-align: center;">客户信息</td></tr>
+            <tr>
+              <td class="titlefc3"><label for="chineseName">姓名:</label></td>
+              <td><input class="rinpsty"  readonly= "true "  type="text" id="chineseName" name="chineseName" value="$result.chinese_name" /></td>
+            </tr>
+           <input class="rinpsty"  readonly= "true "  type="hidden" id=customerid name="customerid" value="$result.custormerid" />
+            <tr>
+             	<td class="titlefc3"><label for="cardId">证件号码:</label></td>
+                <td><input class="rinpsty"  readonly= "true " type="text" name="cardId" id="cardId"  value="$result.card_id" /></td>
+            </tr>
+            
+            <tr>
+              <td class="titlefc3"><label for="spmc">拉黑原因:</label></td>
+              <td><input class="rinpsty"  type="text" name="spmc" id="spmc"  value="" /></td>
+            </tr>
+          </table>
+        </div>
+      <div class="submit" style="text-align:left;">
+        <input id="id_save_button" type="button" value="拉入黑名单" class="current" />
+      </div>
+    </div>
+  </div>
+ 
+  <script type="text/javascript">
+  
+	var layout = new FormsLayout("formsId");
+	window.top.currentWindow.setLayout(layout);
+	
+	 $("#id_save_button").click(function() {
+      			var customerid=$("#customerid").val();
+      			var reason=$("#spmc").val()
+				 var url="${modulePath}/addCustomerBlackList.json?customerid="+customerid+"&reason="+reason;
+      			$.ajax({
+      				url : url,
+      				type : "get",
+      				success : function(data) {
+      					if (data.message=="操作成功") {
+      						Dialog.message("操作成功")
+      					window.location.href="${modulePath}/findAllNoCustormerBlackList.json";
+      					}
+      					else{
+      						Dialog.message("操作失败");	
+      				    }
+      				}
+      			});
+    });
+	
+	//返回
+	function returnClick(){
+		window.location.href= contextPath + "/customer/basiccustomerinforCreate/insert.page";
+	}
+	
+	
+  </script>
+  
+</body>
+#parse ("common/iframe_page_footer.htm")

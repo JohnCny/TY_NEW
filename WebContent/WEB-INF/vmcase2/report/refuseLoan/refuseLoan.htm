@@ -86,15 +86,15 @@
             #foreach ($customer in $result.items)
             <tr>
               <td class="checkbox"><input type="radio" name="checkbox" value="$!customer.appId/$!customer.customerManagerId"/>
-              <td nowrap="nowrap">$!customer.cname</td>
-              <td nowrap="nowrap">$!customer.cardtype</td>
-              <td nowrap="nowrap">$!customer.prodName</td>
-              <td nowrap="nowrap">$!customer.appdate</td>
-              <td nowrap="nowrap">$!customer.reqlmt</td>
-              <td nowrap="nowrap">$!customer.refuseDate</td>
-              <td nowrap="nowrap">$!customer.refuseReason</td>
-              <td nowrap="nowrap">$!customer.busimanager</td>
-              <td nowrap="nowrap">$!customer.name</td>
+              <td nowrap="nowrap">$!customer.CHINESE_NAME</td>
+              <td nowrap="nowrap">$!customer.CARD_ID</td>
+              <td nowrap="nowrap">$!customer.CPMC</td>
+              <td nowrap="nowrap">$!customer.JKRQ</td>
+              <td nowrap="nowrap">$!customer.APPLY_QUOTA</td>
+              <td nowrap="nowrap">$!customer.AUDIT_TIME</td>
+              <td nowrap="nowrap">$!customer.REFUSAL_REASON</td>
+              <td nowrap="nowrap">$!customer.DISPLAY_NAME</td>
+              <td nowrap="nowrap">$!customer.BLJG</td>
             </tr>
             #end
           </table>

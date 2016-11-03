@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +16,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
+import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -26,33 +28,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cardpay.pccredit.Sx.service.SxService;
 import com.cardpay.pccredit.common.UploadFileTool;
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
-import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.model.CustomerInforUpdateBalanceSheet;
 import com.cardpay.pccredit.customer.model.CustomerInforUpdateCashFlow;
 import com.cardpay.pccredit.customer.model.CustomerInforUpdateCrossExamination;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.customer.service.CustomerInforUpdateService;
-import com.cardpay.pccredit.customer.web.MaintenanceForm;
-import com.cardpay.pccredit.intopieces.constant.CardStatus;
-import com.cardpay.pccredit.intopieces.constant.Constant;
-import com.cardpay.pccredit.intopieces.constant.IntoPiecesException;
+import com.cardpay.pccredit.customerappguarantor.model.CustomerApplicationGuarantor;
+import com.cardpay.pccredit.customerappguarantor.service.guarantorservice;
 import com.cardpay.pccredit.intopieces.filter.AddIntoPiecesFilter;
-import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
-import com.cardpay.pccredit.intopieces.filter.MakeCardFilter;
-import com.cardpay.pccredit.intopieces.model.CustomerAccountData;
-import com.cardpay.pccredit.intopieces.model.CustomerApplicationCom;
-import com.cardpay.pccredit.intopieces.model.CustomerApplicationContact;
-import com.cardpay.pccredit.intopieces.model.CustomerApplicationContactVo;
-import com.cardpay.pccredit.intopieces.model.CustomerApplicationGuarantor;
-import com.cardpay.pccredit.intopieces.model.CustomerApplicationGuarantorVo;
-import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
-import com.cardpay.pccredit.intopieces.model.CustomerApplicationOther;
-import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom;
-import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecomVo;
 import com.cardpay.pccredit.intopieces.model.Dcbzlr;
 import com.cardpay.pccredit.intopieces.model.DcbzlrForm;
 import com.cardpay.pccredit.intopieces.model.Dcddpz;
@@ -95,6 +83,7 @@ import com.wicresoft.jrad.base.web.DataBindHelper;
 import com.wicresoft.jrad.base.web.JRadModelAndView;
 import com.wicresoft.jrad.base.web.controller.BaseController;
 import com.wicresoft.jrad.base.web.filter.BaseQueryFilter;
+import com.wicresoft.jrad.base.web.message.Messages;
 import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
 import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
@@ -131,6 +120,9 @@ public class AddIntoPiecesControl extends BaseController {
 	@Autowired
 	private UserLogService userLogService;
 	
+	@Autowired
+	private guarantorservice services;
+	
 	//选择产品
 	@ResponseBody
 	@RequestMapping(value = "browseProduct.page", method = { RequestMethod.GET })
@@ -157,6 +149,8 @@ public class AddIntoPiecesControl extends BaseController {
 		filter.setUserId(user.getId());
 		QueryResult<CustomerInfor> result = customerInforservice.findCustomerInforByFilterAndProductId(filter);
 		JRadPagedQueryResult<CustomerInfor> pagedResult = new JRadPagedQueryResult<CustomerInfor>(filter, result);
+		//    /intopieces/customer_browse
+		//    /intopieces/customerappguarantor/customerappguarantorhtm
 		JRadModelAndView mv = new JRadModelAndView("/intopieces/customer_browse",request);
 		mv.addObject(PAGED_RESULT, pagedResult);
 
@@ -216,7 +210,6 @@ public class AddIntoPiecesControl extends BaseController {
 		JRadPagedQueryResult<LocalImageForm> pagedResult = new JRadPagedQueryResult<LocalImageForm>(filter, result);
 		JRadModelAndView mv = new JRadModelAndView("/intopieces/image_import",request);
 		mv.addObject(PAGED_RESULT, pagedResult);
-		
 		return mv;
 	}
 	
@@ -252,12 +245,14 @@ public class AddIntoPiecesControl extends BaseController {
 	//提交申请
 	@ResponseBody
 	@RequestMapping(value = "addIntopieces.json", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	//JRadReturnMap
 	public JRadReturnMap addIntopieces(@ModelAttribute AddIntoPiecesForm addIntoPiecesForm,HttpServletRequest request) {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 		String loginId = user.getId();
 		try {
-			addIntoPiecesService.addIntopieces(addIntoPiecesForm,loginId);
+			String m= addIntoPiecesService.addIntopieces(addIntoPiecesForm,loginId);
 			//日志记录
 			OperationLog ol = new OperationLog();
 			ol.setUser_id(loginId);
@@ -267,8 +262,8 @@ public class AddIntoPiecesControl extends BaseController {
 		    ol.setOperation_name("ADD");
 		    ol.setIp_address(request.getRemoteAddr());
 			userLogService.addUserLog(ol);
-			
-			returnMap.addGlobalMessage(CHANGE_SUCCESS);
+			returnMap.put(JRadConstants.MESSAGE, m);
+			returnMap.addGlobalMessage(m);
 		} catch (Exception e) {
 			//日志记录
 			OperationLog ol = new OperationLog();
@@ -281,10 +276,85 @@ public class AddIntoPiecesControl extends BaseController {
 			userLogService.addUserLog(ol);
 			return WebRequestHelper.processException(e);
 		}
-
 		return returnMap;
 	}
 	
+	
+	@Autowired
+	private SxService service;
+		//进入担保人信息页面
+			@ResponseBody
+			@RequestMapping(value = "customerappguarantor.page", method = { RequestMethod.GET })
+			@JRadOperation(JRadOperation.BROWSE)
+			public AbstractModelAndView customerappguarantorimport(@ModelAttribute AddIntoPiecesFilter Applicationid,CustomerApplicationGuarantor filter,HttpServletRequest request) {
+				Applicationid.setRequest(request);
+			 //services 因为银行客户担保连一条不能超过5 个人 所以 到五终止
+				//显示当前为当前客户担保的担保信息 (根据当前的进件表id)
+			 String infoid= Applicationid.getApplicationId();
+			 	List<CustomerApplicationGuarantor>lists=service.findguarantor(infoid);
+			 	//显示担保连上的信息   Applicationid.getCustomerId();   根据传过来的customerid
+			 	String customerid=Applicationid.getCustomerId();
+			 	List<CustomerApplicationGuarantor>lists1=service.findguarantorcustomer(customerid);
+			 	List<CustomerApplicationGuarantor>lists2=null;
+			 	List<CustomerApplicationGuarantor>lists3=null;
+			 	List<CustomerApplicationGuarantor>lists4=null;
+			 	int a=lists1.size();
+			 	//根据查出来的customerid
+			 	if(lists1!=null&&lists1.size()!=0){
+			 		customerid=lists1.get(0).getId();
+			 		lists2=service.findguarantorcustomer(customerid);
+			 	}
+			 	//4
+			 	if(lists2!=null&&lists2.size()!=0){
+			 		customerid=lists2.get(0).getId();
+			 		lists3=service.findguarantorcustomer(customerid);
+			 	}
+			 	//5
+			 	if(lists2!=null&&lists3.size()!=0){
+			 		customerid=lists3.get(0).getId();
+			 		lists4=service.findguarantorcustomer(customerid);
+			 	}
+				
+			 	QueryResult<LocalImageForm> result =  addIntoPiecesService.findLocalImageByProductAndCustomer(Applicationid);
+				JRadPagedQueryResult<LocalImageForm> pagedResult = new JRadPagedQueryResult<LocalImageForm>(Applicationid, result);
+				JRadModelAndView mv = new JRadModelAndView("/intopieces/customerappguarantor/customerappguarantorhtm",request);
+				mv.addObject(PAGED_RESULT, pagedResult);
+				mv.addObject("lists", lists);
+				mv.addObject("lists1", lists1);
+				mv.addObject("lists2", lists2);
+				mv.addObject("lists3", lists3);
+				mv.addObject("lists4", lists4);
+				return mv;
+			}
+			
+			//导入担保人信息
+			@ResponseBody
+			@RequestMapping(value = "insertguarantor.json", method = { RequestMethod.POST })
+			@JRadOperation(JRadOperation.BROWSE)
+			public JRadReturnMap addguarantor(@ModelAttribute AddIntoPiecesFilter Applicationid,@ModelAttribute CustomerApplicationGuarantor filter,HttpServletRequest request) {
+				String name=request.getParameter("guarantorMortgagorPledge");
+				JRadReturnMap returnMap = new JRadReturnMap();
+				Applicationid.setRequest(request);
+				if(null==filter.getId()){
+					filter.setId(UUID.randomUUID().toString());
+				}
+				Log.info(Applicationid.getApplicationId());
+				filter.setMainApplicationFormId(Applicationid.getApplicationId());
+				service.insertguarantor(filter);
+				//判断此申请主表有多少个 担保人 如果超过五人就提醒客户    少于五人就可以继续添加
+				String infoid= Applicationid.getApplicationId();
+				int guarantorcount=service.guarantorcount(infoid);
+				String message="";
+				if(guarantorcount<5){
+					returnMap.put(JRadConstants.SUCCESS, true);
+				}else{
+					message="已经超过5个人 ，不能再加担保人了";
+					returnMap.put(JRadConstants.MESSAGE, message);
+					returnMap.put(JRadConstants.SUCCESS, false);
+				}
+				return returnMap;
+			}
+			
 	/**
 	 * 查询 建议
 	 * @param request

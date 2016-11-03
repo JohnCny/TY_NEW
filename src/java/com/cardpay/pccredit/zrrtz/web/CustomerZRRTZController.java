@@ -38,9 +38,11 @@ import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.jrad.base.web.JRadModelAndView;
 import com.wicresoft.jrad.base.web.controller.BaseController;
 import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
+import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
+import com.wicresoft.util.web.RequestHelper;
 
 /**
  * 
@@ -109,8 +111,6 @@ public class CustomerZRRTZController extends BaseController{
 	public AbstractModelAndView zrrtz(@ModelAttribute  ZrrtzFilter filter, HttpServletRequest request) {
 		filter.setRequest(request);
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
-			//数据库的起始日期和终止日期都是varchar类型所以要先转换成date类型才能比较
-			List<IncomingData>date= service.finddate();
 			String date1 =null;   
 			String fdate=null;
 			//查出来的date
@@ -119,17 +119,17 @@ public class CustomerZRRTZController extends BaseController{
 			Date transmissionfdate = null;
 			Date transmissionldate=null;
 			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-			for (int i = 0; i < date.size(); i++) {
-				date1=date.get(i).getFdate();
-			}
-			//如果数据库里面date不为空则做后面的查询操作如果没有则说明数据库里面没有数据v直接跳向叶面
-			if(date1!=null){
 			try {
-				fdate1=sdf.parse(date1);
 				//判断传入的时间是否为空 如果不为空则将其转换为date类型
 				if(filter.getFdate()!=null && filter.getLdate()!=null && filter.getFdate()!="" && filter.getLdate()!=""){
 					transmissionfdate=sdf.parse(filter.getFdate());
 					transmissionldate=sdf.parse(filter.getLdate());
+					//数据库的起始日期和终止日期都是varchar类型所以要先转换成date类型才能比较
+					List<IncomingData>date= service.finddate();
+					for (int i = 0; i < date.size(); i++) {
+						date1=date.get(i).getFdate();
+					}
+					fdate1=sdf.parse(date1);
 				}
 				else{
 					QueryResult<IncomingData> result = service.findintoPiecesByFilter(filter,user);
@@ -154,37 +154,32 @@ public class CustomerZRRTZController extends BaseController{
 		JRadModelAndView mv = new JRadModelAndView("/customer/customerZRRTZ/zrrtz_browse", request);
 		mv.addObject(PAGED_RESULT, pagedResult);
 		return mv;
-			}
-			else{
-				JRadModelAndView mv = new JRadModelAndView("/customer/customerZRRTZ/zrrtz_browse", request);
-				return mv;
-			}
 	}
 	
 	//使用poi方法 导出excel
 	@ResponseBody
 	@RequestMapping(value = "export.json", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
-	public void zrrtzexport(@ModelAttribute  ZrrtzFilter filter, HttpServletRequest request,HttpServletResponse response) {
+	public JRadReturnMap zrrtzexport(@ModelAttribute  ZrrtzFilter filter, HttpServletRequest request,HttpServletResponse response) {
 		filter.setRequest(request);
+		String card_id=RequestHelper.getStringValue(request, ID);
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
 		String title="CUSTOMER_PARAMETER信息表";
-		String[] rowName={"id","客户经理id","客户名称","客户经理名称","客户id"
+		String[] rowName={"编号","客户名称","客户经理名称"
 				,"身份证号","产品名称","金额","期限"
 				,"利率","贷款类型","发放日期","到期日期"
 				,"担保人","行业分类","经营内容","经营地址"
 				,"主调","辅调","组别","审贷会成员"
 				,"贷款方式","是否纳税","归还情况","是否批量"
 				,"电话号码","是否转贷","备注"};
-		//List<IncomingData> plans = dao.findIntoPiecesList(filter);
-		List<CustomerParameter>plans=dao.findpiecesList();
+		List<CustomerParameter>plans=dao.findpiecesList(card_id);
 		List<Object[]>  dataList=new ArrayList<Object[]>();
 		for (int i=0;i<plans.size();i++) {
 			Object[] obj={
 					plans.get(i).getCustomerParameterId(),
-					plans.get(i).getCustomerManagerId(),
 					plans.get(i).getCustomername(),
 					plans.get(i).getManagername(),
-					plans.get(i).getCustomerId(),
 					plans.get(i).getIdcard(),
 					plans.get(i).getProductname(),
 					plans.get(i).getMoney(),
@@ -210,6 +205,7 @@ public class CustomerZRRTZController extends BaseController{
 					plans.get(i).getRemark()
 			};
 			dataList.add(obj);
+			
 		}
 		ExportExcel excel=new ExportExcel(title, rowName, dataList, response);
 		try {
@@ -217,5 +213,8 @@ public class CustomerZRRTZController extends BaseController{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		}
+		return returnMap;
 	}
+	
 }

@@ -49,7 +49,28 @@ public class MaintenanceForm extends BaseForm{
 	private String repayStatus;
 	private String productId;
 	private String dkye;
+	private String createdBy;
+	private Date maintenanceStarttime;
+	private String pid;
 	
+	public String getPid() {
+		return pid;
+	}
+	public void setPid(String pid) {
+		this.pid = pid;
+	}
+	public Date getMaintenanceStarttime() {
+		return maintenanceStarttime;
+	}
+	public void setMaintenanceStarttime(Date maintenanceStarttime) {
+		this.maintenanceStarttime = maintenanceStarttime;
+	}
+	public String getCreatedBy() {
+		return createdBy;
+	}
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
 	public String getDkye() {
 		return dkye;
 	}

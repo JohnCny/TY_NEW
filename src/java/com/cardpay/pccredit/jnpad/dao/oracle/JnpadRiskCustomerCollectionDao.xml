@@ -157,4 +157,44 @@
 					
 	</select>
 	
+	<!-- 得到当前客户经理的逾期客户 -->
+		<select id="getCustomerIdAndName" resultType="com.cardpay.pccredit.system.model.Dict">
+		<!-- select 
+		t.id as TypeCode,t.chineseName as TypeName 
+		from 
+		(select b.id as id,b.chinese_name as chineseName
+		from 
+		basic_customer_information b where b.user_id=#{userId})t
+		inner join
+		(select distinct(customer_id) as customerId 
+		from 
+		customer_overdue)c
+		on t.id=c.customerId -->
+		      	select 
+    		t.id as TypeCode,t.chineseName as TypeName , c.sjmoney as yqMoney,t.tel as tel,t.cardId as cardId,cct.productId as productId,
+    		cct.actual_quote as actual_quote
+    	from 
+    	
+	    ((select b.TELEPHONE as tel,b.CARD_ID as cardId, b.id as id,b.chinese_name as chineseName,b.ty_customer_id as tCustomerId from 
+	    basic_customer_information b where b.user_id=#{userId})t
+       inner join
+	     (select ct.PRODUCT_ID as productId,ct.ACTUAL_QUOTE as actual_quote,ct.customer_id as customerId from 
+	    CUSTOMER_APPLICATION_INFO ct)cct   
+	      on  cct.customerId=t.tCustomerId)
+       inner join
+	    (select distinct(CUSTID) as customerId,MONEY as sjmoney from t_mibusidata_view where (DELAYINTERESTDAYS <![CDATA[ >  ]]> 0 or DELAYAMTDAYS <![CDATA[ >  ]]> 0 ))c
+	   on t.tCustomerId = c.customerId
+	</select>
+	<!-- 得到当前客户经理的逾期客户数量 -->
+		<select id="getCustomerIdAndNameCount" resultType="int">
+		select 
+    		count(*)
+    	from 
+	    (select b.id as id,b.chinese_name as chineseName,b.ty_customer_id as tCustomerId from 
+	    basic_customer_information b where b.user_id=#{userId})t
+	    inner join
+	    (select distinct(CUSTID) as customerId from t_mibusidata_view where (DELAYINTERESTDAYS <![CDATA[ >  ]]> 0 or DELAYAMTDAYS <![CDATA[ >  ]]> 0 ))c
+	    on t.tCustomerId = c.customerId
+	</select>
+	
 	</mapper>

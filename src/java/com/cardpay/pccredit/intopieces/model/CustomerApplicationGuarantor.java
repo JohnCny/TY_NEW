@@ -9,6 +9,7 @@ public class CustomerApplicationGuarantor extends BusinessModel {
 	 * 
 	 */
 	private static final long serialVersionUID = -8820423258178329720L;
+	private String id;
 
     private String mainApplicationFormId;
     
@@ -30,7 +31,17 @@ public class CustomerApplicationGuarantor extends BusinessModel {
 
     private String documentNumber;
 
-    public String getMainApplicationFormId() {
+    
+    
+    public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getMainApplicationFormId() {
 		return mainApplicationFormId;
 	}
 

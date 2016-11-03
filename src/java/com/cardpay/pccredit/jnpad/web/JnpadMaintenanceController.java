@@ -56,7 +56,43 @@ public class JnpadMaintenanceController extends BaseController{
 	@Autowired
 	private JnpadMaintenanceService jnpadMaintenanceService;
 	
-	
+	/**
+	 * 获取维护计划列表
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/product/TygetMaintenanceList1.json", method = { RequestMethod.GET })
+	public String getMaintenanceList1(@ModelAttribute MaintenanceFilter filter, HttpServletRequest request) {
+
+		String id =RequestHelper.getStringValue(request, "userId");
+		int userType = RequestHelper.getIntValue(request, "userType");
+		filter.setCustomerManagerId(RequestHelper.getStringValue(request, "userId"));
+		List<AccountManagerParameterForm> forms = jnpadMaintenanceService.selectSubListManagerByManagerId(id,userType);
+		String customerManagerId = filter.getCustomerManagerId();
+		List<MaintenanceForm> result = null;
+		if(customerManagerId!=null && !customerManagerId.equals("")){
+			result = jnpadMaintenanceService.findMaintenancePlans1(filter);
+		}else{
+			if(forms.size()>0){
+				filter.setCustomerManagerIds(forms);
+				result = jnpadMaintenanceService.findMaintenancePlans1(filter);
+			}else{
+				String mesg = "暂无符合条件信息";
+				JsonConfig jsonConfig = new JsonConfig();
+				jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+				JSONObject json = JSONObject.fromObject(mesg, jsonConfig);
+				return json.toString();
+
+			}
+		}
+		Map<String,Object> query = new LinkedHashMap<String,Object>();
+		query.put("result", result);
+		query.put("size", result.size());
+		
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(query, jsonConfig);
+		return json.toString();
+	}
 	/**
 	 * 查询客户经理
 	 * @param request

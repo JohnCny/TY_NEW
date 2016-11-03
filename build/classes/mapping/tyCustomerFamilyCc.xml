@@ -23,5 +23,7 @@
 	<result column="PGRQ" jdbcType="VARCHAR" index="10" />
 
 	<result column="ZL" jdbcType="VARCHAR" index="13" />
+	
+	<result column="ID" jdbcType="VARCHAR" index="19" />
 
 </resultMap>

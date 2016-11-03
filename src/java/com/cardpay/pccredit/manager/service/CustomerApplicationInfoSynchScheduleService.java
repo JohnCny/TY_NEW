@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.intopieces.constant.Constant;
+import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.model.TyApplicationLog;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
@@ -31,7 +32,6 @@ import com.wicresoft.jrad.base.database.id.IDGenerator;
 public class CustomerApplicationInfoSynchScheduleService {
 	
 	private Logger logger = Logger.getLogger(CustomerApplicationInfoSynchScheduleService.class);
-	
 	@Autowired
 	private IntoPiecesService intoPiecesService;
 	@Autowired
@@ -80,29 +80,43 @@ public class CustomerApplicationInfoSynchScheduleService {
 	
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 	
-
+	@Autowired
+	private IntoPiecesService intoService;
 	/**
 	 * 同步进件状态(更新为已放款)
 	 * @throws IOException 
 	 */
-	/*private void dosynchMethod() throws IOException{
+	private void dosynchMethod() throws IOException{
 		//获取今日日期
 		DateFormat format = new SimpleDateFormat("yyyyMMdd");
 		String dateString = format.format(new Date());
 		logger.info(dateString+"进件状态更新开始（已放款）**********");
 		//查询已经审核通过的进件信息
-		List<IntoPieces> intoPiecesList = intoPiecesService.findCustomerApplicationInfo();
+		List<IntoPieces> intoPiecesList = intoService.findCustomerApplicationInfo();
 		for(IntoPieces intoPieces:intoPiecesList){
-			//更新进件申请表 进件状态 status、借据号关联
-			IntoPieces  pieces = new IntoPieces();
-			pieces.setStatus(Constant.END);//放款成功
-			pieces.setId(intoPieces.getId());
-			pieces.setJjh(intoPieces.getJjh());
-			pieces.setJkrq(intoPieces.getJkrq());
-			intoPiecesService.updateCustomerApplicationInfo(pieces);
+			Boolean jjhExist = intoService.IfJjhExist(intoPieces.getJjh());
+			if(!jjhExist){
+				//更新进件申请表 进件状态 status、借据号关联
+				IntoPieces  pieces = new IntoPieces();
+				pieces.setStatus(Constant.END);//放款成功
+				pieces.setId(intoPieces.getId());
+				pieces.setJjh(intoPieces.getJjh());
+				pieces.setJkrq(intoPieces.getJkrq());
+				intoService.updateCustomerApplicationInfo(pieces);
+			}
 		}
 		logger.info(dateString+"进件状态更新结束（已放款）**********");
-	}*/
+		
+		logger.info(dateString+"进件状态更新开始（还款结束）**********");
+		//查询已经审核通过的进件信息
+		List<CustomerApplicationInfo> intoPiecesEndList = intoService.findCustomerApplicationInfoEnd();
+		for(CustomerApplicationInfo intoPieces:intoPiecesEndList){
+			//更新进件申请表
+			intoPieces.setStatus(Constant.REPAYEND);//还款结束
+			commonDao.updateObject(intoPieces);
+		}
+		logger.info(dateString+"进件状态更新结束（还款结束）**********");
+	}
 	
 /*	*//**
 	 * 同步进件状态（还款已结束）

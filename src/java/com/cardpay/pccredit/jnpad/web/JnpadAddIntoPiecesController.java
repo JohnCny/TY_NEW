@@ -2,6 +2,8 @@ package com.cardpay.pccredit.jnpad.web;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +25,9 @@ import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.jnpad.service.JnpadAddIntoPiecesService;
+import com.cardpay.pccredit.manager.filter.AccountManagerParameterFilter;
+import com.cardpay.pccredit.manager.service.AccountManagerParameterService;
+import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
 import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.constant.JRadConstants;
 import com.wicresoft.jrad.base.database.model.QueryResult;
@@ -33,7 +38,8 @@ import net.sf.json.JsonConfig;
 
 @Controller
 public class JnpadAddIntoPiecesController {
-
+	@Autowired
+	private AccountManagerParameterService accountManagerParameterService;
 	@Autowired
 	private CustomerInforService customerInforservice;
 	
@@ -122,6 +128,25 @@ public class JnpadAddIntoPiecesController {
 			}
 			return null;
 		}
-		
+		/**
+		 * 查看所有客户经理信息
+		 * @param filter
+		 * @param request
+		 * @return
+		 */
+		@ResponseBody
+		@RequestMapping(value = "/ipad/custAppInfo/TySelectAll.json", method = { RequestMethod.GET })
+		public String TySelectAll(@ModelAttribute AccountManagerParameterFilter filter,HttpServletRequest request) {
+			List<AccountManagerParameterForm> result = accountManagerParameterService.findAccountManagerParametersByAllUserId(filter);
+			int size=accountManagerParameterService.findAccountManagerParametersCountByFilter(filter);
+			Map<String,Object> query = new LinkedHashMap<String,Object>();
+			query.put("result", result);
+			query.put("size", size);
+		 	JsonConfig jsonConfig = new JsonConfig();
+			jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+			JSONObject json = JSONObject.fromObject(query, jsonConfig);
+			return json.toString();	    
+				}
+
 		
 }

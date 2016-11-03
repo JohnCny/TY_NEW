@@ -114,4 +114,13 @@ public class ManagerkhglController extends BaseController{
 			mv.addObject("customerInfor", customerinfo);
 		return mv;
 	}
+	
+	//====================================================================================================================//
+		@ResponseBody
+		@RequestMapping(value = "dimensionsCreditModel.page", method = { RequestMethod.GET })
+		@JRadOperation(JRadOperation.BROWSE)
+		public AbstractModelAndView xs(HttpServletRequest request) {
+			JRadModelAndView mv = new JRadModelAndView("/static/score", request);
+			return mv;
+		}
 }

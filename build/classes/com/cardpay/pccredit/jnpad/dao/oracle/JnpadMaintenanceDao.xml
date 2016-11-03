@@ -115,7 +115,63 @@
 	</select>
 	
 	
-	
+	<!-- 查询维护客户信息 -->
+		<select id="findMaintenancePlans1" resultMap="MaintenanceWebResultMap" 
+			parameterType="com.cardpay.pccredit.customer.filter.MaintenanceFilter">
+			
+					  select  b.chinese_name,
+					  		  b.id as customerId,
+          					  b.card_id,
+          					  p.product_name,
+          					  --m.maintenance_endtime-m.maintenance_day as startDay,
+          					  --m.maintenance_endtime as endDay,
+				  			  u.display_name,
+          					  c.id as appId,
+          					  --m.id,
+          					  b.user_id,
+          					 m.end_result as endResult,
+          					  nvl(yehz.dkye,0) as dkye
+				       from customer_application_info c
+				       inner join product_attribute p on c.product_id = p.id
+				       inner join basic_customer_information b  on c.customer_id=b.id
+				       inner join sys_user u on b.user_id = u.id
+				       left join ty_customer_base base on  b.TY_CUSTOMER_ID = base.ID
+				       left join ty_repay_tkmx tkmx	   on base.KHH = tkmx.KHH  and p.product_type_code = tkmx.cpmc
+				       left join ty_repay_yehz  yehz  on yehz.JJH = tkmx.JJH
+				      left join MAINTENANCE_PLAN m on m.app_id = c.id
+					  WHERE 1=1 
+					  --and c.status in ('approved','end')
+					<if test="customerManagerIds != null and customerManagerIds != '' ">  
+ 					  	AND b.user_id in  
+	 					<foreach collection="customerManagerIds" index="index" item="item" open="(" separator="," close=")"> 
+							#{item.userId} 
+						</foreach>
+					</if>
+					<if test="cardId != null and cardId != '' ">
+						AND b.CARD_ID=#{cardId}
+					 </if>
+					 
+					 <if test="customerName != null and customerName != '' ">
+						AND b.CHINESE_NAME=#{customerName}
+					 </if>
+					  
+					  <if test="customerId != null and customerId != '' ">
+						AND b.id=#{customerId}
+					 </if>
+					 <if test="productId != null and productId != '' ">
+						AND c.product_id=#{productId}
+					 </if>
+					 
+					 <if test="customerManagerId != null and customerManagerId != '' ">
+						AND b.user_id = #{customerManagerId}
+					 </if>
+					 
+		<!--  <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]> -->
+	</select>
 	
 	<select id="findMaintenancePlansList" resultMap="MaintenanceWebResultMap" 
 			parameterType="com.cardpay.pccredit.customer.filter.MaintenanceFilter">

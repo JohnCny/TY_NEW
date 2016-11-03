@@ -954,4 +954,18 @@ public class IntoPiecesService {
 		params.put("id", id);
 		String sql = "update LOCAL_EXCEL set APPROVE_VALUE=#{applyQuota} where APPLICATION_ID=#{id}";
 	}
+
+	//查询借据号是否已关联
+	public Boolean IfJjhExist(String jjh){
+		List<CustomerApplicationInfo> list = commonDao.queryBySql(CustomerApplicationInfo.class, "select * from customer_application_info where jjh='"+jjh+"'", null);
+		if(list.size()>0){
+			return true;
+		}
+		return false;
+	}
+
+	//查询审核通过的进件信息
+	public List<CustomerApplicationInfo> findCustomerApplicationInfoEnd(){
+		return intoPiecesComdao.findCustomerApplicationInfoEnd();
+	}
 }

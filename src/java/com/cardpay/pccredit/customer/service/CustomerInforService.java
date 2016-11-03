@@ -70,8 +70,11 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationOther;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom;
+import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
+import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.ipad.model.ProductAttribute;
+import com.cardpay.pccredit.manager.service.CustomerApplicationInfoSynchScheduleService;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
 import com.cardpay.pccredit.system.constants.NodeAuditTypeEnum;
 import com.cardpay.pccredit.system.constants.YesNoEnum;
@@ -104,6 +107,9 @@ public class CustomerInforService {
 	public Logger log = Logger.getLogger(UpdateCustomerTool.class);
 	@Autowired
 	private DataAccessSqlService dataAccessSqlService;
+	
+	@Autowired
+	private ReadWholeAndIncrementService readWholeAndIncrementService;
 
 	@Autowired
 	private CommonDao commonDao;
@@ -124,10 +130,10 @@ public class CustomerInforService {
 	private JdbcTemplate jdbcTemplate;  
 	//客户原始信息
     //todo:文件换成济南的
-	private String[] fileTxt = {"kkh_grxx.txt","kkh_grjtcy.txt","kkh_grjtcc.txt","kkh_grscjy.txt","kkh_grxxll.txt","kkh_grgzll.txt","kkh_grrbxx.txt","cxd_dkcpmc.txt","kkh_hmdgl.txt","cxd_rygl.txt"};
+	private String[] fileTxt = {"kkh_grxx.txt","kkh_grjtcy.txt","kkh_grjtcc.txt","kkh_grscjy.txt","kkh_grxxll.txt","kkh_grgzll.txt","kkh_grrbxx.txt","cxd_dkcpmc.txt","kkh_hmdgl.txt","cxd_rygl.txt","kdk_yehz.txt","kdk_lsz.txt","kdk_tkmx.txt","kdk_jh.txt"};
 	//流水账、余额汇总表、借据表
     //todo:文件换成济南的
-	private String[] fileTxtRepay ={"kdk_yehz.txt","kdk_lsz.txt","kdk_tkmx.txt"};
+	private String[] fileTxtRepay ={"kdk_yehz.txt","kdk_lsz.txt","kdk_tkmx.txt","kdk_jh.txt"};
 	/**
 	 * 得到该客户经理下的客户数量
 	 * @param userId
@@ -1573,7 +1579,44 @@ public class CustomerInforService {
 				}else{
 					customerInforDao.insertCustomerRygl(map);
 				}
+				
+			}
+			//释放空间
+			datas=null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	/**
+	 * 保数据文件到”台帐“表
+	 * @param fileName
+	 * @return
+	 * @throws Exception 
+	 */
+	public void saveMibusidata(String fileName,String date) {
+		try {
+			ImportBankDataFileTools tools = new ImportBankDataFileTools();
+			// 解析数据文件配置
+			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/T_MIBUSIDATA.xml");
 
+			// 解析”帐单记录表“数据文件
+			List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList,date);
+			int count=0;
+			for(Map<String, Object> map : datas){
+				count++;
+				//System.out.println(count);
+				// 保存数据
+				//先查询人员管理参数表，存在则更新否则插入
+				/*String sql = "select * from T_MIBUSIDATA where dm='"+map.get("dm").toString().trim()+"'";
+				List<CustomerFirsthendRygl> list = commonDao.queryBySql(CustomerFirsthendRygl.class, sql, null);
+				if(list.size()>0){
+				}else{
+				}*/
+				//insertmibusidata
+					customerInforDao.insertMIBUSIDATA(map);
+				
 				
 			}
 			//释放空间
@@ -2076,24 +2119,23 @@ public class CustomerInforService {
 		}
 	}
 	
-	
-	
-	
-	/**
+/*	*//**
 	 * 解析（原始信息）
 	 * @throws IOException 
-	 */
+	 *//*
 	public void readFile() throws IOException{
 		//获取今日日期
 	      //yyyyMMdd格式
 		DateFormat format = new SimpleDateFormat("yyyyMMdd");
 		String dateString = format.format(new Date());
 		log.info(dateString+"******************开始读取原始信息文件********************");  
-	        String gzFile = CardFtpUtils.bank_ftp_down_path+dateString;
+	        String gzFile = CardFtpUtils.bank_ftp_down_path;
 	        for(int i=0;i<fileTxt.length;i++){
-				String url = gzFile+File.separator+fileTxt[i];
+				String url = gzFile+fileTxt[i];
+				log.info(url);
 				File f = new File(url);
 				if(f.exists()){
+					log.info("fsuccess");
 						List<String> spFile = new ArrayList<String>();
 						String fileN = "";
 						//判断文件大小，超过50M的先分割
@@ -2166,12 +2208,12 @@ public class CustomerInforService {
 	        }
 	        log.info(dateString+"******************完成读取原始信息文件********************");
 
-	}
+	}*/
 	
 	/**
 	 *解析贷款信息
 	 * @throws IOException 
-	 */
+	 *//*
 	public void readFileRepay() throws IOException{
 		//获取今日日期
 	      //yyyyMMdd格式
@@ -2242,7 +2284,7 @@ public class CustomerInforService {
         }
         log.info(dateString+"******************完成读取贷款文件********************");
 
-	}
+	}*/
 	
 	/*
 	 * 根据cardId获取user
@@ -2307,6 +2349,340 @@ public class CustomerInforService {
 		QueryResult<TyRepayLsz> queryResult = new QueryResult<TyRepayLsz>(size,plans);
 		return queryResult;
 	}
+	
+//============================================================太原====================================================
+	/*
+	 * 批量插入还款计划
+	 */
+	public void insertkdkjh(List<Map<String, Object>> list){
+		 final List<Map<String, Object>> shopsList = list;
+	        String sql =    "  insert into ty_kdk_jh (YWBH,  JHLX,QS,TS,RQ,JE,YHLX,BXHJ,DKYE,BZ )  values    (?,  ? ,  ? ,  ? ,  ? ,  ? ,  ? ,  ? ,  ? ,  ? )";
+	          jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
+	            public void setValues(PreparedStatement ps,int i)throws SQLException
+	               {
+	                ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("ywbh").toString());
+	                ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("jhlx").toString());
+	                ps.setString(3, ((Map<String, Object>)shopsList.get(i)).get("qs").toString());
+	                ps.setString(4, ((Map<String, Object>)shopsList.get(i)).get("ts").toString());
+	                ps.setString(5, ((Map<String, Object>)shopsList.get(i)).get("rq").toString());
+	                ps.setString(6, ((Map<String, Object>)shopsList.get(i)).get("je").toString());
+	                ps.setString(7, ((Map<String, Object>)shopsList.get(i)).get("yhlx").toString());
+	                ps.setString(8, ((Map<String, Object>)shopsList.get(i)).get("bxhj").toString());
+	                ps.setString(9, ((Map<String, Object>)shopsList.get(i)).get("dkye").toString());
+	                ps.setString(10, ((Map<String, Object>)shopsList.get(i)).get("bz").toString());
+	               }
+	               public int getBatchSize()
+	               {
+	                return shopsList.size();
+	               }
+	        });
+	}
+	
+	/*
+	 * 批量插入机构表
+	 */
+	public void insertjggl(List<Map<String, Object>> list){
+		 final List<Map<String, Object>> shopsList = list;
+	        String sql =    "  insert into ty_org (jgh,  jgmc )  values    (?,  ? )";
+	          jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
+	            public void setValues(PreparedStatement ps,int i)throws SQLException
+	               {
+	                ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("jgh").toString());
+	                ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("jgmc").toString());
+
+	               }
+	               public int getBatchSize()
+	               {
+	                return shopsList.size();
+	               }
+	        });
+	}
+	/**
+	 * 保数据文件到”机构表“表
+	 * @param fileName
+	 * @return
+	 * @throws Exception 
+	 */
+	public void saveJGDataFile(String fileName,String date) {
+		try {
+			ImportBankDataFileTools tools = new ImportBankDataFileTools();
+			// 解析数据文件配置
+			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/tyJGGL.xml");
+
+			// 解析”流水号“数据文件
+			List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList,date);
+			//批量插入
+			insertkdkjh(datas);
+			//释放空间
+			datas=null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 保数据文件到”还款计划“表
+	 * @param fileName
+	 * @return
+	 * @throws Exception 
+	 */
+	public void saveJHDataFile(String fileName,String date) {
+		try {
+			ImportBankDataFileTools tools = new ImportBankDataFileTools();
+			// 解析数据文件配置
+			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/tyKdkJh.xml");
+
+			// 解析”还款计划“数据文件
+			List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList,date);
+			//批量插入insertjggl 
+			insertkdkjh(datas);
+			//释放空间
+			datas=null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+//=============跑批
+	/**
+	 * 解析（原始信息）
+	 * @throws IOException 
+	 */
+	public void readFile() throws IOException{
+		log.info("yousuccess");
+		//获取今日日期
+	      //yyyyMMdd格式
+		DateFormat format = new SimpleDateFormat("yyyyMMdd");
+		String dateString = format.format(new Date());
+		log.info(dateString+"******************开始读取原始信息文件********************"); 
+		//+dateString
+	        String gzFile = CardFtpUtils.bank_ftp_down_path;
+	        for(int i=0;i<fileTxt.length;i++){
+	        	//File.separator
+				String url = gzFile+fileTxt[i];
+				log.info(url);
+				File f = new File(url);
+				if(f.exists()){
+					log.info("fsuccess======================");
+						List<String> spFile = new ArrayList<String>();
+						String fileN = "";
+						//判断文件大小，超过50M的先分割
+						if (f.exists() && f.isFile()){
+							if(f.length()>10000000){
+								int spCount = (int) (f.length()/10000000);
+								SPTxt.splitTxt(url,spCount);
+								int to = fileTxt[i].lastIndexOf('.');
+						    	fileN = fileTxt[i].substring(0, to);
+								for(int j=0;j<spCount;j++){
+									spFile.add(fileN+"_"+j+".txt");
+								}
+							}else{
+								int to = fileTxt[i].lastIndexOf('.');
+						    	fileN = fileTxt[i].substring(0, to);
+								spFile.add(fileN+".txt");
+							}
+						}
+						for(String fn : spFile){
+							try{
+								if(fn.contains(fileN)) {
+									log.info("*****************台帐表/gc合同表********************");  
+									saveMibusidata(gzFile+fn,dateString);
+									//      readWholeAndIncrementService.saveGCCONTRACTMAINDataFile(gzFile+fn,dateString);
+									//readWholeAndIncrementService.saveGCCONTRACTMULTICLIENTDataFile(gzFile+fn,dateString);
+									System.gc();
+									
+									/*if(fn.startsWith("cxd_rygl")){
+										log.info("*****************人员管理参数表********************");  
+										System.out.println(1111);
+										//+File.separator
+										saveRyglDataFile(gzFile+fn,dateString);
+										System.gc();
+									}
+									if(fn.startsWith("kkh_grxx")){
+										log.info("*****************客户基本表********************");  
+										saveBaseDataFile(gzFile+fn,dateString);
+										System.gc();
+									}
+									if(fn.startsWith("kkh_grjtcy")){
+										log.info("*****************客户家庭关系表********************");  
+										saveCyDataFile(gzFile+fn,dateString);
+									}
+									if(fn.startsWith("kkh_grjtcc")){
+										log.info("*****************客户家庭财产表********************");  
+										saveCcDataFile(gzFile+fn,dateString);
+									}
+									if(fn.startsWith("kkh_grxxll")){
+										log.info("*****************客户学习表********************");  
+										saveStudyDataFile(gzFile+fn,dateString);
+									}
+									if(fn.startsWith("kkh_grgzll")){
+										log.info("*****************客户工作履历表********************");  
+										saveWorkDataFile(gzFile+fn,dateString);
+									}
+									if(fn.startsWith("kkh_grscjy")){
+										log.info("*****************客户生产经营表********************");  
+									saveManageDataFile(gzFile+fn,dateString);
+								}
+									if(fn.startsWith("kkh_grrbxx")){
+										log.info("*****************客户入保信息表********************");  
+										saveSafeDataFile(gzFile+fn,dateString);
+									}else if(fn.startsWith("cxd_dkcpmc")){
+										log.info("*****************产品信息********************");  
+										saveProductDataFile(gzFile+fn,dateString);
+									}else if(fn.startsWith("kkh_hmdgl")){
+										log.info("*****************黑名单********************");  
+										saveHMDDataFile(gzFile+fn,dateString);
+									}*/
+								} 
+							}catch(Exception e){
+								e.printStackTrace();
+								throw new RuntimeException(e);
+							}
+						}
+						f.delete();
+				}
+	        }
+	        log.info(dateString+"******************完成读取原始信息文件********************");
+
+	}
+	
+	/**
+	 *解析贷款信息
+	 * @throws IOException 
+	 */
+	public void readFileRepay() throws IOException{
+		//获取今日日期
+	      //yyyyMMdd格式
+		DateFormat format = new SimpleDateFormat("yyyyMMdd");
+		String dateString = format.format(new Date());
+		//+dateString
+		String gzFile = CardFtpUtils.bank_ftp_down_path;
+
+		log.info(dateString+"******************开始读取贷款文件********************");  
+        for(int i=0;i<fileTxtRepay.length;i++){
+        	//+File.separator
+			String url = gzFile+fileTxtRepay[i];
+			log.info(url);
+			File f = new File(url);
+			if(f.exists()){
+				log.info("fsuccess");
+					List<String> spFile = new ArrayList<String>();
+					String fileN = "";
+					//判断文件大小，超过50M的先分割
+					if (f.exists() && f.isFile()){
+						if(f.length()>10000000){
+							int spCount = (int) (f.length()/10000000);
+							SPTxt.splitTxt(url,spCount);
+							int to = fileTxtRepay[i].lastIndexOf('.');
+					    	fileN = fileTxtRepay[i].substring(0, to);
+							for(int j=0;j<spCount;j++){
+								spFile.add(fileN+"_"+j+".txt");
+							}
+						}else{
+							int to = fileTxtRepay[i].lastIndexOf('.');
+					    	fileN = fileTxtRepay[i].substring(0, to);
+							spFile.add(fileN+".txt");
+						}
+					}
+					
+					if(fileN.startsWith("kdk_lsz")){
+						//删除流水号历史数据
+						String sql = " truncate   table   ty_repay_lsz";
+						commonDao.queryBySql(sql, null);
+					}
+					if(fileN.startsWith("kdk_yehz")){
+						//删除余额汇总历史数据
+						String sql = " truncate   table   ty_repay_yehz";
+						commonDao.queryBySql(sql, null);
+					}
+					if(fileN.startsWith("kdk_tkmx")){
+						//删除借据表历史数据
+						String sql = " truncate   table   ty_repay_tkmx";
+						commonDao.queryBySql(sql, null);
+					}
+					if(fileN.startsWith("cxd_jggl")){
+						//删除行内机构表历史数据
+						String sql = " truncate   table   ty_org";
+						commonDao.queryBySql(sql, null);
+					}
+					if(fileN.startsWith("kdk_jh")){
+						//删除还款计划历史数据
+						String sql = " truncate   table   ty_kdk_jh";
+						commonDao.queryBySql(sql, null);
+					}
+					for(String fn : spFile){
+						try{
+							if(fn.contains(fileN)) {
+								if(fn.startsWith("kdk_lsz")){
+									log.info("*****************流水账信息********************");
+									//+File.separator
+									saveLSZDataFile(gzFile+fn,dateString);
+								}else if(fn.startsWith("kdk_yehz")){
+									log.info("*****************余额汇总信息********************");  
+									saveYEHZDataFile(gzFile+fn,dateString);
+								}else if(fn.startsWith("kdk_tkmx")){
+									log.info("*****************借据表信息********************");  
+									saveTKMXDataFile(gzFile+fn,dateString);
+								}else if(fn.startsWith("cxd_jggl")){
+									log.info("*****************机构信息********************");  
+									saveJGDataFile(gzFile+File.separator+fn,dateString);
+								}else if(fn.startsWith("kdk_jh")){
+									log.info("*****************还款计划信息********************");  
+									saveJHDataFile(gzFile+fn,dateString);
+								}
+							} 
+						}catch(Exception e){
+							e.printStackTrace();
+							throw new RuntimeException(e);
+						}
+					}
+					f.delete();
+			}
+        }
+        log.info(dateString+"******************完成读取贷款文件********************");
+
+	}
+	
+	
+	/*private Logger logger = Logger.getLogger(CustomerApplicationInfoSynchScheduleService.class);
+	@Autowired
+	private IntoPiecesService intoService;
+	*//**
+	 * 同步进件状态(更新为已放款)
+	 * @throws IOException 
+	 *//*
+	private void dosynchMethod() throws IOException{
+		//获取今日日期
+		DateFormat format = new SimpleDateFormat("yyyyMMdd");
+		String dateString = format.format(new Date());
+		logger.info(dateString+"进件状态更新开始（已放款）**********");
+		//查询已经审核通过的进件信息
+		List<IntoPieces> intoPiecesList = intoService.findCustomerApplicationInfo();
+		for(IntoPieces intoPieces:intoPiecesList){
+			Boolean jjhExist = intoService.IfJjhExist(intoPieces.getJjh());
+			if(!jjhExist){
+				//更新进件申请表 进件状态 status、借据号关联
+				IntoPieces  pieces = new IntoPieces();
+				pieces.setStatus(Constant.END);//放款成功
+				pieces.setId(intoPieces.getId());
+				pieces.setJjh(intoPieces.getJjh());
+				pieces.setJkrq(intoPieces.getJkrq());
+				intoService.updateCustomerApplicationInfo(pieces);
+			}
+		}
+		logger.info(dateString+"进件状态更新结束（已放款）**********");
+		
+		logger.info(dateString+"进件状态更新开始（还款结束）**********");
+		//查询已经审核通过的进件信息
+		List<CustomerApplicationInfo> intoPiecesEndList = intoService.findCustomerApplicationInfoEnd();
+		for(CustomerApplicationInfo intoPieces:intoPiecesEndList){
+			//更新进件申请表
+			intoPieces.setStatus(Constant.REPAYEND);//还款结束
+			commonDao.updateObject(intoPieces);
+		}
+		logger.info(dateString+"进件状态更新结束（还款结束）**********");
+	}*/
+	
 	
 //===============================================================JN================================================================//	
 	//TODO：1、建表 2、根据表改SQL,需要改成济南的
@@ -4036,62 +4412,12 @@ public class CustomerInforService {
 	 */
 	public void insertYe(List<Map<String, Object>> list){
 		 final List<Map<String, Object>> shopsList = list;
-	        String sql =    "  insert into ty_repay_yehz (CREATE_TIME,    "+   
-					        "    						   JJH,              "+
-					        "    						   YWBH,              "+
-					        "    						   KHH,              "+
-					        "     						   ZHTBH,              "+
-					        "     						   JGDM,              "+
-					        "      						   KMH,              "+
-					        "      						   HBZL,             "+
-					        "      						   JKJE,             "+
-					        "      						   QXRQ,             "+
-					        "      						   DKYE,             "+
-					        "      						   BNQX,             "+
-					        "      						   BWQX,             "+
-					        "      						   WJFL1,             "+
-					        "      						   WJFL2,             "+
-					        "      						   WJFL3,             "+
-					        "      						   WJFL4,             "+
-					        "      						   WJFL5,             "+
-					        "      						   SHBJ,             "+
-					        "      						   SHLX,             "+
-					        "      						   LXJS,             "+
-					        "      						   KSQXRQ,             "+
-					        "      						   YHXBJ,             "+
-					        "      						   YHXLX,             "+
-					        "      						   ZHHKR,             "+
-					        "      						   BQLL             )"+
-					        "    values    (?,                              "+
-					        "    		    ?,                              "+
-					        "    		    ?,                              "+
-					        "    		    ?,                              "+
-					        "    		    ?,                              "+
-					        "    		    ?,                              "+
-					        "    		    ?,                              "+
-					        "    		    ?,                              "+
-					        "    		    ?,                              "+
-					        "    		    ?,                              "+
-					        "    		    ?,                              "+
-					        "    		    ?,                              "+
-					        "    		    ?,                              "+
-					        "    		    ?,                              "+
-					        "    		    ?,                              "+
-					        "    		    ?,                              "+
-					        "    		    ?,                              "+
-					        "    		    ?,                              "+
-					        "    		    ?,                              "+
-					        "    		    ?,                              "+
-					        "    		    ?,                              "+
-					        "    		    ?,                              "+
-					        "    		    ?,                              "+
-					        "    		    ?,                              "+
-					        "    		    ?,                              "+
-					        "    		    ?                              )";
+	        String sql =    "insert into ty_repay_yehz (CREATE_TIME,JJH, YWBH, KHH, ZHTBH,JGDM,KMH,  HBZL,JKJE, QXRQ,DKYE, BNQX,  BWQX,WJFL1,WJFL2,WJFL3,WJFL4,WJFL5, SHBJ, SHLX, LXJS,  KSQXRQ,YHXBJ,YHXLX,  ZHHKR, BQLL) values    (   ?,  ?,  ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+					        
 	          jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
 	            public void setValues(PreparedStatement ps,int i)throws SQLException
 	               {
-	                ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
+	            	ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
 	                ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("jjh").toString());
 	                ps.setString(3, ((Map<String, Object>)shopsList.get(i)).get("ywbh").toString());
 	                ps.setString(4, ((Map<String, Object>)shopsList.get(i)).get("khh").toString());

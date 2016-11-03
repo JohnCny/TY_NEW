@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import sun.misc.BASE64Decoder;
 
 import com.cardpay.pccredit.Sx.model.SxInputData;
 import com.cardpay.pccredit.Sx.model.SxOutputData;
@@ -69,8 +68,6 @@ public class LoanSxController extends BaseController {
 		filter.setRequest(request);
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 		String userId = user.getId();
-		// 数据库的起始日期和终止日期都是varchar类型所以要先转换成date类型才能比较
-		List<IncomingData> date = service1.finddate();
 		String date1 = null;
 		String fdate = null;
 		// 转换好的
@@ -78,17 +75,18 @@ public class LoanSxController extends BaseController {
 		Date transmissionfdate = null;
 		Date transmissionldate = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		for (int i = 0; i < date.size(); i++) {
-			date1 = date.get(i).getFdate();
-		}
+		
 		// 如果数据v库里面没有日期就直接跳向叶面
-		if (date1 != null) {
 			try {
-				fdate1 = sdf.parse(date1);
 				//如果有传入值则把传入值转换成date类型如果没有传入值就直接查询
 				if (filter.getFdate() != null && filter.getLdate() != null) {
 					transmissionfdate = sdf.parse(filter.getFdate());
 					transmissionldate = sdf.parse(filter.getLdate());
+					List<IncomingData> date = service1.finddate();
+					for (int i = 0; i < date.size(); i++) {
+						date1 = date.get(i).getFdate();
+					}
+					fdate1 = sdf.parse(date1);
 				} else {
 					QueryResult<SxOutputData> result = service
 							.findSxListByFilter(filter);
@@ -141,10 +139,6 @@ public class LoanSxController extends BaseController {
 			mv.addObject("total", total);
 			mv.addObject("totalSx", totalSx);
 			return mv;
-		} else {
-			JRadModelAndView mv = new JRadModelAndView("/SX/sx_browse", request);
-			return mv;
-		}
 	}
 	
 	// 机构内收息
@@ -158,8 +152,7 @@ public class LoanSxController extends BaseController {
 		List<SxOutputData> team = service.findteam();
 		// 查询客户经理
 		List<SxOutputData> user = service.finduser();
-		// 数据库的起始日期和终止日期都是varchar类型所以要先转换成date类型才能比较
-		List<IncomingData> date = service1.finddate();
+		
 		String date1 = null;
 		String fdate = null;
 		// 转换好的
@@ -167,16 +160,18 @@ public class LoanSxController extends BaseController {
 		Date transmissionfdate = null;
 		Date transmissionldate = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		for (int i = 0; i < date.size(); i++) {
-			date1 = date.get(i).getFdate();
-		}
+		
 		// 如果数据库里面date没有数据则直接条向叶面
-		if (date1 != null) {
 			try {
-				fdate1 = sdf.parse(date1);
 				if (filter.getFdate() != null && filter.getLdate() != null) {
 					transmissionfdate = sdf.parse(filter.getFdate());
 					transmissionldate = sdf.parse(filter.getLdate());
+					// 数据库的起始日期和终止日期都是varchar类型所以要先转换成date类型才能比较
+					List<IncomingData> date = service1.finddate();
+					for (int i = 0; i < date.size(); i++) {
+						date1 = date.get(i).getFdate();
+					}
+					fdate1 = sdf.parse(date1);
 				} else {
 					QueryResult<SxOutputData> result = service.findje(filter);
 					JRadPagedQueryResult<SxOutputData> pagedResult1 = new JRadPagedQueryResult<SxOutputData>(
@@ -230,11 +225,7 @@ public class LoanSxController extends BaseController {
 			mv.addObject("team", team);
 			mv.addObject("user", user);
 			return mv;
-		} else {
-			JRadModelAndView mv = new JRadModelAndView("/SX/Jgnsx_browse",
-					request);
-			return mv;
-		}
+		
 	}
 }
 

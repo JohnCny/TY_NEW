@@ -84,6 +84,8 @@
       <div class="pagebar">
        <div class="controlbtn">
           <a id="id_infor_button" class="btn_g" href="javascript:void(0);" title="查看详细信息">查看详细信息</a>
+          
+          <a id="id_refuse_button" class="btn_g" href="javascript:void(0);" title="被拒绝台帐">被拒绝台帐</a>
         </div>
         <div class="controlbtn">
         </div>
@@ -114,6 +116,12 @@
 			}else{
 				Dialog.message("请选择记录!");
 			}
+	    });
+		
+		$("#id_refuse_button").click(function() {
+				var url = "${modulePath}"+"refuse.page";
+				window.location.href = url;
+				
 	    });
 	});
 </script>

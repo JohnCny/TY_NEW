@@ -384,9 +384,9 @@
 
 	<insert id="insertCustomerRygl" parameterType="map">
 		INSERT INTO ty_customer_rygl
-		(CREATE_TIME,DM,XM,PY,XB,SSJG,ZW,BGDH,SJHM,CZDH,DZXX,YZBM,DZ,BZ,USERID,SSBM,GH,ISKHJL,YWJS,DLDM,DDRQ,WHRY,DCJG,KHJLDJ,SFZHM,TSRQ,
+		(DM,XM,PY,XB,SSJG,ZW,BGDH,SJHM,CZDH,DZXX,YZBM,DZ,BZ,USERID,SSBM,GH,ISKHJL,YWJS,DLDM,DDRQ,WHRY,DCJG,KHJLDJ,SFZHM,TSRQ,
 		SGZH,PXZH) values
-		(#{createTime,jdbcType=VARCHAR},#{dm,jdbcType=VARCHAR},#{xm,jdbcType=VARCHAR},#{py,jdbcType=VARCHAR},#{xb,jdbcType=VARCHAR},
+		(#{dm,jdbcType=VARCHAR},#{xm,jdbcType=VARCHAR},#{py,jdbcType=VARCHAR},#{xb,jdbcType=VARCHAR},
 		#{ssjg,jdbcType=VARCHAR}, #{zw,jdbcType=VARCHAR},
 		#{bgdh,jdbcType=VARCHAR}, #{sjhm,jdbcType=VARCHAR},#{czdh,jdbcType=VARCHAR}, #{dzxx,jdbcType=VARCHAR},
 		#{yzbm,jdbcType=VARCHAR},#{dz,jdbcType=VARCHAR},#{bz,jdbcType=VARCHAR},#{userid,jdbcType=VARCHAR},#{ssbm,jdbcType=VARCHAR},#{gh,jdbcType=VARCHAR},
@@ -427,6 +427,7 @@
 		#{gzrq,jdbcType=VARCHAR},#{zcyz,jdbcType=VARCHAR},#{pgjz,jdbcType=VARCHAR},#{pgrq,jdbcType=VARCHAR},#{zl,jdbcType=VARCHAR})
 
 	</insert>
+	
 
 	<update id="updateCustomerFamilyCc" parameterType="map">
 		update ty_customer_family_cc set
@@ -459,9 +460,9 @@
 	</update>
 
 	<insert id="insertCustomerWork" parameterType="map">
-		INSERT INTO ty_customer_work (ID,CREATE_TIME,KHNM,KSRQ,JSRQ,DWMC,DWXZ,DWDH,
+		INSERT INTO ty_customer_work (ID,KHNM,KSRQ,JSRQ,DWMC,DWXZ,DWDH,
 		DWDZ,DWYZBM,SZBM,ZC,HYXZ,NSR,BZ) values
-		(#{id,jdbcType=VARCHAR},#{createTime,jdbcType=VARCHAR},#{khnm,jdbcType=VARCHAR},
+		(#{id,jdbcType=VARCHAR},#{khnm,jdbcType=VARCHAR},
 		#{ksrq,jdbcType=VARCHAR}, #{jsrq,jdbcType=VARCHAR},
 		#{dwmc,jdbcType=VARCHAR}, #{dwxz,jdbcType=VARCHAR},
 		#{dwdh,jdbcType=VARCHAR},#{dwdz,jdbcType=VARCHAR},
@@ -824,8 +825,8 @@
 		#{productCode,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR})
 	</insert>
 	<insert id="insertHmd" parameterType="map">
-		INSERT INTO f_agr_crd_xyk_cuneg (CREATED_TIME,ZBJG,KHNM,SXRQ,TCRQ,SBYY) values
-		(#{createTime,jdbcType=VARCHAR},
+		INSERT INTO f_agr_crd_xyk_cuneg (ZBJG,KHNM,SXRQ,TCRQ,SBYY) values
+		(
 		#{zbjg,jdbcType=VARCHAR}, #{khnm,jdbcType=VARCHAR}, #{sxrq,jdbcType=VARCHAR}, #{tcrq,jdbcType=VARCHAR}, #{sbyy,jdbcType=VARCHAR})
 	</insert>
 	
