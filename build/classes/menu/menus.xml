@@ -22,7 +22,7 @@
 			<menu id="040005" name="customermaintenancelog" title="客户维护信息日志列表" url="/customer/maintenance/log.page" img="" operations="display|browse|change"/>
 			<menu id="040006" name="basiccustomerinforMove" title="客户移交申请" url="/customer/basiccustomerinforMove/browse.page" img="" operations="create|browse"/>
 			<menu id="040007" name="basiccustomerinforMoveExamine" title="客户移交审批" url="/customer/basiccustomerinforMove/examineBrowse.page" img="" operations="create|browse"/>
-			<menu id="040026" name="customer_ZRRTZ" title="自然人台账" url="/customer/customer_ZRRTZ/zrrtz.json" img="" operations="browse"/>
+			<menu id="040026" name="customer_ZRRTZ" title="自然人台账" url="/customer/customer_ZRRTZ/zrrtz.json" img="" operations="create|browse"/>
 		</menu>
 		
 		<menu id="060000" name="product" title="产品管理" url="" img="images/icon_sys.gif" operations="">

@@ -38,7 +38,7 @@ import com.cardpay.pccredit.jnpad.model.CustomerInfo;
  */
 @Controller 
 @RequestMapping("/customer/amountadjustmentviews/*")
-@JRadModule("customer.amountadjustmentview")
+@JRadModule("customer.amountadjustmentviews")
 public class BusinessTacklingController extends BaseController{
 	@Autowired
 	private BusinessTacklingService btService;
