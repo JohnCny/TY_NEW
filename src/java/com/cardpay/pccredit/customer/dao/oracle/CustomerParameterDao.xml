@@ -60,8 +60,8 @@
 		<result property="interstrate" column="htll" />
 		<result property="providedate" column="JKRQ" />
 		<result property="expiredate" column="DQRQ" />
-		<result property="classification" column="STATUS" />
-		<result property="giveback" column="industry_type" />
+		<result property="classification" column="industry_type" />
+		<result property="giveback" column="ACCOUNT_STATUS" />
 	</resultMap>
 	
 	<resultMap id="allResultMap" type="com.cardpay.pccredit.customer.model.CustomerParameter">
@@ -152,7 +152,7 @@
      and cai.customer_id=cci.customer_id
      and su.id=bci.user_id
      and bci.CARD_ID=#{idCard} -->
-    select 
+   <!--  select 
     su.display_name,
     bci.CHINESE_NAME,
     bci.CARD_ID,
@@ -174,7 +174,30 @@
      and  cai.customer_id = bci.id
      and cai.customer_id=cci.customer_id
      and su.id=bci.user_id
-     and bci.CARD_ID=#{idCard}
+     and bci.CARD_ID=#{idCard} -->
+     select 
+    su.display_name,
+    bci.CHINESE_NAME,
+    bci.CARD_ID,
+    cai.ACTUAL_QUOTE,
+    cai.ACCOUNT_STATUS,
+    trt.DKQX,
+    trt.htll,
+    trt.JKRQ,
+    trt.DQRQ,
+    cci.industry_type
+    from
+     CUSTOMER_CAREERS_INFORMATION cci,
+     CUSTOMER_APPLICATION_INFO cai,
+     TY_REPAY_TKMX trt,
+     basic_customer_information bci,
+     sys_user su
+     where 
+     trt.JJH=cai.JJH
+     and  cai.customer_id = bci.id
+     and cai.customer_id=cci.customer_id
+     and su.id=bci.user_id
+     and bci.CARD_ID=#{idCard} 
 	</select>
 	
 	<select id="queryByIdCard" resultMap="allResultMap" >

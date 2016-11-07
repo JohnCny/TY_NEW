@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Constant {
+	/*还款结束*/
+	public static String REPAYEND = "repayEnd";//太原复用
+
 	/* 操作失败 */
 	public static String FAIL_MESSAGE = "操作失败";
 	

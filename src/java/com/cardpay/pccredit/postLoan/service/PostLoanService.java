@@ -94,6 +94,21 @@ public class PostLoanService {
 	}
 	
 	/**
+	 * 被拒绝台帐
+	 * JN
+	 * @param filter
+	 * @return
+	 */
+	public QueryResult<MibusidataForm> findrefusedMibusidata(
+			PostLoanFilter filter) {
+		// TODO Auto-generated method stub
+		List<MibusidataForm> lists = postLoanDao.findrefusedMibusidata(filter);
+		int size = postLoanDao.findrefusedMibusidatasize(filter);
+		QueryResult<MibusidataForm> qr = new QueryResult<MibusidataForm>(size,lists);
+		return qr;
+	}
+	
+	/**
 	 * 借据表详细信息
 	 * @param filter
 	 * @return
@@ -115,4 +130,6 @@ public class PostLoanService {
 		
 		return postLoanDao.selectRarepaylistfoInfoByBusicode(filter);
 	}
+	
+	
 }

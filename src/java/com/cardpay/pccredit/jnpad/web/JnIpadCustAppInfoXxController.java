@@ -14,6 +14,7 @@ import net.sf.json.JsonConfig;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,10 +26,12 @@ import com.cardpay.pccredit.jnpad.filter.CustomerApprovedFilter;
 import com.cardpay.pccredit.jnpad.filter.NotificationMessageFilter;
 import com.cardpay.pccredit.jnpad.model.AppInfoListVo;
 import com.cardpay.pccredit.jnpad.model.JnpadCustomerBianGeng;
+import com.cardpay.pccredit.jnpad.model.NODEAUDIT;
 import com.cardpay.pccredit.jnpad.model.NotifyMsgListVo;
 import com.cardpay.pccredit.jnpad.model.RetrainUserVo;
 import com.cardpay.pccredit.jnpad.model.RetrainingVo;
 import com.cardpay.pccredit.jnpad.service.JnIpadCustAppInfoXxService;
+import com.cardpay.pccredit.jnpad.service.JnipadNodeService;
 import com.cardpay.pccredit.manager.filter.RetrainingFilter;
 import com.cardpay.pccredit.manager.model.AccountManagerRetraining;
 import com.cardpay.pccredit.manager.model.Retraining;
@@ -36,6 +39,8 @@ import com.cardpay.pccredit.notification.model.NotificationMessage;
 import com.cardpay.pccredit.riskControl.constant.RiskControlRole;
 import com.cardpay.pccredit.riskControl.constant.RiskCreateTypeEnum;
 import com.cardpay.pccredit.riskControl.filter.RiskCustomerFilter;
+import com.cardpay.pccredit.riskControl.model.CUSTOMERBLACKLIST;
+import com.cardpay.pccredit.riskControl.service.CustormerBlackListService;
 import com.cardpay.pccredit.system.model.SystemUser;
 
 /**
@@ -52,8 +57,10 @@ public class JnIpadCustAppInfoXxController {
 	
 	@Autowired
 	private JnIpadCustAppInfoXxService appInfoXxService;
-
-	
+	@Autowired
+	private JnipadNodeService nodeservice;
+	@Autowired
+	private CustormerBlackListService cblservice;
 	/**
 	 * 进件信息查询 
 	 * 【查询进件数量/拒绝进件数量/申请通过进件数量/补充调查进件数量】
@@ -303,12 +310,13 @@ public class JnIpadCustAppInfoXxController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/ipad/custAppInfo/notifiyMessageNum.json", method = { RequestMethod.GET })
-	public String notifiyMessageNum(HttpServletRequest request) {
+	public String notifiyMessageNum(@ModelAttribute NODEAUDIT NODEAUDIT,@ModelAttribute CUSTOMERBLACKLIST cl,HttpServletRequest request) {
 		//当前登录用户ID
 		String userId=request.getParameter("userId");
-	
+		NODEAUDIT.setUser_id(request.getParameter("userId"));
 		NotificationMessageFilter filter = new NotificationMessageFilter();
 		filter.setUserId(userId);
+		cl.setUserid(userId);
 		filter.setNoticeType("shendaihui");
 		int count1 = appInfoXxService.findNotificationCountMessageByFilter(filter);
 		filter.setNoticeType("yuanshiziliao");
@@ -319,7 +327,7 @@ public class JnIpadCustAppInfoXxController {
 		int count4 = appInfoXxService.findNotificationCountMessageByFilter(filter);
 		filter.setNoticeType("qita");
 		int count5 = appInfoXxService.findNotificationCountMessageByFilter(filter);
-		
+		int  Pcount=nodeservice.selectProductUserCount(NODEAUDIT);
 		//拒绝进件数量
 		filter.setNoticeType("refuse");
 		int refuseCount= appInfoXxService.findNoticeCountByFilter(filter);
@@ -332,10 +340,12 @@ public class JnIpadCustAppInfoXxController {
 		filters.setRiskCreateType(RiskCreateTypeEnum.manual.toString());
 	    filters.setRole(RiskControlRole.manager.toString());
 		int risk = appInfoXxService.findRiskNoticeCountByFilter(filters);
+		//黑名单通知
+		int blackcount=cblservice.findAllCustormerBlackListCount(cl);
 		//客户资料变更
 		List<JnpadCustomerBianGeng> cuslist=appInfoXxService.findbiangengCountByManagerId(userId);
 		int count6 = cuslist.size();
-		int sum=count1+count2+count3+count4+count5+refuseCount+returnCount+risk+count6;
+		int sum=count1+count2+count3+count4+count5+refuseCount+returnCount+risk+count6+Pcount;
 		NotifyMsgListVo vo  = new NotifyMsgListVo();
 		vo.setShendaihui(count1);
 		vo.setYuanshiziliao(count2);
@@ -348,7 +358,8 @@ public class JnIpadCustAppInfoXxController {
 		vo.setSum(sum);
 		vo.setZiliaobiangeng(count6);
 		vo.setBianggeng(cuslist);
-		
+		vo.setPcount(Pcount);
+		vo.setBlackcount(blackcount);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(vo, jsonConfig);
@@ -460,6 +471,55 @@ public class JnIpadCustAppInfoXxController {
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(result, jsonConfig);
+		return json.toString();
+	}
+	
+	
+	/**
+	 * 查看当前客户经理的黑名单客户
+	 * @param cl
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/customer/custormerblacklist.json", method = { RequestMethod.GET })
+	public String custormerblacklist(@ModelAttribute CUSTOMERBLACKLIST cl,HttpServletRequest request) {
+		//当前登录用户ID
+		String userId=request.getParameter("userId");
+		cl.setUserid(userId);
+		List <CUSTOMERBLACKLIST> result=cblservice.findCustormerBlackList(cl);
+		int size=cblservice.findAllCustormerBlackListCount(cl);
+		Map<String,Object> map = new LinkedHashMap<String,Object>();
+		map.put("result",result);
+		map.put("size",size);
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+	}
+	
+	/**
+	 * 移除黑名单客户
+	 * @param cl
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/customer/deleteByCoustorId.json", method = { RequestMethod.GET })
+	public String deleteByCoustorId(@ModelAttribute CUSTOMERBLACKLIST cl,HttpServletRequest request) {
+		//当前登录用户ID
+		String userId=request.getParameter("userId");
+		String customerid=request.getParameter("customerId");
+		Map<String,Object> map = new LinkedHashMap<String,Object>();
+		int a=cblservice.deleteByCoustorId(customerid, userId);
+		if(a>0){
+		map.put("message", "移除成功")	;
+		}else{
+			map.put("message", "移除失败")	;
+		}
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
 		return json.toString();
 	}
 }

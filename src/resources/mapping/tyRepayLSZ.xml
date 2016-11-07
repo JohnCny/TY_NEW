@@ -2,6 +2,7 @@
 
 <resultMap>
     <!-- <result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/> -->
+    <result column="CREATE_TIME" jdbcType="VARCHAR" index="1" />
 	<result column="YWBH" jdbcType="VARCHAR" index="1" />
 
 	<result column="KMH" jdbcType="VARCHAR" index="2" />

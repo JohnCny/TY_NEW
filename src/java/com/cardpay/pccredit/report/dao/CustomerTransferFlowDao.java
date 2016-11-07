@@ -53,4 +53,5 @@ public interface CustomerTransferFlowDao {
 	public List<XdlctjbbForm> getXdlctjbbFormList(ReportFilter filter);
 	
 	public List<AccLoanCollectInfo> getAccLoanCollect(AccLoanCollectFilter filter);
+	String finddqrq();
 }

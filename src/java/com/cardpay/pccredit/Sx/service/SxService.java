@@ -9,6 +9,7 @@ import com.cardpay.pccredit.Sx.dao.SxDao;
 import com.cardpay.pccredit.Sx.model.SxInputData;
 import com.cardpay.pccredit.Sx.model.SxOutputData;
 import com.cardpay.pccredit.customer.model.TyRepaySxForm;
+import com.cardpay.pccredit.customerappguarantor.model.CustomerApplicationGuarantor;
 import com.cardpay.pccredit.postLoan.filter.SxFilter;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 @Service
@@ -58,13 +59,29 @@ private SxDao dao;
 		// TODO Auto-generated method stub
 		return dao.finduser();
 	}
+	//-------------------------
+	public List<CustomerApplicationGuarantor> findguarantor(String infoid) {
+		// TODO Auto-generated method stub
+		return dao.findguarantor(infoid);
+	}
 
+	public void insertguarantor(CustomerApplicationGuarantor filter) {
+		// TODO Auto-generated method stub
+		 dao.insertguarantor(filter);
+	}
 
+	public int guarantorcount(String infoid) {
+		// TODO Auto-generated method stub
+		return dao.guarantorcount(infoid);
+	}
 
-
-
+	public List<CustomerApplicationGuarantor> findguarantorcustomer(
+			String customerid) {
+		// TODO Auto-generated method stub
+		return dao.findguarantorcustomer(customerid);
+	}
 	
-
+	
 	
 
 }

@@ -91,17 +91,18 @@
             #foreach ($customer in $result.items)
             <tr>
               <td class="checkbox"><input type="radio" name="checkbox" value="$!customer.appId/$!customer.customerManagerId"/>
-              <td nowrap="nowrap">$!customer.cname</td>
-              <td nowrap="nowrap">$!customer.cardnum</td>
-              <td nowrap="nowrap">$!customer.contactmobiletel</td>
-              <td nowrap="nowrap">$!customer.prodName</td>
-              <td nowrap="nowrap">$!customer.money</td>
-              <td nowrap="nowrap">$format.formatNumber($!customer.interest, 5, 1)</td>
-              <td nowrap="nowrap">$!customer.hkze</td>
-              <td nowrap="nowrap">$!customer.hkbj</td>
-              <td nowrap="nowrap">$!customer.yhlx</td>
-              <td nowrap="nowrap">$!customer.busimanager</td>
-              <td nowrap="nowrap">$!customer.instcode</td>
+              <td nowrap="nowrap">$!customer.CHINESE_NAME</td>
+              <td nowrap="nowrap">$!customer.CARD_ID</td>
+              <td nowrap="nowrap">$!customer.TELEPHONE</td>
+              <td nowrap="nowrap">$!customer.CPMC</td>
+              <td nowrap="nowrap">$!customer.DF</td>
+             <!--  $format.formatNumber($!customer.interest, 5, 1) -->
+              <td nowrap="nowrap">$!customer.JZLL</td>
+              <td nowrap="nowrap">$!customer.BXHJ</td>
+              <td nowrap="nowrap">$!customer.JE</td>
+              <td nowrap="nowrap">$!customer.YHLX</td>
+              <td nowrap="nowrap">$!customer.KHJL</td>
+              <td nowrap="nowrap">$!customer.YWJG</td>
             </tr>
             #end
           </table>
