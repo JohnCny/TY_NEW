@@ -2,6 +2,8 @@
 
 <resultMap id="BaseResultMap" type="com.cardpay.pccredit.bank.model.XmAccCredit">
 	<!-- <result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/> -->
+	 <result column="ID" jdbcType="VARCHAR" index="1" /> 
+	
 	<result column="KHNM" jdbcType="VARCHAR" index="1" />
 
 	<result column="KSRQ" jdbcType="VARCHAR" index="2" />
@@ -27,5 +29,7 @@
 	<result column="NSR" jdbcType="VARCHAR" index="14" />
 	
 	<result column="BZ" jdbcType="VARCHAR" index="15" />
+	
+	
 
 </resultMap>

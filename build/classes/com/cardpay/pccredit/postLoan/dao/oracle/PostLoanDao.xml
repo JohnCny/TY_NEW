@@ -124,6 +124,11 @@
 		 <result column="CUSTIDNO"        property="custidno"    jdbcType="VARCHAR" />  
 		 <result column="LIMIT"        property="limit"    jdbcType="VARCHAR" />  
 		 <result column="REPAYMETHOD"        property="repaymethod"    jdbcType="VARCHAR" />  
+		 <result column="SPMC"        property="spmc"    jdbcType="VARCHAR" />  
+		 <result column="JF"        property="jf"    jdbcType="VARCHAR" />  
+		 <result column="AUDIT_TIME"        property="audittime"    jdbcType="DATE" />  
+		 <result column="REFUSAL_REASON"        property="refusalreason"    jdbcType="VARCHAR" /> 
+		 <result column="DISPLAY_NAME"        property="displayname"    jdbcType="VARCHAR" />  
  	 </resultMap>
 
 	  <!-- <resultMap id="BaseResultMap" type="com.cardpay.pccredit.customer.model.TyRepayTkmxForm" >
@@ -298,4 +303,77 @@
 			AND cname =#{customerName}
 		 </if>
 	</select>
+	
+		<select id="findrefusedMibusidata" resultMap="BaseResultMap3" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
+					SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					    select a.*,trim(a.ACCOUNTSTATE) as STATE,info.SPMC,lsz.JF,pro.AUDIT_TIME,pro.REFUSAL_REASON,sysuser.DISPLAY_NAME
+				   from t_mibusidata_view a ,
+			            customer_application_info app,
+			            basic_customer_information info,
+			            ty_customer_base b,
+			            ty_repay_tkmx tkmx,
+			            TY_REPAY_LSZ lsz,
+			            product_attribute prod,
+			            customer_application_process pro,
+			            sys_user sysuser
+			            where 1=1
+			            and b.id=info.TY_CUSTOMER_ID
+			            and b.KHH = tkmx.KHH
+			            and tkmx.YWBH=a.BUSICODE
+			            and tkmx.JJH=lsz.JJH
+			            and app.customer_id = info.id
+			            and app.product_id = prod.id
+			            and app.id = pro.application_id
+						and sysuser.id = info.user_id 
+			            and app.status ='refuse'
+						
+					 <if test="busiCode != null and busiCode != '' ">
+						AND trim(a.BUSICODE)=#{busiCode}
+					 </if>
+					 
+					 <if test="customerName != null and customerName != '' ">
+						AND cname =#{customerName}
+					 </if>
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+		<select id="findrefusedMibusidatasize" resultType="int" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
+	  	select count(*)  from t_mibusidata_view a ,
+			            customer_application_info app,
+			            basic_customer_information info,
+			            ty_customer_base b,
+			            ty_repay_tkmx tkmx,
+			            product_attribute prod,
+			            customer_application_process pro,
+			            sys_user sysuser
+			            where 1=1
+			            and b.id=info.TY_CUSTOMER_ID
+			            and b.KHH = tkmx.KHH
+			            and tkmx.YWBH=a.BUSICODE
+			            and app.customer_id = info.id
+			            and app.product_id = prod.id
+			            and app.id = pro.application_id
+						 and sysuser.id = info.user_id 
+			            and app.status ='refuse'
+	  	<if test="busiCode != null and busiCode != '' ">
+			AND trim(BUSICODE)=#{busiCode}
+		</if>
+		
+	  	<if test="customerName != null and customerName != '' ">
+			AND cname =#{customerName}
+		 </if>
+	</select>
+	
+	<select id="findtzList"  resultMap="BaseResultMap3" parameterType="String">
+		    select * from T_MIBUSIDATA where 1=1 
+		  <!--   <if test="busicode != null and busicode != ''">
+		    and BUSICODE=#{busicode}
+		    </if> -->
+		</select>
 </mapper>

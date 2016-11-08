@@ -85,5 +85,6 @@ public interface PostLoanDao {
 	List<RarepaylistForm> selectRarepaylistfoInfoByBusicode(FcloaninfoFilter filter);
 	List<MibusidataForm> findrefusedMibusidata(PostLoanFilter filter);
 	int findrefusedMibusidatasize(PostLoanFilter filter);
+	List<MibusidataForm> findtzList(@Param("busicode")String busicode);
 	
 }

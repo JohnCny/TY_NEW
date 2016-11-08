@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.cardpay.pccredit.customer.model.TyCustomerRecord;
 import com.cardpay.pccredit.intopieces.model.AppManagerAuditLog;
 import com.cardpay.pccredit.product.model.AccessoriesList;
 import com.cardpay.pccredit.product.model.AppendixDict;
@@ -31,6 +32,8 @@ public interface AccessoriesListDao {
 	public List<AppManagerAuditLog> findAppManagerAuditLog(@Param("appId") String appId,@Param("auditType") String auditType);
 	
 	public List<AppManagerAuditLog> findAppManagerAuditById(@Param("appId") String appId);
+
+	public List<TyCustomerRecord> delay(@Param("id")String id);
 	
 
 }

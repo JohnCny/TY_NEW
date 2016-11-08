@@ -82,7 +82,7 @@
         
 		prepareOperations(opsObj);
 		
-		$("#id_next_button").click(function() {
+		/* $("#id_next_button").click(function() {
             if ($(".checkbox :checked").length == 1) {
                 var rowid = $($(".checkbox :checked")[0]).attr("value");
                 //"${contextPath}/intopieces/addIntopieces/browseCustomer.page?productId=" + rowid;
@@ -90,6 +90,31 @@
                 var url = "${contextPath}/intopieces/addIntopieces/browseCustomer.page?productId=" + rowid;
                 
                 window.location.href = url;
+            } else {
+                Dialog.message("请选择一行");
+            }
+        }); */
+        $("#id_next_button").click(function() {
+            if ($(".checkbox :checked").length == 1) {
+                var rowid = $($(".checkbox :checked")[0]).attr("value");
+               //"${contextPath}/intopieces/addIntopieces/browseCustomer.page?productId=" + rowid
+                var url = "${contextPath}/intopieces/addIntopieces/browseCustomer.page?productId=" + rowid;
+               //判断是否存在延迟归档文件
+                $.ajax({
+					 url : "${contextPath}/intopieces/addIntopieces/delay.json",
+					 type : "get",
+					 async: false,
+					 success : function(data) {
+						 if (!data.success) {
+							 topWin.Dialog.message("你有档案7天内未归还，无法申请进件！");
+							  result = false;
+							 return;
+						 }
+		                if(data.success){ 
+			                window.location.href = url;
+		                }
+					 }
+				 });
             } else {
                 Dialog.message("请选择一行");
             }

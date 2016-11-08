@@ -130,6 +130,10 @@ public class PostLoanService {
 		
 		return postLoanDao.selectRarepaylistfoInfoByBusicode(filter);
 	}
-	
+	public List<MibusidataForm> findtzList(String busicode) {
+		// TODO Auto-generated method stub
+		System.out.println(busicode);
+		return postLoanDao.findtzList(busicode);
+	}
 	
 }
