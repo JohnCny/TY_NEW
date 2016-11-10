@@ -1,9 +1,10 @@
-#Tue Nov 08 14:25:03 CST 2016
+#Thu Nov 10 15:45:18 CST 2016
 eclipse.preferences.version=1
 encoding//WebContent/WEB-INF/vmcase2/customer/customerFilter/customerfilter_browse.htm=UTF-8
 encoding//WebContent/WEB-INF/vmcase2/customer/customerInforInsert/CustomerParameter_create.htm=UTF-8
 encoding//WebContent/WEB-INF/vmcase2/customer/customerInforInsert/customerinfor_create.htm=UTF-8
 encoding//WebContent/WEB-INF/vmcase2/customer/riskCustomer/riskcustomer_manager_browse.htm=UTF-8
+encoding//WebContent/WEB-INF/vmcase2/customeradd/Jxglbrowse.htm=UTF-8
 encoding//WebContent/WEB-INF/vmcase2/intopieces/customer_browse.htm=UTF-8
 encoding//WebContent/WEB-INF/vmcase2/intopieces/product_browse.htm=UTF-8
 encoding//WebContent/WEB-INF/vmcase2/postLoan/tz_browse.htm=UTF-8
