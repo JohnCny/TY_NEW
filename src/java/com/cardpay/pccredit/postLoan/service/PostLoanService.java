@@ -11,10 +11,12 @@ import org.springframework.stereotype.Service;
 import com.cardpay.pccredit.postLoan.dao.PostLoanDao;
 import com.cardpay.pccredit.postLoan.filter.FcloaninfoFilter;
 import com.cardpay.pccredit.postLoan.filter.PostLoanFilter;
+import com.cardpay.pccredit.postLoan.model.CreditProcess;
 import com.cardpay.pccredit.postLoan.model.Fcloaninfo;
 import com.cardpay.pccredit.postLoan.model.MibusidataForm;
 import com.cardpay.pccredit.postLoan.model.Rarepaylist;
 import com.cardpay.pccredit.postLoan.model.RarepaylistForm;
+import com.cardpay.pccredit.zrrtz.model.IncomingData;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 
@@ -131,5 +133,29 @@ public class PostLoanService {
 		return postLoanDao.selectRarepaylistfoInfoByBusicode(filter);
 	}
 	
+	/**
+	 * 信贷流程跟踪表
+	 * @param filter 
+	 * @param filter
+	 * @return
+	 * */
+	public QueryResult<CreditProcess> queryCreditProcess(CreditProcess filter) {
+		// TODO Auto-generated method stub
+		List<CreditProcess> cplist = postLoanDao.queryCreditProcess(filter);
+		int size = postLoanDao.querySize(filter);
+		QueryResult<CreditProcess> queryResult = new QueryResult<CreditProcess>(size,cplist);
+		return queryResult;
+	}
+	
+	
+	public List<CreditProcess> queryAll(String id) {
+		// TODO Auto-generated method stub
+		return postLoanDao.queryAll(id);
+	}
+	public List<CreditProcess> creditProcessExportQueryAll() {
+		// TODO Auto-generated method stub
+		return postLoanDao.creditProcessExportQueryAll();
+	}
+
 	
 }

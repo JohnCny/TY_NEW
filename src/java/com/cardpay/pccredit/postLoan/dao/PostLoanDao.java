@@ -16,6 +16,7 @@ import com.cardpay.pccredit.customer.web.MaintenanceWeb;
 import com.cardpay.pccredit.manager.web.ManagerBelongMapForm;
 import com.cardpay.pccredit.postLoan.filter.FcloaninfoFilter;
 import com.cardpay.pccredit.postLoan.filter.PostLoanFilter;
+import com.cardpay.pccredit.postLoan.model.CreditProcess;
 import com.cardpay.pccredit.postLoan.model.Fcloaninfo;
 import com.cardpay.pccredit.postLoan.model.MibusidataForm;
 import com.cardpay.pccredit.postLoan.model.Rarepaylist;
@@ -85,5 +86,13 @@ public interface PostLoanDao {
 	List<RarepaylistForm> selectRarepaylistfoInfoByBusicode(FcloaninfoFilter filter);
 	List<MibusidataForm> findrefusedMibusidata(PostLoanFilter filter);
 	int findrefusedMibusidatasize(PostLoanFilter filter);
+	/**
+	 * 查询信贷跟踪表信息
+	 * @param filter 
+	 * */
+	List<CreditProcess> queryCreditProcess(CreditProcess filter);
+	int querySize(CreditProcess filter);
+	List<CreditProcess> queryAll(String id);
+	List<CreditProcess> creditProcessExportQueryAll();
 	
 }

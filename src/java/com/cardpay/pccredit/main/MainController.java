@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cardpay.pccredit.customer.constant.CommonConstant;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.customer.service.CustomerMarketingService;
 import com.cardpay.pccredit.customer.service.MaintenanceService;
@@ -179,7 +180,7 @@ public class MainController {
 		Double doubleApply=managerAssessmentScoreService.getManagerApplyQuota(userId);
 
 		HashMap<String,Integer> homeData = mainService.getHomeData(userId,0);
-		HashMap<String,Object> rightHomeData = getRightHomeData(userId);
+		HashMap<String,Object> rightHomeData = getRightHomeData(user);
 		String organizationname = organization.getName();
 		mv.addObject("accountManagerParameter",accountManagerParameter);
 		mv.addObject("rolename",rolename);
@@ -216,7 +217,8 @@ public class MainController {
 		mv.addObject("customer",rightHomeData.get("customer"));
 		mv.addObject("riskCustomer",rightHomeData.get("riskCustomer"));
 		mv.addObject("verificationCustomer",rightHomeData.get("verificationCustomer"));
-		
+		//还款提醒
+		mv.addObject("repay",rightHomeData.get("repay"));
 		//if(level =="MANA005" || level =="MANA003" ){
 		if(user.getUserType()!=1){
 			/* 
@@ -250,7 +252,8 @@ public class MainController {
 	}
 	
 	/*首页右边信息*/
-	private HashMap<String,Object> getRightHomeData(String userId){
+	private HashMap<String,Object> getRightHomeData(IUser user){
+		String userId = user.getId();
 		HashMap<String,Object> rightHomeData = new HashMap<String,Object>();
 		/*用户bar*/
 		/*未*/
@@ -303,6 +306,24 @@ public class MainController {
 		/*核销客户*/
 		int verification_customer_size = nplsInfomationDao.findNplsInformationCountById(userId);
 		rightHomeData.put("verificationCustomer", verification_customer_size);
+		
+		/*查询是否有要还款用户(提前两天提醒)*/
+		//查询客户经理
+		if(CommonConstant.USER_TYPE.USER_TYPE_1 == user.getUserType()){
+			List<AccountManagerParameterForm> forms = maintenanceService.findSubListManagerByManagerId(user);
+			if(forms != null && forms.size() > 0){
+				StringBuffer userIds = new StringBuffer();
+				userIds.append("(");
+				for(AccountManagerParameterForm form : forms){
+					userIds.append("'").append(form.getUserId()).append("'").append(",");
+				}
+				userIds = userIds.deleteCharAt(userIds.length() - 1);
+				userIds.append(")");
+				String str = maintenanceService.getActiveList(userIds.toString());
+				rightHomeData.put("repay", str);
+			}
+		}
+		
 		return rightHomeData;
 	}
 	@RequestMapping(value = "/homeData.json", method = { RequestMethod.GET })

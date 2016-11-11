@@ -132,7 +132,7 @@
             if ($(".checkbox :checked").length == 1) {
                 $("#addNew").unbind();
                 var rowid = $($(".checkbox :checked")[0]).attr("value");
-                var url = "/PCCredit_TY/customer/customer_parameter/addCustomerParameter.page?idCard=" + rowid + "&nodeType=Product";
+                var url = "/PCCredit/customer/customer_parameter/addCustomerParameter.page?idCard=" + rowid + "&nodeType=Product";
 				window.location.href = url;
             } else {
                 Dialog.message("请选择一行");

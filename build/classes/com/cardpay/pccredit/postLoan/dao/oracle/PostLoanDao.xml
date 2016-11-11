@@ -124,8 +124,34 @@
 		 <result column="CUSTIDNO"        property="custidno"    jdbcType="VARCHAR" />  
 		 <result column="LIMIT"        property="limit"    jdbcType="VARCHAR" />  
 		 <result column="REPAYMETHOD"        property="repaymethod"    jdbcType="VARCHAR" />  
+		 <result column="SPMC"        property="spmc"    jdbcType="VARCHAR" />  
+		 <result column="JF"        property="jf"    jdbcType="VARCHAR" />  
+		 <result column="AUDIT_TIME"        property="audittime"    jdbcType="DATE" />  
+		 <result column="REFUSAL_REASON"        property="refusalreason"    jdbcType="VARCHAR" /> 
+		 <result column="DISPLAY_NAME"        property="displayname"    jdbcType="VARCHAR" />  
  	 </resultMap>
 
+
+	<resultMap id="CreditProcess" type="com.cardpay.pccredit.postLoan.model.CreditProcess" >
+   		<result column="spmc" 		property="spmc"  />
+		<result column="chinese_name" 	property="customername" />
+		<result column="bljg" 		property="bljg" />
+		<result column="dklx" 		property="dklx" />
+		<result column="mainassure"	property="mainassure"/>
+		<result column="industry" 	property="industry" />
+		<result column="busimanager" 	property="mananger"/>
+		<result column="created_time" property="applytime"/>
+		<result column="apply_quota" 	property="applymoney"/>
+		<result column="jkrq" 		property="jkrq"/>
+		<result column="created_time" 		property="willtime" />
+		<result column="audit_opinion" 	property="auditopinion" />
+		<result column="examine_amount" 	property="examineamount" />
+		<result column="audit_time" 	property="audittime" />
+		<result column="examine_lv"	    property="examine" 	 />
+		<result column="process_op_status" 		property="status" />
+		<result column="id" 		property="id" />
+ 	 </resultMap>
+	
 	  <!-- <resultMap id="BaseResultMap" type="com.cardpay.pccredit.customer.model.TyRepayTkmxForm" >
    		<result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR" />
  	  </resultMap>
@@ -297,5 +323,166 @@
 	  	<if test="customerName != null and customerName != '' ">
 			AND cname =#{customerName}
 		 </if>
+	</select>
+	
+		<select id="findrefusedMibusidata" resultMap="BaseResultMap3" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
+					SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					    select a.*,trim(a.ACCOUNTSTATE) as STATE,info.SPMC,lsz.JF,pro.AUDIT_TIME,pro.REFUSAL_REASON,sysuser.DISPLAY_NAME
+				   from t_mibusidata_view a ,
+			            customer_application_info app,
+			            basic_customer_information info,
+			            ty_customer_base b,
+			            ty_repay_tkmx tkmx,
+			            TY_REPAY_LSZ lsz,
+			            product_attribute prod,
+			            customer_application_process pro,
+			            sys_user sysuser
+			            where 1=1
+			            and b.id=info.TY_CUSTOMER_ID
+			            and b.KHH = tkmx.KHH
+			            and tkmx.YWBH=a.BUSICODE
+			            and tkmx.JJH=lsz.JJH
+			            and app.customer_id = info.id
+			            and app.product_id = prod.id
+			            and app.id = pro.application_id
+						and sysuser.id = info.user_id 
+			            and app.status ='refuse'
+						
+					 <if test="busiCode != null and busiCode != '' ">
+						AND trim(a.BUSICODE)=#{busiCode}
+					 </if>
+					 
+					 <if test="customerName != null and customerName != '' ">
+						AND cname =#{customerName}
+					 </if>
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+		<select id="findrefusedMibusidatasize" resultType="int" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
+	  	select count(*)  from t_mibusidata_view a ,
+			            customer_application_info app,
+			            basic_customer_information info,
+			            ty_customer_base b,
+			            ty_repay_tkmx tkmx,
+			            product_attribute prod,
+			            customer_application_process pro,
+			            sys_user sysuser
+			            where 1=1
+			            and b.id=info.TY_CUSTOMER_ID
+			            and b.KHH = tkmx.KHH
+			            and tkmx.YWBH=a.BUSICODE
+			            and app.customer_id = info.id
+			            and app.product_id = prod.id
+			            and app.id = pro.application_id
+						 and sysuser.id = info.user_id 
+			            and app.status ='refuse'
+	  	<if test="busiCode != null and busiCode != '' ">
+			AND trim(BUSICODE)=#{busiCode}
+		</if>
+		
+	  	<if test="customerName != null and customerName != '' ">
+			AND cname =#{customerName}
+		 </if>
+	</select>
+	
+	<!-- 信贷流程跟踪表 -->
+	<select id="queryCreditProcess" resultMap="CreditProcess">
+		  SELECT *from 
+		  (SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+				select 
+                  	bai.spmc,bai.chinese_name,trt.bljg,trt.dklx,
+					m.mainassure,m.industry,cap.process_op_status,bai.id
+					from
+					BASIC_CUSTOMER_INFORMATION bai,TY_REPAY_TKMX trt,T_MIBUSIDATA m,
+					customer_application_info cai,node_audit na,customer_application_process cap 
+					where  1=1
+					and cap.next_node_id=na.id
+					and cai.id=cap.application_id
+					and cai.customer_id=bai.id
+					and cai.jjh=trt.jjh
+					and trt.jjh=m.cnlno
+					<if test="customername!=null and customername!='' ">
+						    and bai.chinese_name like  '%'||#{customername}||'%'
+					</if>
+					
+                   <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	<!-- 统计行数 -->
+	<select id="querySize" resultType="int" parameterType="com.cardpay.pccredit.postLoan.model.CreditProcess">
+		  select count(*)
+		          from (SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+				select 
+                  	bai.spmc,bai.chinese_name,trt.bljg,trt.dklx,
+					m.mainassure,m.industry,cap.process_op_status,bai.id
+					from
+					BASIC_CUSTOMER_INFORMATION bai,TY_REPAY_TKMX trt,T_MIBUSIDATA m,
+					customer_application_info cai,node_audit na,customer_application_process cap 
+					where  1=1
+					and cap.next_node_id=na.id
+					and cai.id=cap.application_id
+					and cai.customer_id=bai.id
+					and cai.jjh=trt.jjh
+					and trt.jjh=m.cnlno
+					
+					<if test="customername!=null and customername!='' ">
+						    and bai.chinese_name like '%'||#{customername}||'%'
+					</if>
+                   <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+					
+	</select>
+	
+	<!-- 显示详情 -->
+	<select id="queryAll" resultMap="CreditProcess" parameterType="String">
+			select 
+			bai.spmc,bai.chinese_name,trt.bljg,trt.dklx,
+			m.mainassure,m.industry,m.busimanager,
+			cai.created_time,cai.apply_quota,cai.jkrq,
+			na.created_time,cap.audit_opinion,cap.examine_amount,
+			cap.audit_time,cap.examine_lv,cap.process_op_status
+			from
+			BASIC_CUSTOMER_INFORMATION bai,TY_REPAY_TKMX trt,T_MIBUSIDATA m,
+			customer_application_info cai,node_audit na,customer_application_process cap 
+			where  
+			cap.next_node_id=na.id
+			and cai.id=cap.application_id
+			and cai.customer_id=bai.id
+			and cai.jjh=trt.jjh
+			and trt.jjh=m.cnlno
+			and bai.id=#{id}
+	</select>
+	
+	<!-- 导出-->
+	<select id="creditProcessExportQueryAll" resultMap="CreditProcess">
+			select 
+			bai.spmc,bai.chinese_name,trt.bljg,trt.dklx,
+			m.mainassure,m.industry,m.busimanager,
+			cai.created_time,cai.apply_quota,cai.jkrq,
+			na.created_time,cap.audit_opinion,cap.examine_amount,
+			cap.audit_time,cap.examine_lv,cap.process_op_status
+			from
+			BASIC_CUSTOMER_INFORMATION bai,TY_REPAY_TKMX trt,T_MIBUSIDATA m,
+			customer_application_info cai,node_audit na,customer_application_process cap 
+			where  
+			cap.next_node_id=na.id
+			and cai.id=cap.application_id
+			and cai.customer_id=bai.id
+			and cai.jjh=trt.jjh
+			and trt.jjh=m.cnlno
 	</select>
 </mapper>

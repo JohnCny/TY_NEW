@@ -1,6 +1,9 @@
 package com.cardpay.pccredit.postLoan.web;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +22,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
+import com.cardpay.pccredit.customer.model.CustomerParameter;
+import com.cardpay.pccredit.customer.model.ParameterInformaion;
+import com.cardpay.pccredit.customer.service.CustomerParameterService;
 import com.cardpay.pccredit.customer.service.MaintenanceService;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.model.DhApplnAttachmentBatch;
@@ -30,15 +36,21 @@ import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentDetail;
 import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentList;
 import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
+import com.cardpay.pccredit.ipad.model.UserIpad;
 import com.cardpay.pccredit.postLoan.dao.PostLoanDao;
 import com.cardpay.pccredit.postLoan.filter.FcloaninfoFilter;
 import com.cardpay.pccredit.postLoan.filter.PostLoanFilter;
+import com.cardpay.pccredit.postLoan.model.CreditProcess;
 import com.cardpay.pccredit.postLoan.model.Fcloaninfo;
 import com.cardpay.pccredit.postLoan.model.MibusidataForm;
 import com.cardpay.pccredit.postLoan.model.Rarepaylist;
 import com.cardpay.pccredit.postLoan.model.RarepaylistForm;
 import com.cardpay.pccredit.postLoan.service.PostLoanService;
+import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
+import com.cardpay.pccredit.zrrtz.Util.ExportExcel;
+import com.cardpay.pccredit.zrrtz.model.IncomingData;
+import com.cardpay.pccredit.zrrtz.model.ZrrtzFilter;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
@@ -51,6 +63,7 @@ import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
 import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
+import com.wicresoft.jrad.modules.privilege.model.User;
 import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 import com.wicresoft.util.web.RequestHelper;
@@ -484,7 +497,114 @@ public class Loan_TY_JJB_Controller extends BaseController {
 			
 		}
 		
+		/**
+		 * 
+		 * 信贷流程跟踪表
+		 * @param filter
+		 * @param request
+		 * @return
+		 */
+		@ResponseBody
+		@RequestMapping(value = "creditProcess.page")
+		public AbstractModelAndView creditProcess(@ModelAttribute  CreditProcess filter,HttpServletRequest request) {
+			filter.setRequest(request);
+			String customername=request.getParameter("customername");
+			if(null!=customername&&""!=customername){
+				filter.setCustomername(customername);
+				QueryResult<CreditProcess> result = postLoanService.queryCreditProcess(filter);
+				JRadPagedQueryResult<CreditProcess> pagedResult = new JRadPagedQueryResult<CreditProcess>(filter, result);
+				JRadModelAndView mv = new JRadModelAndView("/postLoan/creditProcess_browse", request);
+				mv.addObject(PAGED_RESULT, pagedResult);
+				return mv;
+			}else{
+			QueryResult<CreditProcess> result = postLoanService.queryCreditProcess(filter);
+			JRadPagedQueryResult<CreditProcess> pagedResult = new JRadPagedQueryResult<CreditProcess>(filter, result);
+			JRadModelAndView mv = new JRadModelAndView("/postLoan/creditProcess_browse", request);
+			mv.addObject(PAGED_RESULT, pagedResult);
+			return mv;
+			}
+		}
+		/**
+		 * 显示详情
+		 */
+		@ResponseBody
+		@RequestMapping(value = "creditProcessQueryAll.json")
+		@JRadOperation(JRadOperation.BROWSE)
+		public AbstractModelAndView queryAll(HttpServletRequest request) {
+			JRadModelAndView mv =null;
+			String id=RequestHelper.getStringValue(request, ID);
+			List<CreditProcess> cplist=postLoanService.queryAll(id);
+			mv = new JRadModelAndView("/postLoan/creditProcess_queryAll", request);
+			mv.addObject("cplist",cplist);
+			return mv;
+		}
 		
+		
+		//使用poi方法 导出excel
+		@ResponseBody
+		@RequestMapping(value = "creditProcessExport.json", method = { RequestMethod.GET })
+		@JRadOperation(JRadOperation.BROWSE)
+		public JRadReturnMap export(@ModelAttribute  CreditProcess filter,HttpServletRequest request,HttpServletResponse response) {
+			filter.setRequest(request);
+			String id=RequestHelper.getStringValue(request, ID);
+			JRadReturnMap returnMap = new JRadReturnMap();
+			if (returnMap.isSuccess()) {
+			String title="信贷流程跟踪表";
+			String[] rowName={"编号","企业名称","借款人姓名"
+					,"所属团队","所属区域","专业市场分布","贷款种类"
+					,"担保类型","行业类型","营销客户经理","申请时间"
+					,"申请金额 (万元）","等待天数","申请分配时间","等待天数"
+					,"上门调查时间","等待天数","补充调查时间","首次上会时间"
+					,"等待天数","决议时间","决议结果","批准金额（万元）"
+					,"等待天数","放款时间","合同年利率%","周末及假日时间调整",
+					"办理时间总计(天)","当前状态","是否转贷","说明"};
+			List<CreditProcess>plans=postLoanService.creditProcessExportQueryAll();
+			List<Object[]>  dataList=new ArrayList<Object[]>();
+			String applytime=null;
+			String jkrq=null;
+			String willtime=null;
+			String audittime=null;
+			DateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+			for(CreditProcess cc:plans){
+				applytime=sdf.format(cc.getApplytime());
+				jkrq=sdf.format(cc.getJkrq());
+				willtime=sdf.format(cc.getWilltime());
+				audittime=sdf.format(cc.getAudittime());
+			}
+			String some=" ";
+			for (int i=0;i<plans.size();i++) {
+				Object[] obj={
+						some,
+						plans.get(i).getSpmc(),
+						plans.get(i).getCustomername(),
+						plans.get(i).getBljg(),some,some,
+						plans.get(i).getDklx(),
+						plans.get(i).getMainassure(),
+						plans.get(i).getIndustry(),
+						plans.get(i).getMananger(),
+						applytime,
+						plans.get(i).getApplymoney(),some,some,some,
+						jkrq,some,some,
+						willtime,some,
+						willtime,
+						plans.get(i).getAuditopinion(),
+						plans.get(i).getExamineamount(),some,
+						audittime,
+						plans.get(i).getExamine(),some,some,
+						plans.get(i).getStatus(),some,some,
+				};
+				dataList.add(obj);
+				
+			}
+			ExportExcel excel=new ExportExcel(title, rowName, dataList, response);
+			try {
+				excel.export();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			}
+			return returnMap;
+		}
 		
 }
 

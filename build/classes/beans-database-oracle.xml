@@ -25,16 +25,10 @@
 
 	<bean id="masterDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
 		<property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
-  	    <!-- <property name="jdbcUrl" value="jdbc:oracle:thin:@61.98.0.31:1521/jnxwd" />  -->  <!--正式环境  -->
-  <!-- 		<property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.252.1:1521/orcl" />     正式环境 
- 		<property name="user" value="pccredit_jntest" /> 
- 		<property name="password" value="pccredit_jntest" />
- 	    <property name="user" value="pccredit_jn" />
-		<property name="password" value="pccredit_jn" />   --> 
 		
-		<property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.191.1:1521/orcl" />     <!--正式环境  -->
- 	    <property name="user" value="pccredit_jn" />
-		<property name="password" value="pccredit_jn" />
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@10.0.3.4:1521/primary" />     <!--正式环境  -->
+ 	    <property name="user" value="pccredit_ty" />
+		<property name="password" value="pccredit_ty" />
 		
 		<property name="minPoolSize" value="2" />
 		<property name="maxPoolSize" value="10" />

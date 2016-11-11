@@ -97,7 +97,18 @@ public class Constant {
 	/*进件审批记录*/
 	public static String APPSP= "1";//审批客户经理
 	public static String APPFD= "2";//辅调客户经理
+	/*档案流程属性*/
+	public static String RECORD_APPLY = "1";//已申请
+	public static String RECORD_OUT = "2";//未归还
+	public static String RECORD_IN = "3";//已归还
+	public static String RECORD_UN = "4";//尚未归类
 	
+	/*拒绝阶段*/
+	public static String REFUSE_1 = "上会阶段";//上会阶段
+	public static String REFUSE_2 = "申请表阶段";//申请表阶段
+	public static String REFUSE_3 = "征信阶段";//征信阶段
+	public static String REFUSE_4 = "调查阶段";//调查阶段
+	public static String REFUSE_5 = "做表阶段";//做表阶段
 	
 	public static Map<Integer,String> ATT_BATCH_1 = new HashMap<Integer,String>(){{
 		/*put(1,"合同扫描件");

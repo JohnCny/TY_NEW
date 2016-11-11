@@ -88,8 +88,24 @@
                 //"${contextPath}/intopieces/addIntopieces/browseCustomer.page?productId=" + rowid;
                //"${contextPath}/intopieces/addIntopieces/customerappguarantor.page"
                 var url = "${contextPath}/intopieces/addIntopieces/browseCustomer.page?productId=" + rowid;
+                var result = true;
+                //判断是否存在延迟归档文件
+                $.ajax({
+					 url : "${contextPath}/customer/record/delay.json",
+					 type : "get",
+					 async: false,
+					 success : function(data) {
+						 if (!data.success) {
+							 topWin.Dialog.message("尚有档案未提交，无法申请进件！");
+							 result = false;
+							 return;
+						 }
+					 }
+				 });
+                if(result){
+	                window.location.href = url;
+                }
                 
-                window.location.href = url;
             } else {
                 Dialog.message("请选择一行");
             }

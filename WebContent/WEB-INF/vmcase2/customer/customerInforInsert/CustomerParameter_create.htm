@@ -20,7 +20,7 @@
              			<col width="10%" />
               			<col width="40%" />
 						</colgroup>
-			#foreach ($pInfor in $pInfor)
+			#foreach ($pInfor in $pInfor.items)
             <tr>
               <td><label for="name">所属客户经理:</label></td>
               <td><input type="text" id="chineseName" name="managername" value="$!pInfor.customermanagerName" readonly="readonly"/></td>

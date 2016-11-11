@@ -10,6 +10,22 @@
  	 <resultMap id="SxResultMap" type="com.cardpay.pccredit.Sx.model.SxOutputData" >
    		<result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR" />
  	 </resultMap>
+ 	 
+ 	  <resultMap id="GuarantorResultMap" type="com.cardpay.pccredit.customerappguarantor.model.CustomerApplicationGuarantor" >
+    <id column="ID" property="id"  />
+    
+    <result column="CHINESE_NAME" property="chinesename"  />
+    <result column="APPLY_QUOTA" property="applyquota"  />
+    <result column="MAIN_APPLICATION_FORM_ID" property="mainApplicationFormId"  />
+    <result column="GUARANTOR_MORTGAGOR_PLEDGE" property="guarantorMortgagorPledge" jdbcType="VARCHAR" />
+    <result column="SEX" property="sex" jdbcType="VARCHAR" />
+    <result column="RELATIONSHIP_WITH_APPLICANT" property="relationshipWithApplicant" jdbcType="VARCHAR" />
+    <result column="UNIT_NAME" property="unitName" jdbcType="VARCHAR" />
+    <result column="DEPARTMENT" property="department" jdbcType="VARCHAR" />
+    <result column="CONTACT_PHONE" property="contactPhone" jdbcType="VARCHAR" />
+    <result column="CELL_PHONE" property="cellPhone" jdbcType="VARCHAR" />
+    <result column="DOCUMENT_NUMBER" property="documentNumber" jdbcType="VARCHAR" />
+  </resultMap>
 	 	
 	<!--  -->
  	<select id="findSxListByFilter" resultMap="SxResultMap" 
@@ -142,4 +158,49 @@
 	 	<select id="finduser"  resultMap="SxResultMap">
 	 	    select DISPLAY_NAME as displayName from SYS_USER
 	 	</select>
+	 	
+	 	<select id="findguarantor" resultMap="GuarantorResultMap" parameterType="java.lang.String">
+			<!-- select * from CUSTOMER_APPLICATION_GUARANTOR -->
+			select g.GUARANTOR_MORTGAGOR_PLEDGE,b.CHINESE_NAME,info.APPLY_QUOTA
+			from CUSTOMER_APPLICATION_GUARANTOR g,
+				 BASIC_CUSTOMER_INFORMATION b,
+				 CUSTOMER_APPLICATION_INFO info
+			where b.ID=info.CUSTOMER_ID
+			and   info.ID=g.MAIN_APPLICATION_FORM_ID
+			<if test="infoid!=null and infoid!=''">
+			    and info.ID=#{infoid,jdbcType=VARCHAR}
+			</if>
+		</select>
+
+	<select id="insertguarantor" 
+		parameterType="com.cardpay.pccredit.intopieces.model.CustomerApplicationGuarantor">
+		insert into CUSTOMER_APPLICATION_GUARANTOR (ID,MAIN_APPLICATION_FORM_ID,GUARANTOR_MORTGAGOR_PLEDGE,SEX,RELATIONSHIP_WITH_APPLICANT,UNIT_NAME,DEPARTMENT,CONTACT_PHONE,CELL_PHONE,DOCUMENT_NUMBER)
+		values (sys_guid(),#{mainApplicationFormId},#{guarantorMortgagorPledge},#{sex},#{relationshipWithApplicant},#{unitName},#{department},#{contactPhone},#{cellPhone},#{documentNumber})
+	</select>
+	
+	<select id="guarantorcount" 
+		parameterType="java.lang.String" resultType="int">
+		 select count(*) from CUSTOMER_APPLICATION_GUARANTOR t where 1=1
+		 <if test="infoid!=null and infoid!=''">
+			    and t.MAIN_APPLICATION_FORM_ID=#{infoid,jdbcType=VARCHAR}
+			</if>
+	</select>
+	
+	<select id="findguarantorcustomer" 
+		parameterType="java.lang.String" resultMap="GuarantorResultMap">
+		select g.GUARANTOR_MORTGAGOR_PLEDGE,b.CHINESE_NAME,b.ID,info.APPLY_QUOTA
+			from CUSTOMER_APPLICATION_GUARANTOR g,
+				 BASIC_CUSTOMER_INFORMATION b,
+				 CUSTOMER_APPLICATION_INFO info
+			where b.ID=info.CUSTOMER_ID
+			and   info.ID=g.MAIN_APPLICATION_FORM_ID 
+			and info.ID in(
+		 select g.MAIN_APPLICATION_FORM_ID from CUSTOMER_APPLICATION_GUARANTOR g where 1=1
+		 and g.DOCUMENT_NUMBER in(
+		 select CARD_ID from BASIC_CUSTOMER_INFORMATION b where 1=1
+		 <if test="customerid!=null and customerid!=''">
+			    and b.ID=#{customerid,jdbcType=VARCHAR}
+			</if>))
+	</select>
+	
 </mapper>

@@ -418,7 +418,7 @@
 						
 					 </ul>
 				  </div>
-                  
+                   <input type="text" value="$!repay" id="repay"/>
 		   </div>
 		 </div>
 	  </div>
@@ -474,6 +474,14 @@
 				$(this).next().slideToggle();
 				$(this).children("em").toggleClass("up")
 			}); 
+
+		    /*还款提醒*/
+		    $(document).ready(function() {
+				var repay = $("#repay").val();
+				if(repay.length>0){
+					topWin.Dialog.message(repay);
+				}
+			});
 </script>
 
 </html>
