@@ -39,6 +39,7 @@ import com.cardpay.pccredit.postLoan.model.Rarepaylist;
 import com.cardpay.pccredit.postLoan.model.RarepaylistForm;
 import com.cardpay.pccredit.postLoan.service.PostLoanService;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
+import com.cardpay.pccredit.zrrtz.Util.ExportExcel;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
@@ -151,6 +152,46 @@ public class Loan_TY_JJB_Controller extends BaseController {
 		return mv;
 	}
 	
+	
+	//使用poi方法 导出excel
+			@ResponseBody
+			@RequestMapping(value = "tzexport.json", method = { RequestMethod.GET })
+			@JRadOperation(JRadOperation.BROWSE)
+			public JRadReturnMap zrrtzexport(@ModelAttribute  PostLoanFilter filter, HttpServletRequest request,HttpServletResponse response) {
+				filter.setRequest(request);
+				String busicode=RequestHelper.getStringValue(request, ID);
+				JRadReturnMap returnMap = new JRadReturnMap();
+				if (returnMap.isSuccess()) {
+				String title="T_MIBUSIDATA台帐表";
+				String[] rowName={"业务编号","客户名称","客户证件号(核心)"
+						,"授信金额","发放日期(核心)","发放金额(核心)","贷款余额(核心)"
+						,"账户状态(核心) "};
+				List<MibusidataForm>plans=postLoanService.findtzList(busicode);
+				List<Object[]>  dataList=new ArrayList<Object[]>();
+				for (int i=0;i<plans.size();i++) {
+					Object[] obj={
+							plans.get(i).getBusicode(),
+							plans.get(i).getCname(),
+							plans.get(i).getCustidno(),
+							plans.get(i).getReqlmt(),
+							plans.get(i).getLoandate(),
+							plans.get(i).getMoney(),
+							plans.get(i).getBalamt(),
+							plans.get(i).getAccountstate()
+							
+					};
+					dataList.add(obj);
+					
+				}
+				ExportExcel excel=new ExportExcel(title, rowName, dataList, response);
+				try {
+					excel.export();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				}
+				return returnMap;
+			}
 	
 	/**
 	 * 

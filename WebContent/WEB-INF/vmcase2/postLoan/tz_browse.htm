@@ -86,6 +86,8 @@
           <a id="id_infor_button" class="btn_g" href="javascript:void(0);" title="查看详细信息">查看详细信息</a>
           
           <a id="id_refuse_button" class="btn_g" href="javascript:void(0);" title="被拒绝台帐">被拒绝台帐</a>
+          
+          <a id="id_export_button" class="btn_g" href="javascript:void(0);" title="导出Excel">导出Excel</a>
         </div>
         <div class="controlbtn">
         </div>
@@ -123,6 +125,16 @@
 				window.location.href = url;
 				
 	    });
+	    $("#id_export_button").click(function() {
+            if ($(".checkbox :checked").length == 1) {
+               // $("#export").unbind();
+                var busicode = $($(".checkbox :checked")[0]).attr("value");
+                var url = "${modulePath}/tzexport.json"+ "?id=" + busicode;
+				window.location.href = url;
+            } else {
+                Dialog.message("请选择一行");
+            }
+        });
 	});
 </script>
 #parse ("common/iframe_page_footer.htm")

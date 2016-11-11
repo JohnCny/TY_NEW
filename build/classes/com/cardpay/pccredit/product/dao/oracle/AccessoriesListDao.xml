@@ -26,6 +26,14 @@
 		<result property="auditType" 	 column="AUDIT_TYPE" />
 	</resultMap>
 	
+	<resultMap id="TyCustomerRecordMap" type="com.cardpay.pccredit.customer.model.TyCustomerRecord">
+		<result property="id" column="ID" />
+		<result property="applicationId" column="APPLICATIONID" />
+		<result property="recordId" column="RECORDID" />
+		<result property="status" column="STATUS" />
+		<result property="outTime" column="OUTTIME" />
+		<result property="inTime" column="INTIME" />
+	</resultMap>
 
 	<select id="findAppendixTypeCodeByProductId" resultMap="ResultMap" parameterType="java.lang.String">
 		SELECT * from ACCESSORIES_LIST
@@ -74,4 +82,13 @@
         APPLICATION_ID =#{appId}
 	</select>
 
+	<select id="delay" resultMap="TyCustomerRecordMap"  parameterType="java.lang.String">
+	 select b.*
+	from CUSTOMER_APPLICATION_INFO a,TY_CUSTOMER_RECORD b,dual c
+	where a.id=b.APPLICATIONID and b.STATUS='4'
+	<![CDATA[ 
+	and TO_DATE(a.JKRQ,'yyyymmdd') > trunc ( SYSDATE-5 ) and a.customer_id in ( select id from
+	basic_customer_information where user_id=#{id} )
+	]]> 
+	</select>
 </mapper>

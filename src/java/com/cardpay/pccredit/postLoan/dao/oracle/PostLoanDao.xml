@@ -369,4 +369,11 @@
 			AND cname =#{customerName}
 		 </if>
 	</select>
+	
+	<select id="findtzList"  resultMap="BaseResultMap3" parameterType="String">
+		    select * from T_MIBUSIDATA where 1=1 
+		  <!--   <if test="busicode != null and busicode != ''">
+		    and BUSICODE=#{busicode}
+		    </if> -->
+		</select>
 </mapper>

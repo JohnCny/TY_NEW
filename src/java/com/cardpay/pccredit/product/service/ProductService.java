@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.customer.model.CIPERSONBASINFOCOPY;
+import com.cardpay.pccredit.customer.model.TyCustomerRecord;
 import com.cardpay.pccredit.customer.model.TyProductType;
 import com.cardpay.pccredit.intopieces.model.AppManagerAuditLog;
 import com.cardpay.pccredit.intopieces.model.AppManagerAuditLogForm;
@@ -526,5 +527,15 @@ public class ProductService {
 		/*String sql = "select * from t_app_manager_audit_log t where APPLICATION_ID ='"+appId+"'";
 		return commonDao.queryBySql(AppManagerAuditLog.class, sql, null);*/
 		return accessoriesListDao.findAppManagerAuditById(appId);
+	}
+	
+	public Boolean delay(String id) {
+		//如果没有记录就返回true
+		//有记录就返回flase
+		List<TyCustomerRecord> list = accessoriesListDao.delay(id);
+		if(list.size()>0){
+			return false;
+		}
+		return true;
 	}
 }

@@ -139,6 +139,30 @@ public class AddIntoPiecesControl extends BaseController {
 		return mv;
 	}
 
+	/**
+	 * 查看是否7天内未归档
+	 * @param customerinfoForm
+	 * @param request
+	 * @RequestParam
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "delay.json")
+	@JRadOperation(JRadOperation.CREATE)
+	public JRadReturnMap delay(@ModelAttribute ProductFilter filter, HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+			Boolean result = productService.delay(user.getId());
+			returnMap.setSuccess(result);
+		} catch (Exception e) {
+			// TODO: handle exception
+			returnMap.setSuccess(false);
+			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
+		}
+		return returnMap;
+	}
+	
 	//选择客户
 	@ResponseBody
 	@RequestMapping(value = "browseCustomer.page", method = { RequestMethod.GET })

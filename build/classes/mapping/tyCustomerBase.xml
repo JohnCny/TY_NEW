@@ -2,6 +2,8 @@
 
 <resultMap>
    <!--  <result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/> -->
+	<result column="ID" jdbcType="VARCHAR" index="2" />   
+   
 	<result column="KHNM" jdbcType="VARCHAR" index="2" />
 
 	<result column="KHMC" jdbcType="VARCHAR" index="3" />

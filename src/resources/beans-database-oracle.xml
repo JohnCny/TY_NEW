@@ -32,9 +32,13 @@
  	    <property name="user" value="pccredit_jn" />
 		<property name="password" value="pccredit_jn" />   --> 
 		
-		<property name="jdbcUrl" value="jdbc:oracle:thin:@10.0.3.4:1521/primary" />     <!--正式环境  -->
+	<!-- 	<property name="jdbcUrl" value="jdbc:oracle:thin:@10.0.3.4:1521/primary" />     
  	    <property name="user" value="pccredit_ty" />
-		<property name="password" value="pccredit_ty" />
+		<property name="password" value="pccredit_ty" /> -->
+		
+		 <property name="jdbcUrl" value="jdbc:oracle:thin:@127.0.0.1:1521/oracle" />    
+ 	    <property name="user" value="ZBALLTWO" />
+		<property name="password" value="123456" /> 
 		
 		<property name="minPoolSize" value="2" />
 		<property name="maxPoolSize" value="10" />
