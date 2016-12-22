@@ -73,7 +73,7 @@
               <td class="checkbox"><input type="radio" name="checkbox" value="$!obj.id"
                    /></td>
 <!--               <td nowrap="nowrap">#dictVal("CMMCPLX", $!product.productTypeCode)</td> -->
-              <td nowrap="nowrap">$!obj.deptName</td>
+              <td nowrap="nowrap">$!obj.Name</td>
               <td nowrap="nowrap">$!obj.productName</td>
               <td nowrap="nowrap">$!obj.jkje</td>
               <td nowrap="nowrap">$!obj.total</td>
@@ -85,8 +85,14 @@
       <div class="pagebar">
         <div class="controlbtn">
         </div>
-        <span>总笔数:<b>$!total</b>笔</span>
-        <span>收息总金额:<b>$!totalSx</b>元</span>
+        <table>
+     
+          #foreach($obj1 in $totalSx)
+        <span>总笔数:<b>$!obj1.countSx</b>笔</span>
+	    &nbsp;&nbsp;&nbsp;
+        <span>收息总金额:<b>$!obj1.totalSX</b>元</span>
+        #end
+        </table>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
       </div>

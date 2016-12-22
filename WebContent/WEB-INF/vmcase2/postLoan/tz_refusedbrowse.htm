@@ -45,18 +45,19 @@
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">业务编号</th>
               <th nowrap="nowrap">客户名称</th>
               <th nowrap="nowrap">客户身份证号</th>
               <th nowrap="nowrap">客户联系方式</th>
               <th nowrap="nowrap">行业</th>
-              <th nowrap="nowrap">店铺名称</th>
+              <th nowrap="nowrap">店铺名称--</th>
               <th nowrap="nowrap">工作地址</th>
-              <th nowrap="nowrap">申请金额</th>
-              <th nowrap="nowrap">申请时间</th>
+              <th nowrap="nowrap">申请金额--</th>
+              <th nowrap="nowrap">申请时间--</th>
               <!-- <th nowrap="nowrap">拒绝环节</th> -->
               <th nowrap="nowrap">拒绝日期</th>
-              <th nowrap="nowrap">拒绝原因</th>
-              <th nowrap="nowrap">客户经理</th>
+              <th nowrap="nowrap">拒绝原因--</th>
+              <th nowrap="nowrap">客户经理--</th>
             </tr>
           </table>
         </div>
@@ -80,19 +81,20 @@
             #foreach ($obj in $result.items)
             <tr>
               <td class="checkbox"><input type="radio" name="checkbox" value="$!obj.busicode"/></td>
-              <td nowrap="nowrap">$!obj.cname</td>
-              <td nowrap="nowrap">$!obj.custidno</td>
-              <td nowrap="nowrap">$!obj.telephone</td>
+              <td nowrap="nowrap">$!obj.ywbh</td>
+              <td nowrap="nowrap">$!obj.CHINESE_NAME</td>
+              <td nowrap="nowrap">$!obj.CARD_ID</td>
+              <td nowrap="nowrap">$!obj.TELEPHONE</td>
               <td nowrap="nowrap">$!obj.industry</td>
               <td nowrap="nowrap">$!obj.spmc</td>
-              <td nowrap="nowrap">$!obj.messageaddr</td>
-              <td nowrap="nowrap">$!obj.jf</td>
+              <td nowrap="nowrap">$!obj.RESIDENTIAL_ADDRESS</td>
+              <td nowrap="nowrap">$!obj.JKJE</td>
             <!--   #dictVal("ACCOUNTSTATE", $!obj.accountstate) -->
-              <td nowrap="nowrap">$!obj.loandate</td>
+              <td nowrap="nowrap">$!obj.JKRQ</td>
               <!-- <td nowrap="nowrap">$!obj.reqlmt</td> -->
-              <td nowrap="nowrap">$!obj.audittime</td>
-              <td nowrap="nowrap">$!obj.refusalreason</td>
-              <td nowrap="nowrap">$!obj.displayname</td>
+              <td nowrap="nowrap">$!obj.AUDIT_TIME</td>
+              <td nowrap="nowrap">$!obj.REFUSAL_REASON</td>
+              <td nowrap="nowrap">$!obj.DISPLAY_NAME</td>
             </tr>
             #end
           </table>
@@ -100,7 +102,7 @@
       </div>
       <div class="pagebar">
        <div class="controlbtn">
-          <a id="id_infor_button" class="btn_g" href="javascript:void(0);" title="查看详细信息">查看详细信息</a>
+          <!-- <a id="id_infor_button" class="btn_g" href="javascript:void(0);" title="查看详细信息">查看详细信息</a> -->
           
           <!-- <a id="id_refuse_button" class="btn_g" href="javascript:void(0);" title="被拒绝台帐">被拒绝台帐</a> -->
         </div>

@@ -215,7 +215,6 @@ public class IntopiecesDecisionController extends BaseController {
 				return WebRequestHelper.processException(e);
 			}
 		}
-
 		return returnMap;
 	}
 	

@@ -66,7 +66,7 @@
 		  SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
-				select 
+				    select 
                    b.chinese_name as chinese_name,
                    b.card_id as card_id,
                    p.product_name as product_name,
@@ -74,11 +74,17 @@
                    a.display_name as display_name
               from customer_application_info  t,
                    basic_customer_information b,
+                   ty_customer_base base,
                    product_attribute          p,
                    sys_user a,
+                   ty_repay_tkmx tkmx,
                    TY_REPAY_LSZ D 
              where t.customer_id = b.id
-                   and t.product_id = p.id and a.id=b.user_id and D.JJH=t.JJH
+                   and t.product_id = p.id 
+                   and a.id=b.user_id 
+                   and b.TY_CUSTOMER_ID=base.id
+                   and base.khnm=tkmx.khh
+                   and tkmx.jjh=D.Jjh
                    <if test="fdate!=null and ldate!=null and fdate!='' and ldate!=''">
 						    and D.QXRX=#{fdate}
 						</if>
@@ -106,11 +112,17 @@
                    a.display_name as display_name
               from customer_application_info  t,
                    basic_customer_information b,
+                   ty_customer_base base,
                    product_attribute          p,
                    sys_user a,
+                   ty_repay_tkmx tkmx,
                    TY_REPAY_LSZ D 
              where t.customer_id = b.id
-                   and t.product_id = p.id and a.id=b.user_id and D.JJH=t.JJH
+                   and t.product_id = p.id 
+                   and a.id=b.user_id 
+                   and b.TY_CUSTOMER_ID=base.id
+                   and base.khnm=tkmx.khh
+                   and tkmx.jjh=D.Jjh
                    <if test="fdate!=null and ldate!=null and fdate!='' and ldate!=''">
 						    and D.QXRX=#{fdate}
 						</if>

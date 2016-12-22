@@ -1,4 +1,3 @@
-#Thu Nov 10 15:45:18 CST 2016
 eclipse.preferences.version=1
 encoding//WebContent/WEB-INF/vmcase2/customer/customerFilter/customerfilter_browse.htm=UTF-8
 encoding//WebContent/WEB-INF/vmcase2/customer/customerInforInsert/CustomerParameter_create.htm=UTF-8
@@ -10,6 +9,7 @@ encoding//WebContent/WEB-INF/vmcase2/intopieces/product_browse.htm=UTF-8
 encoding//WebContent/WEB-INF/vmcase2/postLoan/tz_browse.htm=UTF-8
 encoding//WebContent/WEB-INF/vmcase2/product=UTF-8
 encoding//WebContent/WEB-INF/vmcase2/product/product_browse.htm=UTF-8
+encoding//WebContent/WEB-INF/vmcase2/report/refuseLoan/refuseLoan.htm=UTF-8
 encoding//WebContent/WEB-INF/vmcase2/riskcontrol/riskCustomer/customer_black_list.htm=UTF-8
 encoding//WebContent/WEB-INF/vmcase2/riskcontrol/riskCustomer/customer_noblack_list.htm=UTF-8
 encoding//WebContent/WEB-INF/vmcase2/riskcontrol/riskCustomer/customerinfor_create_black_list.htm=UTF-8

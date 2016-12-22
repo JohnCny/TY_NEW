@@ -63,7 +63,7 @@ public class CustomerTransferFlowService {
 	
 	
 	public List<YffdktjbbForm> getYffdktjbbFormlList(ReportFilter filter){
-		return customerTransferFlowDao.getYffdktjbbFormlList(filter);
+		return  customerTransferFlowDao.getYffdktjbbFormlList(filter);
 	}
 	/**
 	 *	被拒绝贷款统计
@@ -85,14 +85,6 @@ public class CustomerTransferFlowService {
 	 */
 	public QueryResult<DqzzdktjbbForm> findDqzzdktjbbFormList(ReportFilter filter) throws ParseException{
 		//从数据库里得到贷款的到期日起和系统现在日期相比 在系统现在日起之前的可视为已到期贷款
-		/*SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		String DQRQ=customerTransferFlowDao.finddqrq();
-		String xzrq= sdf.format(new Date());
-		Date dqrq=sdf.parse(DQRQ);
-		Date XZRQ=sdf.parse(xzrq);
-		if(dqrq.before(XZRQ)){
-			System.out.println(111);
-		}*/
 		List<DqzzdktjbbForm> list = customerTransferFlowDao.findDqzzdktjbbFormList(filter);
 		int size = customerTransferFlowDao.findDqzzdktjbbFormCountList(filter);
 		QueryResult<DqzzdktjbbForm> result = new QueryResult<DqzzdktjbbForm>(size,list);

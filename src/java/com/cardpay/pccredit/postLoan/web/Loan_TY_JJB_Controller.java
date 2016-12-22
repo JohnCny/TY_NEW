@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
+import com.cardpay.pccredit.customer.model.TyRepayTkmxForm;
 import com.cardpay.pccredit.customer.service.MaintenanceService;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.model.DhApplnAttachmentBatch;
@@ -35,6 +36,7 @@ import com.cardpay.pccredit.postLoan.filter.FcloaninfoFilter;
 import com.cardpay.pccredit.postLoan.filter.PostLoanFilter;
 import com.cardpay.pccredit.postLoan.model.Fcloaninfo;
 import com.cardpay.pccredit.postLoan.model.MibusidataForm;
+import com.cardpay.pccredit.postLoan.model.MibusidateView;
 import com.cardpay.pccredit.postLoan.model.Rarepaylist;
 import com.cardpay.pccredit.postLoan.model.RarepaylistForm;
 import com.cardpay.pccredit.postLoan.service.PostLoanService;
@@ -94,8 +96,9 @@ public class Loan_TY_JJB_Controller extends BaseController {
 		String userId = user.getId();
 	/*	QueryResult<TyRepayTkmxForm> result = postLoanService.findListByFilter(filter);
 		JRadPagedQueryResult<TyRepayTkmxForm> pagedResult = new JRadPagedQueryResult<TyRepayTkmxForm>(filter, result);*/
-		QueryResult<Fcloaninfo> result = postLoanService.findJJJnListByFilter(filter);
-		JRadPagedQueryResult<Fcloaninfo> pagedResult = new JRadPagedQueryResult<Fcloaninfo>(filter, result);
+		filter.setUserid(userId);
+		QueryResult<TyRepayTkmxForm> result = postLoanService.findJJJnListByFilter(filter);
+		JRadPagedQueryResult<TyRepayTkmxForm> pagedResult = new JRadPagedQueryResult<TyRepayTkmxForm>(filter, result);
 
 		JRadModelAndView mv = new JRadModelAndView("/postLoan/jjb_browse", request);
 		mv.addObject(PAGED_RESULT, pagedResult);
@@ -143,9 +146,9 @@ public class Loan_TY_JJB_Controller extends BaseController {
 		filter.setRequest(request);
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 		String userId = user.getId();
-		QueryResult<MibusidataForm> result = postLoanService.findTzJnListByFilter(filter);
-		JRadPagedQueryResult<MibusidataForm> pagedResult = new JRadPagedQueryResult<MibusidataForm>(filter, result);
-
+		filter.setUserid(userId);
+		QueryResult<MibusidateView> result = postLoanService.findTzJnListByFilter(filter);
+		JRadPagedQueryResult<MibusidateView> pagedResult = new JRadPagedQueryResult<MibusidateView>(filter, result);
 		JRadModelAndView mv = new JRadModelAndView("/postLoan/tz_browse", request);
 		mv.addObject(PAGED_RESULT, pagedResult);
 
@@ -160,13 +163,16 @@ public class Loan_TY_JJB_Controller extends BaseController {
 			public JRadReturnMap zrrtzexport(@ModelAttribute  PostLoanFilter filter, HttpServletRequest request,HttpServletResponse response) {
 				filter.setRequest(request);
 				String busicode=RequestHelper.getStringValue(request, ID);
+				IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+				String userId = user.getId();
 				JRadReturnMap returnMap = new JRadReturnMap();
 				if (returnMap.isSuccess()) {
-				String title="T_MIBUSIDATA台帐表";
+				String title="MIBUSIDATA台帐表";
 				String[] rowName={"业务编号","客户名称","客户证件号(核心)"
 						,"授信金额","发放日期(核心)","发放金额(核心)","贷款余额(核心)"
 						,"账户状态(核心) "};
-				List<MibusidataForm>plans=postLoanService.findtzList(busicode);
+				filter.setUserid(userId);
+				List<MibusidataForm>plans=postLoanService.findtzList(filter);
 				List<Object[]>  dataList=new ArrayList<Object[]>();
 				for (int i=0;i<plans.size();i++) {
 					Object[] obj={
@@ -206,8 +212,8 @@ public class Loan_TY_JJB_Controller extends BaseController {
 		String busicode=request.getParameter("busicode");
 		filter.setBusiCode(busicode);
 		JRadModelAndView mv = new JRadModelAndView("/postLoan/tz_info_browse", request);
-		List<MibusidataForm> result = postLoanService.selectTz(filter);
-		MibusidataForm form = result.get(0);
+		List<MibusidateView> result = postLoanService.selectTz(filter);
+		MibusidateView form = result.get(0);
 		mv.addObject("fcloanifo", form);
 		return mv;
 	
@@ -487,8 +493,8 @@ public class Loan_TY_JJB_Controller extends BaseController {
 			String busicode=request.getParameter("busicode");
 			filter.setBusiCode(busicode);
 			JRadModelAndView mv = new JRadModelAndView("/postLoan/jj_info_browse", request);
-			List<Fcloaninfo> result = postLoanService.selectfcloanifoInfoByBusicode(filter);
-			Fcloaninfo fcloanifo = result.get(0);
+			List<TyRepayTkmxForm> result = postLoanService.selectfcloanifoInfoByBusicode(filter);
+			TyRepayTkmxForm fcloanifo = result.get(0);
 			mv.addObject("fcloanifo", fcloanifo);
 			return mv;
 		

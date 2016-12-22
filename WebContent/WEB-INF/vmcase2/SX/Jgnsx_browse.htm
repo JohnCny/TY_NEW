@@ -34,10 +34,9 @@
 					结束日期:<input type="text" id="ldate" >
 					 产品:<input  type="text" class="/rinpsty" name="product" id="product"   />
 					 <br/>
-					团队:<select id="deptName" name="deptName" >
-                 			   <option value="$!obj.deptName"></option>
+					团队:<select id="deptName" name="deptName"  >
                 			    #foreach($obj in $team)
-                			    	<option value="$!obj.deptName" >$!obj.deptName</option>
+                 			   <option >$!obj.Name</option>
                 			    #end
                 			  </select>
 					客户经理:<select id="displayName" name="displayName" >
@@ -88,7 +87,7 @@
               <td class="checkbox"><input type="radio" name="checkbox" value="$!obj.id"
                    /></td>
 <!--               <td nowrap="nowrap">#dictVal("CMMCPLX", $!product.productTypeCode)</td> -->
-              <td nowrap="nowrap">$!obj.deptName</td>
+              <td nowrap="nowrap">$!obj.Name</td>
               <td nowrap="nowrap">$!obj.displayName</td>
               <td nowrap="nowrap">$!obj.productName</td>
               <td nowrap="nowrap">$!obj.jkje</td>
@@ -98,13 +97,19 @@
           </table>
         </div>
       </div>
+      <table></table>
+          #foreach($obj in $total)
+        <span>总笔数:<b>$!countSx</b>笔</span>
+          #end
+          #foreach($obj in $totalSX)
+        <span>收息总金额:<b>$!totalSx</b>元</span>
+        #end
+        #parse ("common/pagination.htm")
       <div class="pagebar">
         <div class="controlbtn">
         </div>
-        <span>总笔数:<b>$!total</b>笔</span>
-        <span>收息总金额:<b>$!totalSx</b>元</span>
-        #parse ("common/pagination.htm")
-        <div class="clear"></div>
+        <div class="clear">
+        </div>
       </div>
     </div>
   </div>

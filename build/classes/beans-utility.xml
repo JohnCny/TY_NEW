@@ -372,7 +372,7 @@
          <!-- <property name="startDelay" value="0"/>
         <property name="repeatInterval" value="60000" /> -->
          <property name="cronExpression">
-            <value>0 20 10 * * ?</value>
+            <value>0 40 16 * * ?</value>
         </property> 
     </bean>
        <!--贷款信息 start -->
@@ -419,8 +419,11 @@
        <!--  <property name="cronExpression">
             <value>0 0 0/2 * * ?</value>
         </property> -->
-        <property name="cronExpression">
+        <!-- <property name="cronExpression">
             <value>0 39 22 * * ?</value>
+        </property>  -->
+        <property name="cronExpression">
+            <value>0 29 10 * * ?</value>
         </property> 
     </bean>
     
@@ -481,9 +484,9 @@
                  <ref bean="updateCustomerAppInfoStatusTigger"/> 
                  <ref bean="updateCustomerSalaryTigger"/> 
                   <ref bean="downAndtargzScheduleTigger"/>
-				<!-- <ref bean="addManagerAssessmentScoreTigger"/>
-				
-				<ref bean="addStatisticalTableTigger"/> -->
+				<!-- <ref bean="addManagerAssessmentScoreTigger"/>-->
+				 <!-- 每日执行客户经理统计信息信息 start -->
+				<ref bean="addStatisticalTableTigger"/> 
             <!-- 	<ref bean="statisticsYearScheduleServicerTrigger"/>
 
             	<ref bean="statisticsMonthScheduleServicerTrigger"/>

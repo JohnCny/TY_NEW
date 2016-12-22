@@ -18,6 +18,7 @@ import com.cardpay.pccredit.postLoan.filter.FcloaninfoFilter;
 import com.cardpay.pccredit.postLoan.filter.PostLoanFilter;
 import com.cardpay.pccredit.postLoan.model.Fcloaninfo;
 import com.cardpay.pccredit.postLoan.model.MibusidataForm;
+import com.cardpay.pccredit.postLoan.model.MibusidateView;
 import com.cardpay.pccredit.postLoan.model.Rarepaylist;
 import com.cardpay.pccredit.postLoan.model.RarepaylistForm;
 import com.wicresoft.util.annotation.Mapper;
@@ -52,7 +53,7 @@ public interface PostLoanDao {
 	 * @param filter
 	 * @return
 	 */
-	List<Fcloaninfo> findJJJnListByFilter(PostLoanFilter filter);
+	List<TyRepayTkmxForm> findJJJnListByFilter(PostLoanFilter filter);
 	int findJJJnListCountByFilter(PostLoanFilter filter);
 	
 	/**
@@ -71,7 +72,7 @@ public interface PostLoanDao {
 	 * @param filter
 	 * @return
 	 */
-	List<MibusidataForm> findTzJnListByFilter(PostLoanFilter filter);
+	List<MibusidateView> findTzJnListByFilter(PostLoanFilter filter);
 	int findTzJnListCountByFilter(PostLoanFilter filter);
 	
 	/**
@@ -85,6 +86,6 @@ public interface PostLoanDao {
 	List<RarepaylistForm> selectRarepaylistfoInfoByBusicode(FcloaninfoFilter filter);
 	List<MibusidataForm> findrefusedMibusidata(PostLoanFilter filter);
 	int findrefusedMibusidatasize(PostLoanFilter filter);
-	List<MibusidataForm> findtzList(@Param("busicode")String busicode);
+	List<MibusidataForm> findtzList(PostLoanFilter filter);
 	
 }
