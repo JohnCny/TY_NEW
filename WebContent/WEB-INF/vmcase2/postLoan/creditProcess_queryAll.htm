@@ -1,0 +1,140 @@
+#parse ("common/iframe_page_header.htm")
+<script src="${contextPath}/common/js/common/jquery.form.js"></script>
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
+<body>
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+				  <div class="dvTab">
+           <div class="title">信贷流程跟踪表>详情显示</div>
+        </div>
+			</div>
+				<div class="forms" id="formsId">
+		<table class="rule" border="1" bordercolor="#CCCCCC">
+					<caption>产品属性</caption>
+						<colgroup>
+             			<col width="10%" />
+              			<col width="40%" />
+             			<col width="10%" />
+              			<col width="40%" />
+						</colgroup>
+            #foreach ($cplist in $cplist)
+            <tr>
+	              <td><label for="name">企业名称:</label></td>
+	              <td><input type="text" value="$!cplist.spmc"  readonly="readonly"/></td>
+	              
+	              <td><label for="name">客户姓名:</label></td>
+	              <td><input type="text" value="$!cplist.customername" readonly="readonly"/></td>
+            </tr>
+            
+            <tr>
+	              <td><label for="name">所属团队:</label></td>
+	              <td><input  type="text" value="$!cplist.teamname" readonly="readonly"/></td>
+	              
+	               <td><label for="name">所属区域:</label></td>
+	              <td><input  type="text" value="$!cplist.bljg" readonly="readonly"/></td>
+            </tr>
+            
+             <tr>
+             	  <td><label for="name">贷款种类:</label></td>
+	              <td><input  type="text" value="$!cplist.dklx" readonly="readonly"/></td>
+	              
+	              <td><label for="name">担保类型:</label></td>
+	              <td><input type="text" value="$!cplist.mainassure"  readonly="readonly"/></td>
+            </tr>
+            
+            <tr>
+	              <td><label for="name">行业类型:</label></td>
+	              <td><input  type="text" value="$!cplist.industry" readonly="readonly"/></td>
+	              <td><label for="name">营销客户经理:</label></td>
+	              <td><input  type="text" value="$!cplist.mananger" readonly="readonly"/></td>
+            </tr>
+      
+			<tr> 
+	             <td><label for="name">管户经理:</label></td>
+	             <td><input  type="text" value="$!cplist.mananger" readonly="readonly"/></td>
+	             
+				<td><label for="name"> 申请时间:</label></td>
+	            <td><input  type="text" value="$!date.format("yyyy-MM-dd HH:mm:ss",$!cplist.applytime)" readonly="readonly"/></td>
+            </tr>        
+            
+            <tr>
+             	<td><label for="name">申请金额:</label></td>
+             	<td><input type="text" value="$!cplist.applymoney"  readonly="readonly"/></td>
+            
+				<td><label for="name">决议时间:</label></td>
+              	<td><input type="text" value="$!date.format("yyyy-MM-dd HH:mm:ss",$!cplist.willtime)" readonly="readonly"/>
+				</td> 
+            </tr>
+            
+            <tr>
+				<td><label for="name">决议结果:</label></td>
+	            <td><input class="rinpsty"  type="text" value="#dictVal('approveOperationSpecialStatus' ,$!cplist.auditopinion)" readonly="readonly"/></td>
+	            
+	            <td><label for="name">批准金额:</label></td>
+	            <td><input class="rinpsty"  type="text" value="$!cplist.examineamount" readonly="readonly"/></td>
+            </tr>
+            
+            <tr>
+				<td><label for="name">放款时间:</label></td>
+				<td><input class="rinpsty"  type="text" value="$!cplist.audittime" readonly="readonly"/></td>
+	            <!-- <td><input class="rinpsty"  type="text" value="$!date.format("yyyy-MM-dd HH:mm:ss",$!cplist.audittime)" readonly="readonly"/></td> -->
+	            
+	            <td><label for="name">合同年利率:</label></td>
+				<td><input class="rinpsty"  type="text" value="$!cplist.examine" readonly="readonly"/></td>  
+            </tr>
+            
+            <tr>
+				<td><label for="name">当前状态:</label></td>
+	            <td><input class="rinpsty"  type="text" value="$!cplist.status" readonly="readonly"/></td>
+            </tr>
+			#end			
+					</table>
+					
+				</div>
+
+			<div class="submit"> <input
+					type="button" onclick="javascript:history.go(-1);"
+					value="#i18n('button.cancel')" />
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	
+	function mySave() {
+		$('#id_module_form').ajaxSubmit({
+			dataType : 'json',
+			type : "post",
+			success : function(data) {
+				if (data.success) {
+					Dialog.message(data.message,"提示", function() {
+						/* navigateTo("${contextPath}/product/productinformation/create_cpfjqd.page"+"?productId=" +data.productId); */
+						navigateTo("${contextPath}/customer/customer_ZRRTZ/zrrtz.json");
+					 });
+				} else {
+					Dialog.message(data.errors.errors[0].message);
+					return false;
+				}
+			},
+			error : function(data) {
+				Dialog.closeLoad();
+				Dialog.message("操作失败");
+				return false;
+			}
+		});
+	}
+	var layout=new FormsLayout("formsId");			
+	window.top.currentWindow.setLayout(layout);
+
+	 #set ($formName = "'#id_module_form'")
+	 #parse ("product/product_create_validation.js")
+	 $(document).ready(function() {
+		 $("#id_save_button").click(function() {
+		        if ($($formName).valid()) {
+		        	mySave();
+		        }
+		      });
+	});  
+	</script>
+</body>
+</html>

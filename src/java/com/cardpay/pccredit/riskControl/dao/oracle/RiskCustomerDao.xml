@@ -39,7 +39,7 @@
 							p.PRODUCT_NAME as productName
 					  FROM basic_customer_information customer
 					 INNER JOIN risk_list risk
-					    ON customer.id = risk.customer_id
+					    ON customer.id = risk.customer_id 
 					 INNER JOIN sys_user sysuser
 					    ON sysuser.id = risk.reported_id_manager
 					 LEFT  JOIN product_attribute p on p.id = risk.PRODUCT_ID

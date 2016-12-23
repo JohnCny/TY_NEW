@@ -43,7 +43,8 @@
 		<menu id="080000" name="riskcontrol" title="综合风控管理" operations=""> 
 			<menu id="080001" name="riskcustomermanager" title="风险客户管理" url="/riskcontrol/riskcustomermanager/managerbrowse.page" img="" operations="reported|browse"/>
 			<menu id="080002" name="riskcustomercollection" title="客户催收计划列表" url="/riskcontrol/riskcustomercollection/browse.page" img="" operations="create|change|display|browse"/>
-			<menu id="080003" name="riskcustomermanager1" title="黑名单管理" url="/riskcontrol/custormerblacklist/custormerblacklist11.page" img="" operations="reported|browse"/>
+			<!-- <menu id="080003" name="riskcustomermanager1" title="黑名单管理" url="/riskcontrol/custormerblacklist/custormerblacklist11.page" img="" operations="reported|browse"/> -->
+			<menu id="080004" name="hmdinput" title="黑名单导入" url="/report/inputhmdcomtroller/hmdbrowse.page" img="" operations="reported|browse"/>
 			
 		</menu>
 		

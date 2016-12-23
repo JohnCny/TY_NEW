@@ -73,7 +73,6 @@
         <div class="controlbtn">
           <a id="id_pre_button" class="btn_g" href="javascript:history.back();" title="上一步">上一步</a>
           <a id="id_next_button" class="btn_g" href="javascript:void(0);" title="下一步">下一步</a>
-       	<a id="id_businessTackling" class="btn_g" href="javascript:void(0);" title="业务核查">业务核查</a>
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
@@ -141,31 +140,7 @@
                 Dialog.message("请选择一行");
             }
         });
-		//业务核查
-		$("#id_businessTackling").click(function() {
-            if ($(".checkbox :checked").length == 1) {
-            	var rowid = $($(".checkbox :checked")[0]).attr("value").split("/"); 
-  				$.ajax({
-						url : "/PCCredit/customer/amountadjustmentviews/queryByIdCard.json?customerId=" + rowid[0],
-						dataType : 'json',
-						type : "get",
-						success : function(data) {
-						if (data.success) {
-					    if(data.message!=null && data.message!=""){
-						var url = "/PCCredit/customer/amountadjustmentviews/queryByBusinessTackling.page?customerId=" + rowid[0];
-					    window.location.href = url;	
-							}else{
-								window.top.Dialog.message("该用户不存在");
-								}
-						 }else{
-								window.top.Dialog.message("系统出现异常,请联系管理员"); 
-					    	}
-						}
-			    });
-            } else {
-                Dialog.message("请选择一行");
-            }
-        });
+		
          //手工输入调查信息
     /*     $("#id_next_button").click(function() {
             if ($(".checkbox :checked").length == 1) {

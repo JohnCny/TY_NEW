@@ -21,9 +21,9 @@ public class BusinessTacklingService {
 	@Autowired
 	private IBusinessTacklingDao btDao;
 
-	public CustomerInfo queryById(String customerId) {
+	public CustomerInfo queryById(String cardId) {
 		// TODO Auto-generated method stub
-		return btDao.queryById(customerId);
+		return btDao.queryById(cardId);
 	}
 
 	public List<BusinessTackling> queryByIdCard(String idcard) {

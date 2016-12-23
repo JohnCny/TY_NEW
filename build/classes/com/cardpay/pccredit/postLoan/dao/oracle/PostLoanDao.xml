@@ -135,21 +135,26 @@
 	<resultMap id="CreditProcess" type="com.cardpay.pccredit.postLoan.model.CreditProcess" >
    		<result column="spmc" 		property="spmc"  />
 		<result column="chinese_name" 	property="customername" />
+		<result column="teamname" 	property="teamname" />
 		<result column="bljg" 		property="bljg" />
 		<result column="dklx" 		property="dklx" />
-		<result column="mainassure"	property="mainassure"/>
-		<result column="industry" 	property="industry" />
-		<result column="busimanager" 	property="mananger"/>
+		<result column="assure_means"	property="mainassure"/>
+		<result column="hyfl" 	property="industry" />
+		<result column="display_name" 	property="mananger"/>
 		<result column="created_time" property="applytime"/>
 		<result column="apply_quota" 	property="applymoney"/>
-		<result column="jkrq" 		property="jkrq"/>
-		<result column="created_time" 		property="willtime" />
-		<result column="audit_opinion" 	property="auditopinion" />
+		<result column="start_examine_time" 		property="willtime" />
+		<result column="examine_result" 	property="auditopinion" />
 		<result column="examine_amount" 	property="examineamount" />
-		<result column="audit_time" 	property="audittime" />
+		<result column="jkrq" 	property="audittime" />
+		<result column="zjts" 	property="zjdays" />
 		<result column="examine_lv"	    property="examine" 	 />
-		<result column="process_op_status" 		property="status" />
+		<result column="status" 		property="status" />
 		<result column="id" 		property="id" />
+		<result column="CARD_ID" 		property="cardId" />
+		<result column="carId" 		property="zjmh" />
+		
+		
  	 </resultMap>
 	
 	  <!-- <resultMap id="BaseResultMap" type="com.cardpay.pccredit.customer.model.TyRepayTkmxForm" >
@@ -396,18 +401,51 @@
 		  SELECT *from 
 		  (SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
-				select 
-                  	bai.spmc,bai.chinese_name,trt.bljg,trt.dklx,
-					m.mainassure,m.industry,cap.process_op_status,bai.id
+					  select 
+            bai.spmc,
+            bai.chinese_name,
+            (select t.name from sys_department t where t.id in 
+             (select tt.dept_id from sys_dept_user tt where tt.user_id = su.id)) as teamname,
+             (SELECT  A.TYPE_NAME  FROM DICT A ,PRODUCT_ATTRIBUTE p 
+             WHERE A .DICT_TYPE = 'CMMSCLNM-贷款担保方式' and A.TYPE_CODE=p.assure_means and p.id=cai.product_id) as assure_means,
+             su.display_name,
+            cai.created_time,
+            cai.apply_quota,
+             cai.status,
+             bai.id
+             from wf_status_queue_record t 
+             left join wf_status_info s on t.current_status = s.id 
+             left join wf_process_record pr on t.current_process = pr.id 
+             left join customer_application_process aa on pr.id = aa.serial_number
+              left join sys_user su on t.examine_user = su.id 
+              left join customer_application_info cai on cai.id=aa.application_id
+              left join basic_customer_information bai on cai.customer_id=bai.id
+              left join ty_customer_base base on bai.ty_customer_id=base.id
+              left join PRODUCT_ATTRIBUTE p on p.id=cai.product_id
+              where 1=1
+					<!-- select 
+	                bai.spmc,bai.chinese_name,trt.bljg,trt.dklx,
+					m.mainassure,m.industry,s.status_name,bai.id
 					from
-					BASIC_CUSTOMER_INFORMATION bai,TY_REPAY_TKMX trt,T_MIBUSIDATA m,
-					customer_application_info cai,node_audit na,customer_application_process cap 
-					where  1=1
-					and cap.next_node_id=na.id
-					and cai.id=cap.application_id
-					and cai.customer_id=bai.id
-					and cai.jjh=trt.jjh
-					and trt.jjh=m.cnlno
+					wf_status_queue_record t ,
+				    wf_status_info s,
+				    wf_process_record pr,
+				    customer_application_process cap,
+				    customer_application_info cai,
+				    TY_CUSTOMER_RECORD tcr,
+				    BASIC_CUSTOMER_INFORMATION bai,
+				    ty_customer_base tcb,
+				    TY_REPAY_TKMX trt,
+				    t_mibusidata  m
+				    where t.current_status = s.id
+				    and t.current_process = pr.id
+				    and pr.id = cap.serial_number
+				    and tcr.application_id=cap.application_id
+				    and cai.id = tcr.application_id
+			    	and bai.id=cai.customer_id 
+		        	and tcb.id=bai.ty_customer_id
+		            and trt.khh=tcb.khnm
+			        and trt.jjh=m.cnlno -->
 					<if test="customername!=null and customername!='' ">
 						    and bai.chinese_name like  '%'||#{customername}||'%'
 					</if>
@@ -421,68 +459,145 @@
 	<!-- 统计行数 -->
 	<select id="querySize" resultType="int" parameterType="com.cardpay.pccredit.postLoan.model.CreditProcess">
 		  select count(*)
-		          from (SELECT ROW_.*,ROWNUM ROWNUM_
-				FROM (
-				select 
-                  	bai.spmc,bai.chinese_name,trt.bljg,trt.dklx,
-					m.mainassure,m.industry,cap.process_op_status,bai.id
-					from
-					BASIC_CUSTOMER_INFORMATION bai,TY_REPAY_TKMX trt,T_MIBUSIDATA m,
-					customer_application_info cai,node_audit na,customer_application_process cap 
-					where  1=1
-					and cap.next_node_id=na.id
-					and cai.id=cap.application_id
-					and cai.customer_id=bai.id
-					and cai.jjh=trt.jjh
-					and trt.jjh=m.cnlno
-					
-					<if test="customername!=null and customername!='' ">
-						    and bai.chinese_name like '%'||#{customername}||'%'
+		          from 
+			wf_status_queue_record t 
+						 left join wf_status_info s on t.current_status = s.id 
+						 left join wf_process_record pr on t.current_process = pr.id 
+						 left join customer_application_process aa on pr.id = aa.serial_number
+						  left join sys_user su on t.examine_user = su.id 
+						  left join customer_application_info cai on cai.id=aa.application_id
+						  left join basic_customer_information bai on cai.customer_id=bai.id
+						  left join ty_customer_base base on bai.ty_customer_id=base.id
+			  			left join PRODUCT_ATTRIBUTE p on p.id=cai.product_id
+			        <if test="customername!=null and customername!='' ">
+						    and bai.chinese_name like  '%'||#{customername}||'%'
 					</if>
-                   <![CDATA[		
-							) ROW_
-						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
-					WHERE ROWNUM_ > #{limit}*#{page}
-					]]>
 					
 	</select>
 	
 	<!-- 显示详情 -->
 	<select id="queryAll" resultMap="CreditProcess" parameterType="String">
-			select 
-			bai.spmc,bai.chinese_name,trt.bljg,trt.dklx,
-			m.mainassure,m.industry,m.busimanager,
-			cai.created_time,cai.apply_quota,cai.jkrq,
-			na.created_time,cap.audit_opinion,cap.examine_amount,
-			cap.audit_time,cap.examine_lv,cap.process_op_status
-			from
-			BASIC_CUSTOMER_INFORMATION bai,TY_REPAY_TKMX trt,T_MIBUSIDATA m,
-			customer_application_info cai,node_audit na,customer_application_process cap 
-			where  
-			cap.next_node_id=na.id
-			and cai.id=cap.application_id
-			and cai.customer_id=bai.id
-			and cai.jjh=trt.jjh
-			and trt.jjh=m.cnlno
-			and bai.id=#{id}
+			<!-- select 
+		      bai.spmc, bai.chinese_name,trt.bljg,trt.dklx, m.mainassure,m.industry, m.busimanager, tcb.ghjl,
+		      cai.created_time,cai.apply_quota,tcr.intime,cai.modified_time,t.start_examine_time, t.examine_result,
+		      t.examine_amount, trunc(to_timestamp(trt.jkrq, 'yyyy-mm-dd hh24:mi:ss.ff')) jkrq,
+		      trt.HTLL,s.status_name
+      		from
+		      wf_status_queue_record t ,
+		      wf_status_info s,
+		      wf_process_record pr,
+		      customer_application_process cap,
+		      customer_application_info cai,
+		      TY_CUSTOMER_RECORD tcr,
+		      BASIC_CUSTOMER_INFORMATION bai,
+		      ty_customer_base tcb,
+		      TY_REPAY_TKMX trt,
+		      T_MIBUSIDATA m
+		      where t.current_status = s.id
+		      and t.current_process = pr.id
+		      and pr.id = cap.serial_number
+		      and tcr.application_id=cap.application_id
+		      and cai.id = tcr.application_id
+		      and bai.id=cai.customer_id 
+		      and tcb.id=bai.ty_customer_id
+		      and trt.khh=tcb.khnm
+		      and trt.jjh=m.cnlno
+		      and bai.id=#{id} -->
+		      select
+            bai.spmc,
+            bai.chinese_name,
+            (select t.name from sys_department t where t.id in 
+             (select tt.dept_id from sys_dept_user tt where tt.user_id = su.id)) as teamname,
+            (select org.name from sys_organization org where id in(select t.org_id from sys_department t where t.id in 
+             (select tt.dept_id from sys_dept_user tt where tt.user_id = su.id)))as bljg ,
+             ''as dklx,
+            (SELECT  A.TYPE_NAME  FROM DICT A ,PRODUCT_ATTRIBUTE p 
+             WHERE A .DICT_TYPE = 'CMMSCLNM-贷款担保方式' and A.TYPE_CODE=p.assure_means and p.id=cai.product_id) as assure_means,
+             '' as hyfl,
+             su.display_name,
+            cai.created_time,
+            cai.apply_quota,
+             t.start_examine_time,
+              t.examine_result,
+             t.examine_amount,
+             cai.jkrq,
+             aa.examine_lv,
+             cai.status
+             from wf_status_queue_record t 
+             left join wf_status_info s on t.current_status = s.id 
+             left join wf_process_record pr on t.current_process = pr.id 
+             left join customer_application_process aa on pr.id = aa.serial_number
+              left join sys_user su on t.examine_user = su.id 
+              left join customer_application_info cai on cai.id=aa.application_id
+              left join basic_customer_information bai on cai.customer_id=bai.id
+              left join ty_customer_base base on bai.ty_customer_id=base.id
+              left join PRODUCT_ATTRIBUTE p on p.id=cai.product_id
+              where 1=1 and bai.id=#{id}
 	</select>
 	
 	<!-- 导出-->
-	<select id="creditProcessExportQueryAll" resultMap="CreditProcess">
-			select 
-			bai.spmc,bai.chinese_name,trt.bljg,trt.dklx,
-			m.mainassure,m.industry,m.busimanager,
-			cai.created_time,cai.apply_quota,cai.jkrq,
-			na.created_time,cap.audit_opinion,cap.examine_amount,
-			cap.audit_time,cap.examine_lv,cap.process_op_status
-			from
-			BASIC_CUSTOMER_INFORMATION bai,TY_REPAY_TKMX trt,T_MIBUSIDATA m,
-			customer_application_info cai,node_audit na,customer_application_process cap 
-			where  
-			cap.next_node_id=na.id
-			and cai.id=cap.application_id
-			and cai.customer_id=bai.id
-			and cai.jjh=trt.jjh
-			and trt.jjh=m.cnlno
+	<select id="creditProcessExportQueryAll" resultMap="CreditProcess" parameterType="com.cardpay.pccredit.postLoan.model.CreditProcess">
+			
+			<!-- select 
+		      bai.spmc, bai.chinese_name,trt.bljg,trt.dklx, m.mainassure,m.industry, m.busimanager, tcb.ghjl,
+		      cai.created_time,cai.apply_quota,tcr.intime,cai.modified_time,t.start_examine_time, t.examine_result,
+		      t.examine_amount,trunc(to_timestamp(trt.jkrq, 'yyyy-mm-dd hh24:mi:ss.ff')) jkrq,
+		      trunc(trunc(to_timestamp(trt.jkrq, 'yyyy-mm-dd hh24:mi:ss.ff'))- cai.created_time) zjts,
+		      trt.HTLL,s.status_name
+      		from
+		      wf_status_queue_record t ,
+		      wf_status_info s,
+		      wf_process_record pr,
+		      customer_application_process cap,
+		      customer_application_info cai,
+		      TY_CUSTOMER_RECORD tcr,
+		      BASIC_CUSTOMER_INFORMATION bai,
+		      ty_customer_base tcb,
+		      TY_REPAY_TKMX trt,
+		      T_MIBUSIDATA m
+		      where t.current_status = s.id
+		      and t.current_process = pr.id
+		      and pr.id = cap.serial_number
+		      and tcr.application_id=cap.application_id
+		      and cai.id = tcr.application_id
+		      and bai.id=cai.customer_id 
+		      and tcb.id=bai.ty_customer_id
+		      and trt.khh=tcb.khnm
+		      and trt.jjh=m.cnlno -->
+		       select
+            bai.spmc,
+            bai.chinese_name,
+            (select t.name from sys_department t where t.id in 
+             (select tt.dept_id from sys_dept_user tt where tt.user_id = su.id)) as teamname,
+            (select org.name from sys_organization org where id in(select t.org_id from sys_department t where t.id in 
+             (select tt.dept_id from sys_dept_user tt where tt.user_id = su.id)))as bljg ,
+             ''as dklx,
+            (SELECT  A.TYPE_NAME  FROM DICT A ,PRODUCT_ATTRIBUTE p 
+             WHERE A .DICT_TYPE = 'CMMSCLNM-贷款担保方式' and A.TYPE_CODE=p.assure_means and p.id=cai.product_id) as assure_means,
+             '' as hyfl,
+             su.display_name,
+            cai.created_time,
+            cai.apply_quota,
+             t.start_examine_time,
+              t.examine_result,
+             t.examine_amount,
+             trunc(to_timestamp(cai.jkrq, 'yyyy-mm-dd hh24:mi:ss.ff')) as jkrq,
+             aa.examine_lv,
+             cai.status,
+             bai.CARD_ID
+             from wf_status_queue_record t 
+             left join wf_status_info s on t.current_status = s.id 
+             left join wf_process_record pr on t.current_process = pr.id 
+             left join customer_application_process aa on pr.id = aa.serial_number
+              left join sys_user su on t.examine_user = su.id 
+              left join customer_application_info cai on cai.id=aa.application_id
+              left join basic_customer_information bai on cai.customer_id=bai.id
+              left join ty_customer_base base on bai.ty_customer_id=base.id
+              left join PRODUCT_ATTRIBUTE p on p.id=cai.product_id
+	</select>
+	
+	<!-- 根据身份证号查询是否转贷 -->
+	<select id="queryByCardId" resultMap="CreditProcess" parameterType="String">
+		     select zjhm from  ty_customer_base base where base.zjhm=#{cardId} or base.posfzh=#{cardId}
 	</select>
 </mapper>

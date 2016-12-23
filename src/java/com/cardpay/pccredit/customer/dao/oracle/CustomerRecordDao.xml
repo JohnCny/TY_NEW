@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.customer.dao.CustomerInforRecordDao" >
+
+
+ 	<resultMap id="CustomerRecordResultMap" type="com.cardpay.pccredit.customer.model.CustomerRecord">
+		<result property="id" column="id" />
+		<result property="customerId" column="customer_id" />
+		<result property="chineseName" column="chinese_name" />
+		<result property="productName" column="product_name" />
+		<result property="cardId" column="card_id" />
+		<result property="actualQuote" column="actual_quote" />
+		<result property="status" column="status" />
+		<result property="displayName" column="display_name" />
+	</resultMap>
+	
+  <select id="findCustomerRecordList" resultMap="CustomerRecordResultMap" parameterType="com.cardpay.pccredit.customer.filter.CustomerRecordFilter">
+					SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+				select t.id,
+               t.customer_id,
+               b.chinese_name,
+               p.product_name,
+               b.card_id,
+               t.actual_quote,
+               t.status,a.display_name,a.id as userId,q.id as ids,q.record_id as recordId,q.status as recordStatus,q.out_time as outTime,q.in_time as inTime
+		          from customer_application_info  t,
+		               basic_customer_information b,
+		               product_attribute p,sys_user a,ty_customer_record q
+		         where t.customer_id = b.id
+		               and t.product_id = p.id and a.id=b.user_id and t.id=q.application_id
+					
+					<if test="userId != null and userId != '' ">  
+ 					  	AND b.user_id = #{userId}
+					 </if>
+					 
+					 <if test="recordStatus != null and recordStatus != '' ">
+						and q.status= #{recordStatus}
+					 </if>
+					 
+					 <if test="cardId != null and cardId != '' ">
+						and b.card_id like '%'||#{cardId}||'%' 
+					 </if>
+					  
+					  <if test="customerName != null and customerName != '' ">
+						and b.chinese_name like '%'||#{customerName}||'%' 
+					  </if>
+					  <if test="recordId != null and recordId != '' ">
+						and q.record_id like '%'||#{recordId}||'%' 
+					 </if>
+					  order by q.record_id,b.user_id,t.id
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	 <select id="findCustomerRecordListCount" resultType="int" parameterType="com.cardpay.pccredit.customer.filter.CustomerRecordFilter">
+				select count（*）from customer_application_info  t,
+		               basic_customer_information b,
+		               product_attribute p,sys_user a,ty_customer_record q
+		         where t.customer_id = b.id
+		               and t.product_id = p.id and a.id=b.user_id and t.id=q.application_id
+					
+					<if test="userId != null and userId != '' ">  
+ 					  	AND b.user_id = #{userId}
+					 </if>
+					 
+					 <if test="recordStatus != null and recordStatus != '' ">
+						and q.status= #{recordStatus}
+					 </if>
+					 
+					 <if test="cardId != null and cardId != '' ">
+						and b.card_id like '%'||#{cardId}||'%' 
+					 </if>
+					  
+					  <if test="customerName != null and customerName != '' ">
+						and b.chinese_name like '%'||#{customerName}||'%' 
+					  </if>
+					  <if test="recordId != null and recordId != '' ">
+						and q.record_id like '%'||#{recordId}||'%' 
+					 </if>
+					  order by q.record_id,b.user_id,t.id
+	</select>
+	
+	  <select id="findCustomerRecordEnterList" resultMap="CustomerRecordResultMap" parameterType="com.cardpay.pccredit.customer.filter.CustomerRecordFilter">
+					SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (select ss.* from
+				(select rd.record_id as recordId,rd.status as recordStatus,rd.out_time as outTime,rd.in_time as inTime,tt.* from (SELECT
+					T . ID,
+					T .customer_id,
+					b.chinese_name,
+					P .product_name,
+					b.card_id,
+					T .actual_quote,
+					T .status,
+					A .display_name,
+					A . ID AS userId
+				
+				FROM
+					customer_application_info T,
+					basic_customer_information b,
+					product_attribute P,
+					sys_user A
+				WHERE
+					T .customer_id = b. ID
+				AND T .product_id = P . ID
+				
+				AND A . ID = b.user_id
+					<if test="userId != null and userId != '' ">  
+ 					  	AND b.user_id = #{userId}
+					 </if>
+					 
+					 <if test="cardId != null and cardId != '' ">
+						and b.card_id like '%'||#{cardId}||'%' 
+					 </if>
+					  
+					  <if test="customerName != null and customerName != '' ">
+						and b.chinese_name like '%'||#{customerName}||'%' 
+					  </if>
+				) tt LEFT JOIN TY_CUSTOMER_RECORD rd ON tt. ID = rd.application_id) ss where 1=1 
+					<if test="recordId != null and recordId != '' ">
+						and ss.recordId like '%'||#{recordId}||'%' 
+					 </if>
+					 <if test="recordStatus != null and recordStatus != '' ">
+					 	<if test="recordStatus ==4 ">
+							and ss.recordStatus is null
+						</if>
+					 </if>
+					 <if test="recordStatus != null and recordStatus != '' ">
+					 	<if test="recordStatus !=4 ">
+							and ss.recordStatus =#{recordStatus}
+						</if>
+					 </if>
+					
+					  
+					  ORDER BY ss.recordId desc,ss.id 
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+		  <select id="findCustomerRecordEnterListCount" resultType="int" parameterType="com.cardpay.pccredit.customer.filter.CustomerRecordFilter">
+				select count(*) from
+				(select rd.record_id as recordId,rd.status as recordStatus,rd.out_time as outTime,rd.in_time as inTime,tt.* from (SELECT
+					T . ID,
+					T .customer_id,
+					b.chinese_name,
+					P .product_name,
+					b.card_id,
+					T .actual_quote,
+					T .status,
+					A .display_name,
+					A . ID AS userId
+				
+				FROM
+					customer_application_info T,
+					basic_customer_information b,
+					product_attribute P,
+					sys_user A
+				WHERE
+					T .customer_id = b. ID
+				AND T .product_id = P . ID
+				
+				AND A . ID = b.user_id
+					<if test="userId != null and userId != '' ">  
+ 					  	AND b.user_id = #{userId}
+					 </if>
+					 
+					 <if test="cardId != null and cardId != '' ">
+						and b.card_id like '%'||#{cardId}||'%' 
+					 </if>
+					  
+					  <if test="customerName != null and customerName != '' ">
+						and b.chinese_name like '%'||#{customerName}||'%' 
+					  </if>
+				) tt LEFT JOIN TY_CUSTOMER_RECORD rd ON tt. ID = rd.application_id) ss where 1=1 
+					<if test="recordId != null and recordId != '' ">
+						and ss.recordId like '%'||#{recordId}||'%' 
+					 </if>
+					 <if test="recordStatus != null and recordStatus != '' ">
+					 	<if test="recordStatus ==4 ">
+							and ss.recordStatus is null
+						</if>
+					 </if>
+					 <if test="recordStatus != null and recordStatus != '' ">
+					 	<if test="recordStatus !=4 ">
+							and ss.recordStatus =#{recordStatus}
+						</if>
+					 </if>
+	</select>
+</mapper>

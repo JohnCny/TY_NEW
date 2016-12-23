@@ -125,57 +125,7 @@
 	</select>
 	
 	<select id="query" resultMap="queryResultMap">
-	<!--  select 
-    su.display_name,
-    bci.CHINESE_NAME,
-    bci.CARD_ID,
-    cai.ACTUAL_QUOTE,
-    trt.DKQX,
-    trt.htll,
-    trt.JKRQ,
-    trt.DQRQ,
-    tcr.STATUS,
-    cci.industry_type
-    from
-     TY_CUSTOMER_RECORD tcr,
-     CUSTOMER_CAREERS_INFORMATION cci,
-     CUSTOMER_APPLICATION_INFO cai,
-     TY_REPAY_TKMX trt,
-     basic_customer_information bci,
-     product_attribute pa,
-     sys_user su
-     where 
-     trt.JJH=cai.JJH
-     and  cai.customer_id = bci.id
-     and tcr.APPLICATION_ID=cai.id
-     and cai.product_id = pa.id 
-     and cai.customer_id=cci.customer_id
-     and su.id=bci.user_id
-     and bci.CARD_ID=#{idCard} -->
-   <!--  select 
-    su.display_name,
-    bci.CHINESE_NAME,
-    bci.CARD_ID,
-    cai.ACTUAL_QUOTE,
-    cai.STATUS,
-    trt.DKQX,
-    trt.htll,
-    trt.JKRQ,
-    trt.DQRQ,
-    cci.industry_type
-    from
-     CUSTOMER_CAREERS_INFORMATION cci,
-     CUSTOMER_APPLICATION_INFO cai,
-     TY_REPAY_TKMX trt,
-     basic_customer_information bci,
-     sys_user su
-     where 
-     trt.JJH=cai.JJH
-     and  cai.customer_id = bci.id
-     and cai.customer_id=cci.customer_id
-     and su.id=bci.user_id
-     and bci.CARD_ID=#{idCard} -->
-     select 
+    <!--  select 
     su.display_name,
     bci.CHINESE_NAME,
     bci.CARD_ID,
@@ -197,7 +147,51 @@
      and  cai.customer_id = bci.id
      and cai.customer_id=cci.customer_id
      and su.id=bci.user_id
-     and bci.CARD_ID=#{idCard} 
+     and bci.CARD_ID=#{idCard} -->
+    <!--   select 
+    su.display_name,
+    bci.CHINESE_NAME,
+    bci.CARD_ID,
+    cai.ACTUAL_QUOTE,
+    cai.ACCOUNT_STATUS,
+    trt.DKQX,
+    trt.htll,
+    trt.JKRQ,
+    trt.DQRQ,
+    cci.industry_type
+    from
+     CUSTOMER_CAREERS_INFORMATION cci,
+     CUSTOMER_APPLICATION_INFO cai,
+     TY_REPAY_TKMX trt,
+     basic_customer_information bci,
+     ty_customer_base tcb,
+     sys_user su
+     where 
+     tcb.id=bci.ty_customer_id 
+     and cai.customer_id = bci.id
+     and cci.customer_id=bci.id
+     and su.id=bci.user_id
+     and tcb.khh=trt.khh
+     and bci.CARD_ID=#{idCard} -->
+     
+      select 
+    su.display_name,
+    bci.CHINESE_NAME,
+    bci.CARD_ID,
+    cai.ACTUAL_QUOTE,
+    cai.ACCOUNT_STATUS,
+    trt.DKQX,
+    trt.htll,
+    trt.JKRQ,
+    trt.DQRQ,
+    cci.industry_type
+    from
+     basic_customer_information bci left join CUSTOMER_APPLICATION_INFO cai on cai.customer_id = bci.id
+     left join ty_customer_base tcb on tcb.id=bci.ty_customer_id 
+     left join TY_REPAY_TKMX trt on tcb.khnm=trt.khh
+     left join CUSTOMER_CAREERS_INFORMATION cci on cci.customer_id=bci.id
+     left join sys_user su on  su.id=bci.user_id
+     where bci.CARD_ID=#{idCard}
 	</select>
 	
 	<select id="queryByIdCard" resultMap="allResultMap" >

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.jnpad.dao.JnipadNodeDao">
+
+
+<resultMap type="com.cardpay.pccredit.jnpad.model.NODEAUDIT" id="selectCustomerinfo">
+<result property="id" column="id" />
+<result property="product_id" column="product_id" />
+<result property="node_name" column="node_name" />
+<result property="node_id" column="node_id" />
+<result property="user_id" column="user_id" />
+<result property="displayName" column="displayName" />
+<result property="productName" column="productName" />
+<result property="seq_no" column="seq_no" />
+</resultMap>
+	<!-- 查询产品审批人 -->
+	<select id="selectProductUser"  resultType="com.cardpay.pccredit.jnpad.model.NODEAUDIT"  parameterType="com.cardpay.pccredit.jnpad.model.NODEAUDIT">
+	     select      
+                 s.display_name as displayName,
+                 p.product_name as productName,
+                 p.id as product_id,
+                c.node_name as node_name
+              from NODE_AUDIT_USER  t,   
+                   PRODUCT_ATTRIBUTE p,
+                   sys_user         s,
+                   NODE_AUDIT       c
+             where c.product_id=p.id
+             and   s.id=t.user_id
+             and   t.node_id=c.id
+             and   t.user_id=#{user_id}
+	</select>
+	<!-- 查询产品审批人 -->
+	<select id="selectProductUserCount"   resultType="int" parameterType="java.lang.String">
+	     select      
+                count(*)
+              from NODE_AUDIT_USER  t,   
+                   PRODUCT_ATTRIBUTE p,
+                   sys_user         s,
+                   NODE_AUDIT       c
+             where c.product_id=p.id
+             and   s.id=t.user_id
+             and   t.node_id=c.id
+             and   t.user_id=#{user_id}
+	</select>
+	
+	
+	<!-- 查询产品审批人 -->
+	<select id="selectAllProductUser"  resultType="com.cardpay.pccredit.jnpad.model.NODEAUDIT"  parameterType="com.cardpay.pccredit.jnpad.model.NODEAUDIT">
+	        select      
+                 s.display_name as displayName,
+                 p.product_name as productName,
+                 p.id as product_id,
+                c.node_name as node_name,
+                c.seq_no as seq_no
+              from NODE_AUDIT_USER  t,   
+                   PRODUCT_ATTRIBUTE p,
+                   sys_user         s,
+                   NODE_AUDIT       c
+             where c.product_id=p.id
+             and   s.id=t.user_id
+             and   t.node_id=c.id
+                and  c.product_id=#{product_id}
+	</select>
+	<!-- 查询产品审批人 -->
+	<select id="selectAllProductUserCount"   resultType="int" parameterType="java.lang.String">
+	      select      
+               count(*)
+              from NODE_AUDIT_USER  t,   
+                   PRODUCT_ATTRIBUTE p,
+                   sys_user         s,
+                   NODE_AUDIT       c
+             where c.product_id=p.id
+             and   s.id=t.user_id
+             and   t.node_id=c.id
+                and  c.product_id=#{product_id}
+	</select>
+	
+
+</mapper> 
