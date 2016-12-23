@@ -8,11 +8,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cardpay.pccredit.customer.model.TyRepayTkmxForm;
 import com.cardpay.pccredit.postLoan.dao.PostLoanDao;
 import com.cardpay.pccredit.postLoan.filter.FcloaninfoFilter;
 import com.cardpay.pccredit.postLoan.filter.PostLoanFilter;
 import com.cardpay.pccredit.postLoan.model.Fcloaninfo;
 import com.cardpay.pccredit.postLoan.model.MibusidataForm;
+import com.cardpay.pccredit.postLoan.model.MibusidateView;
 import com.cardpay.pccredit.postLoan.model.Rarepaylist;
 import com.cardpay.pccredit.postLoan.model.RarepaylistForm;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
@@ -61,10 +63,10 @@ public class PostLoanService {
 	 * @param filter
 	 * @return
 	 */
-	public QueryResult<Fcloaninfo> findJJJnListByFilter(PostLoanFilter filter){
-		List<Fcloaninfo> lists = postLoanDao.findJJJnListByFilter(filter);
+	public QueryResult<TyRepayTkmxForm> findJJJnListByFilter(PostLoanFilter filter){
+		List<TyRepayTkmxForm> lists = postLoanDao.findJJJnListByFilter(filter);
 		int size = postLoanDao.findJJJnListCountByFilter(filter);
-		QueryResult<Fcloaninfo> qr = new QueryResult<Fcloaninfo>(size,lists);
+		QueryResult<TyRepayTkmxForm> qr = new QueryResult<TyRepayTkmxForm>(size,lists);
 		return qr;
 	}
 	/**
@@ -86,10 +88,10 @@ public class PostLoanService {
 	 * @param filter
 	 * @return
 	 */
-	public QueryResult<MibusidataForm> findTzJnListByFilter(PostLoanFilter filter){
-		List<MibusidataForm> lists = postLoanDao.findTzJnListByFilter(filter);
+	public QueryResult<MibusidateView> findTzJnListByFilter(PostLoanFilter filter){
+		List<MibusidateView> lists = postLoanDao.findTzJnListByFilter(filter);
 		int size = postLoanDao.findTzJnListCountByFilter(filter);
-		QueryResult<MibusidataForm> qr = new QueryResult<MibusidataForm>(size,lists);
+		QueryResult<MibusidateView> qr = new QueryResult<MibusidateView>(size,lists);
 		return qr;
 	}
 	
@@ -114,12 +116,12 @@ public class PostLoanService {
 	 * @return
 	 */
 	
-	public List<Fcloaninfo> selectfcloanifoInfoByBusicode(PostLoanFilter filter) {
+	public List<TyRepayTkmxForm> selectfcloanifoInfoByBusicode(PostLoanFilter filter) {
 		// TODO Auto-generated method stub
 		return postLoanDao.findJJJnListByFilter(filter);
 	}
 	
-	public List<MibusidataForm> selectTz(PostLoanFilter filter) {
+	public List<MibusidateView> selectTz(PostLoanFilter filter) {
 		// TODO Auto-generated method stub
 		return postLoanDao.findTzJnListByFilter(filter);
 	}
@@ -130,10 +132,10 @@ public class PostLoanService {
 		
 		return postLoanDao.selectRarepaylistfoInfoByBusicode(filter);
 	}
-	public List<MibusidataForm> findtzList(String busicode) {
+	public List<MibusidataForm> findtzList(PostLoanFilter filter) {
 		// TODO Auto-generated method stub
-		System.out.println(busicode);
-		return postLoanDao.findtzList(busicode);
+		System.out.println(filter);
+		return postLoanDao.findtzList(filter);
 	}
 	
 }

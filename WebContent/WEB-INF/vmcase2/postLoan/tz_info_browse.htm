@@ -25,54 +25,54 @@
 						<tr>
 							<td><label for="name">客户名称:</label></td>
 							<td><input type="text" id="suoshunf" name="suoshunf"
-								value="$!fcloanifo.cname" disabled="true"/></td>
+								value="$!fcloanifo.KHMC" disabled="true"/></td>
 							<td></td>
 							<td><label for="name">客户证件号（核心）:</label></td>
 							<td><input type="text" id="suoshuqc" name="suoshuqc"
-								value="$!fcloanifo.custidno" disabled="true"/></td>
+								value="$!fcloanifo.ZJHM" disabled="true"/></td>
 						</tr>
 						
 						
 						<tr>
 							<td><label for="name">授信金额:</label></td>
 							<td><input type="text" id="suoshunf" name="suoshunf"
-								value="$!fcloanifo.reqlmt" disabled="true"/></td>
+								value="$!fcloanifo.REQLMT" disabled="true"/></td>
 							<td></td>
 							<td><label for="name">发放日期（核心）:</label></td>
 							<td><input type="text" id="suoshuqc" name="suoshuqc"
-								value="$!fcloanifo.loandate" disabled="true"/></td>
+								value="$!fcloanifo.LOANDATE" disabled="true"/></td>
 						</tr>
 						
 						
 						<tr>
 							<td><label for="name">起始日期:</label></td>
 							<td><input type="text" id="suoshunf" name="suoshunf"
-								value="$!fcloanifo.startdate" disabled="true"/></td>
+								value="$!fcloanifo.LOANDATE" disabled="true"/></td>
 							<td></td>
 							<td><label for="name">现到期日/展期到期日（核心）:</label></td>
 							<td><input type="text" id="suoshuqc" name="suoshuqc"
-								value="$!fcloanifo.enddate" disabled="true"/></td>
+								value="$!fcloanifo.DQRQ" disabled="true"/></td>
 						</tr>
 						
 						<tr>
 							<td><label for="name">贷款期限(月)（核心）:</label></td>
 							<td><input type="text" id="suoshunf" name="suoshunf"
-								value="$!fcloanifo.limit" disabled="true"/></td>
+								value="$!fcloanifo.DKQX" disabled="true"/></td>
 							<td></td>
 							<td><label for="name">利率:</label></td>
 							<td><input type="text" id="suoshuqc" name="suoshuqc"
-								value="$!fcloanifo.interest" disabled="true"/></td>
+								value="$!fcloanifo.JZLL" disabled="true"/></td>
 						</tr>
 						
 						
 						<tr>
 							<td><label for="name">发放金额（核心）:</label></td>
 							<td><input type="text" id="suoshunf" name="suoshunf"
-								value="$!fcloanifo.money" disabled="true"/></td>
+								value="$!fcloanifo.REQLMT" disabled="true"/></td>
 							<td></td>
 							<td><label for="name">贷款余额（核心）:</label></td>
 							<td><input type="text" id="suoshuqc" name="suoshuqc"
-								value="$!fcloanifo.balamt" disabled="true"/></td>
+								value="$!fcloanifo.BALAMT" disabled="true"/></td>
 						</tr>
 						
 						<tr>
@@ -86,7 +86,7 @@
 							<td><label for="name">还款方式:</label></td>
 							<td><select id="suoshuqc" name="suoshuqc" class="rinpsty" disabled="true"> 
               					<option value=""></option>
-	              				#dict("HKFS", $!fcloanifo.repaymethod)
+	              				#dict("HKFS", $!fcloanifo.HKFS)
 	              	  			 </select>
 	             			</td> 
 						</tr>
@@ -95,11 +95,11 @@
 						<tr>
 							<td><label for="name">本金逾期天数:</label></td>
 							<td><input type="text" id="suoshunf" name="suoshunf"
-								value="$!fcloanifo.delayamtdays" disabled="true"/></td>
+								value="$!fcloanifo.DELAYAMTDAYS" disabled="true"/></td>
 							<td></td>
 							<td><label for="name">利息逾期天数:</label></td>
 							<td><input type="text" id="suoshuqc" name="suoshuqc"
-								value="$!fcloanifo.delayinterestdays" disabled="true"/></td>
+								value="$!fcloanifo.DELAYINTERESTDAYS" disabled="true"/></td>
 						</tr>
 						
 						
@@ -107,7 +107,7 @@
 						<tr>
 							<td><label for="name">欠息金额:</label></td>
 							<td><input type="text" id="suoshunf" name="suoshunf"
-								value="$!fcloanifo.debtinterest" disabled="true"/></td>
+								value="$!fcloanifo.je" disabled="true"/></td>
 							<td></td>
 							<td><label for="name">欠息次数:</label></td>
 							<td><input type="text" id="suoshuqc" name="suoshuqc"
@@ -117,7 +117,7 @@
 						<tr>
 							<td><label for="name">正常本金（核心）:</label></td>
 							<td><input type="text" id="suoshunf" name="suoshunf"
-								value="$!fcloanifo.normalamt" disabled="true"/></td>
+								value="$!fcloanifo.REQLMT" disabled="true"/></td>
 							<td></td>
 							<td><label for="name">逾期本金（核心）:</label></td>
 							<td><input type="text" id="suoshuqc" name="suoshuqc"
@@ -127,22 +127,22 @@
 						<tr>
 							<td><label for="name">已收利息:</label></td>
 							<td><input type="text" id="suoshunf" name="suoshunf"
-								value="$!fcloanifo.paydebt" disabled="true"/></td>
+								value="$!fcloanifo.SHLX" disabled="true"/></td>
 							<td></td>
 							<td><label for="name">表内欠息金额:</label></td>
 							<td><input type="text" id="suoshuqc" name="suoshuqc"
-								value="$!fcloanifo.indebtamt" disabled="true"/></td>
+								value="$!fcloanifo.BNQX" disabled="true"/></td>
 						</tr>
 						
 						
 						<tr>
 							<td><label for="name">表外欠息金额:</label></td>
 							<td><input type="text" id="suoshunf" name="suoshunf"
-								value="$!fcloanifo.outdebtamt" disabled="true"/></td>
+								value="$!fcloanifo.BWQX" disabled="true"/></td>
 							<td></td>
 							<td><label for="name">操作时间:</label></td>
 							<td><input type="text" id="suoshuqc" name="suoshuqc"
-								value="$!fcloanifo.operdatetime" disabled="true"/></td>
+								value="$!fcloanifo.CREATE_TIME" disabled="true"/></td>
 						</tr>
 						
 						

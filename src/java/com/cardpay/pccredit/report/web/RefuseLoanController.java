@@ -2,6 +2,8 @@ package com.cardpay.pccredit.report.web;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cardpay.pccredit.report.filter.CustomerMoveFilter;
 import com.cardpay.pccredit.report.filter.ReportFilter;
 import com.cardpay.pccredit.report.model.BjjdktjbbForm;
 import com.cardpay.pccredit.report.service.CustomerTransferFlowService;
@@ -51,6 +52,18 @@ public class RefuseLoanController extends BaseController{
 	public AbstractModelAndView queryHaveBeenLoan(@ModelAttribute ReportFilter filter,HttpServletRequest request) {
 		JRadModelAndView mv = new JRadModelAndView("/report/refuseLoan/refuseLoan", request);
 		filter.setRequest(request);
+		String name=request.getParameter("custManagerName");
+		String custManagerName;
+		if(name!=null && name!=""){
+			try {
+				//String custManagerName=URLDecoder.decode(name, "UTF-8");
+				custManagerName=new String(name.getBytes("iso-8859-1"),"utf-8");
+				filter.setCustManagerName(custManagerName);
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	    QueryResult<BjjdktjbbForm> result =  customerTransferFlowService.findbjjdktjbbFormList(filter);
 		JRadPagedQueryResult<BjjdktjbbForm> pagedResult = new JRadPagedQueryResult<BjjdktjbbForm>(filter, result);
 		mv.addObject(PAGED_RESULT, pagedResult);

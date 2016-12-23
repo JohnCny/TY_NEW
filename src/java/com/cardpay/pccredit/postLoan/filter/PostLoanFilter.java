@@ -18,13 +18,21 @@ public class PostLoanFilter extends BaseQueryFilter{
 	private String jjh;
 	private String busiCode;
 	private String cardNum;
-	
+	private String userId;
 	private String customerName;
 	
 	
 	
 	
 	
+
+	public String getUserid() {
+		return userId;
+	}
+
+	public void setUserid(String userid) {
+		this.userId = userid;
+	}
 
 	public String getCustomerName() {
 		return customerName;

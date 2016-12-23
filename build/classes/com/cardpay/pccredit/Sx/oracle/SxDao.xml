@@ -30,25 +30,60 @@
 	<!--  -->
  	<select id="findSxListByFilter" resultMap="SxResultMap" 
 			parameterType="com.cardpay.pccredit.Sx.model.SxInputData">
+
 					SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
-					  SELECT A .USER_ID as userId,SUBSTR(d.jzrq, 1, 6) as month,dept.name as deptName,p.product_name  as productName,e.display_name as displayName,sum(D .df) as total,count(D .df) as countSx,sum(yehz.JKJE) as jkje
-					  FROM BASIC_CUSTOMER_INFORMATION A,
-						CUSTOMER_APPLICATION_INFO B,
-						TY_REPAY_LSZ D ,SYS_DEPT_USER deptuser,SYS_DEPARTMENT dept,SYS_USER e  ,product_attribute p,ty_repay_yehz yehz
-						WHERE A .USER_ID=deptuser.USER_ID and deptuser.DEPT_ID=dept.id and A .USER_ID=e.id and 
-						 A.ID=B.CUSTOMER_ID and B.JJH=D.JJH and p.id=b.product_id and D.JJH=yehz.JJH
-						
+                    select a.deptname as Name, a.productName,sum(a.ffje) as jkje ,count(a.ywbh) as countSx,sum(a.df) as total from 
+(select distinct tkmx.ywbh,base.khmc,protype.product_name as productName,sysuser.display_name,DeptName.name as deptname,tkmx.jkrq,shlx.df ,tkmx.ffje
+                    from (
+                    select sum(lsz.df) as df ,tkmx.ywbh as ywbh
+                    from ty_customer_rygl rygl,
+                    ty_customer_base base,
+                     ty_product_type protype,
+                    ty_repay_tkmx tkmx,
+                    SYS_USER sysuser  ,
+                    ty_repay_yehz yehz,
+                    ty_repay_lsz lsz
+                    where  base.khjl=rygl.dm and
+                      rygl.ddrq=sysuser.external_id
+                    and base.khnm=tkmx.khh
+                    and tkmx.JJH=yehz.JJH
+                    and protype.product_code=tkmx.cpmc
+                    and lsz.jjh=tkmx.jjh
+                    and lsz.zy='批量自动扣利息'
+                    group by tkmx.ywbh )  shlx,
+                    ( select distinct t.name,sysuser.id from sys_department t,sys_dept_user tt,sys_user sysuser
+              where 
+                    t.id=tt.dept_id and 
+                    sysuser.id=tt.user_id)  DeptName,
+                   ty_customer_rygl rygl,
+                    ty_customer_base base,
+                     ty_product_type protype,
+                    ty_repay_tkmx tkmx,
+                    SYS_USER sysuser  ,
+                    ty_repay_yehz yehz,
+                    ty_kdk_jh jh,
+                    ty_repay_lsz lsz
+                    WHERE 
+                    base.khjl=rygl.dm 
+                    and rygl.ddrq=sysuser.external_id
+                    and base.khnm=tkmx.khh
+                    and tkmx.JJH=yehz.JJH
+                    and protype.product_code=tkmx.cpmc
+                    and jh.ywbh=tkmx.ywbh||'HT'
+                    and lsz.jjh=tkmx.jjh
+                    and shlx.ywbh=tkmx.ywbh
+                    and DeptName.id=sysuser.id  
+                    order  by tkmx.jkrq ) a
 						<if test="fdate!=null and ldate!=null">
-						    and D.QXRX=#{fdate}
+						    and tkmx.JKRQ=#{fdate}
 						</if>
 						<if test="product!=null and product !=''" >
-						    and p.product_name like '%'||#{product}||'%'
+						    and protype.product_name like '%'||#{product}||'%'
 						</if>
-					 <!--   and zy='批量自动扣利息'   -->
-						GROUP BY SUBSTR(d.jzrq, 1, 6),A .USER_ID,e.display_name,dept.name,p.product_name,yehz.JKJE  ORDER BY A .USER_ID,SUBSTR(d.jzrq, 1, 6),dept.name
-					  
+						  group by  a.deptname, a.productName
+                    order by nlssort (a.deptname ,'nls_sort=schinese_pinyin_m')
 		 <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -60,65 +95,249 @@
 		<select id="findSxListCountByFilter" resultType="int"
 			parameterType="com.cardpay.pccredit.Sx.model.SxInputData">
 			select count(*) from 
-	  	(SELECT A .USER_ID as userId,SUBSTR(d.jzrq, 1, 6) as month,dept.name as deptName,p.product_name  as productName,e.display_name as displayName,sum(D .df) as total
-					  FROM BASIC_CUSTOMER_INFORMATION A,
-						CUSTOMER_APPLICATION_INFO B,
-						TY_REPAY_LSZ D ,SYS_DEPT_USER deptuser,SYS_DEPARTMENT dept,SYS_USER e , product_attribute  p
-						WHERE A .USER_ID=deptuser.USER_ID and deptuser.DEPT_ID=dept.id and A .USER_ID=e.id and 
-						 A.ID=B.CUSTOMER_ID and B.JJH=D.JJH and p.id = b.product_id
-						 	<if test="fdate!=null and ldate!=null">
-						    and D.QXRX=#{fdate}
-						</if>
-						<if test="product!=null and product !=''" >
-						    and p.product_name like '%'||#{product}||'%'
-						</if>
-						GROUP BY SUBSTR(d.jzrq, 1, 6),A .USER_ID,e.display_name,dept.name,p.product_name ORDER BY A .USER_ID,SUBSTR(d.jzrq, 1, 6),dept.name)
+			
+	  	(<!-- SELECT 
+          DeptName.Name, protype.product_name as productName,sum(yehz.shlx) as total,count(yehz.shlx) as countSx,sum(yehz.JKJE) as jkje
+                    FROM 
+                    ( SELECT  A.CARD_ID as cardid ,
+               max(to_number(jh.qs)) as qs
+                    FROM 
+                    (select distinct org.name ,sysuser.id from sys_organization org,sys_department t,sys_dept_user tt,sys_user sysuser
+              where org.id=t.org_id and
+                    t.id=tt.dept_id and 
+                    sysuser.id=tt.user_id)  DeptName ,
+                    BASIC_CUSTOMER_INFORMATION A,
+                    ty_customer_base base,
+                     ty_product_type protype,
+                    ty_repay_tkmx tkmx,
+                    SYS_USER sysuser  ,
+                    ty_repay_yehz yehz,
+                    ty_kdk_jh jh
+                    WHERE A .USER_ID=sysuser.id 
+                    and A.TY_CUSTOMER_ID=base.id
+                    and base.khnm=tkmx.khh
+                    and tkmx.JJH=yehz.JJH
+                    and protype.product_code=tkmx.cpmc
+                    and substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh 
+                    and DeptName.Id=sysuser.id
+                    group by A.card_id)  maxqs,
+                   (select distinct org.name ,sysuser.id from sys_organization org,sys_department t,sys_dept_user tt,sys_user sysuser
+              where org.id=t.org_id and
+                    t.id=tt.dept_id and 
+                    sysuser.id=tt.user_id)  DeptName,
+                    BASIC_CUSTOMER_INFORMATION A,
+                    ty_customer_base base,
+                     ty_product_type protype,
+                    ty_repay_tkmx tkmx,
+                    SYS_USER sysuser  ,
+                    ty_repay_yehz yehz,
+                    ty_kdk_jh jh
+                    WHERE A .USER_ID=sysuser.id 
+                    and A.TY_CUSTOMER_ID=base.id
+                    and base.khnm=tkmx.khh
+                    and tkmx.JJH=yehz.JJH
+                    and protype.product_code=tkmx.cpmc
+                    and substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh 
+                    and maxqs.qs=jh.qs 
+                    and maxqs.cardid=A.card_id
+                    and DeptName.id=sysuser.id
+                    GROUP BY SUBSTR(d.jzrq, 1, 6),A .USER_ID,e.display_name,dept.name,p.product_name,yehz.JKJE ORDER BY A .USER_ID,SUBSTR(d.jzrq, 1, 6),dept.name
+                     -->
+                    select a.deptname as Name, a.productName,sum(a.ffje) as jkje ,count(a.ywbh) as countSx,sum(a.df) as total from 
+(select distinct tkmx.ywbh,base.khmc,protype.product_name as productName,sysuser.display_name,DeptName.name as deptname,tkmx.jkrq,shlx.df ,tkmx.ffje
+                    from (
+                    select sum(lsz.df) as df ,tkmx.ywbh as ywbh
+                    from ty_customer_rygl rygl,
+                    ty_customer_base base,
+                     ty_product_type protype,
+                    ty_repay_tkmx tkmx,
+                    SYS_USER sysuser  ,
+                    ty_repay_yehz yehz,
+                    ty_repay_lsz lsz
+                    where  base.khjl=rygl.dm and
+                      rygl.ddrq=sysuser.external_id
+                    and base.khnm=tkmx.khh
+                    and tkmx.JJH=yehz.JJH
+                    and protype.product_code=tkmx.cpmc
+                    and lsz.jjh=tkmx.jjh
+                    and lsz.zy='批量自动扣利息'
+                    group by tkmx.ywbh )  shlx,
+                    ( select distinct t.name,sysuser.id from sys_department t,sys_dept_user tt,sys_user sysuser
+              where 
+                    t.id=tt.dept_id and 
+                    sysuser.id=tt.user_id)  DeptName,
+                   ty_customer_rygl rygl,
+                    ty_customer_base base,
+                     ty_product_type protype,
+                    ty_repay_tkmx tkmx,
+                    SYS_USER sysuser  ,
+                    ty_repay_yehz yehz,
+                    ty_kdk_jh jh,
+                    ty_repay_lsz lsz
+                    WHERE 
+                    base.khjl=rygl.dm 
+                    and rygl.ddrq=sysuser.external_id
+                    and base.khnm=tkmx.khh
+                    and tkmx.JJH=yehz.JJH
+                    and protype.product_code=tkmx.cpmc
+                    and jh.ywbh=tkmx.ywbh||'HT'
+                    and lsz.jjh=tkmx.jjh
+                    and shlx.ywbh=tkmx.ywbh
+                    and DeptName.id=sysuser.id  
+                    order  by tkmx.jkrq ) a
+            <if test="fdate!=null and ldate!=null">
+                and tkmx.JKRQ=#{fdate}
+            </if>
+            <if test="product!=null and product !=''" >
+                and protype.product_name like '%'||#{product}||'%'
+            </if>
+              group by  a.deptname, a.productName
+                    order by nlssort (a.deptname ,'nls_sort=schinese_pinyin_m'))
 	</select> 
 	 	
 	 	<!--  -->
 	 	<select id="findSxListByFilterNoPage" resultMap="SxResultMap" 
 			parameterType="com.cardpay.pccredit.Sx.model.SxInputData">
-					  SELECT A .USER_ID as userId,SUBSTR(d.jzrq, 1, 6) as month,dept.name as deptName,p.product_name as productName,e.display_name as displayName,sum(D .df) as total,count(D .df) as countSx 
-					  FROM BASIC_CUSTOMER_INFORMATION A,
-						CUSTOMER_APPLICATION_INFO B,
-						TY_REPAY_LSZ D ,SYS_DEPT_USER deptuser,SYS_DEPARTMENT dept,SYS_USER e , product_attribute  p
-						WHERE A .USER_ID=deptuser.USER_ID and deptuser.DEPT_ID=dept.id and A .USER_ID=e.id and 
-						 A.ID=B.CUSTOMER_ID and B.JJH=D.JJH and p.id = b.product_id
+			select sum(b.countSx) as countSx,sum(b.total) as totalSX from  
+      (  select a.deptname as Name, a.productName,sum(a.ffje) as jkje ,count(a.ywbh) as countSx,sum(a.df) as total from 
+(select distinct tkmx.ywbh,base.khmc,protype.product_name as productName,sysuser.display_name,DeptName.name as deptname,tkmx.jkrq,shlx.df ,tkmx.ffje
+                    from (
+                    select sum(lsz.df) as df ,tkmx.ywbh as ywbh
+                    from    ty_customer_rygl rygl,
+                    ty_customer_base base,
+                     ty_product_type protype,
+                    ty_repay_tkmx tkmx,
+                    SYS_USER sysuser  ,
+                    ty_repay_yehz yehz,
+                    ty_repay_lsz lsz
+                    where   base.khjl=rygl.dm and
+                      rygl.ddrq=sysuser.external_id
+                    and base.khnm=tkmx.khh
+                    and tkmx.JJH=yehz.JJH
+                    and protype.product_code=tkmx.cpmc
+                    and lsz.jjh=tkmx.jjh
+                    and lsz.zy='批量自动扣利息'
+                    group by tkmx.ywbh )  shlx,
+                    ( select distinct t.name,sysuser.id from sys_department t,sys_dept_user tt,sys_user sysuser
+              where 
+                    t.id=tt.dept_id and 
+                    sysuser.id=tt.user_id)  DeptName,
+                    ty_customer_rygl rygl,
+                    ty_customer_base base,
+                     ty_product_type protype,
+                    ty_repay_tkmx tkmx,
+                    SYS_USER sysuser  ,
+                    ty_repay_yehz yehz,
+                    ty_kdk_jh jh,
+                    ty_repay_lsz lsz
+                    WHERE 
+                     base.khjl=rygl.dm 
+                    and rygl.ddrq=sysuser.external_id
+                    and base.khnm=tkmx.khh
+                    and tkmx.JJH=yehz.JJH
+                    and protype.product_code=tkmx.cpmc
+                    and jh.ywbh=tkmx.ywbh||'HT' 
+                    and lsz.jjh=tkmx.jjh
+                    and shlx.ywbh=tkmx.ywbh
+                    and DeptName.id=sysuser.id
 							<if test="fdate!=null and ldate!=null">
-						    and D.QXRX=#{fdate}
+						    and tkmx.JKRQ=#{fdate}
 						</if>
 						<if test="product!=null and product !=''" >
-						    and p.product_name like '%'||#{product}||'%'
+						    and protype.product_name like '%'||#{product}||'%'
 						</if>
-					  
-						GROUP BY SUBSTR(d.jzrq, 1, 6),A .USER_ID,e.display_name,dept.name,p.product_name ORDER BY A .USER_ID,SUBSTR(d.jzrq, 1, 6),dept.name
-	
+			             order  by tkmx.jkrq
+            ) a
+              group by  a.deptname, a.productName
+                    order by nlssort (a.deptname ,'nls_sort=schinese_pinyin_m')
+             ) b
 	</select>
 	
 	 	<select id="findje" parameterType="com.cardpay.pccredit.Sx.model.SxInputData" resultMap="SxResultMap">
+	 	   with jgnsxlx as (
+	     SELECT *
+		  FROM (
+		 select distinct tkmx.ywbh,base.khmc,protype.product_name as productName,sysuser.display_name,tkmx.jkrq,shlx.df ,tkmx.ffje
+                    from (
+                    select sum(lsz.df) as df ,tkmx.ywbh as ywbh
+                    from   
+                    ty_customer_rygl rygl,
+                    ty_customer_base base,
+                    ty_product_type protype,
+                    ty_repay_tkmx tkmx,
+                    SYS_USER sysuser  ,
+                    ty_repay_yehz yehz,
+                    ty_repay_lsz lsz
+                    where   base.khjl=rygl.dm and
+                      rygl.ddrq=sysuser.external_id
+                    and base.khnm=tkmx.khh
+                    and tkmx.JJH=yehz.JJH
+                    and protype.product_code=tkmx.cpmc
+                    and lsz.jjh=tkmx.jjh
+                    and lsz.zy='批量自动扣利息'
+                    group by tkmx.ywbh )  shlx,
+                    ty_customer_rygl rygl,
+                    ty_customer_base base,
+                     ty_product_type protype,
+                    ty_repay_tkmx tkmx,
+                    SYS_USER sysuser  ,
+                    ty_repay_yehz yehz,
+                    ty_kdk_jh jh,
+                    ty_repay_lsz lsz
+                    WHERE 
+                    base.khjl=rygl.dm and
+                      rygl.ddrq=sysuser.external_id
+                    and base.khnm=tkmx.khh
+                    and tkmx.JJH=yehz.JJH
+                    and protype.product_code=tkmx.cpmc
+                    and substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh 
+                    and lsz.jjh=tkmx.jjh
+                    and shlx.ywbh=tkmx.ywbh
+                     order  by tkmx.jkrq
+	 	    ))
+	 	    
+	 	   
 	 		SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
-				FROM (   
-	 	    SELECT A .USER_ID as userId,SUBSTR(d.jzrq, 1, 6) as month,dept.name as deptName,p.product_name as productName,e.display_name as displayName,sum(D .df) as total,count(D .df) as countSx ,yehz.JKJE as  jkje
-					  FROM BASIC_CUSTOMER_INFORMATION A,
-						CUSTOMER_APPLICATION_INFO B,
-						TY_REPAY_LSZ D ,SYS_DEPT_USER deptuser,SYS_DEPARTMENT dept,SYS_USER e , product_attribute  p,ty_repay_yehz yehz  
-						WHERE A .USER_ID=deptuser.USER_ID and deptuser.DEPT_ID=dept.id and A .USER_ID=e.id and 
-						 A.ID=B.CUSTOMER_ID and B.JJH=D.JJH and p.id = b.product_id and D.JJH=yehz.JJH
-						 <if test="fdate!=null and ldate!=null ">
-						    and D.QXRX=#{fdate}
+				FROM (  
+				   select 
+       DeptName.Name, protype.product_name as productName,sysuser.display_name as displayName,sum(jgnsxlx.df) as total,count(jgnsxlx.df) as countSx,sum(jgnsxlx.ffje) as jkje
+       from
+          jgnsxlx,
+          ( select distinct t.name,sysuser.id from sys_department t,sys_dept_user tt,sys_user sysuser
+              where 
+                    t.id=tt.dept_id and 
+                    sysuser.id=tt.user_id)  DeptName,
+                    ty_customer_rygl rygl,
+                    ty_customer_base base,
+                    ty_product_type protype,
+                    ty_repay_tkmx tkmx,
+                    SYS_USER sysuser  ,
+                    ty_repay_yehz yehz
+                    WHERE 
+                    base.khjl=rygl.dm and
+                      rygl.ddrq=sysuser.external_id
+                    and base.khnm=tkmx.khh
+                    and jgnsxlx.ywbh=tkmx.ywbh
+                    and tkmx.JJH=yehz.JJH
+                    and protype.product_code=tkmx.cpmc
+                    and DeptName.id=sysuser.id  
+						<if test="fdate!=null and ldate!=null ">
+						    and tkmx.ffrq=#{fdate}
 						</if>
 						<if test="product!=null and product!=''">
-						    and p.product_name like '%'||#{product}||'%'
+						    and protype.product_name like '%'||#{product}||'%'
 						</if> 
 						<if test="deptName!=null and deptName!=''">
-						    and dept.name=#{deptName}
+						    and DeptName.name=#{deptName} 
 						</if>
 						<if test="displayName!=null and displayName!=''">
-						    and e.display_name=#{displayName}
+						    and sysuser.display_name  like '%'||#{displayName}||'%'
 						</if>
-					  
-						GROUP BY SUBSTR(d.jzrq, 1, 6),A .USER_ID,e.display_name,dept.name,p.product_name,yehz.JKJE ORDER BY A .USER_ID,SUBSTR(d.jzrq, 1, 6),dept.name
+						  <!--   group by  DeptName.Name,sysuser.display_name, protype.product_name 
+                    order by nlssort (protype.product_name ,'nls_sort=schinese_pinyin_m') -->
+                    group by  DeptName.Name,sysuser.display_name, protype.product_name 
+                    order by nlssort (protype.product_name ,'nls_sort=schinese_pinyin_m')
 	   					 <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -128,31 +347,109 @@
 	 	
 	 	<select id="findSxListCountByFilterje" resultType="int"
 			parameterType="com.cardpay.pccredit.Sx.model.SxInputData">
+						with jgnsxlx as (
+	     SELECT *
+		  FROM (
+		  select distinct tkmx.ywbh,base.khmc,protype.product_name as productName,sysuser.display_name,tkmx.jkrq,shlx.df ,tkmx.ffje
+                    from (
+                    select sum(lsz.df) as df ,tkmx.ywbh as ywbh
+                    from   
+                    ty_customer_rygl rygl,
+                    ty_customer_base base,
+                    ty_product_type protype,
+                    ty_repay_tkmx tkmx,
+                    SYS_USER sysuser  ,
+                    ty_repay_yehz yehz,
+                    ty_repay_lsz lsz
+                    where   base.khjl=rygl.dm and
+                      rygl.ddrq=sysuser.external_id
+                    and base.khnm=tkmx.khh
+                    and tkmx.JJH=yehz.JJH
+                    and protype.product_code=tkmx.cpmc
+                    and lsz.jjh=tkmx.jjh
+                    and lsz.zy='批量自动扣利息'
+                    group by tkmx.ywbh )  shlx,
+                    ty_customer_rygl rygl,
+                    ty_customer_base base,
+                     ty_product_type protype,
+                    ty_repay_tkmx tkmx,
+                    SYS_USER sysuser  ,
+                    ty_repay_yehz yehz,
+                    ty_kdk_jh jh,
+                    ty_repay_lsz lsz
+                    WHERE 
+                    base.khjl=rygl.dm and
+                      rygl.ddrq=sysuser.external_id
+                    and base.khnm=tkmx.khh
+                    and tkmx.JJH=yehz.JJH
+                    and protype.product_code=tkmx.cpmc
+                    and substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh 
+                    and lsz.jjh=tkmx.jjh
+                    and shlx.ywbh=tkmx.ywbh
+                     order  by tkmx.jkrq
+	 	    ))
 			select count(*) from 
-	  	(SELECT A .USER_ID as userId,SUBSTR(d.jzrq, 1, 6) as month,dept.name as deptName,p.product_name  as productName,e.display_name as displayName,sum(D .df) as total,yehz.JKJE as jkje
-					  FROM BASIC_CUSTOMER_INFORMATION A,
-						CUSTOMER_APPLICATION_INFO B,
-						TY_REPAY_LSZ D ,SYS_DEPT_USER deptuser,SYS_DEPARTMENT dept,SYS_USER e , product_attribute  p,ty_repay_yehz yehz
-						WHERE A .USER_ID=deptuser.USER_ID and deptuser.DEPT_ID=dept.id and A .USER_ID=e.id and 
-						 A.ID=B.CUSTOMER_ID and B.JJH=D.JJH and p.id = b.product_id and D.JJH=yehz.JJH
+	  	(	    select 
+       DeptName.Name, protype.product_name as productName,sysuser.display_name as displayName,sum(jgnsxlx.df) as total,count(jgnsxlx.df) as countSx,sum(jgnsxlx.ffje) as jkje
+       from
+          jgnsxlx,
+          ( select distinct t.name,sysuser.id from sys_department t,sys_dept_user tt,sys_user sysuser
+              where 
+                    t.id=tt.dept_id and 
+                    sysuser.id=tt.user_id)  DeptName,
+                    ty_customer_rygl rygl,
+                    ty_customer_base base,
+                    ty_product_type protype,
+                    ty_repay_tkmx tkmx,
+                    SYS_USER sysuser  ,
+                    ty_repay_yehz yehz
+                    WHERE 
+                    base.khjl=rygl.dm and
+                      rygl.ddrq=sysuser.external_id
+                    and base.khnm=tkmx.khh
+                    and jgnsxlx.ywbh=tkmx.ywbh
+                    and tkmx.JJH=yehz.JJH
+                    and protype.product_code=tkmx.cpmc
+                    and DeptName.id=sysuser.id  
 						 <if test="fdate!=null and ldate!=null ">
-						    and D.QXRX=#{fdate}
+						    and tkmx.ffrq=#{fdate}
 						</if>
 						<if test="product!=null and product!=''">
-						    and p.product_name like '%'||#{product}||'%'
+						    and protype.product_name like '%'||#{product}||'%'
 						</if> 
 						<if test="deptName!=null and deptName!=''">
-						    and dept.name=#{deptName}
+						    and DeptName.name =#{deptName}
 						</if>
 						<if test="displayName!=null and displayName!=''">
-						    and e.display_name=#{displayName}
+						    and sysuser.display_name like '%'||#{displayName}||'%'
 						</if>
-					  
-						GROUP BY SUBSTR(d.jzrq, 1, 6),A .USER_ID,e.display_name,dept.name,p.product_name,yehz.JKJE ORDER BY A .USER_ID,SUBSTR(d.jzrq, 1, 6),dept.name)
+						  group by  DeptName.Name,sysuser.display_name, protype.product_name 
+                    order by nlssort (protype.product_name ,'nls_sort=schinese_pinyin_m') ) a
 	</select> 
 	
 	 	<select id="findteam"  resultMap="SxResultMap">
-	 	    select NAME as deptName from SYS_DEPARTMENT
+	 	        SELECT 
+          DeptName.Name as Name
+                    FROM 
+                   ( select distinct t.name,sysuser.id from sys_department t,sys_dept_user tt,sys_user sysuser
+              where 
+                    t.id=tt.dept_id and 
+                    sysuser.id=tt.user_id)  DeptName,
+                    BASIC_CUSTOMER_INFORMATION A,
+                    ty_customer_base base,
+                     ty_product_type protype,
+                    ty_repay_tkmx tkmx,
+                    SYS_USER sysuser  ,
+                    ty_repay_yehz yehz,
+                    ty_kdk_jh jh
+                    WHERE A .USER_ID=sysuser.id 
+                    and A.TY_CUSTOMER_ID=base.id
+                    and base.khnm=tkmx.khh
+                    and tkmx.JJH=yehz.JJH
+                    and protype.product_code=tkmx.cpmc
+                    and substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh 
+                    and DeptName.id=sysuser.id
+                    group by  DeptName.Name
 	 	</select>
 	 	
 	 	<select id="finduser"  resultMap="SxResultMap">

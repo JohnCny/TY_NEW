@@ -7,6 +7,7 @@
     
 	<filter>
 		<filter-name>encodingFilter</filter-name>
+		<!-- org.springframework.web.filter.CharacterEncodingFilter -->
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
 		<init-param>
 			<param-name>encoding</param-name>

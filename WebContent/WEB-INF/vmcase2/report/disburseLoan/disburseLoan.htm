@@ -92,9 +92,9 @@
               <td nowrap="nowrap">$!customer.FFJE</td>
              <!--  format.formatNumber($!customer.baserate, 5, 1)  -->
               <td nowrap="nowrap">$customer.HTLL</td>
-              <td nowrap="nowrap">$!customer.QXRX</td>
+              <td nowrap="nowrap">$!customer.QXRQ</td>
              <!--  #dictVal("ACCOUNTSTATE", $!customer.accountstate) -->
-              <td nowrap="nowrap"></td>
+              <td nowrap="nowrap">$!customer.ACCOUNT_STATUS</td>
               <td nowrap="nowrap">$!customer.KHJL</td>
               <td nowrap="nowrap">$!customer.BLJG</td>
             </tr>
@@ -118,7 +118,7 @@
 	$(document).ready(function() {
 		var opsObj = new Object();
 		opsObj.formObj = $("#submitForm");
-		opsObj.browseUrl = "${modulePath}/browse.page";
+		opsObj.browseUrl = "${modulePath}/queryHaveBeenLoan.page";
 		opsObj.exportUrl = "${modulePath}/exportAll.page";
 		prepareOperations(opsObj);
 	});

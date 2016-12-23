@@ -130,7 +130,7 @@ public class CustomerInforService {
 	private JdbcTemplate jdbcTemplate;  
 	//客户原始信息
     //todo:文件换成济南的
-	private String[] fileTxt = {"kkh_grxx.txt","kkh_grjtcy.txt","kkh_grjtcc.txt","kkh_grscjy.txt","kkh_grxxll.txt","kkh_grgzll.txt","kkh_grrbxx.txt","cxd_dkcpmc.txt","kkh_hmdgl.txt","cxd_rygl.txt","kdk_yehz.txt","kdk_lsz.txt","kdk_tkmx.txt","kdk_jh.txt"};
+	private String[] fileTxt = {"kkh_grxx.txt"/*,"kkh_grjtcy.txt","kkh_grjtcc.txt","kkh_grscjy.txt","kkh_grxxll.txt","kkh_grgzll.txt","kkh_grrbxx.txt","cxd_dkcpmc.txt","kkh_hmdgl.txt","cxd_rygl.txt","kdk_yehz.txt","kdk_lsz.txt","kdk_tkmx.txt","kdk_jh.txt"*/};
 	//流水账、余额汇总表、借据表
     //todo:文件换成济南的
 	private String[] fileTxtRepay ={"kdk_yehz.txt","kdk_lsz.txt","kdk_tkmx.txt","kdk_jh.txt"};
@@ -2485,13 +2485,13 @@ public class CustomerInforService {
 						for(String fn : spFile){
 							try{
 								if(fn.contains(fileN)) {
-									log.info("*****************台帐表/gc合同表********************");  
+									/*log.info("*****************台帐表/gc合同表********************");  
 									saveMibusidata(gzFile+fn,dateString);
 									//      readWholeAndIncrementService.saveGCCONTRACTMAINDataFile(gzFile+fn,dateString);
 									//readWholeAndIncrementService.saveGCCONTRACTMULTICLIENTDataFile(gzFile+fn,dateString);
-									System.gc();
+									System.gc();*/
 									
-									/*if(fn.startsWith("cxd_rygl")){
+									if(fn.startsWith("cxd_rygl")){
 										log.info("*****************人员管理参数表********************");  
 										System.out.println(1111);
 										//+File.separator
@@ -2532,7 +2532,7 @@ public class CustomerInforService {
 									}else if(fn.startsWith("kkh_hmdgl")){
 										log.info("*****************黑名单********************");  
 										saveHMDDataFile(gzFile+fn,dateString);
-									}*/
+									}
 								} 
 							}catch(Exception e){
 								e.printStackTrace();

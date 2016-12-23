@@ -9,26 +9,26 @@ package com.cardpay.pccredit.Sx.model;
 public class SxOutputData{
 	private String userId;//客户经理id
 	private String month;//月份
-	private String deptName;//小微团队
+	private String Name;//小微团队
 	private String displayName;//客户经理名称
 	private String total;//收息额度
 	private String countSx;//收息笔数
+	private String totalSX;//收息总额度
 	private String jkje;//贷款额度
 	private String productName;//产品名称
-	
-	
-	public String getProductName() {
-		return productName;
-	}
-	public void setProductName(String productName) {
-		this.productName = productName;
-	}
-	
-	public String getJkje() {
-		return jkje;
-	}
-	public void setJkje(String jkje) {
+	public SxOutputData(){}
+	public SxOutputData(String userId, String month, String name,
+			String displayName, String total, String countSx, String totalSX,
+			String jkje, String productName) {
+		this.userId = userId;
+		this.month = month;
+		Name = name;
+		this.displayName = displayName;
+		this.total = total;
+		this.countSx = countSx;
+		this.totalSX = totalSX;
 		this.jkje = jkje;
+		this.productName = productName;
 	}
 	public String getUserId() {
 		return userId;
@@ -42,11 +42,11 @@ public class SxOutputData{
 	public void setMonth(String month) {
 		this.month = month;
 	}
-	public String getDeptName() {
-		return deptName;
+	public String getName() {
+		return Name;
 	}
-	public void setDeptName(String deptName) {
-		this.deptName = deptName;
+	public void setName(String name) {
+		Name = name;
 	}
 	public String getDisplayName() {
 		return displayName;
@@ -66,12 +66,25 @@ public class SxOutputData{
 	public void setCountSx(String countSx) {
 		this.countSx = countSx;
 	}
-	@Override
-	public String toString() {
-		return "TyRepaySxForm1 [userId=" + userId + ", month=" + month
-				+ ", deptName=" + deptName + ", displayName=" + displayName
-				+ ", total=" + total + ", countSx=" + countSx + ", jkje="
-				+ jkje + ", productName=" + productName + "]";
+	public String getTotalSX() {
+		return totalSX;
 	}
-
+	public void setTotalSX(String totalSX) {
+		this.totalSX = totalSX;
+	}
+	public String getJkje() {
+		return jkje;
+	}
+	public void setJkje(String jkje) {
+		this.jkje = jkje;
+	}
+	public String getProductName() {
+		return productName;
+	}
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+	
+	
+	
 }

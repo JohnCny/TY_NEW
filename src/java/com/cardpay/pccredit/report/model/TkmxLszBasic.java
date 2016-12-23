@@ -8,7 +8,7 @@ public class TkmxLszBasic extends BusinessModel{
 	private String CPMC; //产品名称
 	private String FFJE; //本次发放金额
 	private String HTLL; //合同利率
-	private String QXRX; //起息日起  贷款日起
+	private String QXRQ; //起息日起  贷款日起
 	private String KHJL; //客户经理
 	private String BLJG;//所属机构
 	
@@ -22,6 +22,9 @@ public class TkmxLszBasic extends BusinessModel{
 	private String TELEPHONE;
 	private String DF;
 	private String BXHJ;
+	
+	String Shbj; //收回本金
+	String Shlx;//收回利息
 	
 	String DQRQ; //到期日起
 	String DKQX; //贷款期限
@@ -41,20 +44,22 @@ public class TkmxLszBasic extends BusinessModel{
 	
 	public TkmxLszBasic(){}
 
+
 	public TkmxLszBasic(String cHINESE_NAME, String cARD_ID, String cPMC,
-			String fFJE, String hTLL, String qXRX, String kHJL, String bLJG,
+			String fFJE, String hTLL, String qXRQ, String kHJL, String bLJG,
 			String jF, String jZLL, String jZRQ, String dKYE, String yWJG,
 			String aCCOUNT_STATUS, String tELEPHONE, String dF, String bXHJ,
-			String dQRQ, String dKQX, String qS, String jE, String yHLX,
-			String hkr, String jKRQ, String aPPLY_QUOTA, String aUDIT_TIME,
-			String rEFUSAL_REASON, String dISPLAY_NAME) {
+			String shbj, String shlx, String dQRQ, String dKQX, String qS,
+			String jE, String yHLX, String hkr, String jKRQ,
+			String aPPLY_QUOTA, String aUDIT_TIME, String rEFUSAL_REASON,
+			String dISPLAY_NAME) {
 		super();
 		CHINESE_NAME = cHINESE_NAME;
 		CARD_ID = cARD_ID;
 		CPMC = cPMC;
 		FFJE = fFJE;
 		HTLL = hTLL;
-		QXRX = qXRX;
+		QXRQ = qXRQ;
 		KHJL = kHJL;
 		BLJG = bLJG;
 		JF = jF;
@@ -66,6 +71,8 @@ public class TkmxLszBasic extends BusinessModel{
 		TELEPHONE = tELEPHONE;
 		DF = dF;
 		BXHJ = bXHJ;
+		Shbj = shbj;
+		Shlx = shlx;
 		DQRQ = dQRQ;
 		DKQX = dKQX;
 		QS = qS;
@@ -80,6 +87,27 @@ public class TkmxLszBasic extends BusinessModel{
 	}
 
 
+
+
+
+
+
+
+	public String getShbj() {
+		return Shbj;
+	}
+
+	public void setShbj(String shbj) {
+		Shbj = shbj;
+	}
+
+	public String getShlx() {
+		return Shlx;
+	}
+
+	public void setShlx(String shlx) {
+		Shlx = shlx;
+	}
 
 	public String getACCOUNT_STATUS() {
 		return ACCOUNT_STATUS;
@@ -195,12 +223,17 @@ public class TkmxLszBasic extends BusinessModel{
 	public void setHTLL(String hTLL) {
 		HTLL = hTLL;
 	}
-	public String getQXRX() {
-		return QXRX;
+	
+	public String getQXRQ() {
+		return QXRQ;
 	}
-	public void setQXRX(String qXRX) {
-		QXRX = qXRX;
+
+
+	public void setQXRQ(String qXRQ) {
+		QXRQ = qXRQ;
 	}
+
+
 	public String getKHJL() {
 		return KHJL;
 	}

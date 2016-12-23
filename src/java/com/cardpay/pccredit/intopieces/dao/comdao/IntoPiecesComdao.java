@@ -17,8 +17,6 @@ import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.filter.MakeCardFilter;
-import com.cardpay.pccredit.intopieces.model.AppManagerAuditLog;
-import com.cardpay.pccredit.intopieces.model.AppManagerAuditLogForm;
 import com.cardpay.pccredit.intopieces.model.ApplicationDataImport;
 import com.cardpay.pccredit.intopieces.model.CustomerAccountData;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationCom;
@@ -26,7 +24,6 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationContact;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationGuarantor;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationOther;
-import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcessForm;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom;
 import com.cardpay.pccredit.intopieces.model.CustomerCreditInfo;
@@ -530,7 +527,7 @@ public class IntoPiecesComdao {
 	public List<IntoPieces> findCustomerApplicationInfo() {
 		//String sql = "select * from customer_application_info where status = 'approved'";
 		
-		String sql =     	"        select a.id,a.customer_id as customerId,e.id as productId,d.jjh,d.jkrq "+
+		/*String sql =     	"        select a.id,a.customer_id as customerId,e.id as productId,d.jjh,d.jkrq "+
 			    "           from customer_application_info  a,    "+              
 			    "                basic_customer_information b,    "+              
 			    "                ty_customer_base           c,    "+             
@@ -542,8 +539,24 @@ public class IntoPiecesComdao {
 			    "                 and a.product_id = e.id         "+
 			    "                 and e.PRODUCT_TYPE_CODE = d.cpmc     "+                       
 			    "                 and a.status ='approved'        "+             
-			    "                 and d.sfzf !='1.0' ";
-
+			    "                 and d.sfzf !='1.0' ";*/
+		String sql="   select a.id,a.customer_id as customerId,e.id as productId,d.jjh,d.jkrq  "+
+				 "        from customer_application_info  a,                  "+
+				 "         basic_customer_information b,                  "+
+				 "         ty_customer_base           c,                 "+
+				 "         ty_repay_tkmx              d,    				"+
+				 "         product_attribute          e,         		"+
+				 "          ty_product_type            f					"+
+				 "    where a.customer_id =b.id                          "+
+				 "          and b.ty_customer_id = c.id                  "+
+				 "          and c.KHNM = d.khh               			"+
+				 "          and a.product_id = e.id         				"+
+				 "        and e.product_type_code=f.product_code			"+
+				 "			and f.product_code=d.cpmc 					"+
+				 "          and a.status ='approved'                 	"+ 
+				 "          and d.sfzf !='1.0'";
+		
+		
 		List<IntoPieces> list = commonDao.queryBySql(IntoPieces.class,sql,null);
 		return list;
 	}

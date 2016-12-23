@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.customeradd.dao.JxglDao" >
+	<resultMap id="AccountManagerParameterFormMap"
+		type="com.cardpay.pccredit.manager.web.AccountManagerParameterForm">
+		<result property="id" column="ID" />
+		<result property="userId" column="USER_ID" />
+		<result property="displayName" column="DISPLAY_NAME" />
+		<result property="rewardIncentiveInformation" column="REWARD_INCENTIVE_INFORMATION" />
+		<result property="levelInformation" column="LEVEL_INFORMATION" />
+		<result property="creditLine" column="CREDIT_LINE" />
+		<result property="monthlyOverdraftBalance" column="MONTHLY_OVERDRAFT_BALANCE" />
+		<result property="teamOverdraftBalance" column="TEAM_OVERDRAFT_BALANCE" />
+		<result property="tubeNumber" column="TUBE_NUMBER" />
+		<result property="activationRate" column="ACTIVATION_RATE" />
+		<result property="activeRate" column="ACTIVE_RATE" />
+		<result property="entryTime" column="ENTRY_TIME" />
+		<result property="riskTolerance" column="RISK_TOLERANCE" />
+		<result property="createdTime" column="CREATED_TIME" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="modifiedTime" column="MODIFIED_TIME" />
+		<result property="modifiedBy" column="MODIFIED_BY" />
+	</resultMap>
+	
+		<resultMap id="jxgl" type="com.cardpay.pccredit.customeradd.model.JxglForm">
+		<result property="displayname" column="displayname" />
+		<result property="monthloannum" column="monthloannum" />
+		<result property="montheffectnum" column="montheffectnum" />
+		<result property="byffje" column="byffje" />
+		<result property="ffje" column="ffje" />
+		<result property="zsx" column="zsx" />
+		
+	</resultMap>
+
+<select id="findcustomermanager" resultMap="AccountManagerParameterFormMap">
+		SELECT T.*, s.DISPLAY_NAME
+		FROM ACCOUNT_MANAGER_PARAMETER T
+		LEFT JOIN SYS_USER s ON s.id = T.USER_ID
+		WHERE  s.USER_TYPE = '1'
+		ORDER BY t.CREATED_TIME DESC
+	</select>
+	
+<select id="findAlljxglList" resultMap="jxgl" parameterType="com.cardpay.pccredit.customer.filter.MaintenanceFilter">
+	SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (	
+          select users1.DISPLAY_NAME displayname,
+      T_JX_PARAMETERS.MONTH_LOAN_NUM monthloannum,
+      T_JX_PARAMETERS.MONTH_EFFECT_NUM montheffectnum,
+      sum(ffje1.FFJE) byffje,
+      sum(ffje2.FFJE) ffje,
+      sum(TY_REPAY_LSZ.df) zsx
+      from
+      (select t.FFJE ,base.id  as id from TY_REPAY_TKMX t,ty_customer_base base ,basic_customer_information b
+      where base.khnm = t.KHH and  b.TY_CUSTOMER_ID = base.ID and
+      t.DQRQ>(select to_char(trunc(sysdate,'MONTH'),'yyyy-mm-dd') First_DayOfMonth from dual)
+      
+      )  ffje1,
+      (select t.FFJE  ,base.id as id from TY_REPAY_TKMX t,ty_customer_base base ,basic_customer_information b
+      where base.khnm = t.KHH and  b.TY_CUSTOMER_ID = base.ID
+       ) ffje2,
+      SYS_USER users1,
+      T_JX_PARAMETERS,
+      TY_REPAY_LSZ,
+      ty_repay_tkmx,
+      BASIC_CUSTOMER_INFORMATION  b,
+      CUSTOMER_APPLICATION_INFO info,
+      ty_customer_base base
+      where users1.id=T_JX_PARAMETERS.customer_manager_id and 
+        users1.id=b.USER_ID and
+        b.TY_CUSTOMER_ID = base.ID and
+        base.khnm = ty_repay_tkmx.KHH and
+         info.customer_id = b.id and
+         ffje1.id=base.id and 
+         ffje2.id=base.id and
+        ty_repay_tkmx.JJH=TY_REPAY_LSZ.JJH
+         <if test="customerManagerId!=null and customerManagerId!=''">
+		            and users1.ID=#{customerManagerId}
+		        </if>
+         group by users1.DISPLAY_NAME,
+      T_JX_PARAMETERS.MONTH_LOAN_NUM,
+      T_JX_PARAMETERS.MONTH_EFFECT_NUM
+      
+       <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+<select id="findAlljxglCountList" resultType="int"
+			parameterType="com.cardpay.pccredit.customer.filter.MaintenanceFilter">
+		  select count(*)
+		     from
+		      SYS_USER users1,
+		      T_JX_PARAMETERS,
+		      TY_REPAY_LSZ,
+		      ty_repay_tkmx,
+		      BASIC_CUSTOMER_INFORMATION  b,
+		      CUSTOMER_APPLICATION_INFO info,
+		      ty_customer_base base
+		      where users1.id=T_JX_PARAMETERS.customer_manager_id and 
+		        users1.id=b.USER_ID and
+		        b.TY_CUSTOMER_ID = base.ID and
+		        base.KHH = ty_repay_tkmx.KHH and
+		         info.customer_id = b.id and
+		       <!--  info.JJH=ty_repay_tkmx.JJH  and -->
+		        ty_repay_tkmx.JJH=TY_REPAY_LSZ.JJH
+		      <if test="customerManagerId!=null and customerManagerId!=''">
+		            and users1.ID=#{customerManagerId}
+		        </if>
+        
+	</select>
+</mapper>

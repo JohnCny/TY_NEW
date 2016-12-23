@@ -4,6 +4,7 @@
 
 package com.wicresoft.jrad.modules.privilege.web.action;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -150,6 +151,17 @@ public class UserController extends BaseController {
 	@RequestMapping(value = "insert.json")
 	@JRadOperation(JRadOperation.CREATE)
 	public JRadReturnMap insert(@ModelAttribute User user, HttpServletRequest request) {
+		String name=request.getParameter("displayName");
+		String sex=request.getParameter("gender");
+		try {
+			String displayName=new String(name.getBytes("iso-8859-1"),"utf-8");
+			String gender=new String(sex.getBytes("iso-8859-1"),"utf-8");
+			user.setDisplayName(displayName);
+			user.setGender(gender);
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		JRadReturnMap returnMap = WebRequestHelper.requestValidation(getModuleName(), user);
 		if (returnMap.isSuccess()) {
 			try {

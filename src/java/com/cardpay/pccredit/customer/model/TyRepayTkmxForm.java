@@ -74,6 +74,63 @@ public class TyRepayTkmxForm{
 	
 	private String productName;
 	private String zjhm;
+	private String cname;
+	private String balamt;
+	private String debtinterest;
+	private String reqlmt;
+	private String overtimes;
+	private String delayamtdays;
+	private String delayinterestdays;
+	private String state;
+	
+	public String getCname() {
+		return cname;
+	}
+	public void setCname(String cname) {
+		this.cname = cname;
+	}
+	public String getBalamt() {
+		return balamt;
+	}
+	public void setBalamt(String balamt) {
+		this.balamt = balamt;
+	}
+	public String getDebtinterest() {
+		return debtinterest;
+	}
+	public void setDebtinterest(String debtinterest) {
+		this.debtinterest = debtinterest;
+	}
+	public String getReqlmt() {
+		return reqlmt;
+	}
+	public void setReqlmt(String reqlmt) {
+		this.reqlmt = reqlmt;
+	}
+	public String getOvertimes() {
+		return overtimes;
+	}
+	public void setOvertimes(String overtimes) {
+		this.overtimes = overtimes;
+	}
+	public String getDelayamtdays() {
+		return delayamtdays;
+	}
+	public void setDelayamtdays(String delayamtdays) {
+		this.delayamtdays = delayamtdays;
+	}
+	public String getDelayinterestdays() {
+		return delayinterestdays;
+	}
+	public void setDelayinterestdays(String delayinterestdays) {
+		this.delayinterestdays = delayinterestdays;
+	}
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
 	public String getJjh() {
 		return jjh;
 	}

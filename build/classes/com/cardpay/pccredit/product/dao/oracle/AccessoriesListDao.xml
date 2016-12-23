@@ -85,9 +85,9 @@
 	<select id="delay" resultMap="TyCustomerRecordMap"  parameterType="java.lang.String">
 	 select b.*
 	from CUSTOMER_APPLICATION_INFO a,TY_CUSTOMER_RECORD b,dual c
-	where a.id=b.APPLICATIONID and b.STATUS='4'
+	where a.id=b.APPLICATION_ID and b.STATUS='4'
 	<![CDATA[ 
-	and TO_DATE(a.JKRQ,'yyyymmdd') > trunc ( SYSDATE-5 ) and a.customer_id in ( select id from
+	and TO_DATE(a.JKRQ,'yyyymmdd') < trunc ( SYSDATE-5 ) and a.customer_id in ( select id from
 	basic_customer_information where user_id=#{id} )
 	]]> 
 	</select>

@@ -67,14 +67,14 @@
             </colgroup>
             #foreach ($obj in $result.items)
             <tr>
-              <td class="checkbox"><input type="radio" name="checkbox" value="$!obj.busicode"/></td>
-              <td nowrap="nowrap">$!obj.busicode</td>
-              <td nowrap="nowrap">$!obj.cname</td>
-              <td nowrap="nowrap">$!obj.custidno</td>
-              <td nowrap="nowrap">$!obj.reqlmt</td>
-              <td nowrap="nowrap">$!obj.loandate</td>
-              <td nowrap="nowrap">$!obj.money</td>
-              <td nowrap="nowrap">$!obj.balamt</td>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!obj.YWBH"/></td>
+              <td nowrap="nowrap">$!obj.YWBH</td>
+              <td nowrap="nowrap">$!obj.KHMC</td>
+              <td nowrap="nowrap">$!obj.ZJHM</td>
+              <td nowrap="nowrap">$!obj.REQLMT</td>
+              <td nowrap="nowrap">$!obj.LOANDATE</td>
+              <td nowrap="nowrap">$!obj.REQLMT</td>
+              <td nowrap="nowrap">$!obj.YE</td>
               <td nowrap="nowrap">#dictVal("ACCOUNTSTATE", $!obj.accountstate)</td>
             </tr>
             #end

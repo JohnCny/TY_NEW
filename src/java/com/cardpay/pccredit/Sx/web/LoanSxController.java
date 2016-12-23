@@ -2,10 +2,17 @@ package com.cardpay.pccredit.Sx.web;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+
+
+
+
+
+
 
 
 import org.apache.log4j.Logger;
@@ -17,6 +24,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
+
+
+
+
+
 
 
 import com.cardpay.pccredit.Sx.model.SxInputData;
@@ -95,18 +108,9 @@ public class LoanSxController extends BaseController {
 					JRadModelAndView mv = new JRadModelAndView("/SX/sx_browse",
 							request);
 					// 统计总笔数、总收息
-					List<SxOutputData> list = service
-							.findSxListByFilterNoPage(filter);
-					float total = 0;
-					float totalSx = 0; 
-					for (int i = 0; i < list.size(); i++) {
-						total += Integer.parseInt(list.get(i).getCountSx());
-						totalSx += Float.parseFloat(list.get(i).getTotal());
-						// jkje+=Integer.parseInt(listje.get(i).getJkje());
-					}
+					List<SxOutputData> list =service.findSxListByFilterNoPage(filter);
 					mv.addObject(PAGED_RESULT, pagedResult);
-					mv.addObject("total", total);
-					mv.addObject("totalSx", totalSx);
+					mv.addObject("totalSx", list);
 					return mv;
 				}
 			} catch (ParseException e) {
@@ -126,18 +130,9 @@ public class LoanSxController extends BaseController {
 					filter, result);
 			JRadModelAndView mv = new JRadModelAndView("/SX/sx_browse", request);
 			// 统计总笔数、总收息
-			List<SxOutputData> list = service
-					.findSxListByFilterNoPage(filter);
-			int total = 0;
-			float totalSx = 0;
-			for (int i = 0; i < list.size(); i++) {
-				total += Integer.parseInt(list.get(i).getCountSx());
-				totalSx += Float.parseFloat(list.get(i).getTotal());
-				// jkje+=Integer.parseInt(listje.get(i).getJkje());
-			}
+			List<SxOutputData> list = service.findSxListByFilterNoPage(filter);
 			mv.addObject(PAGED_RESULT, pagedResult);
-			mv.addObject("total", total);
-			mv.addObject("totalSx", totalSx);
+			mv.addObject("totalSx", list);
 			return mv;
 	}
 	
@@ -179,17 +174,8 @@ public class LoanSxController extends BaseController {
 					JRadModelAndView mv = new JRadModelAndView(
 							"/SX/Jgnsx_browse", request);
 					// 统计总笔数、总收息
-					List<SxOutputData> list = service
-							.findSxListByFilterNoPage(filter);
-					int total = 0;
-					float totalSx = 0;
-					for (int i = 0; i < list.size(); i++) {
-						total += Integer.parseInt(list.get(i).getCountSx());
-						totalSx += Float.parseFloat(list.get(i).getTotal());
-					}
+				//	List<SxOutputData> list = service.findSxListByFilterNoPage(filter);
 					mv.addObject(PAGED_RESULT, pagedResult1);
-					mv.addObject("total", total);
-					mv.addObject("totalSx", totalSx);
 					mv.addObject("team", team);
 					mv.addObject("user", user);
 					return mv;
@@ -210,18 +196,10 @@ public class LoanSxController extends BaseController {
 					filter, result);
 			JRadModelAndView mv = new JRadModelAndView("/SX/Jgnsx_browse",
 					request);
-			// 统计总笔数、总收息
+			/*// 统计总笔数、总收息
 			List<SxOutputData> list = service
-					.findSxListByFilterNoPage(filter);
-			int total = 0;
-			float totalSx = 0;
-			for (int i = 0; i < list.size(); i++) {
-				total += Integer.parseInt(list.get(i).getCountSx());
-				totalSx += Float.parseFloat(list.get(i).getTotal());
-			}
+					.findSxListByFilterNoPage(filter);*/
 			mv.addObject(PAGED_RESULT, pagedResult1);
-			mv.addObject("total", total);
-			mv.addObject("totalSx", totalSx);
 			mv.addObject("team", team);
 			mv.addObject("user", user);
 			return mv;

@@ -157,6 +157,16 @@ public class MibusidataForm extends BusinessModel {
 	private String refusalreason;
 	private String displayname;
 	
+	
+	String jf;
+	
+	
+	public String getJf() {
+		return jf;
+	}
+	public void setJf(String jf) {
+		this.jf = jf;
+	}
 	public String getDisplayname() {
 		return displayname;
 	}
