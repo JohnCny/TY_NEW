@@ -49,9 +49,7 @@ public class BusinessTacklingController extends BaseController{
 			HttpServletRequest request
 			) {
 		JRadModelAndView mv =null;
-		String customerId=request.getParameter("customerId");
-		CustomerInfo customer=btService.queryById(customerId); 
-		String idcard=customer.getCardId();
+		String idcard=request.getParameter("cardId");
 		List<BusinessTackling> btlist=btService.queryByIdCard(idcard);
 		mv = new JRadModelAndView("/customer/customerInfor/BusinessTacking_browse", request);
 		mv.addObject("btlist",btlist);
@@ -64,20 +62,12 @@ public class BusinessTacklingController extends BaseController{
 	public JRadReturnMap queryBusinessTackling(HttpServletRequest request)
 		{
 			JRadReturnMap returnMap = new JRadReturnMap();
-			if (returnMap.isSuccess()) {
-				try {
-					String customerId=request.getParameter("customerId");
-					CustomerInfo customer=btService.queryById(customerId); 
+					String cardId=request.getParameter("cardId");
+					CustomerInfo customer=btService.queryById(cardId); 
 					if(null!=customer){
 						returnMap.put(MESSAGE, "1");
 						return returnMap;
 					}
 					return returnMap;
-				} catch (Exception e) {
-					// TODO: handle exception
-					return WebRequestHelper.processException(e);
-				}	
-		}
-			return returnMap;
 }
 }

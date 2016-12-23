@@ -8,15 +8,15 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cardpay.pccredit.customer.model.TyRepayTkmxForm;
 import com.cardpay.pccredit.postLoan.dao.PostLoanDao;
 import com.cardpay.pccredit.postLoan.filter.FcloaninfoFilter;
 import com.cardpay.pccredit.postLoan.filter.PostLoanFilter;
+import com.cardpay.pccredit.postLoan.model.CreditProcess;
 import com.cardpay.pccredit.postLoan.model.Fcloaninfo;
 import com.cardpay.pccredit.postLoan.model.MibusidataForm;
-import com.cardpay.pccredit.postLoan.model.MibusidateView;
 import com.cardpay.pccredit.postLoan.model.Rarepaylist;
 import com.cardpay.pccredit.postLoan.model.RarepaylistForm;
+import com.cardpay.pccredit.zrrtz.model.IncomingData;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 
@@ -63,10 +63,10 @@ public class PostLoanService {
 	 * @param filter
 	 * @return
 	 */
-	public QueryResult<TyRepayTkmxForm> findJJJnListByFilter(PostLoanFilter filter){
-		List<TyRepayTkmxForm> lists = postLoanDao.findJJJnListByFilter(filter);
+	public QueryResult<Fcloaninfo> findJJJnListByFilter(PostLoanFilter filter){
+		List<Fcloaninfo> lists = postLoanDao.findJJJnListByFilter(filter);
 		int size = postLoanDao.findJJJnListCountByFilter(filter);
-		QueryResult<TyRepayTkmxForm> qr = new QueryResult<TyRepayTkmxForm>(size,lists);
+		QueryResult<Fcloaninfo> qr = new QueryResult<Fcloaninfo>(size,lists);
 		return qr;
 	}
 	/**
@@ -88,10 +88,10 @@ public class PostLoanService {
 	 * @param filter
 	 * @return
 	 */
-	public QueryResult<MibusidateView> findTzJnListByFilter(PostLoanFilter filter){
-		List<MibusidateView> lists = postLoanDao.findTzJnListByFilter(filter);
+	public QueryResult<MibusidataForm> findTzJnListByFilter(PostLoanFilter filter){
+		List<MibusidataForm> lists = postLoanDao.findTzJnListByFilter(filter);
 		int size = postLoanDao.findTzJnListCountByFilter(filter);
-		QueryResult<MibusidateView> qr = new QueryResult<MibusidateView>(size,lists);
+		QueryResult<MibusidataForm> qr = new QueryResult<MibusidataForm>(size,lists);
 		return qr;
 	}
 	
@@ -116,12 +116,12 @@ public class PostLoanService {
 	 * @return
 	 */
 	
-	public List<TyRepayTkmxForm> selectfcloanifoInfoByBusicode(PostLoanFilter filter) {
+	public List<Fcloaninfo> selectfcloanifoInfoByBusicode(PostLoanFilter filter) {
 		// TODO Auto-generated method stub
 		return postLoanDao.findJJJnListByFilter(filter);
 	}
 	
-	public List<MibusidateView> selectTz(PostLoanFilter filter) {
+	public List<MibusidataForm> selectTz(PostLoanFilter filter) {
 		// TODO Auto-generated method stub
 		return postLoanDao.findTzJnListByFilter(filter);
 	}
@@ -132,10 +132,50 @@ public class PostLoanService {
 		
 		return postLoanDao.selectRarepaylistfoInfoByBusicode(filter);
 	}
-	public List<MibusidataForm> findtzList(PostLoanFilter filter) {
+	
+	/**
+	 * 信贷流程跟踪表
+	 * @param filter 
+	 * @param filter
+	 * @return
+	 * */
+	public QueryResult<CreditProcess> queryCreditProcess(CreditProcess filter) {
 		// TODO Auto-generated method stub
-		System.out.println(filter);
-		return postLoanDao.findtzList(filter);
+		List<CreditProcess> cplist = postLoanDao.queryCreditProcess(filter);
+		for(CreditProcess cc:cplist){
+			if(null!=cc.getStatus()){
+				if(cc.getStatus().equals("audit")){
+					cc.setStatus("已申请 ");
+				}else if(cc.getStatus().equals("refuse")){
+					cc.setStatus("被拒绝");
+				}else if(cc.getStatus().equals("approved")){
+					cc.setStatus("审批结束");
+				}else if(cc.getStatus().equals("returnedToFirst")){
+					cc.setStatus("退回至客户经理");
+				}else if(cc.getStatus().equals("end")){
+					cc.setStatus("放款成功");
+				}
+			}
+		}
+		int size = postLoanDao.querySize(filter);
+		QueryResult<CreditProcess> queryResult = new QueryResult<CreditProcess>(size,cplist);
+		return queryResult;
 	}
+	
+	
+	public List<CreditProcess> queryAll(String id) {
+		// TODO Auto-generated method stub
+		return postLoanDao.queryAll(id);
+	}
+	public List<CreditProcess> creditProcessExportQueryAll(CreditProcess filter) {
+		// TODO Auto-generated method stub
+		return postLoanDao.creditProcessExportQueryAll(filter);
+	}
+	//根据身份证号查询是否转贷
+	public List<CreditProcess> queryByCardId(String cardId) {
+		// TODO Auto-generated method stub
+		return postLoanDao.queryByCardId(cardId);
+	}
+
 	
 }

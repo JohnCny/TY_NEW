@@ -1,0 +1,115 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">信贷流程跟踪表</div>
+      </div>
+      <div class="inquiry">
+        <div class="search_tag">#i18n("label.browse.filter")</div>
+        <div class="search">
+         <form id="submitForm" action="${modulePath}/creditProcess.page" >
+            <ul>
+            
+              <li>
+                <span> 客户姓名:<input type="text" id="customername"  name="customername"></span>
+              </li>
+              
+              <li class="search_button">
+                <input id="id_browse1_button" type="submit" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul> 
+          </form>
+        </div>
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+             <!--  <col width="5%" /> -->
+              <col width="5%" />
+              <col width="10%" />
+              <col />
+              <col />
+              <col />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">企业名称</th>
+              <th nowrap="nowrap">客户姓名</th>
+              <th nowrap="nowrap">所属团队</th>
+              <th nowrap="nowrap">担保类型</th>
+              <th nowrap="nowrap">申请时间</th>
+              <th nowrap="nowrap">申请金额</th>
+              <th nowrap="nowrap">当前状态</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+<!--               <col width="5%" /> -->
+              <col width="5%" />
+              <col width="10%" />
+              <col />
+              <col />
+              <col />
+            </colgroup>
+            #foreach ($cplist in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" id="checkbox" 
+              value="$!cplist.id"/></td> 
+              <td nowrap="nowrap">$!cplist.spmc</td>
+              <td nowrap="nowrap">$!cplist.customername</td>
+              <td nowrap="nowrap">$!cplist.teamname</td>
+              <td nowrap="nowrap">$!cplist.mainassure</td>
+              <td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:ss",$!cplist.applytime)</td>
+              <td nowrap="nowrap">$!cplist.applymoney</td>
+              <td nowrap="nowrap">$!cplist.status</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+          #btnpriv("queryAll")<a id="queryAll" class="btn_gr" href="javascript:void(0);" title="#i18n('button.display.hint')">查看详情</a>#end
+          #btnpriv("export")<a id="export" class="btn_g" href="javascript:void(0);" title="#i18n('button.export.hint')">excle导出</a>#end
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+
+
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		
+		opsObj.exportUrl = "${modulePath}/creditProcessExport.json";
+	
+		$("#export").click(function() {
+                $("#export").unbind();
+                var url = "${modulePath}/creditProcessExport.json";
+				window.location.href = url;
+           
+        });
+		
+		$("#queryAll").click(function() {
+            if ($(".checkbox :checked").length == 1) {
+                $("#queryAll").unbind();
+                var rowid = $($(".checkbox :checked")[0]).attr("value");
+                var url = "${modulePath}/creditProcessQueryAll.json?id=" + rowid;
+				window.location.href = url;
+            } else {
+                Dialog.message("请选择一行");
+            }
+        })
+		
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")

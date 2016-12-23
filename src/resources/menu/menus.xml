@@ -44,7 +44,8 @@
 		<menu id="080000" name="riskcontrol" title="综合风控管理" operations=""> 
 			<menu id="080001" name="riskcustomermanager" title="风险客户管理" url="/riskcontrol/riskcustomermanager/managerbrowse.page" img="" operations="reported|browse"/>
 			<menu id="080002" name="riskcustomercollection" title="客户催收计划列表" url="/riskcontrol/riskcustomercollection/browse.page" img="" operations="create|change|display|browse"/>
-			<menu id="080003" name="riskcustomermanager1" title="黑名单管理" url="/riskcontrol/custormerblacklist/custormerblacklist11.page" img="" operations="reported|browse"/>
+			<!-- <menu id="080003" name="riskcustomermanager1" title="黑名单管理" url="/riskcontrol/custormerblacklist/custormerblacklist11.page" img="" operations="reported|browse"/> -->
+			<menu id="080004" name="hmdinput" title="黑名单导入" url="/report/inputhmdcomtroller/hmdbrowse.page" img="" operations="reported|browse"/>
 			
 		</menu>
 		
@@ -54,6 +55,7 @@
 			<menu id="091002" name="postLoan2" title="流水表信息" url="/postLoan/post/lshbrowse.page" img="" operations="create|change|display|browse"/>
 			<menu id="091003" name="postLoan3" title="贷后监控" url="/postLoan/post/dhbrowse.page" img="" operations="create|addbatch|change|display|import|approveloguser|approvelog|browse"/>
 			<menu id="091004" name="postLoan4" title="台帐表信息" url="/postLoan/post/tzbrowse.page" img="" operations="create|change|display|browse"/>
+			<menu id="091005" name="postLoan5" title="信贷流程跟踪信息" url="/postLoan/post/creditProcess.page" img="" operations="create|change|display|browse"/>
 		</menu>
 		
 		<menu id="104000" name="shouxi" title="收息统计" url="" img="images/icon_sys.gif" operations="">

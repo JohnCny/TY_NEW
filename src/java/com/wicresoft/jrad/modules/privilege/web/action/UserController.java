@@ -208,6 +208,7 @@ public class UserController extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/modules/privilege/user/user_change", request);
 
 		String userId = RequestHelper.getStringValue(request, ID);
+		
 
 		if (StringUtils.isNotEmpty(userId)) {
 			List<Role> roleChecked = roleManager.getRoleByUserId(userId);

@@ -43,6 +43,7 @@
       </form>
       <div class="submit" style="text-align:left;">
         <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
+         <input id="id_businessTackling" type="button" value="业务核查" class="current" />
       </div>
     </div>
   </div>
@@ -53,7 +54,6 @@
 	#parse ("customer/customerInforInsert/customerInforCreate_validation.js")
 	var layout = new FormsLayout("formsId");
 	window.top.currentWindow.setLayout(layout);
-	
 	$(document).ready(function() {		
 		$("#id_save_button").click(function() {
 			
@@ -99,6 +99,34 @@
 	   	        
 	    	}
 	      });
+
+		//业务核查
+		$("#id_businessTackling").click(function() {
+            	var cardId=$("#cardId").val();
+            	if(cardId !=""){
+  				$.ajax({
+						url : "/PCCredit/customer/amountadjustmentviews/queryByIdCard.json?cardId=" + cardId,
+						dataType : 'json',
+						type : "get",
+						success : function(data) {
+						if (data.success) {
+					    if(data.message!=null && data.message!=""){
+						var url = "/PCCredit/customer/amountadjustmentviews/queryByBusinessTackling.page?cardId=" + cardId;
+					    window.location.href = url;	
+							}else{
+								window.top.Dialog.message("没有该用户的信息！");
+								}
+						 }else{
+								window.top.Dialog.message("系统出现异常,请联系管理员"); 
+					    	}
+						}
+			    });
+			    }
+  				else{
+  					window.top.Dialog.message("请输入身份证号码");
+  	  				}
+        });
+	      
 		$("#cardId").change(function (){
 			 
 			 $("#cardIde").remove();	

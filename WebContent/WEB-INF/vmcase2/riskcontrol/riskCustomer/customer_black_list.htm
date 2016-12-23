@@ -1,3 +1,7 @@
+
+
+
+
 #parse ("common/iframe_page_header.htm")
 <body>
   <div class="content_main">
@@ -8,29 +12,7 @@
       <div class="inquiry">
         <div class="search_tag">#i18n("label.browse.filter")</div>
         <div class="search">
-        <!--   <form id="submitForm">
-            <ul>
-              <li>
-                <span>客户名称：<input type="text" name="customerName" value="$!result.filter.customerName" /></span>
-              </li>
-              <li>
-                <span>证件类型：
-                	<select id="type" name="cardType">
-	                   <option value="">请选择...</option>
-	                   #dict("CARDTYPE", $!result.filter.cardType)
-                  	</select>
-                  </span>
-              </li>
-              <li>
-                <span>证件号码：<input type="text" name="cardId" value="$!result.filter.cardId" /></span>
-              </li>
-              
-              <li class="search_button">
-                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
-                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
-              </li>
-            </ul>
-          </form> -->
+        <span><b>选择excel文件:</b>&nbsp;&nbsp;<input type="file" id="file" name="file"/></span>
         </div>
         <div id="topDiv" class="inquiry_list inquiry_top">
           <table>
@@ -76,6 +58,7 @@
         <div class="controlbtn">
       		<a id="creat" class="btn_g" href="javascript:void(0);" title="创建黑名单">创建黑名单</a>
       		<a id="delete" class="btn_g"  title="移除出黑名单">移除出黑名单</a>
+      		<a id="daoru" class="btn_g"  title="导入">导入</a>
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
@@ -158,7 +141,14 @@
 				}
 			}); */
 	 });
-		
+
+	//导入
+	 $("#daoru").click(function() {
+		 var urls=$("#file").val();
+		 alert(urls);
+		 var url = "/PCCredit/report/inputhmdcomtroller/inputHmd.json?urls="+urls;
+		 window.location.href = url;
+	 });
 	 
 	//移出黑名单
 	 $("#delete").click(function() {

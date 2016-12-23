@@ -1,0 +1,114 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">黑名单导入</div>
+      </div>
+      <div class="inquiry">
+        <div class="search_tag">#i18n("label.browse.filter")</div>
+        <div class="search">
+         <form action="${modulePath}/hmdbrowse.page" enctype="multipart/form-data">
+            <ul>
+            <li>
+              <span><b>选择excel文件:</b>&nbsp;&nbsp;
+            <!--   <input type="file"  name="file" onchange="document.getElementById('theFilePath').value=this.value"/></span>
+              <input type="hidden" id="theFilePath" name="theFilePath" value=""/> -->
+              <input type="file"  id="file" name="file"/>
+              </li>
+              <li>
+              <a id="daoru" class="btn_g"  title="导入">导入</a>
+              </li>
+              <li>
+                <span> 客户姓名:<input type="text" id="name"  name="name"></span>
+              </li>
+              <li class="search_button">
+                <input id="id_browse1_button" type="submit" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+              
+            </ul> 
+          </form>
+        </div>
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+             <!--  <col width="5%" /> -->
+              <col width="5%" />
+              <col width="10%" />
+              <col />
+              <col />
+              <col />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">客户姓名</th>
+              <th nowrap="nowrap">身份证号</th>
+              <th nowrap="nowrap">来源</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+<!--               <col width="5%" /> -->
+              <col width="5%" />
+              <col width="10%" />
+              <col />
+              <col />
+              <col />
+            </colgroup>
+            #foreach ($cplist in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" id="checkbox" 
+              value="$!cplist.id"/></td> 
+              <td nowrap="nowrap">$!cplist.name</td>
+              <td nowrap="nowrap">$!cplist.cardId</td>
+              <td nowrap="nowrap">$!cplist.comefrom</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+
+
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	//导入
+	$("#daoru").click(function() {
+		// var urls=$("#theFilePath").val();
+		 var urls=$("#file").val();
+		 alert(urls)
+		 
+        	if(urls !=""){
+				$.ajax({
+					url : "/PCCredit/report/inputhmdcomtroller/inputHmd.json?urls="+urls,
+					dataType : 'json',
+					type : "get",
+					success : function(data) {
+      					if (data.success) {
+          				alert(data.mes)
+      					window.location.href="/PCCredit/report/inputhmdcomtroller/hmdbrowse.page";
+      					}
+      					else{
+      						topWin.Dialog.message(data.message);
+      				    }
+      				}
+		    });
+		    }
+				else{
+					window.top.Dialog.message("请选择excel文件");
+	  				}
+    });
+	
+</script>
+#parse ("common/iframe_page_footer.htm")

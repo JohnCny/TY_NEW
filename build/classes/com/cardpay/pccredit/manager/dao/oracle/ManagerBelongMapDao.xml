@@ -146,7 +146,17 @@
 		   and c.user_id = d.id
 		   and d.user_type ='1'
 	</select>
-	
+	<select id="findDeptManagerByDeptId" resultMap="AccountManagerParameterFormMap">
+      select d.display_name,
+             d.id as user_id
+		  from sys_organization a,
+		       sys_department b, 
+		       sys_dept_user c, sys_user d
+		 where a.id = b.org_id
+		   and b.id = c.dept_id
+		   and c.user_id = d.id
+		   and d.user_type ='1' and b.id in (select dept_id from sys_charge where user_id=#{userId})
+	</select>
 	
 	<select id="findDeptOrgan" resultMap="SysOrganMap">
       select t.*,t.rowid from sys_organization  t

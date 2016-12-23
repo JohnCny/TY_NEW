@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!-- <?xml version="1.0" encoding="UTF-8"?>
 <jboss-deployment-structure>
 	<deployment>
 		
@@ -13,4 +13,4 @@
             <module name="org.slf4j.impl" />
 		</exclusions>
 	</deployment>
-</jboss-deployment-structure> 
+</jboss-deployment-structure>  -->

@@ -21,5 +21,9 @@ public class CommonConstant {
 		 * 机构主管
 		 */
 		public static final int USER_TYPE_3 =3;
+		/**
+		 * 区域经理
+		 */
+		public static final int USER_TYPE_4 =4;
 	}
 }

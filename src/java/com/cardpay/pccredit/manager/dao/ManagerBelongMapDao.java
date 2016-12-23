@@ -76,6 +76,12 @@ public interface ManagerBelongMapDao {
 	List<AccountManagerParameterForm> findDeptManagerById(@Param("userId") String userId);
 	
 	/**
+	 * 区域主管logon 查询所管理部门下的客户经理信息
+	 * @param userId
+	 * @return
+	 */
+	List<AccountManagerParameterForm> findDeptManagerByDeptId(@Param("userId") String userId);
+	/**
 	 * 部门主管logon 查询 所属机构
 	 * @param userId
 	 * @return

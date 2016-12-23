@@ -4,6 +4,7 @@
 package com.cardpay.pccredit.customer.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import com.cardpay.pccredit.customer.filter.MaintenanceFilter;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.model.Maintenance;
 import com.cardpay.pccredit.customer.model.MaintenanceAction;
+import com.cardpay.pccredit.customer.model.RepayCustomerInfor;
 import com.cardpay.pccredit.customer.web.MaintenanceForm;
 import com.cardpay.pccredit.customer.web.MaintenanceWeb;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
@@ -287,7 +289,47 @@ public class MaintenanceService {
 		if(CommonConstant.USER_TYPE.USER_TYPE_3 == user.getUserType()){
 			forms =  managerBelongMapDao.findOrgManagerById(user.getId());
 		}
+		//如果是区域经理4
+				if(CommonConstant.USER_TYPE.USER_TYPE_4 == user.getUserType()){
+					forms =  managerBelongMapDao.findDeptManagerByDeptId(user.getId());
+				}
 		return forms;
+	}
+	/**
+	 * 获取提醒客户还款列表
+	 * @return
+	 */
+	public String getActiveList(String userIds){
+		String sql = "select tk.jjh,tk.rq,tk.CHINESE_NAME as customer,tk.DISPLAY_NAME as name from (SELECT o.jjh,SUBSTR(o.jzrq, 7, 9) AS rq,a.CHINESE_NAME,b.DISPLAY_NAME ";
+					sql+="FROM TY_REPAY_LSZ o,	TY_REPAY_TKMX P ,	BASIC_CUSTOMER_INFORMATION A,	SYS_USER b,	CUSTOMER_APPLICATION_INFO c ";
+					sql+="WHERE b.ID in "+userIds+" AND A .USER_ID = b. ID AND c.customer_id = A . ID and  c.jjh=o.jjh  ";//AND zy = '批量自动扣本金'
+					sql+=" AND o.jjh = P .jjh AND P .sfjq = '0.0' ) tk GROUP BY tk.jjh,	tk.rq,tk.CHINESE_NAME,tk.DISPLAY_NAME";
+		List<RepayCustomerInfor> list = commonDao.queryBySql(RepayCustomerInfor.class, sql, null);
+		Calendar calendar = Calendar.getInstance();
+		String date1 = calendar.get(Calendar.DAY_OF_MONTH)+"";
+		calendar.add(Calendar.DAY_OF_YEAR, 1);
+		String date2 = calendar.get(Calendar.DAY_OF_MONTH)+"";
+		calendar.add(Calendar.DAY_OF_YEAR, 1);
+		String date3 = calendar.get(Calendar.DAY_OF_MONTH)+"";
+		StringBuffer buffer = new StringBuffer();
+		for(int i=0;i<list.size();i++){
+			String rq = list.get(i).getRq();
+			String customerName = list.get(i).getCustomer();
+			String userName = list.get(i).getName();
+			if(rq.startsWith("0")){
+				rq = rq.substring(1, 2);
+			}
+			if(date1.equals(rq)){
+				buffer.append("客户经理"+userName+"名下的"+customerName+"客户将于2日后还款，请注意提醒！</br>");
+			}
+			if(date2.equals(rq)){
+				buffer.append("客户经理"+userName+"名下的"+customerName+"客户将于1日后还款，请注意提醒！</br>");
+			}
+			if(date3.equals(rq)){
+				buffer.append("客户经理"+userName+"名下的"+customerName+"客户将于今日后还款，请注意提醒！</br>");
+			}
+		}
+		return buffer.toString();
 	}
 	
 	/**
