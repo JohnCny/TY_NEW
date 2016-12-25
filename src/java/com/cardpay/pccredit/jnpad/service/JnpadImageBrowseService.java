@@ -10,6 +10,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +39,10 @@ public class JnpadImageBrowseService {
 	public List<LocalImageForm> findLocalImage(String customerId,String productId ) {
 		// TODO Auto-generated method stub
 		return jnpadImageBrowseDao.findLocalImage(customerId,productId);
+	}
+	public List<LocalImageForm> findLocalImageByType(String customerId,
+			 String productId, String phone_type){
+		return jnpadImageBrowseDao.findLocalImageByType(customerId,productId,phone_type);
 	}
 	
 
@@ -68,13 +73,15 @@ public class JnpadImageBrowseService {
 		{
 			response.setContentType(JPG);// 设定输出的类型
 			// 得到图片的真实路径
-
+	
 			// 得到图片的文件流
 			InputStream imageIn = new FileInputStream(new File(imagePath));
+	
 			// 得到输入的编码器，将文件流进行jpg格式编码
 			JPEGImageDecoder decoder = JPEGCodec.createJPEGDecoder(imageIn);
 			// 得到编码后的图片对象
 			BufferedImage image = decoder.decodeAsBufferedImage();
+			System.out.println(image);
 			// 得到输出的编码器
 			JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(output);
 			encoder.encode(image);// 对图片进行输出编码

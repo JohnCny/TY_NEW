@@ -103,6 +103,28 @@
 		from INDUSTRY_DICT
 		where 1=1
 	</select>
+		<select id="findCustomerInforByFilterAndProductId1" resultType="com.cardpay.pccredit.customer.model.CustomerInfor">
+		 select 
+			id,
+			chinese_name as chineseName,
+			card_type as cardType,
+			card_id as cardId
+			 from  basic_customer_information b
+           where  b.user_id=#{userId} 
+           and b.id not in (select customer_id from customer_application_info where product_id=#{productId} )
+	</select>
+	
+		<select id="findCustomerInforByFilterAndProductId2" resultType="com.cardpay.pccredit.customer.model.CustomerInfor">
+		 select 
+			id,
+			chinese_name as chineseName,
+			card_type as cardType,
+			card_id as cardId
+			 from  basic_customer_information b
+           where  b.user_id=#{userId} 
+           and b.id not in (select customer_id from customer_application_info where product_id=#{productId} )
+           and b.chinese_name like #{chineseName} 
+	</select>
 	<select id="findCollectionMethod" resultType="com.cardpay.pccredit.system.model.Dict">
 		select Type_code as TypeCode,Type_name as TypeName
 		from Dict

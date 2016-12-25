@@ -1,5 +1,6 @@
 package com.cardpay.pccredit.jnpad.web;
 
+import java.awt.geom.Arc2D.Float;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.ipad.constant.IpadConstant;
 import com.cardpay.pccredit.ipad.model.Result;
 import com.cardpay.pccredit.ipad.service.CustomerInforForIpadService;
@@ -43,7 +45,10 @@ import com.wicresoft.util.web.RequestHelper;
  */
 @Controller
 public class JnIpadUserLoginController {
-	
+	private Integer yxed=0;
+	private Integer dkye=0;
+	private Integer bnqx=0;
+	private Integer bwqx=0;
 	@Autowired
 	private JnIpadUserLoginService userService;
 	
@@ -194,12 +199,31 @@ public class JnIpadUserLoginController {
 	@ResponseBody
 	@RequestMapping(value = "/ipad/user/findYunyinstatus.json")
 	public String findYunyinstatus(HttpServletRequest request) {
+		Integer Money=0;
 		String userId = RequestHelper.getStringValue(request, "userId");
 		//查询运营状况
-		CustYunyinVo vo =  appInfoXxService.findYunyinstatus(userId);
-		//response
+		List<IntoPieces> SXmoney=appInfoXxService.findAlledByUser(userId);
+		if(SXmoney.size()!=0){
+			for(int i=0;i<SXmoney.size();i++){
+				Money+=Integer.parseInt(SXmoney.get(i).getApplyQuota().replace(".00", ""));
+			}
+		}
+		List<IntoPieces> a=appInfoXxService.findyxByUser(userId);
+		for(int b=0;b<a.size();b++){
+			yxed+=Integer.parseInt(a.get(b).getApplyQuota().replace(".00", ""));
+		}
+		List<IntoPieces> aa=appInfoXxService.findyqzeByUser(userId);
+		for(int b=0;b<aa.size();b++){
+			dkye+=Integer.parseInt(aa.get(b).getDkye().replace(".00", ""));
+			bnqx+=Integer.parseInt(aa.get(b).getBnqx().replace(".00", ""));
+			bwqx+=Integer.parseInt(aa.get(b).getBwqx().replace(".00", ""));
+		}
+		int yqrs=appInfoXxService.findyqByUser(userId);
 		Map<String,Object> result = new LinkedHashMap<String,Object>();
-		result.put("result", vo);
+		result.put("SXmoney", Money);
+		result.put("yxed", yxed);
+		result.put("yqrs", yqrs);
+		result.put("yqye", dkye+bnqx+bwqx);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(result, jsonConfig);

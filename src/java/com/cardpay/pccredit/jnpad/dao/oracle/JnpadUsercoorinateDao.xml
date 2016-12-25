@@ -16,7 +16,7 @@
 			insert into USER_COORDINATE (id,user_id,lon,lat,create_time) values (#{id},#{userid},#{lon},#{lat},#{create_time})
 	</insert>
 	<!--当前客户位置信息超过8条时 ,开始覆盖第一条数据-->
-	<insert id="updateUser"  parameterType="java.lang.Integer" >
+	<update id="updateUser"  parameterType="java.lang.Integer" >
 			update
 			       USER_COORDINATE
 			set
@@ -24,7 +24,7 @@
 			       lat=#{lat},
 			       create_time=#{create_time}
 			 where create_time=(select min(create_time) from USER_COORDINATE)
-	</insert>
+	</update>
 	
 	<!-- 根据userid查询客户经理的地理信息 -->
 	<select id="selectUserByUserid" resultType="com.cardpay.pccredit.jnpad.model.usercoorinate"  parameterType="com.cardpay.pccredit.jnpad.model.usercoorinate">

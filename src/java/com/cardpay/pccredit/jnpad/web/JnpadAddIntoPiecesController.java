@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -57,13 +58,29 @@ public class JnpadAddIntoPiecesController {
       
 		filter.setUserId(request.getParameter("userId"));
 		filter.setProductId(request.getParameter("productId"));
-		QueryResult<CustomerInfor> result = customerInforservice.findCustomerInforByFilterAndProductId(filter);
-		
+		QueryResult<CustomerInfor> result = customerInforservice.findCustomerInforByFilterAndProductId1(filter);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(result, jsonConfig);
 		return json.toString();
 	}
+	//搜索客户
+		@ResponseBody
+		@RequestMapping(value = "/ipad/addIntoPieces/sousCustomer.json", method = { RequestMethod.GET })
+		@JRadOperation(JRadOperation.BROWSE)
+		public String sousCustomer(@ModelAttribute CustomerInforFilter filter,HttpServletRequest request) {
+			Map<String, Object> map = new HashMap<String, Object>();
+			filter.setUserId(request.getParameter("userId"));
+			filter.setProductId(request.getParameter("productId"));
+			filter.setChineseName(request.getParameter("kexm")+"%");
+			List<CustomerInfor> result = customerInforservice.findCustomerInforByFilterAndProductId2(filter);
+			map.put("result", result);
+			map.put("size", result.size());
+			JsonConfig jsonConfig = new JsonConfig();
+			jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+			JSONObject json = JSONObject.fromObject(map, jsonConfig);
+			return json.toString();
+		}
 	
 	//上传影像资料
 		@ResponseBody
@@ -72,17 +89,14 @@ public class JnpadAddIntoPiecesController {
 			response.setContentType("text/html;charset=utf-8");
 			Map<String, Object> map = new HashMap<String, Object>();
 			try {
-				if(file==null||file.isEmpty()){
-					map.put(JRadConstants.SUCCESS, false);
-					map.put(JRadConstants.MESSAGE, CustomerInforConstant.IMPORTEMPTY);
-					JSONObject obj = JSONObject.fromObject(map);
-					response.getWriter().print(obj.toString());
-				}
+				
 				String fileName =request.getParameter("fileName");
 				String productId = request.getParameter("productId");
 				String customerId = request.getParameter("customerId");
 				String applicationId = request.getParameter("applicationId");
-				jnpadaddIntoPiecesService.importImage(file,productId,customerId,applicationId,fileName);
+				String phone_type=request.getParameter("phone_type");
+				
+				jnpadaddIntoPiecesService.importImage(file,productId,customerId,applicationId,fileName,phone_type);
 				map.put(JRadConstants.SUCCESS, true);
 				map.put(JRadConstants.MESSAGE, CustomerInforConstant.IMPORTSUCCESS);
 				JSONObject obj = JSONObject.fromObject(map);
@@ -147,6 +161,24 @@ public class JnpadAddIntoPiecesController {
 			JSONObject json = JSONObject.fromObject(query, jsonConfig);
 			return json.toString();	    
 				}
+		
+		@ResponseBody
+		@RequestMapping(value = "/ipad/custAppInfo/NewIma.json", method = { RequestMethod.GET })
+		public String NewIma(HttpServletRequest request,HttpServletResponse response) throws Exception {        
+			Map<String,Object> map = new LinkedHashMap<String,Object>();
+				String fileName =request.getParameter("fileName");
+				String productId = request.getParameter("productId");
+				String customerId = request.getParameter("customerId");
+				String applicationId = request.getParameter("");
+				String phone_type=request.getParameter("phone_type");
+				jnpadaddIntoPiecesService.NewIma(fileName,productId,customerId,applicationId,applicationId,phone_type);
+				map.put("message", "上传成功");
+			 	JsonConfig jsonConfig = new JsonConfig();
+				jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+				JSONObject json = JSONObject.fromObject(map, jsonConfig);
+				return json.toString();	
+		}
+			
 
 		
 }

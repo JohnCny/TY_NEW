@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -55,6 +56,7 @@ import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentList;
 import com.cardpay.pccredit.intopieces.web.AddIntoPiecesForm;
 import com.cardpay.pccredit.intopieces.web.LocalExcelForm;
 import com.cardpay.pccredit.intopieces.web.LocalImageForm;
+import com.cardpay.pccredit.jnpad.dao.JnpadImageBrowseDao;
 import com.cardpay.pccredit.jnpad.model.JNPAD_SFTPUtil;
 import com.cardpay.pccredit.jnpad.model.JNPAD_UploadFileTool;
 import com.cardpay.pccredit.manager.model.BatchTask;
@@ -103,6 +105,9 @@ public class JnpadAddIntoPiecesService {
 	@Autowired
 	private ProcessService processService;
 	
+	@Autowired
+	private JnpadImageBrowseDao addImageByPType;
+	
 	/* 查询调查报告信息 */
 	public QueryResult<LocalExcelForm> findLocalExcelByProductAndCustomer(AddIntoPiecesFilter filter) {
 		List<LocalExcelForm> ls = localExcelDao.findByProductAndCustomer(filter);
@@ -141,14 +146,14 @@ public class JnpadAddIntoPiecesService {
 		//读取excel内容
 		JXLReadExcel readExcel = new JXLReadExcel();
 		//本地测试
-		String sheet[] = readExcel.readExcelToHtml1(url, true);
+		String sheet[] = readExcel.readExcelToHtml(url, true);
 		//服务器
 //		String sheet[] = SFTPUtil.readExcelToHtml(url, true);
-		for(String str : sheet){
+	/*	for(String str : sheet){
 			if(StringUtils.isEmpty(str)){
 				throw new RuntimeException("导入失败，请检查excel文件与模板是否一致！");
 			}
-		}
+		}*/
 		/*localExcel.setSheetJy(sheet[0]);
 		localExcel.setSheetJbzk(sheet[1]);
 		localExcel.setSheetJyzt(sheet[2]);
@@ -167,26 +172,30 @@ public class JnpadAddIntoPiecesService {
 		localExcel.setSheetLsfx(sheet[15]);
 		localExcel.setApproveValue(sheet[17]);
 		localExcel.setJyb(sheet[16]);*/
-		localExcel.setSheetJy(sheet[0]);
-		localExcel.setSheetJbzk(sheet[1]);
+	/*	localExcel.setSheetJbzk(sheet[1]);
 		localExcel.setSheetFz(sheet[2]);
 		localExcel.setSheetBzlrb(sheet[3]);
 		localExcel.setSheetXjllb(sheet[4]);
 		localExcel.setSheetJc(sheet[5]);
 		localExcel.setSheetGdzc(sheet[6]);
-		localExcel.setSheetYfys(sheet[7]);
-		localExcel.setSheetYsyf(sheet[8]);
-		localExcel.setJyb(sheet[9]);
-		
-		if(sheet[10].contains("元")){
-			localExcel.setApproveValue(sheet[10].substring(0,sheet[10].indexOf("元")));
+		*/
+		localExcel.setSheetXjllb(sheet[9]);
+		localExcel.setSheetYfys(sheet[13]);
+		localExcel.setSheetGdzc(sheet[12]);
+		localExcel.setSheetDhd(sheet[11]);
+		localExcel.setSheetYsyf(sheet[14]);
+		localExcel.setSheetJy(sheet[17]);
+		localExcel.setSheetJbzk(sheet[18]);
+		if(sheet[19].contains("元")){
+			localExcel.setApproveValue(sheet[19].substring(0,sheet[19].indexOf("元")));
 		}else{
-		    localExcel.setApproveValue(sheet[10]);
+		    localExcel.setApproveValue(sheet[19]);
 		}
 		//删除旧模板
 		String sql = "delete from local_excel where customer_id='"+customerId+"' and product_id='"+productId+"'";
 		commonDao.queryBySql(LocalExcel.class, sql, null);
 		//添加模板
+		
 		commonDao.insertObject(localExcel);
 	}
 	
@@ -218,7 +227,7 @@ public class JnpadAddIntoPiecesService {
 		//读取excel内容
 		JXLReadExcel readExcel = new JXLReadExcel();
 		//本地测试
-		String sheet[] = readExcel.readExcelToHtml1(url, true);
+		String sheet[] = readExcel.readExcelToHtml(url, true);
 		//服务器
 //		String sheet[] = SFTPUtil.readExcelToHtml(url, true);
 		for(String str : sheet){
@@ -226,21 +235,17 @@ public class JnpadAddIntoPiecesService {
 				throw new RuntimeException("导入失败，请检查excel文件与模板是否一致！");
 			}
 		}
-		localExcel.setSheetJy(sheet[0]);
-		localExcel.setSheetJbzk(sheet[1]);
-		localExcel.setSheetFz(sheet[2]);
-		localExcel.setSheetBzlrb(sheet[3]);
-		localExcel.setSheetXjllb(sheet[4]);
-		localExcel.setSheetJc(sheet[5]);
-		localExcel.setSheetGdzc(sheet[6]);
-		localExcel.setSheetYfys(sheet[7]);
-		localExcel.setSheetYsyf(sheet[8]);
-		localExcel.setJyb(sheet[9]);
-		
-		if(sheet[10].contains("元")){
-			localExcel.setApproveValue(sheet[10].substring(0,sheet[10].indexOf("元")));
+		localExcel.setSheetXjllb(sheet[9]);
+		localExcel.setSheetYfys(sheet[13]);
+		localExcel.setSheetGdzc(sheet[12]);
+		localExcel.setSheetDhd(sheet[11]);
+		localExcel.setSheetYsyf(sheet[14]);
+		localExcel.setSheetJy(sheet[17]);
+		localExcel.setSheetJbzk(sheet[18]);
+		if(sheet[19].contains("元")){
+			localExcel.setApproveValue(sheet[19].substring(0,sheet[19].indexOf("元")));
 		}else{
-		    localExcel.setApproveValue(sheet[10]);
+		    localExcel.setApproveValue(sheet[19]);
 		}
 		
 		//添加模板
@@ -276,7 +281,9 @@ public class JnpadAddIntoPiecesService {
 	}
 	
 	public void importImage(MultipartFile file, String productId,
-			String customerId,String applicationId ,String fileName_1) {
+			String customerId,String applicationId ,String fileName_1,String phone_type) {
+		
+		
 		//本地测试
 		Map<String, String> map = JNPAD_UploadFileTool.uploadYxzlFileBySpring(file,customerId,fileName_1);
 		//指定服务器上传
@@ -286,6 +293,7 @@ public class JnpadAddIntoPiecesService {
 		LocalImage localImage = new LocalImage();
 		localImage.setProductId(productId);
 		localImage.setCustomerId(customerId);
+		localImage.setPhone_type(phone_type);
 		if(applicationId != null){
 			localImage.setApplicationId(applicationId);
 		}
@@ -297,7 +305,7 @@ public class JnpadAddIntoPiecesService {
 			localImage.setAttachment(fileName);
 		}
 		
-		commonDao.insertObject(localImage);
+		addImageByPType.addImageByPType(localImage);
 	}
 
 	public void addIntopieces(AddIntoPiecesForm addIntoPiecesForm,String userId) {
@@ -1044,7 +1052,26 @@ public class JnpadAddIntoPiecesService {
 		request.getSession().setAttribute(batchId, null);
 	}
 	
+	public void NewIma(String fileName,String productId,String customerId,String applicationId,String applicationId1,String phone_type){
+		LocalImage localImage = new LocalImage();
+		localImage.setProductId(productId);
+		localImage.setCustomerId(customerId);
+		localImage.setPhone_type(phone_type);
+		if(applicationId1 != null){
+			localImage.setApplicationId(applicationId1);
+		}
+		String path = Constant.FILE_PATH + customerId+File.separator+fileName;
+		localImage.setCreatedTime(new Date());
+			localImage.setUri(path);
+			localImage.setAttachment(fileName);
+			
+			addImageByPType.addImageByPType(localImage);
+	}
 	
+	public LocalImageForm findLocalId(@Param("customerId") String customerId,@Param("productId") String productId){
+		return addImageByPType.findLocalId(customerId, productId);
+		
+	}
 
 
 }

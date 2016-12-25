@@ -9,9 +9,14 @@
 		<result property="chineseName" column="chinese_name" />
 		<result property="productId" column="product_id" />
 		<result property="productName" column="product_name" />
+		<result property="displayName" column="display_name" />
 		<result property="cardId" column="card_id" />
 		<result property="applyQuota" column="apply_quota" />
 		<result property="status" column="status" />
+		<result property="dkye" column="dkye" />
+		<result property="bnqx" column="bnqx" />
+		<result property="bwqx" column="bwqx" />
+		<result property="creatime" column="CREATED_TIME" />
 	</resultMap>
 
 
@@ -271,6 +276,29 @@
 	</select>
 
 
+	<select id="findAlledByUser" resultType="com.cardpay.pccredit.intopieces.model.IntoPieces" parameterType="com.cardpay.pccredit.intopieces.model.IntoPieces">	      
+	select 
+			 distinct m.SXED as applyQuota,m.YWBH
+	 from   mibusidata m,BASIC_CUSTOMER_INFORMATION b
+	 where  m.id=b.TY_CUSTOMER_ID
+	 and   	b.USER_ID=#{userId}
+	</select>
+	
+	<select id="findyxByUser" resultType="com.cardpay.pccredit.intopieces.model.IntoPieces" >	      
+	 SELECT   DISTINCT m.YWBH,m.REQLMT as applyQuota FROM MIBUSIDATA m,BASIC_CUSTOMER_INFORMATION b
+  	 where     m.id=b.TY_CUSTOMER_ID and b.user_id=#{userId}
+	</select>
+	
+	<select id="findyqByUser" resultType="int" >	      
+	 SELECT  count(DISTINCT m.YWBH)  FROM MIBUSIDATA m,BASIC_CUSTOMER_INFORMATION b
+     where m.id=b.TY_CUSTOMER_ID and b.user_id=#{userId} and m.DELAYAMTDAYS is not null
+	</select>
+	<select id="findyqzeByUser" resultType="com.cardpay.pccredit.intopieces.model.IntoPieces" >	      
+	select t.dkye as dkye,t.bnqx as bnqx,t.bwqx as bwqx from TY_REPAY_YEHZ t ,
+	mibusidata m,BASIC_CUSTOMER_INFORMATION b where m.ywbh=t.ywbh and b.ty_customer_id=m.id
+	and b.user_id=#{userId}
+	</select>
+
 	<select id="findAccountManagerRetraining" resultMap="RetrainResultMap">
 		SELECT u.display_name
 		from account_manager_retraining t, sys_user u
@@ -288,4 +316,45 @@
 	    
 	    UPDATE T_CIPERSONBASINFO_COPY SET islook ='0' WHERE id=#{id} and cardnum=#{cardId}
 	</update>
+	
+	
+		<select id="selectNoS" resultMap="ResultMap">
+		SELECT u.display_name as displayName, t.chinese_name as chineseName,t.card_id as cardId,
+		c.APPLY_QUOTA as applyQuota,p.product_name as productName,c.CREATED_TIME as creatime
+		from BASIC_CUSTOMER_INFORMATION t, sys_user u,CUSTOMER_APPLICATION_INFO c,	product_attribute p
+		where 
+		t.user_id=u.id
+		and t.id=c.CUSTOMER_ID
+		and c.PRODUCT_ID=p.id
+		and c.STATUS=#{STATUS}
+		
+	</select>
+	<select id="selectNoSCount" resultType="int">
+		SELECT count(*)
+		from BASIC_CUSTOMER_INFORMATION t, sys_user u,CUSTOMER_APPLICATION_INFO c,	product_attribute p
+		where 
+		t.user_id=u.id
+		and t.id=c.CUSTOMER_ID
+		and c.PRODUCT_ID=p.id
+		and c.STATUS=#{STATUS}
+		
+	</select>
+	
+	<delete id="deteleFin" parameterType="int">
+		    delete from CUSTOMER_APPLICATION_INFO 
+		where 
+		CUSTOMER_ID=#{customerId}
+		and
+		PRODUCT_ID=#{productId}
+	</delete>
+		<update id="insertFin" parameterType="int">
+		    update  CUSTOMER_APPLICATION_INFO 
+		    set ACTUAL_QUOTE =#{applyQuota}
+		where 
+		CUSTOMER_ID=#{customerId}
+		and
+		PRODUCT_ID=#{productId}
+		
+	</update>
+	
 </mapper> 

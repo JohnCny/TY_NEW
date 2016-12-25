@@ -34,6 +34,8 @@ public interface StatisticalCommonDao {
 	
 	//统计各行 已申请进件数量
 	public List<NameValueRecord> statisticalAuditStatus();
+	
+	
 	//统计各行 通过进件数量
 	public List<NameValueRecord> statisticalApprovedStatus();
 	
@@ -41,9 +43,25 @@ public interface StatisticalCommonDao {
 	public List<NameValueRecord> statisticaljine();
 	//统计 各支行放款总金额
 	public List<NameValueRecord> statisticalsxorgan();
+	
+	//pad统计 各支行放款总金额
+	public List<NameValueRecord> statisticalsxorgan1();
 	//统计 各支行逾期总金额
 	public List<NameValueRecord> statisticalyqorgan();
+	//pad统计 各支行逾期总金额
+		public List<NameValueRecord> statisticalyqorgan1();
 	//统计 各支行不良总金额
 	public List<NameValueRecord> statisticalblorgan();
+	//pad统计 各支行不良总金额
+		public List<NameValueRecord> statisticalblorgan1();
 	
+	//pad统计各行 已申请进件数量
+	public List<NameValueRecord> statisticalAuditStatus1();
+	//pad统计各行 通过进件数量
+	public List<NameValueRecord> statisticalApprovedStatus1();
+	
+	//计算用信总额selectALLyqze
+	public List<NameValueRecord> selectALLyxze();
+	//计算逾期总额
+	public List<NameValueRecord> selectALLyqze();
 }

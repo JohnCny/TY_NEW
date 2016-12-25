@@ -141,6 +141,9 @@ public interface CustomerInforDao {
 	 * @param customerId
 	 * @param applicationId
 	 */
+	
+	public List<CustomerInfor> findCustomerInforByFilterAndProductId1(CustomerInforFilter filter);
+	public List<CustomerInfor> findCustomerInforByFilterAndProductId2(CustomerInforFilter filter);
 	public void cloneCustomerMainManager(@Param("customerId") String customerId, @Param("applicationId") String applicationId);
 	/**
 	 * 进件申请提交时 客户维护资料做快照

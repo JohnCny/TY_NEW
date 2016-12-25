@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -230,5 +231,39 @@ public class JnIpadCustAppInfoXxService {
 
 	public void changeIsLook(String id, String cardId) {
 		jnIpadCustAppInfoDao.changeIsLook(id,cardId);
+	}
+	
+	
+	public List<IntoPieces> findAlledByUser(@Param("userId") String userId){
+		return jnIpadCustAppInfoDao.findAlledByUser(userId);
+	}
+	
+	public List<IntoPieces> findyxByUser(@Param("userId") String userId){
+		return jnIpadCustAppInfoDao.findyxByUser(userId);
+	}
+	
+	public int findyqByUser(@Param("userId") String userId){
+		return jnIpadCustAppInfoDao.findyqByUser(userId);
+	}
+	public List<IntoPieces> findyqzeByUser(@Param("userId") String userId){
+		return jnIpadCustAppInfoDao.findyqzeByUser(userId);
+	}
+	
+	public List<IntoPieces> selectNoS(@Param("STATUS") String STATUS){
+		return jnIpadCustAppInfoDao.selectNoS(STATUS);
+		
+	}
+	public int selectNoSCount(@Param("STATUS") String STATUS){
+		return jnIpadCustAppInfoDao.selectNoSCount(STATUS);
+		
+	}
+	public int insertFin(@Param("productId") String productId,@Param("applyQuota") String applyQuota,@Param("customerId") String customerId){
+		return jnIpadCustAppInfoDao.insertFin(productId, applyQuota, customerId);
+		
+	}
+	
+	public int deteleFin(@Param("productId") String productId,@Param("customerId") String customerId){
+		return jnIpadCustAppInfoDao.deteleFin(productId, customerId);
+		
 	}
 }

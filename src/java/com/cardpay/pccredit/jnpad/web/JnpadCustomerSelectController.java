@@ -1,5 +1,6 @@
 package com.cardpay.pccredit.jnpad.web;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -20,9 +21,12 @@ import com.cardpay.pccredit.customer.model.CustomerFirsthendBase;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.jnpad.model.CIPERSONBASINFO;
 import com.cardpay.pccredit.jnpad.model.CustomerInfo;
+import com.cardpay.pccredit.jnpad.model.JBUser;
 import com.cardpay.pccredit.jnpad.model.NODEAUDIT;
+import com.cardpay.pccredit.jnpad.service.JnIpadJBUserService;
 import com.cardpay.pccredit.jnpad.service.JnipadNodeService;
 import com.cardpay.pccredit.jnpad.service.JnpadCustomerSelectService;
+import com.cardpay.pccredit.manager.web.ManagerBelongMapForm;
 import com.cardpay.pccredit.riskControl.model.CUSTOMERBLACKLIST;
 import com.cardpay.pccredit.riskControl.service.CustormerBlackListService;
 import com.wicresoft.util.web.RequestHelper;
@@ -42,6 +46,10 @@ public class JnpadCustomerSelectController {
 	private JnpadCustomerSelectService customerSelectSercice;
 	@Autowired
 	private CustormerBlackListService cblservice;
+	@Autowired
+	private JnIpadJBUserService JnIpadJBUser;
+	@Autowired
+	private com.cardpay.pccredit.manager.service.ManagerBelongMapService ManagerBelongMapService;
 	/**
 	 * 根据证件号码查询
 	 * @return
@@ -157,7 +165,6 @@ public String selectCustomerInfoByCardId(HttpServletRequest request){
 		String ProductName="融耀卡";
 		String userId=request.getParameter("userId");
 		 List<CustomerInfo> result=customerSelectSercice.selectByserIdOnRy(userId,ProductName);
-		 //int size=customerSelectSercice.selectByserIdOnRyCount(userId,ProductName);
 		Map<String,Object> map = new LinkedHashMap<String,Object>();
 		map.put("result", result);
 		map.put("size", result.size());
@@ -226,5 +233,117 @@ public String selectCustomerInfoByCardId(HttpServletRequest request){
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);
 		return json.toString();
 	}
+	
+	/**
+	 * 查询所有区域经理的Id
+	 * @param CUSTOMERBLACKLIST
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/customer/selectqujl.json", method = { RequestMethod.GET })
+    public String selectqujl(HttpServletRequest request ){
+		Map<String,Object> map = new LinkedHashMap<String,Object>();
+		List list=new ArrayList();
+		String ID="";
+		Integer b=0;
+		String userId=request.getParameter("userId");
+		String parentId="100000";
+		//确认当前客户经理是否为区域经理
+		List<ManagerBelongMapForm> result=ManagerBelongMapService.findAllqyjl(parentId);
+		for(int a=0;a<result.size();a++){
+			if(result.get(a).getId().equals(userId)){
+				b=1;
+				ID=result.get(a).getId();
+			}
+		}
+		if(b==1){
+			List<JBUser>depart=JnIpadJBUser.selectDepartUser(ID);
+			map.put("depart", depart);
+			map.put("size", depart.size());
+		}else{
+			//确认当前客户经理是否为小组长
+			for(int i=0;i<result.size();i++){
+				List<ManagerBelongMapForm> result1=ManagerBelongMapService.findxzz(result.get(i).getId());
+				for(int c=0;c<result1.size();c++){
+					list.add(result1.get(c).getId());
+				}
+			}
+			for(int d=0;d<list.size();d++){
+				if(list.get(d).equals(userId)){
+					b=2;
+					ID=list.get(d).toString();
+				}
+			}
+			if(b==2){
+				List<JBUser>depart1=JnIpadJBUser.selectDepart1(ID);
+				map.put("result", depart1);
+				map.put("size", depart1.size());
+			}
+		}
+		map.put("b", b);
+	 	JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+	}
+	
+	
+	
+	/**
+	 * 根据小组Id查询该组成员
+	 * @param CUSTOMERBLACKLIST
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/customer/selectDUser.json", method = { RequestMethod.GET })
+    public String selectDUser(HttpServletRequest request ){
+		String ID=request.getParameter("id");
+		List<JBUser>result=JnIpadJBUser.findDe(ID);
+		Map<String,Object> map = new LinkedHashMap<String,Object>();
+		map.put("result", result);
+		map.put("size", result.size());
+	 	JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+	}
+	
+	/**
+	 * 查询选中组员的所有进件详情
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/customer/selectAllcustormerId.json", method = { RequestMethod.GET })
+    public String selectAllcustormerId(HttpServletRequest request ){
+		//拒绝数量
+		Integer resufeCount=0;
+		//未申请数量
+		Integer Nosq=0;
+		//成功数量
+		Integer successCount=0;
+		//待审批 数量
+		Integer NospCount=0;
+		String userId=request.getParameter("userId");
+		List<CustomerInfo>result=customerSelectSercice.selectAllcustormerId(userId);
+		for(int a=0;a<result.size();a++){
+			resufeCount+=customerSelectSercice.findCount(result.get(a).getId(), "refuse");
+			Nosq+=customerSelectSercice.findNoSQCount(userId);
+			successCount+=customerSelectSercice.findCount(result.get(a).getId(), "approved");
+			NospCount+=customerSelectSercice.findCount(result.get(a).getId(), "audit");
+		}
+		Map<String,Object> map = new LinkedHashMap<String,Object>();
+		map.put("resufeCount", resufeCount);
+		map.put("Nosq", Nosq);
+		map.put("successCount", successCount);
+		map.put("NospCount", NospCount);
+	 	JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+	}
+	
 }
 

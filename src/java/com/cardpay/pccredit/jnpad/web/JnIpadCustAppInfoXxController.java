@@ -25,6 +25,7 @@ import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.jnpad.filter.CustomerApprovedFilter;
 import com.cardpay.pccredit.jnpad.filter.NotificationMessageFilter;
 import com.cardpay.pccredit.jnpad.model.AppInfoListVo;
+import com.cardpay.pccredit.jnpad.model.CustomerInfo;
 import com.cardpay.pccredit.jnpad.model.JnpadCustomerBianGeng;
 import com.cardpay.pccredit.jnpad.model.NODEAUDIT;
 import com.cardpay.pccredit.jnpad.model.NotifyMsgListVo;
@@ -36,6 +37,7 @@ import com.cardpay.pccredit.manager.filter.RetrainingFilter;
 import com.cardpay.pccredit.manager.model.AccountManagerRetraining;
 import com.cardpay.pccredit.manager.model.Retraining;
 import com.cardpay.pccredit.notification.model.NotificationMessage;
+import com.cardpay.pccredit.report.model.CustomerHmd;
 import com.cardpay.pccredit.riskControl.constant.RiskControlRole;
 import com.cardpay.pccredit.riskControl.constant.RiskCreateTypeEnum;
 import com.cardpay.pccredit.riskControl.filter.RiskCustomerFilter;
@@ -54,7 +56,9 @@ import com.cardpay.pccredit.system.model.SystemUser;
  */
 @Controller
 public class JnIpadCustAppInfoXxController {
-	
+	private List list1=new ArrayList();
+
+
 	@Autowired
 	private JnIpadCustAppInfoXxService appInfoXxService;
 	@Autowired
@@ -313,6 +317,17 @@ public class JnIpadCustAppInfoXxController {
 	public String notifiyMessageNum(@ModelAttribute NODEAUDIT NODEAUDIT,@ModelAttribute CUSTOMERBLACKLIST cl,HttpServletRequest request) {
 		//当前登录用户ID
 		String userId=request.getParameter("userId");
+		List <CustomerInfo> result=cblservice.selectCusByUser(userId);
+		Integer i=0;
+		CustomerHmd list=null;
+		for(int a=0;a<result.size();a++){
+			
+				list=cblservice.findCustormerBlackList(result.get(a).getCardId());
+				if(list!=null){
+					i=i+1;
+			
+				}
+		}
 		NODEAUDIT.setUser_id(request.getParameter("userId"));
 		NotificationMessageFilter filter = new NotificationMessageFilter();
 		filter.setUserId(userId);
@@ -327,13 +342,19 @@ public class JnIpadCustAppInfoXxController {
 		int count4 = appInfoXxService.findNotificationCountMessageByFilter(filter);
 		filter.setNoticeType("qita");
 		int count5 = appInfoXxService.findNotificationCountMessageByFilter(filter);
-		int  Pcount=nodeservice.selectProductUserCount(NODEAUDIT);
+		String STATUS="audit";
+		int  Pcount=appInfoXxService.selectNoSCount(STATUS);
 		//拒绝进件数量
 		filter.setNoticeType("refuse");
 		int refuseCount= appInfoXxService.findNoticeCountByFilter(filter);
 		//补充调查通知
 		filter.setNoticeType("returnedToFirst");
 		int returnCount= appInfoXxService.findNoticeCountByFilter(filter);
+		
+		//申款成功
+		filter.setNoticeType("approved");
+		int passCount= appInfoXxService.findNoticeCountByFilter(filter);
+				
 		//风险客户通知
 		RiskCustomerFilter filters = new RiskCustomerFilter();
 		filters.setCustManagerId(userId);
@@ -341,7 +362,7 @@ public class JnIpadCustAppInfoXxController {
 	    filters.setRole(RiskControlRole.manager.toString());
 		int risk = appInfoXxService.findRiskNoticeCountByFilter(filters);
 		//黑名单通知
-		int blackcount=cblservice.findAllCustormerBlackListCount(cl);
+	
 		//客户资料变更
 		List<JnpadCustomerBianGeng> cuslist=appInfoXxService.findbiangengCountByManagerId(userId);
 		int count6 = cuslist.size();
@@ -359,7 +380,8 @@ public class JnIpadCustAppInfoXxController {
 		vo.setZiliaobiangeng(count6);
 		vo.setBianggeng(cuslist);
 		vo.setPcount(Pcount);
-		vo.setBlackcount(blackcount);
+		vo.setBlackcount(i);
+		vo.setPassCount(passCount);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(vo, jsonConfig);
@@ -481,22 +503,20 @@ public class JnIpadCustAppInfoXxController {
 	 * @param request
 	 * @return
 	 */
-	@ResponseBody
+	/*@ResponseBody
 	@RequestMapping(value = "/ipad/customer/custormerblacklist.json", method = { RequestMethod.GET })
-	public String custormerblacklist(@ModelAttribute CUSTOMERBLACKLIST cl,HttpServletRequest request) {
+	public String custormerblacklist(@ModelAttribute CustomerHmd CustomerHmd,HttpServletRequest request) {
 		//当前登录用户ID
-		String userId=request.getParameter("userId");
-		cl.setUserid(userId);
-		List <CUSTOMERBLACKLIST> result=cblservice.findCustormerBlackList(cl);
-		int size=cblservice.findAllCustormerBlackListCount(cl);
+		String cardId=request.getParameter("cardId");
+		List <CustomerHmd> result=cblservice.findCustormerBlackList(cardId);
 		Map<String,Object> map = new LinkedHashMap<String,Object>();
 		map.put("result",result);
-		map.put("size",size);
+		map.put("size",result.size());
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);
 		return json.toString();
-	}
+	}*/
 	
 	/**
 	 * 移除黑名单客户
@@ -508,10 +528,10 @@ public class JnIpadCustAppInfoXxController {
 	@RequestMapping(value = "/ipad/customer/deleteByCoustorId.json", method = { RequestMethod.GET })
 	public String deleteByCoustorId(@ModelAttribute CUSTOMERBLACKLIST cl,HttpServletRequest request) {
 		//当前登录用户ID
-		String userId=request.getParameter("userId");
-		String customerid=request.getParameter("customerId");
+	
+		String cardId=request.getParameter("cardId");
 		Map<String,Object> map = new LinkedHashMap<String,Object>();
-		int a=cblservice.deleteByCoustorId(customerid, userId);
+		int a=cblservice.deleteByCoustorId(cardId);
 		if(a>0){
 		map.put("message", "移除成功")	;
 		}else{
@@ -520,6 +540,108 @@ public class JnIpadCustAppInfoXxController {
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+	}
+	
+	/**
+	 * 查询当前客户经理的所有客户的ID
+	 * @param cl
+	 * @param request
+	 * @return
+	 */
+	
+	@ResponseBody
+	@RequestMapping(value = "/ipad/customer/selectByCardId.json", method = { RequestMethod.GET })
+	public String selectByCardId(@ModelAttribute CustomerHmd CustomerHmd,HttpServletRequest request) {
+		//当前登录用户ID
+		String userId=request.getParameter("userId");
+		List <CustomerInfo> result=cblservice.selectCusByUser(userId);
+		Integer i=0;
+		CustomerHmd list=null;
+		for(int a=0;a<result.size();a++){
+			
+				list=cblservice.findCustormerBlackList(result.get(a).getCardId());
+				if(list!=null){
+					list1.add(list);
+			
+				}
+		}
+		
+
+		Map<String,Object> map = new LinkedHashMap<String,Object>();
+
+		map.put("result", null);
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+
+		return json.toString();
+	}
+	/**
+	 * 返回值
+	 * @param cl
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/customer/selectByCardId1.json", method = { RequestMethod.GET })
+	public String selectByCardId1(@ModelAttribute CustomerHmd CustomerHmd,HttpServletRequest request) {
+		
+		Map<String,Object> map = new LinkedHashMap<String,Object>();
+		map.put("result",list1);
+		if(list1==null){
+			map.put("size",0);
+		}else{
+			map.put("size",list1.size());
+		}
+	
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		list1.clear();
+		return json.toString();
+	}
+	/**
+	 * 查询当前客户是否是黑名单客户
+	 * @param CustomerHmd
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/customer/selectByCardId3.json", method = { RequestMethod.GET })
+	public String selectByCardId3(@ModelAttribute CustomerHmd CustomerHmd,HttpServletRequest request) {
+		String cardId=request.getParameter("cardId");
+		Map<String,Object> map = new LinkedHashMap<String,Object>();
+		CustomerHmd list=cblservice.findCustormerBlackList(cardId);
+		if(list!=null){
+			map.put("size", 1);
+		}else{
+			map.put("size", 0);
+		}
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+
+		return json.toString();
+	}
+	/**
+	 * 审贷会通知
+	 * @param CustomerHmd
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/customer/sdhtz.json", method = { RequestMethod.GET })
+	public String sdhtz(@ModelAttribute CustomerHmd CustomerHmd,HttpServletRequest request) {
+		String STATUS="audit";
+		Map<String,Object> map = new LinkedHashMap<String,Object>();
+		List<IntoPieces> result=appInfoXxService.selectNoS(STATUS);
+		map.put("result", result);
+		map.put("size", result.size());
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+
 		return json.toString();
 	}
 }

@@ -122,10 +122,14 @@ public class JnpadZongBaoCustomerInsertController  extends BaseController{
 	@RequestMapping(value="/ipad/product/zhongbaocustomerbrower.json" ,method = { RequestMethod.GET })
 	public String customerBrower(HttpServletRequest request){
 		
-//		String userId =request.getParameter("userId");
+		String userid =request.getParameter("userId");
 		String userId =null;
 		List<CustomerInfo> customerList = jnpadZongBaoCustomerInsertService.selectCustomerInfo(userId);
-		
+		for(int a=0;a<customerList.size();a++){
+			if(customerList.get(a).getCreatedBy().equals(userid)){
+				customerList.remove(a);
+			}
+		}
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		Map<String,Object> result = new LinkedHashMap<String,Object>();

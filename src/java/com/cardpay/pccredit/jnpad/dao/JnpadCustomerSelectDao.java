@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import com.cardpay.pccredit.jnpad.model.CIPERSONBASINFO;
 import com.cardpay.pccredit.jnpad.model.CustomerInfo;
 import com.wicresoft.util.annotation.Mapper;
+import com.cardpay.pccredit.jnpad.model.CustomerInfo;
 @Mapper
 public interface JnpadCustomerSelectDao {
 
@@ -27,8 +28,13 @@ public interface JnpadCustomerSelectDao {
 	
 	//当前客户没有申请荣耀卡的客户
 	int selectByserIdOnRyCount( @Param(value = "userId")String userId,@Param(value = "ProductName")String ProductName);
+	
+	public List<CustomerInfo> selectCusByUser(@Param(value = "userId")String userId);
+	
+	public List<CustomerInfo> selectAllcustormerId(@Param(value = "userId")String userId);
+	
+	public int findCount(@Param(value = "ID")String ID,@Param(value = "status")String status);
 
-
-
+	public int findNoSQCount(@Param(value = "userId")String userId);
 
 }

@@ -96,11 +96,41 @@ public class JnpadIntopiecesDecisionController extends BaseController{
 		
 	}
 	
-	//下拉框选择客户经理信息
+	//初审下拉框选择客户经理信息
 	@ResponseBody
 	@RequestMapping(value = "/ipad/intopieces/managerInfoi.json", method = { RequestMethod.GET })
 	public String managerInfo(HttpServletRequest request){
-		
+		/*String userId=request.getParameter("userId");
+		int x;
+		int y;
+		int z;
+		Map<String, Object> map = new LinkedHashMap<String, Object>();
+		List<ManagerInfoForm> result = jnpadIntopiecesDecisionService.findManagerInfo();
+		for(int b=0;b<(result.size()-1);b++){
+			if(result.get(b).getID().equals(userId)){
+				
+			}
+		}
+		x=(int)(Math.random()*(result.size()-1));
+		y=(int)(Math.random()*(result.size()-1));
+		z=(int)(Math.random()*(result.size()-1));
+		for(int a=0;a<(result.size()-1);a++){
+			if(x!=y && x!=z && y!=z){
+				x=x;
+				y=y;
+				z=z;
+			}else{
+				x=(int)(Math.random()*(result.size()-1));
+				y=(int)(Math.random()*(result.size()-1));
+				z=(int)(Math.random()*(result.size()-1));
+			}
+		}
+		String s="<option value = '"+result.get(x).getID()+"'>"+result.get(x).getDISPLAY_NAME()+"</option>";
+		String s1="<option value = '"+result.get(y).getID()+"'>"+result.get(y).getDISPLAY_NAME()+"</option>";
+		String s2="<option value = '"+result.get(z).getID()+"'>"+result.get(z).getDISPLAY_NAME()+"</option>";
+	       map.put("manager", s);
+	       map.put("manager1", s1);
+	       map.put("manager2", s2);*/
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
 		List<ManagerInfoForm> result = jnpadIntopiecesDecisionService.findManagerInfo();
 		Iterator<ManagerInfoForm> it = result.iterator(); 

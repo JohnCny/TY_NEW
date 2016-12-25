@@ -9,6 +9,7 @@ import java.util.List;
 import net.sf.json.JSONObject;
 
 import org.apache.axis.utils.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -240,5 +241,10 @@ public class ManagerBelongMapService {
 		 return managerBelongMapDao.findAllManager();
 	}
 	//------------------------------------------------------济南绩效相关end --------------------------------------------//
-
+	public List<ManagerBelongMapForm> findAllqyjl(@Param("parentId") String parentId){
+		return managerBelongMapDao.findAllqyjl(parentId);
+	}
+	public List<ManagerBelongMapForm> findxzz(@Param("ID") String ID){
+		return managerBelongMapDao.findxzz(ID);
+	}
 }

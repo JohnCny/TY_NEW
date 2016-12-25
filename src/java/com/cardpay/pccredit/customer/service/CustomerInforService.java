@@ -4646,4 +4646,14 @@ public class CustomerInforService {
 	               }
 	        });
 	}
+	
+	public QueryResult<CustomerInfor> findCustomerInforByFilterAndProductId1(CustomerInforFilter filter) {
+		List<CustomerInfor> ls = customerInforDao.findCustomerInforByFilterAndProductId1(filter);
+		int size = customerInforDao.findCustomerInforCountByFilterAndProductId(filter);
+		QueryResult<CustomerInfor> qr = new QueryResult<CustomerInfor>(size,ls);
+		return qr;
+	}
+	public List<CustomerInfor> findCustomerInforByFilterAndProductId2(CustomerInforFilter filter){
+		return customerInforDao.findCustomerInforByFilterAndProductId2(filter);
+	}
 }

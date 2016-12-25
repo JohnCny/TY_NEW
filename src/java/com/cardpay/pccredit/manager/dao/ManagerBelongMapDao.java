@@ -106,4 +106,17 @@ public interface ManagerBelongMapDao {
 	public List<ManagerBelongMapForm> findChildId(@Param("id") String userId);
 	
 	List<AccountManagerParameterForm> findAllManager();
+	/**
+	 * 	<!-- 确认是否为区域经理或小组长-->
+	 * @param parentId
+	 * @return
+	 */
+	public List<ManagerBelongMapForm> findAllqyjl(@Param("parentId") String parentId);
+	
+	/**
+	 * 	<!-- 确认是否为小组长-->
+	 * @param parentId
+	 * @return
+	 */
+	public List<ManagerBelongMapForm> findxzz(@Param("ID") String ID);
 }

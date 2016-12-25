@@ -167,6 +167,7 @@ public class JNPAD_UploadFileTool {
 		try {
 			// 取得上传文件
 			if (file != null && !file.isEmpty()) {
+				System.out.println("file"+file);
 //				fileName = file.getOriginalFilename();
 				fileName = fileName_1;
 				File tempFile = new File(path
