@@ -42,6 +42,19 @@ public interface JnIpadCustAppInfoXxDao {
 	//进件列表根据状态查询数量
 	public int findNoticeCountByFilter(NotificationMessageFilter filter);
 
-
 	public void changeIsLook(@Param("id")String id,@Param("cardId") String cardId);
+	
+	//当前客户经理授信总额度
+	public List<IntoPieces> findAlledByUser(@Param("userId") String userId);
+	//当前客户经理用信总额度
+	public List<IntoPieces> findyxByUser(@Param("userId") String userId);
+	//当前客户经理逾期客户个数
+	public int findyqByUser(@Param("userId") String userId);
+	//当前客户经理逾期余额
+		public List<IntoPieces> findyqzeByUser(@Param("userId") String userId);
+		//审贷会通知
+		public List<IntoPieces> selectNoS(@Param("STATUS") String STATUS);
+		public int selectNoSCount(@Param("STATUS") String STATUS);
+		public int insertFin(@Param("productId") String productId,@Param("applyQuota") String applyQuota,@Param("customerId") String customerId);
+		public int deteleFin(@Param("productId") String productId,@Param("customerId") String customerId);
 }

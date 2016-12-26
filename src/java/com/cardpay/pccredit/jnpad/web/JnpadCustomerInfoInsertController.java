@@ -1,8 +1,11 @@
 package com.cardpay.pccredit.jnpad.web;
 
 
+import java.util.ArrayList;
 import java.util.Date;
-
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -57,6 +60,8 @@ public class JnpadCustomerInfoInsertController extends BaseController {
 	private JnpadCustomerSelectService jnpadCustomerSelectService; 
 	@Autowired
 	private IntoPiecesService intoPiecesService;
+	@Autowired
+	private com.cardpay.pccredit.jnpad.service.JnIpadCustAppInfoXxService JnIpadCustAppInfoXxService;
 	
 	@ResponseBody
 	@RequestMapping(value="/ipad/product/customerInsert.json" ,method = { RequestMethod.GET })
@@ -144,7 +149,6 @@ public class JnpadCustomerInfoInsertController extends BaseController {
 		return json.toString();
 
 	}
-	
 	/**
 	 * 浏览页面
 	 * 
@@ -161,6 +165,7 @@ public class JnpadCustomerInfoInsertController extends BaseController {
 		String userId = request.getParameter("userId");
 		String userType = request.getParameter("userType");
 		Integer s =new Integer(userType);
+		List<IntoPieces> list=new ArrayList();
 		QueryResult<IntoPieces> result=null;
 		//客户经理
 		if(s==1){
@@ -170,6 +175,141 @@ public class JnpadCustomerInfoInsertController extends BaseController {
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(result, jsonConfig);
+		return json.toString();
+	}
+	
+	/**
+	 * 退回客户列表
+	 * 
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/customerIntopiece/browse2.json", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public String browse2( HttpServletRequest request) {
+		IntoPiecesFilter filter=new IntoPiecesFilter();
+//		filter.setRequest(request);
+		String userId = request.getParameter("userId");
+		String userType = request.getParameter("userType");
+		Integer s =new Integer(userType);
+		List<IntoPieces> list=new ArrayList();
+		QueryResult<IntoPieces> result=null;
+		//客户经理
+		if(s==1){
+			filter.setUserId(userId);
+		}
+		result = JnpadCustomerInfoInsertServ‎ice.findintoPiecesByFilter(filter);
+		for(int a=0;a<result.getItems().size();a++){
+			
+			if(result.getItems().get(a).getStatus().equals("returnedToFirst")){
+				list.add(result.getItems().get(a));
+			}
+		}
+		System.out.println(list.size());
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list);
+		map.put("size", list.size());
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+	}
+	
+	/**
+	 * 
+	 * 拒绝客户列表
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/customerIntopiece/browse1.json", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public String browse1( HttpServletRequest request) {
+		IntoPiecesFilter filter=new IntoPiecesFilter();
+//		filter.setRequest(request);
+		String userId = request.getParameter("userId");
+		String userType = request.getParameter("userType");
+		Integer s =new Integer(userType);
+		List<IntoPieces> list=new ArrayList();
+		QueryResult<IntoPieces> result=null;
+		//客户经理
+		if(s==1){
+			filter.setUserId(userId);
+		}
+		result = JnpadCustomerInfoInsertServ‎ice.findintoPiecesByFilter(filter);
+		for(int a=0;a<result.getItems().size();a++){
+			
+			if(result.getItems().get(a).getStatus().equals("refuse")){
+				list.add(result.getItems().get(a));
+			}
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list);
+		map.put("size", list.size());
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+	}
+	/**
+	 * 
+	 * 通过客户列表
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/customerIntopiece/browse3.json", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public String browse3( HttpServletRequest request) {
+		IntoPiecesFilter filter=new IntoPiecesFilter();
+//		filter.setRequest(request);
+		String userId = request.getParameter("userId");
+		String userType = request.getParameter("userType");
+		Integer s =new Integer(userType);
+		List<IntoPieces> list=new ArrayList();
+		QueryResult<IntoPieces> result=null;
+		//客户经理
+		if(s==1){
+			filter.setUserId(userId);
+		}
+		result = JnpadCustomerInfoInsertServ‎ice.findintoPiecesByFilter(filter);
+		for(int a=0;a<result.getItems().size();a++){
+			
+			if(result.getItems().get(a).getStatus().equals("approved")){
+				list.add(result.getItems().get(a));
+			}
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list);
+		map.put("size", list.size());
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+	}
+	
+	/**
+	 * 添加合同金额
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/customerIntopiece/insertFin.json", method = { RequestMethod.GET })
+	public String insertFin( HttpServletRequest request) {
+		String productId = request.getParameter("productId");
+		String customerId = request.getParameter("customerId");
+		String applyQuota= request.getParameter("htje");
+		System.out.println(applyQuota);
+		int a=JnIpadCustAppInfoXxService.insertFin(productId, applyQuota, customerId);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("size", a);
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
 		return json.toString();
 	}
 

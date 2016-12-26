@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.customer.dao.CustomerInforDao;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
+import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.intopieces.constant.ApplicationStatusEnum;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.dao.CustomerApplicationIntopieceWaitDao;
@@ -40,7 +41,8 @@ import com.wicresoft.util.spring.Beans;
 public class JnpadIntopiecesDecisionService {
 	@Autowired
 	JnpadIntopiecesDecisionDao jnpadIntopiecesDecisionDao;
-
+	@Autowired
+	private CustomerInforService customerInforService;
 	@Autowired
 	private CommonDao commonDao;
 
@@ -52,6 +54,8 @@ public class JnpadIntopiecesDecisionService {
 
 	@Autowired
 	private CustomerInforDao customerInforDao;
+	@Autowired
+	private JnIpadCustAppInfoXxService JnIpadCustAppInfoXxService;
 
 	//查询当前客户经理进件初审信息
 	public QueryResult<CustomerApplicationIntopieceWaitForm> findCustomerApplicationIntopieceDecison(IntoPiecesFilter filter) {
@@ -62,7 +66,6 @@ public class JnpadIntopiecesDecisionService {
 	}
 
 	public List<ManagerInfoForm> findManagerInfo() {
-
 		return jnpadIntopiecesDecisionDao.findManagerInfo();
 	}
 	//提交结论
@@ -109,17 +112,19 @@ public class JnpadIntopiecesDecisionService {
 			}
 
 			if(examineResutl.equals(ApproveOperationTypeEnum.RETURNAPPROVE.toString())){
-				//customerApplicationInfo.setStatus("nopass");
+				customerApplicationInfo.setStatus(Constant.NOPASS_REPLENISH_INTOPICES);
 				//退回时 删除提交申请备份的信息
-				//CustomerApplicationInfo returnApp = commonDao.findObjectById(CustomerApplicationInfo.class, applicationId);
-				//customerInforService.deleteCloneSubmitAppByReturn(returnApp.getCustomerId(), applicationId);
+				CustomerApplicationInfo returnApp = commonDao.findObjectById(CustomerApplicationInfo.class, applicationId);
+				customerInforService.deleteCloneSubmitAppByReturn(returnApp.getCustomerId(), applicationId);
 			}
 
 			if(examineResutl.equals(ApproveOperationTypeEnum.NORMALEND.toString())){
 				customerApplicationInfo.setFinalApproval(examineAmount);
 				customerApplicationInfo.setStatus(Constant.APPROVED_INTOPICES);
 			}
-
+			if(applicationStatus=="RETURNAPPROVE"){
+				JnIpadCustAppInfoXxService.deteleFin(productId, customerId);
+			}
 			customerApplicationInfo.setId(applicationId);
 			customerApplicationInfo.setModifiedBy(loginId);
 			customerApplicationInfo.setModifiedTime(new Date());

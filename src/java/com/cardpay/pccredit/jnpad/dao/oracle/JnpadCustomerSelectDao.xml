@@ -289,7 +289,23 @@
 		AND
 		( c.CUSTID=#{custid})
 		) ROW_)
-
 </select>
 
+<select id="selectCusByUser" resultMap="selectCustomerinfo">
+	select CARD_ID as cardId from basic_customer_information where user_id=#{userId}
+</select>
+
+<!-- 查询当前客户经理所有的客户ID -->
+<select id="selectAllcustormerId" resultMap="selectCustomerinfo">
+	select id as id from basic_customer_information where user_id=#{userId}
+</select>
+<!-- 查询特定状态的数量 -->
+<select id="findCount" resultType="int" parameterType="java.lang.String">	
+    select count(*) from  CUSTOMER_APPLICATION_INFO where CUSTOMER_ID=#{ID} and STATUS=#{status}
+ </select>  
+ <!-- 查询特定状态的数量 -->
+<select id="findNoSQCount" resultType="int" parameterType="java.lang.String">	
+    select count(*) from basic_customer_information where user_id=#{userId} and 
+    id not in( select CUSTOMER_ID from  CUSTOMER_APPLICATION_INFO )
+ </select>  
 </mapper> 

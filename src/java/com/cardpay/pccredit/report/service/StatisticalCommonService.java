@@ -149,6 +149,20 @@ public class StatisticalCommonService {
 		return JSONArray.fromObject(list).toString();
 	}
 	
+	//pad
+	public String getOrganApplicationAuditNumJson1(){
+		List<Double> list = new ArrayList<Double>();
+		List<NameValueRecord> records = statisticalCommonDao.statisticalAuditStatus1();
+		for(NameValueRecord nameValueRecord : records){
+			if(StringUtils.isNotEmpty(nameValueRecord.getValue())){
+				list.add(Double.valueOf(nameValueRecord.getValue()));
+			}else{
+				list.add(0d);
+			}
+		}
+		return JSONArray.fromObject(list).toString();
+	}
+	
 	public String getOrganApplicationApprovedNumJson(){
 		List<Double> list = new ArrayList<Double>();
 		List<NameValueRecord> records = statisticalCommonDao.statisticalApprovedStatus();
@@ -161,8 +175,19 @@ public class StatisticalCommonService {
 		}
 		return JSONArray.fromObject(list).toString();
 	}
-	
-	
+	//pad
+	public String getOrganApplicationApprovedNumJson1(){
+		List<Double> list = new ArrayList<Double>();
+		List<NameValueRecord> records = statisticalCommonDao.statisticalApprovedStatus1();
+		for(NameValueRecord nameValueRecord : records){
+			if(StringUtils.isNotEmpty(nameValueRecord.getValue())){
+				list.add(Double.valueOf(nameValueRecord.getValue()));
+			}else{
+				list.add(0d);
+			}
+		}
+		return JSONArray.fromObject(list).toString();
+	}
 	
 	
 	public String statisticaljine(){
@@ -191,6 +216,19 @@ public class StatisticalCommonService {
 		return JSONArray.fromObject(list).toString();
 	}
 	
+	public String statisticalsxorgan1(){
+		List<Double> list = new ArrayList<Double>();
+		List<NameValueRecord> records = statisticalCommonDao.statisticalsxorgan1();
+		for(NameValueRecord nameValueRecord : records){
+			if(StringUtils.isNotEmpty(nameValueRecord.getValue())){
+				list.add(Double.valueOf(nameValueRecord.getValue()));
+			}else{
+				list.add(0d);
+			}
+		}
+		return JSONArray.fromObject(list).toString();
+	}
+	
 	public String statisticalyqorgan(){
 		List<Double> list = new ArrayList<Double>();
 		List<NameValueRecord> records = statisticalCommonDao.statisticalyqorgan();
@@ -204,6 +242,18 @@ public class StatisticalCommonService {
 		return JSONArray.fromObject(list).toString();
 	}
 	
+	public String statisticalyqorgan1(){
+		List<Double> list = new ArrayList<Double>();
+		List<NameValueRecord> records = statisticalCommonDao.statisticalyqorgan1();
+		for(NameValueRecord nameValueRecord : records){
+			if(StringUtils.isNotEmpty(nameValueRecord.getValue())){
+				list.add(Double.valueOf(nameValueRecord.getValue()));
+			}else{
+				list.add(0d);
+			}
+		}
+		return JSONArray.fromObject(list).toString();
+	}
 	public String statisticalblorgan(){
 		List<Double> list = new ArrayList<Double>();
 		List<NameValueRecord> records = statisticalCommonDao.statisticalblorgan();
@@ -215,5 +265,25 @@ public class StatisticalCommonService {
 			}
 		}
 		return JSONArray.fromObject(list).toString();
+	}
+	public String statisticalblorgan1(){
+		List<Double> list = new ArrayList<Double>();
+		List<NameValueRecord> records = statisticalCommonDao.statisticalblorgan1();
+		for(NameValueRecord nameValueRecord : records){
+			if(StringUtils.isNotEmpty(nameValueRecord.getValue())){
+				list.add(Double.valueOf(nameValueRecord.getValue()));
+			}else{
+				list.add(0d);
+			}
+		}
+		return JSONArray.fromObject(list).toString();
+	}
+	
+	public List<NameValueRecord> selectALLyxze(){
+		
+		return statisticalCommonDao.selectALLyxze();
+	}
+	public List<NameValueRecord> selectALLyqze(){
+		return statisticalCommonDao.selectALLyqze();
 	}
 }

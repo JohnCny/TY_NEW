@@ -35,30 +35,21 @@ public class JnpadInquiryModelController {
 		String appId = RequestHelper.getStringValue(request, "appId");
 		if (StringUtils.isNotEmpty(appId)) {
 			try {
-				
-			
 			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
-			String tableContentjyb = getFromBASE64(localExcel.getSheetJy()).replaceAll("\n", "<br>").replace("><br><", "><");
-			String tableContentjbzkb = getFromBASE64(localExcel.getSheetJbzk()).replaceAll("\n", "<br>").replace("><br><", "><");
-			String tableContentzcfzb = getFromBASE64(localExcel.getSheetFz()).replaceAll("\n", "<br>").replace("><br><", "><");
-			String tableContentbzlrb = getFromBASE64(localExcel.getSheetBzlrb()).replaceAll("\n", "<br>").replace("><br><", "><");
-			String tableContentxjlb = getFromBASE64(localExcel.getSheetXjllb()).replaceAll("\n", "<br>").replace("><br><", "><");
-			String tableContentxjXb = getFromBASE64(localExcel.getSheetJc()).replaceAll("\n", "<br>").replace("><br><", "><");
-			String tableContentxgzb = getFromBASE64(localExcel.getSheetGdzc()).replaceAll("\n", "<br>").replace("><br><", "><");
 			String tableContentyfysb = getFromBASE64(localExcel.getSheetYfys()).replaceAll("\n", "<br>").replace("><br><", "><");
-			String tableContentysyfb = getFromBASE64(localExcel.getSheetYsyf()).replaceAll("\n", "<br>").replace("><br><", "><");
-			String tableContentjueyb = getFromBASE64(localExcel.getJyb()).replaceAll("\n", "<br>").replace("><br><", "><");
-			
-			map.put("tableContentjyb", tableContentjyb);
-			map.put("tableContentjbzkb", tableContentjbzkb);
-			map.put("tableContentzcfzb", tableContentzcfzb);
-			map.put("tableContentbzlrb", tableContentbzlrb);
+			String tableContentysyfb = getFromBASE64(localExcel.getSheetYsyf()).replaceAll("\n", "<br>").replace("><br><", "><");	
+			String tableContentxjlb = getFromBASE64(localExcel.getSheetXjllb()).replaceAll("\n", "<br>").replace("><br><", "><");
+			String tableContentxgzb = getFromBASE64(localExcel.getSheetGdzc()).replaceAll("\n", "<br>").replace("><br><", "><");
+			String tableContentjyb=getFromBASE64(localExcel.getSheetJy()).replaceAll("\n", "<br>").replace("><br><", "><");
+			String tableContentjbzkb=getFromBASE64(localExcel.getSheetJbzk()).replaceAll("\n", "<br>").replace("><br><", "><");
+			String tableContentdhd=getFromBASE64(localExcel.getSheetDhd()).replaceAll("\n", "<br>").replace("><br><", "><");
 			map.put("tableContentxjlb", tableContentxjlb);
-			map.put("tableContentxjXb", tableContentxjXb);
 			map.put("tableContentxgzb", tableContentxgzb);
 			map.put("tableContentyfysb", tableContentyfysb);
 			map.put("tableContentysyfb", tableContentysyfb);
-			map.put("tableContentjueyb", tableContentjueyb);
+			map.put("tableContentjyb", tableContentjyb);
+			map.put("tableContentjbzkb", tableContentjbzkb);
+			map.put("tableContentdhd", tableContentdhd);
 			} catch (Exception e) {
 				map.put("mess", e.getMessage());
 			}

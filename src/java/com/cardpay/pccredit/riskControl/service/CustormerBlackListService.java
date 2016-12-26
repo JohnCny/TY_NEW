@@ -6,6 +6,10 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cardpay.pccredit.jnpad.dao.InputHmdDao1;
+import com.cardpay.pccredit.jnpad.dao.JnpadCustomerSelectDao;
+import com.cardpay.pccredit.jnpad.model.CustomerInfo;
+import com.cardpay.pccredit.report.model.CustomerHmd;
 import com.cardpay.pccredit.riskControl.dao.CustormerBlackListDao;
 import com.cardpay.pccredit.riskControl.filter.RiskCustomerFilter;
 import com.cardpay.pccredit.riskControl.model.CUSTOMERBLACKLIST;
@@ -15,7 +19,10 @@ import com.wicresoft.jrad.base.database.model.QueryResult;
 public class CustormerBlackListService {
 	@Autowired
 	private CustormerBlackListDao cdao;
-	
+	@Autowired
+	private InputHmdDao1 inputhmddao;
+	@Autowired
+	private JnpadCustomerSelectDao selectDao;
 	/**\
 	 *筛选黑名单客户
 	 * @param cl
@@ -48,8 +55,8 @@ public class CustormerBlackListService {
 	 * @param cl
 	 * @return
 	 */
-	public List <CUSTOMERBLACKLIST> findCustormerBlackList(CUSTOMERBLACKLIST cl){
-		return cdao.findAllCustormerBlackList(cl);
+	public CustomerHmd findCustormerBlackList(String cardId){
+		return inputhmddao.selectByCardId(cardId);
 	}
 	
 	/**
@@ -64,20 +71,13 @@ public class CustormerBlackListService {
 		return qs;
 	}
 	
-	public int deleteByCoustorId(@Param("customerid")String customerid,@Param("userid")String userid){
-		return cdao.deleteByCoustorId(customerid,userid);
+	public int deleteByCoustorId(@Param("cardId")String cardId){
+		return inputhmddao.deleteByCardId(cardId);
 	}
 	public QueryResult<CUSTOMERBLACKLIST> findAllNoCustormerBlackList(CUSTOMERBLACKLIST cl) {
 		List <CUSTOMERBLACKLIST> result=cdao.findAllNoCustormerBlackList(cl);
 		int size=cdao.findAllNoCustormerBlackListCount( cl);
-		String card="身份证";
-		/*System.out.println(result.size());
-		System.out.println(size);
-		for(int a=0;a<bb;a++){
-			if(result.get(a).getCard_type().equals("0")){
-				result.get(a).setCard_type(card);
-			}
-		}*/
+		
 		QueryResult<CUSTOMERBLACKLIST> qs = new QueryResult<CUSTOMERBLACKLIST>( size,result);
 		return qs;
 	}
@@ -85,6 +85,10 @@ public class CustormerBlackListService {
 	
 	public int selectCount(@Param("customerid")String customerid){
 		return cdao.selectCount( customerid);
+	}
+	public List<CustomerInfo> selectCusByUser(String userId){
+		return selectDao.selectCusByUser(userId);
+		
 	}
 
 

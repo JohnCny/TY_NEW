@@ -132,12 +132,32 @@ public class JnpadRiskCustomerCollectionController extends BaseController{
 	@ResponseBody
 	@RequestMapping(value = "/ipad/product/getCustomer.json")
 	public String getCustomer(HttpServletRequest request){
+		Integer a=0;
+		Integer dkye=0;
+		Integer bnqx=0;
+		Integer bwqx=0;
 		Map<String, Object> map =new LinkedHashMap<String, Object>();
-		String userId = RequestHelper.getStringValue(request, ID);
+		String userId = request.getParameter("userId");
 		List<Dict> riskCustomers = riskCustomerCollectionService.findCustomerIdAndName(userId);
-		int size =riskCustomerCollectionService.getCustomerIdAndNameCount(userId);
+		a=riskCustomers.size();
+		for(int b=0;b<riskCustomers.size();b++){
+			dkye=Integer.parseInt(riskCustomers.get(b).getDkye().replace(".00", ""));
+			bnqx=Integer.parseInt(riskCustomers.get(b).getBnqx().replace(".00", ""));
+			bnqx=Integer.parseInt(riskCustomers.get(b).getBwqx().replace(".00", ""));
+			if(dkye==0 && bnqx==0 &&bnqx==0){
+				riskCustomers.remove(b);
+				a=a-1;
+			}else{
+				Integer yqmoney=dkye+bnqx+bnqx;
+				String yqmoneys1=yqmoney.toString();
+				riskCustomers.get(b).setYqMoney(yqmoneys1);
+			}
+			 dkye=0;
+			 bnqx=0;
+			 bwqx=0;
+		}
 		map.put("result", riskCustomers);
-		map.put("size", size);
+		map.put("size", a);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);

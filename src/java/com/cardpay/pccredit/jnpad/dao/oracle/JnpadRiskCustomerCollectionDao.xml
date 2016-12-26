@@ -170,7 +170,7 @@
 		from 
 		customer_overdue)c
 		on t.id=c.customerId -->
-		      	select 
+	<!-- 	      	select 
     		t.id as TypeCode,t.chineseName as TypeName , c.sjmoney as yqMoney,t.tel as tel,t.cardId as cardId,cct.productId as productId,
     		cct.actual_quote as actual_quote
     	from 
@@ -183,7 +183,13 @@
 	      on  cct.customerId=t.tCustomerId)
        inner join
 	    (select distinct(CUSTID) as customerId,MONEY as sjmoney from t_mibusidata_view where (DELAYINTERESTDAYS <![CDATA[ >  ]]> 0 or DELAYAMTDAYS <![CDATA[ >  ]]> 0 ))c
-	   on t.tCustomerId = c.customerId
+	   on t.tCustomerId = c.customerId -->
+	 select distinct(m.ywbh) as qq,
+	 		b.id as TypeCode,b.chinese_name as TypeName,b.TELEPHONE as tel,b.card_id as cardId ,t.dkye as dkye,t.bnqx as bnqx,t.bwqx as bwqx,m.REQLMT as actual_quote
+	  from  TY_REPAY_YEHZ t ,mibusidata m,BASIC_CUSTOMER_INFORMATION b 
+	  where m.ywbh=t.ywbh and b.ty_customer_id=m.id
+	and b.user_id=#{userId}
+	   
 	</select>
 	<!-- 得到当前客户经理的逾期客户数量 -->
 		<select id="getCustomerIdAndNameCount" resultType="int">

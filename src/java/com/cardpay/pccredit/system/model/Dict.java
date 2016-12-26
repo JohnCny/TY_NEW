@@ -21,6 +21,28 @@ public class Dict extends BusinessModel{
 	private String tel;
 	private String productId;
 	private String actual_quote;
+    private String dkye;
+    private String bnqx;
+    private String bwqx;
+	
+	public String getDkye() {
+		return dkye;
+	}
+	public void setDkye(String dkye) {
+		this.dkye = dkye;
+	}
+	public String getBnqx() {
+		return bnqx;
+	}
+	public void setBnqx(String bnqx) {
+		this.bnqx = bnqx;
+	}
+	public String getBwqx() {
+		return bwqx;
+	}
+	public void setBwqx(String bwqx) {
+		this.bwqx = bwqx;
+	}
 	public String getProductId() {
 		return productId;
 	}

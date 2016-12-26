@@ -210,5 +210,28 @@
 		FROM ACCOUNT_MANAGER_PARAMETER T
 		LEFT JOIN SYS_USER s ON s.id = T.USER_ID
 	</select>
+		<!-- 确认是否为区域经理-->
+		<select id="findAllqyjl" resultMap="ResultMap">
+		   select amp.user_id as id
+     FROM  manager_belong_map mbm
+     LEFT JOIN account_manager_parameter amp
+       on amp.id = mbm.child_id
+     LEFT JOIN sys_user su
+		    ON su.id = amp.user_id
+		 WHERE   mbm.parent_id =#{parentId}
+	</select>
 	
+		<!-- 确认是否为小组长-->
+		<select id="findxzz" resultMap="ResultMap">
+		     select amp.user_id as id
+     FROM  manager_belong_map mbm
+    ,account_manager_parameter amp
+
+     , sys_user su,
+     ( select id from account_manager_parameter where user_id=#{ID}) cc
+
+     WHERE   mbm.parent_id =cc.id
+     and amp.id = mbm.child_id
+     and su.id = amp.user_id
+	</select>
 </mapper>

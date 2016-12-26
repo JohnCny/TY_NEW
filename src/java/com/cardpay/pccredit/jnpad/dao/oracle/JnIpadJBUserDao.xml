@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.jnpad.dao.JnIpadJBUserDao">
+	
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.jnpad.model.JBUser">
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="qname" column="qname" />
+		<result property="parentId" column="PARENT_ID" />
+		<result property="childId" column="CHILD_ID" />
+		<result property="userId" column="USER_ID" />
+		<result property="orgId" column="ORG_ID" />
+		<result property="displayName" column="display_name" />
+	</resultMap>
+	
+		<select id="selectDepartUser" resultMap="ResultMap" parameterType="com.cardpay.pccredit.jnpad.model.JBUser">
+			select su.id as id,su.name as name,cc.name as qname
+			from SYS_ORGANIZATION o,SYS_DEPARTMENT su,
+			(select o.name,o.id
+             from SYS_ORGANIZATION o,SYS_DEPT_USER d,SYS_DEPARTMENT su
+             where o.id=su.org_id
+             and su.id=d.dept_id
+             and d.user_id=#{ID}) cc
+			where  o.id=su.org_id
+			and o.id=cc.id
+	</select>
+	
+	<select id="selectDepart1" resultMap="ResultMap" parameterType="com.cardpay.pccredit.jnpad.model.JBUser">	
+		  select u.id as id ,u.display_name as displayName,cc.name as name
+    from SYS_DEPT_USER d,sys_user u,(select su.id,su.name from SYS_DEPARTMENT su,SYS_DEPT_USER d,sys_user u
+        where d.dept_id=su.id
+        and d.user_id=u.id
+        and d.user_id=#{ID})cc
+        where d.dept_id=cc.id
+        and u.id=d.user_id
+      </select>
+      
+	
+	
+	
+	<select id="findDe" resultMap="ResultMap" parameterType="com.cardpay.pccredit.jnpad.model.JBUser">	
+		   select distinct (u.id) as id ,u.display_name as displayName,cc.name as name
+    from SYS_DEPT_USER d,sys_user u,(select su.id,su.name from SYS_DEPARTMENT su,SYS_DEPT_USER d,sys_user u
+        where d.dept_id=su.id
+        and d.user_id=u.id
+        and d.dept_id=#{ID})cc
+        where d.dept_id=cc.id
+        and u.id=d.user_id
+      </select>
+</mapper>

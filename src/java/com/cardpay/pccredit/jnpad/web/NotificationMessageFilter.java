@@ -7,7 +7,7 @@ public class NotificationMessageFilter extends BaseQueryFilter{
     private String userId;
     
     
-
+   
 	public String getUserId() {
 		return userId;
 	}

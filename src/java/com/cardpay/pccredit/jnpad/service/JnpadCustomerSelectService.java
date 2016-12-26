@@ -91,7 +91,16 @@ public class JnpadCustomerSelectService {
 	public int selectByserIdOnRyCount(String userId,String ProductName){
 		return jnpadCustomerSelectDao.selectByserIdOnRyCount(userId,ProductName);
 	}
-
+	public List<CustomerInfo> selectAllcustormerId(@Param(value = "userId")String userId){
+		return jnpadCustomerSelectDao.selectAllcustormerId(userId);
+	}
+	
+	public int findCount(@Param(value = "ID")String ID,@Param(value = "status")String status){
+		return jnpadCustomerSelectDao.findCount(ID, status);
+	}
+	public int findNoSQCount(@Param(value = "userId")String userId){
+		return jnpadCustomerSelectDao.findNoSQCount(userId);
+	}
 
 
 

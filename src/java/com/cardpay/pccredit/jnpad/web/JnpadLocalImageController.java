@@ -22,8 +22,11 @@ import com.cardpay.pccredit.common.UploadFileTool;
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.intopieces.model.LocalExcel;
 import com.cardpay.pccredit.intopieces.model.LocalImage;
+import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
 import com.cardpay.pccredit.intopieces.web.AddIntoPiecesForm;
+import com.cardpay.pccredit.intopieces.web.LocalImageForm;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
+import com.cardpay.pccredit.jnpad.service.JnpadAddIntoPiecesService;
 import com.cardpay.pccredit.jnpad.service.JnpadLocalImageService;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.constant.JRadConstants;
@@ -41,6 +44,10 @@ public class JnpadLocalImageController {
 	private CommonDao commonDao;
 	@Autowired
 	private JnpadLocalImageService addIntoPiecesService;
+	@Autowired
+	private AddIntoPiecesService addservice;
+	@Autowired
+	private JnpadAddIntoPiecesService jnpadaddIntoPiecesService;
 	/**
 	 * 上传影像资料
 	 * @param file
@@ -84,7 +91,6 @@ public class JnpadLocalImageController {
 	@ResponseBody
 	@RequestMapping(value = "/ipad/jnnaddIntopieces/imageImport.json", method = { RequestMethod.GET })
 	public String addIntopieces(@ModelAttribute AddIntoPiecesForm addIntoPiecesForm,HttpServletRequest request) {
-		System.out.println("125262662"+request.getParameter("customerId"));
 		Map<String,Object> map = new LinkedHashMap<String,Object>();
 		String userId=request.getParameter("userId");
 		addIntoPiecesForm.setCustomerId(request.getParameter("customerId"));
@@ -95,7 +101,26 @@ public class JnpadLocalImageController {
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);
 		return json.toString();
-
+	}
+	
+	//提申请
+	@ResponseBody
+	@RequestMapping(value = "/ipad/jnnaddIntopieces/tjsq.json", method = { RequestMethod.GET })
+	public String tjsq(@ModelAttribute AddIntoPiecesForm addIntoPiecesForm,HttpServletRequest request) {
+		Map<String,Object> map = new LinkedHashMap<String,Object>();
+		String userId=request.getParameter("userId");
+		addIntoPiecesForm.setCustomerId(request.getParameter("customerId"));
+		addIntoPiecesForm.setProductId(request.getParameter("productId"));
+		String customerId=request.getParameter("customerId");
+		String productId=request.getParameter("productId");
+		LocalImageForm addinform=jnpadaddIntoPiecesService.findLocalId(customerId, productId);
+		addIntoPiecesForm.setExcelId(addinform.getId());
+		addservice.addIntopieces(addIntoPiecesForm,userId);
+		map.put("message", "进件上传成功");
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
 	}
 }
 

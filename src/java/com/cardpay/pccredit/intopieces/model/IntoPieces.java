@@ -1,12 +1,13 @@
 package com.cardpay.pccredit.intopieces.model;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import com.wicresoft.jrad.base.database.model.BusinessModel;
 
 public class IntoPieces  extends BusinessModel {
 	
-	
+	private Date creatime;
 	private String id;//进件编号
 	private String customerId;//客户ID(外键)
 	private String chineseName;//客户名称
@@ -31,8 +32,9 @@ public class IntoPieces  extends BusinessModel {
     
     private String jjh; //对应银行借据号
     private String jkrq; //对应银行借款日期
-    
-    
+    private String dkye;
+    private String bnqx;
+    private String bwqx;
     private String reqlmt;
     
     private BigDecimal actualAmt;
@@ -51,8 +53,31 @@ public class IntoPieces  extends BusinessModel {
     private String organName;
     
     
-    
-    public String getOrganName() {
+    public Date getCreatime() {
+		return creatime;
+	}
+	public void setCreatime(Date creatime) {
+		this.creatime = creatime;
+	}
+	public String getDkye() {
+		return dkye;
+	}
+	public void setDkye(String dkye) {
+		this.dkye = dkye;
+	}
+	public String getBnqx() {
+		return bnqx;
+	}
+	public void setBnqx(String bnqx) {
+		this.bnqx = bnqx;
+	}
+	public String getBwqx() {
+		return bwqx;
+	}
+	public void setBwqx(String bwqx) {
+		this.bwqx = bwqx;
+	}
+	public String getOrganName() {
 		return organName;
 	}
 	public void setOrganName(String organName) {

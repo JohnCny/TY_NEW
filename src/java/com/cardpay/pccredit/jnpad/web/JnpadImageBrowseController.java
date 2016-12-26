@@ -1,5 +1,6 @@
 package com.cardpay.pccredit.jnpad.web;
 
+import java.io.File;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -45,7 +46,74 @@ public class JnpadImageBrowseController {
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);
 		return json.toString();
 	}
+	/**
+	 * 分类查询照片
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/JnpadImageBrowse/findLocalImageByType.json", method = { RequestMethod.GET })
+	public String findLocalImageByType(HttpServletRequest request) {
+		List<LocalImageForm> imagerList = jnpadImageBrowseService.findLocalImageByType(request.getParameter("customerId"),request.getParameter("productId")
+				,request.getParameter("phone_type"));
+		for(int a=0;a<imagerList.size();a++){
+			System.out.println(imagerList.get(a));
+		}
+		
+		Map<String,Object> map = new LinkedHashMap<String,Object>();
+		map.put("imagerList",imagerList);
+		map.put("size",imagerList.size());
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+	}
 	
+	/**
+	 * 分类查询确认照片
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/JnpadImageBrowse/findLocalImageByType1.json", method = { RequestMethod.GET })
+	public String findLocalImageByType1(HttpServletRequest request) {
+		List<LocalImageForm> imagerList1 = jnpadImageBrowseService.findLocalImageByType(request.getParameter("customerId"),request.getParameter("productId")
+				,"1");
+		List<LocalImageForm> imagerList2 = jnpadImageBrowseService.findLocalImageByType(request.getParameter("customerId"),request.getParameter("productId")
+				,"2");
+		List<LocalImageForm> imagerList3 = jnpadImageBrowseService.findLocalImageByType(request.getParameter("customerId"),request.getParameter("productId")
+				,"3");
+		List<LocalImageForm> imagerList4 = jnpadImageBrowseService.findLocalImageByType(request.getParameter("customerId"),request.getParameter("productId")
+				,"4");
+		List<LocalImageForm> imagerList5 = jnpadImageBrowseService.findLocalImageByType(request.getParameter("customerId"),request.getParameter("productId")
+				,"5");
+		List<LocalImageForm> imagerList6 = jnpadImageBrowseService.findLocalImageByType(request.getParameter("customerId"),request.getParameter("productId")
+				,"6");
+		List<LocalImageForm> imagerList7 = jnpadImageBrowseService.findLocalImageByType(request.getParameter("customerId"),request.getParameter("productId")
+				,"7");
+		List<LocalImageForm> imagerList8 = jnpadImageBrowseService.findLocalImageByType(request.getParameter("customerId"),request.getParameter("productId")
+				,"8");
+		List<LocalImageForm> imagerList9 = jnpadImageBrowseService.findLocalImageByType(request.getParameter("customerId"),request.getParameter("productId")
+				,"9");
+		List<LocalImageForm> imagerList10 = jnpadImageBrowseService.findLocalImageByType(request.getParameter("customerId"),request.getParameter("productId")
+				,"10");
+		
+		Map<String,Object> map = new LinkedHashMap<String,Object>();
+		map.put("size1",imagerList1.size());
+		map.put("size2",imagerList2.size());
+		map.put("size3",imagerList3.size());
+		map.put("size4",imagerList4.size());
+		map.put("size5",imagerList5.size());
+		map.put("size6",imagerList6.size());
+		map.put("size7",imagerList7.size());
+		map.put("size8",imagerList8.size());
+		map.put("size9",imagerList9.size());
+		map.put("size10",imagerList10.size());
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/ipad/JnpadImageBrowse/downLoadYxzlJn.json",method = { RequestMethod.GET })
@@ -53,8 +121,8 @@ public class JnpadImageBrowseController {
 	public AbstractModelAndView downLoadYxzlJn(HttpServletRequest request,HttpServletResponse response){
 		try {
 			String s =request.getParameter("id");
-			
 			jnpadImageBrowseService.downLoadYxzlJn(response,s);
+			           
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
