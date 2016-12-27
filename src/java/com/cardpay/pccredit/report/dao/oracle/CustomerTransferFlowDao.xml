@@ -1232,6 +1232,46 @@
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
 					 <!-- select * from yqdktjbb a WHERE 1=1  -->
+					 <!-- 逾期贷款如果不是按照还款计划计算则使用注释代码 -->
+					 <!--  select
+                base.khmc as CHINESE_NAME,base.zjhm as CARD_ID,base.sj as TELEPHONE, protype.product_name as CPMC,tkmx.ffje as DF, tkmx.JZLL,
+                bx.bxhj as BXHJ,yehz.dkye as JE,
+                jh.YHLX,
+                sysuser.display_name as KHJL,(select t.name from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt  where tt.user_id = sysuser.id)) as YWJG 
+              from
+              (select tkmx.ywbh,base.khmc,max(lsz.jzrq) as zdjzrq,sum(lsz.df) as bxhj from 
+		        ty_repay_tkmx tkmx,
+		        ty_customer_base base,
+		        ty_customer_rygl rygl,
+		        sys_user sysuser,
+		        ty_repay_lsz lsz
+		        where base.khjl=rygl.dm and
+		        rygl.ddrq=sysuser.external_id and
+		        base.khnm=tkmx.khh and
+		        tkmx.jjh =lsz.jjh and
+		        sysuser.display_name='刘毛毛'
+		        group by tkmx.ywbh,base.khmc)  bx,
+		         ty_repay_tkmx tkmx,
+		        ty_customer_base base,
+		        ty_customer_rygl rygl,
+		        sys_user sysuser,
+		        ty_kdk_jh jh,
+		        ty_product_type protype,
+		        ty_repay_yehz yehz,
+		        ty_repay_lsz lsz
+		        where base.khjl=rygl.dm and
+		        rygl.ddrq=sysuser.external_id and
+		        base.khnm=tkmx.khh and
+		        jh.ywbh=tkmx.ywbh||'HT'and
+		        tkmx.jjh =lsz.jjh and
+		        yehz.jjh=tkmx.jjh and
+		        protype.product_code=tkmx.cpmc and
+		        bx.ywbh=tkmx.ywbh and
+		        bx.zdjzrq>tkmx.dqrq and
+		        sysuser.display_name='刘毛毛'
+		        group by tkmx.ywbh,base.khmc,base.zjhm,base.sj, protype.product_name,tkmx.ffje, tkmx.JZLL,
+                bx.bxhj,yehz.dkye,
+                sysuser.display_name , sysuser.id -->
 					  select
                 b.CHINESE_NAME,b.CARD_ID,c.SJ as TELEPHONE, protype.product_name as CPMC,tkmx.ffje as DF,tkmx.JZLL,jh.BXHJ,jh.JE,jh.YHLX,sysuser.display_name as KHJL,(select t.name from
               sys_department t where t.id in (select tt.dept_id 
@@ -1256,7 +1296,7 @@
                 b.user_id=sysuser.id and
                 sysuser.id=deptuser.USER_ID and
                 deptuser.DEPT_ID=department.id and
-                substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh and
+                jh.ywbh=tkmx.ywbh||'HT' and
                 jh.ts>0 
                 group by  b.card_id ) maxqs,
                  BASIC_CUSTOMER_INFORMATION b,
@@ -1274,7 +1314,7 @@
                 b.user_id=sysuser.id and
                 sysuser.id=deptuser.USER_ID and
                 deptuser.DEPT_ID=department.id and
-                substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh and
+                jh.ywbh=tkmx.ywbh||'HT' and
                 maxqs.cardid= b.card_id and
                 maxqs.qs=jh.qs and
                 jh.ts>0
@@ -1283,10 +1323,10 @@
 					</if>
 					
 					<if test="organName != null and organName != '' ">
-					    AND (select org.name from sys_organization org where id in(
-					    select t.org_id fromsys_department t where t.id in (select tt.dept_id 
+					    AND (
+					    select t.name fromsys_department t where t.id in (select tt.dept_id 
        					from sys_dept_user tt
-           			   	where tt.user_id = sysuser.id)))=#{organName}
+           			   	where tt.user_id = sysuser.id))=#{organName}
 					</if>
 					
 					<if test="custManagerName != null and custManagerName != '' ">
@@ -1325,7 +1365,7 @@
                 b.user_id=sysuser.id and
                 sysuser.id=deptuser.USER_ID and
                 deptuser.DEPT_ID=department.id and
-                substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh and
+                jh.ywbh=tkmx.ywbh||'HT' and
                 jh.ts>0 
                 group by  b.card_id ) maxqs,
                  BASIC_CUSTOMER_INFORMATION b,
@@ -1343,7 +1383,7 @@
                 b.user_id=sysuser.id and
                 sysuser.id=deptuser.USER_ID and
                 deptuser.DEPT_ID=department.id and
-                substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh and
+                jh.ywbh=tkmx.ywbh||'HT' and
                 maxqs.cardid= b.card_id and
                 maxqs.qs=jh.qs and
                 jh.ts>0
@@ -1352,10 +1392,10 @@
 					</if>
 					
 					<if test="organName != null and organName != '' ">
-					    AND (select org.name from sys_organization org where id in(
-					    select t.org_id fromsys_department t where t.id in (select tt.dept_id 
+					    AND (
+					    select t.name fromsys_department t where t.id in (select tt.dept_id 
        					from sys_dept_user tt
-           			   	where tt.user_id = sysuser.id)))=#{organName}
+           			   	where tt.user_id = sysuser.id))=#{organName}
 					</if>
 					
 					<if test="custManagerName != null and custManagerName != '' ">
@@ -1386,7 +1426,7 @@
                 b.user_id=sysuser.id and
                 sysuser.id=deptuser.USER_ID and
                 deptuser.DEPT_ID=department.id and
-                substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh and
+                jh.ywbh=tkmx.ywbh||'HT' and
                 jh.ts>0 
                 group by  b.card_id ) maxqs,
                  BASIC_CUSTOMER_INFORMATION b,
@@ -1404,7 +1444,7 @@
                 b.user_id=sysuser.id and
                 sysuser.id=deptuser.USER_ID and
                 deptuser.DEPT_ID=department.id and
-                substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh and
+               jh.ywbh=tkmx.ywbh||'HT' and
                 maxqs.cardid= b.card_id and
                 maxqs.qs=jh.qs and
                 jh.ts>0
@@ -1413,8 +1453,8 @@
 					</if>
 					
 					<if test="organName != null and organName != '' ">
-					    AND (select org.name from sys_organization org where id in(
-					    select t.org_id fromsys_department t where t.id in (select tt.dept_id 
+					    AND (
+					    select t.name fromsys_department t where t.id in (select tt.dept_id 
        					from sys_dept_user tt
            			   	where tt.user_id = sysuser.id)))=#{organName}
 					</if>
@@ -1423,7 +1463,7 @@
 						AND sysuser.display_name=#{custManagerName}
 					</if>
 	</select>
-	
+	 
 	<!--预期还款贷款统计-->
 	<select id="findYqhkdktjbbFormList" resultMap="tkmxFormResultMap" 
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
@@ -1559,10 +1599,10 @@
                           jh.JE as hkbj,
                           jh.YHLX as yhlx,
                           sysuser.display_name as busimanager,
-                          (select org.name from sys_organization org where id in(select t.org_id from
+                          (select t.name from
 		          sys_department t where t.id in (select tt.dept_id 
 					from sys_dept_user tt
-		          where tt.user_id = sysuser.id)))  as instcode
+		          where tt.user_id = sysuser.id))  as instcode
                         from sys_dept_user tt
               where tt.user_id = sysuser.id)))  as YWJG,jh.qs
                         from 
@@ -1606,10 +1646,10 @@
 						AND b.CARD_ID=#{certiCode}
 					</if>
 					<if test="organName != null and organName != '' ">
-					    AND (select org.name from sys_organization org where id in(select t.org_id from
+					    AND (select t.name from
               			sys_department t where t.id in (select tt.dept_id 
           				from sys_dept_user tt
-              			where tt.user_id = sysuser.id)))=#{organName}
+              			where tt.user_id = sysuser.id))=#{organName}
 					</if>
 					
 					<if test="custManagerName != null and custManagerName != '' ">
@@ -1773,50 +1813,6 @@
 	      with mibusidata as (
 	     SELECT *
 		  FROM (
-		  <!--select
-        distinct
-          tkmx.YWBH ,
-          b.id as id ,
-          b.KHH,
-          b.KHMC,
-          b.ZJHM,
-          rygl.SSBM,
-          b.SJ,
-          b.SXED,
-          b.GHJL,
-          tkmx.JKRQ as LOANDATE, 
-          tkmx.DQRQ,
-          tkmx.DKQX,
-          tkmx.JZLL,
-          tkmx.FFJE   as REQLMT,  
-         jh.ts as DELAYINTERESTDAYS, 
-           jh.ts as DELAYAMTDAYS,   
-           jh.qs as qs,    
-            rq.a+jh.ts as DLAYDT, 
-          yehz.SHBJ,
-          yehz.JKJE,
-          yehz.KSQXRQ,
-          yehz.SHLX,   
-          yehz.DKYE,
-          yehz.BNQX,
-          yehz.BWQX,
-          yehz.DKYE as BALAMT  ,
-          yehz.jkje-yehz.dkye as yxye 
-        from
-         (select trunc(to_date(rq,'yyyy-mm-dd')) a from ty_kdk_jh) rq,
-                      TY_REPAY_TKMX tkmx,
-                      TY_CUSTOMER_BASE  b,
-                      ty_customer_rygl rygl,
-                      TY_REPAY_YEHZ yehz,
-                      ty_kdk_jh jh
-                      where 1=1 and
-                      b.khnm=tkmx.khh and
-                      b.khjl=rygl.dm and
-                      yehz.JJH = tkmx.JJH and
-                              substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh and
-                               rq.a=to_date(jh.rq,'yyyy-mm-dd') -->
-                     <!--  and to_date(  tkmx.JQRQ ,'yyyymmdd')>to_date( tkmx.DQRQ ,'yyyymmdd')
-                     and jh.ts>0 -->
                  <!--     select
         distinct
           tkmx.YWBH ,
@@ -1868,7 +1864,7 @@
 						             and sysuser.id  =#{userId}
 						         </if>
                                -->
-                                select
+          select
         distinct
           tkmx.YWBH ,
           b.id as id ,
@@ -1883,264 +1879,248 @@
           tkmx.DQRQ,
           tkmx.DKQX,
           tkmx.JZLL,
-          tkmx.FFJE   as REQLMT,  
-         jh.ts as DELAYINTERESTDAYS, 
-           jh.ts as DELAYAMTDAYS,   
-           jh.qs as qs,    
-            rq.a+jh.ts as DLAYDT, 
+          tkmx.FFJE   as REQLMT,
+           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end ) as DELAYINTERESTDAYS,  
+           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end )as DELAYAMTDAYS, 
+           max(lsz.jzrq) as DLAYDT,
           yehz.SHBJ,
           yehz.JKJE,
           yehz.KSQXRQ,
-          yehz.SHLX,   
+          yehz.SHLX as PAYDEBT,  
           yehz.DKYE,
           yehz.BNQX,
           yehz.BWQX,
           yehz.DKYE as BALAMT  ,
-          yehz.dkye as yxye ,
+          yehz.dkye as yxye,
+          sysuser.id userid,
           sysuser.display_name
-        from
-           (select  basic.card_id  as cardid,
-                      max(to_number(jh.qs)) as qs
-          from
-         (select trunc(to_date(rq,'yyyy-mm-dd')) a from ty_kdk_jh) rq,
-                      TY_REPAY_TKMX tkmx,
-                      TY_CUSTOMER_BASE  b,
-                      ty_customer_rygl rygl,
-                      TY_REPAY_YEHZ yehz,
-                      ty_kdk_jh jh,
-                      basic_customer_information basic,
-                      sys_user sysuser
-                      where 1=1 and
-                      b.khnm=tkmx.khh and
-                      b.khjl=rygl.dm and
-                      yehz.JJH = tkmx.JJH and
-                              substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh and
-                              b.id=basic.ty_customer_id and
-                              basic.user_id=sysuser.id and
-                               rq.a=to_date(jh.rq,'yyyy-mm-dd')
-                  <if test="userId != null and userId != '' ">
+       from
+              ty_repay_tkmx tkmx,
+              ty_customer_base b,
+              ty_customer_rygl rygl,
+              sys_user sysuser,
+             ty_kdk_jh jh,
+              ty_repay_yehz yehz,
+              ty_repay_lsz lsz
+              where b.khjl=rygl.dm and
+              rygl.ddrq=sysuser.external_id and
+              b.khnm=tkmx.khh and
+              jh.ywbh=tkmx.ywbh||'HT' and
+              yehz.jjh=tkmx.jjh and
+              tkmx.jjh =lsz.jjh
+             <if test="userId != null and userId != '' ">
 			             and sysuser.id  =#{userId}
 			         </if>
-                   group by basic.card_id)  maxqs,
-         (select trunc(to_date(rq,'yyyy-mm-dd')) a from ty_kdk_jh) rq,
-                      TY_REPAY_TKMX tkmx,
-                      TY_CUSTOMER_BASE  b,
-                      ty_customer_rygl rygl,
-                      TY_REPAY_YEHZ yehz,
-                      ty_kdk_jh jh,
-                      basic_customer_information basic,
-                      sys_user sysuser
-                      where 1=1 and
-                      b.khnm=tkmx.khh and
-                      b.khjl=rygl.dm and
-                      yehz.JJH = tkmx.JJH and
-                              substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh and
-                              b.id=basic.ty_customer_id and
-                              basic.user_id=sysuser.id and
-                               rq.a=to_date(jh.rq,'yyyy-mm-dd') 
-                               and jh.qs=maxqs.qs
-                               and basic.card_id=maxqs.cardid
+              group by tkmx.YWBH ,b.id ,b.KHH,b.KHMC, b.ZJHM,rygl.SSBM, b.SJ, b.SXED, b.GHJL,tkmx.JKRQ , tkmx.DQRQ, tkmx.DKQX,tkmx.JZLL, tkmx.FFJE  ,
+                 yehz.SHBJ,yehz.JKJE, yehz.KSQXRQ,yehz.SHLX, yehz.DKYE,yehz.BNQX, yehz.BWQX,yehz.DKYE  , yehz.dkye  , sysuser.display_name, sysuser.id 
+              order by tkmx.jkrq
 	    ))
-   
-   select ( select count(distinct(a.id))
+  <!--  select count(distinct(a.id))
           from mibusidata a, basic_customer_information b
-         where a.id = b.ty_customer_id
-         and a.LOANDATE <![CDATA[ <=  ]]> to_char( to_date( #{endDate} ,'yyyy/mm/dd'),'yyyymmdd')
-         and a.LOANDATE <![CDATA[ >=  ]]> to_char( to_date( #{startDate} ,'yyyy/mm/dd'),'yyyymmdd')
+         where a.id = b.ty_customer_id -->
+   select ( select count(distinct(YWBH))
+          from mibusidata 
+          where 1=1
+         and LOANDATE <![CDATA[ <=  ]]> to_char( to_date( #{endDate} ,'yyyy/mm/dd'),'yyyymmdd')
+         and LOANDATE <![CDATA[ >=  ]]> to_char( to_date( #{startDate} ,'yyyy/mm/dd'),'yyyymmdd')
          <if test="userId != null and userId != '' ">
-             and b.USER_ID =#{userId}
+               and userid =#{userId}
          </if> ) as increaseLoancount
             ,
-       ( select count(distinct(a.id))
+           <!--  select count(distinct(a.id))
           from mibusidata a, basic_customer_information b
-         where a.id = b.ty_customer_id
+         where a.id = b.ty_customer_id -->
+       ( select count(distinct(a.YWBH))
+          from mibusidata a
+          where 1=1
          and a.LOANDATE <![CDATA[ <=  ]]> to_char( to_date( #{endDate} ,'yyyy/mm/dd'),'yyyymmdd')
          <if test="userId != null and userId != '' ">
-             and b.USER_ID =#{userId}
-         </if> ) as loanCustomerSum 
-         ,
+               and a.userid =#{userId}
+         </if>  ) as loanCustomerSum 
+          ,
          
-       (select count(distinct(b.id))
+         <!-- select count(distinct(b.id))
           from mibusidata a,
                basic_customer_information b
-         where b.ty_customer_id=a.id
-          and a.LOANDATE <![CDATA[ <=  ]]> to_char( to_date( #{endDate} ,'yyyy/mm/dd'),'yyyymmdd')
+         where b.ty_customer_id=a.id -->
+       (select count(distinct(a.YWBH))
+          from mibusidata a
+          where 1=1
+         and a.LOANDATE <![CDATA[ <=  ]]> to_char( to_date( #{endDate} ,'yyyy/mm/dd'),'yyyymmdd')
          and a.LOANDATE <![CDATA[ >=  ]]> to_char( to_date( #{startDate} ,'yyyy/mm/dd'),'yyyymmdd')
-           <if test="userId != null and userId != '' ">
-             and b.USER_ID =#{userId}
-           </if> ) as increaseCusSum
+         <if test="userId != null and userId != '' ">
+               and a.userid =#{userId}
+         </if> ) as increaseCusSum
           ,
            
-       (select count(distinct(b.id))
+         <!--  select count(distinct(b.id))
           from mibusidata a,
-               basic_customer_information b
-         where b.ty_customer_id=a.id
-          and a.LOANDATE <![CDATA[ <=  ]]> to_char( to_date( #{endDate} ,'yyyy/mm/dd'),'yyyymmdd')
-           <if test="userId != null and userId != '' ">
-             and b.USER_ID =#{userId}
-           </if> ) as centreLoansSun
+               basic_customer_information b 
+         where b.ty_customer_id=a.id -->
+       (select count(distinct(a.YWBH))
+          from mibusidata a
+          where 1=1
+         and a.LOANDATE <![CDATA[ <=  ]]> to_char( to_date( #{endDate} ,'yyyy/mm/dd'),'yyyymmdd')
+         <if test="userId != null and userId != '' ">
+               and a.userid =#{userId}
+         </if> ) as centreLoansSun
        		   ,
-           
-       (select count(distinct a.id)
+          <!--  select count(distinct a.id)
           from mibusidata a, basic_customer_information b
-         where a.id = b.ty_customer_id
+         where a.id = b.ty_customer_id -->
+       (select count(distinct a.YWBH)
+          from mibusidata a
+         where 1=1
            and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
-           and a.DLAYDT <![CDATA[ <=  ]]>  to_date( #{endDate}  ,'yyyy/mm/dd')
-           and a.DLAYDT <![CDATA[ >=  ]]>  to_date( #{startDate}  ,'yyyy/mm/dd')
+           and a.DLAYDT <![CDATA[ <=  ]]>  to_char(to_date( #{endDate}  ,'yyyy/mm/dd'))
+           and a.DLAYDT <![CDATA[ >=  ]]>  to_char(to_date( #{startDate}  ,'yyyy/mm/dd'))
            <if test="userId != null and userId != '' ">
-             and b.USER_ID =#{userId}
-           </if> ) as increseOverdueCusTheMon 
+              and a.userid =#{userId}
+           </if> ) as increseOverdueCusTheMon  
             ,
            
-       (select count(distinct(a.id))
-          from mibusidata a, basic_customer_information b
-         where a.id = b.ty_customer_id
-           
-           and (nvl(a.DELAYINTERESTDAYS,0)  >  0 or nvl(a.DELAYAMTDAYS,0)  >  0)
-   		   and a.DLAYDT <![CDATA[ <=  ]]>  to_date( #{endDate}  ,'yyyy/mm/dd')
+       (select count(distinct a.YWBH)
+          from mibusidata a
+         where 1=1
+           and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
+           and a.DLAYDT <![CDATA[ <=  ]]>  to_char(to_date( #{endDate}  ,'yyyy/mm/dd'))
            <if test="userId != null and userId != '' ">
-             and b.USER_ID =#{userId}
+              and a.userid =#{userId}
            </if> ) as alloverdue
-          ,
+           ,
            
        (select  sum(a.balamt)/(trunc(to_date(#{endDate},'yyyy-MM-dd'))-trunc(to_date(#{startDate},'yyyy-MM-dd')))
-          from mibusidata a,
-               basic_customer_information c
-         where c.ty_customer_id = a.id
+             from mibusidata a
+          where 1=1
            and a.LOANDATE <![CDATA[ <=  ]]>to_char( to_date( #{endDate} ,'yyyy/mm/dd'),'yyyymmdd')
            and a.LOANDATE <![CDATA[ >=  ]]> to_char( to_date( #{startDate} ,'yyyy/mm/dd'),'yyyymmdd')
            <if test="userId != null and userId != '' ">
-             and c.USER_ID =#{userId}
+             and a.userid =#{userId}
            </if> ) as increaseBalanceTheMonth
           ,
            
        (select sum(a.yxye)
-          from mibusidata a,
-               basic_customer_information c
-         where  c.ty_customer_id = a.id
+          from mibusidata a
+          where 1=1
            and a.LOANDATE <![CDATA[ <=  ]]> to_char( to_date( #{endDate} ,'yyyy/mm/dd'),'yyyymmdd')
            and a.LOANDATE <![CDATA[ >=  ]]> to_char( to_date( #{startDate} ,'yyyy/mm/dd'),'yyyymmdd')
            <if test="userId != null and userId != '' ">
-             and c.USER_ID =#{userId}
+            and a.userid =#{userId}
            </if> ) as loanBalanceSum
-            ,
+       ,
            
        (select sum(a.yxye)
-          from mibusidata a,
-               basic_customer_information c
-         where  c.ty_customer_id = a.id
+          from mibusidata a
+          where 1=1
            and a.LOANDATE <![CDATA[ <=  ]]> to_char( to_date( #{endDate} ,'yyyy/mm/dd'),'yyyymmdd')
            <if test="userId != null and userId != '' ">
-             and c.USER_ID =#{userId}
+             and a.userid =#{userId}
            </if> ) as contBalace
           ,
            
-      ( select sum(a.REQLMT)
-          from mibusidata           a,
-               basic_customer_information b
-         where b.ty_customer_id= a.id 
+      ( select sum(a.yxye)
+        from mibusidata a
+          where 1=1
            and a.LOANDATE <![CDATA[ <=  ]]>  to_char( to_date( #{endDate} ,'yyyy/mm/dd'),'yyyymmdd')
            and a.LOANDATE <![CDATA[ >=  ]]> to_char( to_date( #{startDate}  ,'yyyy/mm/dd'),'yyyymmdd')
            <if test="userId != null and userId != '' ">
-             and b.USER_ID =#{userId}
+              and a.userid =#{userId}
            </if> ) as increaseLoanCredit
-           ,
+         ,
            
        ( select sum(a.REQLMT)
-          from mibusidata           a,
-               basic_customer_information b
-         where b.ty_customer_id= a.id 
+        from mibusidata a
+          where 1=1
            and a.LOANDATE <![CDATA[ <=  ]]>  to_char( to_date( #{endDate} ,'yyyy/mm/dd'),'yyyymmdd')
            <if test="userId != null and userId != '' ">
-             and b.USER_ID =#{userId}
+              and a.userid =#{userId}
            </if> ) as contAmt 
-           ,
+              ,
        (select sum(nvl(a.DKYE,0) + nvl(a.BNQX,0) + nvl(a.BWQX,0)) 
-          from mibusidata a, basic_customer_information c
-         where a.id = c.ty_customer_id
+          from mibusidata a
+           where 1=1
            and (nvl(a.DELAYINTERESTDAYS,0)  >   0 or nvl(a.DELAYAMTDAYS,0)  >  0)
-           and a.DLAYDT <![CDATA[ <=  ]]> to_date( #{endDate} ,'yyyy/mm/dd')
-           and a.DLAYDT <![CDATA[ >=  ]]> to_date(  #{startDate} ,'yyyy/mm/dd')
+           and a.DLAYDT <![CDATA[ <=  ]]> to_char(to_date( #{endDate} ,'yyyy/mm/dd'))
+           and a.DLAYDT <![CDATA[ >=  ]]> to_char(to_date( #{startDate},'yyyy/mm/dd'))
            <if test="userId != null and userId != '' ">
-             and c.USER_ID =#{userId}
+             and a.userid =#{userId}
            </if> ) as overdueBalanceTheMon
-          ,
+         ,
            
        (select sum(nvl(a.DKYE,0) + nvl(a.BNQX,0) + nvl(a.BWQX,0)) 
-          from mibusidata a, basic_customer_information c
-         where a.id = c.ty_customer_id
-           and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
-           and a.DLAYDT <![CDATA[ <=  ]]> to_date( #{endDate} ,'yyyy/mm/dd')
+          from mibusidata a
+           where 1=1
+           and (nvl(a.DELAYINTERESTDAYS,0)  >   0 or nvl(a.DELAYAMTDAYS,0)  >  0)
+           and a.DLAYDT <![CDATA[ <=  ]]> to_char(to_date( #{endDate} ,'yyyy/mm/dd'))
            <if test="userId != null and userId != '' ">
-             and c.USER_ID =#{userId}
-           </if> ) as overdueBalance
-            ,
+             and a.userid =#{userId}
+           </if>) as overdueBalance
+             ,
            
-       (select count(distinct a.id)
-          from mibusidata a, basic_customer_information b
-         where a.id = b.ty_customer_id
-          
+       (select count(distinct a.YWBH)
+          from mibusidata a
+          where 1=1
            and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
            and nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ <  ]]> 30
            and nvl(a.DELAYAMTDAYS,0) <![CDATA[ < ]]> 30
-           and a.DLAYDT <![CDATA[ <=  ]]>to_date( #{endDate} ,'yyyy/mm/dd')
-           and a.DLAYDT <![CDATA[ >=  ]]> to_date(  #{startDate} ,'yyyy/mm/dd')
+           and a.DLAYDT <![CDATA[ <=  ]]>to_char(to_date( #{endDate} ,'yyyy/mm/dd'))
+           and a.DLAYDT <![CDATA[ >=  ]]> to_char(to_date(  #{startDate} ,'yyyy/mm/dd'))
            <if test="userId != null and userId != '' ">
-             and b.USER_ID =#{userId}
+              and a.userid =#{userId}
            </if> ) as overdueCusM0
            ,
            
-       (  select count(distinct a.id)
-          from mibusidata a, basic_customer_information b
-         where a.id = b.ty_customer_id
+       (  select count(distinct a.YWBH)
+          from mibusidata a
+          where 1=1
            and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
            and nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >=  ]]> 30
            and nvl(a.DELAYAMTDAYS,0) <![CDATA[ >=  ]]> 30
-           and a.DLAYDT <![CDATA[ <=  ]]>to_date( #{endDate} ,'yyyy/mm/dd')
-           and a.DLAYDT <![CDATA[ >=  ]]>to_date(  #{startDate} ,'yyyy/mm/dd')
+           and a.DLAYDT <![CDATA[ <=  ]]>to_char(to_date( #{endDate} ,'yyyy/mm/dd'))
+           and a.DLAYDT <![CDATA[ >=  ]]>to_char(to_date(  #{startDate} ,'yyyy/mm/dd'))
            <if test="userId != null and userId != '' ">
-             and b.USER_ID =#{userId}
+           and a.userid =#{userId}
            </if> ) as overdueCusM1
-           ,
+            ,
            
-       (select count(distinct a.id)
-          from mibusidata a, basic_customer_information b
-         where a.id = b.ty_customer_id
+       (select count(distinct a.YWBH)
+          from mibusidata a
+          where 1=1
            and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
            and nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >=  ]]> 60
            and nvl(a.DELAYAMTDAYS,0) <![CDATA[ >=  ]]> 60
-           and a.DLAYDT <![CDATA[ <=  ]]>to_date( #{endDate} ,'yyyy/mm/dd')
-           and a.DLAYDT <![CDATA[ >=  ]]>to_date(  #{startDate} ,'yyyy/mm/dd')
+           and a.DLAYDT <![CDATA[ <=  ]]>to_char(to_date( #{endDate} ,'yyyy/mm/dd'))
+           and a.DLAYDT <![CDATA[ >=  ]]>to_char(to_date(  #{startDate} ,'yyyy/mm/dd'))
            <if test="userId != null and userId != '' ">
-             and b.USER_ID =#{userId}
+              and a.userid =#{userId}
            </if> ) as overdueCusM2
            ,
            
-       (   select count(distinct a.id)
-          from mibusidata a, basic_customer_information b
-         where a.id = b.ty_customer_id
+       (   select count(distinct a.YWBH)
+          from mibusidata a
+          where 1=1
            and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
            and nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >=  ]]> 90
            and nvl(a.DELAYAMTDAYS,0) <![CDATA[ >=  ]]> 90
-           and a.DLAYDT <![CDATA[ <=  ]]>to_date( #{endDate} ,'yyyy/mm/dd')
-           and a.DLAYDT <![CDATA[ >=  ]]> to_date(  #{startDate} ,'yyyy/mm/dd')
+           and a.DLAYDT <![CDATA[ <=  ]]>to_char(to_date( #{endDate} ,'yyyy/mm/dd'))
+           and a.DLAYDT <![CDATA[ >=  ]]>to_char(to_date(  #{startDate} ,'yyyy/mm/dd'))
            <if test="userId != null and userId != '' ">
-             and b.USER_ID =#{userId}
+              and a.userid =#{userId}
            </if> ) as overdueCusM3
            ,
            
-       (select count(distinct a.id)
-          from mibusidata a, basic_customer_information b
-         where a.id = b.ty_customer_id
+       (select count(distinct a.YWBH)
+          from mibusidata a
+          where 1=1
            and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
            and nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >=  ]]> 120
            and nvl(a.DELAYAMTDAYS,0) <![CDATA[ >=  ]]> 120
-           and a.DLAYDT <![CDATA[ <=  ]]>to_date( #{endDate} ,'yyyy/mm/dd')
-           and a.DLAYDT <![CDATA[ >=  ]]> to_date(  #{startDate} ,'yyyy/mm/dd')
+           and a.DLAYDT <![CDATA[ <=  ]]>to_char(to_date( #{endDate} ,'yyyy/mm/dd'))
+           and a.DLAYDT <![CDATA[ >=  ]]> to_char(to_date(  #{startDate} ,'yyyy/mm/dd'))
            <if test="userId != null and userId != '' ">
-             and b.USER_ID =#{userId}
+              and a.userid =#{userId}
            </if> ) as overdueCusM4
-           ,
+          <!--  ,
            
        ( select sum(a.SHLX)
           from mibusidata a, basic_customer_information b
@@ -2149,7 +2129,7 @@
          and a.LOANDATE <![CDATA[ >=  ]]> #{startDate}
          <if test="userId != null and userId != '' ">
              and b.USER_ID =#{userId}
-         </if> ) as resvIntAccum
+         </if> ) as resvIntAccum  -->
         <!--  ,
          
         ( select nvl(sum(a.DKYE),0) from 

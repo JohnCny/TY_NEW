@@ -106,5 +106,6 @@
 			<menu id="103110" name="group" title="用户组管理" url="/system/group/browse.page" img="" operations="display|browse|export" />
 			<menu id="103120" name="charge" title="负责人管理" url="/system/charge/browse.page" img="" operations="create|change|delete|display|browse" />
 		</menu>
+		
 	</menu>
 </menus>

@@ -70,7 +70,15 @@
 			  <result column="BADLOANDATE" 		  property="badloandate" jdbcType="VARCHAR" /> 
 			  <result column="CREATE_TIME" 		  property="create_time" jdbcType="VARCHAR" /> 
  	 </resultMap>
- 	 
+ 	  <resultMap id="lszform" type="com.cardpay.pccredit.postLoan.model.TyRarepaylistForm" >
+ 	      	<result column="ywbh" 		property="ywbh" 			jdbcType="VARCHAR" />
+ 	      	<result column="jkrq" 		property="jkrq" 			jdbcType="VARCHAR" />
+ 	      	<result column="bj" 		property="bj" 			jdbcType="VARCHAR" />
+ 	      	<result column="lx" 		property="lx" 			jdbcType="VARCHAR" />
+ 	      	<result column="jxfs" 		property="jxfs" 			jdbcType="VARCHAR" />
+ 	      	<result column="jzrq" 		property="jzrq" 			jdbcType="VARCHAR" />
+ 	      	<result column="create_time" 		property="create_time" 			jdbcType="VARCHAR" />
+ 	 </resultMap>
  	 <resultMap id="BaseResultMap2" type="com.cardpay.pccredit.postLoan.model.RarepaylistForm" >
    		<result column="KEYCODE" 		property="keycode" 			jdbcType="VARCHAR" />
 		<result column="REPAYDATE" 		property="repaydate" 		jdbcType="VARCHAR" />
@@ -365,14 +373,88 @@
 	
 	
 	
-	<select id="findLshJnListByFilter" resultMap="BaseResultMap2" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
+	<select id="findLshJnListByFilter" resultMap="lszform" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
 					SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
-					  select a.*,trim(a.squaremodel) as param1 from T_RAREPAYLIST a WHERE 1=1 
-					  <if test="busiCode != null and busiCode != '' ">
-						AND trim(a.BUSICODE)=#{busiCode}
-					   </if>
+					 select
+       distinct 
+       tkmx.ywbh,
+       tkmx.jkrq,
+       shbj.df as bj,
+       shlx.df as lx,
+       tkmx.jxfs,
+       shbj.jzrq,
+       yehz.create_time
+       from
+        (select  sum(lsz.df) as df ,
+                      tkmx.ywbh ,
+                      c.zjhm
+              from
+               ty_customer_rygl rygl,
+              TY_REPAY_TKMX tkmx ,
+              TY_REPAY_YEHZ yehz,
+              ty_repay_lsz lsz,
+              ty_customer_base c,
+             ty_product_type protype,
+              sys_user sysuser
+              where  c.khjl=rygl.dm and
+              rygl.ddrq=sysuser.external_id and
+              c.KHNM = tkmx.khh and
+              yehz.JJH = tkmx.JJH and
+              protype.product_code=tkmx.cpmc and
+              lsz.jjh=tkmx.jjh 
+              and lsz.zy='批量自动扣利息'
+           
+              group by   tkmx.ywbh , c.zjhm) shlx,
+      (select  c.khmc,
+              sum(lsz.df) as df ,
+                      tkmx.ywbh ,
+                      c.zjhm,
+                       max(lsz.jzrq) as jzrq
+              from
+               ty_customer_rygl rygl,
+              TY_REPAY_TKMX tkmx ,
+              TY_REPAY_YEHZ yehz,
+              ty_repay_lsz lsz,
+              ty_customer_base c,
+             ty_product_type protype,
+              sys_user sysuser
+              where  c.khjl=rygl.dm and
+              rygl.ddrq=sysuser.external_id and
+              c.KHNM = tkmx.khh and
+              yehz.JJH = tkmx.JJH and
+              protype.product_code=tkmx.cpmc and
+              lsz.jjh=tkmx.jjh 
+            and (lsz.zy='批量自动扣本金'
+            or lsz.zy='贷款柜台提前还款')
+            
+              group by   tkmx.ywbh , c.zjhm ,c.khmc) shbj,
+              ty_repay_tkmx tkmx,
+              ty_customer_base b,
+              ty_customer_rygl rygl,
+              sys_user sysuser,
+             ty_kdk_jh jh,
+              ty_repay_yehz yehz,
+              ty_repay_lsz lsz
+              where b.khjl=rygl.dm and
+              rygl.ddrq=sysuser.external_id and
+              b.khnm=tkmx.khh and
+              jh.ywbh=tkmx.ywbh||'HT' and
+              yehz.jjh=tkmx.jjh and
+              tkmx.jjh =lsz.jjh and
+              
+               shlx.ywbh=tkmx.ywbh and
+              shlx.zjhm=b.zjhm and
+             shbj.ywbh=tkmx.ywbh and
+              shbj.zjhm=b.Zjhm
+               <if test="busiCode != null and busiCode != '' ">
+					AND trim(tkmx.ywbh)=#{busiCode}
+			</if>
+			 <if test="busiCode != null and busiCode != '' ">
+					AND trim(tkmx.ywbh)=#{busiCode}
+			</if>
+                 order by tkmx.jkrq
 		 <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
