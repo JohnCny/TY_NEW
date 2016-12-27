@@ -39,11 +39,13 @@
 		<result property="maxRiskLevel" column="maxRiskLevel" />
 		<result property="customerId" column="customerId" />
 		<result property="productName" column="productName" />
-		
-		 
-		
-		
 	</resultMap>
+	
+	<!-- 	<insert id="InsertCs" resultType="int">
+	insert into COLLECTION_PLAN (ID,CREATE_WAY,CUSTOMER_ID,PRODUCT_ID,)
+	</select> -->
+		
+		
 	<select id="findCountByFilter" resultType="int"
 		parameterType="com.cardpay.pccredit.riskControl.filter.RiskCustomerCollectionPlanFilter">
 		select
@@ -184,11 +186,15 @@
        inner join
 	    (select distinct(CUSTID) as customerId,MONEY as sjmoney from t_mibusidata_view where (DELAYINTERESTDAYS <![CDATA[ >  ]]> 0 or DELAYAMTDAYS <![CDATA[ >  ]]> 0 ))c
 	   on t.tCustomerId = c.customerId -->
-	 select distinct(m.ywbh) as qq,
+	 select distinct(m.ywbh) as qq, cc.PRODUCT_ID as productId,p.PRODUCT_NAME as productName
 	 		b.id as TypeCode,b.chinese_name as TypeName,b.TELEPHONE as tel,b.card_id as cardId ,t.dkye as dkye,t.bnqx as bnqx,t.bwqx as bwqx,m.REQLMT as actual_quote
-	  from  TY_REPAY_YEHZ t ,mibusidata m,BASIC_CUSTOMER_INFORMATION b 
+	  from  TY_REPAY_YEHZ t ,mibusidata m,BASIC_CUSTOMER_INFORMATION b, CUSTOMER_APPLICATION_INFO cc,PRODUCT_ATTRIBUTE p
 	  where m.ywbh=t.ywbh and b.ty_customer_id=m.id
+	  and  (( m.DELAYINTERESTDAYS  not in ('0') and  m.DELAYINTERESTDAYS is not null)
+   or( m.DELAYAMTDAYS  not in ('0') and m.DELAYAMTDAYS is not null))
 	and b.user_id=#{userId}
+	and p.id=cc.PRODUCT_ID
+	and cc.customerId=b.id
 	   
 	</select>
 	<!-- 得到当前客户经理的逾期客户数量 -->

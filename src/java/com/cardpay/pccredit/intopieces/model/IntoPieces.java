@@ -32,9 +32,9 @@ public class IntoPieces  extends BusinessModel {
     
     private String jjh; //对应银行借据号
     private String jkrq; //对应银行借款日期
-    private String dkye;
-    private String bnqx;
-    private String bwqx;
+    private Float dkye;
+    private Float bnqx;
+    private Float bwqx;
     private String reqlmt;
     
     private BigDecimal actualAmt;
@@ -51,30 +51,37 @@ public class IntoPieces  extends BusinessModel {
     private String managerName;
     
     private String organName;
+    private Float yxje;
     
-    
-    public Date getCreatime() {
+    public Float getYxje() {
+		return yxje;
+	}
+	public void setYxje(Float yxje) {
+		this.yxje = yxje;
+	}
+	public Date getCreatime() {
 		return creatime;
 	}
 	public void setCreatime(Date creatime) {
 		this.creatime = creatime;
 	}
-	public String getDkye() {
+	
+	public Float getDkye() {
 		return dkye;
 	}
-	public void setDkye(String dkye) {
+	public void setDkye(Float dkye) {
 		this.dkye = dkye;
 	}
-	public String getBnqx() {
+	public Float getBnqx() {
 		return bnqx;
 	}
-	public void setBnqx(String bnqx) {
+	public void setBnqx(Float bnqx) {
 		this.bnqx = bnqx;
 	}
-	public String getBwqx() {
+	public Float getBwqx() {
 		return bwqx;
 	}
-	public void setBwqx(String bwqx) {
+	public void setBwqx(Float bwqx) {
 		this.bwqx = bwqx;
 	}
 	public String getOrganName() {

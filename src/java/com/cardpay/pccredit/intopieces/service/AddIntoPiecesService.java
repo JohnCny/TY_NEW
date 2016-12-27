@@ -71,6 +71,9 @@ import com.cardpay.workflow.models.WfProcessInfo;
 import com.cardpay.workflow.models.WfStatusInfo;
 import com.cardpay.workflow.models.WfStatusResult;
 import com.cardpay.workflow.service.ProcessService;
+import com.sun.image.codec.jpeg.JPEGCodec;
+import com.sun.image.codec.jpeg.JPEGImageDecoder;
+import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
 import com.wicresoft.jrad.base.database.model.QueryResult;
@@ -118,141 +121,114 @@ public class AddIntoPiecesService {
 	}
 
 	//导入调查报告
-	public void importExcel(MultipartFile file,String productId, String customerId) {
-		// TODO Auto-generated method stub
-		System.out.println("这是路径："+file);
-		//本地测试
-		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
-		//指定服务器上传
-		//Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
-		String fileName = map.get("fileName");
-		String url = map.get("url");
-		LocalExcel localExcel = new LocalExcel();
-		localExcel.setProductId(productId);
-		localExcel.setCustomerId(customerId);
-		localExcel.setCreatedTime(new Date());
-		if (StringUtils.trimToNull(url) != null) {
-			localExcel.setUri(url);
-		}
-		if (StringUtils.trimToNull(fileName) != null) {
-			localExcel.setAttachment(fileName);
-		}
-		
-		//读取excel内容
-		JXLReadExcel readExcel = new JXLReadExcel();
-		//本地测试
-		String sheet[] = readExcel.readExcelToHtml1(url, true);
-		//服务器
-		//String sheet[] = SFTPUtil.readExcelToHtml(url, true);
-		for(String str : sheet){
-			if(StringUtils.isEmpty(str)){
-				throw new RuntimeException("导入失败，请检查excel文件与模板是否一致！");
+		public void importExcel(MultipartFile file,String productId, String customerId) {
+			// TODO Auto-generated method stub
+			//本地测试
+			Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+			//指定服务器上传
+			//Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
+			String fileName = map.get("fileName");
+			String url = map.get("url");
+			LocalExcel localExcel = new LocalExcel();
+			localExcel.setProductId(productId);
+			localExcel.setCustomerId(customerId);
+			localExcel.setCreatedTime(new Date());
+			if (StringUtils.trimToNull(url) != null) {
+				localExcel.setUri(url);
 			}
-		}
-		/*localExcel.setSheetJy(sheet[0]);
-		localExcel.setSheetJbzk(sheet[1]);
-		localExcel.setSheetJyzt(sheet[2]);
-		localExcel.setSheetSczt(sheet[3]);
-		localExcel.setSheetDdpz(sheet[4]);
-		localExcel.setSheetFz(sheet[5]);
-		localExcel.setSheetLrjb(sheet[6]);
-		localExcel.setSheetBzlrb(sheet[7]);
-		localExcel.setZyyw(sheet[8]);
-		localExcel.setSheetXjllb(sheet[9]);
-		localExcel.setSheetJc(sheet[10]);
-		localExcel.setSheetDhd(sheet[11]);
-		localExcel.setSheetGdzc(sheet[12]);
-		localExcel.setSheetYfys(sheet[13]);
-		localExcel.setSheetYsyf(sheet[14]);
-		localExcel.setSheetLsfx(sheet[15]);
-		localExcel.setApproveValue(sheet[17]);
-		localExcel.setJyb(sheet[16]);*/
-		localExcel.setSheetJy(sheet[0]);
-		localExcel.setSheetJbzk(sheet[1]);
-		localExcel.setSheetFz(sheet[2]);
-		localExcel.setSheetBzlrb(sheet[3]);
-		localExcel.setSheetXjllb(sheet[4]);
-		localExcel.setSheetJc(sheet[5]);
-		localExcel.setSheetGdzc(sheet[6]);
-		localExcel.setSheetYfys(sheet[7]);
-		localExcel.setSheetYsyf(sheet[8]);
-		localExcel.setJyb(sheet[9]);
-		
-		if(sheet[10].contains("元")){
-			localExcel.setApproveValue(sheet[10].substring(0,sheet[10].indexOf("元")));
-		}else{
-		    localExcel.setApproveValue(sheet[10]);
-		}
-		//删除旧模板
-		String sql = "delete from local_excel where customer_id='"+customerId+"' and product_id='"+productId+"'";
-		commonDao.queryBySql(LocalExcel.class, sql, null);
-		//添加模板
-		commonDao.insertObject(localExcel);
-	}
-	
-	//补充调查模板先删除原有的调查模板信息再新增
-	public void importExcelSupple(MultipartFile file,String productId, String customerId,String appId) {
-		// TODO Auto-generated method stub
-		//本地
-		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
-		//指定服务器上传
-		//Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
-		String fileName = map.get("fileName");
-		String url = map.get("url");
-		//删除
-		localImageDao.deleteByProductIdAndCustomerId(productId,customerId);
-		
-		LocalExcel localExcel = new LocalExcel();
-		localExcel.setProductId(productId);
-		localExcel.setCustomerId(customerId);
-		localExcel.setCreatedTime(new Date());
-		localExcel.setApplicationId(appId);
-		
-		if (StringUtils.trimToNull(url) != null) {
-			localExcel.setUri(url);
-		}
-		if (StringUtils.trimToNull(fileName) != null) {
-			localExcel.setAttachment(fileName);
-		}
-		
-		//读取excel内容
-		JXLReadExcel readExcel = new JXLReadExcel();
-		//本地测试
-		String sheet[] = readExcel.readExcelToHtml1(url, true);
-		//服务器
-		//String sheet[] = SFTPUtil.readExcelToHtml(url, true);
-		for(String str : sheet){
-			if(StringUtils.isEmpty(str)){
-				throw new RuntimeException("导入失败，请检查excel文件与模板是否一致！");
+			if (StringUtils.trimToNull(fileName) != null) {
+				localExcel.setAttachment(fileName);
 			}
+			
+			//读取excel内容
+			JXLReadExcel readExcel = new JXLReadExcel();
+			//本地测试
+			String sheet[] = readExcel.readExcelToHtml(url, true);
+			//服务器
+			//String sheet[] = SFTPUtil.readExcelToHtml(url, true);
+			/*for(String str : sheet){
+				if(StringUtils.isEmpty(str)){
+					throw new RuntimeException("导入失败，请检查excel文件与模板是否一致！");
+				}
+			}*/
+			localExcel.setSheetXjllb(sheet[9]);
+			localExcel.setSheetYfys(sheet[13]);
+			localExcel.setSheetGdzc(sheet[12]);
+			localExcel.setSheetDhd(sheet[11]);
+			localExcel.setSheetYsyf(sheet[14]);
+			localExcel.setSheetJy(sheet[17]);
+			localExcel.setSheetJbzk(sheet[18]);
+			if(sheet[19].contains("元")){
+				localExcel.setApproveValue(sheet[19].substring(0,sheet[19].indexOf("元")));
+			}else{
+			    localExcel.setApproveValue(sheet[19]);
+			}
+			//删除旧模板
+			String sql = "delete from local_excel where customer_id='"+customerId+"' and product_id='"+productId+"'";
+			commonDao.queryBySql(LocalExcel.class, sql, null);
+			//添加模板
+			commonDao.insertObject(localExcel);
 		}
-		localExcel.setSheetJy(sheet[0]);
-		localExcel.setSheetJbzk(sheet[1]);
-		localExcel.setSheetFz(sheet[2]);
-		localExcel.setSheetBzlrb(sheet[3]);
-		localExcel.setSheetXjllb(sheet[4]);
-		localExcel.setSheetJc(sheet[5]);
-		localExcel.setSheetGdzc(sheet[6]);
-		localExcel.setSheetYfys(sheet[7]);
-		localExcel.setSheetYsyf(sheet[8]);
-		localExcel.setJyb(sheet[9]);
 		
-		if(sheet[10].contains("元")){
-			localExcel.setApproveValue(sheet[10].substring(0,sheet[10].indexOf("元")));
-		}else{
-		    localExcel.setApproveValue(sheet[10]);
+		//补充调查模板先删除原有的调查模板信息再新增
+		public void importExcelSupple(MultipartFile file,String productId, String customerId,String appId) {
+			// TODO Auto-generated method stub
+			//本地
+			Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+			//指定服务器上传
+			//Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
+			String fileName = map.get("fileName");
+			String url = map.get("url");
+			//删除
+			localImageDao.deleteByProductIdAndCustomerId(productId,customerId);
+			
+			LocalExcel localExcel = new LocalExcel();
+			localExcel.setProductId(productId);
+			localExcel.setCustomerId(customerId);
+			localExcel.setCreatedTime(new Date());
+			localExcel.setApplicationId(appId);
+			
+			if (StringUtils.trimToNull(url) != null) {
+				localExcel.setUri(url);
+			}
+			if (StringUtils.trimToNull(fileName) != null) {
+				localExcel.setAttachment(fileName);
+			}
+			
+			//读取excel内容
+			JXLReadExcel readExcel = new JXLReadExcel();
+			//本地测试
+			String sheet[] = readExcel.readExcelToHtml(url, true);
+			//服务器
+			//String sheet[] = SFTPUtil.readExcelToHtml(url, true);
+			for(String str : sheet){
+				if(StringUtils.isEmpty(str)){
+					throw new RuntimeException("导入失败，请检查excel文件与模板是否一致！");
+				}
+			}
+			localExcel.setSheetXjllb(sheet[9]);
+			localExcel.setSheetYfys(sheet[13]);
+			localExcel.setSheetGdzc(sheet[12]);
+			localExcel.setSheetDhd(sheet[11]);
+			localExcel.setSheetYsyf(sheet[14]);
+			localExcel.setSheetJy(sheet[17]);
+			localExcel.setSheetJbzk(sheet[18]);
+			if(sheet[19].contains("元")){
+				localExcel.setApproveValue(sheet[19].substring(0,sheet[19].indexOf("元")));
+			}else{
+			    localExcel.setApproveValue(sheet[19]);
+			}
+			
+			//修改申请金额
+			CustomerApplicationInfo info = new CustomerApplicationInfo();
+			info.setApplyQuota(localExcel.getApproveValue());
+			info.setId(appId);
+			commonDao.updateObject(info);
+			
+			//添加模板
+			commonDao.insertObject(localExcel);
+		
 		}
-		
-		//修改申请金额
-		CustomerApplicationInfo info = new CustomerApplicationInfo();
-		info.setApplyQuota(localExcel.getApproveValue());
-		info.setId(appId);
-		commonDao.updateObject(info);
-		
-		//添加模板
-		commonDao.insertObject(localExcel);
-	
-	}
 
 	/* 查询影像资料信息 */
 	public QueryResult<LocalImageForm> findLocalImageByProductAndCustomer(AddIntoPiecesFilter filter) {

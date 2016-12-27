@@ -323,15 +323,21 @@ union all
 	</select>
 	
 	<!-- 查询用信总额 -->
-	<select id="selectALLyxze" resultMap="ResultMap" >
-	    		select 
-			 distinct(m.YWBH) as name, m.REQLMT as value
-	 from   mibusidata m
+	<select id="selectALLyxze" resultType="int" >
+	    select sum(mm.REQLMT) from
+	    		(select 
+			 distinct(m.YWBH), m.REQLMT 
+	 from   mibusidata m) mm
 	</select>
 		<!-- 逾期总额 -->
-	<select id="selectALLyqze" resultMap="ResultMap" >
-	    	select distinct(YWBH) as name, dkye as value,bnqx as value1,bwqx as value2 from mibusidata 
+	<select id="selectALLyqze" resultType="String" >
+	    	select sum(cc.dkye+cc.bnqx+cc.bwqx) from 
+(select dkye,bnqx,bwqx
+  from mibusidata where
+  ( DELAYINTERESTDAYS  not in ('0') and  DELAYINTERESTDAYS is not null)
+   or( DELAYAMTDAYS  not in ('0') and DELAYAMTDAYS is not null)) cc 
 	</select>
+	
 	
 	<select id="statisticaljine" resultMap="ResultMap" >
 	    with circle as (

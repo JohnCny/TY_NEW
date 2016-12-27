@@ -60,7 +60,8 @@ public class JnpadIntopiecesDecisionService {
 	//查询当前客户经理进件初审信息
 	public QueryResult<CustomerApplicationIntopieceWaitForm> findCustomerApplicationIntopieceDecison(IntoPiecesFilter filter) {
 		List<CustomerApplicationIntopieceWaitForm> listCAI = jnpadIntopiecesDecisionDao.findCustomerApplicationIntopieceDecisionForm(filter);
-		int size = jnpadIntopiecesDecisionDao.findCustomerApplicationIntopieceDecisionCountForm(filter);
+	/*	int size = jnpadIntopiecesDecisionDao.findCustomerApplicationIntopieceDecisionCountForm(filter);*/
+		int size = listCAI.size();
 		QueryResult<CustomerApplicationIntopieceWaitForm> qs = new QueryResult<CustomerApplicationIntopieceWaitForm>(size, listCAI);
 		return qs;
 	}

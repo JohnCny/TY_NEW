@@ -330,10 +330,10 @@ public String selectCustomerInfoByCardId(HttpServletRequest request){
 		List<CustomerInfo>result=customerSelectSercice.selectAllcustormerId(userId);
 		for(int a=0;a<result.size();a++){
 			resufeCount+=customerSelectSercice.findCount(result.get(a).getId(), "refuse");
-			Nosq+=customerSelectSercice.findNoSQCount(userId);
 			successCount+=customerSelectSercice.findCount(result.get(a).getId(), "approved");
 			NospCount+=customerSelectSercice.findCount(result.get(a).getId(), "audit");
 		}
+		Nosq=customerSelectSercice.findNoSQCount(userId);
 		Map<String,Object> map = new LinkedHashMap<String,Object>();
 		map.put("resufeCount", resufeCount);
 		map.put("Nosq", Nosq);
