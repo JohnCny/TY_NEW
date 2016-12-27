@@ -56,7 +56,7 @@ public class CustormerBlackListService {
 	 * @return
 	 */
 	public CustomerHmd findCustormerBlackList(String cardId){
-		return inputhmddao.selectByCardId(cardId);
+		return inputhmddao.selectallByCardId(cardId);
 	}
 	
 	/**

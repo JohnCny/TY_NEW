@@ -46,9 +46,9 @@ import com.wicresoft.util.web.RequestHelper;
 @Controller
 public class JnIpadUserLoginController {
 	private Integer yxed=0;
-	private Integer dkye=0;
-	private Integer bnqx=0;
-	private Integer bwqx=0;
+	private java.lang.Float dkye;
+	private java.lang.Float bnqx;
+	private java.lang.Float bwqx;
 	@Autowired
 	private JnIpadUserLoginService userService;
 	
@@ -199,31 +199,33 @@ public class JnIpadUserLoginController {
 	@ResponseBody
 	@RequestMapping(value = "/ipad/user/findYunyinstatus.json")
 	public String findYunyinstatus(HttpServletRequest request) {
-		Integer Money=0;
+		Map<String,Object> result = new LinkedHashMap<String,Object>();
+		String zje;
 		String userId = RequestHelper.getStringValue(request, "userId");
 		//查询运营状况
-		List<IntoPieces> SXmoney=appInfoXxService.findAlledByUser(userId);
-		if(SXmoney.size()!=0){
-			for(int i=0;i<SXmoney.size();i++){
-				Money+=Integer.parseInt(SXmoney.get(i).getApplyQuota().replace(".00", ""));
-			}
+		String Money=appInfoXxService.findAlledByUser(userId);
+		if(Money==null){
+			result.put("SXmoney", "0.00");
+		}else{
+			result.put("SXmoney", Money);
 		}
-		List<IntoPieces> a=appInfoXxService.findyxByUser(userId);
-		for(int b=0;b<a.size();b++){
-			yxed+=Integer.parseInt(a.get(b).getApplyQuota().replace(".00", ""));
+		String yxed1=appInfoXxService.findyxByUser(userId);
+		if(yxed1==null){
+			result.put("yxed", "0.00");
+		}else{
+			result.put("yxed",yxed1);
 		}
-		List<IntoPieces> aa=appInfoXxService.findyqzeByUser(userId);
-		for(int b=0;b<aa.size();b++){
-			dkye+=Integer.parseInt(aa.get(b).getDkye().replace(".00", ""));
-			bnqx+=Integer.parseInt(aa.get(b).getBnqx().replace(".00", ""));
-			bwqx+=Integer.parseInt(aa.get(b).getBwqx().replace(".00", ""));
+		zje=appInfoXxService.findyqzeByUser(userId);
+		if(zje==null){
+			result.put("yqye", "0.00");
+		}else{
+			result.put("yqye", zje);
 		}
 		int yqrs=appInfoXxService.findyqByUser(userId);
-		Map<String,Object> result = new LinkedHashMap<String,Object>();
-		result.put("SXmoney", Money);
-		result.put("yxed", yxed);
 		result.put("yqrs", yqrs);
-		result.put("yqye", dkye+bnqx+bwqx);
+		Money=null;
+		yxed=0;
+		zje=null;
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(result, jsonConfig);

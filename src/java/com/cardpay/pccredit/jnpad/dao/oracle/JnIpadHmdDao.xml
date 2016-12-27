@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.jnpad.dao.InputHmdDao1">
+	
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.report.model.CustomerHmd">
+		<result property="name" column="NAME" />
+		<result property="cardId" column="CARDID" />
+		<result property="comefrom" column="COMEFROM" />
+	</resultMap>
+	
+
+		 <select id="selectallByCardId" resultMap="ResultMap" parameterType="com.cardpay.pccredit.report.model.CustomerHmd">
+	  	select NAME as name,CARDID as cardId, COMEFROM as comefrom from LOCAL_HMD_EXCEL where CARDID=#{cardId}
+	</select> 
+	<delete id="deleteByCardId" parameterType="int" >
+	  	delete  from  LOCAL_HMD_EXCEL where CARDID=#{cardId}
+	</delete> 
+</mapper>

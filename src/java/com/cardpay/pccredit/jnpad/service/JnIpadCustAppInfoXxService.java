@@ -234,18 +234,18 @@ public class JnIpadCustAppInfoXxService {
 	}
 	
 	
-	public List<IntoPieces> findAlledByUser(@Param("userId") String userId){
+	public String findAlledByUser(@Param("userId") String userId){
 		return jnIpadCustAppInfoDao.findAlledByUser(userId);
 	}
 	
-	public List<IntoPieces> findyxByUser(@Param("userId") String userId){
+	public String findyxByUser(@Param("userId") String userId){
 		return jnIpadCustAppInfoDao.findyxByUser(userId);
 	}
 	
 	public int findyqByUser(@Param("userId") String userId){
 		return jnIpadCustAppInfoDao.findyqByUser(userId);
 	}
-	public List<IntoPieces> findyqzeByUser(@Param("userId") String userId){
+	public String findyqzeByUser(@Param("userId") String userId){
 		return jnIpadCustAppInfoDao.findyqzeByUser(userId);
 	}
 	

@@ -9,6 +9,6 @@ import com.wicresoft.util.annotation.Mapper;
 
 @Mapper
 public interface InputHmdDao1 {
-	public CustomerHmd selectByCardId(@Param("cardId") String cardId);
+	public CustomerHmd selectallByCardId(@Param("cardId") String cardId);
 	public int deleteByCardId(@Param("cardId") String cardId);
 }

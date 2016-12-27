@@ -325,7 +325,7 @@ public class JnIpadCustAppInfoXxController {
 				list=cblservice.findCustormerBlackList(result.get(a).getCardId());
 				if(list!=null){
 					i=i+1;
-			
+					list=null;
 				}
 		}
 		NODEAUDIT.setUser_id(request.getParameter("userId"));

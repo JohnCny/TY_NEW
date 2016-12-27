@@ -279,11 +279,11 @@ public class StatisticalCommonService {
 		return JSONArray.fromObject(list).toString();
 	}
 	
-	public List<NameValueRecord> selectALLyxze(){
+	public int selectALLyxze(){
 		
 		return statisticalCommonDao.selectALLyxze();
 	}
-	public List<NameValueRecord> selectALLyqze(){
+	public String selectALLyqze(){
 		return statisticalCommonDao.selectALLyqze();
 	}
 }

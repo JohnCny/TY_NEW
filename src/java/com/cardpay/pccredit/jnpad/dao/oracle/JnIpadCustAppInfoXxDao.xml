@@ -12,6 +12,7 @@
 		<result property="displayName" column="display_name" />
 		<result property="cardId" column="card_id" />
 		<result property="applyQuota" column="apply_quota" />
+			<result property="yxje" column="yxje" />
 		<result property="status" column="status" />
 		<result property="dkye" column="dkye" />
 		<result property="bnqx" column="bnqx" />
@@ -276,27 +277,34 @@
 	</select>
 
 
-	<select id="findAlledByUser" resultType="com.cardpay.pccredit.intopieces.model.IntoPieces" parameterType="com.cardpay.pccredit.intopieces.model.IntoPieces">	      
-	select 
-			 distinct m.SXED as applyQuota,m.YWBH
-	 from   mibusidata m,BASIC_CUSTOMER_INFORMATION b
-	 where  m.id=b.TY_CUSTOMER_ID
-	 and   	b.USER_ID=#{userId}
+	<select id="findAlledByUser" resultType="String" >	      
+	 select sum(cc.sxed)  from
+ (SELECT DISTINCT (m.YWBH),m.sxed FROM MIBUSIDATA m,BASIC_CUSTOMER_INFORMATION b 
+ where m.id=b.TY_CUSTOMER_ID and b.user_id=#{userId}) cc
 	</select>
 	
-	<select id="findyxByUser" resultType="com.cardpay.pccredit.intopieces.model.IntoPieces" >	      
-	 SELECT   DISTINCT m.YWBH,m.REQLMT as applyQuota FROM MIBUSIDATA m,BASIC_CUSTOMER_INFORMATION b
-  	 where     m.id=b.TY_CUSTOMER_ID and b.user_id=#{userId}
+	<select id="findyxByUser" resultType="String" >	          
+	  select sum(cc.applyQuota)  from
+   (SELECT DISTINCT (m.YWBH),m.REQLMT as applyQuota FROM MIBUSIDATA m,BASIC_CUSTOMER_INFORMATION b 
+    where m.id=b.TY_CUSTOMER_ID and b.user_id=#{userId}) cc
 	</select>
 	
 	<select id="findyqByUser" resultType="int" >	      
-	 SELECT  count(DISTINCT m.YWBH)  FROM MIBUSIDATA m,BASIC_CUSTOMER_INFORMATION b
-     where m.id=b.TY_CUSTOMER_ID and b.user_id=#{userId} and m.DELAYAMTDAYS is not null
+	
+select count(*) from 
+(select  USERID
+  from mibusidata where
+  ( DELAYINTERESTDAYS  not in ('0') and  DELAYINTERESTDAYS is not null)
+   or( DELAYAMTDAYS  not in ('0') and DELAYAMTDAYS is not null)) cc 
+where  #{userId} in cc.USERID
 	</select>
-	<select id="findyqzeByUser" resultType="com.cardpay.pccredit.intopieces.model.IntoPieces" >	      
-	select t.dkye as dkye,t.bnqx as bnqx,t.bwqx as bwqx from TY_REPAY_YEHZ t ,
-	mibusidata m,BASIC_CUSTOMER_INFORMATION b where m.ywbh=t.ywbh and b.ty_customer_id=m.id
-	and b.user_id=#{userId}
+	<select id="findyqzeByUser" resultType="String" >	      
+	select sum(cc.dkye+cc.bnqx+cc.bwqx)  from 
+(select  USERID,dkye,bnqx,bwqx
+  from mibusidata where
+  ( DELAYINTERESTDAYS  not in ('0') and  DELAYINTERESTDAYS is not null)
+   or( DELAYAMTDAYS  not in ('0') and DELAYAMTDAYS is not null)) cc 
+where #{userId}  in cc.USERID
 	</select>
 
 	<select id="findAccountManagerRetraining" resultMap="RetrainResultMap">

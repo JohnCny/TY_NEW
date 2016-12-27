@@ -61,7 +61,7 @@ public interface StatisticalCommonDao {
 	public List<NameValueRecord> statisticalApprovedStatus1();
 	
 	//计算用信总额selectALLyqze
-	public List<NameValueRecord> selectALLyxze();
+	public int selectALLyxze();
 	//计算逾期总额
-	public List<NameValueRecord> selectALLyqze();
+	public String selectALLyqze();
 }
