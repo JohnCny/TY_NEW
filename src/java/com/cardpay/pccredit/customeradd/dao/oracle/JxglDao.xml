@@ -54,7 +54,6 @@
       (select t.FFJE ,base.id  as id from TY_REPAY_TKMX t,ty_customer_base base ,basic_customer_information b
       where base.khnm = t.KHH and  b.TY_CUSTOMER_ID = base.ID and
       t.DQRQ>(select to_char(trunc(sysdate,'MONTH'),'yyyy-mm-dd') First_DayOfMonth from dual)
-      
       )  ffje1,
       (select t.FFJE  ,base.id as id from TY_REPAY_TKMX t,ty_customer_base base ,basic_customer_information b
       where base.khnm = t.KHH and  b.TY_CUSTOMER_ID = base.ID

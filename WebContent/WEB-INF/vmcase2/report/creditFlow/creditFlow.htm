@@ -79,16 +79,12 @@
         <div id="downDiv" class="inquiry_list inquiry_down">
           <table>
             <colgroup>
-              <col width="5%" />
+               <col width="5%" />
+			  <col width="7%" />
               <col width="7%" />
               <col width="7%" />
               <col width="7%" />
-              <col width="7%" />
-              <col width="7%" />
-              <col width="7%" />
-              <col width="7%" />
-              <col width="7%" />
-              <col width="7%" />
+              <col width="9%" />
               <col width="7%" />
               <col width="7%" />
               <col width="7%" />
@@ -98,20 +94,20 @@
             #foreach ($customer in $result.items)
             <tr>
               <td class="checkbox"><input type="radio" name="checkbox" value="$!customer.appId/$!customer.customerManagerId"/>
-              <td nowrap="nowrap">$!customer.chineseName</td>
-              <td nowrap="nowrap">$!customer.cardId</td>
-              <td nowrap="nowrap">$!customer.prodName</td>
-              <td nowrap="nowrap">$!customer.applyQuota</td>
-              <td nowrap="nowrap">$!customer.createdTime</td>
-              <td nowrap="nowrap">$!customer.clts</td>
+              <td nowrap="nowrap">$!customer.chinese_name</td>
+              <td nowrap="nowrap">$!customer.card_id</td>
+              <td nowrap="nowrap">$!customer.PRODUCT_NAME</td>
+              <td nowrap="nowrap">$!customer.APPLY_QUOTA</td>
+              <td nowrap="nowrap">$!customer.CREATED_TIME</td>
+          <!--     <td nowrap="nowrap">$!customer.clts</td>
               <td nowrap="nowrap">$!customer.dcr</td>
-              <td nowrap="nowrap">$!customer.dcts</td>
-              <td nowrap="nowrap">$!customer.sdhrq</td>
-              <td nowrap="nowrap">$!customer.sdhts</td>
-              <td nowrap="nowrap">$!customer.dkffjjr</td>
-              <td nowrap="nowrap">$!customer.totalNum</td>
-              <td nowrap="nowrap">$!customer.custManager</td>
-              <td nowrap="nowrap">$!customer.name</td>
+              <td nowrap="nowrap">$!customer.dcts</td> -->
+              <td nowrap="nowrap">$!customer.start_examine_time</td>
+              <!-- <td nowrap="nowrap">$!customer.sdhts</td> -->
+              <td nowrap="nowrap">$!customer.jkrq</td>
+              <td nowrap="nowrap">$!customer.xdsj</td>
+              <td nowrap="nowrap">$!customer.display_name</td>
+              <td nowrap="nowrap">$!customer.teamname</td>
             </tr>
             #end
           </table>

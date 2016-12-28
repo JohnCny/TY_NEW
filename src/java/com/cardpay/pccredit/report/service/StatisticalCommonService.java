@@ -170,11 +170,13 @@ public class StatisticalCommonService {
 		List<NameValueRecord> records = statisticalCommonDao.statisticaljine();
 		for(NameValueRecord nameValueRecord : records){
 			if(StringUtils.isNotEmpty(nameValueRecord.getValue())){
+				//Double b=Double.valueOf(nameValueRecord.getValue());
 				list.add(Double.valueOf(nameValueRecord.getValue()));
 			}else{
 				list.add(0d);
 			}
 		}
+		//String a=JSONArray.fromObject(list).toString();
 		return JSONArray.fromObject(list).toString();
 	}
 	

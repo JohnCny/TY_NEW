@@ -112,7 +112,18 @@
 		<result property="instcode" column="instcode" />
 		<result property="rowIndex" column="row_index" />
 	</resultMap>
-	
+	<resultMap id="XdlctjbbForms" type="com.cardpay.pccredit.report.model.XdlctjbbForms">
+	    <result property="chinese_name" column="chinese_name" />
+	    <result property="card_id" column="card_id" />
+	    <result property="PRODUCT_NAME" column="PRODUCT_NAME" />
+	    <result property="APPLY_QUOTA" column="APPLY_QUOTA" />
+	    <result property="CREATED_TIME" column="CREATED_TIME" />
+	    <result property="start_examine_time" column="start_examine_time" />
+	    <result property="jkrq" column="jkrq" />
+	    <result property="xdsj" column="xdsj" />
+	    <result property="display_name" column="display_name" />
+	    <result property="teamname" column="teamname" />
+	</resultMap>
 	<resultMap id="XdlctjbbFormResultMap" type="com.cardpay.pccredit.report.model.XdlctjbbForm">
 		<result property="chineseName" column="chineseName" />
 		<result property="cardId" column="cardId" />
@@ -1604,7 +1615,7 @@
 					from sys_dept_user tt
 		          where tt.user_id = sysuser.id))  as instcode
                         from sys_dept_user tt
-              where tt.user_id = sysuser.id)))  as YWJG,jh.qs
+              where tt.user_id = sysuser.id))  as YWJG,jh.qs
                         from 
                           ( select  b.card_id  as cardid,
                       max(to_number(jh.qs)) as qs
@@ -1658,64 +1669,33 @@
 	</select>
 	
 	<!--信贷流程统计-->
-	<select id="findXdlctjbbFormList" resultMap="XdlctjbbFormResultMap" 
+	<select id="findXdlctjbbFormList" resultMap="XdlctjbbForms" 
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
 					SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
-					<!--  select * from xdlctjbb a WHERE 1=1  -->
-                      <!--  select 
-                 cust.chinese_name as chineseName,   
-                 cust.card_id as cardId,             
-                 prod.product_name as prodName,     
-                 app.apply_quota as applyQuota ,     
-                 app.created_time as createdTime,   
-               to_date( lsz.JZRQ ,'yyyymmdd')-to_date( tkmx.JKRQ ,'yyyymmdd') as clts,
-                        rcd.intime as dcr,
-                        tkmx.jkrq as dkffjjr,
-                        to_date( tkmx.DQRQ ,'yyyymmdd')-to_date( tkmx.JKRQ ,'yyyymmdd') as totalNum
-                  from ty_repay_tkmx tkmx,
-                   customer_application_info app,
-                       product_attribute prod,
-                       basic_customer_information cust,
-                       ty_customer_base c,
-                       sys_user sysuser,
-                       TY_REPAY_LSZ lsz,
-                       TY_CUSTOMER_RECORD rcd
-                       where 1=1 and
-                       app.customer_id=cust.id and
-                       app.product_id=prod.id and 
-                       cust.user_id=sysuser.id and 
-                       cust.ty_customer_id=c.id and 
-                      c.KHNM = tkmx.khh and
-                      tkmx.jjh=lsz.jjh and
-                      rcd.application_id=app.id -->
-                        select 
-                 cust.chinese_name as chineseName,   
-                 cust.card_id as cardId,             
-                 prod.product_name as prodName,     
-                 app.apply_quota as applyQuota ,     
-                 app.created_time as createdTime,   
-               to_date( yehz.qxrq,'yyyymmdd')-to_date( tkmx.JKRQ ,'yyyymmdd') as clts,
-                        rcd.intime as dcr,
-                        tkmx.jkrq as dkffjjr,
-                        to_date( tkmx.DQRQ ,'yyyymmdd')-to_date( tkmx.JKRQ ,'yyyymmdd') as totalNum
-                  from ty_repay_tkmx tkmx,
-                   customer_application_info app,
-                       product_attribute prod,
-                       basic_customer_information cust,
-                       ty_repay_yehz yehz,
-                       ty_customer_base c,
-                       sys_user sysuser,
-                       TY_CUSTOMER_RECORD rcd
-                       where 1=1 and
-                       app.customer_id=cust.id and
-                       app.product_id=prod.id and 
-                       cust.user_id=sysuser.id and 
-                       cust.ty_customer_id=c.id and 
-                      c.KHNM = tkmx.khh and
-                      yehz.jjh=tkmx.jjh and
-                      rcd.application_id=app.id
+                      select 
+                      distinct bai.id,
+                       bai.chinese_name,
+			         bai.card_id,
+			         p.PRODUCT_NAME,
+			         cai.APPLY_QUOTA,
+			         cai.CREATED_TIME,
+			         t.start_examine_time ,
+			        cai.jkrq,
+			        trunc(trunc(to_timestamp(cai.jkrq, 'yyyy-mm-dd hh24:mi:ss.ff'))- cai.created_time) as xdsj,
+			         su.display_name,
+			         (select t.name from sys_department t where t.id in 
+			             (select tt.dept_id from sys_dept_user tt where tt.user_id = su.id)) as teamname
+			                from wf_status_queue_record t 
+			             left join wf_status_info s on t.current_status = s.id 
+			             left join wf_process_record pr on t.current_process = pr.id 
+			             left join customer_application_process aa on pr.id = aa.serial_number
+			              left join sys_user su on t.examine_user = su.id 
+			              left join customer_application_info cai on cai.id=aa.application_id
+			              left join basic_customer_information bai on cai.customer_id=bai.id
+			              left join ty_customer_base base on bai.ty_customer_id=base.id
+			              left join PRODUCT_ATTRIBUTE p on p.id=cai.product_id
 					<if test="certiCode != null and certiCode != '' ">
 						AND cardId=#{certiCode}
 					</if>
@@ -1728,7 +1708,7 @@
 					<if test="custManagerName != null and custManagerName != '' ">
 						AND a.custManager=#{custManagerName}
 					</if>
-					
+					order by  cai.CREATED_TIME
 		 			<![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -1738,34 +1718,38 @@
 	
 	<select id="findXdlctjbbFormCountList" resultType="int" 
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
-		 select count(*)   from ty_repay_tkmx tkmx,
-                   customer_application_info app,
-                       product_attribute prod,
-                       basic_customer_information cust,
-                       ty_repay_yehz yehz,
-                       ty_customer_base c,
-                       sys_user sysuser,
-                       TY_CUSTOMER_RECORD rcd
-                       where 1=1 and
-                       app.customer_id=cust.id and
-                       app.product_id=prod.id and 
-                       cust.user_id=sysuser.id and 
-                       cust.ty_customer_id=c.id and 
-                      c.KHNM = tkmx.khh and
-                      yehz.jjh=tkmx.jjh and
-                      rcd.application_id=app.id
-					<if test="certiCode != null and certiCode != '' ">
-						AND cardId=#{certiCode}
-					</if>
-					<if test="customerName != null and customerName != '' ">
-					    AND chineseName=#{customerName}
-					</if>
-		<if test="organName != null and organName != '' ">
-		    AND a.name=#{organName}
-		</if>
-		<if test="custManagerName != null and custManagerName != '' ">
-			AND a.custManager=#{custManagerName}
-		</if>
+		 select count(*)   from (   select  distinct bai.id, bai.chinese_name,
+			         bai.card_id,
+			         p.PRODUCT_NAME,
+			         cai.APPLY_QUOTA,
+			         cai.CREATED_TIME,
+			         t.start_examine_time ,
+			        cai.jkrq,
+			        trunc(trunc(to_timestamp(cai.jkrq, 'yyyy-mm-dd hh24:mi:ss.ff'))- cai.created_time) as xdsj,
+			         su.display_name,
+			         (select t.name from sys_department t where t.id in 
+			             (select tt.dept_id from sys_dept_user tt where tt.user_id = su.id)) as teamname
+			                from wf_status_queue_record t 
+			             left join wf_status_info s on t.current_status = s.id 
+			             left join wf_process_record pr on t.current_process = pr.id 
+			             left join customer_application_process aa on pr.id = aa.serial_number
+			              left join sys_user su on t.examine_user = su.id 
+			              left join customer_application_info cai on cai.id=aa.application_id
+			              left join basic_customer_information bai on cai.customer_id=bai.id
+			              left join ty_customer_base base on bai.ty_customer_id=base.id
+			              left join PRODUCT_ATTRIBUTE p on p.id=cai.product_id
+						<if test="certiCode != null and certiCode != '' ">
+							AND cardId=#{certiCode}
+						</if>
+						<if test="customerName != null and customerName != '' ">
+						    AND chineseName=#{customerName}
+						</if>
+						<if test="organName != null and organName != '' ">
+						    AND a.name=#{organName}
+						</if>
+						<if test="custManagerName != null and custManagerName != '' ">
+							AND a.custManager=#{custManagerName}
+						</if>)
 	</select>
 	
 	<select id="getXdlctjbbFormList" resultMap="XdlctjbbFormResultMap" 
