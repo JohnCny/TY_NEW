@@ -34,6 +34,42 @@ public class RiskCustomerCollectionPlanForm extends BaseForm{
 	private String customerManagerId;
 	private String collectionStartTime;
 	private int size;
+	private Date created_time;
+	private String hkje;
+	private String crhksj;
+	private String id;
+	private String time;
+	public String getTime() {
+		return time;
+	}
+	public void setTime(String time) {
+		this.time = time;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+	public String getCrhksj() {
+		return crhksj;
+	}
+	public void setCrhksj(String crhksj) {
+		this.crhksj = crhksj;
+	}
+	public String getHkje() {
+		return hkje;
+	}
+	public void setHkje(String hkje) {
+		this.hkje = hkje;
+	}
+	public Date getCreated_time() {
+		return created_time;
+	}
+	public void setCreated_time(Date created_time) {
+		this.created_time = created_time;
+	}
 	public String getCreateWay() {
 		return createWay;
 	}

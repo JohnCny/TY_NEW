@@ -1,4 +1,4 @@
-#parse ("common/iframe_page_header.htm")
+﻿#parse ("common/iframe_page_header.htm")
 <body>
   <div class="content_main">
     <div class="contentinner">
@@ -60,8 +60,7 @@
             </colgroup>
             #foreach ($cplist in $result.items)
             <tr>
-              <td class="checkbox"><input type="radio" name="checkbox" id="checkbox" 
-              value="$!cplist.id"/></td> 
+              <td class="checkbox"></td> 
               <td nowrap="nowrap">$!cplist.name</td>
               <td nowrap="nowrap">$!cplist.cardId</td>
               <td nowrap="nowrap">$!cplist.comefrom</td>

@@ -19,6 +19,11 @@
 		<result property="collectionAmount" column="COLLECTION_AMOUNT" />
 		<result property="userName" column="DISPLAY_NAME"/>
 		<result property="size" column="countAction"/>
+		<result property="created_time" column="CREATED_TIME"/>
+		<result property="id" column="id"/>
+		<result property="customerManagerId" column="CUSTOMER_MANAGER_ID"/>
+		<result property="hkje" column="COLLECTION_AMOUNT"/>
+		<result property="crhksj" column="COLLECTION_PROMISE_DATE"/>
 	</resultMap>
 	
 		<resultMap id="ResultMap" type="com.cardpay.pccredit.riskControl.model.RiskCustomer">
@@ -61,22 +66,23 @@
 	</select>
 	
 		<select id="findRiskCustomerCollectionPlans" resultMap="CollectionFormResultMap">
-		SELECT * FROM
-		(SELECT ROW_.*,ROWNUM ROWNUM_
-		FROM (
-		 SELECT c.*, P.PRODUCT_NAME, i.CHINESE_NAME,(select count(1) from collection_plans_action a where a.collection_plan_id=c.id) as countAction 
-		 FROM COLLECTION_PLAN c
-		 LEFT JOIN PRODUCT_ATTRIBUTE P
-		 ON c.product_id = P.ID
-		 LEFT JOIN BASIC_CUSTOMER_INFORMATION i
-		 ON c.customer_id = i.ID
-		 where i.user_id = #{customerManagerId}
-		 order by c.created_time desc
-		 <![CDATA[		
-							) ROW_
-						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
-					WHERE ROWNUM_ > #{limit}*#{page}
-					]]>
+					select 
+					c.COLLECTION_AMOUNT as hkje,
+					c.END_RESULT as endResult,
+					c.ID as id,
+					c.IMPLEMENTATION_OBJECTIVE as implementationObjective ,
+					c.COLLECTION_TIME as collectionTime,
+					c.COLLECTION_METHOD as collectionMethod,
+					c.CREATED_TIME as created_time,
+					c.COLLECTION_ENDTIME as collectionEndtime,
+					b.CHINESE_NAME as chineseName,
+					c.COLLECTION_PROMISE_DATE as crhksj
+					from 
+					COLLECTION_PLAN c,
+					BASIC_CUSTOMER_INFORMATION b
+					where  b.user_id=c.CUSTOMER_MANAGER_ID
+					and c.customer_id=b.id
+					and c.CUSTOMER_MANAGER_ID=#{customerManagerId}
 	</select>
 	
 	
@@ -186,15 +192,13 @@
        inner join
 	    (select distinct(CUSTID) as customerId,MONEY as sjmoney from t_mibusidata_view where (DELAYINTERESTDAYS <![CDATA[ >  ]]> 0 or DELAYAMTDAYS <![CDATA[ >  ]]> 0 ))c
 	   on t.tCustomerId = c.customerId -->
-	 select distinct(m.ywbh) as qq, cc.PRODUCT_ID as productId,p.PRODUCT_NAME as productName
+	 select distinct(m.ywbh) as qq,m.DLAYDT as bankCode,
 	 		b.id as TypeCode,b.chinese_name as TypeName,b.TELEPHONE as tel,b.card_id as cardId ,t.dkye as dkye,t.bnqx as bnqx,t.bwqx as bwqx,m.REQLMT as actual_quote
-	  from  TY_REPAY_YEHZ t ,mibusidata m,BASIC_CUSTOMER_INFORMATION b, CUSTOMER_APPLICATION_INFO cc,PRODUCT_ATTRIBUTE p
+	  from  TY_REPAY_YEHZ t ,mibusidata m,BASIC_CUSTOMER_INFORMATION b
 	  where m.ywbh=t.ywbh and b.ty_customer_id=m.id
 	  and  (( m.DELAYINTERESTDAYS  not in ('0') and  m.DELAYINTERESTDAYS is not null)
    or( m.DELAYAMTDAYS  not in ('0') and m.DELAYAMTDAYS is not null))
 	and b.user_id=#{userId}
-	and p.id=cc.PRODUCT_ID
-	and cc.customerId=b.id
 	   
 	</select>
 	<!-- 得到当前客户经理的逾期客户数量 -->
@@ -208,5 +212,23 @@
 	    (select distinct(CUSTID) as customerId from t_mibusidata_view where (DELAYINTERESTDAYS <![CDATA[ >  ]]> 0 or DELAYAMTDAYS <![CDATA[ >  ]]> 0 ))c
 	    on t.tCustomerId = c.customerId
 	</select>
+	<!-- 添加催收计划 -->
+	<insert id="InsertCs" parameterType="int">
+	insert into COLLECTION_PLAN (ID,CUSTOMER_ID,IMPLEMENTATION_OBJECTIVE,COLLECTION_TIME,COLLECTION_METHOD,CUSTOMER_MANAGER_ID,CREATED_TIME,END_RESULT,COLLECTION_ENDTIME,TIME)
+	values(#{id},#{customerId},#{implementationObjective},#{collectionTime},#{collectionMethod},#{customerManagerId},#{created_time},#{endResult},#{collectionEndtime},#{time})
+	</insert>
 	
+	<update id='updateCs' parameterType="int">
+	update  COLLECTION_PLAN  set COLLECTION_AMOUNT=#{hkje},COLLECTION_PROMISE_DATE=#{crhksj},END_RESULT=#{endResult}
+	where ID=#{id}
+	</update>
+	
+	<!-- 查询是否添加催收计划 -->
+		<select id="selectOrCs" resultType="int">
+		select 
+    		count(*)
+    	from 
+	    COLLECTION_PLAN
+	    where customer_id=#{customerId} and TIME=#{time}
+	</select>
 	</mapper>
