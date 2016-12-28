@@ -12,6 +12,7 @@ import com.wicresoft.jrad.base.database.model.ModelParam;
  */
 @ModelParam(table="dict")
 public class Dict extends BusinessModel{
+	private String jzrq;
 	private String dictType;
 	private String TypeCode;
 	private String TypeName;

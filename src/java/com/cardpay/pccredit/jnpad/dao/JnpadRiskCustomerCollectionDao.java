@@ -36,5 +36,15 @@ public interface JnpadRiskCustomerCollectionDao {
 	 * @return
 	 */
 	int getCustomerIdAndNameCount(@Param("userId") String userId);
+	/**
+	 * 添加催收信息
+	 * @param filter
+	 * @return
+	 */
+	int InsertCs(RiskCustomerCollectionPlanForm filter);
+	
+	int updateCs(RiskCustomerCollectionPlanForm filter);
+	
+	int selectOrCs(RiskCustomerCollectionPlanForm filter);
 
 }

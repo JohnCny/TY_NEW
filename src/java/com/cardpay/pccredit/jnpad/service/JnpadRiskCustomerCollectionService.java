@@ -39,7 +39,7 @@ public class JnpadRiskCustomerCollectionService {
 	 */
 	public QueryResult<RiskCustomerCollectionPlanForm> findRiskCustomerCollectionPlansByFilter(RiskCustomerCollectionPlanFilter filter) {
 		List<RiskCustomerCollectionPlanForm> riskCustomerCollectionPlanForm = riskCustomerCollectionDao.findRiskCustomerCollectionPlans(filter);
-		int size = riskCustomerCollectionDao.findCountByFilter(filter);
+		int size = riskCustomerCollectionPlanForm.size();
 		QueryResult<RiskCustomerCollectionPlanForm> qs = new QueryResult<RiskCustomerCollectionPlanForm>(size, riskCustomerCollectionPlanForm);
 		return qs;
 	}
@@ -81,5 +81,16 @@ public class JnpadRiskCustomerCollectionService {
 		//return commonDao.findObjectsByFilter(RiskCustomer.class, filter);
 		List<RiskCustomer> riskCustomers = riskCustomerCollectionDao.findRiskCustomersByFilter(filter);
 		return riskCustomers;
+	}
+	
+	public int InsertCs(RiskCustomerCollectionPlanForm filter){
+		return riskCustomerCollectionDao.InsertCs(filter);
+	}
+	
+	public int updateCs(RiskCustomerCollectionPlanForm filter){
+		return riskCustomerCollectionDao.updateCs(filter);
+	}
+	public int selectOrCs(RiskCustomerCollectionPlanForm filter){
+		return riskCustomerCollectionDao.selectOrCs(filter);
 	}
 }

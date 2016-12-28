@@ -27,8 +27,20 @@ public class RiskCustomerCollectionPlanFilter extends BaseQueryFilter{
 	private String collectionMethod;
 	private Date collectionPromiseDate;
 	private Date collectionEndtime;
-	
-	
+	private Date created_time;
+	private String chineseName;
+	public String getChineseName() {
+		return chineseName;
+	}
+	public void setChineseName(String chineseName) {
+		this.chineseName = chineseName;
+	}
+	public Date getCreated_time() {
+		return created_time;
+	}
+	public void setCreated_time(Date created_time) {
+		this.created_time = created_time;
+	}
 	public List<AccountManagerParameterForm> getCustomerManagerIds() {
 		return customerManagerIds;
 	}

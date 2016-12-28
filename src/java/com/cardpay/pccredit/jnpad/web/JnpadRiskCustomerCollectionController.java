@@ -1,10 +1,15 @@
 package com.cardpay.pccredit.jnpad.web;
 
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,6 +37,7 @@ import com.wicresoft.jrad.base.web.controller.BaseController;
 import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
+import com.wicresoft.util.date.DateHelper;
 import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.web.RequestHelper;
 
@@ -185,7 +191,91 @@ public class JnpadRiskCustomerCollectionController extends BaseController{
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);
 		return json.toString();
-		
 	}
 	
+	/**
+	 * 添加催收计划
+	 * @param request
+	 * @return
+	 * @throws ParseException 
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/product/InsertCs.json")
+	public String InsertCs(@ModelAttribute RiskCustomerCollectionPlanForm form,HttpServletRequest request) throws ParseException{
+		Map<String, Object> map =new LinkedHashMap<String, Object>();
+		form.setTime(request.getParameter("time"));
+		form.setCustomerId(request.getParameter("customerId"));
+		form.setCollectionMethod(request.getParameter("way"));
+		form.setImplementationObjective(request.getParameter("csmb"));
+		form.setCollectionTime(request.getParameter("csts"));
+		form.setCustomerManagerId(request.getParameter("userId"));
+		form.setEndResult("collection");
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		form.setCreated_time(new Date());
+		Date kstime=form.getCreated_time();
+		Calendar c =Calendar.getInstance();
+		c.add(Calendar.DATE, Integer.parseInt(form.getCollectionTime()));
+		kstime=c.getTime();
+		String enddate=	sdf.format(kstime);
+		Date endTime=sdf.parse(enddate);
+		/*String endTimeDay = form.getCollectionTime()==null?"":form.getCollectionTime();
+		Date maintenanceEndtime = DateHelper.shiftDay(form.getCreated_time(), Integer.parseInt(endTimeDay.equals("")?"0":endTimeDay));*/
+		form.setCollectionEndtime(endTime);
+		String sid=null;
+		if(null==sid){
+			sid=UUID.randomUUID().toString();
+		}
+		form.setId(sid);
+		int a=riskCustomerCollectionService.InsertCs(form);
+		map.put("size", a);
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+	}
+	
+	/**
+	 * 更改催收计划
+	 * @param form
+	 * @param request
+	 * @return
+	 * @throws ParseException
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/product/updateCs.json")
+	public String updateCs(@ModelAttribute RiskCustomerCollectionPlanForm form,HttpServletRequest request) throws ParseException{
+		Map<String, Object> map =new LinkedHashMap<String, Object>();
+		form.setHkje(request.getParameter("money"));
+		String time=(request.getParameter("hksj"));
+		time=time.replace("-", "/")+" 00:00:00";
+		form.setCrhksj(time);
+		form.setEndResult(request.getParameter("cszt"));
+		int a=riskCustomerCollectionService.updateCs(form);
+		map.put("size", a);
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+	}
+	
+	/***
+	 * 查看逾期客户是否悲催收
+	 * @param form
+	 * @param request
+	 * @return
+	 * @throws ParseException
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/product/selectOrCs.json")
+	public String selectOrCs(@ModelAttribute RiskCustomerCollectionPlanForm form,HttpServletRequest request) throws ParseException{
+		Map<String, Object> map =new LinkedHashMap<String, Object>();
+		form.setTime(request.getParameter("time"));
+		form.setCustomerId(request.getParameter("id"));
+		int a=riskCustomerCollectionService.selectOrCs(form);
+		map.put("size", a);
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+	}
 }
