@@ -1,36 +1,40 @@
 #parse ("common/iframe_page_header.htm")
+#parse ("common/customerInfor.htm")
+<script src="${contextPath}/common/js/common/jquery.form.js"></script>
+<script src="${contextPath}/js/intopieces/intopieces.js"></script>
 <body>
   <div class="content_main">
     <div class="contentinner">
       <div class="place">
-        <div class="title">黑名单导入</div>
+        <div class="title">导入黑名单文件</div>
       </div>
-      <div class="inquiry">
+ <div class="inquiry">
         <div class="search_tag">#i18n("label.browse.filter")</div>
         <div class="search">
-         <form action="${modulePath}/hmdbrowse.page" enctype="multipart/form-data">
+          <form id="excelForm" enctype="multipart/form-data" method="post" 
+          	action="${contextPath}/report/inputhmdcomtroller/inputHmd.json">
+          	<ul>
+              <li>
+                <span>客户姓名:<input type="text" id="name"  name="name"></span>
+              </li>
+              <a id="shaixuan" class="search_button_inquiry"  title="筛选">筛选</a>
+            </ul>
             <ul>
-            <li>
-              <span><b>选择excel文件:</b>&nbsp;&nbsp;
-            <!--   <input type="file"  name="file" onchange="document.getElementById('theFilePath').value=this.value"/></span>
-              <input type="hidden" id="theFilePath" name="theFilePath" value=""/> -->
-              <input type="file"  id="file" name="file"/>
-              </li>
               <li>
-              <a id="daoru" class="btn_g"  title="导入">导入</a>
+                <span><b>选择excle文件:</b>&nbsp;&nbsp;<input type="file" id="file" name="file"/></span>
               </li>
-              <li>
-                <span> 客户姓名:<input type="text" id="name"  name="name"></span>
-              </li>
-              <li class="search_button">
-                <input id="id_browse1_button" type="submit" value="#i18n('button.browse')" class="search_button_inquiry"
-                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              <li id="uploadTip" style="display:none;color:red">
+                <span><b>上传中，请稍后... ...</b></span>
               </li>
               
-            </ul> 
+              <li class="search_button">
+              <input type="button" value="导入" class="search_button_inquiry" id="uploadButton" style="height: 26px; line-height: 24px;"
+              	onclick="importCustomer('${contextPath}/report/inputhmdcomtroller/hmdbrowse.page')"/>
+              </li>
+            </ul>
           </form>
         </div>
-        <div id="topDiv" class="inquiry_list inquiry_top">
+             <div id="topDiv" class="inquiry_list inquiry_top">
           <table>
             <colgroup>
              <!--  <col width="5%" /> -->
@@ -60,8 +64,7 @@
             </colgroup>
             #foreach ($cplist in $result.items)
             <tr>
-              <td class="checkbox"><input type="radio" name="checkbox" id="checkbox" 
-              value="$!cplist.id"/></td> 
+              <td class="checkbox"></td> 
               <td nowrap="nowrap">$!cplist.name</td>
               <td nowrap="nowrap">$!cplist.cardId</td>
               <td nowrap="nowrap">$!cplist.comefrom</td>
@@ -77,38 +80,19 @@
     </div>
   </div>
 </body>
-
-
 <script language="javascript" type="text/javascript">
 	var layout = new TableLayout(2);
 	window.top.currentWindow.setLayout(layout);
 
-	//导入
-	$("#daoru").click(function() {
-		// var urls=$("#theFilePath").val();
-		 var urls=$("#file").val();
-		 alert(urls)
-		 
-        	if(urls !=""){
-				$.ajax({
-					url : "/PCCredit/report/inputhmdcomtroller/inputHmd.json?urls="+urls,
-					dataType : 'json',
-					type : "get",
-					success : function(data) {
-      					if (data.success) {
-          				alert(data.mes)
-      					window.location.href="/PCCredit/report/inputhmdcomtroller/hmdbrowse.page";
-      					}
-      					else{
-      						topWin.Dialog.message(data.message);
-      				    }
-      				}
-		    });
-		    }
-				else{
-					window.top.Dialog.message("请选择excel文件");
-	  				}
-    });
-	
+	$(document).ready(function() {
+		var opsObj = new Object();
+		prepareOperations(opsObj);
+		//导入
+		$("#shaixuan").click(function() {
+			 var name=$("#name").val();
+			window.location.href="/PCCredit/report/inputhmdcomtroller/hmdbrowse.page?name="+name;
+	});
+	});
 </script>
+   <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
 #parse ("common/iframe_page_footer.htm")

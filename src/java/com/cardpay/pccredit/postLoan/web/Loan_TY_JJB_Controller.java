@@ -727,7 +727,11 @@ public class Loan_TY_JJB_Controller extends BaseController {
 				CreditProcess move = list.get(i);
 				row = sheet.createRow((int) i+1);
 				row.createCell((short) 0).setCellValue(i+1);//序号
+				if(""!=move.getSpmc()&&null!=move.getSpmc()){
 				row.createCell((short) 1).setCellValue(move.getSpmc());//企业名称
+				}else{
+					row.createCell((short) 1).setCellValue(move.getSpmc());//企业名称
+				}
 				row.createCell((short) 2).setCellValue(move.getCustomername());//借款人姓名
 				row.createCell((short) 3).setCellValue(move.getTeamname());//所属团队
 				row.createCell((short) 4).setCellValue(move.getBljg());//所属区域
