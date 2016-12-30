@@ -16,6 +16,7 @@ public class NameValueRecord {
 	private String value;
 	private String value1;
 	private String value2;
+	
 
 	public String getValue1() {
 		return value1;

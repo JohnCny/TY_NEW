@@ -8,7 +8,7 @@
 	</resultMap>
 	
 	<select id="statisticalApplicationStatus" resultMap="ResultMap" >
-		select t.name,
+		<!-- select t.name,
 	       t.id,
 	       (case
 	         when t.id = 'return' then
@@ -64,7 +64,14 @@
 		          from customer_overdue_history t
 		        union all
 		        select '不良' name, nvl(sum(t.VERIFICATION_ACCOUNT), 0)
-		          from npls_information t) a
+		          from npls_information t) a -->
+		          
+select allsp.e as id, nopaa.a as name ,nosq.b as value,bcak.c as value1,succwss.d as value2 from
+(select count(*）as a from CUSTOMER_APPLICATION_INFO where (status='refuse'or status='nopass'))nopaa,
+(select count(*）as b from CUSTOMER_APPLICATION_INFO where status='audit')nosq,
+(select count(*）as c from CUSTOMER_APPLICATION_INFO where (status='returnedToFirst'or status='nopass_replenish')) bcak,
+(select count(*）as d from CUSTOMER_APPLICATION_INFO where (status='approved'or status='end')) succwss,
+(select count(*）as e from CUSTOMER_APPLICATION_INFO where (status='approved'or status='end' or status='returnedToFirst'or status='nopass_replenish' or status='refuse' or status='nopass')) allsp
 	</select>
 	
 	<select id="statisticalCardStatus" resultMap="ResultMap" >

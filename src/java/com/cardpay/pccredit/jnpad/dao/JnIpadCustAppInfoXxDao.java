@@ -57,4 +57,8 @@ public interface JnIpadCustAppInfoXxDao {
 		public int selectNoSCount(@Param("STATUS") String STATUS);
 		public int insertFin(@Param("productId") String productId,@Param("applyQuota") String applyQuota,@Param("customerId") String customerId);
 		public int deteleFin(@Param("productId") String productId,@Param("customerId") String customerId);
+		
+		public List<IntoPieces> findCustomerBack(@Param("userId") String userId);
+		
+		public int findCustomerBackCount(@Param("userId") String userId);
 }

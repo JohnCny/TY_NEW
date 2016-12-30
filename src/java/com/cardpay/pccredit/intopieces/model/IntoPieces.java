@@ -53,7 +53,33 @@ public class IntoPieces  extends BusinessModel {
     private String organName;
     private Float yxje;
     
-    public Float getYxje() {
+ private String final_approval;
+    
+    private String actual_quote;
+    
+    private Float REFUSAL_REASON;
+    
+    
+    
+    public String getFinal_approval() {
+		return final_approval;
+	}
+	public void setFinal_approval(String final_approval) {
+		this.final_approval = final_approval;
+	}
+	public String getActual_quote() {
+		return actual_quote;
+	}
+	public void setActual_quote(String actual_quote) {
+		this.actual_quote = actual_quote;
+	}
+	public Float getREFUSAL_REASON() {
+		return REFUSAL_REASON;
+	}
+	public void setREFUSAL_REASON(Float rEFUSAL_REASON) {
+		REFUSAL_REASON = rEFUSAL_REASON;
+	}
+	public Float getYxje() {
 		return yxje;
 	}
 	public void setYxje(Float yxje) {

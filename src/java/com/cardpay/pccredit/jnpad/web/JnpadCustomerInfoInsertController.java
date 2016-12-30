@@ -189,10 +189,11 @@ public class JnpadCustomerInfoInsertController extends BaseController {
 	@RequestMapping(value = "/ipad/customerIntopiece/browse2.json", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
 	public String browse2( HttpServletRequest request) {
-		IntoPiecesFilter filter=new IntoPiecesFilter();
+		/*IntoPiecesFilter filter=new IntoPiecesFilter();
 //		filter.setRequest(request);
 		String userId = request.getParameter("userId");
 		String userType = request.getParameter("userType");
+		filter.setStatus(request.getParameter("status"));
 		Integer s =new Integer(userType);
 		List<IntoPieces> list=new ArrayList();
 		QueryResult<IntoPieces> result=null;
@@ -203,14 +204,23 @@ public class JnpadCustomerInfoInsertController extends BaseController {
 		result = JnpadCustomerInfoInsertServ‎ice.findintoPiecesByFilter(filter);
 		for(int a=0;a<result.getItems().size();a++){
 			
-			if(result.getItems().get(a).getStatus().equals("returnedToFirst")){
+			if(result.getItems().get(a).getStatus().equals("returnedToFirst") ){
 				list.add(result.getItems().get(a));
 			}
 		}
-		System.out.println(list.size());
+		filter.setStatus("nopass_replenish");
+		result = JnpadCustomerInfoInsertServ‎ice.findintoPiecesByFilter(filter);
+		for(int a=0;a<result.getItems().size();a++){
+			
+			if(result.getItems().get(a).getStatus().equals("nopass_replenish")){
+				list.add(result.getItems().get(a));
+			}
+		}*/
+		String userId=request.getParameter("userId");
+		List<IntoPieces> result=JnIpadCustAppInfoXxService.findCustomerBack(userId);
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("list", list);
-		map.put("size", list.size());
+		map.put("list", result);
+		map.put("size", result.size());
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);
