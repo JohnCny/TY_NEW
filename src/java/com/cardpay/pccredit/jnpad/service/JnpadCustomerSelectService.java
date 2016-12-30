@@ -95,8 +95,8 @@ public class JnpadCustomerSelectService {
 		return jnpadCustomerSelectDao.selectAllcustormerId(userId);
 	}
 	
-	public int findCount(@Param(value = "ID")String ID,@Param(value = "status")String status){
-		return jnpadCustomerSelectDao.findCount(ID, status);
+	public int findCount(@Param(value = "ID")String ID,@Param(value = "status")String status,@Param(value = "status1")String status1){
+		return jnpadCustomerSelectDao.findCount(ID, status,status1);
 	}
 	public int findNoSQCount(@Param(value = "userId")String userId){
 		return jnpadCustomerSelectDao.findNoSQCount(userId);

@@ -264,6 +264,11 @@ public class JnIpadCustAppInfoXxService {
 	
 	public int deteleFin(@Param("productId") String productId,@Param("customerId") String customerId){
 		return jnIpadCustAppInfoDao.deteleFin(productId, customerId);
-		
+	}
+	public List<IntoPieces> findCustomerBack(@Param("userId") String userId){
+		return jnIpadCustAppInfoDao.findCustomerBack(userId);
+	}
+	public int findCustomerBackCount(@Param("userId") String userId){
+		return jnIpadCustAppInfoDao.findCustomerBackCount(userId);
 	}
 }

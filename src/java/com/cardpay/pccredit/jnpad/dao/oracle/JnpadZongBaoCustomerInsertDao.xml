@@ -31,22 +31,37 @@
 <result property="spmc" column="SPMC" />
 </resultMap>
 
+<resultMap id="ResultMap1"
+		type="com.cardpay.pccredit.intopieces.model.IntoPieces">
+		<result property="id" column="id" />
+		<result property="customerId" column="customer_id" />
+		<result property="chineseName" column="chinese_name" />
+		<result property="productId" column="product_id" />
+		<result property="productName" column="product_name" />
+		<result property="displayName" column="display_name" />
+		<result property="cardId" column="card_id" />
+		<result property="applyQuota" column="apply_quota" />
+			<result property="yxje" column="yxje" />
+		<result property="status" column="status" />
+		<result property="dkye" column="dkye" />
+		<result property="bnqx" column="bnqx" />
+		<result property="bwqx" column="bwqx" />
+		<result property="creatime" column="CREATED_TIME" />
+			<result property="fallBackReason" column="FALLBACK_REASON" />
+			<result property="final_approval" column="final_approval" />
+		<result property="actual_quote" column="actual_quote" />
+			<result property="status" column="status" />
+			<result property="REFUSAL_REASON" column="REFUSAL_REASON" />
+	</resultMap>
+
 
 
 <select id="selectCustomerInfo" resultMap="selectCustomerinfo">
-	SELECT * FROM
-		(SELECT
-		ROW_.*,ROWNUM ROWNUM_
-		FROM (
 		select *
 		from BASIC_CUSTOMER_INFORMATION c
-		where 1=1
-		<if test="userId != null and userId != '' ">
-		AND c.created_by=#{userId}
-		</if>
-		and c.user_id is null
-		
-		) ROW_)
+		where 
+		 c.user_id is null
+		 and c.created_by is not null
 </select>
 
 <update id="updateCustomerInfo">
@@ -54,4 +69,15 @@
    UPDATE  BASIC_CUSTOMER_INFORMATION  SET  user_id =#{userId} WHERE id =#{customerId}
 </update>
 
+
+
+<select id="selectAllMyZb" resultMap="ResultMap1">
+ 
+  select b.card_id as cardId, b.chinese_name as chineseName,s.display_name as displayName,c.apply_quota as applyQuota,p.product_name as productName,c.final_approval as final_approval,c.actual_quote as actual_quote,c.status as status,t.REFUSAL_REASON as REFUSAL_REASON,t.FALLBACK_REASON as fallBackReason
+ from 
+ basic_customer_information b LEFT JOIN customer_application_info c on b.id=c.customer_id LEFT JOIN product_attribute p on c.product_id=p.id LEFT JOIN   sys_user s on s.id=b.user_id LEFT JOIN CUSTOMER_APPLICATION_PROCESS t on c.id=t.APPLICATION_ID
+ where 
+
+b.created_by=#{userId}
+</select>
 </mapper>

@@ -348,8 +348,7 @@ public class JnIpadCustAppInfoXxController {
 		filter.setNoticeType("refuse");
 		int refuseCount= appInfoXxService.findNoticeCountByFilter(filter);
 		//补充调查通知
-		filter.setNoticeType("returnedToFirst");
-		int returnCount= appInfoXxService.findNoticeCountByFilter(filter);
+		int returnCount= appInfoXxService.findCustomerBackCount(userId);
 		
 		//申款成功
 		filter.setNoticeType("approved");

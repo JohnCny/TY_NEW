@@ -30,7 +30,12 @@ public class JnpadTongjiInforController {
 		Map<Object, Object> map = new LinkedHashMap<Object, Object>();
 			long start = System.currentTimeMillis();
 			// 当前进件状况 济南 sj 20160804
-			map.put("applicationStatusJson",statisticalCommonService.getApplicationStatusJson());
+			List<NameValueRecord> result=statisticalCommonService.statisticalApplicationStatus();
+			map.put("allspover", Integer.parseInt(result.get(0).getId()));
+			map.put("nopss", Integer.parseInt(result.get(0).getName()));
+			map.put("ysq", Integer.parseInt(result.get(0).getValue()));
+			map.put("back", Integer.parseInt(result.get(0).getValue1()));
+			map.put("success", Integer.parseInt(result.get(0).getValue2()));
 		    // 统计各行已申请和通过进件数量  济南 sj 20160809
 			map.put("organApplicationAuditNumJson",statisticalCommonService.getOrganApplicationAuditNumJson1());
 			map.put("organApplicationApprovedNumJson",statisticalCommonService.getOrganApplicationApprovedNumJson1());

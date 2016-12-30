@@ -125,9 +125,11 @@ public class JnpadZongBaoCustomerInsertController  extends BaseController{
 		String userid =request.getParameter("userId");
 		String userId =null;
 		List<CustomerInfo> customerList = jnpadZongBaoCustomerInsertService.selectCustomerInfo(userId);
-		for(int a=0;a<customerList.size();a++){
-			if(customerList.get(a).getCreatedBy().equals(userid)){
-				customerList.remove(a);
+		if(customerList!=null){
+			for(int a=0;a<customerList.size();a++){
+				if(customerList.get(a).getCreatedBy().equals(userid)){
+					customerList.remove(a);
+				}
 			}
 		}
 		JsonConfig jsonConfig = new JsonConfig();
@@ -170,7 +172,7 @@ public class JnpadZongBaoCustomerInsertController  extends BaseController{
 	@RequestMapping(value = "/ipad/zhongbaocustomerIntopiece/browse.json", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
 	public String browse( HttpServletRequest request) {
-		IntoPiecesFilter filter=new IntoPiecesFilter();
+/*		IntoPiecesFilter filter=new IntoPiecesFilter();
 //		filter.setRequest(request);
 		String userId = request.getParameter("userId");
 		String userType = request.getParameter("userType");
@@ -179,11 +181,15 @@ public class JnpadZongBaoCustomerInsertController  extends BaseController{
 		//客户经理
 		if(s==1){
 			filter.setUserId(userId);
-		}
-		result = jnpadZongBaoCustomerInsertService.findCustomerInfor(filter);
+		}*/
+		String userId = request.getParameter("userId");
+		List<IntoPieces> result = jnpadZongBaoCustomerInsertService.selectAllMyZb(userId);
+		Map<Object,Object> map =new LinkedHashMap<Object, Object>();
+		map.put("result", result);
+		map.put("size", result.size());
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
-		JSONObject json = JSONObject.fromObject(result, jsonConfig);
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
 		return json.toString();
 	}
 	

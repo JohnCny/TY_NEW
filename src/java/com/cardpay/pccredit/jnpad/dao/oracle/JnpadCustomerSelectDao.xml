@@ -301,8 +301,11 @@
 </select>
 <!-- 查询特定状态的数量 -->
 <select id="findCount" resultType="int" parameterType="java.lang.String">	
-    select count(*) from  CUSTOMER_APPLICATION_INFO where CUSTOMER_ID=#{ID} and STATUS=#{status}
-    
+    select count(*) from  CUSTOMER_APPLICATION_INFO where CUSTOMER_ID=#{ID} and (STATUS=#{status}
+    <if test="status1 != null and status1 != '' ">
+		or STATUS=#{status1}
+		</if> 
+    )
  </select>  
  <!-- 查询特定状态的数量 -->
 <select id="findNoSQCount" resultType="int" parameterType="java.lang.String">	

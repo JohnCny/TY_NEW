@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
+import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
 import com.cardpay.pccredit.ipad.constant.IpadConstant;
 import com.cardpay.pccredit.ipad.model.Result;
 import com.cardpay.pccredit.ipad.service.CustomerInforForIpadService;
@@ -51,7 +52,8 @@ public class JnIpadUserLoginController {
 	private java.lang.Float bwqx;
 	@Autowired
 	private JnIpadUserLoginService userService;
-	
+	@Autowired
+	private AddIntoPiecesService addIntoPiecesService;
 	@Autowired
 	private CustomerInforForIpadService customerInforService;
 	
@@ -231,4 +233,24 @@ public class JnIpadUserLoginController {
 		JSONObject json = JSONObject.fromObject(result, jsonConfig);
 		return json.toString();
 	}
+	
+	/**
+	 * 退回客户重新申请
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/user/updateJj.json")
+	public String updateJj(HttpServletRequest request) {
+		String appId= request.getParameter("userId");
+		Map<String,Object> result = new LinkedHashMap<String,Object>();
+		addIntoPiecesService.doMethod(appId);
+		result.put("result", "重新申请成功");
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(result, jsonConfig);
+		return json.toString();
+	}
+	
+	
 }

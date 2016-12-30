@@ -326,12 +326,14 @@ public String selectCustomerInfoByCardId(HttpServletRequest request){
 		Integer successCount=0;
 		//待审批 数量
 		Integer NospCount=0;
+		Integer BackCount=0;
 		String userId=request.getParameter("userId");
 		List<CustomerInfo>result=customerSelectSercice.selectAllcustormerId(userId);
 		for(int a=0;a<result.size();a++){
-			resufeCount+=customerSelectSercice.findCount(result.get(a).getId(), "refuse");
-			successCount+=customerSelectSercice.findCount(result.get(a).getId(), "approved");
-			NospCount+=customerSelectSercice.findCount(result.get(a).getId(), "audit");
+			resufeCount+=customerSelectSercice.findCount(result.get(a).getId(), "refuse","nopss");
+			successCount+=customerSelectSercice.findCount(result.get(a).getId(), "approved","end");
+			NospCount+=customerSelectSercice.findCount(result.get(a).getId(), "audit","");
+			BackCount+=customerSelectSercice.findCount(result.get(a).getId(), "returnedToFirst","nopass_replenish");
 		}
 		Nosq=customerSelectSercice.findNoSQCount(userId);
 		Map<String,Object> map = new LinkedHashMap<String,Object>();
@@ -339,6 +341,7 @@ public String selectCustomerInfoByCardId(HttpServletRequest request){
 		map.put("Nosq", Nosq);
 		map.put("successCount", successCount);
 		map.put("NospCount", NospCount);
+		map.put("BackCount", BackCount);
 	 	JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);

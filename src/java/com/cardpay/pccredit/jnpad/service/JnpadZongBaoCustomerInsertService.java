@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -98,11 +99,13 @@ public class JnpadZongBaoCustomerInsertService {
 		}else{
 			sql.append("and b.user_id <> b.created_by ");
 		}
-		
-
-
 		sql.append(" order by t.id asc");
 		return commonDao.queryBySqlInPagination(IntoPieces.class, sql.toString(), params,
 				filter.getStart(),sum);
+	}
+	
+	public List<IntoPieces> selectAllMyZb(@Param (value ="userId") String userId){
+		return jnpadZongBaoCustomerInsertDao.selectAllMyZb(userId);
+		
 	}
 }

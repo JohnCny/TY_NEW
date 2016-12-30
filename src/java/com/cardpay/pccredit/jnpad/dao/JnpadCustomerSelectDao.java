@@ -33,7 +33,7 @@ public interface JnpadCustomerSelectDao {
 	
 	public List<CustomerInfo> selectAllcustormerId(@Param(value = "userId")String userId);
 	
-	public int findCount(@Param(value = "ID")String ID,@Param(value = "status")String status);
+	public int findCount(@Param(value = "ID")String ID,@Param(value = "status")String status,@Param(value = "status1")String status1);
 
 	public int findNoSQCount(@Param(value = "userId")String userId);
 
