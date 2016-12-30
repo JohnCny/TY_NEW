@@ -70,14 +70,15 @@ public class SystemChargeService {
 	 * 显示未抽奖成员
 	 */
 	public List<Choujiang> query(){
-		List<Choujiang> list = commonDao.queryBySql(Choujiang.class, "select * From ty_tmp where result is null", null);
+		/*ty_tmp*/
+		List<Choujiang> list = commonDao.queryBySql(Choujiang.class, "select * From sys_user ", null);
 		return list;
 	}
 	/*
 	 * 显示已抽奖成员
 	 */
 	public List<Choujiang> query1(){
-		List<Choujiang> list = commonDao.queryBySql(Choujiang.class, "select * From ty_tmp where result is not null order by result", null);
+		List<Choujiang> list = commonDao.queryBySql(Choujiang.class, "select * From sys_user", null);
 		return list;
 	}
 	/*

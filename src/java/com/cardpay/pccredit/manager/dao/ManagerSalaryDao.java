@@ -9,6 +9,7 @@ import com.cardpay.pccredit.manager.filter.ManagerSalaryFilter;
 import com.cardpay.pccredit.manager.model.ManagerSalary;
 import com.cardpay.pccredit.manager.model.ManagerSalaryForm;
 import com.cardpay.pccredit.manager.model.SalaryParameter;
+import com.cardpay.pccredit.manager.model.TJxParameters;
 import com.wicresoft.util.annotation.Mapper;
 
 /**
@@ -120,4 +121,6 @@ public interface ManagerSalaryDao {
 	public int findSdAprovedCountByManagerId(@Param("managerId") String  managerId,
 									  		 @Param("year")String year,
 									  		 @Param("month")String month);
+	public void insertjx(TJxParameters jxParameters);
+
 }

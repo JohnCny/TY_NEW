@@ -5,8 +5,6 @@
 		<result property="id" column="id" />
 		<result property="name" column="name" />
 		<result property="value" column="value" />
-		<result property="value1" column="value1" />
-		<result property="value2" column="value2" />
 	</resultMap>
 	
 	<select id="statisticalApplicationStatus" resultMap="ResultMap" >
@@ -97,78 +95,6 @@
 		     basic_customer_information b
 		where status ='audit' 
 		  and a.customer_id = b.id 
-		group by  b.user_id)tt where tt.instcode ='高新支行') ttt
-union all
- 		select nvl(sum(ttt.value),0) as value from (select tt.value,
-        tt.instcode
-		from (select count(*) as value, 
-		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
-		from customer_application_info a,
-		     basic_customer_information b
-		where status ='audit' 
-		  and a.customer_id = b.id 
-		group by  b.user_id)tt where tt.instcode ='天桥支行')ttt
-union all
- 		select nvl(sum(ttt.value),0) as value from (select tt.value,
-        tt.instcode
-		from (select count(*) as value, 
-		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
-		from customer_application_info a,
-		     basic_customer_information b
-		where status ='audit' 
-		  and a.customer_id = b.id 
-		group by  b.user_id)tt where tt.instcode ='长清支行')ttt
-union all
- 		select nvl(sum(ttt.value),0) as value from (select tt.value,
-        tt.instcode
-		from (select count(*) as value, 
-		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
-		from customer_application_info a,
-		     basic_customer_information b
-		where status ='audit' 
-		  and a.customer_id = b.id 
-		group by  b.user_id)tt where tt.instcode ='历城支行')ttt
-union all
- 		select nvl(sum(ttt.value),0) as value from (select tt.value,
-        tt.instcode
-		from (select count(*) as value, 
-		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
-		from customer_application_info a,
-		     basic_customer_information b
-		where status ='audit' 
-		  and a.customer_id = b.id 
-		group by  b.user_id)tt where tt.instcode ='历下支行')ttt
-union all
- 		select nvl(sum(ttt.value),0) as value from (select tt.value,
-        tt.instcode
-		from (select count(*) as value, 
-		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
-		from customer_application_info a,
-		     basic_customer_information b
-		where status ='audit' 
-		  and a.customer_id = b.id 
-		group by  b.user_id)tt where tt.instcode ='润丰支行')ttt
-union all
- 		select nvl(sum(ttt.value),0) as value from (select tt.value,
-        tt.instcode
-		from (select count(*) as value, 
-		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
-		from customer_application_info a,
-		     basic_customer_information b
-		where status ='audit' 
-		  and a.customer_id = b.id 
-		group by  b.user_id)tt where tt.instcode ='槐荫支行')ttt
-	</select> 
-	
-		<select id="statisticalAuditStatus1" resultMap="ResultMap" >
-	  select nvl(sum(ttt.value),0) as value from (select tt.value,
-        tt.instcode
-		from (select count(*) as value, 
-		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
-		from customer_application_info a,
-		     basic_customer_information b
-		where status ='audit' 
-		  and a.customer_id = b.id 
 		group by  b.user_id)tt where tt.instcode ='一区') ttt
 union all
  		select nvl(sum(ttt.value),0) as value from (select tt.value,
@@ -200,20 +126,6 @@ union all
 		where status ='audit' 
 		  and a.customer_id = b.id 
 		group by  b.user_id)tt where tt.instcode ='四区')ttt
-
-	</select>
-	
-	
-	<select id="statisticalApprovedStatus" resultMap="ResultMap" >
-	    select nvl(sum(ttt.value),0) as value from (select tt.value,
-        tt.instcode
-		from (select count(*) as value, 
-		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
-		from customer_application_info a,
-		     basic_customer_information b
-		where status ='approved' 
-		  and a.customer_id = b.id 
-		group by  b.user_id)tt where tt.instcode ='高新支行')ttt
 union all
  		select nvl(sum(ttt.value),0) as value from (select tt.value,
         tt.instcode
@@ -221,47 +133,17 @@ union all
 		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
 		from customer_application_info a,
 		     basic_customer_information b
-		where status ='approved' 
+		where status ='audit' 
 		  and a.customer_id = b.id 
-		group by  b.user_id)tt where tt.instcode ='天桥支行')ttt
-union all
+		group by  b.user_id)tt where tt.instcode ='后台')ttt
+<!-- union all
  		select nvl(sum(ttt.value),0) as value from (select tt.value,
         tt.instcode
 		from (select count(*) as value, 
 		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
 		from customer_application_info a,
 		     basic_customer_information b
-		where status ='approved' 
-		  and a.customer_id = b.id 
-		group by  b.user_id)tt where tt.instcode ='长清支行')ttt
-union all
- 		select nvl(sum(ttt.value),0) as value from (select tt.value,
-        tt.instcode
-		from (select count(*) as value, 
-		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
-		from customer_application_info a,
-		     basic_customer_information b
-		where status ='approved' 
-		  and a.customer_id = b.id 
-		group by  b.user_id)tt where tt.instcode ='历城支行')ttt
-union all
- 		select nvl(sum(ttt.value),0) as value from (select tt.value,
-        tt.instcode
-		from (select count(*) as value, 
-		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
-		from customer_application_info a,
-		     basic_customer_information b
-		where status ='approved' 
-		  and a.customer_id = b.id 
-		group by  b.user_id)tt where tt.instcode ='历下支行')ttt
-union all
- 		select nvl(sum(ttt.value),0) as value from (select tt.value,
-        tt.instcode
-		from (select count(*) as value, 
-		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
-		from customer_application_info a,
-		     basic_customer_information b
-		where status ='approved' 
+		where status ='audit' 
 		  and a.customer_id = b.id 
 		group by  b.user_id)tt where tt.instcode ='润丰支行')ttt
 union all
@@ -271,14 +153,15 @@ union all
 		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
 		from customer_application_info a,
 		     basic_customer_information b
-		where status ='approved' 
+		where status ='audit' 
 		  and a.customer_id = b.id 
-		group by  b.user_id)tt where tt.instcode ='槐荫支行') ttt
+		group by  b.user_id)tt where tt.instcode ='槐荫支行')ttt -->
 	</select>
 	
 	
 	
-	<select id="statisticalApprovedStatus1" resultMap="ResultMap" >
+	
+	<select id="statisticalApprovedStatus" resultMap="ResultMap" >
 	    select nvl(sum(ttt.value),0) as value from (select tt.value,
         tt.instcode
 		from (select count(*) as value, 
@@ -318,29 +201,43 @@ union all
 		where status ='approved' 
 		  and a.customer_id = b.id 
 		group by  b.user_id)tt where tt.instcode ='四区')ttt
-
-		
+union all
+ 		select nvl(sum(ttt.value),0) as value from (select tt.value,
+        tt.instcode
+		from (select count(*) as value, 
+		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
+		from customer_application_info a,
+		     basic_customer_information b
+		where status ='approved' 
+		  and a.customer_id = b.id 
+		group by  b.user_id)tt where tt.instcode ='后台')ttt
+<!-- union all
+ 		select nvl(sum(ttt.value),0) as value from (select tt.value,
+        tt.instcode
+		from (select count(*) as value, 
+		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
+		from customer_application_info a,
+		     basic_customer_information b
+		where status ='approved' 
+		  and a.customer_id = b.id 
+		group by  b.user_id)tt where tt.instcode ='润丰支行')ttt
+union all
+ 		select nvl(sum(ttt.value),0) as value from (select tt.value,
+        tt.instcode
+		from (select count(*) as value, 
+		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
+		from customer_application_info a,
+		     basic_customer_information b
+		where status ='approved' 
+		  and a.customer_id = b.id 
+		group by  b.user_id)tt where tt.instcode ='槐荫支行') ttt -->
 	</select>
 	
-	<!-- 查询用信总额 -->
-	<select id="selectALLyxze" resultType="int" >
-	    select sum(mm.REQLMT) from
-	    		(select 
-			 distinct(m.YWBH), m.REQLMT 
-	 from   mibusidata m) mm
-	</select>
-		<!-- 逾期总额 -->
-	<select id="selectALLyqze" resultType="String" >
-	    	select sum(cc.dkye+cc.bnqx+cc.bwqx) from 
-(select dkye,bnqx,bwqx
-  from mibusidata where
-  ( DELAYINTERESTDAYS  not in ('0') and  DELAYINTERESTDAYS is not null)
-   or( DELAYAMTDAYS  not in ('0') and DELAYAMTDAYS is not null)) cc 
-	</select>
 	
 	
+	<!-- 放款总额度/逾期总额度/不良总额度 -->
 	<select id="statisticaljine" resultMap="ResultMap" >
-	    with circle as (
+	   <!--  with circle as (
 	    SELECT *
 		  FROM (select T.BUSICODE,T.CUSTID,T.CNAME,T.CUSTIDNO,T.DEPTCODE,T.TELEPHONE,T.MAINASSURE,T.REQLMT,T.BUSIMANAGER,T.LOANDATE,T.STARTDATE,T.ORIENDDATE,T.ENDDATE,T.INTEREST,T.MONEY,T.BALAMT,T.ACCOUNTSTATE,T.CLOSEDATE,T.FIVECLASS,T.DELAYAMTDAYS,T.DELAYINTERESTDAYS,T.FIRSTINTERESTDATE,T.DEBTINTEREST,T.DEBTINTERESTTIMES,T.NORMALAMT,T.DLAYAMT,T.DLAYDT,T.PAYDEBT,T.INDEBTAMT,T.OUTDEBTAMT,T.BAILAMT,T.CREATE_TIME,ROW_NUMBER() OVER(PARTITION BY busicode ORDER BY OPERDATETIME desc) RN
 		          from t_mibusidata T)
@@ -351,181 +248,291 @@ union all
 		union all
 		select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  
 		union all
-		select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0)  as value from circle  where FIVECLASS in ('1','2','3')
+		select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0)  as value from circle  where FIVECLASS in ('1','2','3') -->
+		 with circle as (
+	    SELECT *
+		  FROM (    select
+        distinct
+          tkmx.YWBH ,
+          b.id as id ,
+          b.KHH,
+          b.KHMC,
+          b.ZJHM,
+          rygl.SSBM,
+          b.SJ,
+          b.SXED,
+          b.GHJL,
+          tkmx.JKRQ as LOANDATE, 
+          tkmx.DQRQ,
+          tkmx.DKQX,
+          tkmx.JZLL,
+          tkmx.FFJE   as REQLMT,
+           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end ) as DELAYINTERESTDAYS,  
+           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end )as DELAYAMTDAYS, 
+           max(lsz.jzrq) as DLAYDT,
+          yehz.SHBJ,
+          yehz.JKJE,
+          yehz.KSQXRQ,
+          yehz.SHLX as PAYDEBT,  
+          yehz.DKYE,
+          yehz.BNQX,
+          yehz.BWQX,
+          yehz.DKYE as BALAMT  ,
+          yehz.dkye as yxye,
+          yehz.wjfl3,
+          yehz.wjfl4,
+          yehz.wjfl5,
+          sysuser.id userid,
+          sysuser.display_name
+       from
+              ty_repay_tkmx tkmx,
+              ty_customer_base b,
+              ty_customer_rygl rygl,
+              sys_user sysuser,
+             ty_kdk_jh jh,
+              ty_repay_yehz yehz,
+              ty_repay_lsz lsz
+              where b.khjl=rygl.dm and
+              rygl.ddrq=sysuser.external_id and
+              b.khnm=tkmx.khh and
+              jh.ywbh=tkmx.ywbh||'HT' and
+              yehz.jjh=tkmx.jjh and
+              tkmx.jjh =lsz.jjh
+              group by tkmx.YWBH ,b.id ,b.KHH,b.KHMC, b.ZJHM,rygl.SSBM, b.SJ, b.SXED, b.GHJL,tkmx.JKRQ , tkmx.DQRQ, tkmx.DKQX,tkmx.JZLL, tkmx.FFJE  ,
+                 yehz.SHBJ,yehz.JKJE, yehz.KSQXRQ,yehz.SHLX, yehz.DKYE,yehz.BNQX, yehz.BWQX,yehz.DKYE  , yehz.dkye  , sysuser.display_name, sysuser.id ,yehz.wjfl3,
+          yehz.wjfl4,yehz.wjfl5
+              order by tkmx.jkrq)
+	    )
+	    
+	    select nvl(sum(REQLMT),0) as value from circle  
+		union all
+		select nvl(sum(DKYE+BNQX+BWQX),0) as value from circle  a  where 1=1 and
+		 (nvl(a.DELAYINTERESTDAYS,0)  >   0 or nvl(a.DELAYAMTDAYS,0)  >  0)
+		union all
+		select nvl(sum(DKYE+BNQX+BWQX),0)  as value from circle  a  where 1=1 and
+		 (nvl(a.DELAYINTERESTDAYS,0)  >   0 or nvl(a.DELAYAMTDAYS,0)  >  0) and (wjfl3!=0 or wjfl4!=0 or wjfl3!=0)
 	</select>
 	
-	
+	<!-- 放款总金额 -->
 	<select id="statisticalsxorgan" resultMap="ResultMap" >
 	   with circle as (
 	    SELECT *
-		  FROM (select T.BUSICODE,T.CUSTID,T.CNAME,T.CUSTIDNO,T.DEPTCODE,T.TELEPHONE,T.MAINASSURE,T.REQLMT,T.BUSIMANAGER,T.LOANDATE,T.STARTDATE,T.ORIENDDATE,T.ENDDATE,T.INTEREST,T.MONEY,T.BALAMT,T.ACCOUNTSTATE,T.CLOSEDATE,T.FIVECLASS,T.DELAYAMTDAYS,T.DELAYINTERESTDAYS,T.FIRSTINTERESTDATE,T.DEBTINTEREST,T.DEBTINTERESTTIMES,T.NORMALAMT,T.DLAYAMT,T.DLAYDT,T.PAYDEBT,T.INDEBTAMT,T.OUTDEBTAMT,T.BAILAMT,T.CREATE_TIME,ROW_NUMBER() OVER(PARTITION BY busicode ORDER BY OPERDATETIME desc) RN
-		          from t_mibusidata T)
-		 WHERE RN = 1
+		  FROM (select
+        distinct
+          tkmx.YWBH ,
+          b.id as id ,
+          b.KHH,
+          b.KHMC,
+          b.ZJHM,
+          rygl.SSBM,
+          b.SJ,
+          b.SXED,
+          b.GHJL,
+          tkmx.JKRQ as LOANDATE, 
+          tkmx.DQRQ,
+          tkmx.DKQX,
+          tkmx.JZLL,
+          tkmx.FFJE   as REQLMT,
+           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end ) as DELAYINTERESTDAYS,  
+           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end )as DELAYAMTDAYS, 
+           max(lsz.jzrq) as DLAYDT,
+          yehz.SHBJ,
+          yehz.JKJE,
+          yehz.KSQXRQ,
+          yehz.SHLX as PAYDEBT,  
+          yehz.DKYE,
+          yehz.BNQX,
+          yehz.BWQX,
+          yehz.DKYE as BALAMT  ,
+          yehz.dkye as yxye,
+          sysuser.id userid,
+          sysuser.display_name,
+         ( select org.name from SYS_ORGANIZATION org where org.id in (select t.ORG_ID from sys_department t where t.id in (select tt.dept_id 
+          from sys_dept_user tt  where tt.user_id = sysuser.id)))  as YWJG
+       from
+              ty_repay_tkmx tkmx,
+              ty_customer_base b,
+              ty_customer_rygl rygl,
+              sys_user sysuser,
+             ty_kdk_jh jh,
+              ty_repay_yehz yehz,
+              ty_repay_lsz lsz
+              where b.khjl=rygl.dm and
+              rygl.ddrq=sysuser.external_id and
+              b.khnm=tkmx.khh and
+              jh.ywbh=tkmx.ywbh||'HT' and
+              yehz.jjh=tkmx.jjh and
+              tkmx.jjh =lsz.jjh
+              group by tkmx.YWBH ,b.id ,b.KHH,b.KHMC, b.ZJHM,rygl.SSBM, b.SJ, b.SXED, b.GHJL,tkmx.JKRQ , tkmx.DQRQ, tkmx.DKQX,tkmx.JZLL, tkmx.FFJE  ,
+                 yehz.SHBJ,yehz.JKJE, yehz.KSQXRQ,yehz.SHLX, yehz.DKYE,yehz.BNQX, yehz.BWQX,yehz.DKYE  , yehz.dkye  , sysuser.display_name, sysuser.id 
+              order by tkmx.jkrq)
 	    )
 	    
-	    select nvl(sum(money),0) as value from circle  where DEPTCODE ='200734'
+	    select nvl(sum(REQLMT),0) as value from circle  where YWJG ='一区'
 		union all
-		select nvl(sum(money),0) as value from circle  where DEPTCODE ='200733'
+		select nvl(sum(REQLMT),0) as value from circle  where YWJG ='二区'
 		union all
-		select nvl(sum(money),0) as value from circle  where DEPTCODE ='200729'
+		select nvl(sum(REQLMT),0) as value from circle  where YWJG ='三区'
 		union all
-		select nvl(sum(money),0) as value from circle  where DEPTCODE ='200730'
+		select nvl(sum(REQLMT),0) as value from circle  where YWJG ='四区'
 		union all
-		select nvl(sum(money),0) as value from circle  where DEPTCODE ='200732'
-		union all
+		select nvl(sum(REQLMT),0) as value from circle  where YWJG ='后台'
+		<!-- union all
 		select nvl(sum(money),0) as value from circle  where DEPTCODE ='200731'
 		union all
-		select nvl(sum(money),0) as value from circle  where DEPTCODE ='200735'
+		select nvl(sum(money),0) as value from circle  where DEPTCODE ='200735' -->
 	</select>
 	
-		<select id="statisticalsxorgan1" resultMap="ResultMap" >
-	   with circle as (
-	    SELECT *
-		  FROM (select T.BUSICODE,T.CUSTID,T.CNAME,T.CUSTIDNO,T.DEPTCODE,T.TELEPHONE,T.MAINASSURE,T.REQLMT,T.BUSIMANAGER,T.LOANDATE,T.STARTDATE,T.ORIENDDATE,T.ENDDATE,T.INTEREST,T.MONEY,T.BALAMT,T.ACCOUNTSTATE,T.CLOSEDATE,T.FIVECLASS,T.DELAYAMTDAYS,T.DELAYINTERESTDAYS,T.FIRSTINTERESTDATE,T.DEBTINTEREST,T.DEBTINTERESTTIMES,T.NORMALAMT,T.DLAYAMT,T.DLAYDT,T.PAYDEBT,T.INDEBTAMT,T.OUTDEBTAMT,T.BAILAMT,T.CREATE_TIME,ROW_NUMBER() OVER(PARTITION BY busicode ORDER BY OPERDATETIME desc) RN
-		          from t_mibusidata T)
-		 WHERE RN = 1
-	    )
-	    
-	    select nvl(sum(money),0) as value from circle  where DEPTCODE ='第一组'
-		union all
-		select nvl(sum(money),0) as value from circle  where DEPTCODE ='第二组'
-		union all
-		select nvl(sum(money),0) as value from circle  where DEPTCODE ='第三组'
-		union all
-		select nvl(sum(money),0) as value from circle  where DEPTCODE ='第四组'
-		union all
-		select nvl(sum(money),0) as value from circle  where DEPTCODE ='第五组'
-		union all
-		select nvl(sum(money),0) as value from circle  where DEPTCODE ='第六组'
-		union all
-		select nvl(sum(money),0) as value from circle  where DEPTCODE ='第七组'
-		union all
-		select nvl(sum(money),0) as value from circle  where DEPTCODE ='第八组'
-		union all
-		select nvl(sum(money),0) as value from circle  where DEPTCODE ='第九组'
-		union all
-		select nvl(sum(money),0) as value from circle  where DEPTCODE ='第十组'
-		union all
-		select nvl(sum(money),0) as value from circle  where DEPTCODE ='第十一组'
-		union all
-		select nvl(sum(money),0) as value from circle  where DEPTCODE ='第十二组'
-	</select>
-	
+	<!-- 逾期总金额 -->
 	<select id="statisticalyqorgan" resultMap="ResultMap" >
 	   with circle as (
 	    SELECT *
-		  FROM (select T.BUSICODE,T.CUSTID,T.CNAME,T.CUSTIDNO,T.DEPTCODE,T.TELEPHONE,T.MAINASSURE,T.REQLMT,T.BUSIMANAGER,T.LOANDATE,T.STARTDATE,T.ORIENDDATE,T.ENDDATE,T.INTEREST,T.MONEY,T.BALAMT,T.ACCOUNTSTATE,T.CLOSEDATE,T.FIVECLASS,T.DELAYAMTDAYS,T.DELAYINTERESTDAYS,T.FIRSTINTERESTDATE,T.DEBTINTEREST,T.DEBTINTERESTTIMES,T.NORMALAMT,T.DLAYAMT,T.DLAYDT,T.PAYDEBT,T.INDEBTAMT,T.OUTDEBTAMT,T.BAILAMT,T.CREATE_TIME,ROW_NUMBER() OVER(PARTITION BY busicode ORDER BY OPERDATETIME desc) RN
-		          from t_mibusidata T)
-		 WHERE RN = 1
+		  FROM (select
+        distinct
+          tkmx.YWBH ,
+          b.id as id ,
+          b.KHH,
+          b.KHMC,
+          b.ZJHM,
+          rygl.SSBM,
+          b.SJ,
+          b.SXED,
+          b.GHJL,
+          tkmx.JKRQ as LOANDATE, 
+          tkmx.DQRQ,
+          tkmx.DKQX,
+          tkmx.JZLL,
+          tkmx.FFJE   as REQLMT,
+           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end ) as DELAYINTERESTDAYS,  
+           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end )as DELAYAMTDAYS, 
+           max(lsz.jzrq) as DLAYDT,
+          yehz.SHBJ,
+          yehz.JKJE,
+          yehz.KSQXRQ,
+          yehz.SHLX as PAYDEBT,  
+          yehz.DKYE,
+          yehz.BNQX,
+          yehz.BWQX,
+          yehz.DKYE as BALAMT  ,
+          yehz.dkye as yxye,
+          yehz.wjfl3,
+          yehz.wjfl4,
+          yehz.wjfl5,
+          sysuser.id userid,
+          sysuser.display_name,
+         ( select org.name from SYS_ORGANIZATION org where org.id in (select t.ORG_ID from sys_department t where t.id in (select tt.dept_id 
+          from sys_dept_user tt  where tt.user_id = sysuser.id)))  as YWJG
+       from
+              ty_repay_tkmx tkmx,
+              ty_customer_base b,
+              ty_customer_rygl rygl,
+              sys_user sysuser,
+             ty_kdk_jh jh,
+              ty_repay_yehz yehz,
+              ty_repay_lsz lsz
+              where b.khjl=rygl.dm and
+              rygl.ddrq=sysuser.external_id and
+              b.khnm=tkmx.khh and
+              jh.ywbh=tkmx.ywbh||'HT' and
+              yehz.jjh=tkmx.jjh and
+              tkmx.jjh =lsz.jjh
+              group by tkmx.YWBH ,b.id ,b.KHH,b.KHMC, b.ZJHM,rygl.SSBM, b.SJ, b.SXED, b.GHJL,tkmx.JKRQ , tkmx.DQRQ, tkmx.DKQX,tkmx.JZLL, tkmx.FFJE  ,
+                 yehz.SHBJ,yehz.JKJE, yehz.KSQXRQ,yehz.SHLX, yehz.DKYE,yehz.BNQX, yehz.BWQX,yehz.DKYE  , yehz.dkye  , sysuser.display_name, sysuser.id, yehz.wjfl3,
+          yehz.wjfl4,yehz.wjfl5
+              order by tkmx.jkrq)
 	    )
 	    
-	select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='200734'
+	select nvl(sum(DKYE+BNQX+BWQX),0) as value from circle   where YWJG ='一区' and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0)
     union all
-    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='200733'
+    select nvl(sum(DKYE+BNQX+BWQX),0) as value from circle  where YWJG ='二区' and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0)
     union all
-    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='200729'
+    select nvl(sum(DKYE+BNQX+BWQX),0) as value from circle  where YWJG ='三区' and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0)
     union all
-    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='200730'
+    select nvl(sum(DKYE+BNQX+BWQX),0) as value from circle  where YWJG ='四区' and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0)
     union all
-    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='200732'
-    union all
+    select nvl(sum(DKYE+BNQX+BWQX),0) as value from circle  where YWJG ='后台' and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0)
+  <!--   union all
     select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='200731'
     union all
-    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='200735'
+    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='200735' -->
 	</select>
 	
-	
-		<select id="statisticalyqorgan1" resultMap="ResultMap" >
+	<!-- 不良总金额 -->
+	<select id="statisticalblorgan" resultMap="ResultMap" >
 	   with circle as (
 	    SELECT *
-		  FROM (select T.BUSICODE,T.CUSTID,T.CNAME,T.CUSTIDNO,T.DEPTCODE,T.TELEPHONE,T.MAINASSURE,T.REQLMT,T.BUSIMANAGER,T.LOANDATE,T.STARTDATE,T.ORIENDDATE,T.ENDDATE,T.INTEREST,T.MONEY,T.BALAMT,T.ACCOUNTSTATE,T.CLOSEDATE,T.FIVECLASS,T.DELAYAMTDAYS,T.DELAYINTERESTDAYS,T.FIRSTINTERESTDATE,T.DEBTINTEREST,T.DEBTINTERESTTIMES,T.NORMALAMT,T.DLAYAMT,T.DLAYDT,T.PAYDEBT,T.INDEBTAMT,T.OUTDEBTAMT,T.BAILAMT,T.CREATE_TIME,ROW_NUMBER() OVER(PARTITION BY busicode ORDER BY OPERDATETIME desc) RN
-		          from t_mibusidata T)
-		 WHERE RN = 1
+		  FROM (select
+        distinct
+          tkmx.YWBH ,
+          b.id as id ,
+          b.KHH,
+          b.KHMC,
+          b.ZJHM,
+          rygl.SSBM,
+          b.SJ,
+          b.SXED,
+          b.GHJL,
+          tkmx.JKRQ as LOANDATE, 
+          tkmx.DQRQ,
+          tkmx.DKQX,
+          tkmx.JZLL,
+          tkmx.FFJE   as REQLMT,
+           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end ) as DELAYINTERESTDAYS,  
+           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end )as DELAYAMTDAYS, 
+           max(lsz.jzrq) as DLAYDT,
+          yehz.SHBJ,
+          yehz.JKJE,
+          yehz.KSQXRQ,
+          yehz.SHLX as PAYDEBT,  
+          yehz.DKYE,
+          yehz.BNQX,
+          yehz.BWQX,
+          yehz.DKYE as BALAMT  ,
+          yehz.dkye as yxye,
+           yehz.wjfl3,
+          yehz.wjfl4,
+          yehz.wjfl5,
+          sysuser.id userid,
+          sysuser.display_name,
+         ( select org.name from SYS_ORGANIZATION org where org.id in (select t.ORG_ID from sys_department t where t.id in (select tt.dept_id 
+          from sys_dept_user tt  where tt.user_id = sysuser.id)))  as YWJG
+       from
+              ty_repay_tkmx tkmx,
+              ty_customer_base b,
+              ty_customer_rygl rygl,
+              sys_user sysuser,
+             ty_kdk_jh jh,
+              ty_repay_yehz yehz,
+              ty_repay_lsz lsz
+              where b.khjl=rygl.dm and
+              rygl.ddrq=sysuser.external_id and
+              b.khnm=tkmx.khh and
+              jh.ywbh=tkmx.ywbh||'HT' and
+              yehz.jjh=tkmx.jjh and
+              tkmx.jjh =lsz.jjh
+              group by tkmx.YWBH ,b.id ,b.KHH,b.KHMC, b.ZJHM,rygl.SSBM, b.SJ, b.SXED, b.GHJL,tkmx.JKRQ , tkmx.DQRQ, tkmx.DKQX,tkmx.JZLL, tkmx.FFJE  ,
+              yehz.SHBJ,yehz.JKJE, yehz.KSQXRQ,yehz.SHLX, yehz.DKYE,yehz.BNQX, yehz.BWQX,yehz.DKYE  , yehz.dkye  , sysuser.display_name, sysuser.id , yehz.wjfl3, yehz.wjfl4,
+         	  yehz.wjfl5
+              order by tkmx.jkrq)
 	    )
 	    
-	select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='第一组'
+	select nvl(sum(DKYE+BNQX+BWQX),0) as value from circle  where YWJG ='一区'  and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0) and
+	(wjfl3!=0 or wjfl4!=0 or wjfl3!=0)
     union all
-    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='第二组'
+    select nvl(sum(DKYE+BNQX+BWQX),0) as value from circle  where YWJG ='二区'  and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0) and
+	(wjfl3!=0 or wjfl4!=0 or wjfl3!=0)
     union all
-    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='第三组'
+    select nvl(sum(DKYE+BNQX+BWQX),0) as value from circle  where YWJG ='三区'  and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0) and
+	(wjfl3!=0 or wjfl4!=0 or wjfl3!=0)
     union all
-    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='第四组'
+  select nvl(sum(DKYE+BNQX+BWQX),0) as value from circle  where YWJG ='四区'  and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0) and
+	(wjfl3!=0 or wjfl4!=0 or wjfl3!=0)
     union all
-    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='第五组'
-    union all
-    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='第六组'
-    union all
-    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='第七组'
-     union all
-    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='第八组'
-    union all
-    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='第九组'
-    union all
-    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='第十组'
-    union all
-    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='第十一组'
-    union all
-    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='第十二组'
-	</select>
-	
-<!-- 	<select id="statisticalblorgan" resultMap="ResultMap" >
-	   with circle as (
-	    SELECT *
-		  FROM (select T.BUSICODE,T.CUSTID,T.CNAME,T.CUSTIDNO,T.DEPTCODE,T.TELEPHONE,T.MAINASSURE,T.REQLMT,T.BUSIMANAGER,T.LOANDATE,T.STARTDATE,T.ORIENDDATE,T.ENDDATE,T.INTEREST,T.MONEY,T.BALAMT,T.ACCOUNTSTATE,T.CLOSEDATE,T.FIVECLASS,T.DELAYAMTDAYS,T.DELAYINTERESTDAYS,T.FIRSTINTERESTDATE,T.DEBTINTEREST,T.DEBTINTERESTTIMES,T.NORMALAMT,T.DLAYAMT,T.DLAYDT,T.PAYDEBT,T.INDEBTAMT,T.OUTDEBTAMT,T.BAILAMT,T.CREATE_TIME,ROW_NUMBER() OVER(PARTITION BY busicode ORDER BY OPERDATETIME desc) RN
-		          from t_mibusidata T)
-		 WHERE RN = 1
-	    )
-	    
-	select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='200734' and FIVECLASS in ('1','2','3')
-    union all
-    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='200733' and FIVECLASS in ('1','2','3')
-    union all
-    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='200729' and FIVECLASS in ('1','2','3')
-    union all
-    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='200730' and FIVECLASS in ('1','2','3')
-    union all
-    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='200732' and FIVECLASS in ('1','2','3')
-    union all
+   select nvl(sum(DKYE+BNQX+BWQX),0) as value from circle  where YWJG ='后台'  and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0) and
+	(wjfl3!=0 or wjfl4!=0 or wjfl3!=0)
+   <!--  union all
     select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='200731' and FIVECLASS in ('1','2','3')
     union all
-    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='200735' and FIVECLASS in ('1','2','3')
+    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='200735' and FIVECLASS in ('1','2','3') -->
 	</select>
-	
-	<select id="statisticalblorgan1" resultMap="ResultMap" >
-	   with circle as (
-	    SELECT *
-		  FROM (select T.BUSICODE,T.CUSTID,T.CNAME,T.CUSTIDNO,T.DEPTCODE,T.TELEPHONE,
-		  T.MAINASSURE,T.REQLMT,T.BUSIMANAGER,T.LOANDATE,T.STARTDATE,T.ORIENDDATE,
-		  T.ENDDATE,T.INTEREST,T.MONEY,T.BALAMT,T.ACCOUNTSTATE,T.CLOSEDATE,T.FIVECLASS,
-		  T.DELAYAMTDAYS,T.DELAYINTERESTDAYS,T.FIRSTINTERESTDATE,T.DEBTINTEREST,T.DEBTINTERESTTIMES,
-		  T.NORMALAMT,T.DLAYAMT,T.DLAYDT,T.PAYDEBT,T.INDEBTAMT,T.OUTDEBTAMT,T.BAILAMT,T.CREATE_TIME,
-		  ROW_NUMBER() OVER(PARTITION BY busicode ORDER BY OPERDATETIME desc) RN
-		          from t_mibusidata T)
-		 WHERE RN = 1
-	    )
-	    
-	select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='第一组' and FIVECLASS in ('1','2','3')
-    union all
-    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='第二组' and FIVECLASS in ('1','2','3')
-    union all
-    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='第三组' and FIVECLASS in ('1','2','3')
-    union all
-    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='第四组' and FIVECLASS in ('1','2','3')
-    union all
-    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='第五组' and FIVECLASS in ('1','2','3')
-    union all
-    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='第六组' and FIVECLASS in ('1','2','3')
-    union all
-    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='第七组' and FIVECLASS in ('1','2','3')
-     union all
-    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='第八组' and FIVECLASS in ('1','2','3')
-    union all
-    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='第九组' and FIVECLASS in ('1','2','3')
-    union all
-    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='第十组' and FIVECLASS in ('1','2','3')
-    union all
-    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='第十一组' and FIVECLASS in ('1','2','3')
-    union all
-    select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='第十二组' and FIVECLASS in ('1','2','3')
-	</select> -->
 </mapper>

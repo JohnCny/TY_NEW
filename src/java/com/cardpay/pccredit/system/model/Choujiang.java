@@ -19,6 +19,14 @@ public class Choujiang extends BusinessModel{
 	private String name;
 	private String exentId;
 	private String result;
+	private String DISPLAY_NAME;
+	
+	public String getDISPLAY_NAME() {
+		return DISPLAY_NAME;
+	}
+	public void setDISPLAY_NAME(String dISPLAY_NAME) {
+		DISPLAY_NAME = dISPLAY_NAME;
+	}
 	public String getName() {
 		return name;
 	}
