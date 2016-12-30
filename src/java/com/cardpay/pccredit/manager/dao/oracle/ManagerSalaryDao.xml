@@ -489,12 +489,18 @@
 	</select>
 	
 	<select id="findProdLimitAndType" resultType="map">
-		select cname,INTEREST, MAINASSURE                  
+		<!-- select cname,INTEREST, MAINASSURE                  
   from t_mibusidata a, basic_customer_information b
  where a.custid = b.ty_customer_id                 
    and substr(a.OPERDATETIME, '0', '4') = #{year} 
    and substr(a.OPERDATETIME, '6', '2') = #{month}  
-   and b.id = #{customerId}  
+   and b.id = #{customerId}   -->
+       select a.KHMC as cname,a.JZLL as INTEREST     
+          from mibusidata a, basic_customer_information b
+         where a.id = b.ty_customer_id                 
+           and substr(a.LOANDATE, '0', '4') = #{year} 
+           and substr(a.LOANDATE, '6', '2') = #{month}  
+           and b.id = #{customerId}  
 	    
 	</select>
 	
@@ -550,5 +556,9 @@
 	      and substr(to_char(info.created_time,'yyyyMMdd'),'5','2') = #{month}
 	</select>
 	
+	<select id="insertjx" parameterType="com.cardpay.pccredit.manager.model.TJxParameters">
+	insert into T_JX_PARAMETERS (customer_manager_id,id,month,month_effect_num , month_loan_num , month_overdue_days ,month_overdue_loannum , month_times ,year ) 
+	values (#{customerManagerId},#{Id},#{month},#{monthEffectNum},#{monthLoanNum},#{monthOverdueDays},#{monthOverdueLoannum},#{monthTimes},#{year})
+	</select> 
 	<!-- =====================================济南绩效相关end============================= -->
 </mapper>

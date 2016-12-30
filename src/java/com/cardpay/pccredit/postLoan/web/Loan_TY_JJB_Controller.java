@@ -99,7 +99,6 @@ public class Loan_TY_JJB_Controller extends BaseController {
 		filter.setUserid(userId);
 		QueryResult<TyRepayTkmxForm> result = postLoanService.findJJJnListByFilter(filter);
 		JRadPagedQueryResult<TyRepayTkmxForm> pagedResult = new JRadPagedQueryResult<TyRepayTkmxForm>(filter, result);
-
 		JRadModelAndView mv = new JRadModelAndView("/postLoan/jjb_browse", request);
 		mv.addObject(PAGED_RESULT, pagedResult);
 

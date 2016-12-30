@@ -56,9 +56,21 @@ public class TJxParameters extends BusinessModel {
 	 * 机构
 	 */
     private String instcode;
+    
+    
+    
+    private String Id;
+    
 	
 	
 	
+
+	public String getId() {
+		return Id;
+	}
+	public void setId(String id) {
+		Id = id;
+	}
 	public String getInstcode() {
 		return instcode;
 	}

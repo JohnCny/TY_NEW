@@ -938,7 +938,11 @@ public class ManagerSalaryService {
 		jxParameters.setMonthOverdueLoannum(findOverdueNum(userId,year,month)+"");//当月逾期贷款笔数
 		jxParameters.setMonthOverdueDays(findOverdueDays(userId,year,month)+"");//当月逾期贷款天数
 		jxParameters.setMonthTimes(xbNum+"");//当月协办次数
-		commonDao.insertObject(jxParameters);
+		//managerSalaryDao.insertjx(jxParameters);
+		int a=commonDao.insertObject(jxParameters);
+		if(a>0){
+			System.out.println(1111);
+		}
 	}
 	
 	/**
@@ -951,50 +955,25 @@ public class ManagerSalaryService {
 				 "   and substr(loandate, '0', '4') = '"+year+"'             "+
 				 "   and substr(loandate, '6', '2') = '"+month+"'            "+
 				 "   and b.USER_ID = '"+customerManagerId+"'                 ";*/
-			String sql="     select                                                          "+
-	       "                   count(distinct b.id)   as HYK                                        "+
-	       " from                                                                            "+
-	       "    (select  basic.card_id  as cardid,                                           "+
-	       "               max(to_number(jh.qs)) as qs                                       "+
-	       "   from                                                                          "+
-	       "  (select trunc(to_date(rq,'yyyy-mm-dd')) a from ty_kdk_jh) rq,                  "+
-	       "               TY_REPAY_TKMX tkmx,                                               "+
-	       "               TY_CUSTOMER_BASE  b,                                              "+
-	       "               ty_customer_rygl rygl,                                            "+
-	       "               TY_REPAY_YEHZ yehz,                                               "+
-	       "               ty_kdk_jh jh,                                                     "+
-	       "               basic_customer_information basic,                                 "+
-	       "               sys_user sysuser                                                  "+
-	       "               where 1=1 and                                                     "+
-	       "               b.khnm=tkmx.khh and                                               "+
-	       "               b.khjl=rygl.dm and                                                "+
-	       "               yehz.JJH = tkmx.JJH and                                           "+
-	       "                       substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh and         "+
-	       "                       b.id=basic.ty_customer_id and                             "+
-	       "                       basic.user_id=sysuser.id and                              "+
-	       "                        rq.a=to_date(jh.rq,'yyyy-mm-dd')                         "+
-	       "            and sysuser.id  ='"+customerManagerId+"'                             "+
-	       "            group by basic.card_id)  maxqs,                                      "+
-	       "  (select trunc(to_date(rq,'yyyy-mm-dd')) a from ty_kdk_jh) rq,                  "+
-	       "               TY_REPAY_TKMX tkmx,                                               "+
-	       "               TY_CUSTOMER_BASE  b,                                              "+
-	       "               ty_customer_rygl rygl,                                            "+
-	       "               TY_REPAY_YEHZ yehz,                                               "+
-	       "               ty_kdk_jh jh,                                                     "+
-	       "               basic_customer_information basic,                                 "+
-	       "               sys_user sysuser                                                  "+
-	       "               where 1=1 and                                                     "+
-	       "               b.khnm=tkmx.khh and                                               "+
-	       "               b.khjl=rygl.dm and                                                "+
-	       "               yehz.JJH = tkmx.JJH and                                           "+
-	       "                       substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh and         "+
-	       "                       b.id=basic.ty_customer_id and                             "+
-	       "                       basic.user_id=sysuser.id and                              "+
-	       "                        rq.a=to_date(jh.rq,'yyyy-mm-dd')                         "+
-	       "                        and jh.qs=maxqs.qs                                       "+
-	       "                        and basic.card_id=maxqs.cardid                           "+
-	       "                and substr(tkmx.JKRQ, '0', '4') = '"+year+"'                      "+
-	       "                and substr(tkmx.JKRQ, '6', '2') = '"+month+"'     ";
+				String sql=    "   select                                      "+
+						       " count(distinct tkmx.ywbh)   as HYK            "+
+						       " from                                          "+
+						       "        ty_repay_tkmx tkmx,                    "+
+						       "        ty_customer_base b,                    "+
+						       "        ty_customer_rygl rygl,                 "+
+						       "        sys_user sysuser,                      "+
+						       "       ty_kdk_jh jh,                           "+
+						       "        ty_repay_yehz yehz,                    "+
+						       "        ty_repay_lsz lsz                       "+
+						       "        where b.khjl=rygl.dm and               "+
+						       "        rygl.ddrq=sysuser.external_id and      "+
+						       "        b.khnm=tkmx.khh and                    "+
+						       "        jh.ywbh=tkmx.ywbh||'HT' and            "+
+						       "        yehz.jjh=tkmx.jjh and                  "+
+						       "        tkmx.jjh =lsz.jjh                      "+
+						       "   and substr(tkmx.jkrq, '0', '4') = '"+year+"'             "+
+						       "   and substr(tkmx.jkrq, '5', '2') = '"+month+"'            "+
+						       "   and sysuser.id = '"+customerManagerId+"'                 ";
 		List<HashMap<String, Object>> list = commonDao.queryBySql(sql, null);
 		BigDecimal b = (BigDecimal) list.get(0).get("HYK");
 		return b.intValue();
@@ -1023,51 +1002,27 @@ public class ManagerSalaryService {
 						"   and t.id = b.ty_customer_id                        "+
 						"   and nvl(PAYDEBT, 0) > 0                               "+
 						"   and b.user_id = '"+customerManagerId+"'    			  ";*/
-		String sql="         select                                                                          "+
-				    "                      count(distinct b.id) as HYK                                             "+
-				    "    from                                                                                "+
-				    "       (select  basic.card_id  as cardid,                                               "+
-				    "                  max(to_number(jh.qs)) as qs                                           "+
-				    "      from                                                                              "+
-				    "     (select trunc(to_date(rq,'yyyy-mm-dd')) a from ty_kdk_jh) rq,                      "+
-				    "                  TY_REPAY_TKMX tkmx,                                                   "+
-				    "                  TY_CUSTOMER_BASE  b,                                                  "+
-				    "                  ty_customer_rygl rygl,                                                "+
-				    "                  TY_REPAY_YEHZ yehz,                                                   "+
-				    "                  ty_kdk_jh jh,                                                         "+
-				    "                  basic_customer_information basic,                                     "+
-				    "                  sys_user sysuser                                                      "+
-				    "                  where 1=1 and                                                         "+
-				    "                  b.khnm=tkmx.khh and                                                   "+
-				    "                  b.khjl=rygl.dm and                                                    "+
-				    "                  yehz.JJH = tkmx.JJH and                                               "+
-				    "                          substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh and             "+
-				    "                          b.id=basic.ty_customer_id and                                 "+
-				    "                          basic.user_id=sysuser.id and                                  "+
-				    "                           rq.a=to_date(jh.rq,'yyyy-mm-dd')                             "+
-				    "               and sysuser.id  ='"+customerManagerId+"'                      "+
-				    "               group by basic.card_id)  maxqs,                                          "+
-				    "     (select trunc(to_date(rq,'yyyy-mm-dd')) a from ty_kdk_jh) rq,                      "+
-				    "                  TY_REPAY_TKMX tkmx,                                                   "+
-				    "                  TY_CUSTOMER_BASE  b,                                                  "+
-				    "                  ty_customer_rygl rygl,                                                "+
-				    "                  TY_REPAY_YEHZ yehz,                                                   "+
-				    "                  ty_kdk_jh jh,                                                         "+
-				    "                  basic_customer_information basic,                                     "+
-				    "                  sys_user sysuser                                                      "+
-				    "                  where 1=1 and                                                         "+
-				    "                  b.khnm=tkmx.khh and                                                   "+
-				    "                  b.khjl=rygl.dm and                                                    "+
-				    "                  yehz.JJH = tkmx.JJH and                                               "+
-				    "                  substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh and                     "+
-				    "                  b.id=basic.ty_customer_id and                                         "+
-				    "                  basic.user_id=sysuser.id and                                          "+
-				    "                  rq.a=to_date(jh.rq,'yyyy-mm-dd')                                      "+
-				    "                  and jh.qs=maxqs.qs                                                    "+
-				    "                  and basic.card_id=maxqs.cardid                                        "+
-				    "             and substr(tkmx.JKRQ, '0', '4') = '"+year+"'                      "+
-	       "                and substr(tkmx.JKRQ, '6', '2') = '"+month+"'                               "+
-					"	              and nvl( yehz.SHLX, 0) > 0     ";
+		String sql=             
+					"	select count(distinct tkmx.ywbh) as HYK                       "+
+					"	                    from                                      "+
+					"	                    ty_customer_rygl rygl,                    "+
+					"	                    ty_customer_base base,                    "+
+					"	                    ty_product_type protype,                  "+
+					"	                    ty_repay_tkmx tkmx,                       "+
+					"	                    SYS_USER sysuser  ,                       "+
+					"	                    ty_repay_yehz yehz,                       "+
+					"	                    ty_repay_lsz lsz                          "+
+					"	                    where   base.khjl=rygl.dm and             "+
+					"	                      rygl.ddrq=sysuser.external_id           "+
+					"	                    and base.khnm=tkmx.khh                    "+
+					"	                    and tkmx.JJH=yehz.JJH                     "+
+					"	                    and protype.product_code=tkmx.cpmc        "+
+					"	                    and lsz.jjh=tkmx.jjh                      "+
+					"	                    and lsz.zy='批量自动扣利息'                    "+
+					"	                    and df>0                                  "+
+					"   and substr(tkmx.jkrq, '0', '4') = '"+year+"'             "+
+				       "   and substr(tkmx.jkrq, '5', '2') = '"+month+"'            "+              
+				       "   and sysuser.id = '"+customerManagerId+"'                 ";
 		List<HashMap<String, Object>> list = commonDao.queryBySql(sql, null);
 		BigDecimal b = (BigDecimal) list.get(0).get("HYK");
 		return b.intValue();
@@ -1083,51 +1038,31 @@ public class ManagerSalaryService {
 						"   and substr(loandate, '0', '4') = '"+year+"'            "+
 						"   and substr(loandate, '6', '2') = '"+month+"'           "+
 						"   and b.USER_ID ='"+customerManagerId+"'                 ";*/
-		String sql="   select                                                                             "+
-				   "                      count(distinct b.id) as HYK                                     "+
-				   "     from                                                                             "+
-				   "        (select  basic.card_id  as cardid,                                            "+
-				   "                   max(to_number(jh.qs)) as qs                                        "+
-				   "       from                                                                           "+
-				   "      (select trunc(to_date(rq,'yyyy-mm-dd')) a from ty_kdk_jh) rq,                   "+
-				   "                   TY_REPAY_TKMX tkmx,                                                "+
-				   "                   TY_CUSTOMER_BASE  b,                                               "+
-				   "                   ty_customer_rygl rygl,                                             "+
-				   "                   TY_REPAY_YEHZ yehz,                                                "+
-				   "                   ty_kdk_jh jh,                                                      "+
-				   "                   basic_customer_information basic,                                  "+
-				   "                   sys_user sysuser                                                   "+
-				   "                   where 1=1 and                                                      "+
-				   "                   b.khnm=tkmx.khh and                                                "+
-				   "                   b.khjl=rygl.dm and                                                 "+
-				   "                   yehz.JJH = tkmx.JJH and                                            "+
-				   "                           substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh and          "+
-				   "                           b.id=basic.ty_customer_id and                              "+
-				   "                           basic.user_id=sysuser.id and                               "+
-				   "                            rq.a=to_date(jh.rq,'yyyy-mm-dd')                          "+
-				   "                and sysuser.id  ='"+customerManagerId+"'                  "+
-				   "                group by basic.card_id)  maxqs,                                       "+
-				   "      (select trunc(to_date(rq,'yyyy-mm-dd')) a from ty_kdk_jh) rq,                   "+
-				   "                   TY_REPAY_TKMX tkmx,                                                "+
-				   "                   TY_CUSTOMER_BASE  b,                                               "+
-				   "                   ty_customer_rygl rygl,                                             "+
-				   "                   TY_REPAY_YEHZ yehz,                                                "+
-				   "                   ty_kdk_jh jh,                                                      "+
-				   "                   basic_customer_information basic,                                  "+
-				   "                   sys_user sysuser                                                   "+
-				   "                   where 1=1 and                                                      "+
-				   "                   b.khnm=tkmx.khh and                                                "+
-				   "                   b.khjl=rygl.dm and                                                 "+
-				   "                   yehz.JJH = tkmx.JJH and                                            "+
-				   "                           substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh and          "+
-				   "                           b.id=basic.ty_customer_id and                              "+
-				   "                           basic.user_id=sysuser.id and                               "+
-				   "                            rq.a=to_date(jh.rq,'yyyy-mm-dd')                          "+
-				   "                            and jh.qs=maxqs.qs                                        "+
-				   "                            and basic.card_id=maxqs.cardid                            "+
-				   "                             and substr( tkmx.JKRQ, '0', '4') = '"+year+"'               "+
-				   "                              and substr( tkmx.JKRQ, '6', '2') =  '"+month+"'                "+
-				   "                              and (nvl( jh.ts,0)  >   0 or nvl(jh.ts,0)  >   0)";
+		String sql=  "  select count(a.ywbh)  as HYK  from                                                                                                                                                                                            "+
+				     "  (select                                                                                                                                                                                                              "+
+				     "             distinct                                                                                                                                                                                                  "+
+				     "               tkmx.YWBH ,                                                                                                                                                                                             "+
+				     "                (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end ) as DELAYINTERESTDAYS,  "+
+				     "                (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end )as DELAYAMTDAYS,        "+
+				     "                sysuser.id                                                                                                                                                                                             "+
+				     "            from                                                                                                                                                                                                       "+
+				     "                   ty_repay_tkmx tkmx,                                                                                                                                                                                 "+
+				     "                   ty_customer_base b,                                                                                                                                                                                 "+
+				     "                   ty_customer_rygl rygl,                                                                                                                                                                              "+
+				     "                   sys_user sysuser,                                                                                                                                                                                   "+
+				     "                  ty_kdk_jh jh,                                                                                                                                                                                        "+
+				     "                   ty_repay_yehz yehz,                                                                                                                                                                                 "+
+				     "                   ty_repay_lsz lsz                                                                                                                                                                                    "+
+				     "                   where b.khjl=rygl.dm and                                                                                                                                                                            "+
+				     "                   rygl.ddrq=sysuser.external_id and                                                                                                                                                                   "+
+				     "                   b.khnm=tkmx.khh and                                                                                                                                                                                 "+
+				     "                   jh.ywbh=tkmx.ywbh||'HT' and                                                                                                                                                                         "+
+				     "                   yehz.jjh=tkmx.jjh and                                                                                                                                                                               "+
+				     "                   tkmx.jjh =lsz.jjh                                                                                                                                                                                   "+
+				     "                   group by tkmx.ywbh,tkmx.dqrq,sysuser.id) a                                                                                                                                                          "+
+				     "                  where 1=1                                                                                                                                                                                            "+
+				     "                  and (nvl(a.DELAYINTERESTDAYS,0)  >   0 or nvl(a.DELAYAMTDAYS,0)  >  0)                                                                                                                               "+
+				     "   and a.id ='"+customerManagerId+"'                 ";
 		List<HashMap<String, Object>> list = commonDao.queryBySql(sql, null);
 		BigDecimal b = (BigDecimal) list.get(0).get("HYK");
 		return b.intValue();

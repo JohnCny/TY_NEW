@@ -72,6 +72,7 @@
  	 </resultMap>
  	  <resultMap id="lszform" type="com.cardpay.pccredit.postLoan.model.TyRarepaylistForm" >
  	      	<result column="ywbh" 		property="ywbh" 			jdbcType="VARCHAR" />
+ 	      	<result column="khmc" 		property="khmc" 			jdbcType="VARCHAR" />
  	      	<result column="jkrq" 		property="jkrq" 			jdbcType="VARCHAR" />
  	      	<result column="bj" 		property="bj" 			jdbcType="VARCHAR" />
  	      	<result column="lx" 		property="lx" 			jdbcType="VARCHAR" />
@@ -380,6 +381,7 @@
 					 select
        distinct 
        tkmx.ywbh,
+       b.khmc,
        tkmx.jkrq,
        shbj.df as bj,
        shlx.df as lx,
