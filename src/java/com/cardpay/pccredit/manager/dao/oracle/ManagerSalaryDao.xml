@@ -495,22 +495,132 @@
    and substr(a.OPERDATETIME, '0', '4') = #{year} 
    and substr(a.OPERDATETIME, '6', '2') = #{month}  
    and b.id = #{customerId}   -->
+    with mibusidata as (
+	     SELECT *
+		  FROM (
+		  select
+        distinct
+          tkmx.YWBH ,
+          b.id as id ,
+          b.KHH,
+          b.KHMC,
+          b.ZJHM,
+          rygl.SSBM,
+          b.SJ,
+          b.SXED,
+          b.GHJL,
+          tkmx.JKRQ as LOANDATE, 
+          tkmx.DQRQ,
+          tkmx.DKQX,
+          tkmx.JZLL,
+          tkmx.FFJE   as REQLMT,
+           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end ) as DELAYINTERESTDAYS,  
+           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end )as DELAYAMTDAYS, 
+           max(lsz.jzrq) as DLAYDT,
+          yehz.SHBJ,
+          yehz.JKJE,
+          yehz.KSQXRQ,
+          yehz.SHLX as PAYDEBT,  
+          yehz.DKYE,
+          yehz.BNQX,
+          yehz.BWQX,
+          yehz.DKYE as BALAMT  ,
+          yehz.dkye as yxye,
+           max(lsz.jzrq) as operdatetime ,
+          sysuser.id userid,
+          sysuser.display_name
+       from
+              ty_repay_tkmx tkmx,
+              ty_customer_base b,
+              ty_customer_rygl rygl,
+              sys_user sysuser,
+             ty_kdk_jh jh,
+              ty_repay_yehz yehz,
+              ty_repay_lsz lsz
+              where b.khjl=rygl.dm and
+              rygl.ddrq=sysuser.external_id and
+              b.khnm=tkmx.khh and
+              jh.ywbh=tkmx.ywbh||'HT' and
+              yehz.jjh=tkmx.jjh and
+              tkmx.jjh =lsz.jjh
+              group by tkmx.YWBH ,b.id ,b.KHH,b.KHMC, b.ZJHM,rygl.SSBM, b.SJ, b.SXED, b.GHJL,tkmx.JKRQ , tkmx.DQRQ, tkmx.DKQX,tkmx.JZLL, tkmx.FFJE  ,
+                 yehz.SHBJ,yehz.JKJE, yehz.KSQXRQ,yehz.SHLX, yehz.DKYE,yehz.BNQX, yehz.BWQX,yehz.DKYE  , yehz.dkye  , sysuser.display_name, sysuser.id 
+              order by tkmx.jkrq
+		  ))
+		  
        select a.KHMC as cname,a.JZLL as INTEREST     
           from mibusidata a, basic_customer_information b
          where a.id = b.ty_customer_id                 
-           and substr(a.LOANDATE, '0', '4') = #{year} 
-           and substr(a.LOANDATE, '6', '2') = #{month}  
+           and substr(a.operdatetime, '0', '4') = #{year} 
+           and substr(a.operdatetime, '5', '2') = #{month}  
            and b.id = #{customerId}  
 	    
 	</select>
 	
 	
 	<select id="findDistinctBusicode" resultType="map">
-		select distinct(t.busicode)
+	     with mibusidata as (
+	     SELECT *
+		  FROM (
+		  select
+        distinct
+          tkmx.YWBH ,
+          b.id as id ,
+          b.KHH,
+          b.KHMC,
+          b.ZJHM,
+          rygl.SSBM,
+          b.SJ,
+          b.SXED,
+          b.GHJL,
+          tkmx.JKRQ as LOANDATE, 
+          tkmx.DQRQ,
+          tkmx.DKQX,
+          tkmx.JZLL,
+          tkmx.FFJE   as REQLMT,
+           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end ) as DELAYINTERESTDAYS,  
+           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end )as DELAYAMTDAYS, 
+           max(lsz.jzrq) as DLAYDT,
+          yehz.SHBJ,
+          yehz.JKJE,
+          yehz.KSQXRQ,
+          yehz.SHLX as PAYDEBT,  
+          yehz.DKYE,
+          yehz.BNQX,
+          yehz.BWQX,
+          yehz.DKYE as BALAMT  ,
+          yehz.dkye as yxye,
+          max(lsz.jzrq) as operdatetime ,
+          sysuser.id userid,
+          sysuser.display_name
+       from
+              ty_repay_tkmx tkmx,
+              ty_customer_base b,
+              ty_customer_rygl rygl,
+              sys_user sysuser,
+             ty_kdk_jh jh,
+              ty_repay_yehz yehz,
+              ty_repay_lsz lsz
+              where b.khjl=rygl.dm and
+              rygl.ddrq=sysuser.external_id and
+              b.khnm=tkmx.khh and
+              jh.ywbh=tkmx.ywbh||'HT' and
+              yehz.jjh=tkmx.jjh and
+              tkmx.jjh =lsz.jjh
+              group by tkmx.YWBH ,b.id ,b.KHH,b.KHMC, b.ZJHM,rygl.SSBM, b.SJ, b.SXED, b.GHJL,tkmx.JKRQ , tkmx.DQRQ, tkmx.DKQX,tkmx.JZLL, tkmx.FFJE  ,
+                 yehz.SHBJ,yehz.JKJE, yehz.KSQXRQ,yehz.SHLX, yehz.DKYE,yehz.BNQX, yehz.BWQX,yehz.DKYE  , yehz.dkye  , sysuser.display_name, sysuser.id 
+              order by tkmx.jkrq
+		  ))
+		<!-- select distinct(t.busicode)
 		  from t_mibusidata t
 		 where substr(OPERDATETIME, '0', '4') = #{year} 
 		   and substr(OPERDATETIME, '6', '2') = #{month}  
-		   and t.custid = #{tyCustomerId}  
+		   and t.custid = #{tyCustomerId}  --> 
+		      	select distinct(t.ywbh) as BUSICODE
+		  from mibusidata t
+		 where substr(t.operdatetime, '0', '4') = #{year} 
+		   and substr(t.operdatetime, '5', '2') = #{month}  
+		   and t.id = #{tyCustomerId} 
 	</select>
 	
 	

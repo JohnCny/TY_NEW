@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cardpay.pccredit.Sx.model.SxOutputData;
+import com.cardpay.pccredit.Sx.service.SxService;
 import com.cardpay.pccredit.common.FormatTool;
 import com.cardpay.pccredit.report.filter.CustomerMoveFilter;
 import com.cardpay.pccredit.report.filter.ReportFilter;
@@ -37,7 +39,8 @@ import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 @RequestMapping("/expire/loan/*")
 @JRadModule("expire.loan")
 public class ExpireLoanController extends BaseController{
-	
+	@Autowired
+	private SxService service;
 	@Autowired
 	private CustomerTransferFlowService customerTransferFlowService;
 	
@@ -54,9 +57,12 @@ public class ExpireLoanController extends BaseController{
 	public AbstractModelAndView queryExpireLoan(@ModelAttribute ReportFilter filter,HttpServletRequest request) throws ParseException {
 		JRadModelAndView mv = new JRadModelAndView("/report/expire/expiresLoan", request);
 		filter.setRequest(request);
+		// 查询团队
+		List<SxOutputData> team = service.findteam();
 		QueryResult<DqzzdktjbbForm> result =  customerTransferFlowService.findDqzzdktjbbFormList(filter);
 		JRadPagedQueryResult<DqzzdktjbbForm> pagedResult = new JRadPagedQueryResult<DqzzdktjbbForm>(filter, result);
 		mv.addObject(PAGED_RESULT, pagedResult);
+		mv.addObject("team", team);
 		return mv;
 	}
 	

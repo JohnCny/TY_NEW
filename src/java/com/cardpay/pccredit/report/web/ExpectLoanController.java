@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cardpay.pccredit.Sx.model.SxOutputData;
+import com.cardpay.pccredit.Sx.service.SxService;
 import com.cardpay.pccredit.report.filter.CustomerMoveFilter;
 import com.cardpay.pccredit.report.filter.ReportFilter;
 import com.cardpay.pccredit.report.model.CustomerMoveForm;
@@ -36,7 +38,8 @@ import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 @RequestMapping("/expect/loan/*")
 @JRadModule("expect.loan")
 public class ExpectLoanController extends BaseController{
-	
+	@Autowired
+	private SxService service;
 	@Autowired
 	private CustomerTransferFlowService customerTransferFlowService;
 	
@@ -52,9 +55,12 @@ public class ExpectLoanController extends BaseController{
 	public AbstractModelAndView queryExpireLoan(@ModelAttribute ReportFilter filter,HttpServletRequest request) {
 		JRadModelAndView mv = new JRadModelAndView("/report/expect/expectLoan", request);
 		filter.setRequest(request);
+		// 查询团队
+		List<SxOutputData> team = service.findteam();
 	    QueryResult<YqhkdktjbbForm> result =  customerTransferFlowService.findYqhkdktjbbFormList(filter);
 		JRadPagedQueryResult<YqhkdktjbbForm> pagedResult = new JRadPagedQueryResult<YqhkdktjbbForm>(filter, result);
 		mv.addObject(PAGED_RESULT, pagedResult);
+		mv.addObject("team", team);
 		return mv;
 	}
 	
