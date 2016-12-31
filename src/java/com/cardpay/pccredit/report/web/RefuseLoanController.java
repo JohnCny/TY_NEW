@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cardpay.pccredit.Sx.model.SxOutputData;
+import com.cardpay.pccredit.Sx.service.SxService;
 import com.cardpay.pccredit.report.filter.ReportFilter;
 import com.cardpay.pccredit.report.model.BjjdktjbbForm;
 import com.cardpay.pccredit.report.service.CustomerTransferFlowService;
@@ -36,7 +38,8 @@ import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 @RequestMapping("/refuse/loan/*")
 @JRadModule("refuse.loan")
 public class RefuseLoanController extends BaseController{
-	
+	@Autowired
+	private SxService service;
 	@Autowired
 	private CustomerTransferFlowService customerTransferFlowService;
 	
@@ -64,9 +67,12 @@ public class RefuseLoanController extends BaseController{
 				e.printStackTrace();
 			}
 		}
+		// 查询团队
+		List<SxOutputData> team = service.findteam();
 	    QueryResult<BjjdktjbbForm> result =  customerTransferFlowService.findbjjdktjbbFormList(filter);
 		JRadPagedQueryResult<BjjdktjbbForm> pagedResult = new JRadPagedQueryResult<BjjdktjbbForm>(filter, result);
 		mv.addObject(PAGED_RESULT, pagedResult);
+		mv.addObject("team", team);
 		return mv;
 	}
 	

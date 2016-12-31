@@ -1110,7 +1110,7 @@ public class ManagerSalaryService {
 	    	}else{
 		    	Map<String, Object> obj = mapList.get(0);
 		    	prodLimit = obj.get("INTEREST").toString();
-		        prodType =  obj.get("MAINASSURE").toString();
+		       // prodType =  obj.get("MAINASSURE").toString();
 	    	}
 	    	
 	        // 计算贷款余额
@@ -1126,7 +1126,10 @@ public class ManagerSalaryService {
 			jxSpecificParameters.setProdType(prodType);//产品类型（C101-保证  C102-抵押  C100-信用）
 			jxSpecificParameters.setCustomerId(customerId);//客户id
 			jxSpecificParameters.setCustomerManagerId(userId);//客户经理id
-			commonDao.insertObject(jxSpecificParameters);
+			int a=commonDao.insertObject(jxSpecificParameters);
+			if(a>0){
+				System.out.println(222);
+			}
 	    }
 	}
 	
@@ -1154,7 +1157,7 @@ public class ManagerSalaryService {
 		
 		// 根据BUSICODE再次筛选
 		for (Map<String, Object> obj : mapList){
-			String sql =    " select t.busicode,				   		    		"+				
+			String sql =    /*" select t.busicode,				   		    		"+				
 							"       t.money,                                		"+
 							"       t.loandate,                             		"+
 							"       t.balamt,                               		"+
@@ -1167,7 +1170,14 @@ public class ManagerSalaryService {
 							"   and substr(OPERDATETIME, '6', '2') = '"+month+"'    "+
 							"   and custid = '"+tyCustomerId+"'                     "+
 							"   and busicode = '"+obj.get("BUSICODE").toString()+"' "+
-							" order by OPERDATETIME asc                             ";
+							" order by OPERDATETIME asc                             ";*/
+					" 	select a.YWBH as busicode,a.REQLMT as money,a.LOANDATE,a.BALAMT,a.operdatetime ,a.id as custid        "+
+		            " 	 from mibusidata a                                             "+
+		            " 	 where substr(a.operdatetime , '0', '4') = '"+year+"'          "+
+		            "  	and substr(OPERDATETIME, '5', '2') = '"+month+"'              "+
+		            "   and a.id = '"+tyCustomerId+"'                                "+
+		            "    and a.YWBH = '"+obj.get("BUSICODE").toString()+"'           "+
+		            "    order by a.operdatetime asc                                 ";
 			List<TMibusidata> mibusidataList = new ArrayList<TMibusidata>();
 			mibusidataList =  commonDao.queryBySql(TMibusidata.class, sql, null);
 			balamt = balamt.add(doCalAmt(mibusidataList, year, month));
@@ -1203,7 +1213,7 @@ public class ManagerSalaryService {
 		for(TMibusidata data : mibusidataList){
 		    if(balamt != data.getBalamt().toString()){
 		    	balamt = data.getBalamt().toString();
-		    	operTime = data.getOperdatetime();
+		    	operTime = data.getOperdatetime().toString();
 		    	list.add(balamt+"@"+operTime);
 		    }
 		}

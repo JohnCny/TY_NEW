@@ -27,7 +27,12 @@
               	 <span>贷款状态：<select id="status" name="status"><option value="">请选择</option>#dict("STATE","")</select></span>
               </li> -->
               <li>
-                 <span>所属机构：<select id="organName" name="organName"><option value="">请选择</option>#dict("ORGANJN","")</select></span>
+                 <span>所属机构：<select id="organName" name="organName"><option value="">请选择</option>
+                 <!-- #dict("ORGANJN","") -->
+                  #foreach($obj in $team)
+                 		<option >$!obj.Name</option>
+                #end
+                 </select></span>
               </li>
               <li class="search_button">
                 <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
