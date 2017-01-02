@@ -57,11 +57,17 @@ public class IntoPieces  extends BusinessModel {
     
     private String actual_quote;
     
-    private Float REFUSAL_REASON;
+    private String REFUSAL_REASON;
     
     
     
-    public String getFinal_approval() {
+    public String getREFUSAL_REASON() {
+		return REFUSAL_REASON;
+	}
+	public void setREFUSAL_REASON(String rEFUSAL_REASON) {
+		REFUSAL_REASON = rEFUSAL_REASON;
+	}
+	public String getFinal_approval() {
 		return final_approval;
 	}
 	public void setFinal_approval(String final_approval) {
@@ -72,12 +78,6 @@ public class IntoPieces  extends BusinessModel {
 	}
 	public void setActual_quote(String actual_quote) {
 		this.actual_quote = actual_quote;
-	}
-	public Float getREFUSAL_REASON() {
-		return REFUSAL_REASON;
-	}
-	public void setREFUSAL_REASON(Float rEFUSAL_REASON) {
-		REFUSAL_REASON = rEFUSAL_REASON;
 	}
 	public Float getYxje() {
 		return yxje;

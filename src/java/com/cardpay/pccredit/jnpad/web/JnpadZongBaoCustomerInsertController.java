@@ -190,6 +190,7 @@ public class JnpadZongBaoCustomerInsertController  extends BaseController{
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		System.out.println("1111");
 		return json.toString();
 	}
 	

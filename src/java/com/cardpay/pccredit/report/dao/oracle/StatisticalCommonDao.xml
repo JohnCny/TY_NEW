@@ -284,7 +284,6 @@ union all
 	</select>
 	
 	
-	
 	<select id="statisticalApprovedStatus1" resultMap="ResultMap" >
 	    select nvl(sum(ttt.value),0) as value from (select tt.value,
         tt.instcode
