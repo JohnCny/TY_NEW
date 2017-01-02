@@ -18,7 +18,11 @@ public interface StatisticalCommonDao {
      * @return
      */
 	public List<NameValueRecord> statisticalApplicationStatus();
-	
+	/**
+     * 统计当前进件状况
+     * @return
+     */
+	public List<NameValueRecord> statisticalApplicationStatus1();
 	/**
      * 统计当前贷款状况
      * @return
