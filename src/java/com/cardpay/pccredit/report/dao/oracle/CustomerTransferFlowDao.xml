@@ -340,7 +340,7 @@
 	<select id="getYffdktjbbFormlList" resultMap="YffdktjbbFormResultMap"
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
 					<!--  app.ACCOUNT_STATUS  as state,prod.product_name as prodName -->
- 		 			select distinct  base.khmc as cname ,base.zjhm as cardtype,tkmx.FFJE as money,tkmx.HTLL as baserate,yehz.QXRQ as interest, sysuser.display_name as busimanager,DeptName.Name  as name 
+ 		 			select distinct  base.khmc as cname ,base.zjhm as cardtype,protype.product_name as prodName,tkmx.FFJE as money,tkmx.HTLL as baserate,yehz.QXRQ as interest, sysuser.display_name as busimanager,DeptName.Name  as name 
 		                   from
 	                   
 	                   ( select distinct t.name,sysuser.id from sys_department t,sys_dept_user tt,sys_user sysuser
@@ -472,7 +472,9 @@
 					    AND sysuser.DISPLAY_NAME=#{custManagerName}
 					</if>
 					<if test="organName != null and organName != '' ">
-					    AND a.name=#{organName}
+					    AND  (select t.name from
+                  sys_department t where t.id in (select tt.dept_id from sys_dept_user tt
+                  where tt.user_id = sysuser.id))=#{organName}
 					</if>
 					
 					
@@ -507,7 +509,9 @@
 					    AND sysuser.DISPLAY_NAME=#{custManagerName}
 					</if>
 					<if test="organName != null and organName != '' ">
-					    AND a.name=#{organName}
+					    AND (select t.name from
+                  sys_department t where t.id in (select tt.dept_id from sys_dept_user tt
+                  where tt.user_id = sysuser.id))=#{organName}
 					</if>
 		
 	</select>
@@ -1283,65 +1287,62 @@
 		        group by tkmx.ywbh,base.khmc,base.zjhm,base.sj, protype.product_name,tkmx.ffje, tkmx.JZLL,
                 bx.bxhj,yehz.dkye,
                 sysuser.display_name , sysuser.id -->
-					  select
-                b.CHINESE_NAME,b.CARD_ID,c.SJ as TELEPHONE, protype.product_name as CPMC,tkmx.ffje as DF,tkmx.JZLL,jh.BXHJ,jh.JE,jh.YHLX,sysuser.display_name as KHJL,(select t.name from
+					  
+   select CHINESE_NAME, CARD_ID, TELEPHONE,  CPMC, DF,JZLL, BXHJ, JE, KHJL, YWJG from
+ ( select
+          b.khmc as CHINESE_NAME,b.zjhm as CARD_ID,b.SJ as TELEPHONE, protype.product_name as CPMC,tkmx.ffje as DF,tkmx.JZLL,bxhj.bx as BXHJ,yehz.dkye as JE,sysuser.display_name as KHJL,(select t.name from
               sys_department t where t.id in (select tt.dept_id 
         from sys_dept_user tt
               where tt.user_id = sysuser.id))
-                as YWJG
-                from
-                    (select b.card_id  as cardid,
-                     max(to_number(jh.qs)) as qs
-                from BASIC_CUSTOMER_INFORMATION b,
-                ty_customer_base c,
-                TY_REPAY_TKMX tkmx,
-                ty_product_type protype,
-                TY_KDK_JH jh,
-                sys_user sysuser,
-                SYS_DEPT_USER deptuser,
-                SYS_DEPARTMENT department
-                where
-                b.ty_customer_id = c.id and
-                c.KHNM = tkmx.khh and
-                 protype.product_code=tkmx.cpmc and
-                b.user_id=sysuser.id and
-                sysuser.id=deptuser.USER_ID and
-                deptuser.DEPT_ID=department.id and
-                jh.ywbh=tkmx.ywbh||'HT' and
-                jh.ts>0 
-                group by  b.card_id ) maxqs,
-                 BASIC_CUSTOMER_INFORMATION b,
-                ty_customer_base c,
-                TY_REPAY_TKMX tkmx,
-                ty_product_type protype,
-                TY_KDK_JH jh,
-                sys_user sysuser,
-                SYS_DEPT_USER deptuser,
-                SYS_DEPARTMENT department
-                where
-                b.ty_customer_id = c.id and
-                c.KHNM = tkmx.khh and
-                 protype.product_code=tkmx.cpmc and
-                b.user_id=sysuser.id and
-                sysuser.id=deptuser.USER_ID and
-                deptuser.DEPT_ID=department.id and
-                jh.ywbh=tkmx.ywbh||'HT' and
-                maxqs.cardid= b.card_id and
-                maxqs.qs=jh.qs and
-                jh.ts>0
+                as YWJG,
+           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end ) as DELAYINTERESTDAYS,  
+           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end )as DELAYAMTDAYS
+         
+       from
+           (   select 
+              tkmx.ywbh,
+              sum(lsz.df) as bx from  
+              ty_repay_tkmx tkmx,
+              ty_product_type protype,
+              ty_customer_base b,
+              ty_customer_rygl rygl,
+              sys_user sysuser,
+              ty_repay_yehz yehz,
+              ty_repay_lsz lsz
+              where b.khjl=rygl.dm and
+              rygl.ddrq=sysuser.external_id and
+              protype.product_code=tkmx.cpmc and
+              b.khnm=tkmx.khh and
+              yehz.jjh=tkmx.jjh and
+              tkmx.jjh =lsz.jjh 
+              group by tkmx.ywbh)bxhj,
+              ty_repay_tkmx tkmx,
+              ty_product_type protype,
+              ty_customer_base b,
+              ty_customer_rygl rygl,
+              sys_user sysuser,
+              ty_repay_yehz yehz,
+              ty_repay_lsz lsz
+              where b.khjl=rygl.dm and
+              rygl.ddrq=sysuser.external_id and
+              protype.product_code=tkmx.cpmc and
+              b.khnm=tkmx.khh and
+              yehz.jjh=tkmx.jjh and
+              tkmx.jjh =lsz.jjh and
+              bxhj.ywbh=tkmx.ywbh
+              group by  b.khmc,b.zjhm,b.SJ , protype.product_name ,tkmx.ffje ,tkmx.JZLL,sysuser.display_name ,sysuser.id,tkmx.dqrq,bxhj.bx,yehz.dkye) a
+              where 1=1 and
+               (nvl(a.DELAYINTERESTDAYS,0)  >   0 or nvl(a.DELAYAMTDAYS,0)  >   0)
 					<if test="certiCode != null and certiCode != '' ">
-						AND b.CARD_ID=#{certiCode}
+						AND a.CARD_ID=#{certiCode}
 					</if>
 					
 					<if test="organName != null and organName != '' ">
-					    AND (
-					    select t.name fromsys_department t where t.id in (select tt.dept_id 
-       					from sys_dept_user tt
-           			   	where tt.user_id = sysuser.id))=#{organName}
+					    AND a.YWJG=#{organName}
 					</if>
 					
 					<if test="custManagerName != null and custManagerName != '' ">
-						AND sysuser.display_name=#{custManagerName}
+						AND a.KHJL=#{custManagerName}
 					</if>
 		 			<![CDATA[		
 							) ROW_
@@ -1353,64 +1354,62 @@
 	
 	<select id="getYqdktjbbFormList" resultMap="YqdktjbbFormResultMap" 
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
-					 select  b.CHINESE_NAME as cname,b.CARD_ID as cardnum,c.SJ as contactmobiletel,tkmx.CPMC as prodName,tkmx.ffje as money,tkmx.JZLL as interest,jh.BXHJ as hkze,jh.JE as hkbj,jh.YHLX as yhlx,sysuser.display_name as busimanager,
-					 (select t.name from
-		          sys_department t where t.id in (select tt.dept_id 
-					from sys_dept_user tt
-		          where tt.user_id = sysuser.id)))  as instcode
-					 from
-                    (select b.card_id  as cardid,
-                     max(to_number(jh.qs)) as qs
-                from BASIC_CUSTOMER_INFORMATION b,
-                ty_customer_base c,
-                TY_REPAY_TKMX tkmx,
-                ty_product_type protype,
-                TY_KDK_JH jh,
-                sys_user sysuser,
-                SYS_DEPT_USER deptuser,
-                SYS_DEPARTMENT department
-                where
-                b.ty_customer_id = c.id and
-                c.KHNM = tkmx.khh and
-                 protype.product_code=tkmx.cpmc and
-                b.user_id=sysuser.id and
-                sysuser.id=deptuser.USER_ID and
-                deptuser.DEPT_ID=department.id and
-                jh.ywbh=tkmx.ywbh||'HT' and
-                jh.ts>0 
-                group by  b.card_id ) maxqs,
-                 BASIC_CUSTOMER_INFORMATION b,
-                ty_customer_base c,
-                TY_REPAY_TKMX tkmx,
-                ty_product_type protype,
-                TY_KDK_JH jh,
-                sys_user sysuser,
-                SYS_DEPT_USER deptuser,
-                SYS_DEPARTMENT department
-                where
-                b.ty_customer_id = c.id and
-                c.KHNM = tkmx.khh and
-                 protype.product_code=tkmx.cpmc and
-                b.user_id=sysuser.id and
-                sysuser.id=deptuser.USER_ID and
-                deptuser.DEPT_ID=department.id and
-                jh.ywbh=tkmx.ywbh||'HT' and
-                maxqs.cardid= b.card_id and
-                maxqs.qs=jh.qs and
-                jh.ts>0
+					 select   cname, cardnum, contactmobiletel, prodName, money, interest, hkze, hkbj,  busimanager, instcode
+           from
+                   ( select
+          b.khmc as cname,b.zjhm as cardnum,b.SJ as contactmobiletel, protype.product_name as prodName,tkmx.ffje as money,tkmx.JZLL as interest,bxhj.bx as hkze,yehz.dkye as hkbj ,sysuser.display_name as busimanager,(select t.name from
+              sys_department t where t.id in (select tt.dept_id 
+        from sys_dept_user tt
+              where tt.user_id = sysuser.id))
+                as instcode,
+           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end ) as DELAYINTERESTDAYS,  
+           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end )as DELAYAMTDAYS
+         
+       from
+           (   select 
+              tkmx.ywbh,
+              sum(lsz.df) as bx from  
+              ty_repay_tkmx tkmx,
+              ty_product_type protype,
+              ty_customer_base b,
+              ty_customer_rygl rygl,
+              sys_user sysuser,
+              ty_repay_yehz yehz,
+              ty_repay_lsz lsz
+              where b.khjl=rygl.dm and
+              rygl.ddrq=sysuser.external_id and
+              protype.product_code=tkmx.cpmc and
+              b.khnm=tkmx.khh and
+              yehz.jjh=tkmx.jjh and
+              tkmx.jjh =lsz.jjh 
+              group by tkmx.ywbh)bxhj,
+              ty_repay_tkmx tkmx,
+              ty_product_type protype,
+              ty_customer_base b,
+              ty_customer_rygl rygl,
+              sys_user sysuser,
+              ty_repay_yehz yehz,
+              ty_repay_lsz lsz
+              where b.khjl=rygl.dm and
+              rygl.ddrq=sysuser.external_id and
+              protype.product_code=tkmx.cpmc and
+              b.khnm=tkmx.khh and
+              yehz.jjh=tkmx.jjh and
+              tkmx.jjh =lsz.jjh and
+              bxhj.ywbh=tkmx.ywbh
+              group by  b.khmc,b.zjhm,b.SJ , protype.product_name ,tkmx.ffje ,tkmx.JZLL,sysuser.display_name ,sysuser.id,tkmx.dqrq,bxhj.bx,yehz.dkye) a
+              where 1=1 and
+               (nvl(a.DELAYINTERESTDAYS,0)  >   0 or nvl(a.DELAYAMTDAYS,0)  >   0)
 					<if test="certiCode != null and certiCode != '' ">
-						AND b.CARD_ID=#{certiCode}
+						AND cardnum=#{certiCode}
 					</if>
 					
 					<if test="organName != null and organName != '' ">
-					    AND (
-					    select t.name fromsys_department t where t.id in (select tt.dept_id 
-       					from sys_dept_user tt
-           			   	where tt.user_id = sysuser.id))=#{organName}
+					    AND instcode=#{organName}
 					</if>
 					
 					<if test="custManagerName != null and custManagerName != '' ">
-						AND sysuser.display_name=#{custManagerName}
+						AND busimanager=#{custManagerName}
 					</if>
 	</select>
 	
@@ -1419,47 +1418,63 @@
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
 		 <!-- select count(*) from yqdktjbb a WHERE 1=1  -->
 		 select count(*)
-		 from
-                    (select b.card_id  as cardid,
-                     max(to_number(jh.qs)) as qs
-                from BASIC_CUSTOMER_INFORMATION b,
-                ty_customer_base c,
-                TY_REPAY_TKMX tkmx,
-                ty_product_type protype,
-                TY_KDK_JH jh,
-                sys_user sysuser,
-                SYS_DEPT_USER deptuser,
-                SYS_DEPARTMENT department
-                where
-                b.ty_customer_id = c.id and
-                c.KHNM = tkmx.khh and
-                 protype.product_code=tkmx.cpmc and
-                b.user_id=sysuser.id and
-                sysuser.id=deptuser.USER_ID and
-                deptuser.DEPT_ID=department.id and
-                jh.ywbh=tkmx.ywbh||'HT' and
-                jh.ts>0 
-                group by  b.card_id ) maxqs,
-                 BASIC_CUSTOMER_INFORMATION b,
-                ty_customer_base c,
-                TY_REPAY_TKMX tkmx,
-                ty_product_type protype,
-                TY_KDK_JH jh,
-                sys_user sysuser,
-                SYS_DEPT_USER deptuser,
-                SYS_DEPARTMENT department
-                where
-                b.ty_customer_id = c.id and
-                c.KHNM = tkmx.khh and
-                 protype.product_code=tkmx.cpmc and
-                b.user_id=sysuser.id and
-                sysuser.id=deptuser.USER_ID and
-                deptuser.DEPT_ID=department.id and
-               jh.ywbh=tkmx.ywbh||'HT' and
-                maxqs.cardid= b.card_id and
-                maxqs.qs=jh.qs and
-                jh.ts>0
-		<if test="certiCode != null and certiCode != '' ">
+		 from (select CHINESE_NAME, CARD_ID, TELEPHONE,  CPMC, DF,JZLL, BXHJ, JE, KHJL, YWJG from
+ ( select
+          b.khmc as CHINESE_NAME,b.zjhm as CARD_ID,b.SJ as TELEPHONE, protype.product_name as CPMC,tkmx.ffje as DF,tkmx.JZLL,bxhj.bx as BXHJ,yehz.dkye as JE,sysuser.display_name as KHJL,(select t.name from
+              sys_department t where t.id in (select tt.dept_id 
+        from sys_dept_user tt
+              where tt.user_id = sysuser.id))
+                as YWJG,
+           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end ) as DELAYINTERESTDAYS,  
+           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end )as DELAYAMTDAYS
+         
+       from
+           (   select 
+              tkmx.ywbh,
+              sum(lsz.df) as bx from  
+              ty_repay_tkmx tkmx,
+              ty_product_type protype,
+              ty_customer_base b,
+              ty_customer_rygl rygl,
+              sys_user sysuser,
+              ty_repay_yehz yehz,
+              ty_repay_lsz lsz
+              where b.khjl=rygl.dm and
+              rygl.ddrq=sysuser.external_id and
+              protype.product_code=tkmx.cpmc and
+              b.khnm=tkmx.khh and
+              yehz.jjh=tkmx.jjh and
+              tkmx.jjh =lsz.jjh 
+              group by tkmx.ywbh)bxhj,
+              ty_repay_tkmx tkmx,
+              ty_product_type protype,
+              ty_customer_base b,
+              ty_customer_rygl rygl,
+              sys_user sysuser,
+              ty_repay_yehz yehz,
+              ty_repay_lsz lsz
+              where b.khjl=rygl.dm and
+              rygl.ddrq=sysuser.external_id and
+              protype.product_code=tkmx.cpmc and
+              b.khnm=tkmx.khh and
+              yehz.jjh=tkmx.jjh and
+              tkmx.jjh =lsz.jjh and
+              bxhj.ywbh=tkmx.ywbh
+              group by  b.khmc,b.zjhm,b.SJ , protype.product_name ,tkmx.ffje ,tkmx.JZLL,sysuser.display_name ,sysuser.id,tkmx.dqrq,bxhj.bx,yehz.dkye) a
+              where 1=1 and
+               (nvl(a.DELAYINTERESTDAYS,0)  >   0 or nvl(a.DELAYAMTDAYS,0)  >   0)
+					<if test="certiCode != null and certiCode != '' ">
+						AND a.CARD_ID=#{certiCode}
+					</if>
+					
+					<if test="organName != null and organName != '' ">
+					    AND a.YWJG=#{organName}
+					</if>
+					
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.KHJL=#{custManagerName}
+					</if>)
+		<!-- <if test="certiCode != null and certiCode != '' ">
 						AND b.CARD_ID=#{certiCode}
 					</if>
 					
@@ -1472,7 +1487,7 @@
 					
 					<if test="custManagerName != null and custManagerName != '' ">
 						AND sysuser.display_name=#{custManagerName}
-					</if>
+					</if> -->
 	</select>
 	 
 	<!--预期还款贷款统计-->
@@ -1482,7 +1497,7 @@
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
 					<!--  select * from yqhkdktjbb a WHERE 1=1 -->
-				select distinct tkmx.ywbh, b.CHINESE_NAME,b.CARD_ID,tkmx.CPMC,tkmx.ffje as DF,
+			<!-- 	select distinct tkmx.ywbh, b.CHINESE_NAME,b.CARD_ID,tkmx.CPMC,tkmx.ffje as DF,
                            (case when(to_date(tkmx.dqrq,'yyyy-MM-dd')-trunc(sysdate,'dd')) > 0 then (to_date(tkmx.dqrq,'yyyy-MM-dd')-trunc(sysdate,'dd')) else null  end )  as hkr, 
                           jh.JE,
                           jh.YHLX,
@@ -1527,19 +1542,44 @@
                               deptuser.DEPT_ID=department.id  and
                           substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh and
                           maxqs.cardid=b.card_id and
-                          maxqs.qs=jh.qs
+                          maxqs.qs=jh.qs -->
+                          select distinct ywbh, CHINESE_NAME,CARD_ID,CPMC,DF,  hkr, JE,KHJL, YWJG
+ from
+(select distinct tkmx.ywbh, b.khmc as CHINESE_NAME,b.zjhm as CARD_ID,tkmx.CPMC,tkmx.ffje as DF,
+                           (case when(to_date(tkmx.dqrq,'yyyy-MM-dd')-trunc(sysdate,'dd')) > 0 then (to_date(tkmx.dqrq,'yyyy-MM-dd')-trunc(sysdate,'dd')) else null  end )  as hkr, yehz.dkye as JE,
+                          sysuser.display_name as KHJL,
+                         (select t.name from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = sysuser.id))  as YWJG,
+                          (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end ) as DELAYINTERESTDAYS,  
+           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end )as DELAYAMTDAYS
+					 from 
+                      ty_repay_tkmx tkmx,
+                      ty_product_type protype,
+                      ty_customer_base b,
+                      ty_customer_rygl rygl,
+                      sys_user sysuser,
+                      ty_repay_yehz yehz,
+                      ty_kdk_jh jh,
+                      ty_repay_lsz lsz
+                      where b.khjl=rygl.dm and
+                      rygl.ddrq=sysuser.external_id and
+                      protype.product_code=tkmx.cpmc and
+                      b.khnm=tkmx.khh and
+                      yehz.jjh=tkmx.jjh and
+                      tkmx.jjh =lsz.jjh  and
+                      jh.ywbh=tkmx.ywbh||'HT'
+                      group by   tkmx.ywbh, b.khmc,b.zjhm,tkmx.CPMC,tkmx.ffje ,sysuser.display_name ,tkmx.dqrq,yehz.dkye,sysuser.id
+                      ) a
+                      where 1=1  
+                       and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ <= ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ <=  ]]>0)
 					<if test="certiCode != null and certiCode != '' ">
-						AND b.CARD_ID=#{certiCode}
+						AND CARD_ID=#{certiCode}
 					</if>
 					<if test="organName != null and organName != '' ">
-					    AND (select org.name from sys_organization org where id in(select t.org_id from
-              			sys_department t where t.id in (select tt.dept_id 
-          				from sys_dept_user tt
-              			where tt.user_id = sysuser.id)))=#{organName}
+					    AND  YWJG=#{organName}
 					</if>
 					
 					<if test="custManagerName != null and custManagerName != '' ">
-						AND sysuser.display_name=#{custManagerName}
+						AND KHJL=#{custManagerName}
 					</if>
 		 			<![CDATA[		
 							) ROW_
@@ -1552,55 +1592,44 @@
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
 		 select count(*)
 		   from 
-                          ( select  b.card_id  as cardid,
-                      max(to_number(jh.qs)) as qs
-                            from 
-                             BASIC_CUSTOMER_INFORMATION  b,
-                            TY_REPAY_TKMX tkmx ,
-                            TY_REPAY_YEHZ yehz,
-                            ty_customer_base c,
-                            TY_KDK_JH  jh,
-                             sys_user sysuser,
-                        SYS_DEPT_USER deptuser,
-                        SYS_DEPARTMENT department
-                            where  b.ty_customer_id = c.id and
-                                 c.KHNM = tkmx.khh  and
-                                 yehz.JJH = tkmx.JJH and
-                                 b.user_id=sysuser.id and
-                                 sysuser.id=deptuser.USER_ID and
-                                  deptuser.DEPT_ID=department.id  and
-                              substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh 
-                              group by  b.card_id )  maxqs,
-                         BASIC_CUSTOMER_INFORMATION  b,
-                        TY_REPAY_TKMX tkmx ,
-                        TY_REPAY_YEHZ yehz,
-                        ty_customer_base c,
-                        TY_KDK_JH  jh,
-                         sys_user sysuser,
-                    SYS_DEPT_USER deptuser,
-                    SYS_DEPARTMENT department
-                        where  b.ty_customer_id = c.id and
-                             c.KHNM = tkmx.khh  and
-                             yehz.JJH = tkmx.JJH and
-                             b.user_id=sysuser.id and
-                             sysuser.id=deptuser.USER_ID and
-                              deptuser.DEPT_ID=department.id  and
-                          substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh and
-                          maxqs.cardid=b.card_id and
-                          maxqs.qs=jh.qs
+                          (     select distinct ywbh, CHINESE_NAME,CARD_ID,CPMC,DF,  hkr, JE,KHJL, YWJG
+ from
+(select distinct tkmx.ywbh, b.khmc as CHINESE_NAME,b.zjhm as CARD_ID,tkmx.CPMC,tkmx.ffje as DF,
+                           (case when(to_date(tkmx.dqrq,'yyyy-MM-dd')-trunc(sysdate,'dd')) > 0 then (to_date(tkmx.dqrq,'yyyy-MM-dd')-trunc(sysdate,'dd')) else null  end )  as hkr, yehz.dkye as JE,
+                          sysuser.display_name as KHJL,
+                         (select t.name from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = sysuser.id))  as YWJG,
+                          (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end ) as DELAYINTERESTDAYS,  
+           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end )as DELAYAMTDAYS
+					 from 
+                      ty_repay_tkmx tkmx,
+                      ty_product_type protype,
+                      ty_customer_base b,
+                      ty_customer_rygl rygl,
+                      sys_user sysuser,
+                      ty_repay_yehz yehz,
+                      ty_kdk_jh jh,
+                      ty_repay_lsz lsz
+                      where b.khjl=rygl.dm and
+                      rygl.ddrq=sysuser.external_id and
+                      protype.product_code=tkmx.cpmc and
+                      b.khnm=tkmx.khh and
+                      yehz.jjh=tkmx.jjh and
+                      tkmx.jjh =lsz.jjh  and
+                      jh.ywbh=tkmx.ywbh||'HT'
+                      group by   tkmx.ywbh, b.khmc,b.zjhm,tkmx.CPMC,tkmx.ffje ,sysuser.display_name ,tkmx.dqrq,yehz.dkye,sysuser.id
+                      ) a
+                      where 1=1  
+                       and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ <= ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ <=  ]]>0)
 					<if test="certiCode != null and certiCode != '' ">
-						AND b.CARD_ID=#{certiCode}
+						AND CARD_ID=#{certiCode}
 					</if>
 					<if test="organName != null and organName != '' ">
-					    AND (select t.name from
-              			sys_department t where t.id in (select tt.dept_id 
-          				from sys_dept_user tt
-              			where tt.user_id = sysuser.id))=#{organName}
+					    AND  YWJG=#{organName}
 					</if>
 					
 					<if test="custManagerName != null and custManagerName != '' ">
-						AND sysuser.display_name=#{custManagerName}
-					</if>
+						AND KHJL=#{custManagerName}
+					</if>)
 	</select>
 	
 	<select id="getYqhkdktjbbFormList" resultMap="YqhkdktjbbFormResultMap" 
@@ -1617,50 +1646,31 @@
                         from sys_dept_user tt
               where tt.user_id = sysuser.id))  as YWJG,jh.qs
                         from 
-                          ( select  b.card_id  as cardid,
-                      max(to_number(jh.qs)) as qs
-                            from 
-                             BASIC_CUSTOMER_INFORMATION  b,
-                            TY_REPAY_TKMX tkmx ,
-                            TY_REPAY_YEHZ yehz,
-                            ty_customer_base c,
-                            TY_KDK_JH  jh,
-                             sys_user sysuser,
-                        SYS_DEPT_USER deptuser,
-                        SYS_DEPARTMENT department
-                            where  b.ty_customer_id = c.id and
-                                 c.KHNM = tkmx.khh  and
-                                 yehz.JJH = tkmx.JJH and
-                                 b.user_id=sysuser.id and
-                                 sysuser.id=deptuser.USER_ID and
-                                  deptuser.DEPT_ID=department.id  and
-                              substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh 
-                              group by  b.card_id )  maxqs,
-                         BASIC_CUSTOMER_INFORMATION  b,
-                        TY_REPAY_TKMX tkmx ,
-                        TY_REPAY_YEHZ yehz,
-                        ty_customer_base c,
-                        TY_KDK_JH  jh,
-                         sys_user sysuser,
-                    SYS_DEPT_USER deptuser,
-                    SYS_DEPARTMENT department
-                        where  b.ty_customer_id = c.id and
-                             c.KHNM = tkmx.khh  and
-                             yehz.JJH = tkmx.JJH and
-                             b.user_id=sysuser.id and
-                             sysuser.id=deptuser.USER_ID and
-                              deptuser.DEPT_ID=department.id  and
-                          substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh and
-                          maxqs.cardid=b.card_id and
-                          maxqs.qs=jh.qs
+                           select distinct tkmx.ywbh, b.khmc as CHINESE_NAME,b.zjhm as CARD_ID,tkmx.CPMC,tkmx.ffje as DF,
+                           (case when(to_date(tkmx.dqrq,'yyyy-MM-dd')-trunc(sysdate,'dd')) > 0 then (to_date(tkmx.dqrq,'yyyy-MM-dd')-trunc(sysdate,'dd')) else null  end )  as hkr, yehz.dkye as JE,
+                          sysuser.display_name as KHJL,
+                         (select t.name from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = sysuser.id))  as YWJG
+                        from 
+                      ty_repay_tkmx tkmx,
+                      ty_product_type protype,
+                      ty_customer_base b,
+                      ty_customer_rygl rygl,
+                      sys_user sysuser,
+                      ty_repay_yehz yehz,
+                      ty_kdk_jh jh,
+                      ty_repay_lsz lsz
+                      where b.khjl=rygl.dm and
+                      rygl.ddrq=sysuser.external_id and
+                      protype.product_code=tkmx.cpmc and
+                      b.khnm=tkmx.khh and
+                      yehz.jjh=tkmx.jjh and
+                      tkmx.jjh =lsz.jjh  and
+                      jh.ywbh=tkmx.ywbh||'HT'
 					<if test="certiCode != null and certiCode != '' ">
-						AND b.CARD_ID=#{certiCode}
+						AND b.zjhm=#{certiCode}
 					</if>
 					<if test="organName != null and organName != '' ">
-					    AND (select t.name from
-              			sys_department t where t.id in (select tt.dept_id 
-          				from sys_dept_user tt
-              			where tt.user_id = sysuser.id))=#{organName}
+					    AND  (select t.name from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = sysuser.id)) =#{organName}
 					</if>
 					
 					<if test="custManagerName != null and custManagerName != '' ">

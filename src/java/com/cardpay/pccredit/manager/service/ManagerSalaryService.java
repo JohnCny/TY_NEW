@@ -2,6 +2,9 @@ package com.cardpay.pccredit.manager.service;
 
 import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -45,7 +48,9 @@ import com.cardpay.pccredit.manager.model.TyPerformanceParameters;
 import com.cardpay.pccredit.manager.model.TyRiskMargin;
 import com.cardpay.pccredit.manager.model.TyRiskMarginSpecific;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
+import com.cardpay.pccredit.postLoan.model.MibusidateView;
 import com.cardpay.pccredit.system.model.SystemUser;
+import com.thoughtworks.xstream.io.binary.Token.Formatter;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
 import com.wicresoft.jrad.base.database.model.QueryResult;
@@ -938,11 +943,8 @@ public class ManagerSalaryService {
 		jxParameters.setMonthOverdueLoannum(findOverdueNum(userId,year,month)+"");//当月逾期贷款笔数
 		jxParameters.setMonthOverdueDays(findOverdueDays(userId,year,month)+"");//当月逾期贷款天数
 		jxParameters.setMonthTimes(xbNum+"");//当月协办次数
-		//managerSalaryDao.insertjx(jxParameters);
-		int a=commonDao.insertObject(jxParameters);
-		if(a>0){
-			System.out.println(1111);
-		}
+		managerSalaryDao.insertjx(jxParameters);
+		commonDao.insertObject(jxParameters);
 	}
 	
 	/**
@@ -1171,15 +1173,18 @@ public class ManagerSalaryService {
 							"   and custid = '"+tyCustomerId+"'                     "+
 							"   and busicode = '"+obj.get("BUSICODE").toString()+"' "+
 							" order by OPERDATETIME asc                             ";*/
-					" 	select a.YWBH as busicode,a.REQLMT as money,a.LOANDATE,a.BALAMT,a.operdatetime ,a.id as custid        "+
+					//" 	select a.YWBH as busicode,a.REQLMT as money,a.LOANDATE,a.BALAMT,a.operdatetime ,a.id as custid        "+
+					" 	select a.ywbh ,a.reqlmt,a.loandate,a.balamt,a.operdatetime ,a.id         "+
 		            " 	 from mibusidata a                                             "+
 		            " 	 where substr(a.operdatetime , '0', '4') = '"+year+"'          "+
 		            "  	and substr(OPERDATETIME, '5', '2') = '"+month+"'              "+
 		            "   and a.id = '"+tyCustomerId+"'                                "+
 		            "    and a.YWBH = '"+obj.get("BUSICODE").toString()+"'           "+
 		            "    order by a.operdatetime asc                                 ";
-			List<TMibusidata> mibusidataList = new ArrayList<TMibusidata>();
-			mibusidataList =  commonDao.queryBySql(TMibusidata.class, sql, null);
+			/*List<TMibusidata> mibusidataList = new ArrayList<TMibusidata>();
+			mibusidataList =  commonDao.queryBySql(TMibusidata.class, sql, null);*/
+			List<MibusidateView> mibusidataList = new ArrayList<MibusidateView>();
+			mibusidataList =  commonDao.queryBySql(MibusidateView.class, sql, null);
 			balamt = balamt.add(doCalAmt(mibusidataList, year, month));
 		}
 		return balamt;
@@ -1191,7 +1196,7 @@ public class ManagerSalaryService {
 	 * @return
 	 * 一笔busicode 的list 一笔算
 	 */
-	public BigDecimal doCalAmt(List<TMibusidata> mibusidataList,String year,String month){
+	public BigDecimal doCalAmt(List<MibusidateView> mibusidataList,String year,String month){
 		// 获取当月实际天数
 		int  days = getMonthLastDay(Integer.parseInt(year),Integer.parseInt(month));
 		
@@ -1210,7 +1215,7 @@ public class ManagerSalaryService {
 		 */
 		List<String> list  = new ArrayList<String>();
 		
-		for(TMibusidata data : mibusidataList){
+		for(MibusidateView data : mibusidataList){
 		    if(balamt != data.getBalamt().toString()){
 		    	balamt = data.getBalamt().toString();
 		    	operTime = data.getOperdatetime().toString();
@@ -1293,7 +1298,16 @@ public class ManagerSalaryService {
 	     long start = calendar.getTimeInMillis();
 	     
 	     // end
-	     List<String> endDateList = findYearAndMonthAndDay(endDate);
+	     DateFormat df=new SimpleDateFormat("yyyyMMdd");
+	     DateFormat df1=new SimpleDateFormat("yyyy-MM-dd");
+	     String endDates = null;
+		try {
+			endDates = df.format(df1.parse(endDate));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	     List<String> endDateList = findYearAndMonthAndDay(endDates);
 	     calendar.set(Integer.parseInt(endDateList.get(0)),
 	    		 	  Integer.parseInt(endDateList.get(1)),
 	    			  Integer.parseInt(endDateList.get(2))); 
@@ -1311,8 +1325,8 @@ public class ManagerSalaryService {
 	  public static List<String> findYearAndMonthAndDay(String date){
 		  List<String>  list = new ArrayList<String>();
 		  String year = date.substring(0, 4);
-		  String month = date.substring(6, 7);
-		  String day = date.substring(8, 10);
+		  String month = date.substring(4, 6);
+		  String day = date.substring(6, 8);
 		  list.add(year);
 		  list.add(month);
 		  list.add(day);

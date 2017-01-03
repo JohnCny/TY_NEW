@@ -307,7 +307,7 @@
                     and lsz.jjh=tkmx.jjh
                     and maxqs.ywbh=tkmx.ywbh
                     and maxqs.qs=jh.qs
-                     <if test="userId != null and userId != '' ">
+                     <if test="userId != null and userId != '' and userId!='000001'">
 						AND sysuser.id=#{userId}
 					   </if>
 					   <if test="busiCode != null and busiCode != '' ">
@@ -360,7 +360,7 @@
                     and lsz.jjh=tkmx.jjh
                     and maxqs.ywbh=tkmx.ywbh
                     and maxqs.qs=jh.qs
-                   <if test="userId != null and userId != '' ">
+                   <if test="userId != null and userId != '' and userId!='000001'">
 						AND sysuser.id=#{userId}
 					   </if>
 					   <if test="busiCode != null and busiCode != '' ">
@@ -541,7 +541,7 @@
 			              jh.ywbh=tkmx.ywbh||'HT' and
 			              yehz.jjh=tkmx.jjh and
 			              tkmx.jjh =lsz.jjh
-			            <if test="userId != null and userId != '' ">
+			            <if test="userId != null and userId != '' and userId !='000001'">
 			             and sysuser.id  =#{userId}
 				         </if>
 				         <if test="busiCode != null and busiCode != '' ">
@@ -605,7 +605,7 @@
 			              jh.ywbh=tkmx.ywbh||'HT' and
 			              yehz.jjh=tkmx.jjh and
 			              tkmx.jjh =lsz.jjh
-			            <if test="userId != null and userId != '' ">
+			            <if test="userId != null and userId != '' and userId !='000001' ">
 			             and sysuser.id  =#{userId}
 				         </if>
 				         <if test="busiCode != null and busiCode != '' ">

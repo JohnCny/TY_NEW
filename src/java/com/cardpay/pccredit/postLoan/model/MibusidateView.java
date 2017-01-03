@@ -1,7 +1,10 @@
 package com.cardpay.pccredit.postLoan.model;
 
-public class MibusidateView {
+import com.wicresoft.jrad.base.database.model.BusinessModel;
+
+public class MibusidateView extends BusinessModel{
 	private String YWBH;
+	private String ywbh;
 	private String id;
 	private String KHH;
 	private String KHMC;
@@ -11,10 +14,12 @@ public class MibusidateView {
 	private String SXED;
 	private String GHJL;
 	private String LOANDATE;
+	private String loandate;
 	private String DQRQ;
 	private String DKQX;
 	private String JZLL;
 	private String REQLMT;
+	private String reqlmt;
 	private String DELAYINTERESTDAYS;
 	private String DELAYAMTDAYS;
 	private String qs;
@@ -29,51 +34,43 @@ public class MibusidateView {
 	private String BNQX;
 	private String BWQX;
 	private String BALAMT;
+	private String balamt;
 	private String yxye;
 	private String HKFS;
 	private String je;
 	private String CREATE_TIME;
-	public MibusidateView(){}
-	public MibusidateView(String yWBH, String id, String kHH, String kHMC,
-			String zJHM, String sSBM, String sJ, String sXED, String gHJL,
-			String lOANDATE, String dQRQ, String dKQX, String jZLL,
-			String rEQLMT, String dELAYINTERESTDAYS, String dELAYAMTDAYS,
-			String qs, String dLAYDT, String dF, String yE, String sHBJ,
-			String jKJE, String kSQXRQ, String sHLX, String dKYE, String bNQX,
-			String bWQX, String bALAMT, String yxye, String hKFS, String je,
-			String cREATE_TIME) {
-		YWBH = yWBH;
-		this.id = id;
-		KHH = kHH;
-		KHMC = kHMC;
-		ZJHM = zJHM;
-		SSBM = sSBM;
-		SJ = sJ;
-		SXED = sXED;
-		GHJL = gHJL;
-		LOANDATE = lOANDATE;
-		DQRQ = dQRQ;
-		DKQX = dKQX;
-		JZLL = jZLL;
-		REQLMT = rEQLMT;
-		DELAYINTERESTDAYS = dELAYINTERESTDAYS;
-		DELAYAMTDAYS = dELAYAMTDAYS;
-		this.qs = qs;
-		DLAYDT = dLAYDT;
-		DF = dF;
-		YE = yE;
-		SHBJ = sHBJ;
-		JKJE = jKJE;
-		KSQXRQ = kSQXRQ;
-		SHLX = sHLX;
-		DKYE = dKYE;
-		BNQX = bNQX;
-		BWQX = bWQX;
-		BALAMT = bALAMT;
-		this.yxye = yxye;
-		HKFS = hKFS;
-		this.je = je;
-		CREATE_TIME = cREATE_TIME;
+	private String operdatetime;
+	
+	
+	public String getLoandate() {
+		return loandate;
+	}
+	public void setLoandate(String loandate) {
+		this.loandate = loandate;
+	}
+	public String getReqlmt() {
+		return reqlmt;
+	}
+	public void setReqlmt(String reqlmt) {
+		this.reqlmt = reqlmt;
+	}
+	public String getYwbh() {
+		return ywbh;
+	}
+	public void setYwbh(String ywbh) {
+		this.ywbh = ywbh;
+	}
+	public String getBalamt() {
+		return balamt;
+	}
+	public void setBalamt(String balamt) {
+		this.balamt = balamt;
+	}
+	public String getOperdatetime() {
+		return operdatetime;
+	}
+	public void setOperdatetime(String operdatetime) {
+		this.operdatetime = operdatetime;
 	}
 	public String getJe() {
 		return je;
