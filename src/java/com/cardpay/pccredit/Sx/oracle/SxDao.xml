@@ -76,11 +76,12 @@
                     and shlx.ywbh=tkmx.ywbh
                     and DeptName.id=sysuser.id  
                     order  by tkmx.jkrq ) a
+                      where 1=1 
 						<if test="fdate!=null and ldate!=null">
-						    and tkmx.JKRQ=#{fdate}
+						    and a.JKRQ=#{fdate}
 						</if>
 						<if test="product!=null and product !=''" >
-						    and protype.product_name like '%'||#{product}||'%'
+						    and productName like '%'||#{product}||'%'
 						</if>
 						  group by  a.deptname, a.productName
                     order by nlssort (a.deptname ,'nls_sort=schinese_pinyin_m')
@@ -185,12 +186,13 @@
                     and shlx.ywbh=tkmx.ywbh
                     and DeptName.id=sysuser.id  
                     order  by tkmx.jkrq ) a
-            <if test="fdate!=null and ldate!=null">
-                and tkmx.JKRQ=#{fdate}
-            </if>
-            <if test="product!=null and product !=''" >
-                and protype.product_name like '%'||#{product}||'%'
-            </if>
+            where 1=1 
+						<if test="fdate!=null and ldate!=null">
+						    and a.JKRQ=#{fdate}
+						</if>
+						<if test="product!=null and product !=''" >
+						    and productName like '%'||#{product}||'%'
+						</if>
               group by  a.deptname, a.productName
                     order by nlssort (a.deptname ,'nls_sort=schinese_pinyin_m'))
 	</select> 
