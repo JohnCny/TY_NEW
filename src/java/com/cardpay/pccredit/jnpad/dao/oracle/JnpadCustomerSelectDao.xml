@@ -235,10 +235,10 @@
 		from BASIC_CUSTOMER_INFORMATION c
 		where 1=1
 		<if test="cardId != null and cardId != '' ">
-		AND c.CARD_ID=#{cardId}
+		AND c.CARD_ID like #{cardId}
 		</if>
 		<if test="chineseName != null and chineseName != '' ">
-		AND c.CHINESE_NAME=#{chineseName}
+		AND c.CHINESE_NAME like #{chineseName}
 		</if>
 		 AND 
 		c.USER_ID=#{userId}
