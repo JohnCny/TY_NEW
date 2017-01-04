@@ -53,7 +53,7 @@ public class OdsTools_jn {
 			//获取今日日期 yyyyMMdd格式
 			DateFormat format = new SimpleDateFormat("yyyyMMdd");
 			String dateString = format.format(new Date());
-			curRemotePath = curRemotePath+File.separator+dateString;
+			curRemotePath = curRemotePath+dateString;
 			//获取文件列表
 			ArrayList<String> files = sftp.getList(curRemotePath);
 			//处理ftp文件
@@ -94,12 +94,16 @@ public class OdsTools_jn {
 		 //本地创建当日数据文件夹
         if(!url.exists()){ 
         	url.mkdirs();  
+        	 if(!url.exists()){
+        		 System.out.println(111);
+        	 }
         }
 		while(pathIterator.hasNext()){
 			String file = pathIterator.next();
 			try{
 				for(int i=0;i<fileName.length;i++){
-					if(file.indexOf(fileName[i])>-1){
+					int a =file.indexOf(fileName[i]);
+					if(file.indexOf(fileName[i])>=-1){
 						//下载文件
 						if(sftp.download(curRemotePath, file, downloadPath)){
 							log.error("下载文件" + file + "成功");

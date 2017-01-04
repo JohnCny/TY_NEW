@@ -16,6 +16,7 @@ import com.cardpay.pccredit.customer.web.MaintenanceWeb;
 import com.cardpay.pccredit.manager.web.ManagerBelongMapForm;
 import com.cardpay.pccredit.postLoan.filter.FcloaninfoFilter;
 import com.cardpay.pccredit.postLoan.filter.PostLoanFilter;
+import com.cardpay.pccredit.postLoan.model.CreditProcess;
 import com.cardpay.pccredit.postLoan.model.Fcloaninfo;
 import com.cardpay.pccredit.postLoan.model.MibusidataForm;
 import com.cardpay.pccredit.postLoan.model.MibusidateView;
@@ -87,5 +88,15 @@ public interface PostLoanDao {
 	List<MibusidataForm> findrefusedMibusidata(PostLoanFilter filter);
 	int findrefusedMibusidatasize(PostLoanFilter filter);
 	List<MibusidataForm> findtzList(PostLoanFilter filter);
-	
+	/**
+	 * 查询信贷跟踪表信息
+	 * @param filter 
+	 * */
+	List<CreditProcess> queryCreditProcess(CreditProcess filter);
+	int querySize(CreditProcess filter);
+	List<CreditProcess> queryAll(String id);
+	List<CreditProcess> creditProcessExportQueryAll(CreditProcess filter);
+	List<CreditProcess> queryByCardId(String cardId);
+	TyRepayTkmxForm queryByJJH(String jjh);
+	TyRepayLshForm queryByLSJJH(String jjh);
 }

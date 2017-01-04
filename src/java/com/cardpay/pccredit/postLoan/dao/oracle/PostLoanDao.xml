@@ -191,7 +191,30 @@
 	  <resultMap id="BaseResultMap" type="com.cardpay.pccredit.customer.model.TyRepayTkmxForm" >
    		<result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR" />
  	  </resultMap>
- 	 
+ 	  <resultMap id="CreditProcess" type="com.cardpay.pccredit.postLoan.model.CreditProcess" >
+   		<result column="spmc" 		property="spmc"  />
+		<result column="chinese_name" 	property="customername" />
+		<result column="teamname" 	property="teamname" />
+		<result column="bljg" 		property="bljg" />
+		<result column="dklx" 		property="dklx" />
+		<result column="assure_means"	property="mainassure"/>
+		<result column="hyfl" 	property="industry" />
+		<result column="display_name" 	property="mananger"/>
+		<result column="created_time" property="applytime"/>
+		<result column="apply_quota" 	property="applymoney"/>
+		<result column="start_examine_time" 		property="willtime" />
+		<result column="examine_result" 	property="auditopinion" />
+		<result column="examine_amount" 	property="examineamount" />
+		<result column="jkrq" 	property="audittime" />
+		<result column="zjts" 	property="zjdays" />
+		<result column="examine_lv"	    property="examine" 	 />
+		<result column="status" 		property="status" />
+		<result column="id" 		property="id" />
+		<result column="CARD_ID" 		property="cardId" />
+		<result column="carId" 		property="zjmh" />
+		
+		
+ 	 </resultMap>
  	 <!-- <resultMap id="BaseResultMap1" type="com.cardpay.pccredit.customer.model.TyRepayLshForm" >
    		<result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR" />
  	 </resultMap>
@@ -496,7 +519,6 @@
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
 				<!-- trim(a.ACCOUNTSTATE) as STATE -->
-					  select distinct a.* from (
 					  select
 			        distinct
 			          tkmx.YWBH ,
@@ -547,10 +569,12 @@
 				         <if test="busiCode != null and busiCode != '' ">
 							AND trim(tkmx.ywbh)=#{busiCode}
 						</if>
+						<if test="customerName != null and customerName != '' ">
+							AND b.khmc=#{customerName}
+						</if>
 			              group by tkmx.YWBH ,b.id ,b.KHH,b.KHMC, b.ZJHM,rygl.SSBM, b.SJ, b.SXED, b.GHJL,tkmx.JKRQ , tkmx.DQRQ, tkmx.DKQX,tkmx.JZLL, tkmx.FFJE  ,
 			                 yehz.SHBJ,yehz.JKJE, yehz.KSQXRQ,yehz.SHLX, yehz.DKYE,yehz.BNQX, yehz.BWQX,yehz.DKYE  , yehz.dkye  , sysuser.display_name, sysuser.id 
 			              order by tkmx.jkrq
-					  ) a where 1=1
 		 <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -610,6 +634,9 @@
 				         </if>
 				         <if test="busiCode != null and busiCode != '' ">
 							AND trim(tkmx.ywbh)=#{busiCode}
+						</if>
+						<if test="customerName != null and customerName != '' ">
+							AND b.khmc=#{customerName}
 						</if>
 			              group by tkmx.YWBH ,b.id ,b.KHH,b.KHMC, b.ZJHM,rygl.SSBM, b.SJ, b.SXED, b.GHJL,tkmx.JKRQ , tkmx.DQRQ, tkmx.DKQX,tkmx.JZLL, tkmx.FFJE  ,
 			                 yehz.SHBJ,yehz.JKJE, yehz.KSQXRQ,yehz.SHLX, yehz.DKYE,yehz.BNQX, yehz.BWQX,yehz.DKYE  , yehz.dkye  , sysuser.display_name, sysuser.id 
@@ -697,80 +724,211 @@
 	</select>
 	
 	<select id="findtzList"  resultMap="BaseResultMap3" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
-		    select * from (select
-		        distinct
-		          tkmx.YWBH ,
-		          b.id as id ,
-		          b.KHH,
-		          b.KHMC,
-		          b.ZJHM,
-		          rygl.SSBM,
-		          b.SJ,
-		          b.SXED,
-		          b.GHJL,
-		          tkmx.JKRQ as LOANDATE, 
-		          tkmx.DQRQ,
-		          tkmx.DKQX,
-		          tkmx.JZLL,
-		          tkmx.FFJE   as REQLMT,  
-		         jh.ts as DELAYINTERESTDAYS, 
-		           jh.ts as DELAYAMTDAYS,   
-		           jh.qs as qs,    
-		            rq.a+jh.ts as DLAYDT, 
-		          yehz.SHBJ,
-		          yehz.JKJE,
-		          yehz.KSQXRQ,
-		          yehz.SHLX,   
-		          yehz.DKYE,
-		          yehz.BNQX,
-		          yehz.BWQX,
-		          yehz.DKYE as BALAMT  ,
-		          yehz.dkye as YE ,
-		          sysuser.display_name
-		        from
-		           (select  basic.card_id  as cardid,
-		                      max(to_number(jh.qs)) as qs
-		          from
-		         (select trunc(to_date(rq,'yyyy-mm-dd')) a from ty_kdk_jh) rq,
-		                      TY_REPAY_TKMX tkmx,
-		                      TY_CUSTOMER_BASE  b,
-		                      ty_customer_rygl rygl,
-		                      TY_REPAY_YEHZ yehz,
-		                      ty_kdk_jh jh,
-		                      basic_customer_information basic,
-		                      sys_user sysuser
-		                      where 1=1 and
-		                      b.khnm=tkmx.khh and
-		                      b.khjl=rygl.dm and
-		                      yehz.JJH = tkmx.JJH and
-		                              substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh and
-		                              b.id=basic.ty_customer_id and
-		                              basic.user_id=sysuser.id and
-		                               rq.a=to_date(jh.rq,'yyyy-mm-dd')
-		                  <if test="userId != null and userId != '' ">
-					             and sysuser.id  =#{userId}
-					         </if>
-		                   group by basic.card_id)  maxqs,
-		         (select trunc(to_date(rq,'yyyy-mm-dd')) a from ty_kdk_jh) rq,
-		                      TY_REPAY_TKMX tkmx,
-		                      TY_CUSTOMER_BASE  b,
-		                      ty_customer_rygl rygl,
-		                      TY_REPAY_YEHZ yehz,
-		                      ty_kdk_jh jh,
-		                      basic_customer_information basic,
-		                      sys_user sysuser
-		                      where 1=1 and
-		                      b.khnm=tkmx.khh and
-		                      b.khjl=rygl.dm and
-		                      yehz.JJH = tkmx.JJH and
-		                              substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh and
-		                              b.id=basic.ty_customer_id and
-		                              basic.user_id=sysuser.id and
-		                               rq.a=to_date(jh.rq,'yyyy-mm-dd') 
-		                               and jh.qs=maxqs.qs
-		                               and basic.card_id=maxqs.cardid) a
+					  select
+			        distinct
+			          tkmx.YWBH Busicode,
+			          b.id as id ,
+			          b.KHH,
+			          b.KHMC Cname,
+			          b.ZJHM Custidno,
+			          rygl.SSBM,
+			          b.SJ,
+			          b.SXED,
+			          b.GHJL,
+			          tkmx.JKRQ as Loandate, 
+			          tkmx.DQRQ,
+			          tkmx.DKQX,
+			          tkmx.JZLL,
+			          tkmx.FFJE   as Reqlmt,
+			           tkmx.FFJE   as Money,
+			           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end ) as DELAYINTERESTDAYS,  
+			           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end )as DELAYAMTDAYS, 
+			           max(lsz.jzrq) as DLAYDT,
+			          yehz.SHBJ,
+			          yehz.JKJE,
+			          yehz.KSQXRQ,
+			          yehz.SHLX as PAYDEBT,  
+			          yehz.DKYE as Balamt ,
+			          yehz.BNQX,
+			          yehz.BWQX,
+			          yehz.DKYE as BALAMT  ,
+			          yehz.dkye as yxye,
+			          sysuser.id userid,
+			          sysuser.display_name
+			       from
+			              ty_repay_tkmx tkmx,
+			              ty_customer_base b,
+			              ty_customer_rygl rygl,
+			              sys_user sysuser,
+			              ty_kdk_jh jh,
+			              ty_repay_yehz yehz,
+			              ty_repay_lsz lsz
+			              where b.khjl=rygl.dm and
+			              rygl.ddrq=sysuser.external_id and
+			              b.khnm=tkmx.khh and
+			              jh.ywbh=tkmx.ywbh||'HT' and
+			              yehz.jjh=tkmx.jjh and
+			              tkmx.jjh =lsz.jjh
+			            <if test="userId != null and userId != '' and userId !='000001'">
+			             and sysuser.id  =#{userId}
+				         </if>
+				         <if test="busiCode != null and busiCode != '' ">
+							AND trim(tkmx.ywbh)=#{busiCode}
+						</if>
+						<if test="customerName != null and customerName != '' ">
+							AND b.khmc=#{customerName}
+						</if>
+			              group by tkmx.YWBH ,b.id ,b.KHH,b.KHMC, b.ZJHM,rygl.SSBM, b.SJ, b.SXED, b.GHJL,tkmx.JKRQ , tkmx.DQRQ, tkmx.DKQX,tkmx.JZLL, tkmx.FFJE  ,
+			                 yehz.SHBJ,yehz.JKJE, yehz.KSQXRQ,yehz.SHLX, yehz.DKYE,yehz.BNQX, yehz.BWQX,yehz.DKYE  , yehz.dkye  , sysuser.display_name, sysuser.id 
+			              order by tkmx.jkrq
 		  <!--   <if test="busicode != null and busicode != ''">
 		    and BUSICODE=#{busicode}
 		    </if> -->
 		</select>
+		
+		<!-- 信贷流程跟踪表 -->
+	<select id="queryCreditProcess" resultMap="CreditProcess">
+		  SELECT *from 
+		  (SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					  select 
+            bai.spmc,
+            bai.chinese_name,
+            (select t.name from sys_department t where t.id in 
+             (select tt.dept_id from sys_dept_user tt where tt.user_id = su.id)) as teamname,
+             (SELECT  A.TYPE_NAME  FROM DICT A ,PRODUCT_ATTRIBUTE p 
+             WHERE A .DICT_TYPE = 'CMMSCLNM-贷款担保方式' and A.TYPE_CODE=p.assure_means and p.id=cai.product_id) as assure_means,
+             su.display_name,
+            cai.created_time,
+            cai.apply_quota,
+             cai.status,
+             cai.id
+             <!-- from wf_status_queue_record t 
+             left join wf_status_info s on t.current_status = s.id 
+             left join wf_process_record pr on t.current_process = pr.id 
+             left join customer_application_process aa on pr.id = aa.serial_number
+              left join customer_application_info cai on cai.id=aa.application_id
+              left join basic_customer_information bai on cai.customer_id=bai.id
+              left join sys_user su on su.id=bai.user_id
+              left join ty_customer_base base on bai.ty_customer_id=base.id
+              left join PRODUCT_ATTRIBUTE p on p.id=cai.product_id
+              where 1=1 -->
+              from customer_application_info cai  
+				  	  left join customer_application_process aa on cai.id=aa.application_id
+			          left join basic_customer_information bai on cai.customer_id=bai.id
+		              left join sys_user su on su.id=bai.user_id
+		              left join ty_customer_base base on bai.ty_customer_id=base.id
+		              left join PRODUCT_ATTRIBUTE p on p.id=cai.product_id
+		              left join  wf_process_record pr on pr.id = aa.serial_number
+		              left join wf_status_queue_record t on t.current_process = pr.id 
+		              left join wf_status_info s on t.current_status = s.id 
+					<if test="customername!=null and customername!='' ">
+						    and bai.chinese_name like  '%'||#{customername}||'%'
+					</if>
+					
+                   <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	<!-- 统计行数 -->
+	<select id="querySize" resultType="int" parameterType="com.cardpay.pccredit.postLoan.model.CreditProcess">
+		  select count(*)
+			<!-- wf_status_queue_record t 
+						 left join wf_status_info s on t.current_status = s.id 
+						 left join wf_process_record pr on t.current_process = pr.id 
+						 left join customer_application_process aa on pr.id = aa.serial_number
+						  left join sys_user su on t.examine_user = su.id 
+						  left join customer_application_info cai on cai.id=aa.application_id
+						  left join basic_customer_information bai on cai.customer_id=bai.id
+						  left join ty_customer_base base on bai.ty_customer_id=base.id
+			  			left join PRODUCT_ATTRIBUTE p on p.id=cai.product_id -->
+			  			from customer_application_info cai  
+				  	  left join customer_application_process aa on cai.id=aa.application_id
+			          left join basic_customer_information bai on cai.customer_id=bai.id
+		              left join sys_user su on su.id=bai.user_id
+		              left join ty_customer_base base on bai.ty_customer_id=base.id
+		              left join PRODUCT_ATTRIBUTE p on p.id=cai.product_id
+		              left join  wf_process_record pr on pr.id = aa.serial_number
+		              left join wf_status_queue_record t on t.current_process = pr.id 
+		              left join wf_status_info s on t.current_status = s.id 
+			        <if test="customername!=null and customername!='' ">
+						    and bai.chinese_name like  '%'||#{customername}||'%'
+					</if>
+					
+	</select>
+	
+	<!-- 显示详情 -->
+	<select id="queryAll" resultMap="CreditProcess" parameterType="String">
+		      select
+            bai.spmc,
+            bai.chinese_name,
+            (select t.name from sys_department t where t.id in 
+             (select tt.dept_id from sys_dept_user tt where tt.user_id = su.id)) as teamname,
+            (select org.name from sys_organization org where id in(select t.org_id from sys_department t where t.id in 
+             (select tt.dept_id from sys_dept_user tt where tt.user_id = su.id)))as bljg ,
+             ''as dklx,
+            (SELECT  A.TYPE_NAME  FROM DICT A ,PRODUCT_ATTRIBUTE p 
+             WHERE A .DICT_TYPE = 'CMMSCLNM-贷款担保方式' and A.TYPE_CODE=p.assure_means and p.id=cai.product_id) as assure_means,
+             '' as hyfl,
+             su.display_name,
+            cai.created_time,
+            cai.apply_quota,
+             t.start_examine_time,
+              t.examine_result,
+             t.examine_amount,
+             cai.jkrq,
+             aa.examine_lv,
+             cai.status
+            from customer_application_info cai  
+				  	  left join customer_application_process aa on cai.id=aa.application_id
+			          left join basic_customer_information bai on cai.customer_id=bai.id
+		              left join sys_user su on su.id=bai.user_id
+		              left join ty_customer_base base on bai.ty_customer_id=base.id
+		              left join PRODUCT_ATTRIBUTE p on p.id=cai.product_id
+		              left join  wf_process_record pr on pr.id = aa.serial_number
+		              left join wf_status_queue_record t on t.current_process = pr.id 
+		              left join wf_status_info s on t.current_status = s.id 
+              where 1=1 and cai.id=#{id}
+	</select>
+	
+	<!-- 导出-->
+	<select id="creditProcessExportQueryAll" resultMap="CreditProcess" parameterType="com.cardpay.pccredit.postLoan.model.CreditProcess">
+		       select
+            bai.spmc,
+            bai.chinese_name,
+            (select t.name from sys_department t where t.id in 
+             (select tt.dept_id from sys_dept_user tt where tt.user_id = su.id)) as teamname,
+            (select org.name from sys_organization org where id in(select t.org_id from sys_department t where t.id in 
+             (select tt.dept_id from sys_dept_user tt where tt.user_id = su.id)))as bljg ,
+             ''as dklx,
+            (SELECT  A.TYPE_NAME  FROM DICT A ,PRODUCT_ATTRIBUTE p 
+             WHERE A .DICT_TYPE = 'CMMSCLNM-贷款担保方式' and A.TYPE_CODE=p.assure_means and p.id=cai.product_id) as assure_means,
+             '' as hyfl,
+             su.display_name,
+            cai.created_time,
+            cai.apply_quota,
+             t.start_examine_time,
+              t.examine_result,
+             t.examine_amount,
+             trunc(to_timestamp(cai.jkrq, 'yyyy-mm-dd hh24:mi:ss.ff')) as jkrq,
+             aa.examine_lv,
+             cai.status,
+             bai.CARD_ID
+          from customer_application_info cai  
+				  	  left join customer_application_process aa on cai.id=aa.application_id
+			          left join basic_customer_information bai on cai.customer_id=bai.id
+		              left join sys_user su on su.id=bai.user_id
+		              left join ty_customer_base base on bai.ty_customer_id=base.id
+		              left join PRODUCT_ATTRIBUTE p on p.id=cai.product_id
+		              left join  wf_process_record pr on pr.id = aa.serial_number
+		              left join wf_status_queue_record t on t.current_process = pr.id 
+		              left join wf_status_info s on t.current_status = s.id 
+	</select>
+	
+	<!-- 根据身份证号查询是否转贷 -->
+	<select id="queryByCardId" resultMap="CreditProcess" parameterType="String">
+		     select zjhm from  ty_customer_base base where base.zjhm=#{cardId} or base.posfzh=#{cardId}
+	</select>
 </mapper>
