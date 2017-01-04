@@ -105,13 +105,13 @@
             	var cardId=$("#cardId").val();
             	if(cardId !=""){
   				$.ajax({
-						url : "/PCCredit/customer/amountadjustmentviews/queryByIdCard.json?cardId=" + cardId,
+						url : "/PCCredit_TY/customer/amountadjustmentviews/queryByIdCard.json?cardId=" + cardId,
 						dataType : 'json',
 						type : "get",
 						success : function(data) {
 						if (data.success) {
 					    if(data.message!=null && data.message!=""){
-						var url = "/PCCredit/customer/amountadjustmentviews/queryByBusinessTackling.page?cardId=" + cardId;
+						var url = "/PCCredit_TY/customer/amountadjustmentviews/queryByBusinessTackling.page?cardId=" + cardId;
 					    window.location.href = url;	
 							}else{
 								window.top.Dialog.message("没有该用户的信息！");

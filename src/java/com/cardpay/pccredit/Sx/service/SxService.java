@@ -45,7 +45,7 @@ private SxDao dao;
 
 	public QueryResult<SxOutputData> findje(SxInputData filter) {
 		// TODO Auto-generated method stub
-		String displayname=filter.getDisplayName();
+		/*String displayname=filter.getDisplayName();
 		String deptname=filter.getDeptName();
 		if(displayname!=null||deptname!=null){
 		try {
@@ -56,7 +56,7 @@ private SxDao dao;
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}}
+		}}*/
 		List<SxOutputData>lists= dao.findje(filter);
 		int size = dao.findSxListCountByFilterje(filter);
 		QueryResult<SxOutputData> qr = new QueryResult<SxOutputData>(size, lists);

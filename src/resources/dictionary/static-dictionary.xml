@@ -518,13 +518,11 @@
 	
 	
 	<dictionary name="ORGANJN" title="济南机构">
-		<item name="高新支行"     title="高新支行" />
-		<item name="天桥支行"     title="天桥支行" />
-		<item name="槐荫支行"     title="槐荫支行" />
-		<item name="长清支行"     title="长清支行" />
-		<item name="历城支行"     title="历城支行" />
-		<item name="历下支行"     title="历下支行" />
-		<item name="润丰支行"     title="润丰支行" />
+		<item name="一区"     title="一区" />
+		<item name="二区"     title="二区" />
+		<item name="三区"     title="三区" />
+		<item name="四区"     title="四区" />
+		<item name="后台"     title="后台" />
 	</dictionary>
 	
 	<dictionary name="CUSTTYPEJN" title="客户类型">

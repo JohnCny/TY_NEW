@@ -468,7 +468,7 @@
        <!--  cron表达式 -->
         <property name="cronExpression">
             <!-- 0 10 18 ? * *  -->
-            <value>0 38 10 * * ?</value><!-- 下午3点 -->
+            <value>0 40 18 * * ?</value><!-- 下午3点 -->
         </property>
     </bean>
 	<!-- 每日下载和解压数据 end -->

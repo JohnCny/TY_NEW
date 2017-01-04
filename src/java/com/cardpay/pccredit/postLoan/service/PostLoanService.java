@@ -8,10 +8,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cardpay.pccredit.customer.model.TyRepayLshForm;
 import com.cardpay.pccredit.customer.model.TyRepayTkmxForm;
 import com.cardpay.pccredit.postLoan.dao.PostLoanDao;
 import com.cardpay.pccredit.postLoan.filter.FcloaninfoFilter;
 import com.cardpay.pccredit.postLoan.filter.PostLoanFilter;
+import com.cardpay.pccredit.postLoan.model.CreditProcess;
 import com.cardpay.pccredit.postLoan.model.Fcloaninfo;
 import com.cardpay.pccredit.postLoan.model.MibusidataForm;
 import com.cardpay.pccredit.postLoan.model.MibusidateView;
@@ -137,5 +139,56 @@ public class PostLoanService {
 		System.out.println(filter);
 		return postLoanDao.findtzList(filter);
 	}
+	/**
+	 * 信贷流程跟踪表
+	 * @param filter 
+	 * @param filter
+	 * @return
+	 * */
+	public QueryResult<CreditProcess> queryCreditProcess(CreditProcess filter) {
+		// TODO Auto-generated method stub
+		List<CreditProcess> cplist = postLoanDao.queryCreditProcess(filter);
+		for(CreditProcess cc:cplist){
+			if(null!=cc.getStatus()){
+				if(cc.getStatus().equals("audit")){
+					cc.setStatus("已申请 ");
+				}else if(cc.getStatus().equals("refuse")){
+					cc.setStatus("被拒绝");
+				}else if(cc.getStatus().equals("approved")){
+					cc.setStatus("审批结束");
+				}else if(cc.getStatus().equals("returnedToFirst")){
+					cc.setStatus("退回至客户经理");
+				}else if(cc.getStatus().equals("end")){
+					cc.setStatus("放款成功");
+				}
+			}
+		}
+		int size = postLoanDao.querySize(filter);
+		QueryResult<CreditProcess> queryResult = new QueryResult<CreditProcess>(size,cplist);
+		return queryResult;
+	}
 	
+	
+	public List<CreditProcess> queryAll(String id) {
+		// TODO Auto-generated method stub
+		return postLoanDao.queryAll(id);
+	}
+	public List<CreditProcess> creditProcessExportQueryAll(CreditProcess filter) {
+		// TODO Auto-generated method stub
+		return postLoanDao.creditProcessExportQueryAll(filter);
+	}
+	//根据身份证号查询是否转贷
+	public List<CreditProcess> queryByCardId(String cardId) {
+		// TODO Auto-generated method stub
+		return postLoanDao.queryByCardId(cardId);
+	}
+	public TyRepayTkmxForm queryByJJH(String jjh) {
+		// TODO Auto-generated method stub
+		return postLoanDao.queryByJJH(jjh);
+	}
+	public TyRepayLshForm queryByLSJJH(String jjh) {
+		// TODO Auto-generated method stub
+		return postLoanDao.queryByLSJJH(jjh);
+	}
+
 }
