@@ -60,6 +60,12 @@ public String selectCustomerInfoByCardId(HttpServletRequest request){
 	String chineseName = request.getParameter("chineseName");	
 	String cardId = request.getParameter("cardId");
 	String userId = request.getParameter("userId");
+	if(chineseName!=null){
+		chineseName=chineseName+"%";	
+	}
+	if(cardId!=null){
+		cardId=cardId+"%";	
+	}
 		List<CustomerInfo> customerList = customerSelectSercice.selectCustomerInfo(cardId,chineseName,userId);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
@@ -70,6 +76,7 @@ public String selectCustomerInfoByCardId(HttpServletRequest request){
 	        while(it.hasNext()){  
 	        CustomerInfo cus = it.next();
 	        String CardType =cus.getCardType();
+	        CardType =CardType.replace("CST0000000000A", "身份证");
 	        CardType =CardType.replace("0", "身份证");
 	        CardType =CardType.replace("1", "军官证");
 	        CardType =CardType.replace("2", "护照");

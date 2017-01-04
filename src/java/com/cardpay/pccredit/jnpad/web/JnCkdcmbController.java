@@ -10,7 +10,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cardpay.pccredit.intopieces.model.LocalExcel;
@@ -22,27 +21,21 @@ import com.wicresoft.util.web.RequestHelper;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 import sun.misc.BASE64Decoder;
-
 @Controller
-public class JnpadInquiryModelController {
-	
+public class JnCkdcmbController {
 	@Autowired
 	private AddIntoPiecesService addIntoPiecesService;
 	@Autowired
 	private JnIpadLocalExcelService LocalExcelService;
 	
 	
-	
-	
 	@ResponseBody
-	@RequestMapping(value = "/ipad/product/ckdcmb.json",method = { RequestMethod.GET })
-	public String ckdcmb(HttpServletRequest request) {
-		System.out.println("111111");
+	@RequestMapping(value = "/ipad/user/ckdcmb.json")
+	public String browerModel(HttpServletRequest request) {
 		Map<Object,Object> map =new LinkedHashMap<Object, Object>();
-		String productId = request.getParameter("productId");
 		String customerId = request.getParameter("customerId");
-		/*if (StringUtils.isNotEmpty(productId) && StringUtils.isNotEmpty(customerId) ) {
-			try {*/
+		String productId = request.getParameter("productId");
+	
 			LocalExcel localExcel = LocalExcelService.findByApplication(customerId,productId);
 			String tableContentyfysb = getFromBASE64(localExcel.getSheetYfys()).replaceAll("\n", "<br>").replace("><br><", "><");
 			String tableContentysyfb = getFromBASE64(localExcel.getSheetYsyf()).replaceAll("\n", "<br>").replace("><br><", "><");	
@@ -58,25 +51,24 @@ public class JnpadInquiryModelController {
 			map.put("tableContentjyb", tableContentjyb);
 			map.put("tableContentjbzkb", tableContentjbzkb);
 			map.put("tableContentdhd", tableContentdhd);
-			/*} catch (Exception e) {
-				map.put("mess", e.getMessage());
-			}
-		}*/
+			
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);
 		return json.toString();
 	}
 	
+	
 	//base64解码
-		public static String getFromBASE64(String s) { 
-	    	if (s == null) return null; 
-	    	BASE64Decoder decoder = new BASE64Decoder(); 
-	    	try { 
-	    	byte[] b = decoder.decodeBuffer(s); 
-	    	return new String(b); 
-	    	} catch (Exception e) { 
-	    	return null; 
-	    	} 
-		} 
+	public static String getFromBASE64(String s) { 
+    	if (s == null) return null; 
+    	BASE64Decoder decoder = new BASE64Decoder(); 
+    	try { 
+    	byte[] b = decoder.decodeBuffer(s); 
+    	return new String(b); 
+    	} catch (Exception e) { 
+    	return null; 
+    	} 
+	} 
+
 }
