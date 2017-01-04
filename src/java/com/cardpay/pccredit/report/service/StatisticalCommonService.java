@@ -32,7 +32,14 @@ public class StatisticalCommonService {
 	public List<NameValueRecord> statisticalApplicationStatus(){
 		return statisticalCommonDao.statisticalApplicationStatus();
 	}
-	
+	/**
+     * pad统计当前进件状况
+     * @param filter
+     * @return
+     */
+	public List<NameValueRecord> statisticalApplicationStatus1(){
+		return statisticalCommonDao.statisticalApplicationStatus1();
+	}
 	/**
      * 统计当前进件状况json
      * @param filter

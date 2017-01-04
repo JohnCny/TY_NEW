@@ -542,4 +542,114 @@ union all
     union all
     select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='200735' and FIVECLASS in ('1','2','3') -->
 	</select>
+	
+	
+	<select id="statisticalAuditStatus1" resultMap="ResultMap" >
+	  select nvl(sum(ttt.value),0) as value from (select tt.value,
+        tt.instcode
+		from (select count(*) as value, 
+		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
+		from customer_application_info a,
+		     basic_customer_information b
+		where status ='audit' 
+		  and a.customer_id = b.id 
+		group by  b.user_id)tt where tt.instcode ='一区') ttt
+union all
+ 		select nvl(sum(ttt.value),0) as value from (select tt.value,
+        tt.instcode
+		from (select count(*) as value, 
+		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
+		from customer_application_info a,
+		     basic_customer_information b
+		where status ='audit' 
+		  and a.customer_id = b.id 
+		group by  b.user_id)tt where tt.instcode ='二区')ttt
+union all
+ 		select nvl(sum(ttt.value),0) as value from (select tt.value,
+        tt.instcode
+		from (select count(*) as value, 
+		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
+		from customer_application_info a,
+		     basic_customer_information b
+		where status ='audit' 
+		  and a.customer_id = b.id 
+		group by  b.user_id)tt where tt.instcode ='三区')ttt
+union all
+ 		select nvl(sum(ttt.value),0) as value from (select tt.value,
+        tt.instcode
+		from (select count(*) as value, 
+		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
+		from customer_application_info a,
+		     basic_customer_information b
+		where status ='audit' 
+		  and a.customer_id = b.id 
+		group by  b.user_id)tt where tt.instcode ='四区')ttt
+
+	</select>
+	<select id="statisticalApprovedStatus1" resultMap="ResultMap" >
+	    select nvl(sum(ttt.value),0) as value from (select tt.value,
+        tt.instcode
+		from (select count(*) as value, 
+		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
+		from customer_application_info a,
+		     basic_customer_information b
+		where status ='approved' 
+		  and a.customer_id = b.id 
+		group by  b.user_id)tt where tt.instcode ='一区')ttt
+union all
+ 		select nvl(sum(ttt.value),0) as value from (select tt.value,
+        tt.instcode
+		from (select count(*) as value, 
+		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
+		from customer_application_info a,
+		     basic_customer_information b
+		where status ='approved' 
+		  and a.customer_id = b.id 
+		group by  b.user_id)tt where tt.instcode ='二区')ttt
+union all
+ 		select nvl(sum(ttt.value),0) as value from (select tt.value,
+        tt.instcode
+		from (select count(*) as value, 
+		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
+		from customer_application_info a,
+		     basic_customer_information b
+		where status ='approved' 
+		  and a.customer_id = b.id 
+		group by  b.user_id)tt where tt.instcode ='三区')ttt
+union all
+ 		select nvl(sum(ttt.value),0) as value from (select tt.value,
+        tt.instcode
+		from (select count(*) as value, 
+		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
+		from customer_application_info a,
+		     basic_customer_information b
+		where status ='approved' 
+		  and a.customer_id = b.id 
+		group by  b.user_id)tt where tt.instcode ='四区')ttt
+
+		
+	</select>
+	<!-- 查询用信总额 -->
+	<select id="selectALLyxze" resultType="int" >
+	    select sum(mm.REQLMT) from
+	    		(select 
+			 distinct(m.YWBH), m.REQLMT 
+	 from   mibusidata m) mm
+	</select>
+		<!-- 逾期总额 -->
+	<select id="selectALLyqze" resultType="String" >
+	    	select sum(cc.dkye+cc.bnqx+cc.bwqx) from 
+(select dkye,bnqx,bwqx
+  from mibusidata where
+  ( DELAYINTERESTDAYS  not in ('0') and  DELAYINTERESTDAYS is not null)
+   or( DELAYAMTDAYS  not in ('0') and DELAYAMTDAYS is not null)) cc 
+	</select>
+	<select id="statisticalApplicationStatus1" resultMap="ResultMap" >
+select allsp.e as id, nopaa.a as name ,nosq.b as value,bcak.c as value1,succwss.d as value2 from
+(select count(*）as a from CUSTOMER_APPLICATION_INFO where (status='refuse'or status='nopass'))nopaa,
+(select count(*）as b from CUSTOMER_APPLICATION_INFO where status='audit')nosq,
+(select count(*）as c from CUSTOMER_APPLICATION_INFO where (status='returnedToFirst'or status='nopass_replenish')) bcak,
+(select count(*）as d from CUSTOMER_APPLICATION_INFO where (status='approved'or status='end')) succwss,
+(select count(*）as e from CUSTOMER_APPLICATION_INFO where (status='approved'or status='end' or status='returnedToFirst'or status='nopass_replenish' or status='refuse' or status='nopass')) allsp
+	</select>
 </mapper>

@@ -474,11 +474,13 @@
 	<!-- 每日下载和解压数据 end -->
     
     
+       
     <!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序  -->
    
     <bean id="scheduler" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <list>
+                
                   <ref bean="addBaseTigger"/>
                  <ref bean="addRepayTigger"/>
                  <ref bean="updateCustomerAppInfoStatusTigger"/> 
@@ -487,8 +489,8 @@
 				<!-- <ref bean="addManagerAssessmentScoreTigger"/>-->
 				 <!-- 每日执行客户经理统计信息信息 start -->
 				<ref bean="addStatisticalTableTigger"/> 
-            <!-- 	<ref bean="statisticsYearScheduleServicerTrigger"/>
-
+         	<ref bean="dailyReportScheduleTigger"/>
+<!-- 
             	<ref bean="statisticsMonthScheduleServicerTrigger"/>
             	
             	<ref bean="statisticsWeekScheduleServicerTrigger"/>
@@ -511,7 +513,7 @@
 	
 	<!-- 
 	=========================================================== 系统定时触发器 ==================================================
-	1.task
+ --><!-- 	1.task
 	<bean id="taskJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         调用的类
         <property name="targetObject">
@@ -555,32 +557,32 @@
             <value>0 10 18 ? * *</value>下午3点
         </property>
     </bean>
-	每日下载和解压数据 end
+	每日下载和解压数据 end -->
     
-    3.客户经理日报
+ <!--    3.客户经理日报 -->
     <bean id="dailyReportScheduleJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-        调用的类
+     <!--    调用的类 -->
         <property name="targetObject">
             <ref bean="dailyReportScheduleService"/>
         </property>
-        调用类中的方法
+       <!--  调用类中的方法 -->
         <property name="targetMethod">
             <value>insertWeekSchedule</value>
         </property>
     </bean>
-    定义触发时间
+    <!-- 定义触发时间 -->
     <bean id="dailyReportScheduleTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
         <property name="jobDetail">
             <ref bean="dailyReportScheduleJob"/>
         </property>
-        cron表达式
+        <!-- cron表达式 -->
         <property name="cronExpression">
-            <value>0 0 12 ? * SAT</value>时间定在周六 
+           <value>0 30 10 ? * MON</value><!-- 时间定在周六  -->
         </property>
     </bean>
-    客户经理日报  end
+   <!--  客户经理日报  end -->
     
-    
+   <!--  
     4.ODS增量数据
     <bean id="readWholeAndIncrementScheduleJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         调用的类
@@ -602,10 +604,10 @@
             <value>0 30 18 ? * *</value>时间定在周六 
         </property>
     </bean>
-    客户经理日报  end
+    客户经理日报  end -->
     
     
-    5.同步系统中的进件的status
+ <!--    5.同步系统中的进件的status
     <bean id="updateCustomerAppInfoStatusJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         调用的类
         <property name="targetObject">
@@ -625,11 +627,11 @@
             <value>0 00 23 ? * *</value>
         </property>
     </bean>
-    
-    
-    每月初统计客户经理绩效参数
-    总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序 
-    <bean id="scheduler" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+     -->
+<!--     
+  每月初统计客户经理绩效参数
+    总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序  -->
+<!--     <bean id="scheduler" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <list>
             	 <ref bean="taskTigger"/>
@@ -639,7 +641,6 @@
                  <ref bean="updateCustomerAppInfoStatusTigger"/>
             </list>
         </property>
-    </bean>
-     -->
+    </bean>  -->
    
 </beans>
