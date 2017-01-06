@@ -326,7 +326,8 @@ public class CustomerFirsthendController extends BaseController{
 		JRadModelAndView mv = new JRadModelAndView("/customer/customerFirsthend/customer_iframe_11", request);
 		String customerInforId = RequestHelper.getStringValue(request, ID);
 		if (StringUtils.isNotEmpty(customerInforId)) {
-			CIPERSONBASINFO base = customerInforService.findCIPERSONBASINFO(customerInforId);
+			CustomerFirsthendBase base=customerInforService.findCustomerFirsthendBase(customerInforId);
+			//CIPERSONBASINFO base = customerInforService.findCIPERSONBASINFO(customerInforId);
 			mv.addObject("customerInfor", base);
 			mv.addObject("customerNm", base.getId());
 		}

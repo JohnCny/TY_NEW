@@ -104,7 +104,7 @@
        <div class="controlbtn">
           <!-- <a id="id_infor_button" class="btn_g" href="javascript:void(0);" title="查看详细信息">查看详细信息</a> -->
           
-          <!-- <a id="id_refuse_button" class="btn_g" href="javascript:void(0);" title="被拒绝台帐">被拒绝台帐</a> -->
+           <a id="id_export_button" class="btn_g" href="javascript:void(0);" title="导出">导出Excel</a> 
         </div>
         <div class="controlbtn">
         </div>
@@ -127,10 +127,10 @@
 		opsObj.browseUrl = "${modulePath}/browse.page";
 
 		prepareOperations(opsObj);
-		$("#id_infor_button").click(function() {
+		$("#id_export_button").click(function() {
 			if ($(".checkbox :checked").length == 1) {
 				var value = $("input[name='checkbox']:checked").val();
-				var url = "${modulePath}/tz_information.page?busicode=" + value;
+				var url = "${modulePath}/rftzexport.json";
 				window.location.href = url;
 			}else{
 				Dialog.message("请选择记录!");

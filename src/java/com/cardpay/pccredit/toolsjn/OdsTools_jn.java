@@ -36,7 +36,7 @@ public class OdsTools_jn {
 	public Logger log = Logger.getLogger(OdsTools.class);
 	//private static ChannelSftp csftp = null;  
 	public String curRemotePath = "";//本次下载服务器目录
-	private String[] fileName = {"xdsj.tar.Z"};
+	private String[] fileName = {"kkh_grxx.zip","kkh_grjtcy.zip","kkh_grjtcc.zip","kkh_grscjy.zip","kkh_grxxll.zip","kkh_grgzll.zip","kkh_grrbxx.zip","kdk_yehz.zip","kdk_lsz.zip","kdk_tkmx.zip","cxd_dkcpmc.zip","kkh_hmdgl.zip","cxd_rygl.zip","kdk_jh.zip"};
 
 	@Autowired
 	private CustomerInforService customerInforService;
@@ -98,12 +98,12 @@ public class OdsTools_jn {
         		 System.out.println(111);
         	 }
         }
-		while(pathIterator.hasNext()){
+        while(pathIterator.hasNext()){
 			String file = pathIterator.next();
 			try{
 				for(int i=0;i<fileName.length;i++){
 					int a =file.indexOf(fileName[i]);
-					if(file.indexOf(fileName[i])>=-1){
+					if(file.indexOf(fileName[i])>-1){
 						//下载文件
 						if(sftp.download(curRemotePath, file, downloadPath)){
 							log.error("下载文件" + file + "成功");
@@ -117,7 +117,7 @@ public class OdsTools_jn {
 			}
 		}
 		log.error(dateString+"******************开始解压********************");  
-		String gzFile = FtpUtils.bank_ftp_down_path+dateString;
+		String gzFile = FtpUtils.bank_ftp_down_path+File.separator+dateString;
 		for(int i=0;i<fileName.length;i++){
 			String url1 = gzFile+File.separator+fileName[i];
 			File fileUrl = new File(url1);
@@ -125,7 +125,8 @@ public class OdsTools_jn {
 				//连接sftp31
 				SFTPUtil31 csftp = new SFTPUtil31();
 				csftp.connect();  
-				String command = "tar -zxvf "+ gzFile +File.separator+"xdsj.tar.Z "+ "-C " + gzFile;
+				//gzFile    "tar -zxvf "+ fileUrl+ "-C " + fileUrl;
+				String command = "unzip -n"+fileUrl+"-d"+fileUrl;
 				log.info("tar命令:"+command);
 				Runtime.getRuntime().exec(command);
 				//删除压缩包  存在解压未完成 删包的condition

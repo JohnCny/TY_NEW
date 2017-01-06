@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import com.cardpay.pccredit.customer.model.CustomerParameter;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
+import com.cardpay.pccredit.zrrtz.model.OutcomingData;
 import com.cardpay.pccredit.zrrtz.model.ZrrtzFilter;
 import com.cardpay.pccredit.zrrtz.model.IncomingData;
 import com.wicresoft.util.annotation.Mapper;
@@ -19,6 +20,6 @@ public interface ZrrtzDao {
 
 	List<IncomingData> findate();
 
-	List<CustomerParameter> findpiecesList(@Param("card_id")String card_id);
+	List<OutcomingData> findpiecesList(@Param("id")String id);
 
 }

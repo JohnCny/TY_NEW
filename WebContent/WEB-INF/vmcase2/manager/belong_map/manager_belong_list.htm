@@ -92,13 +92,15 @@
 	                		url += "&" + $.param({
 		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
 		                    });
+	                		 alert(111+url);
 	                	}else{
 		                    url += "?" + $.param({
 		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
 		                    });
+		                    alert(222+url);
 	                	}
 	                }
-	            }
+	            } 
 	            window.location.href = url;
 	        });
 	    }

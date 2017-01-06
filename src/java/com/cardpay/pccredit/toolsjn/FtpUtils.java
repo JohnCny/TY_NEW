@@ -25,7 +25,7 @@ public class FtpUtils {
 //	public static String bank_ftp_path="/home/xwdftp";     	    // ftp文件目录
 	public static String bank_ftp_path="/xdls/";// 制卡ftp文件目录
 	public static String bank_ftp_down_path="/usr/local/tmp";// 下发数据存放
-//  public static String bank_ftp_down_path="F://sql//新建文件夹数据//新建文件夹数据//太原下发数据";// 下发数据存放
+//  public static String bank_ftp_down_path="F://sql//新建文件夹数据//新建文件夹数据//A";// 下发数据存放
 	private ChannelSftp sftp = null;
 
 

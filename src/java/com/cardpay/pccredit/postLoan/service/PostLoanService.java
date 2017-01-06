@@ -19,6 +19,7 @@ import com.cardpay.pccredit.postLoan.model.MibusidataForm;
 import com.cardpay.pccredit.postLoan.model.MibusidateView;
 import com.cardpay.pccredit.postLoan.model.Rarepaylist;
 import com.cardpay.pccredit.postLoan.model.RarepaylistForm;
+import com.cardpay.pccredit.postLoan.model.RefuseMibusidata;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 
@@ -103,12 +104,12 @@ public class PostLoanService {
 	 * @param filter
 	 * @return
 	 */
-	public QueryResult<MibusidataForm> findrefusedMibusidata(
+	public QueryResult<RefuseMibusidata> findrefusedMibusidata(
 			PostLoanFilter filter) {
 		// TODO Auto-generated method stub
-		List<MibusidataForm> lists = postLoanDao.findrefusedMibusidata(filter);
+		List<RefuseMibusidata> lists = postLoanDao.findrefusedMibusidata(filter);
 		int size = postLoanDao.findrefusedMibusidatasize(filter);
-		QueryResult<MibusidataForm> qr = new QueryResult<MibusidataForm>(size,lists);
+		QueryResult<RefuseMibusidata> qr = new QueryResult<RefuseMibusidata>(size,lists);
 		return qr;
 	}
 	

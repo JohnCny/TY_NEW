@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cardpay.pccredit.customer.dao.MaintenanceDao;
 import com.cardpay.pccredit.customer.filter.MaintenanceFilter;
+import com.cardpay.pccredit.customer.model.CustomerFirsthendBase;
 import com.cardpay.pccredit.customer.service.MaintenanceService;
 import com.cardpay.pccredit.customeradd.model.CIPERSONBASINFO;
 import com.cardpay.pccredit.customeradd.model.MaintenanceForm;
@@ -109,7 +110,7 @@ public class ManagerkhglController extends BaseController{
 		QueryResult<MaintenanceForm> result = null;
 			String cardid=productId[2];
 			//通过页面取得cardid查询用户的具体信息
-			List<CIPERSONBASINFO>customerinfo=service.findcustomerinfo(cardid);
+			List<CustomerFirsthendBase>customerinfo=service.findcustomerinfo(cardid);
 			mv = new JRadModelAndView("/customeradd/findcustomerinfo", request);
 			mv.addObject("customerInfor", customerinfo);
 		return mv;

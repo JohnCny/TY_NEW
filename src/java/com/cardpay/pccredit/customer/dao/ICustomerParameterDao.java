@@ -20,7 +20,7 @@ public interface ICustomerParameterDao {
 
 	public List<ProductAttribute> queryProduct();
 
-	public List<ParameterInformaion> query(@Param("idCard")String idCard);
+	public List<ParameterInformaion> query(@Param("id")String id);
 
 	public List<UserIpad> queryAllManager();
 

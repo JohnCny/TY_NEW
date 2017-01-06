@@ -94,28 +94,33 @@ public class ManagerJxglController extends BaseController{
 		
 		//当月绩效排名功能  
 		int  ffjew = 0;
+		int i0=0; 
 		JxglpmForm e=new JxglpmForm();
 		//lists是档次  lists1是人数
 		List<JxglpmForm>lists=new ArrayList<JxglpmForm>();
 		List<String>lists1=new ArrayList<String>();
-		List<JxglForm>ffje=result.getItems();
-		for (JxglForm ffjeq : ffje) {
+		List<JxglForm>ffje1=result.getItems();
+		for (JxglForm ffjeq : ffje1) {
 			ffjew=Integer.parseInt(ffjeq.getFfje().trim());
 			e.setFpm(ffjew);
 			e.setLpm(ffjew+1000);
+		//取模用来区分是什么档次      80
+			int results=ffjew/1000;
+			e.setResults(results);
+			if(lists.isEmpty()){
+				lists.add(e);
+				i0++;
+			}else{
+				for(JxglpmForm a:lists){
+					if(a.getResults()==results){
+						//因为ffjew 可能会有多个值 所以这里要给一个循环 用I0来统计人数
+						i0++; 
+					}
+				}
+			}
 			lists.add(e);
 		}
-		//取模用来区分是什么档次      80 
-		int results=ffjew/1000;
-		//因为ffjew 可能会有多个值 所以这里要给一个循环 用I0来统计人数
-		int a;
-		for(a=0;a<ffjew;a++){
-			if(a==results){
-				 int i0=0; 
-				 i0++; 
-				 lists1.add(Integer.toString(i0));
-			}
-		}
+		lists1.add(Integer.toString(i0));
 		JRadPagedQueryResult<JxglForm> pagedResult = new JRadPagedQueryResult<JxglForm>(filter, result);
 		mv.addObject(PAGED_RESULT, pagedResult);
 		mv.addObject("forms", forms);

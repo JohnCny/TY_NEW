@@ -45,13 +45,13 @@ public class CustomerParameterController extends BaseController{
 			HttpServletRequest request
 			) {
 		JRadModelAndView mv =null;
-		String idCard=request.getParameter("idCard");
+		String id=request.getParameter("id");
 		mv = new JRadModelAndView("/customer/customerInforInsert/CustomerParameter_create", request);
 		List<UserIpad> managers=cpService.queryAllManager();
-		List<ParameterInformaion> pInfor=cpService.query(idCard);
-		List<ProductAttribute> product=cpService.queryProduct();
+		List<ParameterInformaion> pInfor=cpService.query(id);
+		//List<ProductAttribute> product=cpService.queryProduct();
 		mv.addObject("managers", managers);
-		mv.addObject("product", product);
+		//mv.addObject("product", product);
 		mv.addObject("pInfor",pInfor);
 		return mv;
 	}

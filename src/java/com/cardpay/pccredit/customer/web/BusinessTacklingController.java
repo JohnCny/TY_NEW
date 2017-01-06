@@ -53,6 +53,17 @@ public class BusinessTacklingController extends BaseController{
 		List<BusinessTackling> btlist=btService.queryByIdCard(idcard);
 		mv = new JRadModelAndView("/customer/customerInfor/BusinessTacking_browse", request);
 		mv.addObject("btlist",btlist);
+		for(BusinessTackling bb:btlist){
+			if (bb.getSettle()!=null) {
+				if(bb.getSettle().equals("0.0")){
+					bb.setSettle("未结清");
+				}else{
+					bb.setSettle("已结清");
+				}
+			}else{
+				bb.setSettle("");
+			}
+		}
 		return mv;
 	}
 	

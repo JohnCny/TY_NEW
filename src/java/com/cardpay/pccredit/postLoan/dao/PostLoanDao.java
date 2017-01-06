@@ -22,6 +22,7 @@ import com.cardpay.pccredit.postLoan.model.MibusidataForm;
 import com.cardpay.pccredit.postLoan.model.MibusidateView;
 import com.cardpay.pccredit.postLoan.model.Rarepaylist;
 import com.cardpay.pccredit.postLoan.model.RarepaylistForm;
+import com.cardpay.pccredit.postLoan.model.RefuseMibusidata;
 import com.wicresoft.util.annotation.Mapper;
 
 /**
@@ -85,7 +86,7 @@ public interface PostLoanDao {
 	
 	
 	List<RarepaylistForm> selectRarepaylistfoInfoByBusicode(FcloaninfoFilter filter);
-	List<MibusidataForm> findrefusedMibusidata(PostLoanFilter filter);
+	List<RefuseMibusidata> findrefusedMibusidata(PostLoanFilter filter);
 	int findrefusedMibusidatasize(PostLoanFilter filter);
 	List<MibusidataForm> findtzList(PostLoanFilter filter);
 	/**
