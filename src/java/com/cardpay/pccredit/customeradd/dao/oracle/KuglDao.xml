@@ -89,7 +89,7 @@
 	</select>
 	
 <select id="fincustomerinfo"  parameterType="String" resultType="com.cardpay.pccredit.customeradd.model.CIPERSONBASINFO" >
-	select * from T_CIPERSONBASINFO where CARDNUM=#{cardid}
+	select * from ty_customer_base where ZJHM=#{cardid}
 </select>
 <select id="findMaintenancePlansList" resultMap="MaintenanceWebResultMap" 
 			parameterType="com.cardpay.pccredit.customer.filter.MaintenanceFilter">

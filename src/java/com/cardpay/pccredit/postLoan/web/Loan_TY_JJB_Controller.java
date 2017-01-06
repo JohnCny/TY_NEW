@@ -52,7 +52,9 @@ import com.cardpay.pccredit.postLoan.model.MibusidataForm;
 import com.cardpay.pccredit.postLoan.model.MibusidateView;
 import com.cardpay.pccredit.postLoan.model.Rarepaylist;
 import com.cardpay.pccredit.postLoan.model.RarepaylistForm;
+import com.cardpay.pccredit.postLoan.model.RefuseMibusidata;
 import com.cardpay.pccredit.postLoan.service.PostLoanService;
+import com.cardpay.pccredit.report.model.CustomerMoveForm;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
 import com.cardpay.pccredit.zrrtz.Util.ExportExcel;
 import com.wicresoft.jrad.base.auth.IUser;
@@ -79,7 +81,8 @@ public class Loan_TY_JJB_Controller extends BaseController {
 	final public static String AREA_SEPARATOR  = "_";
 
 	Logger logger = Logger.getLogger(this.getClass());
-	
+	@Autowired
+	private PostLoanDao postLoanDao;
 	@Autowired
 	private PostLoanService postLoanService;
 	
@@ -242,14 +245,165 @@ public class Loan_TY_JJB_Controller extends BaseController {
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView tzrefuse(@ModelAttribute PostLoanFilter filter,HttpServletRequest request) {
 		filter.setRequest(request);
-		QueryResult<MibusidataForm> result = postLoanService.findrefusedMibusidata(filter);
-		JRadPagedQueryResult<MibusidataForm> pagedResult = new JRadPagedQueryResult<MibusidataForm>(filter, result);
+		QueryResult<RefuseMibusidata> result = postLoanService.findrefusedMibusidata(filter);
+		JRadPagedQueryResult<RefuseMibusidata> pagedResult = new JRadPagedQueryResult<RefuseMibusidata>(filter, result);
 
 		JRadModelAndView mv = new JRadModelAndView("/postLoan/tz_refusedbrowse", request);
 		mv.addObject(PAGED_RESULT, pagedResult);
 
 		return mv;
 	}
+	
+	/*//使用poi方法 导出拒绝台帐
+    @ResponseBody
+    @RequestMapping(value = "rftzexport.json", method = { RequestMethod.GET })
+    @JRadOperation(JRadOperation.BROWSE)
+    public JRadReturnMap rfexport(@ModelAttribute  PostLoanFilter filter, HttpServletRequest request,HttpServletResponse response) {
+      filter.setRequest(request);
+      String busicode=RequestHelper.getStringValue(request, ID);
+      IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+      String userId = user.getId();
+      JRadReturnMap returnMap = new JRadReturnMap();
+      if (returnMap.isSuccess()) {
+      String title="refusedMIBUSIDATA拒绝台帐表";
+      String[] rowName={"业务编号","客户名称","客户证件号(核心)"
+          ,"客户联系方式","行业","店铺名称","工作地址"
+          ,"申请金额 ","申请时间 ","拒绝日期 ","拒绝原因 ","客户经理 "};
+      filter.setUserid(userId);
+      List<RefuseMibusidata> lists = postLoanDao.findrefusedMibusidata(filter);
+      List<Object[]>  dataList=new ArrayList<Object[]>();
+      for (int i=0;i<lists.size();i++) {
+        Object[] obj={
+        		lists.get(i).getYwbh(),
+        		lists.get(i).getCHINESE_NAME(),
+        		lists.get(i).getCARD_ID(),
+        		lists.get(i).getTELEPHONE(),
+        		lists.get(i).getIndustry(),
+        		lists.get(i).getSpmc(),
+        		lists.get(i).getRESIDENTIAL_ADDRESS(),
+        		lists.get(i).getJKJE(),
+        		lists.get(i).getJKRQ(),
+        		lists.get(i).getAUDIT_TIME(),
+        		lists.get(i).getREFUSAL_REASON(),
+        		lists.get(i).getDISPLAY_NAME()
+            //plans.get(i).getAccountstate()
+            
+        };
+        dataList.add(obj);
+        
+      }
+      ExportExcel excel=new ExportExcel(title, rowName, dataList, response);
+      try {
+        excel.export();
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+      }
+      return returnMap;
+    }*/
+	
+	
+	
+	/**
+	   * 导出拒绝台帐
+	   */
+	  @ResponseBody
+	  @RequestMapping(value = "rftzexport.json", method = { RequestMethod.GET })
+	  public void exportAll(@ModelAttribute PostLoanFilter filter, HttpServletRequest request,HttpServletResponse response){
+	    filter.setRequest(request);
+	    List<RefuseMibusidata> lists = postLoanDao.findrefusedMibusidata(filter);
+	    create1(lists,response);
+	  }
+	  
+	  public void create1(List<RefuseMibusidata> lists,HttpServletResponse response){
+	    HSSFWorkbook wb = new HSSFWorkbook();
+	    HSSFSheet sheet = wb.createSheet("拒绝台帐");
+	    HSSFCellStyle style = wb.createCellStyle();
+	    style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	    //第一行  合并单元格 并且设置标题
+	    /*HSSFRow row0 = sheet.createRow((int) 0);
+	    row0.createCell(0).setCellValue("基本资料");
+	    row0.createCell(0).setCellStyle(style);
+	    sheet.addMergedRegion(new Region(0, (short) 0, 0, (short) 6));*/
+	    sheet.setColumnWidth(0, 3500);
+	    sheet.setColumnWidth(1, 8000);
+	    sheet.setColumnWidth(2, 8000);
+	    sheet.setColumnWidth(3, 8000);
+	    sheet.setColumnWidth(4, 8000);
+	    sheet.setColumnWidth(5, 5000);
+	    //==========================
+	    HSSFRow row = sheet.createRow((int) 0);
+	    HSSFCell cell = row.createCell((short) 0);
+	    cell.setCellValue("业务编号");
+	    cell.setCellStyle(style);
+	    cell = row.createCell((short) 1);
+	    cell.setCellValue("客户名称");
+	    cell.setCellStyle(style);
+	    cell = row.createCell((short) 2);
+	    cell.setCellValue("客户证件号");
+	    cell.setCellStyle(style);
+	    cell = row.createCell((short) 3);
+	    cell.setCellValue("客户联系方式");
+	    cell.setCellStyle(style);
+	    cell = row.createCell((short) 4);
+	    cell.setCellValue("行业");
+	    cell.setCellStyle(style);
+	    cell = row.createCell((short) 5);
+	    cell.setCellValue("店铺名称");
+	    cell.setCellStyle(style);
+	    cell = row.createCell((short) 6);
+	    cell.setCellValue("工作地址");
+	    cell.setCellStyle(style);
+	    cell = row.createCell((short) 7);
+	    cell.setCellValue("申请金额");
+	    cell.setCellStyle(style);
+	    cell = row.createCell((short) 8);
+	    cell.setCellValue("申请时间");
+	    cell.setCellStyle(style);
+	    cell = row.createCell((short) 9);
+	    cell.setCellValue("拒绝日期");
+	    cell.setCellStyle(style);
+	    cell = row.createCell((short) 10);
+	    cell.setCellValue("拒绝原因");
+	    cell.setCellStyle(style);
+	    cell = row.createCell((short) 11);
+	    cell.setCellValue("客户经理");
+	    cell.setCellStyle(style);
+	    cell = row.createCell((short) 12);
+	    cell.setCellValue("操作时间");
+	    cell.setCellStyle(style);
+	    
+	    
+	    for(int i = 0; i < lists.size(); i++){
+	      RefuseMibusidata move = lists.get(i);
+	      row = sheet.createRow((int) i+1);
+	      row.createCell((short) 0).setCellValue(move.getYwbh());
+	      row.createCell((short) 1).setCellValue(move.getCHINESE_NAME());
+	      row.createCell((short) 2).setCellValue(move.getCARD_ID());
+	      row.createCell((short) 3).setCellValue(move.getTELEPHONE());
+	      row.createCell((short) 4).setCellValue(move.getIndustry());
+	      row.createCell((short) 5).setCellValue(move.getSpmc());
+	      row.createCell((short) 6).setCellValue(move.getRESIDENTIAL_ADDRESS());
+	      row.createCell((short) 7).setCellValue(move.getJKJE());
+	      row.createCell((short) 8).setCellValue(move.getJKRQ());
+	      row.createCell((short) 9).setCellValue(move.getAUDIT_TIME());
+	      row.createCell((short) 10).setCellValue(move.getREFUSAL_REASON());
+	      row.createCell((short) 11).setCellValue(move.getDISPLAY_NAME());
+	      row.createCell((short) 12).setCellValue(move.getPROCESS_OP_STATUS());
+	    }
+	    String fileName = "拒绝台帐";
+	    try{
+	      response.setHeader("Content-Disposition", "attachment;fileName="+new String(fileName.getBytes("gbk"),"iso8859-1")+".xls");
+	      response.setHeader("Connection", "close");
+	      response.setHeader("Content-Type", "application/vnd.ms-excel");
+	      OutputStream os = response.getOutputStream();
+	      wb.write(os);
+	      os.flush();
+	      os.close();
+	    }catch(IOException e){
+	      e.printStackTrace();
+	    }
+	  }
 	
 	/**
 	 * 浏览页面

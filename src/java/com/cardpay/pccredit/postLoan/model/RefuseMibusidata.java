@@ -8,6 +8,7 @@ import com.wicresoft.jrad.base.database.model.BusinessModel;
  * @author sc
  */
 public class RefuseMibusidata extends BusinessModel {
+	 private String id;
 	 private String ywbh;
 	 private String CHINESE_NAME;
 	 private String CARD_ID;
@@ -22,12 +23,15 @@ public class RefuseMibusidata extends BusinessModel {
 	 private String DISPLAY_NAME;
 	 private String PROCESS_OP_STATUS;
 	 
+	
 	 public RefuseMibusidata(){}
-	public RefuseMibusidata(String ywbh, String cHINESE_NAME, String cARD_ID,
-			String tELEPHONE, String industry, String spmc,
+	
+	public RefuseMibusidata(String id, String ywbh, String cHINESE_NAME,
+			String cARD_ID, String tELEPHONE, String industry, String spmc,
 			String rESIDENTIAL_ADDRESS, String jKJE, String jKRQ,
 			String aUDIT_TIME, String rEFUSAL_REASON, String dISPLAY_NAME,
 			String pROCESS_OP_STATUS) {
+		this.id = id;
 		this.ywbh = ywbh;
 		CHINESE_NAME = cHINESE_NAME;
 		CARD_ID = cARD_ID;
@@ -41,6 +45,12 @@ public class RefuseMibusidata extends BusinessModel {
 		REFUSAL_REASON = rEFUSAL_REASON;
 		DISPLAY_NAME = dISPLAY_NAME;
 		PROCESS_OP_STATUS = pROCESS_OP_STATUS;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
 	}
 	public String getYwbh() {
 		return ywbh;

@@ -3,6 +3,7 @@ package com.cardpay.pccredit.zrrtz.model;
 import com.wicresoft.jrad.base.database.dao.business.BusinessFilter;
 
 public class IncomingData extends BusinessFilter{
+	private String id;
 	private String chinese_name;
 	private String card_id;
 	private String product_name;
@@ -11,6 +12,16 @@ public class IncomingData extends BusinessFilter{
 	private String display_name;
 	private String fdate;
 	private String ldate;
+	
+	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	public String getActual_quote() {
 		return actual_quote;
 	}

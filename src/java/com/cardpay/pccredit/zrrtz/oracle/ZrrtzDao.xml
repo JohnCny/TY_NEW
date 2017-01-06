@@ -28,8 +28,33 @@
 		<result property="card_id" column="CARD_ID"/>
 		<result property="product_name" column="PRODUCT_NAME"/>
 		<result property="actual_quote" column="ACTUAL_QUOTE"/>
+		<result property="id" column="id"/>
 	</resultMap>
 	
+	<resultMap id="aLLResultMaps" type="com.cardpay.pccredit.zrrtz.model.OutcomingData">
+		<result property="Customername" column="Customername" />
+		<result property="Idcard" column="Idcard" />
+		<result property="Productname" column="Productname" />
+		<result property="actual_quote" column="actual_quote" />
+		<result property="Managername" column="Managername" />
+		<result property="Money" column="Money" />
+		<result property="Deadline" column="Deadline" />
+		<result property="Providedate" column="Providedate" />
+		<result property="Expiredate" column="Expiredate" />
+		<result property="Classification" column="Classification" />
+		<result property="Scopeoperation" column="Scopeoperation" />
+		<result property="Operationaddress" column="Operationaddress" />
+		<result property="Principal" column="Principal" />
+		<result property="Assist" column="Assist" />
+		<result property="Groupes" column="Groupes" />
+		<result property="Members" column="Members" />
+		<result property="Patternslend" column="Patternslend" />
+		<result property="Ratepaying" column="Ratepaying" />
+		<result property="Giveback" column="Giveback" />
+		<result property="SJ" column="SJ" />
+		<result property="Remark" column="Remark" />
+		</resultMap>
+		
 	<resultMap id="aLLResultMap" type="com.cardpay.pccredit.customer.model.CustomerParameter">
 		<result property="customerParameterId" column="ID" />
 		<result property="customerManagerId" column="CUSTOMERMANAGERID" />
@@ -59,7 +84,6 @@
 		<result property="phonenumber" column="PHONENUMBER" />
 		<result property="enlending" column="ENLENDING" />
 		<result property="remark" column="REMARK" />
-		
 	</resultMap>
 	
 	<select id="findIntoPiecesList" resultMap="SHILIMap" parameterType="com.cardpay.pccredit.zrrtz.model.ZrrtzFilter">
@@ -67,6 +91,7 @@
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
 				    select 
+				    t.id,
                    b.chinese_name as chinese_name,
                    b.card_id as card_id,
                    p.product_name as product_name,
@@ -76,22 +101,18 @@
                    basic_customer_information b,
                    ty_customer_base base,
                    product_attribute          p,
-                   sys_user a,
-                   ty_repay_tkmx tkmx,
-                   TY_REPAY_LSZ D 
+                   sys_user a
              where t.customer_id = b.id
                    and t.product_id = p.id 
                    and a.id=b.user_id 
                    and b.TY_CUSTOMER_ID=base.id
-                   and base.khnm=tkmx.khh
-                   and tkmx.jjh=D.Jjh
+               
                    <if test="fdate!=null and ldate!=null and fdate!='' and ldate!=''">
-						    and D.QXRX=#{fdate}
+						    and base.QFRQ=#{fdate}
 						</if>
 				   <if test="status!=null and status!=''">
 				       and t.ACCOUNT_STATUS=#{status}
 				   </if>
-				   order by D.QXRX desc
                    <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -102,9 +123,8 @@
 	
 	<select id="findIntoPiecesCountList" resultType="int" parameterType="com.cardpay.pccredit.zrrtz.model.ZrrtzFilter">
 		  select count(*)
-		          from (SELECT ROW_.*,ROWNUM ROWNUM_
-				FROM (
-				select 
+		          from ( select 
+				    t.id,
                    b.chinese_name as chinese_name,
                    b.card_id as card_id,
                    p.product_name as product_name,
@@ -114,40 +134,55 @@
                    basic_customer_information b,
                    ty_customer_base base,
                    product_attribute          p,
-                   sys_user a,
-                   ty_repay_tkmx tkmx,
-                   TY_REPAY_LSZ D 
+                   sys_user a
              where t.customer_id = b.id
                    and t.product_id = p.id 
                    and a.id=b.user_id 
                    and b.TY_CUSTOMER_ID=base.id
-                   and base.khnm=tkmx.khh
-                   and tkmx.jjh=D.Jjh
-                   <if test="fdate!=null and ldate!=null and fdate!='' and ldate!=''">
-						    and D.QXRX=#{fdate}
-						</if>
-				   <if test="status!=null and status!=''">
-				       and t.ACCOUNT_STATUS=#{status}
-				   </if>
-				   order by D.QXRX desc
-                   <![CDATA[		
-							) ROW_
-						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
-					WHERE ROWNUM_ > #{limit}*#{page}
-					]]>
-
-					
+                  )
 	</select>
 	
 	<select id="findate" resultMap="SHILIMap">
 		 select QXRX as fdate,ZXRQ as ldate from TY_REPAY_LSZ D 
 	</select>
 	
-	<select id="findpiecesList" resultMap="aLLResultMap" parameterType="String">
-		 select * from CUSTOMER_PARAMETER where 1=1 
-		 <if test="card_id!=null and card_id!=''">
-				       and IDCARD=#{card_id}
-		 </if>
+	<select id="findpiecesList" resultMap="aLLResultMaps" parameterType="String">
+		 select 
+                   b.chinese_name as Customername,
+                   b.card_id as Idcard,
+                   p.product_name as Productname,
+                   t.actual_quote as actual_quote,
+                   a.display_name as Managername,
+                   t.Apply_Quota as Money,
+                   p.LOAN_TIME_LIMIT as Deadline,
+                   base.QFRQ as Providedate,
+                   base.DQRQ as Expiredate,
+                   base.Cshy as Classification,
+                   base.ZYYW as  Scopeoperation,
+                   base.yydz as Operationaddress,
+                   '' as Principal,
+                   '' as Assist,
+                   (select t.name from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = a.id)) as Groupes,
+                   (select display_name from sys_user a where a.id= pro.Audit_User) as Members,
+                   t.DEBIT_WAY as Patternslend,
+                   '' as Ratepaying,
+                   '' as Giveback ,
+                   base.sj as SJ,
+                   '' as Remark
+             from customer_application_info  t,
+                   basic_customer_information b,
+                   ty_customer_base base,
+                   product_attribute          p,
+                   sys_user a,
+                   customer_application_process pro
+             where t.customer_id = b.id
+                   and t.product_id = p.id 
+                   and a.id=b.user_id 
+                   and b.TY_CUSTOMER_ID=base.id
+                   and t.id=pro.application_id 
+		  <if test="id!=null and id!='' and id!='undefined' and id!='000001'">
+				       and a.id=#{id}
+		 </if> 
 	</select>
 	
 </mapper>

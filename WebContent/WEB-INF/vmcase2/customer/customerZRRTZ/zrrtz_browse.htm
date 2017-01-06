@@ -12,7 +12,7 @@
             <ul>
             
               <li>
-                <!-- <span>客户状态：<select id="status" name="status"
+             <!--    <span>客户状态：<select id="status" name="status"
 										value="$!result.filter.status">
 											<option value="">ALL</option>
 											<option #if($!result.filter.status=='audit') selected="selected" #end value="正常">正常
@@ -22,7 +22,7 @@
 											<option #if($!result.filter.status=='approved') selected="selected" #end value="不良">不良</option>
 											<option #if($!result.filter.status=='end') selected="selected" #end value="空">空</option>
 									</select> -->
-									 起始日期:<input type="text" id="fdate" name="fdate" >
+									 起始日期:<input type="text" id="fdate" name="fdate" ><br/>
 										 结束日期:<input type="text" id="ldate"  name="ldate"></span>
               </li>
               
@@ -67,7 +67,7 @@
             <tr>
              <!--  <td class="checkbox"><input type="radio" name="checkbox" id="checkbox" value="$!customer.tyCustomerId@$!customer.chineseName@$!customer.cardId"
                    /></td> -->
-                    <td class="checkbox"><input type="radio" name="checkbox" value="$!intoPieces.card_id"/></td>
+                    <td class="checkbox"><input type="radio" name="checkbox" value="$!intoPieces.id"/></td>
               <td nowrap="nowrap">$!intoPieces.display_name</td>
               <td nowrap="nowrap">$!intoPieces.chinese_name</td>
               <td nowrap="nowrap">$!intoPieces.card_id</td>
@@ -81,8 +81,8 @@
       <div class="pagebar">
         <div class="controlbtn">
           <!-- #btnpriv("query")<a id="query" class="btn_gr" href="javascript:void(0);" title="#i18n('button.display.hint')">数据详情</a>#end -->
-          #btnpriv("addNew")<a id="addNew" class="btn_gr" href="javascript:void(0);" title="#i18n('button.display.hint')">数据填补</a>#end
-          #btnpriv("export")<a id="export" class="btn_g" href="javascript:void(0);" title="#i18n('button.export.hint')">excle导出</a>#end
+         <a id="addNew" class="btn_gr" href="javascript:void(0);" title="#i18n('button.display.hint')">数据填补</a>
+         <a id="export" class="btn_g" href="javascript:void(0);" title="#i18n('button.export.hint')">excle导出</a>
           <!-- #btnpriv("confignodeintopieces")<a id="id_config_button" class="btn_g" href="javascript:void(0);" title="配置选中产品进件审批流程节点">配置进件审批流程</a>#end -->
            <!--#btnpriv("confignodeamountadjustment")<a id="id_adjust_button" class="btn_g" href="javascript:void(0);" title="配置选中产品调额审批流程节点">配置调额审批流程</a>#end -->
          <!--  #btnpriv("display")<a id="id_display_button" class="btn_gr" href="javascript:void(0);" title="#i18n('button.display.hint')">#i18n("button.display")</a>#end -->
@@ -105,14 +105,11 @@
 		opsObj.exportUrl = "${modulePath}/export.json";
 	
 		$("#export").click(function() {
-            if ($(".checkbox :checked").length == 1) {
-                $("#export").unbind();
-                var rowid = $($(".checkbox :checked")[0]).attr("value");
+          
+                var rowid = $($(".checkbox :checked")[3]).attr("value");
                 var url = "${modulePath}/export.json"+ "?id=" + rowid;
 				window.location.href = url;
-            } else {
-                Dialog.message("请选择一行");
-            }
+         
         });
 
 
@@ -132,7 +129,7 @@
             if ($(".checkbox :checked").length == 1) {
                 $("#addNew").unbind();
                 var rowid = $($(".checkbox :checked")[0]).attr("value");
-                var url = "/PCCredit/customer/customer_parameter/addCustomerParameter.page?idCard=" + rowid + "&nodeType=Product";
+                var url = "/PCCredit_TY/customer/customer_parameter/addCustomerParameter.page?id=" + rowid + "&nodeType=Product";
 				window.location.href = url;
             } else {
                 Dialog.message("请选择一行");

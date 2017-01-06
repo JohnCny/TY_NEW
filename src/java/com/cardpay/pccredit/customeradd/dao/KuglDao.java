@@ -3,6 +3,7 @@ package com.cardpay.pccredit.customeradd.dao;
 import java.util.List;
 
 import com.cardpay.pccredit.customer.filter.MaintenanceFilter;
+import com.cardpay.pccredit.customer.model.CustomerFirsthendBase;
 import com.cardpay.pccredit.customeradd.model.CIPERSONBASINFO;
 import com.cardpay.pccredit.customeradd.model.MaintenanceForm;
 import com.cardpay.pccredit.jnpad.model.CustomerInfo;
@@ -27,7 +28,7 @@ public interface KuglDao {
 	List<String> findalluser();*/
 	
 
-	List<CIPERSONBASINFO> fincustomerinfo(String cardid);
+	List<CustomerFirsthendBase> fincustomerinfo(String cardid);
 
 	List<AccountManagerParameterForm> findcustomermanager();
 

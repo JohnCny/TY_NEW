@@ -1,6 +1,8 @@
 package com.cardpay.pccredit.customer.model;
 
 public class ParameterInformaion  {
+	private String productName; //产品名称
+	private String id;//进件ID
 	private String customerid;//客户ID
 	private String customerName;//客户姓名
 	private String customermanagerId;//客户经理ID
@@ -14,6 +16,13 @@ public class ParameterInformaion  {
 	private String classification;//行业分类
 	private String members;//审贷会成员
 	private String giveback;//归还情况
+	
+	public String getProductName() {
+		return productName;
+	}
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
 	public String getCustomerid() {
 		return customerid;
 	}
@@ -91,6 +100,12 @@ public class ParameterInformaion  {
 	}
 	public void setGiveback(String giveback) {
 		this.giveback = giveback;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 }

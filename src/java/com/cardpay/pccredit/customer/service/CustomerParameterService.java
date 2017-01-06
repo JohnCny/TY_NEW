@@ -33,9 +33,9 @@ public class CustomerParameterService {
 	}
 
 
-	public List<ParameterInformaion> query(String idCard) {
+	public List<ParameterInformaion> query(String id) {
 		// TODO Auto-generated method stub
-		return cpDao.query(idCard);
+		return cpDao.query(id);
 	}
 
 	public List<UserIpad> queryAllManager() {

@@ -1430,9 +1430,15 @@ public class CustomerInforService {
 	public CustomerFirsthendBase findCustomerFirsthendById(String customerInforId){
 		return commonDao.findObjectById(CustomerFirsthendBase.class,customerInforId);
 	}
-	
+	//CustomerFirsthendBase
 	public CIPERSONBASINFO findCIPERSONBASINFO(String customerInforId){
 		return commonDao.findObjectById(CIPERSONBASINFO.class,customerInforId);
+	}
+	//CustomerFirsthendBase
+	public CustomerFirsthendBase findCustomerFirsthendBase(
+			String customerInforId) {
+		// TODO Auto-generated method stub
+		return commonDao.findObjectById(CustomerFirsthendBase.class,customerInforId);
 	}
 	
 	//COPY
@@ -4656,4 +4662,5 @@ public class CustomerInforService {
 	public List<CustomerInfor> findCustomerInforByFilterAndProductId2(CustomerInforFilter filter){
 		return customerInforDao.findCustomerInforByFilterAndProductId2(filter);
 	}
+	
 }

@@ -3,6 +3,8 @@
  */
 package com.cardpay.pccredit.zrrtz.web;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,6 +14,11 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cardpay.pccredit.common.FormatTool;
 import com.cardpay.pccredit.customer.filter.CustomerLoanFilter;
 import com.cardpay.pccredit.customer.model.CustomerParameter;
 import com.cardpay.pccredit.customer.service.CustomerLoanService;
@@ -26,8 +34,11 @@ import com.cardpay.pccredit.customer.service.MaintenanceService;
 import com.cardpay.pccredit.customer.web.CustomerLoanForm;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
+import com.cardpay.pccredit.report.filter.ReportFilter;
+import com.cardpay.pccredit.report.model.YffdktjbbForm;
 import com.cardpay.pccredit.zrrtz.Util.ExportExcel;
 import com.cardpay.pccredit.zrrtz.dao.ZrrtzDao;
+import com.cardpay.pccredit.zrrtz.model.OutcomingData;
 import com.cardpay.pccredit.zrrtz.model.ZrrtzFilter;
 import com.cardpay.pccredit.zrrtz.model.IncomingData;
 import com.cardpay.pccredit.zrrtz.service.ZrrtzcService;
@@ -156,39 +167,37 @@ public class CustomerZRRTZController extends BaseController{
 		return mv;
 	}
 	
-	//使用poi方法 导出excel
+/*	//使用poi方法 导出excel
 	@ResponseBody
 	@RequestMapping(value = "export.json", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
 	public JRadReturnMap zrrtzexport(@ModelAttribute  ZrrtzFilter filter, HttpServletRequest request,HttpServletResponse response) {
 		filter.setRequest(request);
-		String card_id=RequestHelper.getStringValue(request, ID);
+		String id=RequestHelper.getStringValue(request, ID);
 		JRadReturnMap returnMap = new JRadReturnMap();
 		if (returnMap.isSuccess()) {
 		String title="CUSTOMER_PARAMETER信息表";
-		String[] rowName={"编号","客户名称","客户经理名称"
+		String[] rowName={"客户名称","客户经理名称"
 				,"身份证号","产品名称","金额","期限"
-				,"利率","贷款类型","发放日期","到期日期"
-				,"担保人","行业分类","经营内容","经营地址"
+				,"发放日期","到期日期"
+				,"行业分类","经营内容","经营地址"
 				,"主调","辅调","组别","审贷会成员"
-				,"贷款方式","是否纳税","归还情况","是否批量"
-				,"电话号码","是否转贷","备注"};
-		List<CustomerParameter>plans=dao.findpiecesList(card_id);
+				,"贷款方式","是否纳税","归还情况","备注"};
+		List<OutcomingData>plans=dao.findpiecesList(id);
 		List<Object[]>  dataList=new ArrayList<Object[]>();
 		for (int i=0;i<plans.size();i++) {
 			Object[] obj={
-					plans.get(i).getCustomerParameterId(),
 					plans.get(i).getCustomername(),
 					plans.get(i).getManagername(),
 					plans.get(i).getIdcard(),
 					plans.get(i).getProductname(),
 					plans.get(i).getMoney(),
 					plans.get(i).getDeadline(),
-					plans.get(i).getInterstrate(),
-					plans.get(i).getLoantype(),
+				//	plans.get(i).getInterstrate(),
+				//	plans.get(i).getLoantype(),
 					plans.get(i).getProvidedate(),
 					plans.get(i).getExpiredate(),
-					plans.get(i).getBondsman(),
+				//	plans.get(i).getBondsman(),
 					plans.get(i).getClassification(),
 					plans.get(i).getScopeoperation(),
 					plans.get(i).getOperationaddress(),
@@ -199,9 +208,9 @@ public class CustomerZRRTZController extends BaseController{
 					plans.get(i).getPatternslend(),
 					plans.get(i).getRatepaying(),
 					plans.get(i).getGiveback(),
-					plans.get(i).getBatchs(),
-					plans.get(i).getPhonenumber(),
-					plans.get(i).getEnlending(),
+				//	plans.get(i).getBatchs(),
+				//	plans.get(i).getPhonenumber(),
+				//	plans.get(i).getEnlending(),
 					plans.get(i).getRemark()
 			};
 			dataList.add(obj);
@@ -215,6 +224,153 @@ public class CustomerZRRTZController extends BaseController{
 		}
 		}
 		return returnMap;
+	}
+	*/
+	
+	
+	/**
+	 * 导出
+	 */
+	@ResponseBody
+	@RequestMapping(value = "export.json", method = { RequestMethod.GET })
+	public void exportAll(@ModelAttribute ReportFilter filter, HttpServletRequest request,HttpServletResponse response){
+		filter.setRequest(request);
+		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		String id=user.getId();
+	//	String id=RequestHelper.getStringValue(request, ID);
+		List<OutcomingData>list=dao.findpiecesList(id);
+		create(list,response);
+	}
+	
+	public void create(List<OutcomingData> list,HttpServletResponse response){
+		HSSFWorkbook wb = new HSSFWorkbook();
+		HSSFSheet sheet = wb.createSheet("自然人台帐");
+		HSSFCellStyle style = wb.createCellStyle();
+		style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+		//第一行  合并单元格 并且设置标题
+		/*HSSFRow row0 = sheet.createRow((int) 0);
+		row0.createCell(0).setCellValue("基本资料");
+		row0.createCell(0).setCellStyle(style);
+		sheet.addMergedRegion(new Region(0, (short) 0, 0, (short) 6));*/
+		sheet.setColumnWidth(0, 3500);
+		sheet.setColumnWidth(1, 8000);
+		sheet.setColumnWidth(2, 8000);
+		sheet.setColumnWidth(3, 8000);
+		sheet.setColumnWidth(4, 8000);
+		sheet.setColumnWidth(5, 5000);
+		//==========================
+		HSSFRow row = sheet.createRow((int) 0);
+		
+		HSSFCell cell = row.createCell((short) 0);
+		cell.setCellValue("序号");
+		cell.setCellStyle(style);
+		
+		cell = row.createCell((short) 1);
+		cell.setCellValue("客户名称");
+		cell.setCellStyle(style);
+		
+		cell = row.createCell((short) 2);
+		cell.setCellValue("客户经理名称");
+		cell.setCellStyle(style);
+		
+		cell = row.createCell((short) 3);
+		cell.setCellValue("身份证号");
+		cell.setCellStyle(style);
+		
+		cell = row.createCell((short) 4);
+		cell.setCellValue("产品名称");
+		cell.setCellStyle(style);
+		
+		cell = row.createCell((short) 5);
+		cell.setCellValue("金额");
+		cell.setCellStyle(style);
+		
+		cell = row.createCell((short) 6);
+		cell.setCellValue("期限");
+		cell.setCellStyle(style);
+		
+		cell = row.createCell((short) 7);
+		cell.setCellValue("发放日期");
+		cell.setCellStyle(style);
+		
+		cell = row.createCell((short) 8);
+		cell.setCellValue("到期日期");
+		cell.setCellStyle(style);
+		
+		cell = row.createCell((short) 9);
+		cell.setCellValue("行业分类");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 10);
+		cell.setCellValue("经营内容");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 11);
+		cell.setCellValue("经营地址");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 12);
+		cell.setCellValue("主调");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 13);
+		cell.setCellValue("辅调");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 14);
+		cell.setCellValue("组别");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 15);
+		cell.setCellValue("审贷会成员");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 16);
+		cell.setCellValue("贷款方式");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 17);
+		cell.setCellValue("是否纳税");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 18);
+		cell.setCellValue("归还情况");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 19);
+		cell.setCellValue("备注");
+		cell.setCellStyle(style);
+		
+
+		
+		for(int i = 0; i < list.size(); i++){
+			OutcomingData move = list.get(i);
+			row = sheet.createRow((int) i+1);
+			row.createCell((short) 0).setCellValue(move.getRowIndex());
+			row.createCell((short) 1).setCellValue(move.getCustomername());
+			row.createCell((short) 2).setCellValue(move.getManagername());
+			row.createCell((short) 3).setCellValue(move.getIdcard());
+			row.createCell((short) 4).setCellValue(move.getProductname());
+			row.createCell((short) 5).setCellValue(FormatTool.formatNumber(move.getMoney(), 5, 1));
+			row.createCell((short) 6).setCellValue(move.getDeadline());
+			row.createCell((short) 7).setCellValue(move.getProvidedate());
+			row.createCell((short) 8).setCellValue(move.getExpiredate());
+			row.createCell((short) 9).setCellValue(move.getClassification());
+			row.createCell((short) 10).setCellValue(move.getScopeoperation());
+			row.createCell((short) 11).setCellValue(move.getOperationaddress());
+			row.createCell((short) 12).setCellValue(move.getPrincipal());
+			row.createCell((short) 13).setCellValue(move.getAssist());
+			row.createCell((short) 14).setCellValue(move.getGroupes());
+			row.createCell((short) 15).setCellValue(move.getMembers());
+			row.createCell((short) 16).setCellValue(move.getPatternslend());
+			row.createCell((short) 17).setCellValue(move.getRatepaying());
+			row.createCell((short) 18).setCellValue(move.getGiveback());
+			row.createCell((short) 19).setCellValue(move.getSJ());
+			
+		}
+		
+		String fileName = "自然人台帐";
+		try{
+			response.setHeader("Content-Disposition", "attachment;fileName="+new String(fileName.getBytes("gbk"),"iso8859-1")+".xls");
+			response.setHeader("Connection", "close");
+			response.setHeader("Content-Type", "application/vnd.ms-excel");
+			OutputStream os = response.getOutputStream();
+			wb.write(os);
+			os.flush();
+			os.close();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
 	}
 	
 }

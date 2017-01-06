@@ -36,13 +36,13 @@
               #foreach ($customerInfor in $customerInfor)
             <tr>
               <td class="titlefc3"><label for="khh">客户初始ID:</label></td>
-              <td><input class="rinpsty"  type="text" id="khh" name="khh" value="$!customerInfor.initid" /></td>
+              <td><input class="rinpsty"  type="text" id="khh" name="khh" value="$!customerInfor.ID" /></td>
               <td class="titlefc3"><label for="khmc">客户编号:</label></td>
-              <td><input class="rinpsty"  type="text" id="khmc" name="khmc" value="$!customerInfor.custid" /></td>
+              <td><input class="rinpsty"  type="text" id="khmc" name="khmc" value="$!customerInfor.KHNM" /></td>
             </tr>
              <tr>
               <td class="titlefc3"><label for="rh">客户类型:</label></td>
-              <td><input class="rinpsty"  type="text" id="rh" name="rh" value="$!customerInfor.custtype" /></td> 
+              <td><input class="rinpsty"  type="text" id="rh" name="rh" value="$!customerInfor.KHLX" /></td> 
              
               <td class="titlefc3"><label for="khlx">客户名称:</label></td>
               <td><input class="rinpsty"  type="text" id="khlx" name="khlx" value="$!customerInfor.cname" /></td>

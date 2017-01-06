@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.customer.dao.MaintenanceDao;
 import com.cardpay.pccredit.customer.filter.MaintenanceFilter;
+import com.cardpay.pccredit.customer.model.CustomerFirsthendBase;
 import com.cardpay.pccredit.customeradd.dao.KuglDao;
 import com.cardpay.pccredit.customeradd.model.CIPERSONBASINFO;
 import com.cardpay.pccredit.customeradd.model.MaintenanceForm;
@@ -23,7 +24,7 @@ public class KuglService {
 		// TODO Auto-generated method stub
 		return dao.findcustomermanager();
 	}
-	public List<CIPERSONBASINFO> findcustomerinfo(String cardid) {
+	public List<CustomerFirsthendBase> findcustomerinfo(String cardid) {
 		// TODO Auto-generated method stub
 		return dao.fincustomerinfo(cardid);
 	}

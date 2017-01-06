@@ -62,6 +62,8 @@
 		<result property="expiredate" column="DQRQ" />
 		<result property="classification" column="industry_type" />
 		<result property="giveback" column="ACCOUNT_STATUS" />
+		<result property="id" column="id" />
+		<result property="productName" column="product_name" />
 	</resultMap>
 	
 	<resultMap id="allResultMap" type="com.cardpay.pccredit.customer.model.CustomerParameter">
@@ -124,7 +126,7 @@
 		SELECT * from product_attribute 
 	</select>
 	
-	<select id="query" resultMap="queryResultMap">
+	<select id="query" resultMap="queryResultMap"  parameterType="String">
     <!--  select 
     su.display_name,
     bci.CHINESE_NAME,
@@ -178,6 +180,7 @@
     su.display_name,
     bci.CHINESE_NAME,
     bci.CARD_ID,
+    p.product_name,
     cai.ACTUAL_QUOTE,
     cai.ACCOUNT_STATUS,
     trt.DKQX,
@@ -191,7 +194,8 @@
      left join TY_REPAY_TKMX trt on tcb.khnm=trt.khh
      left join CUSTOMER_CAREERS_INFORMATION cci on cci.customer_id=bci.id
      left join sys_user su on  su.id=bci.user_id
-     where bci.CARD_ID=#{idCard}
+     left join  product_attribute p on cai.product_id = p.id
+     where cai.id=#{id}
 	</select>
 	
 	<select id="queryByIdCard" resultMap="allResultMap" >
