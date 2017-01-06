@@ -47,4 +47,26 @@
         where d.dept_id=cc.id
         and u.id=d.user_id
       </select>
+      
+	
+	
+	
+	<select id="selectUserByDid" resultMap="ResultMap" parameterType="com.cardpay.pccredit.jnpad.model.JBUser">
+			select s.id as userId,s.display_name as displayName,t.name as name
+			from SYS_DEPT_USER d,sys_user s, SYS_DEPARTMENT t
+			where  s.id=d.user_id
+			and t.id=d.dept_id
+			and d.dept_id=#{parentId}
+	</select>
+	
+	
+	
+	<select id="selectUserByDid1" resultMap="ResultMap" parameterType="com.cardpay.pccredit.jnpad.model.JBUser">
+			   select user_id as userId,cc.name as name,u.display_name as displayName from SYS_DEPT_USER d,
+      (select t.id,t.name from SYS_DEPT_USER s,SYS_DEPARTMENT t
+      where s.user_id=#{userId}
+      and s.dept_id=t.id) cc,sys_user u
+      where cc.id=d.dept_id
+      and u.id=d.user_id
+	</select>
 </mapper>

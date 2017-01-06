@@ -257,6 +257,60 @@ public class MaintenanceService {
 		
 	}
 	
+	/**
+	 * pad查询客户经理
+	 * @param user
+	 * @return
+	 */
+	public List<AccountManagerParameterForm>  findSubListManagerByManagerId1(String Id,int userType){
+		//客户经理list
+		 List<AccountManagerParameterForm>  forms = new ArrayList<AccountManagerParameterForm>();
+		 
+		//如果是客户经理1
+		if(CommonConstant.USER_TYPE.USER_TYPE_1 == userType){
+			List<ManagerBelongMapForm> childBelongMapList = maintenanceDao.findChildId(Id);
+			if(childBelongMapList != null && childBelongMapList.size() > 0){
+					StringBuffer belongChildIds = new StringBuffer();
+					belongChildIds.append("(");
+					for(ManagerBelongMapForm belongMapForm : childBelongMapList){
+						belongChildIds.append("'").append(belongMapForm.getChildId()).append("'").append(",");
+					}
+					belongChildIds = belongChildIds.deleteCharAt(belongChildIds.length() - 1);
+					belongChildIds.append(")");
+					return managerBelongMapDao.findAccountManagerParameterByChildIds(belongChildIds.toString());
+			}
+		}
+		//如果是部门主管2
+		if(CommonConstant.USER_TYPE.USER_TYPE_2 == userType){
+			forms =  managerBelongMapDao.findDeptManagerById(Id);
+		}
+		//如果是机构主管3
+		if(CommonConstant.USER_TYPE.USER_TYPE_3 == userType){
+			forms =  managerBelongMapDao.findOrgManagerById(Id);
+		}
+		//如果是区域经理4
+				if(CommonConstant.USER_TYPE.USER_TYPE_4 == userType){
+					forms =  managerBelongMapDao.findDeptManagerByDeptId(Id);
+				}
+		return forms;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	/**
 	 * 查询客户经理

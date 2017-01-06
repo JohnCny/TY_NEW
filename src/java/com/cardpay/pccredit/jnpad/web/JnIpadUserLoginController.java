@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cardpay.pccredit.customer.constant.CommonConstant;
+import com.cardpay.pccredit.customer.service.MaintenanceService;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
 import com.cardpay.pccredit.ipad.constant.IpadConstant;
@@ -32,7 +34,9 @@ import com.cardpay.pccredit.jnpad.model.JnUserLoginIpad;
 import com.cardpay.pccredit.jnpad.model.JnUserLoginResult;
 import com.cardpay.pccredit.jnpad.service.JnIpadCustAppInfoXxService;
 import com.cardpay.pccredit.jnpad.service.JnIpadUserLoginService;
+import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
 import com.cardpay.pccredit.system.model.SystemUser;
+import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.jrad.modules.privilege.model.User;
 import com.wicresoft.util.spring.Beans;
@@ -59,7 +63,8 @@ public class JnIpadUserLoginController {
 	
 	@Autowired
 	private JnIpadCustAppInfoXxService appInfoXxService;
-	
+	@Autowired
+	private MaintenanceService maintenanceService;
 	/**
 	 * 用户登录
 	 * @param request
@@ -73,6 +78,7 @@ public class JnIpadUserLoginController {
 		String passwd = RequestHelper.getStringValue(request, "password");
 		HttpSession session=request.getSession();
 		String time= (String) session.getAttribute("loginTime");
+		JnUserLoginIpad user = null;
 		if(time==null){
 			Date loginTime =new Date();
 			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -101,7 +107,7 @@ public class JnIpadUserLoginController {
 			map.put("result",result);
 		}else{
 			loginResult = new JnUserLoginResult();
-			JnUserLoginIpad user = userService.login(login, passwd);
+			 user = userService.login(login, passwd);
 			if(user!=null){
 				loginResult.setUser(user);
 				loginResult.setStatus(IpadConstant.SUCCESS);
@@ -112,6 +118,22 @@ public class JnIpadUserLoginController {
 			}
 			map.put("result",loginResult);
 		}
+		if(CommonConstant.USER_TYPE.USER_TYPE_1 == user.getUserType()){
+			List<AccountManagerParameterForm> forms = maintenanceService.findSubListManagerByManagerId1(user.getId(),user.getUserType());
+			if(forms != null && forms.size() > 0){
+				StringBuffer userIds = new StringBuffer();
+				userIds.append("(");
+				for(AccountManagerParameterForm form : forms){
+					userIds.append("'").append(form.getUserId()).append("'").append(",");
+				}
+				userIds = userIds.deleteCharAt(userIds.length() - 1);
+				userIds.append(")");
+				String str = maintenanceService.getActiveList(userIds.toString());
+				map.put("repay", str);
+			}
+		}
+		
+		
 		JSONObject json = JSONObject.fromObject(map);
 		return String.valueOf(json);
 	}
