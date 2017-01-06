@@ -29,5 +29,19 @@ public interface JnIpadJBUserDao {
 	 * @return
 	 */
 	public List<JBUser> findDe(@Param("ID") String ID);
+	
+	/**
+	 * 权限查看
+	 * @param parentId
+	 * @return
+	 */
+	public List<JBUser> selectUserByDid(@Param("parentId") String parentId);
+	
+	/**
+	 * 权限查看
+	 * @param parentId
+	 * @return
+	 */
+	public List<JBUser> selectUserByDid1(@Param("userId") String userId);
 
 }

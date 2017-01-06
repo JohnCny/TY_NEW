@@ -225,8 +225,8 @@ public class StatisticalCommonService {
 		return JSONArray.fromObject(list).toString();
 	}
 	
-	public String statisticalsxorgan1(){
-		List<Double> list = new ArrayList<Double>();
+	public List<NameValueRecord> statisticalsxorgan1(){
+		/*List<Double> list = new ArrayList<Double>();
 		List<NameValueRecord> records = statisticalCommonDao.statisticalsxorgan1();
 		for(NameValueRecord nameValueRecord : records){
 			if(StringUtils.isNotEmpty(nameValueRecord.getValue())){
@@ -235,7 +235,8 @@ public class StatisticalCommonService {
 				list.add(0d);
 			}
 		}
-		return JSONArray.fromObject(list).toString();
+		return JSONArray.fromObject(list).toString();*/
+		return statisticalCommonDao.statisticalsxorgan1();
 	}
 	
 	public String statisticalyqorgan(){
@@ -251,8 +252,8 @@ public class StatisticalCommonService {
 		return JSONArray.fromObject(list).toString();
 	}
 	
-	public String statisticalyqorgan1(){
-		List<Double> list = new ArrayList<Double>();
+	public List<NameValueRecord> statisticalyqorgan1(){
+/*		List<Double> list = new ArrayList<Double>();
 		List<NameValueRecord> records = statisticalCommonDao.statisticalyqorgan1();
 		for(NameValueRecord nameValueRecord : records){
 			if(StringUtils.isNotEmpty(nameValueRecord.getValue())){
@@ -261,7 +262,8 @@ public class StatisticalCommonService {
 				list.add(0d);
 			}
 		}
-		return JSONArray.fromObject(list).toString();
+		return JSONArray.fromObject(list).toString();*/
+		return statisticalCommonDao.statisticalyqorgan1();
 	}
 	public String statisticalblorgan(){
 		List<Double> list = new ArrayList<Double>();

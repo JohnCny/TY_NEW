@@ -22,13 +22,16 @@ import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.jnpad.model.CIPERSONBASINFO;
 import com.cardpay.pccredit.jnpad.model.CustomerInfo;
 import com.cardpay.pccredit.jnpad.model.JBUser;
+import com.cardpay.pccredit.jnpad.model.JnIpadXDModel;
 import com.cardpay.pccredit.jnpad.model.NODEAUDIT;
 import com.cardpay.pccredit.jnpad.service.JnIpadJBUserService;
+import com.cardpay.pccredit.jnpad.service.JnIpadXDService;
 import com.cardpay.pccredit.jnpad.service.JnipadNodeService;
 import com.cardpay.pccredit.jnpad.service.JnpadCustomerSelectService;
 import com.cardpay.pccredit.manager.web.ManagerBelongMapForm;
 import com.cardpay.pccredit.riskControl.model.CUSTOMERBLACKLIST;
 import com.cardpay.pccredit.riskControl.service.CustormerBlackListService;
+import com.wicresoft.jrad.modules.privilege.model.User;
 import com.wicresoft.util.web.RequestHelper;
 
 import net.sf.json.JSONObject;
@@ -48,6 +51,8 @@ public class JnpadCustomerSelectController {
 	private CustormerBlackListService cblservice;
 	@Autowired
 	private JnIpadJBUserService JnIpadJBUser;
+	@Autowired
+	private JnIpadXDService XDService;
 	@Autowired
 	private com.cardpay.pccredit.manager.service.ManagerBelongMapService ManagerBelongMapService;
 	/**
@@ -352,6 +357,97 @@ public String selectCustomerInfoByCardId(HttpServletRequest request){
 	 	JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+	}
+	
+	
+	/**
+	 * 当前客户经理信贷放款记录
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/customer/selectUserXD.json", method = { RequestMethod.GET })
+    public String selectUserxdSj(HttpServletRequest request ){
+		Map<String,Object> map = new LinkedHashMap<String,Object>();
+		String userId=request.getParameter("userId");
+		List<JnIpadXDModel> result=XDService.selectUserXD(userId);
+		for(int i=0;i<result.size();i++){
+			if(!result.get(i).getDkye().equals("0.00")){
+				result.get(i).setHqys("未还清");
+			}else{
+				result.get(i).setHqys("已还清");
+			}
+		}
+		Integer b=0;
+		String parentId="100000";
+		JBUser user =new JBUser();
+		List list=new ArrayList();
+		//确认当前客户经理是否为区域经理
+		List<ManagerBelongMapForm> result1=ManagerBelongMapService.findAllqyjl(parentId);
+		for(int a=0;a<result1.size();a++){
+			if(result1.get(a).getId().equals(userId)){
+				b=1;
+			}
+		}
+		if(b==1){
+			List<JBUser> depart=JnIpadJBUser.selectDepartUser(userId);
+			for(int i=0;i<depart.size();i++){
+				List<JBUser> findxzcy=JnIpadJBUser.selectUserByDid(depart.get(i).getId());
+				for(int a=0;a<findxzcy.size();a++){
+					list.add(findxzcy.get(a));	
+				}
+			map.put("list", list);
+			
+		}}else{
+			List<JBUser> findxzcy=JnIpadJBUser.selectUserByDid1(userId);
+			for(int a=0;a<findxzcy.size();a++){
+				list.add(findxzcy.get(a));	
+			}
+			map.put("list", list);
+		}
+		map.put("listsize", list.size());
+		map.put("result", result);
+		map.put("size", result.size());
+	 	JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		list.clear();
+		return json.toString();
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/ipad/customer/selectxzorqy.json", method = { RequestMethod.GET })
+    public String selectxzorqy(HttpServletRequest request ){
+		Map<String,Object> map = new LinkedHashMap<String,Object>();
+		String userId=request.getParameter("userId");
+		Integer b=0;
+		String parentId="100000";
+		List list=new ArrayList();
+		//确认当前客户经理是否为区域经理
+		List<ManagerBelongMapForm> result=ManagerBelongMapService.findAllqyjl(parentId);
+		for(int a=0;a<result.size();a++){
+			if(result.get(a).getId().equals(userId)){
+				b=1;
+			}
+		}
+		if(b==1){
+			List<JBUser> depart=JnIpadJBUser.selectDepartUser(userId);
+			for(int i=0;i<depart.size();i++){
+				List<JBUser> findxzcy=JnIpadJBUser.selectUserByDid(depart.get(i).getId());
+				list.add(findxzcy);
+			}
+			map.put("user", list);
+			
+		}else{
+			List<JBUser> findxzcy=JnIpadJBUser.selectUserByDid1(userId);
+			list.add(findxzcy);
+			map.put("user", list);
+		}
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		list.clear();
 		return json.toString();
 	}
 	

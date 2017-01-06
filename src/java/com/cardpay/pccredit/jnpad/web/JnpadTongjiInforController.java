@@ -29,6 +29,17 @@ public class JnpadTongjiInforController {
 		String allyq;
 		Map<Object, Object> map = new LinkedHashMap<Object, Object>();
 			long start = System.currentTimeMillis();
+			//各区域放款总额与逾期总额
+			List<NameValueRecord> records=statisticalCommonService.statisticalyqorgan1();
+			map.put("oneyq", records.get(0));
+			map.put("twoyq", records.get(1));
+			map.put("threeyq", records.get(2));
+			map.put("fouryq", records.get(3));
+			List<NameValueRecord> result1=statisticalCommonService.statisticalsxorgan1();
+			map.put("oneyx", result1.get(0));
+			map.put("twoyx", result1.get(1));
+			map.put("threeyx", result1.get(2));
+			map.put("fouryx", result1.get(3));
 			// 当前进件状况 济南 sj 20160804
 			List<NameValueRecord> result=statisticalCommonService.statisticalApplicationStatus1();
 			map.put("allspover", Integer.parseInt(result.get(0).getId()));

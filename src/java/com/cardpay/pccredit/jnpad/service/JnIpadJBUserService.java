@@ -27,5 +27,11 @@ public class JnIpadJBUserService {
 	public List<JBUser> findDe(@Param("ID") String ID){
 		return JnIpadJBUser.findDe(ID);
 	}
+	public List<JBUser> selectUserByDid(@Param("parentId") String parentId){
+		return JnIpadJBUser.selectUserByDid(parentId);
+	}
+	public List<JBUser> selectUserByDid1(@Param("userId") String userId){
+		return JnIpadJBUser.selectUserByDid1(userId);
+	}
 
 }

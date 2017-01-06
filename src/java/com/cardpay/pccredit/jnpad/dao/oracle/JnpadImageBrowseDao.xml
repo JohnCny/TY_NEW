@@ -43,6 +43,7 @@
     where CUSTOMER_ID =#{customerId}
 	AND PRODUCT_ID=#{productId}
 	AND PHONE_TYPE=#{phone_type}
+	order by i.created_time desc
 </select>
 <delete id="deleteImage">
     delete from local_image where id=#{id}
