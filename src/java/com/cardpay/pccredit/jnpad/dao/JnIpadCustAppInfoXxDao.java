@@ -59,6 +59,7 @@ public interface JnIpadCustAppInfoXxDao {
 		public int deteleFin(@Param("productId") String productId,@Param("customerId") String customerId);
 		
 		public List<IntoPieces> findCustomerBack(@Param("userId") String userId);
-		
+		public List<IntoPieces> findCustomersuccess(@Param("userId") String userId);
+		public List<IntoPieces> findCustomerResulf(@Param("userId") String userId);
 		public int findCustomerBackCount(@Param("userId") String userId);
 }

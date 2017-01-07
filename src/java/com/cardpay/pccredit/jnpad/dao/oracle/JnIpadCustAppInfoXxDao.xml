@@ -19,6 +19,9 @@
 		<result property="bwqx" column="bwqx" />
 		<result property="creatime" column="CREATED_TIME" />
 			<result property="fallBackReason" column="FALLBACK_REASON" />
+			<result property="final_approval" column="final_approval" />
+			<result property="actual_quote" column="actual_quote" />
+			<result property="refusqlReason" column="REFUSAL_REASON" />
 	</resultMap>
 
 
@@ -378,7 +381,37 @@ and b.user_id=#{userId}
 and s.id=b.user_id
 and (c.status='nopass_replenish'
 or c.status='returnedToFirst')
-		
+	</select>
+	
+	
+	<select id="findCustomerResulf" resultMap="ResultMap">
+	select  c.id as id,c.customer_id as customerId,b.chinese_name as chineseName
+	,p.id as productId,p.product_name as productName,b.card_id as cardId,c.apply_quota as applyQuota
+	,c.status as status,t.REFUSAL_REASON as REFUSAL_REASON,s.display_name as displayName
+from
+customer_application_info c,basic_customer_information  b,customer_application_process t,product_attribute p ,sys_user s
+where b.id=c.customer_id
+and c.id=t.APPLICATION_ID
+and c.product_id=p.id
+and b.user_id=#{userId}
+and s.id=b.user_id
+and (c.status='refuse'
+or c.status='nopass')
+	</select>
+	
+	
+		<select id="findCustomersuccess" resultMap="ResultMap">
+	select  c.id as id,c.customer_id as customerId,b.chinese_name as chineseName
+	,p.id as productId,p.product_name as productName,b.card_id as cardId,c.apply_quota as applyQuota
+	,c.status as status,c.final_approval as final_approval,c.actual_quote as actual_quote,s.display_name as displayName
+from
+customer_application_info c,basic_customer_information  b,product_attribute p ,sys_user s
+where b.id=c.customer_id
+and c.product_id=p.id
+and b.user_id=#{userId}
+and s.id=b.user_id
+and (c.status='success'
+or c.status='approved')
 	</select>
 	
 	

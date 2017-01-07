@@ -379,77 +379,14 @@ public String selectCustomerInfoByCardId(HttpServletRequest request){
 				result.get(i).setHqys("已还清");
 			}
 		}
-		Integer b=0;
-		String parentId="100000";
-		JBUser user =new JBUser();
-		List list=new ArrayList();
-		//确认当前客户经理是否为区域经理
-		List<ManagerBelongMapForm> result1=ManagerBelongMapService.findAllqyjl(parentId);
-		for(int a=0;a<result1.size();a++){
-			if(result1.get(a).getId().equals(userId)){
-				b=1;
-			}
-		}
-		if(b==1){
-			List<JBUser> depart=JnIpadJBUser.selectDepartUser(userId);
-			for(int i=0;i<depart.size();i++){
-				List<JBUser> findxzcy=JnIpadJBUser.selectUserByDid(depart.get(i).getId());
-				for(int a=0;a<findxzcy.size();a++){
-					list.add(findxzcy.get(a));	
-				}
-			map.put("list", list);
-			
-		}}else{
-			List<JBUser> findxzcy=JnIpadJBUser.selectUserByDid1(userId);
-			for(int a=0;a<findxzcy.size();a++){
-				list.add(findxzcy.get(a));	
-			}
-			map.put("list", list);
-		}
-		map.put("listsize", list.size());
 		map.put("result", result);
 		map.put("size", result.size());
 	 	JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);
-		list.clear();
 		return json.toString();
 	}
 	
-	@ResponseBody
-	@RequestMapping(value = "/ipad/customer/selectxzorqy.json", method = { RequestMethod.GET })
-    public String selectxzorqy(HttpServletRequest request ){
-		Map<String,Object> map = new LinkedHashMap<String,Object>();
-		String userId=request.getParameter("userId");
-		Integer b=0;
-		String parentId="100000";
-		List list=new ArrayList();
-		//确认当前客户经理是否为区域经理
-		List<ManagerBelongMapForm> result=ManagerBelongMapService.findAllqyjl(parentId);
-		for(int a=0;a<result.size();a++){
-			if(result.get(a).getId().equals(userId)){
-				b=1;
-			}
-		}
-		if(b==1){
-			List<JBUser> depart=JnIpadJBUser.selectDepartUser(userId);
-			for(int i=0;i<depart.size();i++){
-				List<JBUser> findxzcy=JnIpadJBUser.selectUserByDid(depart.get(i).getId());
-				list.add(findxzcy);
-			}
-			map.put("user", list);
-			
-		}else{
-			List<JBUser> findxzcy=JnIpadJBUser.selectUserByDid1(userId);
-			list.add(findxzcy);
-			map.put("user", list);
-		}
-		JsonConfig jsonConfig = new JsonConfig();
-		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
-		JSONObject json = JSONObject.fromObject(map, jsonConfig);
-		list.clear();
-		return json.toString();
-	}
 	
 }
 
