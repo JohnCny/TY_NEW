@@ -271,4 +271,10 @@ public class JnIpadCustAppInfoXxService {
 	public int findCustomerBackCount(@Param("userId") String userId){
 		return jnIpadCustAppInfoDao.findCustomerBackCount(userId);
 	}
+	public List<IntoPieces> findCustomersuccess(@Param("userId") String userId){
+		return jnIpadCustAppInfoDao.findCustomersuccess(userId);
+	}
+	public List<IntoPieces> findCustomerResulf(@Param("userId") String userId){
+		return jnIpadCustAppInfoDao.findCustomerResulf(userId);
+	}
 }

@@ -2,6 +2,7 @@ package com.cardpay.pccredit.jnpad.web;
 
 import java.awt.geom.Arc2D.Float;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -30,11 +31,15 @@ import com.cardpay.pccredit.ipad.service.CustomerInforForIpadService;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.jnpad.model.CustYunyinVo;
 import com.cardpay.pccredit.jnpad.model.CustomerManagerVo;
+import com.cardpay.pccredit.jnpad.model.JBUser;
 import com.cardpay.pccredit.jnpad.model.JnUserLoginIpad;
 import com.cardpay.pccredit.jnpad.model.JnUserLoginResult;
 import com.cardpay.pccredit.jnpad.service.JnIpadCustAppInfoXxService;
+import com.cardpay.pccredit.jnpad.service.JnIpadJBUserService;
 import com.cardpay.pccredit.jnpad.service.JnIpadUserLoginService;
+import com.cardpay.pccredit.jnpad.service.JnIpadXDService;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
+import com.cardpay.pccredit.manager.web.ManagerBelongMapForm;
 import com.cardpay.pccredit.system.model.SystemUser;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.web.security.LoginManager;
@@ -60,11 +65,16 @@ public class JnIpadUserLoginController {
 	private AddIntoPiecesService addIntoPiecesService;
 	@Autowired
 	private CustomerInforForIpadService customerInforService;
-	
+	@Autowired
+	private JnIpadJBUserService JnIpadJBUser;
 	@Autowired
 	private JnIpadCustAppInfoXxService appInfoXxService;
 	@Autowired
 	private MaintenanceService maintenanceService;
+	@Autowired
+	private JnIpadXDService XDService;
+	@Autowired
+	private com.cardpay.pccredit.manager.service.ManagerBelongMapService ManagerBelongMapService;
 	/**
 	 * 用户登录
 	 * @param request
@@ -117,22 +127,24 @@ public class JnIpadUserLoginController {
 				loginResult.setReason(IpadConstant.LOGINFAIL);
 			}
 			map.put("result",loginResult);
-		}
-		if(CommonConstant.USER_TYPE.USER_TYPE_1 == user.getUserType()){
-			List<AccountManagerParameterForm> forms = maintenanceService.findSubListManagerByManagerId1(user.getId(),user.getUserType());
-			if(forms != null && forms.size() > 0){
-				StringBuffer userIds = new StringBuffer();
-				userIds.append("(");
-				for(AccountManagerParameterForm form : forms){
-					userIds.append("'").append(form.getUserId()).append("'").append(",");
+			List list1=cxke(user);
+			map.put("list", list1);
+			map.put("listsize", list1.size());
+			if(CommonConstant.USER_TYPE.USER_TYPE_1 == user.getUserType()){
+				List<AccountManagerParameterForm> forms = maintenanceService.findSubListManagerByManagerId1(user.getId(),user.getUserType());
+				if(forms != null && forms.size() > 0){
+					StringBuffer userIds = new StringBuffer();
+					userIds.append("(");
+					for(AccountManagerParameterForm form : forms){
+						userIds.append("'").append(form.getUserId()).append("'").append(",");
+					}
+					userIds = userIds.deleteCharAt(userIds.length() - 1);
+					userIds.append(")");
+					String str = maintenanceService.getActiveList(userIds.toString());
+					map.put("repay", str);
 				}
-				userIds = userIds.deleteCharAt(userIds.length() - 1);
-				userIds.append(")");
-				String str = maintenanceService.getActiveList(userIds.toString());
-				map.put("repay", str);
 			}
 		}
-		
 		
 		JSONObject json = JSONObject.fromObject(map);
 		return String.valueOf(json);
@@ -274,5 +286,34 @@ public class JnIpadUserLoginController {
 		return json.toString();
 	}
 	
+	
+	public List cxke(JnUserLoginIpad user) {
+		Integer b=0;
+		String parentId="100000";
+		List list=new ArrayList();
+		String userId=user.getId();
+		//确认当前客户经理是否为区域经理
+		List<ManagerBelongMapForm> result1=ManagerBelongMapService.findAllqyjl(parentId);
+		for(int a=0;a<result1.size();a++){
+			if(result1.get(a).getId().equals(userId)){
+				b=1;
+			}
+		}
+		if(b==1){
+			List<JBUser> depart=JnIpadJBUser.selectDepartUser(userId);
+			for(int i=0;i<depart.size();i++){
+				List<JBUser> findxzcy=JnIpadJBUser.selectUserByDid(depart.get(i).getId());
+				for(int a=0;a<findxzcy.size();a++){
+					list.add(findxzcy.get(a));	
+				}
+			
+		}}else{
+			List<JBUser> findxzcy=JnIpadJBUser.selectUserByDid1(userId);
+			for(int a=0;a<findxzcy.size();a++){
+				list.add(findxzcy.get(a));	
+			}
+		}
+		return list;
+	}
 	
 }

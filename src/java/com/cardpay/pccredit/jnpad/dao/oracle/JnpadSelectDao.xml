@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.jnpad.dao.JnpadSelectDao" >
+<resultMap type="com.cardpay.pccredit.jnpad.model.JnIpadXDModel" id="selectXD">
+<result property="ywbh" column="ywbh" />
+<result property="khh" column="khh" />
+<result property="khmc" column="khmc" />
+<result property="zjhm" column="zjhm" />
+<result property="sj" column="sj" />
+<result property="loandate" column="loandate" />
+<result property="dqrq" column="dqrq" />
+<result property="dkqx" column="dkqx" />
+<result property="jzll" column="jzll" />
+<result property="reqlmt" column="reqlmt" />
+<result property="dkye" column="dkye" />
+<result property="ksqxrq" column="ksqxrq" />
+<result property="display" column="display" />
+</resultMap>
+    
+    
+<select id="selectUserXDGZ" resultMap="selectXD">
+select cc.display_name as display, cc.ywbh as ywbh,cc.khh as khh,cc.khmc as khmc,cc.zjhm as zjhm,cc.sj as sj,cc.loandate as loandate,cc.dqrq as dqrq,cc.dkqx as dkqx,cc.jzll as jzll,cc.reqlmt as reqlmt,cc.dkye as dkye,cc.ksqxrq as ksqxrq
+from(select * from mibusidata where userid=#{userId}
+order by loandate desc) cc
+ 
+</select>
+</mapper> 

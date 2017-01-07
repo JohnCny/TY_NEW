@@ -238,7 +238,7 @@ public class JnpadCustomerInfoInsertController extends BaseController {
 	@RequestMapping(value = "/ipad/customerIntopiece/browse1.json", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
 	public String browse1( HttpServletRequest request) {
-		IntoPiecesFilter filter=new IntoPiecesFilter();
+	/*	IntoPiecesFilter filter=new IntoPiecesFilter();
 //		filter.setRequest(request);
 		String userId = request.getParameter("userId");
 		String userType = request.getParameter("userType");
@@ -255,7 +255,9 @@ public class JnpadCustomerInfoInsertController extends BaseController {
 			if(result.getItems().get(a).getStatus().equals("refuse")){
 				list.add(result.getItems().get(a));
 			}
-		}
+		}*/
+		String userId = request.getParameter("userId");
+		List<IntoPieces> list=JnIpadCustAppInfoXxService.findCustomerResulf(userId);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list", list);
 		map.put("size", list.size());
@@ -273,26 +275,9 @@ public class JnpadCustomerInfoInsertController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/ipad/customerIntopiece/browse3.json", method = { RequestMethod.GET })
-	@JRadOperation(JRadOperation.BROWSE)
 	public String browse3( HttpServletRequest request) {
-		IntoPiecesFilter filter=new IntoPiecesFilter();
-//		filter.setRequest(request);
 		String userId = request.getParameter("userId");
-		String userType = request.getParameter("userType");
-		Integer s =new Integer(userType);
-		List<IntoPieces> list=new ArrayList();
-		QueryResult<IntoPieces> result=null;
-		//客户经理
-		if(s==1){
-			filter.setUserId(userId);
-		}
-		result = JnpadCustomerInfoInsertServ‎ice.findintoPiecesByFilter(filter);
-		for(int a=0;a<result.getItems().size();a++){
-			
-			if(result.getItems().get(a).getStatus().equals("approved")){
-				list.add(result.getItems().get(a));
-			}
-		}
+		List<IntoPieces> list=JnIpadCustAppInfoXxService.findCustomersuccess(userId);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list", list);
 		map.put("size", list.size());
