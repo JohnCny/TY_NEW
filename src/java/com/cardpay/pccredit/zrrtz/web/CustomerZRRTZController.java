@@ -143,6 +143,7 @@ public class CustomerZRRTZController extends BaseController{
 					fdate1=sdf.parse(date1);
 				}
 				else{
+					filter.setUserId(user.getId());
 					QueryResult<IncomingData> result = service.findintoPiecesByFilter(filter,user);
 					JRadPagedQueryResult<IncomingData> pagedResult = new JRadPagedQueryResult<IncomingData>(filter, result);
 					JRadModelAndView mv = new JRadModelAndView("/customer/customerZRRTZ/zrrtz_browse", request);
@@ -160,6 +161,7 @@ public class CustomerZRRTZController extends BaseController{
 				}
 			}
 			filter.setFdate(fdate);
+			filter.setUserId(user.getId());
 		QueryResult<IncomingData> result = service.findintoPiecesByFilter(filter,user);
 		JRadPagedQueryResult<IncomingData> pagedResult = new JRadPagedQueryResult<IncomingData>(filter, result);
 		JRadModelAndView mv = new JRadModelAndView("/customer/customerZRRTZ/zrrtz_browse", request);
@@ -262,7 +264,7 @@ public class CustomerZRRTZController extends BaseController{
 		HSSFRow row = sheet.createRow((int) 0);
 		
 		HSSFCell cell = row.createCell((short) 0);
-		cell.setCellValue("序号");
+		cell.setCellValue("业务编号");
 		cell.setCellStyle(style);
 		
 		cell = row.createCell((short) 1);
@@ -328,7 +330,10 @@ public class CustomerZRRTZController extends BaseController{
 		cell.setCellValue("归还情况");
 		cell.setCellStyle(style);
 		cell = row.createCell((short) 19);
-		cell.setCellValue("备注");
+		cell.setCellValue("联系方式");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 20);
+		cell.setCellValue("联系方式");
 		cell.setCellStyle(style);
 		
 
@@ -336,7 +341,7 @@ public class CustomerZRRTZController extends BaseController{
 		for(int i = 0; i < list.size(); i++){
 			OutcomingData move = list.get(i);
 			row = sheet.createRow((int) i+1);
-			row.createCell((short) 0).setCellValue(move.getRowIndex());
+			row.createCell((short) 0).setCellValue(move.getYwbh());
 			row.createCell((short) 1).setCellValue(move.getCustomername());
 			row.createCell((short) 2).setCellValue(move.getManagername());
 			row.createCell((short) 3).setCellValue(move.getIdcard());
@@ -356,6 +361,7 @@ public class CustomerZRRTZController extends BaseController{
 			row.createCell((short) 17).setCellValue(move.getRatepaying());
 			row.createCell((short) 18).setCellValue(move.getGiveback());
 			row.createCell((short) 19).setCellValue(move.getSJ());
+			row.createCell((short) 20).setCellValue(move.getRemark());
 			
 		}
 		

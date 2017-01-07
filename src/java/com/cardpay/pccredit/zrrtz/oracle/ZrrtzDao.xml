@@ -32,6 +32,7 @@
 	</resultMap>
 	
 	<resultMap id="aLLResultMaps" type="com.cardpay.pccredit.zrrtz.model.OutcomingData">
+	    <result property="ywbh" column="ywbh" />
 		<result property="Customername" column="Customername" />
 		<result property="Idcard" column="Idcard" />
 		<result property="Productname" column="Productname" />
@@ -90,25 +91,35 @@
 		  SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
-				    select 
-				    t.id,
-                   b.chinese_name as chinese_name,
-                   b.card_id as card_id,
-                   p.product_name as product_name,
-                   t.actual_quote as actual_quote,
-                   a.display_name as display_name
-              from customer_application_info  t,
-                   basic_customer_information b,
-                   ty_customer_base base,
-                   product_attribute          p,
-                   sys_user a
-             where t.customer_id = b.id
-                   and t.product_id = p.id 
-                   and a.id=b.user_id 
-                   and b.TY_CUSTOMER_ID=base.id
-               
+			  select
+			        distinct
+			        tkmx.ywbh ,
+			        sysuser.display_name as display_name,
+			        b.khmc as chinese_name,
+			        b.zjhm as card_id,
+			        protype.product_name,
+			        tkmx.ffje as actual_quote
+			       from
+			              ty_repay_tkmx tkmx,
+			              ty_customer_base b,
+			              ty_customer_rygl rygl,
+			             ty_product_type protype,
+			              sys_user sysuser,
+			             ty_kdk_jh jh,
+			              ty_repay_yehz yehz,
+			              ty_repay_lsz lsz
+			              where b.khjl=rygl.dm and
+			              rygl.ddrq=sysuser.external_id and
+			              b.khnm=tkmx.khh and
+			              jh.ywbh=tkmx.ywbh||'HT' and
+			              yehz.jjh=tkmx.jjh and
+			              tkmx.jjh =lsz.jjh and
+			              protype.product_code=tkmx.cpmc
                    <if test="fdate!=null and ldate!=null and fdate!='' and ldate!=''">
 						    and base.QFRQ=#{fdate}
+						</if>
+						<if test="userId!='' and userId!=null">
+						    and sysuser.id=#{userId}
 						</if>
 				   <if test="status!=null and status!=''">
 				       and t.ACCOUNT_STATUS=#{status}
@@ -123,22 +134,39 @@
 	
 	<select id="findIntoPiecesCountList" resultType="int" parameterType="com.cardpay.pccredit.zrrtz.model.ZrrtzFilter">
 		  select count(*)
-		          from ( select 
-				    t.id,
-                   b.chinese_name as chinese_name,
-                   b.card_id as card_id,
-                   p.product_name as product_name,
-                   t.actual_quote as actual_quote,
-                   a.display_name as display_name
-              from customer_application_info  t,
-                   basic_customer_information b,
-                   ty_customer_base base,
-                   product_attribute          p,
-                   sys_user a
-             where t.customer_id = b.id
-                   and t.product_id = p.id 
-                   and a.id=b.user_id 
-                   and b.TY_CUSTOMER_ID=base.id
+		          from (select
+			        distinct
+			        tkmx.ywbh ,
+			        sysuser.display_name as display_name,
+			        b.khmc as chinese_name,
+			        b.zjhm as card_id,
+			        protype.product_name,
+			        tkmx.ffje as actual_quote
+			       from
+			              ty_repay_tkmx tkmx,
+			              ty_customer_base b,
+			              ty_customer_rygl rygl,
+			             ty_product_type protype,
+			              sys_user sysuser,
+			             ty_kdk_jh jh,
+			              ty_repay_yehz yehz,
+			              ty_repay_lsz lsz
+			              where b.khjl=rygl.dm and
+			              rygl.ddrq=sysuser.external_id and
+			              b.khnm=tkmx.khh and
+			              jh.ywbh=tkmx.ywbh||'HT' and
+			              yehz.jjh=tkmx.jjh and
+			              tkmx.jjh =lsz.jjh and
+			              protype.product_code=tkmx.cpmc
+                   <if test="fdate!=null and ldate!=null and fdate!='' and ldate!=''">
+						    and base.QFRQ=#{fdate}
+						</if>
+						<if test="userId!='' and userId!=null and userId!='000001'">
+						    and sysuser.id=#{userId}
+						</if>
+				   <if test="status!=null and status!=''">
+				       and t.ACCOUNT_STATUS=#{status}
+				   </if>
                   )
 	</select>
 	
@@ -147,41 +175,46 @@
 	</select>
 	
 	<select id="findpiecesList" resultMap="aLLResultMaps" parameterType="String">
-		 select 
-                   b.chinese_name as Customername,
-                   b.card_id as Idcard,
-                   p.product_name as Productname,
-                   t.actual_quote as actual_quote,
-                   a.display_name as Managername,
-                   t.Apply_Quota as Money,
-                   p.LOAN_TIME_LIMIT as Deadline,
-                   base.QFRQ as Providedate,
-                   base.DQRQ as Expiredate,
-                   base.Cshy as Classification,
+		           select 
+                  distinct tkmx.ywbh,
+                   base.khmc  as Customername,
+                   sysuser.display_name as Managername,
+                   base.zjhm as Idcard,
+                   protype.product_name as Productname,
+                   tkmx.ffje as actual_quote,
+                   '' as Deadline,
+                   tkmx.jkrq as Providedate,
+                    tkmx.DQRQ as Expiredate,
+                    base.Cshy as Classification,
                    base.ZYYW as  Scopeoperation,
-                   base.yydz as Operationaddress,
-                   '' as Principal,
+                   base.yydz as Operationaddress,  
+                    '' as Principal,
                    '' as Assist,
-                   (select t.name from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = a.id)) as Groupes,
-                   (select display_name from sys_user a where a.id= pro.Audit_User) as Members,
-                   t.DEBIT_WAY as Patternslend,
+                   (select t.name from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = sysuser.id)) as Groupes,
+                   '' as Members,
+                    ''as Patternslend,
                    '' as Ratepaying,
                    '' as Giveback ,
                    base.sj as SJ,
                    '' as Remark
-             from customer_application_info  t,
-                   basic_customer_information b,
-                   ty_customer_base base,
-                   product_attribute          p,
-                   sys_user a,
-                   customer_application_process pro
-             where t.customer_id = b.id
-                   and t.product_id = p.id 
-                   and a.id=b.user_id 
-                   and b.TY_CUSTOMER_ID=base.id
-                   and t.id=pro.application_id 
+         from
+                    ty_repay_tkmx tkmx,
+                    ty_customer_base base,
+                    ty_customer_rygl rygl,
+                   ty_product_type protype,
+                    sys_user sysuser,
+                   ty_kdk_jh jh,
+                    ty_repay_yehz yehz,
+                    ty_repay_lsz lsz
+                    where base.khjl=rygl.dm and
+                    rygl.ddrq=sysuser.external_id and
+                    base.khnm=tkmx.khh and
+                    jh.ywbh=tkmx.ywbh||'HT' and
+                    yehz.jjh=tkmx.jjh and
+                    tkmx.jjh =lsz.jjh and
+                    protype.product_code=tkmx.cpmc
 		  <if test="id!=null and id!='' and id!='undefined' and id!='000001'">
-				       and a.id=#{id}
+				       and sysuser.id=#{id}
 		 </if> 
 	</select>
 	

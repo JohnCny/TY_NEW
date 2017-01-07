@@ -21,6 +21,7 @@ import com.cardpay.pccredit.customeradd.model.CIPERSONBASINFO;
 import com.cardpay.pccredit.customeradd.model.JxglForm;
 import com.cardpay.pccredit.customeradd.model.JxglpmForm;
 import com.cardpay.pccredit.customeradd.model.MaintenanceForm;
+import com.cardpay.pccredit.customeradd.model.dcrs;
 import com.cardpay.pccredit.customeradd.service.KuglService;
 import com.cardpay.pccredit.customeradd.service.JxglService;
 import com.cardpay.pccredit.jnpad.model.CustomerInfo;
@@ -94,33 +95,39 @@ public class ManagerJxglController extends BaseController{
 		
 		//当月绩效排名功能  
 		int  ffjew = 0;
-		int i0=0; 
-		JxglpmForm e=new JxglpmForm();
+		int pnum=0;
 		//lists是档次  lists1是人数
 		List<JxglpmForm>lists=new ArrayList<JxglpmForm>();
-		List<String>lists1=new ArrayList<String>();
-		List<JxglForm>ffje1=result.getItems();
-		for (JxglForm ffjeq : ffje1) {
-			ffjew=Integer.parseInt(ffjeq.getFfje().trim());
+		
+		List<dcrs>lists1=new ArrayList<dcrs>();
+		List<JxglForm>ffje=result.getItems();
+		//JxglForm ffjeq : ffje
+		for (int i=0;i<ffje.size();i++) {
+			JxglpmForm e=new JxglpmForm();
+			
+			e.setId(Integer.toString(i));
+			ffjew=Integer.parseInt(ffje.get(i).getFfje().trim());
 			e.setFpm(ffjew);
 			e.setLpm(ffjew+1000);
-		//取模用来区分是什么档次      80
+			//取模用来区分是什么档次      80 
 			int results=ffjew/1000;
-			e.setResults(results);
-			if(lists.isEmpty()){
-				lists.add(e);
-				i0++;
-			}else{
-				for(JxglpmForm a:lists){
-					if(a.getResults()==results){
-						//因为ffjew 可能会有多个值 所以这里要给一个循环 用I0来统计人数
-						i0++; 
+			e.setResult(results);
+			if(i!=0){
+				for(int ii=0;ii<lists.size();ii++){
+					if(lists.get(ii).getResult()==results){
+						pnum=lists.get(ii).getPnum();
+					}else{
+						e.setPnum(pnum+1);
+						lists.add(e);
 					}
 				}
+					e.setPnum(pnum+1);
+				}else{
+				e.setPnum(pnum+1);
+				lists.add(e);
 			}
-			lists.add(e);
+			
 		}
-		lists1.add(Integer.toString(i0));
 		JRadPagedQueryResult<JxglForm> pagedResult = new JRadPagedQueryResult<JxglForm>(filter, result);
 		mv.addObject(PAGED_RESULT, pagedResult);
 		mv.addObject("forms", forms);
