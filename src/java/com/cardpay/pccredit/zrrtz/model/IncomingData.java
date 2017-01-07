@@ -12,8 +12,17 @@ public class IncomingData extends BusinessFilter{
 	private String display_name;
 	private String fdate;
 	private String ldate;
+    private	String ywbh;
 	
 	
+	public String getYwbh() {
+		return ywbh;
+	}
+
+	public void setYwbh(String ywbh) {
+		this.ywbh = ywbh;
+	}
+
 	public String getId() {
 		return id;
 	}

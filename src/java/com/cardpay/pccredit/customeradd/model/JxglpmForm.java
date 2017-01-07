@@ -17,15 +17,29 @@ public class JxglpmForm extends BaseForm{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private String id;
 	private int fpm;
 	private int lpm;
-	private int results;
-	
-	public JxglpmForm(){}
-	public JxglpmForm(int fpm, int lpm, int results) {
-		this.fpm = fpm;
-		this.lpm = lpm;
-		this.results = results;
+	private int result;
+	private int pnum;
+
+	public int getResult() {
+		return result;
+	}
+	public void setResult(int result) {
+		this.result = result;
+	}
+	public int getPnum() {
+		return pnum;
+	}
+	public void setPnum(int pnum) {
+		this.pnum = pnum;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
 	}
 	public int getFpm() {
 		return fpm;
@@ -39,11 +53,6 @@ public class JxglpmForm extends BaseForm{
 	public void setLpm(int lpm) {
 		this.lpm = lpm;
 	}
-	public int getResults() {
-		return results;
-	}
-	public void setResults(int results) {
-		this.results = results;
-	}
+	
 	
 }

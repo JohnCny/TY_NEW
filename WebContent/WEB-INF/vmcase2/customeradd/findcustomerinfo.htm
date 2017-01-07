@@ -32,67 +32,94 @@
               <col width="10%" />
               <col width="30%" />
             </colgroup>
-              <tr><td class="titlec" colspan="4" style="text-align: center;">基本信息</td></tr>
               #foreach ($customerInfor in $customerInfor)
+             <tr><td class="titlec" colspan="4" style="text-align: center;">基本信息</td></tr>
             <tr>
               <td class="titlefc3"><label for="khh">客户初始ID:</label></td>
-              <td><input class="rinpsty"  type="text" id="khh" name="khh" value="$!customerInfor.ID" /></td>
+              <td><input class="rinpsty"  type="text" id="khh" name="khh" value="$!customerInfor.khh" /></td>
               <td class="titlefc3"><label for="khmc">客户编号:</label></td>
-              <td><input class="rinpsty"  type="text" id="khmc" name="khmc" value="$!customerInfor.KHNM" /></td>
+              <td><input class="rinpsty"  type="text" id="khmc" name="khmc" value="$!customerInfor.khh" /></td>
             </tr>
              <tr>
               <td class="titlefc3"><label for="rh">客户类型:</label></td>
-              <td><input class="rinpsty"  type="text" id="rh" name="rh" value="$!customerInfor.KHLX" /></td> 
-             
+              <!-- <td><input class="rinpsty"  type="text" id="rh" name="rh" value="$!customerInfor.custtype" /></td> -->
+              <td><select id="CUSTTYPEJN" name="CUSTTYPEJN" class="rinpsty"> 
+              		 #dict("CUSTTYPEJN", $!customerInfor.khlx)
+              	  </select>
+              </td>
               <td class="titlefc3"><label for="khlx">客户名称:</label></td>
-              <td><input class="rinpsty"  type="text" id="khlx" name="khlx" value="$!customerInfor.cname" /></td>
+              <td><input class="rinpsty"  type="text" id="khlx" name="khlx" value="$!customerInfor.khmc" /></td>
             </tr>
             <tr>
               <td class="titlefc3"><label for="zjlx">证件类型:</label></td>
-              <td><input class="rinpsty"  type="text" id="zjlx" name="zjlx" value="$!customerInfor.cardtype" /></td> 
-             
+              <!-- <td><input class="rinpsty"  type="text" id="zjlx" name="zjlx" value="$!customerInfor.cardtype" /></td> -->
+              <td><select id="CARDTYPE" name="CARDTYPE" class="rinpsty"> 
+              		#dict("CARDTYPE", $!customerInfor.zjlx)
+              	  </select>
+              </td>
               <td class="titlefc3"><label for="zjhm">证件号码:</label></td>
-              <td><input class="rinpsty"  type="text" id="zjhm" name="zjhm" value="$!customerInfor.cardnum" /></td>
+              <td><input class="rinpsty"  type="text" id="zjhm" name="zjhm" value="$!customerInfor.zjhm" /></td>
             </tr>
              <tr>
               <td class="titlefc3"><label for="qfjg">性别:</label></td>
-             <td><input class="rinpsty"  type="text" id="qfjg" name="qfjg" value="$!customerInfor.sex" /></td> 
-             
+               <td><input class="rinpsty"  type="text" id="qfjg" name="qfjg" value="$!customerInfor.xb" /></td> 
               <td class="titlefc3"><label for="sfcq">民族:</label></td>
-              <td><input class="rinpsty"  type="text" id="sfcq" name="sfcq" value="$!customerInfor.ethical" /></td> 
+              <td><select id="sfcq" name="sfcq" class="rinpsty"> #dict("MINGZHU", $!customerInfor.mz)</select></td> 
+                <!-- <td><select id="sfcq" name="sfcq" class="rinpsty"> 
+              		<option value=" $!customerInfor.mz">#dict("MINGZHU", $!customerInfor.mz)</option>
+              	  </select>
+              </td> -->
             </tr>
             <tr>
               <td class="titlefc3"><label for="hyzk">婚姻状况:</label></td>
-              <td><input class="rinpsty"  type="text" id="hyzk" name="hyzk" value="$!customerInfor.marrige" /></td>
-              
+              <!-- <td><input class="rinpsty"  type="text" id="hyzk" name="hyzk" value="$!customerInfor.marrige" /></td> -->
+              <td><select id="MARRIGE" name="MARRIGE" class="rinpsty"> 
+              		#dict("MARRIGE", $!customerInfor.hyzk)
+              	  </select>
+              </td>
               <td class="titlefc3"><label for="dqrq">出生日期:</label></td>
-              <td><input class="rinpsty"  type="text" id="dqrq" name="dqrq" value="$!customerInfor.birthday" /></td>
+              <td><input class="rinpsty"  type="text" id="dqrq" name="dqrq" value="$!customerInfor.csrq" /></td>
             </tr>
             <tr>
               <td class="titlefc3"><label for="gltx">住址:</label></td>
-              <td><input class="rinpsty"  type="text" id="gltx" name="gltx" value="$!customerInfor.syaddr" /></td>
+              <td><input class="rinpsty"  type="text" id="gltx" name="gltx" value="$!customerInfor.xxdz" /></td>
               <td class="titlefc3"><label for="pqdz">有效期限:</label></td>
               <td><input class="rinpsty"  type="text" id="pqdz" name="pqdz" value="$!customerInfor.usefullife" /></td>
             </tr>
             <tr>
               <td class="titlefc3"><label for="csrq">工作单位名称:</label></td>
-              <td><input class="rinpsty"  type="text" id="csrq" name="csrq" value="$!customerInfor.employer" /></td>
+              <td><input class="rinpsty"  type="text" id="csrq" name="csrq" value="$!customerInfor.gtspmc" /></td>
               <td class="titlefc3"><label for="xb">工作单位地址:</label></td>
-              <td><input class="rinpsty"  type="text" id="xb" name="xb" value="$!customerInfor.employeraddr" /></td>
+              <td><input class="rinpsty"  type="text" id="xb" name="xb" value="$!customerInfor.yydz" /></td>
             </tr>
-           
+            <!-- <tr>
+              <td class="titlefc3"><label for="gtspmc">行政区划（市）:</label></td>
+              <td><input class="rinpsty"  type="text" id="gtspmc" name="gtspmc" value="$!customerInfor.city" /></td>
+              <td class="titlefc3"><label for="gtyyzzhm">行政区划（县/区）:</label></td>
+              <td><input class="rinpsty"  type="text" id="gtyyzzhm" name="gtyyzzhm" value="$!customerInfor.districtcounty" /></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="zxyzsj">所属区域（乡镇/街道）:</label></td>
+              <td><input class="rinpsty"  type="text" id="zxyzsj" name="zxyzsj" value="$!customerInfor.town" /></td>
+              <td class="titlefc3"><label for="yydz">所属区域（村/社区）:</label></td>
+              <td><input class="rinpsty"  type="text" id="yydz" name="yydz" value="$!customerInfor.community" /></td>
+            </tr> -->
             <tr>
               <td class="titlefc3"><label for="xxdz">联系方式(手机):</label></td>
-              <td><input class="rinpsty"  type="text" id="xxdz" name="xxdz" value="$!customerInfor.contactmobiletel" /></td>
+              <td><input class="rinpsty"  type="text" id="xxdz" name="xxdz" value="$!customerInfor.sj" /></td>
               <td class="titlefc3"><label for="yzbm">联系方式(固话):</label></td>
-              <td><input class="rinpsty"  type="text" id="yzbm" name="yzbm" value="$!customerInfor.contacttel" /></td>
+              <td><input class="rinpsty"  type="text" id="yzbm" name="yzbm" value="$!customerInfor.jtdh" /></td>
             </tr>
             <tr>
               <td class="titlefc3"><label for="hjdz">居住状况:</label></td>
-              <td><input class="rinpsty"  type="text" id="hjdz" name="hjdz" value="$!customerInfor.reside" /></td> 
-             
+               <td><input class="rinpsty"  type="text" id="hjdz" name="hjdz" value="$!customerInfor.xxdz" /></td> 
+              <!-- <td><select id="RESIDE" name="RESIDE" class="rinpsty"> 
+              		<option value=""></option>
+              		#dict("RESIDE", $!customerInfor.xxdz)
+              	  </select>
+              </td> -->
               <td class="titlefc3"><label for="jtdh">评级结果（对应评级的信用等级）:</label></td>
-              <td><input class="rinpsty"  type="text" id="jtdh" name="jtdh" value="$!customerInfor.levelcal" /></td>
+              <td><input class="rinpsty"  type="text" id="jtdh" name="jtdh" value="$!customerInfor.xydj" /></td>
             </tr>
             <tr>
               <td class="titlefc3"><label for="cz">家庭总资产:</label></td>
@@ -108,14 +135,20 @@
             </tr>
             <tr>
               <td class="titlefc3"><label for="mz">最高学位:</label></td>
-              <td><input class="rinpsty"  type="text" id="mz" name="mz" value="$!customerInfor.educationlevel" /></td> 
-             
+              <!-- <td><input class="rinpsty"  type="text" id="mz" name="mz" value="$!customerInfor.educationlevel" /></td> -->
+              <td><select id="EDUCATIONLEVEL" name="EDUCATIONLEVEL" class="rinpsty"> 
+              		<option value=""></option>
+              		#dict("EDUCATIONLEVEL", $!customerInfor.xw)
+              	  </select>
+              </td>
               <td class="titlefc3"><label for="zzmm">最高学历:</label></td>
-              <td><input class="rinpsty"  type="text" id="zzmm" name="zzmm" value="$!customerInfor.degree" /></td> 
-             
+              <!-- <td><input class="rinpsty"  type="text" id="zzmm" name="zzmm" value="$!customerInfor.degree" /></td> -->
+              <td><select id="DEGREE" name="DEGREE" class="rinpsty"> 
+              		#dict("DEGREE", $!customerInfor.xl)
+              	  </select>
+              </td>
             </tr>
-            #end
-          
+          #end
           </table>
         </div>
       </form>

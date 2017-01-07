@@ -80,10 +80,7 @@
           </br>
 	       <div id="pm" style="display: none"><span>
 	           #foreach ($pm in $lists)
-	           		$!pm.fpm —— $pm.lpm 之间的有
-	          #foreach ($pm1 in $lists1)
-	           		$!pm1 人</br>
-	            #end 
+	           		$!pm.fpm —— $pm.lpm 之间的有$!pm.pnum人</br>
 	             #end
 	            
 	       </span></div>
@@ -94,7 +91,7 @@
         <div class="controlbtn">
         <!--  <a id="id_create_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.create.hint')">显示</a> -->
          
-         <!--  <a id="id_xianshi_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.create.hint')">显示各阶段的排名</a> -->
+         <a id="id_xianshi_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.create.hint')">显示各阶段的排名</a> 
           
         </div>
         #parse ("common/pagination.htm")

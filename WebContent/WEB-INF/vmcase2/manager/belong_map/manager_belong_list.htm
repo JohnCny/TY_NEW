@@ -84,7 +84,7 @@
 		if (opsObj.createUrl) {
 	        $("#id_create_button").click(function() {
 	            var url = opsObj.createUrl;
-	            if (opsObj.formObj) {
+	             if (opsObj.formObj) {
 	                // 回调URL
 	                var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
 	                if (callBackUrlObj) {
@@ -92,15 +92,13 @@
 	                		url += "&" + $.param({
 		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
 		                    });
-	                		 alert(111+url);
 	                	}else{
 		                    url += "?" + $.param({
 		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
 		                    });
-		                    alert(222+url);
 	                	}
 	                }
-	            } 
+	            }  
 	            window.location.href = url;
 	        });
 	    }

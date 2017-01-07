@@ -115,7 +115,7 @@ public class ManagerBelongMapController extends BaseController{
 	 */
 	@ResponseBody
 	@RequestMapping(value = "create.page")
-	@JRadOperation(JRadOperation.CREATE)
+	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView create(@ModelAttribute ManagerBelongMapFilter filter, HttpServletRequest request) {
 		JRadModelAndView mv = new JRadModelAndView("/manager/belong_map/manager_belong_create", request);
 		mv.addObject("organization", filter);

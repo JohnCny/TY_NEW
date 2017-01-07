@@ -88,7 +88,7 @@
 		ORDER BY t.CREATED_TIME DESC
 	</select>
 	
-<select id="fincustomerinfo"  parameterType="String" resultType="com.cardpay.pccredit.customeradd.model.CIPERSONBASINFO" >
+<select id="fincustomerinfo"  parameterType="String" resultType="com.cardpay.pccredit.customer.model.CustomerFirsthendBase" >
 	select * from ty_customer_base where ZJHM=#{cardid}
 </select>
 <select id="findMaintenancePlansList" resultMap="MaintenanceWebResultMap" 
