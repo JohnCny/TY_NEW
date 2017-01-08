@@ -71,4 +71,7 @@ public interface ProductDao {
 	public int findProductsAgencyAssociationCountByOrganizationId(@Param("organizationId") String organizationId);
 	
 	public int findProductCountByName(@Param("productName") String productName,@Param("productId") String productId);
+
+	//是否有未结清的贷款
+		public int findsfjq(String id);
 }

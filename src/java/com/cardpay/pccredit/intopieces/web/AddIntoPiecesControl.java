@@ -129,13 +129,16 @@ public class AddIntoPiecesControl extends BaseController {
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView browseProduct(@ModelAttribute ProductFilter filter, HttpServletRequest request) {
 		filter.setRequest(request);
-
+		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		int customer=productService.findsfjq(user.getId());
 		QueryResult<ProductAttribute> result = productService.findProductsByFilter(filter);
 		JRadPagedQueryResult<ProductAttribute> pagedResult = new JRadPagedQueryResult<ProductAttribute>(filter, result);
 
 		JRadModelAndView mv = new JRadModelAndView("/intopieces/product_browse", request);
 		mv.addObject(PAGED_RESULT, pagedResult);
-
+		if(customer>0){
+			mv.addObject("mes", "尚有贷款未结清");
+			}
 		return mv;
 	}
 

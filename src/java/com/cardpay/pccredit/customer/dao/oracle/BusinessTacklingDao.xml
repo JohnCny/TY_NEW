@@ -20,7 +20,7 @@
 	</resultMap>
 	
 	<select id="queryById" resultMap="ResultMap" parameterType="String">
-		SELECT CARD_ID FROM BASIC_CUSTOMER_INFORMATION where CARD_ID=#{cardId}
+		SELECT CARD_ID FROM BASIC_CUSTOMER_INFORMATION where CARD_ID=#{cardId} and card_type='CST0000000000A'
 	</select>
 	
 	
@@ -58,6 +58,9 @@
         left join ty_repay_tkmx tkmx on  base.khnm=tkmx.khh
         left join SYS_USER su on su.id=basic.user_id
         left join ty_product_type  tpt on  tkmx.cpmc=tpt.product_code
-        left join TY_CUSTOMER_SAFE safe on safe.khnm=base.khnm  where basic.card_id=#{idcard}
+        left join TY_CUSTOMER_SAFE safe on safe.khnm=base.khnm 
+        where basic.card_type='CST0000000000A'
+        and  basic.user_id in (select id from sys_user )
+        and  basic.card_id=#{idcard} 
 	</select>
 </mapper>
