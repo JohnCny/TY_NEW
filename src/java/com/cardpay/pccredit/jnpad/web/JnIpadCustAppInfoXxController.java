@@ -332,7 +332,7 @@ public class JnIpadCustAppInfoXxController {
 		NotificationMessageFilter filter = new NotificationMessageFilter();
 		filter.setUserId(userId);
 		cl.setUserid(userId);
-		filter.setNoticeType("shendaihui");
+	/*	filter.setNoticeType("shendaihui");
 		int count1 = appInfoXxService.findNotificationCountMessageByFilter(filter);
 		filter.setNoticeType("yuanshiziliao");
 		int count2 = appInfoXxService.findNotificationCountMessageByFilter(filter);
@@ -342,7 +342,7 @@ public class JnIpadCustAppInfoXxController {
 		int count4 = appInfoXxService.findNotificationCountMessageByFilter(filter);
 		filter.setNoticeType("qita");
 		int count5 = appInfoXxService.findNotificationCountMessageByFilter(filter);
-		String STATUS="audit";
+		String STATUS="audit";*/
 		/*int  Pcount=appInfoXxService.selectNoSCount(STATUS);*/
 		//拒绝进件数量
 		filter.setNoticeType("refuse");
@@ -363,21 +363,21 @@ public class JnIpadCustAppInfoXxController {
 		//黑名单通知
 	
 		//客户资料变更
-		List<JnpadCustomerBianGeng> cuslist=appInfoXxService.findbiangengCountByManagerId(userId);
-		int count6 = cuslist.size();
-		int sum=count1+count2+count3+count4+count5+refuseCount+returnCount+risk+count6;
+		//List<JnpadCustomerBianGeng> cuslist=appInfoXxService.findbiangengCountByManagerId(userId);
+		//int count6 = cuslist.size();
+		//int sum=count1+count2+count3+count4+count5+refuseCount+returnCount+risk+count6;
 		NotifyMsgListVo vo  = new NotifyMsgListVo();
-		vo.setShendaihui(count1);
+	/*	vo.setShendaihui(count1);
 		vo.setYuanshiziliao(count2);
 		vo.setPeixun(count3);
 		vo.setKaocha(count4);
-		vo.setQita(count5);
+		vo.setQita(count5);*/
 		vo.setRefuseCount(refuseCount);
 		vo.setReturnCount(returnCount);
 		vo.setRisk(risk);
-		vo.setSum(sum);
-		vo.setZiliaobiangeng(count6);
-		vo.setBianggeng(cuslist);
+		//vo.setSum(sum);
+		//vo.setZiliaobiangeng(count6);
+		//vo.setBianggeng(cuslist);
 		vo.setBlackcount(i);
 		vo.setPassCount(passCount);
 		JsonConfig jsonConfig = new JsonConfig();

@@ -17,6 +17,7 @@ import net.sf.json.JsonConfig;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,17 +30,26 @@ import com.cardpay.pccredit.ipad.constant.IpadConstant;
 import com.cardpay.pccredit.ipad.model.Result;
 import com.cardpay.pccredit.ipad.service.CustomerInforForIpadService;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
+import com.cardpay.pccredit.jnpad.filter.NotificationMessageFilter;
 import com.cardpay.pccredit.jnpad.model.CustYunyinVo;
+import com.cardpay.pccredit.jnpad.model.CustomerInfo;
 import com.cardpay.pccredit.jnpad.model.CustomerManagerVo;
 import com.cardpay.pccredit.jnpad.model.JBUser;
 import com.cardpay.pccredit.jnpad.model.JnUserLoginIpad;
 import com.cardpay.pccredit.jnpad.model.JnUserLoginResult;
+import com.cardpay.pccredit.jnpad.model.NODEAUDIT;
+import com.cardpay.pccredit.jnpad.model.NotifyMsgListVo;
 import com.cardpay.pccredit.jnpad.service.JnIpadCustAppInfoXxService;
 import com.cardpay.pccredit.jnpad.service.JnIpadJBUserService;
 import com.cardpay.pccredit.jnpad.service.JnIpadUserLoginService;
 import com.cardpay.pccredit.jnpad.service.JnIpadXDService;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
 import com.cardpay.pccredit.manager.web.ManagerBelongMapForm;
+import com.cardpay.pccredit.report.model.CustomerHmd;
+import com.cardpay.pccredit.riskControl.constant.RiskControlRole;
+import com.cardpay.pccredit.riskControl.constant.RiskCreateTypeEnum;
+import com.cardpay.pccredit.riskControl.filter.RiskCustomerFilter;
+import com.cardpay.pccredit.riskControl.service.CustormerBlackListService;
 import com.cardpay.pccredit.system.model.SystemUser;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.web.security.LoginManager;
@@ -75,6 +85,9 @@ public class JnIpadUserLoginController {
 	private JnIpadXDService XDService;
 	@Autowired
 	private com.cardpay.pccredit.manager.service.ManagerBelongMapService ManagerBelongMapService;
+	
+	@Autowired
+	private CustormerBlackListService cblservice;
 	/**
 	 * 用户登录
 	 * @param request
@@ -82,7 +95,7 @@ public class JnIpadUserLoginController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/ipad/user/JnLogin.json")
-	public String login(HttpServletRequest request) {
+	public String login(@ModelAttribute NODEAUDIT NODEAUDIT,HttpServletRequest request) {
 		Map<String,Object> map = new LinkedHashMap<String,Object>();
 		String login = RequestHelper.getStringValue(request, "login");
 		String passwd = RequestHelper.getStringValue(request, "password");
@@ -144,8 +157,9 @@ public class JnIpadUserLoginController {
 					map.put("repay", str);
 				}
 			}
+			NotifyMsgListVo vo=jjzkCount(user.getId());
+			map.put("vo", vo);
 		}
-		
 		JSONObject json = JSONObject.fromObject(map);
 		return String.valueOf(json);
 	}
@@ -316,4 +330,43 @@ public class JnIpadUserLoginController {
 		return list;
 	}
 	
+	
+	
+	public NotifyMsgListVo jjzkCount(String userId) {
+		List <CustomerInfo> result1=cblservice.selectCusByUser(userId);
+		Integer i=0;
+		CustomerHmd list=null;
+		for(int a=0;a<result1.size();a++){
+				list=cblservice.findCustormerBlackList(result1.get(a).getCardId());
+				if(list!=null){
+					i=i+1;
+					list=null;
+				}
+		}
+		NotificationMessageFilter filter = new NotificationMessageFilter();
+		filter.setUserId(userId);
+		//拒绝进件数量
+		filter.setNoticeType("refuse");
+		int refuseCount= appInfoXxService.findNoticeCountByFilter(filter);
+		//补充调查通知
+		int returnCount= appInfoXxService.findCustomerBackCount(userId);
+		
+		//申款成功
+		filter.setNoticeType("approved");
+		int passCount= appInfoXxService.findNoticeCountByFilter(filter);
+				
+		//风险客户通知
+		RiskCustomerFilter filters = new RiskCustomerFilter();
+		filters.setCustManagerId(userId);
+		filters.setRiskCreateType(RiskCreateTypeEnum.manual.toString());
+	    filters.setRole(RiskControlRole.manager.toString());
+		int risk = appInfoXxService.findRiskNoticeCountByFilter(filters);
+		NotifyMsgListVo vo  = new NotifyMsgListVo();
+		vo.setRefuseCount(refuseCount);
+		vo.setReturnCount(returnCount);
+		vo.setRisk(risk);
+		vo.setBlackcount(i);
+		vo.setPassCount(passCount);
+		return vo;
+	}
 }

@@ -22,6 +22,10 @@
 select cc.display_name as display, cc.ywbh as ywbh,cc.khh as khh,cc.khmc as khmc,cc.zjhm as zjhm,cc.sj as sj,cc.loandate as loandate,cc.dqrq as dqrq,cc.dkqx as dkqx,cc.jzll as jzll,cc.reqlmt as reqlmt,cc.dkye as dkye,cc.ksqxrq as ksqxrq
 from(select * from mibusidata where userid=#{userId}
 order by loandate desc) cc
- 
+</select>
+
+
+<select id="findJqUser" resultMap="selectXD">
+select dkye as dkye from mibusidata where zjhm=#{cardId}
 </select>
 </mapper> 
