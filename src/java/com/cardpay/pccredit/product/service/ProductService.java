@@ -538,4 +538,10 @@ public class ProductService {
 		}
 		return true;
 	}
+	
+	public int findsfjq(String id) {
+		// TODO Auto-generated method stub
+		return productDao.findsfjq(id);
+	}
+	
 }

@@ -2,7 +2,7 @@ package com.cardpay.pccredit.customer.model;
 
 public class ParameterInformaion  {
 	private String productName; //产品名称
-	private String id;//进件ID
+	private String ywbh;//业务编号
 	private String customerid;//客户ID
 	private String customerName;//客户姓名
 	private String customermanagerId;//客户经理ID
@@ -101,11 +101,11 @@ public class ParameterInformaion  {
 	public void setGiveback(String giveback) {
 		this.giveback = giveback;
 	}
-	public String getId() {
-		return id;
+	public String getYwbh() {
+		return ywbh;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setYwbh(String ywbh) {
+		this.ywbh = ywbh;
 	}
 	
 }
