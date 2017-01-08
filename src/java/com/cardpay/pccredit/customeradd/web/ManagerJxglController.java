@@ -101,10 +101,8 @@ public class ManagerJxglController extends BaseController{
 		
 		List<dcrs>lists1=new ArrayList<dcrs>();
 		List<JxglForm>ffje=result.getItems();
-		//JxglForm ffjeq : ffje
 		for (int i=0;i<ffje.size();i++) {
 			JxglpmForm e=new JxglpmForm();
-			
 			e.setId(Integer.toString(i));
 			ffjew=Integer.parseInt(ffje.get(i).getFfje().trim());
 			e.setFpm(ffjew);
@@ -116,12 +114,14 @@ public class ManagerJxglController extends BaseController{
 				for(int ii=0;ii<lists.size();ii++){
 					if(lists.get(ii).getResult()==results){
 						pnum=lists.get(ii).getPnum();
+						e.setPnum(pnum+1);
+						continue;
 					}else{
 						e.setPnum(pnum+1);
 						lists.add(e);
+						break;
 					}
 				}
-					e.setPnum(pnum+1);
 				}else{
 				e.setPnum(pnum+1);
 				lists.add(e);
