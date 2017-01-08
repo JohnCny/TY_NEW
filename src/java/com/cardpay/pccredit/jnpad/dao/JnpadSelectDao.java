@@ -10,4 +10,5 @@ import com.wicresoft.util.annotation.Mapper;
 @Mapper
 public interface JnpadSelectDao {
 	public List<JnIpadXDModel> selectUserXDGZ(@Param("userId") String userId);
+	public List<JnIpadXDModel> findJqUser(@Param("cardId") String cardId);
 }

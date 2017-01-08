@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.customer.model.CustomerFirsthendBase;
 import com.cardpay.pccredit.jnpad.dao.JnpadCustomerSelectDao;
+import com.cardpay.pccredit.jnpad.dao.JnpadSelectDao;
 import com.cardpay.pccredit.jnpad.model.CIPERSONBASINFO;
 import com.cardpay.pccredit.jnpad.model.CustomerInfo;
+import com.cardpay.pccredit.jnpad.model.JnIpadXDModel;
 import com.cardpay.pccredit.system.model.SystemUser;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 
@@ -26,6 +28,8 @@ public class JnpadCustomerSelectService {
 	
 	@Autowired
 	private CommonDao commonDao;
+	@Autowired
+	private JnpadSelectDao selectdao;
 	/**
 	 * 根据证件号码查询
 	 * @return
@@ -101,7 +105,10 @@ public class JnpadCustomerSelectService {
 	public int findNoSQCount(@Param(value = "userId")String userId){
 		return jnpadCustomerSelectDao.findNoSQCount(userId);
 	}
-
+	public List<JnIpadXDModel> findJqUser(@Param("cardId") String cardId){
+		return selectdao.findJqUser(cardId);
+		
+	}
 
 
 }

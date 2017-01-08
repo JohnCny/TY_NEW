@@ -386,7 +386,29 @@ public String selectCustomerInfoByCardId(HttpServletRequest request){
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);
 		return json.toString();
 	}
-	
-	
+	/**
+	 * 进件申请时查询该客户是否有贷款未结清
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/customer/findJqUser.json", method = { RequestMethod.GET })
+    public String findJqUser(HttpServletRequest request ){
+		Map<String,Object> map = new LinkedHashMap<String,Object>();
+		List list=new ArrayList();
+		String cardId=request.getParameter("cardId");
+		List<JnIpadXDModel> result=customerSelectSercice.findJqUser(cardId);
+		for(int i=0;i<result.size();i++){
+			if(!result.get(i).getDkye().equals("0.00")){
+				list.add(result.get(i).getDkye());
+			}
+		}
+		map.put("result", list);
+		map.put("size", list.size());
+	 	JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+	}
 }
 
