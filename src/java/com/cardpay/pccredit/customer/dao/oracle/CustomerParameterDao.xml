@@ -50,8 +50,6 @@
 	</resultMap>
 	
 	<resultMap id="queryResultMap" type="com.cardpay.pccredit.customer.model.ParameterInformaion">
-		<result property="customerId" column="customer_id" />
-		<result property="customermanagerId" column="user_id" />
 		<result property="customermanagerName" column="display_name" />
 		<result property="customerName" column="chinese_name" />
 		<result property="idcard" column="card_id" />
@@ -60,15 +58,12 @@
 		<result property="interstrate" column="htll" />
 		<result property="providedate" column="JKRQ" />
 		<result property="expiredate" column="DQRQ" />
-		<result property="classification" column="industry_type" />
-		<result property="giveback" column="ACCOUNT_STATUS" />
-		<result property="id" column="id" />
+		<result property="ywbh" column="ywbh" />
 		<result property="productName" column="product_name" />
 	</resultMap>
 	
 	<resultMap id="allResultMap" type="com.cardpay.pccredit.customer.model.CustomerParameter">
-		<result property="customerParameterId" column="ID" />
-		<result property="customerManagerId" column="CUSTOMERMANAGERID" />
+	<result property="ywbh" column="ywbh" />
 		<result property="customername" column="CUSTOMERNAME" />
 		<result property="managername" column="MANAGERNAME" />
 		<result property="customerId" column="CUSTOMERID" />
@@ -112,12 +107,12 @@
 	   ID,PRODUCTNAME,LOANTYPE,BONDSMAN,SCOPEOPERATION,OPERATIONADDRESS,ASSIST,
 	   GROUPES,MEMBERS,PATTERNSLEND,RATEPAYING,BATCHS,PHONENUMBER,ENLENDING,
 	   REMARK,CUSTOMERNAME,MANAGERNAME,IDCARD,MONEY,DEADLINE,INTERSTRATE,
-	   PROVIDEDATE,EXPIREDATE,CLASSIFICATION,PRINCIPAL,GIVEBACK) 
+	   PROVIDEDATE,EXPIREDATE,CLASSIFICATION,PRINCIPAL,GIVEBACK,YWBH) 
 	   values
 	  (sys_guid(),#{productname},#{loantype},
 	  #{bondsman},#{scopeoperation},#{operationaddress},#{assist},#{groupes},#{members},#{patternslend},
 	  #{ratepaying},#{batchs},#{phonenumber},#{enlending},#{remark},#{customername},#{managername},
-	  #{idcard},#{money},#{deadline},#{interstrate},#{providedate},#{expiredate},#{classification},#{principal},#{giveback})
+	  #{idcard},#{money},#{deadline},#{interstrate},#{providedate},#{expiredate},#{classification},#{principal},#{giveback}，#{ywbh})
 	</insert>
 	    
  
@@ -127,55 +122,7 @@
 	</select>
 	
 	<select id="query" resultMap="queryResultMap"  parameterType="String">
-    <!--  select 
-    su.display_name,
-    bci.CHINESE_NAME,
-    bci.CARD_ID,
-    cai.ACTUAL_QUOTE,
-    cai.ACCOUNT_STATUS,
-    trt.DKQX,
-    trt.htll,
-    trt.JKRQ,
-    trt.DQRQ,
-    cci.industry_type
-    from
-     CUSTOMER_CAREERS_INFORMATION cci,
-     CUSTOMER_APPLICATION_INFO cai,
-     TY_REPAY_TKMX trt,
-     basic_customer_information bci,
-     sys_user su
-     where 
-     trt.JJH=cai.JJH
-     and  cai.customer_id = bci.id
-     and cai.customer_id=cci.customer_id
-     and su.id=bci.user_id
-     and bci.CARD_ID=#{idCard} -->
-    <!--   select 
-    su.display_name,
-    bci.CHINESE_NAME,
-    bci.CARD_ID,
-    cai.ACTUAL_QUOTE,
-    cai.ACCOUNT_STATUS,
-    trt.DKQX,
-    trt.htll,
-    trt.JKRQ,
-    trt.DQRQ,
-    cci.industry_type
-    from
-     CUSTOMER_CAREERS_INFORMATION cci,
-     CUSTOMER_APPLICATION_INFO cai,
-     TY_REPAY_TKMX trt,
-     basic_customer_information bci,
-     ty_customer_base tcb,
-     sys_user su
-     where 
-     tcb.id=bci.ty_customer_id 
-     and cai.customer_id = bci.id
-     and cci.customer_id=bci.id
-     and su.id=bci.user_id
-     and tcb.khh=trt.khh
-     and bci.CARD_ID=#{idCard} -->
-     
+    <!--  
       select 
     su.display_name,
     bci.CHINESE_NAME,
@@ -195,11 +142,43 @@
      left join CUSTOMER_CAREERS_INFORMATION cci on cci.customer_id=bci.id
      left join sys_user su on  su.id=bci.user_id
      left join  product_attribute p on cai.product_id = p.id
-     where cai.id=#{id}
+     where cai.id=#{id} -->
+     
+     
+     
+         select
+              distinct
+              tkmx.ywbh ,
+              sysuser.display_name,
+              b.khmc as chinese_name,
+              b.zjhm as card_id,
+              protype.product_name,
+              tkmx.ffje as actual_quote,
+                tkmx.DKQX,
+          tkmx.htll,
+          tkmx.JKRQ,
+          tkmx.DQRQ
+             from
+                    ty_repay_tkmx tkmx,
+                    ty_customer_base b,
+                    ty_customer_rygl rygl,
+                   ty_product_type protype,
+                    sys_user sysuser,
+                   ty_kdk_jh jh,
+                    ty_repay_yehz yehz,
+                    ty_repay_lsz lsz
+                    where b.khjl=rygl.dm and
+                    rygl.ddrq=sysuser.external_id and
+                    b.khnm=tkmx.khh and
+                    jh.ywbh=tkmx.ywbh||'HT' and
+                    yehz.jjh=tkmx.jjh and
+                    tkmx.jjh =lsz.jjh and
+                    protype.product_code=tkmx.cpmc
+                    and  tkmx.ywbh=#{id}
 	</select>
 	
 	<select id="queryByIdCard" resultMap="allResultMap" >
-	 select * from CUSTOMER_PARAMETER where IDCARD=#{idcard}
+	 select * from CUSTOMER_PARAMETER where ywbh=#{ywbh}
 	</select>
 	    
 	    

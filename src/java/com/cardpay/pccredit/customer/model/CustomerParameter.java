@@ -8,6 +8,7 @@ import com.wicresoft.jrad.base.database.model.ModelParam;
 public class CustomerParameter extends BusinessModel {
 	
 	  private static final long serialVersionUID = 1L;
+	  private String ywbh;//业务编号
 	  private String customerParameterId;      
 	  private String customerManagerId;//客户经理ID 
 	  private String customername;//客户名称
@@ -204,5 +205,12 @@ public class CustomerParameter extends BusinessModel {
 		}
 		public void setGiveback(String giveback) {
 			this.giveback = giveback;
+		}
+
+		  public String getYwbh() {
+			return ywbh;
+		}
+		public void setYwbh(String ywbh) {
+			this.ywbh = ywbh;
 		}
 }

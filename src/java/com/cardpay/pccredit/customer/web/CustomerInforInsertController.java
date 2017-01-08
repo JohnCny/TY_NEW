@@ -14,14 +14,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cardpay.pccredit.common.IdCardValidate;
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
+import com.cardpay.pccredit.customer.model.BusinessTackling;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
+import com.cardpay.pccredit.customer.service.BusinessTacklingService;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.datapri.constant.DataPriConstants;
+import com.cardpay.pccredit.jnpad.model.CustomerInfo;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
 import com.cardpay.pccredit.system.model.SystemUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
@@ -50,7 +54,9 @@ public class CustomerInforInsertController extends BaseController{
 	
 	@Autowired
 	private UserLogService userLogService;
-	
+	//业务核查
+	@Autowired
+	private BusinessTacklingService btService;
 	/**
 	 * 跳转到增加客户信息页面
 	 * 
@@ -83,7 +89,7 @@ public class CustomerInforInsertController extends BaseController{
 				filter.setCardId(customerinfoForm.getCardId());
 				//身份证号码验证
 				String msg ="";
-				if("0".equals(customerinfoForm.getCardType())){
+				if("CST0000000000A".equals(customerinfoForm.getCardType())){
 					 msg = IdCardValidate.IDCardValidate(customerinfoForm.getCardId().trim());
 				}
 				if(msg !="" && msg != null){
@@ -164,4 +170,51 @@ public class CustomerInforInsertController extends BaseController{
 		return returnMap;
 	}
 	
+	
+	/**
+	 * 业务核查
+	 * 描述 ： 行内现有业务核查
+	 * @author 周文杰
+	 *
+	 * 2016年10月24日14:59:36
+	 */
+	@ResponseBody
+	@RequestMapping(value = "queryByBusinessTackling.page", method = { RequestMethod.GET})
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView change( 
+			HttpServletRequest request
+			) {
+		JRadModelAndView mv =null;
+		String idcard=request.getParameter("cardId");
+		List<BusinessTackling> btlist=btService.queryByIdCard(idcard);
+		mv = new JRadModelAndView("/customer/customerInfor/BusinessTacking_browse", request);
+		mv.addObject("btlist",btlist);
+		for(BusinessTackling bb:btlist){
+			if (bb.getSettle()!=null) {
+				if(bb.getSettle().equals("0.0")){
+					bb.setSettle("未结清");
+				}else{
+					bb.setSettle("已结清");
+				}
+			}else{
+				bb.setSettle("");
+			}
+		}
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "queryByIdCard.json", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public JRadReturnMap queryBusinessTackling(HttpServletRequest request)
+		{
+			JRadReturnMap returnMap = new JRadReturnMap();
+					String cardId=request.getParameter("cardId");
+					CustomerInfo customer=btService.queryById(cardId); 
+					if(null!=customer){
+						returnMap.put(MESSAGE, "1");
+						return returnMap;
+					}
+					return returnMap;
+}
 }

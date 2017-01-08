@@ -328,7 +328,7 @@
 		<item name="15" title="金融机构" />
 	</dictionary>
 	<dictionary name="zjlx" title="证件类型">
-		<item name="0" title="身份证" />
+		<item name="CST0000000000A" title="身份证" />
 		<item name="3" title="军官证" />
 	</dictionary>
 	<dictionary name="sfcq" title="是否长期">
@@ -418,7 +418,7 @@
 	</dictionary>
 	
 	<dictionary name="CARDTYPE" title="证件类型">
-		<item name="0" title="身份证" />
+		<item name="CST0000000000A" title="身份证" />
 		<item name="1" title="军官证" />
 		<item name="2" title="护照" />
 		<item name="3" title="香港身份证" />
@@ -508,7 +508,7 @@
 	</dictionary>
 	
 	 <dictionary name="CARDTYPEJN" title="证件类型">
-		<item name="0"     title="身份证" />
+		<item name="CST0000000000A"     title="身份证" />
 		<item name="1"     title="军官证" />
 		<item name="2"     title="护照" />
 		<item name="3"     title="香港身份证" />

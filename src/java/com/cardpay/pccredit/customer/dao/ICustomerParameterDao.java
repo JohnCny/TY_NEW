@@ -24,7 +24,7 @@ public interface ICustomerParameterDao {
 
 	public List<UserIpad> queryAllManager();
 
-	public List<CustomerParameter> queryByIdCard(@Param("idcard")String idcard);
+	public List<CustomerParameter> queryByIdCard(@Param("ywbh")String ywbh);
 
 
 }
