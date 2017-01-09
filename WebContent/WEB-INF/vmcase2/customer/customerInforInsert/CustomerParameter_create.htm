@@ -10,7 +10,7 @@
         </div>
 			</div>
 			<form id="id_module_form"
-				action="${contextPath}/customer/customer_parameter/addCustomerParameter.json"  method="post">
+				action="${modulePath}/addCustomerParameter.json"  method="post">
 				<div class="forms" id="formsId">
 					<table class="rule" border="1" bordercolor="#CCCCCC">
 					<caption>产品属性</caption>
@@ -35,12 +35,13 @@
               
               <td><label for="name">产品名称:</label></td>
               <td>
-					<select id="type" name="productname">
+					<!-- <select id="type" name="productname">
 							   <option value="">-----请选择------</option>
 							   #foreach ($p in $product)
                  			  <option value="$!p.productName">$!p.productName</option>
                  			   #end
-                	</select>
+                	</select> -->
+                	<input  type="text" id="chineseName" name="productname" value="$!pInfor.productName" readonly="readonly"/>
 			 </td>
    
             </tr>
@@ -86,7 +87,7 @@
               <td><input  type="text" id="chineseName" name="bondsman"/></td>
               
               <td><label for="name">行业分类:</label></td>
-              <td><input  type="text" id="chineseName" name="classification" value="$!pInfor.classification" readonly="readonly"/></td>
+              <td><input  type="text" id="chineseName" name="classification" /></td>
             </tr>
             
             <tr>
@@ -165,7 +166,7 @@
             
             <tr>
               <td><label for="name">归还情况:</label></td>
-              <td><input class="rinpsty"  type="text" id="chineseName" name="giveback" value="$!pInfor.giveback" readonly="readonly"/></td>
+              <td><input class="rinpsty"  type="text" id="chineseName" name="giveback" /></td>
 			
 			  <td><label for="name">是否批量:</label></td>
               <td>
@@ -194,7 +195,8 @@
          	<tr>
               <td><label for="name">备注:</label></td>
               <td><input type="text" id="chineseName" name="remark"/></td>
-              </tr>
+               <td><input type="hidden" id="chineseName" name="ywbh"  value="$!pInfor.ywbh"  readonly="readonly"/></td>
+            </tr>
 			#end		
 					</table>
 					
@@ -218,7 +220,6 @@
 			success : function(data) {
 				if (data.success) {
 					Dialog.message(data.message,"提示", function() {
-						/* navigateTo("${contextPath}/product/productinformation/create_cpfjqd.page"+"?productId=" +data.productId); */
 						navigateTo("${contextPath}/customer/customer_ZRRTZ/zrrtz.json");
 					 });
 				} else {

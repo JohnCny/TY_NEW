@@ -116,9 +116,9 @@
 			              tkmx.jjh =lsz.jjh and
 			              protype.product_code=tkmx.cpmc
                    <if test="fdate!=null and ldate!=null and fdate!='' and ldate!=''">
-						    and base.QFRQ=#{fdate}
+						    and tkmx.jkrq=#{fdate}
 						</if>
-						<if test="userId!='' and userId!=null">
+						<if test="userId!='' and userId!=null and userId!='000001'">
 						    and sysuser.id=#{userId}
 						</if>
 				   <if test="status!=null and status!=''">
@@ -159,7 +159,7 @@
 			              tkmx.jjh =lsz.jjh and
 			              protype.product_code=tkmx.cpmc
                    <if test="fdate!=null and ldate!=null and fdate!='' and ldate!=''">
-						    and base.QFRQ=#{fdate}
+						    and tkmx.jkrq=#{fdate}
 						</if>
 						<if test="userId!='' and userId!=null and userId!='000001'">
 						    and sysuser.id=#{userId}
@@ -170,8 +170,26 @@
                   )
 	</select>
 	
-	<select id="findate" resultMap="SHILIMap">
-		 select QXRX as fdate,ZXRQ as ldate from TY_REPAY_LSZ D 
+	<select id="finddate" resultMap="SHILIMap">
+		<!--  select QXRX as fdate,ZXRQ as ldate from TY_REPAY_LSZ D  -->
+		 select distinct tkmx.ywbh, tkmx.JKRQ as fdate  
+   from 
+              ty_repay_tkmx tkmx,
+              ty_customer_base b,
+              ty_customer_rygl rygl,
+              sys_user sysuser,
+             ty_kdk_jh jh,
+              ty_repay_yehz yehz,
+              ty_repay_lsz lsz
+              where b.khjl=rygl.dm and
+              rygl.ddrq=sysuser.external_id and
+              b.khnm=tkmx.khh and
+              jh.ywbh=tkmx.ywbh||'HT' and
+              yehz.jjh=tkmx.jjh and
+              tkmx.jjh =lsz.jjh
+		<if test="id!=null and id!=''">
+			 and sysuser.id=#{id}
+		</if>
 	</select>
 	
 	<select id="findpiecesList" resultMap="aLLResultMaps" parameterType="String">

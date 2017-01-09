@@ -52,8 +52,8 @@
             <tr class="title">
               <th nowrap="nowrap"></th>
               <th nowrap="nowrap">客户名称</th>
-              <th nowrap="nowrap">证件号码</th>
               <th nowrap="nowrap">产品名称</th>
+              <th nowrap="nowrap">证件号码</th>
               <th nowrap="nowrap">申请额度</th>
               <th nowrap="nowrap">状态</th>
             </tr>
@@ -71,10 +71,10 @@
             </colgroup>
             #foreach ($intoPieces in $result.items)
             <tr>
-              <td class="checkbox"><input type="radio" name="checkbox" value="$!{intoPieces.id}_$!{intoPieces.customerId}_$!{intoPieces.tyCustomerId}"/></td>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!{intoPieces.id}_$!{intoPieces.customerId}_$!{intoPieces.tyCustomerId}_$!{intoPieces.cardId}"/></td>
               <td nowrap="nowrap">$!intoPieces.chineseName</td>
-              <td nowrap="nowrap">$!intoPieces.cardId</td>
               <td nowrap="nowrap">$!intoPieces.productName</td>
+              <td nowrap="nowrap">$!intoPieces.cardId</td>
               <td nowrap="nowrap">$format.formatNumber($!intoPieces.applyQuota, 2, 1)</td>
               <td nowrap="nowrap">
 	              #if($!intoPieces.status=='audit')已申请  
@@ -175,7 +175,7 @@
 		$("#id_report_button").click(function() {
 			if ($(".checkbox :checked").length == 1) {
 				var rowid = $("input[name='checkbox']:checked").val();
-				var url = "${contextPath}/customer/customerInfor_wh_ty/report_jy.page?appId=" + rowid.split("_")[0]+"&urlType=2";
+				var url = "${contextPath}/customer/customerInfor_wh_ty/report_jy.page?appId=" + rowid.split("_")[0]+"&urlType=2"+"&&cardId="+rowid.split("_")[3];
 				window.location.href = url;
 			}
 			else{

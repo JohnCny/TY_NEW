@@ -71,6 +71,7 @@ import com.cardpay.pccredit.product.model.AddressAccessories;
 import com.cardpay.pccredit.product.model.AppendixDict;
 import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.service.ProductService;
+import com.cardpay.pccredit.system.model.Dict;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
@@ -1248,13 +1249,13 @@ public class IntoPiecesControl extends BaseController {
 		mv.addObject("producAttribute", producAttribute);
 		mv.addObject("custManagerId", customerInfor.getUserId());
 		
-		boolean lock = false;
+		/*boolean lock = false;
 		String sql = "select * from dict where dict_type = 'CTRL_STATUS_PARAM' ";
 		String PARAM = (String) commonDao.queryBySql(sql, null).get(0).get("TYPE_CODE");
 		if("1".equals(PARAM)){
 			lock = true;
 		}
-		mv.addObject("lock", lock);
+		mv.addObject("lock", lock);*/
 		return mv;
 	}
 	

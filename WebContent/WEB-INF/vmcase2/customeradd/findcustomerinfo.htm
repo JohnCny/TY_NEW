@@ -112,12 +112,11 @@
             </tr>
             <tr>
               <td class="titlefc3"><label for="hjdz">居住状况:</label></td>
-               <td><input class="rinpsty"  type="text" id="hjdz" name="hjdz" value="$!customerInfor.xxdz" /></td> 
-              <!-- <td><select id="RESIDE" name="RESIDE" class="rinpsty"> 
-              		<option value=""></option>
+               <!-- <td><input class="rinpsty"  type="text" id="hjdz" name="hjdz" value="$!customerInfor.xxdz" /></td>  -->
+               <td><select id="RESIDE" name="RESIDE" class="rinpsty"> 
               		#dict("RESIDE", $!customerInfor.xxdz)
               	  </select>
-              </td> -->
+              </td> 
               <td class="titlefc3"><label for="jtdh">评级结果（对应评级的信用等级）:</label></td>
               <td><input class="rinpsty"  type="text" id="jtdh" name="jtdh" value="$!customerInfor.xydj" /></td>
             </tr>
@@ -137,7 +136,6 @@
               <td class="titlefc3"><label for="mz">最高学位:</label></td>
               <!-- <td><input class="rinpsty"  type="text" id="mz" name="mz" value="$!customerInfor.educationlevel" /></td> -->
               <td><select id="EDUCATIONLEVEL" name="EDUCATIONLEVEL" class="rinpsty"> 
-              		<option value=""></option>
               		#dict("EDUCATIONLEVEL", $!customerInfor.xw)
               	  </select>
               </td>

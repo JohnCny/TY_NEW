@@ -78,7 +78,7 @@ public class CustormerBlackListController extends BaseController {
 	 * @param filter
 	 * @param request
 	 * @return
-	 */
+	 *//*
 	@ResponseBody
 	@RequestMapping(value = "deleteByCoustorId.json", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
@@ -95,7 +95,7 @@ public class CustormerBlackListController extends BaseController {
 		}
 	
 		return returnMap;
-	}
+	}*/
 	/**
 	 * 当前客户经理的非黑名单客户
 	 * @param filter
