@@ -45,11 +45,11 @@
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
-              <th nowrap="nowrap">所属经理</th>
               <th nowrap="nowrap">客户名称</th>
               <th nowrap="nowrap">身份证号码</th>
               <th nowrap="nowrap">产品名称</th>
               <th nowrap="nowrap">金额</th>
+              <th nowrap="nowrap">所属经理</th>
             </tr>
           </table>
         </div>
@@ -68,11 +68,11 @@
              <!--  <td class="checkbox"><input type="radio" name="checkbox" id="checkbox" value="$!customer.tyCustomerId@$!customer.chineseName@$!customer.cardId"
                    /></td> -->
                     <td class="checkbox"><input type="radio" name="checkbox" value="$!intoPieces.ywbh"/></td>
-              <td nowrap="nowrap">$!intoPieces.display_name</td>
               <td nowrap="nowrap">$!intoPieces.chinese_name</td>
               <td nowrap="nowrap">$!intoPieces.card_id</td>
               <td nowrap="nowrap">$!intoPieces.product_name</td>
               <td nowrap="nowrap">$format.formatNumber($!intoPieces.actual_quote, 2, 1)</td>
+              <td nowrap="nowrap">$!intoPieces.display_name</td>
             </tr>
             #end
           </table>
@@ -129,7 +129,7 @@
             if ($(".checkbox :checked").length == 1) {
                 $("#addNew").unbind();
                 var rowid = $($(".checkbox :checked")[0]).attr("value");
-                var url = "/PCCredit_TY/customer/customer_parameter/addCustomerParameter.page?id=" + rowid + "&nodeType=Product";
+                var url = "${modulePath}/addCustomerParameter.page?id=" + rowid + "&nodeType=Product";
 				window.location.href = url;
             } else {
                 Dialog.message("请选择一行");

@@ -381,9 +381,10 @@ public class CustomerFirsthendController extends BaseController{
 			CIPERSONBASINFOCOPY base = customerInforService.findCIPERSONBASINFOCOPY(customerInforId);
 			if(base == null){
 				//复制
-				customerInforService.findCIPERSONBASINFOCOPYISEXIT(customerInforId);
+				//customerInforService.findCIPERSONBASINFOCOPYISEXIT(customerInforId);
 				//查询
-				CIPERSONBASINFOCOPY copy = customerInforService.findCIPERSONBASINFOCOPY(customerInforId);
+				CustomerFirsthendBase copy=customerInforService.findCustomerFirsthendBase(customerInforId);
+				//CIPERSONBASINFOCOPY copy = customerInforService.findCIPERSONBASINFOCOPY(customerInforId);
 				mv.addObject("customerInfor", copy);
 				mv.addObject("customerNm", copy.getId());
 			}else{

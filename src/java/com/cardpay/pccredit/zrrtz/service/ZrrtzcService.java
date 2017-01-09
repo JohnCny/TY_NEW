@@ -26,10 +26,11 @@ public class ZrrtzcService {
 				QueryResult<IncomingData> queryResult = new QueryResult<IncomingData>(size,plans);
 				return queryResult;
 	}
-	public List<IncomingData> finddate() {
+	public List<IncomingData> finddate(String id) {
 		// TODO Auto-generated method stub
-		return dao.findate();
+		return dao.finddate(id);
 	}
+	
 	
 
 }

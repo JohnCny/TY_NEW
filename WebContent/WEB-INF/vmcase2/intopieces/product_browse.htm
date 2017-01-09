@@ -59,6 +59,7 @@
             </tr>
             #end
           </table>
+          <input type="hidden" id="repay" value="$!mes" />
         </div>
       </div>
       <div class="pagebar">
@@ -136,6 +137,12 @@
                 Dialog.message("请选择一行");
             }
         });
+	});
+	$(document).ready(function() {
+		var repay = $("#repay").val();
+		if(repay.length>0){
+			topWin.Dialog.message(repay);
+		}
 	});
 </script>
 #parse ("common/iframe_page_footer.htm")

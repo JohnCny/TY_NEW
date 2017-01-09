@@ -367,12 +367,12 @@ public class AddIntoPiecesControl extends BaseController {
 				}
 				Log.info(Applicationid.getApplicationId());
 				filter.setMainApplicationFormId(Applicationid.getApplicationId());
-				service.insertguarantor(filter);
 				//判断此申请主表有多少个 担保人 如果超过五人就提醒客户    少于五人就可以继续添加
 				String infoid= Applicationid.getApplicationId();
 				int guarantorcount=service.guarantorcount(infoid);
 				String message="";
 				if(guarantorcount<5){
+					service.insertguarantor(filter);
 					returnMap.put(JRadConstants.SUCCESS, true);
 				}else{
 					message="已经超过5个人 ，不能再加担保人了";

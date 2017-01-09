@@ -822,10 +822,11 @@
 		              left join  wf_process_record pr on pr.id = aa.serial_number
 		              left join wf_status_queue_record t on t.current_process = pr.id 
 		              left join wf_status_info s on t.current_status = s.id 
+		              where 1=1
 					<if test="customername!=null and customername!='' ">
 						    and bai.chinese_name like  '%'||#{customername}||'%'
 					</if>
-					
+					 order by cai.created_time desc
                    <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -853,10 +854,10 @@
 		              left join  wf_process_record pr on pr.id = aa.serial_number
 		              left join wf_status_queue_record t on t.current_process = pr.id 
 		              left join wf_status_info s on t.current_status = s.id 
+		               where 1=1
 			        <if test="customername!=null and customername!='' ">
 						    and bai.chinese_name like  '%'||#{customername}||'%'
 					</if>
-					
 	</select>
 	
 	<!-- 显示详情 -->

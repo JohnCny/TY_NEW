@@ -18,8 +18,9 @@ public interface ZrrtzDao {
 
 	int findIntoPiecesCountList(ZrrtzFilter filter);
 
-	List<IncomingData> findate();
 
 	List<OutcomingData> findpiecesList(@Param("id")String id);
+
+	List<IncomingData> finddate(@Param("id")String id);
 
 }

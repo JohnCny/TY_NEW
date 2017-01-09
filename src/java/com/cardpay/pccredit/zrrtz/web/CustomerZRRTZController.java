@@ -135,14 +135,14 @@ public class CustomerZRRTZController extends BaseController{
 			//传入的date
 			Date transmissionfdate = null;
 			Date transmissionldate=null;
-			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
 			try {
 				//判断传入的时间是否为空 如果不为空则将其转换为date类型
 				if(filter.getFdate()!=null && filter.getLdate()!=null && filter.getFdate()!="" && filter.getLdate()!=""){
 					transmissionfdate=sdf.parse(filter.getFdate());
 					transmissionldate=sdf.parse(filter.getLdate());
 					//数据库的起始日期和终止日期都是varchar类型所以要先转换成date类型才能比较
-					List<IncomingData>date= service.finddate();
+					List<IncomingData>date= service.finddate(user.getId());
 					for (int i = 0; i < date.size(); i++) {
 						date1=date.get(i).getFdate();
 					}
