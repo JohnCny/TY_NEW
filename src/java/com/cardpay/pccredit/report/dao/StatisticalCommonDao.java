@@ -2,6 +2,8 @@ package com.cardpay.pccredit.report.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.cardpay.pccredit.report.model.NameValueRecord;
 import com.wicresoft.util.annotation.Mapper;
 
@@ -66,6 +68,7 @@ public interface StatisticalCommonDao {
 	
 	//计算用信总额selectALLyqze
 	public int selectALLyxze();
+	public List<NameValueRecord>selectYDyx(@Param("userId") String userId);
 	//计算逾期总额
 	public String selectALLyqze();
 }

@@ -33,5 +33,8 @@ public class JnIpadJBUserService {
 	public List<JBUser> selectUserByDid1(@Param("userId") String userId){
 		return JnIpadJBUser.selectUserByDid1(userId);
 	}
+	public List<JBUser> selectUserByDid2(@Param("parentId") String parentId){
+		return JnIpadJBUser.selectUserByDid2(parentId);
+	}
 
 }

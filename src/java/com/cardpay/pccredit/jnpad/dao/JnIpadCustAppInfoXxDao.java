@@ -41,6 +41,9 @@ public interface JnIpadCustAppInfoXxDao {
 
 	//进件列表根据状态查询数量
 	public int findNoticeCountByFilter(NotificationMessageFilter filter);
+	
+	//进件列表根据状态查询详情
+		public List<IntoPieces> findTZByFilter(NotificationMessageFilter filter);
 
 	public void changeIsLook(@Param("id")String id,@Param("cardId") String cardId);
 	
@@ -62,4 +65,5 @@ public interface JnIpadCustAppInfoXxDao {
 		public List<IntoPieces> findCustomersuccess(@Param("userId") String userId);
 		public List<IntoPieces> findCustomerResulf(@Param("userId") String userId);
 		public int findCustomerBackCount(@Param("userId") String userId);
+		public List<IntoPieces> findTZBlackCount(@Param("userId") String userId);
 }

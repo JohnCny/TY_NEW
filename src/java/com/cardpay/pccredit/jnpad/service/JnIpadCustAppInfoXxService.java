@@ -210,6 +210,10 @@ public class JnIpadCustAppInfoXxService {
 		return jnIpadCustAppInfoDao.findNoticeCountByFilter(filter);
 	}
 	
+	public List<IntoPieces> findTZByFilter(NotificationMessageFilter filter){
+		return jnIpadCustAppInfoDao.findTZByFilter(filter);
+	}
+	
 
 
 
@@ -276,5 +280,10 @@ public class JnIpadCustAppInfoXxService {
 	}
 	public List<IntoPieces> findCustomerResulf(@Param("userId") String userId){
 		return jnIpadCustAppInfoDao.findCustomerResulf(userId);
+	}
+	
+	public List<IntoPieces> findTZBlackCount(@Param("userId") String userId){
+		return jnIpadCustAppInfoDao.findTZBlackCount(userId);
+		
 	}
 }

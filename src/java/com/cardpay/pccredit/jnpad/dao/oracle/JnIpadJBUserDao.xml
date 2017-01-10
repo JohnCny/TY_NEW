@@ -59,6 +59,13 @@
 			and d.dept_id=#{parentId}
 	</select>
 	
+		<select id="selectUserByDid2" resultMap="ResultMap" parameterType="com.cardpay.pccredit.jnpad.model.JBUser">
+			select s.id as userId
+			from SYS_DEPT_USER d,sys_user s, SYS_DEPARTMENT t
+			where  s.id=d.user_id
+			and t.id=d.dept_id
+			and d.dept_id=#{parentId}
+	</select>
 	
 	
 	<select id="selectUserByDid1" resultMap="ResultMap" parameterType="com.cardpay.pccredit.jnpad.model.JBUser">

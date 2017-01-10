@@ -636,6 +636,12 @@ union all
 			 distinct(m.YWBH), m.REQLMT 
 	 from   mibusidata m) mm
 	</select>
+	
+	<!-- 当前客户经理月度用信金额 -->
+	<select id="selectYDyx" resultMap="ResultMap" >
+	    select  distinct(m.YWBH),m.loandate as name,m.reqlmt as value from mibusidata m
+	    where m.userid=#{userId}
+	</select>
 		<!-- 逾期总额 -->
 	<select id="selectALLyqze" resultType="String" >
 	    	select sum(cc.dkye+cc.bnqx+cc.bwqx) from 
