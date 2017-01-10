@@ -43,6 +43,7 @@ import com.cardpay.pccredit.jnpad.service.JnIpadCustAppInfoXxService;
 import com.cardpay.pccredit.jnpad.service.JnIpadJBUserService;
 import com.cardpay.pccredit.jnpad.service.JnIpadUserLoginService;
 import com.cardpay.pccredit.jnpad.service.JnIpadXDService;
+import com.cardpay.pccredit.jnpad.service.JnpadZongBaoCustomerInsertService;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
 import com.cardpay.pccredit.manager.web.ManagerBelongMapForm;
 import com.cardpay.pccredit.report.model.CustomerHmd;
@@ -69,6 +70,9 @@ public class JnIpadUserLoginController {
 	private java.lang.Float dkye;
 	private java.lang.Float bnqx;
 	private java.lang.Float bwqx;
+	private Integer qyjl=0;
+	@Autowired
+	private JnpadZongBaoCustomerInsertService jnpadZongBaoCustomerInsertService;
 	@Autowired
 	private JnIpadUserLoginService userService;
 	@Autowired
@@ -88,6 +92,8 @@ public class JnIpadUserLoginController {
 	
 	@Autowired
 	private CustormerBlackListService cblservice;
+	
+	
 	/**
 	 * 用户登录
 	 * @param request
@@ -96,12 +102,14 @@ public class JnIpadUserLoginController {
 	@ResponseBody
 	@RequestMapping(value = "/ipad/user/JnLogin.json")
 	public String login(@ModelAttribute NODEAUDIT NODEAUDIT,HttpServletRequest request) {
+		qyjl=0;
 		Map<String,Object> map = new LinkedHashMap<String,Object>();
 		String login = RequestHelper.getStringValue(request, "login");
 		String passwd = RequestHelper.getStringValue(request, "password");
 		HttpSession session=request.getSession();
 		String time= (String) session.getAttribute("loginTime");
 		JnUserLoginIpad user = null;
+		//上次登录时间
 		if(time==null){
 			Date loginTime =new Date();
 			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -140,9 +148,18 @@ public class JnIpadUserLoginController {
 				loginResult.setReason(IpadConstant.LOGINFAIL);
 			}
 			map.put("result",loginResult);
+			//查询是否为区域经理或者小组长，以及小组成员
 			List list1=cxke(user);
 			map.put("list", list1);
 			map.put("listsize", list1.size());
+			if(qyjl==1){
+				map.put("zw", "区域经理");	
+			}else if(qyjl==2){
+				map.put("zw", "客户经理主管");	
+			}else if(qyjl==3){
+				map.put("zw", "客户经理");	
+			}
+		
 			if(CommonConstant.USER_TYPE.USER_TYPE_1 == user.getUserType()){
 				List<AccountManagerParameterForm> forms = maintenanceService.findSubListManagerByManagerId1(user.getId(),user.getUserType());
 				if(forms != null && forms.size() > 0){
@@ -204,7 +221,6 @@ public class JnIpadUserLoginController {
 		String name = request.getParameter("name");
 		String cardId = request.getParameter("cardId");
 		String cardType = request.getParameter("cardType");
-		
 		String userId = request.getParameter("userId");
 		map = customerInforService.addCustomer(name,cardId,cardType,userId);
 		JsonConfig jsonConfig = new JsonConfig();
@@ -303,8 +319,10 @@ public class JnIpadUserLoginController {
 	
 	public List cxke(JnUserLoginIpad user) {
 		Integer b=0;
+		Integer c1=0;
 		String parentId="100000";
 		List list=new ArrayList();
+		List list1=new ArrayList();
 		String userId=user.getId();
 		//确认当前客户经理是否为区域经理
 		List<ManagerBelongMapForm> result1=ManagerBelongMapService.findAllqyjl(parentId);
@@ -314,6 +332,7 @@ public class JnIpadUserLoginController {
 			}
 		}
 		if(b==1){
+			qyjl=1;
 			List<JBUser> depart=JnIpadJBUser.selectDepartUser(userId);
 			for(int i=0;i<depart.size();i++){
 				List<JBUser> findxzcy=JnIpadJBUser.selectUserByDid(depart.get(i).getId());
@@ -322,6 +341,23 @@ public class JnIpadUserLoginController {
 				}
 			
 		}}else{
+			//确认当前客户经理是否为小组长
+			for(int i=0;i<result1.size();i++){
+				List<ManagerBelongMapForm> result2=ManagerBelongMapService.findxzz(result1.get(i).getId());
+				for(int c=0;c<result2.size();c++){
+					list1.add(result2.get(c).getId());
+				}
+			}
+			for(int d=0;d<list1.size();d++){
+				if(list1.get(d).equals(userId)){
+					c1=1;
+				}
+			}
+			if(c1>0){
+				qyjl=2;
+			}else{
+				qyjl=3;
+			}
 			List<JBUser> findxzcy=JnIpadJBUser.selectUserByDid1(userId);
 			for(int a=0;a<findxzcy.size();a++){
 				list.add(findxzcy.get(a));	
@@ -333,7 +369,7 @@ public class JnIpadUserLoginController {
 	
 	
 	public NotifyMsgListVo jjzkCount(String userId) {
-		List <CustomerInfo> result1=cblservice.selectCusByUser(userId);
+	/*	List <CustomerInfo> result1=cblservice.selectCusByUser(userId);
 		Integer i=0;
 		CustomerHmd list=null;
 		for(int a=0;a<result1.size();a++){
@@ -342,18 +378,61 @@ public class JnIpadUserLoginController {
 					i=i+1;
 					list=null;
 				}
+		}*/
+		int JrefuseCount=0;
+		int JRiskCount=0;
+		int JblackCount=0;
+		int JpassCount=0;
+		int count=0;
+		List<CustomerInfo> customerList = jnpadZongBaoCustomerInsertService.selectCustomerInfo(userId);
+		if(customerList!=null){
+			for(int a=0;a<customerList.size();a++){
+				if(!customerList.get(a).getCreatedBy().equals(userId)){
+					count+=1;
+				}
+			}
 		}
+		Date date=new Date();
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String time1=sdf.format(date);
+		String[] time=time1.split("-");
+		String logntime=time[0]+time[1]+time[2].substring(0, 2);
 		NotificationMessageFilter filter = new NotificationMessageFilter();
 		filter.setUserId(userId);
 		//拒绝进件数量
 		filter.setNoticeType("refuse");
-		int refuseCount= appInfoXxService.findNoticeCountByFilter(filter);
+		List<IntoPieces> refusecount= appInfoXxService.findTZByFilter(filter);
+		for(int i=0;i<refusecount.size();i++){
+			String refuseTime=sdf.format(refusecount.get(i).getCreatime());
+			String[] refusetime=refuseTime.split("-");
+			String refusetime1=refusetime[0]+refusetime[1]+refusetime[2].substring(0, 2);
+			if(refusetime1.equals(logntime)){
+				JrefuseCount+=1;
+			}
+		}
 		//补充调查通知
-		int returnCount= appInfoXxService.findCustomerBackCount(userId);
+		List<IntoPieces> balckcount= appInfoXxService.findTZBlackCount(userId);
+		for(int i=0;i<balckcount.size();i++){
+			String refuseTime=sdf.format(balckcount.get(i).getCreatime());
+			String[] blacktime=refuseTime.split("-");
+			String blacktime1=blacktime[0]+blacktime[1]+blacktime[2].substring(0, 2);
+			if(blacktime1.equals(logntime)){
+				JblackCount+=1;
+			}
+		}
+		
 		
 		//申款成功
 		filter.setNoticeType("approved");
-		int passCount= appInfoXxService.findNoticeCountByFilter(filter);
+		List<IntoPieces> passcount= appInfoXxService.findTZByFilter(filter);
+		for(int i=0;i<passcount.size();i++){
+			String passTime=sdf.format(passcount.get(i).getCreatime());
+			String[] passtime=passTime.split("-");
+			String passtime1=passtime[0]+passtime[1]+passtime[2].substring(0, 2);
+			if(passtime1.equals(logntime)){
+				JpassCount+=1;
+			}
+		}
 				
 		//风险客户通知
 		RiskCustomerFilter filters = new RiskCustomerFilter();
@@ -362,11 +441,12 @@ public class JnIpadUserLoginController {
 	    filters.setRole(RiskControlRole.manager.toString());
 		int risk = appInfoXxService.findRiskNoticeCountByFilter(filters);
 		NotifyMsgListVo vo  = new NotifyMsgListVo();
-		vo.setRefuseCount(refuseCount);
-		vo.setReturnCount(returnCount);
+		vo.setQita(count);
+		vo.setRefuseCount(JrefuseCount);
+		vo.setReturnCount(JblackCount);
 		vo.setRisk(risk);
-		vo.setBlackcount(i);
-		vo.setPassCount(passCount);
+		vo.setPassCount(JpassCount);
+		vo.setKaocha(JrefuseCount+JRiskCount+JblackCount+JpassCount);
 		return vo;
 	}
 }

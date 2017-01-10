@@ -37,6 +37,14 @@ public interface JnIpadJBUserDao {
 	 */
 	public List<JBUser> selectUserByDid(@Param("parentId") String parentId);
 	
+	
+	/**
+	 * 权限查看
+	 * @param parentId
+	 * @return
+	 */
+	public List<JBUser> selectUserByDid2(@Param("parentId") String parentId);
+	
 	/**
 	 * 权限查看
 	 * @param parentId
