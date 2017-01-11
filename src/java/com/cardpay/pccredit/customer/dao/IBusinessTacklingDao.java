@@ -18,7 +18,7 @@ import com.wicresoft.util.annotation.Mapper;
 @Mapper
 public interface IBusinessTacklingDao {
 
-	CustomerInfo queryById(@Param("cardId")String cardId);
+	List<CustomerInfo>  queryById(@Param("cardId")String cardId);
 
 	List<BusinessTackling> queryByIdCard(@Param("idcard")String idcard);
 

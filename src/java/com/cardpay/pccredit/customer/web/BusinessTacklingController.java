@@ -74,8 +74,8 @@ public class BusinessTacklingController extends BaseController{
 		{
 			JRadReturnMap returnMap = new JRadReturnMap();
 					String cardId=request.getParameter("cardId");
-					CustomerInfo customer=btService.queryById(cardId); 
-					if(null!=customer){
+					List<CustomerInfo> customer=btService.queryById(cardId); 
+					if(customer.size()>0){
 						returnMap.put(MESSAGE, "1");
 						return returnMap;
 					}

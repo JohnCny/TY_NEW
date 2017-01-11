@@ -34,6 +34,15 @@
 		<result property="outTime" column="OUTTIME" />
 		<result property="inTime" column="INTIME" />
 	</resultMap>
+	
+	<resultMap id="SHILIMap" type="com.cardpay.pccredit.zrrtz.model.IncomingData">
+		<result property="chinese_name" column="chinese_name" />
+		<result property="card_id" column="card_id" />
+		<result property="product_name" column="product_name" />
+		<result property="apply_quota" column="apply_quota" />
+		<result property="id" column="id"/>
+		<result property="userId" column="id"/>
+	</resultMap>
 
 	<select id="findAppendixTypeCodeByProductId" resultMap="ResultMap" parameterType="java.lang.String">
 		SELECT * from ACCESSORIES_LIST
@@ -82,20 +91,36 @@
         APPLICATION_ID =#{appId}
 	</select>
 
-	<select id="delay" resultMap="TyCustomerRecordMap"  parameterType="java.lang.String">
-	<!--  select b.*
-	from CUSTOMER_APPLICATION_INFO a,TY_CUSTOMER_RECORD b,dual c
-	where a.id=b.APPLICATION_ID and b.STATUS='4'
-	<![CDATA[ 
-	and TO_DATE(a.JKRQ,'yyyymmdd') < trunc ( SYSDATE-5 ) and a.customer_id in ( select id from
-	basic_customer_information where user_id=#{id} )
-	]]>  -->
-	select b.* from CUSTOMER_APPLICATION_INFO a,local_excel b,dual c 
-  	where a.STATUS!='save' and a.ID=b.APPLICATION_ID and  b.ATTACHMENT=null
-	<![CDATA[ 
-	and a.created_time<trunc(SYSDATE-6)  and a.customer_id in 
-	(select id from basic_customer_information where user_id=#{id})
-	]]> 
-	
+	<select id="delay" resultMap="SHILIMap"  parameterType="java.lang.String">
+	select  distinct 
+              sysuser.id,
+              tkmx.ywbh ,
+              sysuser.display_name as display_name,
+              b.khmc as chinese_name,
+              b.zjhm as card_id,
+              protype.product_name,
+              tkmx.ffje as actual_quote,
+              tkmx.jkrq
+             from
+                    ty_repay_tkmx tkmx,
+                    ty_customer_base b,
+                    ty_customer_rygl rygl,
+                   ty_product_type protype,
+                    sys_user sysuser,
+                   ty_kdk_jh jh,
+                    ty_repay_yehz yehz,
+                    ty_repay_lsz lsz
+                    where b.khjl=rygl.dm and
+                    rygl.ddrq=sysuser.external_id and
+                    b.khnm=tkmx.khh and
+                    jh.ywbh=tkmx.ywbh||'HT' and
+                    yehz.jjh=tkmx.jjh and
+                    tkmx.jjh =lsz.jjh and
+                    protype.product_code=tkmx.cpmc
+                    and tkmx.ywbh not in (select ywbh from CUSTOMER_PIGEONHOLE)
+                    and sysuser.id=#{id} 
+                    <![CDATA[ 
+  					and to_date(tkmx.jkrq,'yy-mm-dd')<trunc(SYSDATE-6)
+					]]>       
 	</select>
 </mapper>
