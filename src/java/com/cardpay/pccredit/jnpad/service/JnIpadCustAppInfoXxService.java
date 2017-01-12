@@ -34,6 +34,7 @@ import com.cardpay.pccredit.manager.model.Retraining;
 import com.cardpay.pccredit.notification.model.NotificationMessage;
 import com.cardpay.pccredit.riskControl.dao.RiskCustomerDao;
 import com.cardpay.pccredit.riskControl.filter.RiskCustomerFilter;
+import com.cardpay.pccredit.riskControl.model.RiskCustomer;
 import com.cardpay.pccredit.system.model.SystemUser;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 
@@ -221,6 +222,11 @@ public class JnIpadCustAppInfoXxService {
 	public int findRiskNoticeCountByFilter(RiskCustomerFilter filters) {
 		// TODO Auto-generated method stub
 		return riskCustomerDao.findRiskCustomersCountByFilter(filters);
+	}
+	
+	
+	public List<RiskCustomer> findRiskTZCountByFilter(RiskCustomerFilter filter){
+		return riskCustomerDao.findRiskTZCountByFilter(filter);
 	}
 
 

@@ -50,6 +50,7 @@ import com.cardpay.pccredit.report.model.CustomerHmd;
 import com.cardpay.pccredit.riskControl.constant.RiskControlRole;
 import com.cardpay.pccredit.riskControl.constant.RiskCreateTypeEnum;
 import com.cardpay.pccredit.riskControl.filter.RiskCustomerFilter;
+import com.cardpay.pccredit.riskControl.model.RiskCustomer;
 import com.cardpay.pccredit.riskControl.service.CustormerBlackListService;
 import com.cardpay.pccredit.system.model.SystemUser;
 import com.wicresoft.jrad.base.auth.IUser;
@@ -174,8 +175,8 @@ public class JnIpadUserLoginController {
 					map.put("repay", str);
 				}
 			}
-			NotifyMsgListVo vo=jjzkCount(user.getId());
-			map.put("vo", vo);
+		/*	NotifyMsgListVo vo=jjzkCount(user.getId());
+			map.put("vo", vo);*/
 		}
 		JSONObject json = JSONObject.fromObject(map);
 		return String.valueOf(json);
@@ -439,12 +440,21 @@ public class JnIpadUserLoginController {
 		filters.setCustManagerId(userId);
 		filters.setRiskCreateType(RiskCreateTypeEnum.manual.toString());
 	    filters.setRole(RiskControlRole.manager.toString());
-		int risk = appInfoXxService.findRiskNoticeCountByFilter(filters);
+		//int risk = appInfoXxService.findRiskNoticeCountByFilter(filters);
+		List<RiskCustomer> fxcount=appInfoXxService.findRiskTZCountByFilter(filters);
+		for(int i=0;i<fxcount.size();i++){
+			String passTime=sdf.format(fxcount.get(i).getCREATED_TIME());
+			String[] passtime=passTime.split("-");
+			String passtime1=passtime[0]+passtime[1]+passtime[2].substring(0, 2);
+			if(passtime1.equals(logntime)){
+				JRiskCount+=1;
+			}
+		}
 		NotifyMsgListVo vo  = new NotifyMsgListVo();
 		vo.setQita(count);
 		vo.setRefuseCount(JrefuseCount);
 		vo.setReturnCount(JblackCount);
-		vo.setRisk(risk);
+		vo.setRisk(JRiskCount);
 		vo.setPassCount(JpassCount);
 		vo.setKaocha(JrefuseCount+JRiskCount+JblackCount+JpassCount);
 		return vo;
