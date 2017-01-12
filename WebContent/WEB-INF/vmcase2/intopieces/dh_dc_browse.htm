@@ -107,12 +107,13 @@
       <div class="pagebar">
         <div class="controlbtn">
           <a class="btn_g" href="javascript:void(0);" title="审议结论" onclick="viewIntoPicesApproveHistory2('NO')">审议结论</a>
+          <a class="btn_g" href="javascript:void(0);" title="影像资料" onclick="scan('NO')">影像资料</a>
           <!-- <a class="btn_g" href="javascript:void(0);" title="审议结论" onclick="viewIntoPicesApproveHistory1('NO')">审议结论</a> -->
-           #if($!type==1)
+          <!--  #if($!type==1)
           <a class="btn_g" href="javascript:void(0);" title="采集资料" onclick="scan('NO')">采集资料</a>
            #else
           <a class="btn_g" href="javascript:void(0);" title="在线预览" onclick="scanpage('NO')">在线预览</a>
-           #end        
+           #end  -->       
 		</div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>

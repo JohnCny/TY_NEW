@@ -3,7 +3,7 @@
 
 
 <body>
-	<h1>å›¾ç‰‡æ‰¹é‡ä¸Šä¼ </h1>
+	<h1>Í¼Æ¬ÅúÁ¿ÉÏ´«</h1>
 	<form style="margin-left:10px">
 		<div id="queue"></div>
 		<input id="file_upload" name="file_upload" type="file" multiple="true">
@@ -13,105 +13,105 @@
 	$(document).ready(function() {
 			$('#file_upload').uploadify({
 				'debug' 		: false,
-				'auto' 			: false, 			//æ˜¯å¦è‡ªåŠ¨ä¸Šä¼ ,
-				'buttonClass' 	: 'haha', 			//æŒ‰é’®è¾…åŠ©class
-				'buttonText'  	: 'ä¸Šä¼ å›¾ç‰‡', 		//æŒ‰é’®æ–‡å­—
-				'height'      	: 30,				//æŒ‰é’®é«˜åº¦
-				'width'			: 100,				//æŒ‰é’®å®½åº¦
-				//'checkExisting' : 'check-exists.php',//æ˜¯å¦æ£€æµ‹å›¾ç‰‡å­˜åœ¨,ä¸æ£€æµ‹:false
-				'fileObjName'   : 'file',			 //é»˜è®¤ Filedata, $_FILESæ§ä»¶åç§°
-				//'fileSizeLimit' : '1024KB',			 //æ–‡ä»¶å¤§å°é™åˆ¶ 0ä¸ºæ— é™åˆ¶ é»˜è®¤KB
-				'fileTypeDesc'  : 'All Files',		 //å›¾ç‰‡é€‰æ‹©æè¿°
-				'fileTypeExts'  : '*.jpg',//æ–‡ä»¶åç¼€é™åˆ¶ é»˜è®¤ï¼š'*.*'
-				'formData'      : {'someKey' : 'someValue', 'someOtherKey' : 1},//ä¼ è¾“æ•°æ®JSONæ ¼å¼
+				'auto' 			: false, 			//ÊÇ·ñ×Ô¶¯ÉÏ´«,
+				'buttonClass' 	: 'haha', 			//°´Å¥¸¨Öúclass
+				'buttonText'  	: 'ÉÏ´«Í¼Æ¬', 		//°´Å¥ÎÄ×Ö
+				'height'      	: 30,				//°´Å¥¸ß¶È
+				'width'			: 100,				//°´Å¥¿í¶È
+				//'checkExisting' : 'check-exists.php',//ÊÇ·ñ¼ì²âÍ¼Æ¬´æÔÚ,²»¼ì²â:false
+				'fileObjName'   : 'file',			 //Ä¬ÈÏ Filedata, $_FILES¿Ø¼şÃû³Æ
+				//'fileSizeLimit' : '1024KB',			 //ÎÄ¼ş´óĞ¡ÏŞÖÆ 0ÎªÎŞÏŞÖÆ Ä¬ÈÏKB
+				'fileTypeDesc'  : 'All Files',		 //Í¼Æ¬Ñ¡ÔñÃèÊö
+				'fileTypeExts'  : '*.jpg',//ÎÄ¼şºó×ºÏŞÖÆ Ä¬ÈÏ£º'*.*'
+				'formData'      : {'session':'<?php echo session_id();?>','someKey' : 'someValue', 'someOtherKey' : 1},//´«ÊäÊı¾İJSON¸ñÊ½
 				//'overrideEvents': ['onUploadProgress'],  // The progress will not be updated
-				//'progressData' : 'speed',				//é»˜è®¤percentage è¿›åº¦æ˜¾ç¤ºæ–¹å¼
-				'queueID'		: 'queue',				//é»˜è®¤é˜Ÿåˆ—ID
-				'queueSizeLimit': 500, 					//ä¸€ä¸ªé˜Ÿåˆ—ä¸Šä¼ æ–‡ä»¶æ•°é™åˆ¶
-				'removeCompleted' : true,				//å®Œæˆæ—¶æ˜¯å¦æ¸…é™¤é˜Ÿåˆ— é»˜è®¤true
-				'removeTimeout'   : 3,					//å®Œæˆæ—¶æ¸…é™¤é˜Ÿåˆ—æ˜¾ç¤ºç§’æ•°,é»˜è®¤3ç§’
-				'requeueErrors'   : false,				//é˜Ÿåˆ—ä¸Šä¼ å‡ºé”™ï¼Œæ˜¯å¦ç»§ç»­å›æ»šé˜Ÿåˆ—
-				'successTimeout'  : 10,					//ä¸Šä¼ è¶…æ—¶
-				'uploadLimit'     : 500,					//å…è®¸ä¸Šä¼ çš„æœ€å¤šå¼ æ•°
+				//'progressData' : 'speed',				//Ä¬ÈÏpercentage ½ø¶ÈÏÔÊ¾·½Ê½
+				'queueID'		: 'queue',				//Ä¬ÈÏ¶ÓÁĞID
+				'queueSizeLimit': 500, 					//Ò»¸ö¶ÓÁĞÉÏ´«ÎÄ¼şÊıÏŞÖÆ
+				'removeCompleted' : true,				//Íê³ÉÊ±ÊÇ·ñÇå³ı¶ÓÁĞ Ä¬ÈÏtrue
+				'removeTimeout'   : 3,					//Íê³ÉÊ±Çå³ı¶ÓÁĞÏÔÊ¾ÃëÊı,Ä¬ÈÏ3Ãë
+				'requeueErrors'   : false,				//¶ÓÁĞÉÏ´«³ö´í£¬ÊÇ·ñ¼ÌĞø»Ø¹ö¶ÓÁĞ
+				'successTimeout'  : 10,					//ÉÏ´«³¬Ê±
+				'uploadLimit'     : 500,					//ÔÊĞíÉÏ´«µÄ×î¶àÕÅÊı
 				'swf'  : '${contextPath}/common/js/common/uploadify.swf', //swfUpload
-				'uploader': '${contextPath}/postLoan/post/browse_folder.json?batch_id=$!batch_id', //æœåŠ¡å™¨ç«¯è„šæœ¬
+				'uploader': '${contextPath}/postLoan/post/browse_folder.json?batch_id=$!batch_id', //·şÎñÆ÷¶Ë½Å±¾
 
 
-				//ä¿®æ”¹formDataæ•°æ®
+				//ĞŞ¸ÄformDataÊı¾İ
 				'onUploadStart' : function(file) {
 		            //$("#file_upload").uploadify("settings", "someOtherKey", 2);
 		        },
-		        //åˆ é™¤æ—¶è§¦å‘
+		        //É¾³ıÊ±´¥·¢
 		        'onCancel' : function(file) {
 		            //alert('The file ' + file.name + '--' + file.size + ' was cancelled.');
 		        },
-		        //æ¸…é™¤é˜Ÿåˆ—
+		        //Çå³ı¶ÓÁĞ
 		        'onClearQueue' : function(queueItemCount) {
 		            //alert(queueItemCount + ' file(s) were removed from the queue');
 		        },
-		        //è°ƒç”¨destroyæ˜¯è§¦å‘
+		        //µ÷ÓÃdestroyÊÇ´¥·¢
 		        'onDestroy' : function() {
-                    alert('æˆ‘è¢«é”€æ¯äº†');
+                    alert('ÎÒ±»Ïú»ÙÁË');
                 },
-                //æ¯æ¬¡åˆå§‹åŒ–ä¸€ä¸ªé˜Ÿåˆ—æ˜¯è§¦å‘
+                //Ã¿´Î³õÊ¼»¯Ò»¸ö¶ÓÁĞÊÇ´¥·¢
                 'onInit' : function(instance){
                     //alert('The queue ID is ' + instance.settings.queueID);
                 },
-                //ä¸Šä¼ æˆåŠŸ
+                //ÉÏ´«³É¹¦
                 'onUploadSuccess' : function(file, data, response) {
-                    //alert(file.name + ' | ' + response + ':' + data);
+                    alert(file.name + ' | ' + response + ':' + data);
                 },
-                //ä¸Šä¼ é”™è¯¯
+                //ÉÏ´«´íÎó
                 'onUploadError' : function(file, errorCode, errorMsg, errorString) {
                     //alert('The file ' + file.name + ' could not be uploaded: ' + errorString);
                 },
-                //ä¸Šä¼ æ±‡æ€»
+                //ÉÏ´«»ã×Ü
                 'onUploadProgress' : function(file, bytesUploaded, bytesTotal, totalBytesUploaded, totalBytesTotal) {
                     $('#progress').html(totalBytesUploaded + ' bytes uploaded of ' + totalBytesTotal + ' bytes.');
                 },
-                //ä¸Šä¼ å®Œæˆ
+                //ÉÏ´«Íê³É
                 'onUploadComplete' : function(file) {
-                	//alert('The file ' + file.name + ' finished processing.');
+                	alert('The file ' + file.name + ' finished processing.');
             	},
              
 			});
 		});
 
 
-		//å˜æ¢æŒ‰é’®
+		//±ä»»°´Å¥
 		function changeBtnText() {
-		    $('#file_upload').uploadify('settings','buttonText','ç»§ç»­ä¸Šä¼ ');
+		    $('#file_upload').uploadify('settings','buttonText','¼ÌĞøÉÏ´«');
 		}
 
 
-		//è¿”å›æŒ‰é’®
+		//·µ»Ø°´Å¥
 		function returnBtnText() {
 		    alert('The button says ' + $('#file_upload').uploadify('settings','buttonText'));
 		}
 		
-		//å¼€å§‹ä¸Šä¼ å½±åƒå¹³å°
+		//¿ªÊ¼ÉÏ´«Ó°ÏñÆ½Ì¨
 		function browse_folder_complete(custId){
 			$.ajax({
 				url : "${contextPath}/postLoan/post/browse_folder_complete.json?batch_id=$!batch_id",
 				type : "get",
 				success : function(data) {
 					if (data.success) {
-						topWin.Dialog.message("å·²æäº¤åå°ä¸Šä¼ ï¼");
+						topWin.Dialog.message("ÒÑÌá½»ºóÌ¨ÉÏ´«£¡");
 						window.location.href = "${contextPath}/postLoan/post/sunds_ocx.page?appId=$!appId"+"&custId="+custId;
 					}
 					else{
-						topWin.Dialog.message("å½±åƒæäº¤å¤±è´¥ï¼");
+						topWin.Dialog.message("Ó°ÏñÌá½»Ê§°Ü£¡");
 				    }
 				}
 			});
 		}
 	</script>
-	<h4>æ“ä½œ:</h4> 
-	<a href="javascript:$('#file_upload').uploadify('upload', '*');">å¼€å§‹ç¼“å­˜</a> &nbsp;|&nbsp;
-	<a href="javascript:$('#file_upload').uploadify('cancel', '*');">æ¸…é™¤é˜Ÿåˆ—</a> &nbsp;|&nbsp;
-	<a href="javascript:history.back();">è¿”å›</a> &nbsp;|&nbsp;
-	<a href="javascript:void(0);" onclick="browse_folder_complete('$!custId')">ä¸Šä¼ </a> &nbsp;|&nbsp;
-	<h4>å¤§å°:</h4>
+	<h4>²Ù×÷:</h4> 
+	<a href="javascript:$('#file_upload').uploadify('upload', '*');">¿ªÊ¼»º´æ</a> &nbsp;|&nbsp;
+	<a href="javascript:$('#file_upload').uploadify('cancel', '*');">Çå³ı¶ÓÁĞ</a> &nbsp;|&nbsp;
+	<a href="javascript:history.back();">·µ»Ø</a> &nbsp;|&nbsp;
+	<a href="javascript:void(0);" onclick="browse_folder_complete('$!custId')">ÉÏ´«</a> &nbsp;|&nbsp;
+	<h4>´óĞ¡:</h4>
 	<div id='progress'></div> 
 </body>
 #parse ("common/iframe_page_footer.htm")

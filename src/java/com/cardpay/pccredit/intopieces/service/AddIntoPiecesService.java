@@ -418,7 +418,9 @@ public class AddIntoPiecesService {
 	
 	public void downLoadDh(HttpServletResponse response,String id) throws Exception{
 		DhApplnAttachmentDetail v = commonDao.findObjectById(DhApplnAttachmentDetail.class, id);
+		System.out.println("123");
 		if(v!=null){
+			System.out.println("000");
 			//本地
 			this.downLoadFileDh(response,v);
 			//服务器

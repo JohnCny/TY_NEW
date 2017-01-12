@@ -49,19 +49,30 @@
               	已上传
               #end
               </td>
-              <td nowrap="nowrap">
-              	#if($!obj.isUpload == "0")
-              		上传中,禁止操作！
-              	#elseif($!obj.isUpload == $null)
-              		<a id="id_browse_button" class="btn_g" href="javascript:void(0);" title="上传" onclick="browseFolder('$!{obj.id}','$!obj.isUpload','$!customerInfor.id')">上传</a>
-              		<a id="id_detail_button" class="btn_g" href="javascript:void(0);" title="查看上传" onclick="displayDetail('$!{obj.id}','$!obj.isUpload')">查看上传</a>
-              	#elseif($!obj.isUpload == "1")
-              		<a id="id_browse_button" class="btn_g" href="javascript:void(0);" title="上传" onclick="browseFolder('$!{obj.id}','$!obj.isUpload','$!customerInfor.id')">上传</a>
-              		<a id="id_detail_button" class="btn_g" href="javascript:void(0);" title="查看上传" onclick="displayDetail('$!{obj.id}','$!obj.isUpload','$!customerInfor.id')">查看上传</a>
-              		<a id="id_server_button" class="btn_g" href="javascript:void(0);" title="在线预览" onclick="displayServerPage('$!{obj.id}','$!obj.isUpload')">在线预览</a>
-              		<a id="id_delete_button" class="btn_g" href="javascript:void(0);" title="删除该批次" onclick="deleteBatch('$!{obj.id}')">删除该批次</a>
+              #if($!type==1)
+	              <td nowrap="nowrap">
+	              	#if($!obj.isUpload == "0")
+	              		上传中,禁止操作！
+	              	#elseif($!obj.isUpload == $null)
+	              		<a id="id_browse_button" class="btn_g" href="javascript:void(0);" title="上传" onclick="browseFolder('$!{obj.id}','$!obj.isUpload','$!customerInfor.id')">上传</a>
+	              		<a id="id_detail_button" class="btn_g" href="javascript:void(0);" title="查看上传" onclick="displayDetail('$!{obj.id}','$!obj.isUpload')">查看上传</a>
+	              	#elseif($!obj.isUpload == "1")
+	              		<a id="id_browse_button" class="btn_g" href="javascript:void(0);" title="上传" onclick="browseFolder('$!{obj.id}','$!obj.isUpload','$!customerInfor.id')">上传</a>
+	              		<a id="id_detail_button" class="btn_g" href="javascript:void(0);" title="查看上传" onclick="displayDetail('$!{obj.id}','$!obj.isUpload','$!customerInfor.id')">查看上传</a>
+	              		<a id="id_server_button" class="btn_g" href="javascript:void(0);" title="在线预览" onclick="displayServerPage('$!{obj.id}','$!obj.isUpload')">在线预览</a>
+	              		<a id="id_delete_button" class="btn_g" href="javascript:void(0);" title="删除该批次" onclick="deleteBatch('$!{obj.id}')">删除该批次</a>
+	              	#end
+	              </td>
+              	#else
+              	<td nowrap="nowrap">
+	              	#if($!obj.isUpload == "0")
+	              		上传中,禁止操作！
+	              	#elseif($!obj.isUpload == "1")
+	              		<a id="id_detail_button" class="btn_g" href="javascript:void(0);" title="查看上传" onclick="displayDetail('$!{obj.id}','$!obj.isUpload','$!customerInfor.id')">查看上传</a>
+	              		<a id="id_server_button" class="btn_g" href="javascript:void(0);" title="在线预览" onclick="displayServerPage('$!{obj.id}','$!obj.isUpload')">在线预览</a>
+	              	#end
+	              </td>
               	#end
-              </td>
             </tr>
             #end
           </table>

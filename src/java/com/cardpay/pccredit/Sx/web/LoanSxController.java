@@ -95,7 +95,7 @@ public class LoanSxController extends BaseController {
 				if (filter.getFdate() != null && filter.getLdate() != null) {
 					transmissionfdate = sdf.parse(filter.getFdate());
 					transmissionldate = sdf.parse(filter.getLdate());
-					List<IncomingData> date = service1.finddate();
+					List<IncomingData> date = service1.finddate(userId);
 					for (int i = 0; i < date.size(); i++) {
 						date1 = date.get(i).getFdate();
 					}
@@ -147,7 +147,8 @@ public class LoanSxController extends BaseController {
 		List<SxOutputData> team = service.findteam();
 		// 查询客户经理
 		List<SxOutputData> user = service.finduser();
-		
+		IUser userself = Beans.get(LoginManager.class).getLoggedInUser(request);
+		String loginuserid=userself.getId();
 		String date1 = null;
 		String fdate = null;
 		// 转换好的
@@ -162,7 +163,7 @@ public class LoanSxController extends BaseController {
 					transmissionfdate = sdf.parse(filter.getFdate());
 					transmissionldate = sdf.parse(filter.getLdate());
 					// 数据库的起始日期和终止日期都是varchar类型所以要先转换成date类型才能比较
-					List<IncomingData> date = service1.finddate();
+					List<IncomingData> date = service1.finddate(loginuserid);
 					for (int i = 0; i < date.size(); i++) {
 						date1 = date.get(i).getFdate();
 					}
