@@ -31,6 +31,13 @@ public interface RiskCustomerDao {
 	public int findRiskCustomersCountByFilter(RiskCustomerFilter filter);
 	
 	/**
+	 * 统计每日风险客户
+	 * @param filter
+	 * @return
+	 */
+	public List<RiskCustomer> findRiskTZCountByFilter(RiskCustomerFilter filter);
+	
+	/**
 	 * 过滤查询客户的风险等级
 	 * @param filter
 	 * @return

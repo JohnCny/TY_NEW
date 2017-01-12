@@ -1,5 +1,6 @@
 package com.cardpay.pccredit.jnpad.web;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -33,6 +34,7 @@ import com.cardpay.pccredit.jnpad.model.RetrainUserVo;
 import com.cardpay.pccredit.jnpad.model.RetrainingVo;
 import com.cardpay.pccredit.jnpad.service.JnIpadCustAppInfoXxService;
 import com.cardpay.pccredit.jnpad.service.JnipadNodeService;
+import com.cardpay.pccredit.jnpad.service.JnpadZongBaoCustomerInsertService;
 import com.cardpay.pccredit.manager.filter.RetrainingFilter;
 import com.cardpay.pccredit.manager.model.AccountManagerRetraining;
 import com.cardpay.pccredit.manager.model.Retraining;
@@ -42,6 +44,7 @@ import com.cardpay.pccredit.riskControl.constant.RiskControlRole;
 import com.cardpay.pccredit.riskControl.constant.RiskCreateTypeEnum;
 import com.cardpay.pccredit.riskControl.filter.RiskCustomerFilter;
 import com.cardpay.pccredit.riskControl.model.CUSTOMERBLACKLIST;
+import com.cardpay.pccredit.riskControl.model.RiskCustomer;
 import com.cardpay.pccredit.riskControl.service.CustormerBlackListService;
 import com.cardpay.pccredit.system.model.SystemUser;
 
@@ -58,7 +61,8 @@ import com.cardpay.pccredit.system.model.SystemUser;
 public class JnIpadCustAppInfoXxController {
 	private List list1=new ArrayList();
 
-
+	@Autowired
+	private JnpadZongBaoCustomerInsertService jnpadZongBaoCustomerInsertService;
 	@Autowired
 	private JnIpadCustAppInfoXxService appInfoXxService;
 	@Autowired
@@ -317,69 +321,83 @@ public class JnIpadCustAppInfoXxController {
 	public String notifiyMessageNum(@ModelAttribute NODEAUDIT NODEAUDIT,@ModelAttribute CUSTOMERBLACKLIST cl,HttpServletRequest request) {
 		//当前登录用户ID
 		String userId=request.getParameter("userId");
-		List <CustomerInfo> result=cblservice.selectCusByUser(userId);
-		Integer i=0;
-		CustomerHmd list=null;
-		for(int a=0;a<result.size();a++){
-			
-				list=cblservice.findCustormerBlackList(result.get(a).getCardId());
-				if(list!=null){
-					i=i+1;
-					list=null;
+		int JrefuseCount=0;
+		int JRiskCount=0;
+		int JblackCount=0;
+		int JpassCount=0;
+		int count=0;
+		List<CustomerInfo> customerList = jnpadZongBaoCustomerInsertService.selectCustomerInfo(userId);
+		if(customerList!=null){
+			for(int a=0;a<customerList.size();a++){
+				if(!customerList.get(a).getCreatedBy().equals(userId)){
+					count+=1;
 				}
+			}
 		}
-		NODEAUDIT.setUser_id(request.getParameter("userId"));
+		Date date=new Date();
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String time1=sdf.format(date);
+		String[] time=time1.split("-");
+		String logntime=time[0]+time[1]+time[2].substring(0, 2);
 		NotificationMessageFilter filter = new NotificationMessageFilter();
 		filter.setUserId(userId);
-		cl.setUserid(userId);
-	/*	filter.setNoticeType("shendaihui");
-		int count1 = appInfoXxService.findNotificationCountMessageByFilter(filter);
-		filter.setNoticeType("yuanshiziliao");
-		int count2 = appInfoXxService.findNotificationCountMessageByFilter(filter);
-		filter.setNoticeType("peixun");
-		int count3 = appInfoXxService.findNotificationCountMessageByFilter(filter);
-		filter.setNoticeType("kaocha");
-		int count4 = appInfoXxService.findNotificationCountMessageByFilter(filter);
-		filter.setNoticeType("qita");
-		int count5 = appInfoXxService.findNotificationCountMessageByFilter(filter);
-		String STATUS="audit";*/
-		/*int  Pcount=appInfoXxService.selectNoSCount(STATUS);*/
 		//拒绝进件数量
 		filter.setNoticeType("refuse");
-		int refuseCount= appInfoXxService.findNoticeCountByFilter(filter);
+		List<IntoPieces> refusecount= appInfoXxService.findTZByFilter(filter);
+		for(int i=0;i<refusecount.size();i++){
+			String refuseTime=sdf.format(refusecount.get(i).getCreatime());
+			String[] refusetime=refuseTime.split("-");
+			String refusetime1=refusetime[0]+refusetime[1]+refusetime[2].substring(0, 2);
+			if(refusetime1.equals(logntime)){
+				JrefuseCount+=1;
+			}
+		}
 		//补充调查通知
-		int returnCount= appInfoXxService.findCustomerBackCount(userId);
+		List<IntoPieces> balckcount= appInfoXxService.findTZBlackCount(userId);
+		for(int i=0;i<balckcount.size();i++){
+			String refuseTime=sdf.format(balckcount.get(i).getCreatime());
+			String[] blacktime=refuseTime.split("-");
+			String blacktime1=blacktime[0]+blacktime[1]+blacktime[2].substring(0, 2);
+			if(blacktime1.equals(logntime)){
+				JblackCount+=1;
+			}
+		}
+		
 		
 		//申款成功
 		filter.setNoticeType("approved");
-		int passCount= appInfoXxService.findNoticeCountByFilter(filter);
+		List<IntoPieces> passcount= appInfoXxService.findTZByFilter(filter);
+		for(int i=0;i<passcount.size();i++){
+			String passTime=sdf.format(passcount.get(i).getCreatime());
+			String[] passtime=passTime.split("-");
+			String passtime1=passtime[0]+passtime[1]+passtime[2].substring(0, 2);
+			if(passtime1.equals(logntime)){
+				JpassCount+=1;
+			}
+		}
 				
 		//风险客户通知
 		RiskCustomerFilter filters = new RiskCustomerFilter();
 		filters.setCustManagerId(userId);
 		filters.setRiskCreateType(RiskCreateTypeEnum.manual.toString());
 	    filters.setRole(RiskControlRole.manager.toString());
-		int risk = appInfoXxService.findRiskNoticeCountByFilter(filters);
-		//黑名单通知
-	
-		//客户资料变更
-		//List<JnpadCustomerBianGeng> cuslist=appInfoXxService.findbiangengCountByManagerId(userId);
-		//int count6 = cuslist.size();
-		//int sum=count1+count2+count3+count4+count5+refuseCount+returnCount+risk+count6;
+		//int risk = appInfoXxService.findRiskNoticeCountByFilter(filters);
+		List<RiskCustomer> fxcount=appInfoXxService.findRiskTZCountByFilter(filters);
+		for(int i=0;i<fxcount.size();i++){
+			String passTime=sdf.format(fxcount.get(i).getCREATED_TIME());
+			String[] passtime=passTime.split("-");
+			String passtime1=passtime[0]+passtime[1]+passtime[2].substring(0, 2);
+			if(passtime1.equals(logntime)){
+				JRiskCount+=1;
+			}
+		}
 		NotifyMsgListVo vo  = new NotifyMsgListVo();
-	/*	vo.setShendaihui(count1);
-		vo.setYuanshiziliao(count2);
-		vo.setPeixun(count3);
-		vo.setKaocha(count4);
-		vo.setQita(count5);*/
-		vo.setRefuseCount(refuseCount);
-		vo.setReturnCount(returnCount);
-		vo.setRisk(risk);
-		//vo.setSum(sum);
-		//vo.setZiliaobiangeng(count6);
-		//vo.setBianggeng(cuslist);
-		vo.setBlackcount(i);
-		vo.setPassCount(passCount);
+		vo.setQita(count);
+		vo.setRefuseCount(JrefuseCount);
+		vo.setReturnCount(JblackCount);
+		vo.setRisk(JRiskCount);
+		vo.setPassCount(JpassCount);
+		vo.setKaocha(JrefuseCount+JRiskCount+JblackCount+JpassCount);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(vo, jsonConfig);

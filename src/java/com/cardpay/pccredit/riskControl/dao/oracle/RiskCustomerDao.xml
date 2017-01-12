@@ -20,7 +20,7 @@
 		<result property="maxRiskLevel" column="maxRiskLevel" />
 		<result property="customerId" column="customerId" />
 		<result property="productName" column="productName" />
-		
+		<result property="CREATED_TIME" column="CREATED_TIME" />
 		 
 		
 		
@@ -78,6 +78,43 @@
 	</select>
 	
 	
+	<select id="findRiskTZCountByFilter" resultMap="ResultMap" 
+			parameterType="com.cardpay.pccredit.riskControl.filter.RiskCustomerFilter">
+		SELECT risk.created_time as CREATED_TIME
+		  FROM basic_customer_information customer
+		 INNER JOIN risk_list risk
+		    ON customer.id = risk.customer_id
+		  WHERE 1=1 
+		 <if test="reportedIdManager != null and reportedIdManager != '' ">
+			AND risk.reported_id_manager=#{reportedIdManager}
+		 </if>
+		 <if test="custManagerId != null and custManagerId != '' ">
+			AND risk.CUST_MANAGER_ID=#{custManagerId}
+		 </if>
+		 <if test="status != null and status != '' ">
+			AND risk.status=#{status}
+		 </if>
+		 <if test="role != null and role != '' and role == 'manager'">
+		 </if>
+		 <if test="role != null and role != '' and role == 'cardcenter'">
+			AND (risk.status='REPORTED_CARDCENTER' or risk.status='CONFIRMED_CARDCENTER' or risk.status='REJECT_CARDCENTER')
+		 </if>
+		 <if test="riskCreateType != null and riskCreateType != ''">
+			AND risk.risk_create_type=#{riskCreateType}
+		 </if>
+		 <if test="customerName != null and customerName != '' ">
+			AND customer.chinese_name like '%${customerName}%'
+		 </if>
+		 <if test="cardType != null and cardType != '' ">
+			AND customer.card_type=#{cardType}
+		 </if>
+		 <if test="cardId != null and cardId != '' ">
+			AND customer.card_id like '%${cardId}%'
+		 </if>
+		 ORDER BY risk.created_time DESC
+	</select>
+	
+	
 	<select id="findRiskCustomersCountByFilter" resultType="int"
 			parameterType="com.cardpay.pccredit.riskControl.filter.RiskCustomerFilter">
 		SELECT count(*)
@@ -113,6 +150,9 @@
 		 </if>
 		 ORDER BY risk.created_time DESC
 	</select>
+	
+	
+	
 	<select id="findRiskListByFilter" resultType="com.cardpay.pccredit.riskControl.model.RiskCustomer"
 			parameterType="com.cardpay.pccredit.riskControl.filter.RiskCustomerFilter">
 	

@@ -1,5 +1,7 @@
 package com.cardpay.pccredit.riskControl.model;
 
+import java.util.Date;
+
 import com.wicresoft.jrad.base.database.id.IDType;
 import com.wicresoft.jrad.base.database.model.BusinessModel;
 import com.wicresoft.jrad.base.database.model.ModelParam;
@@ -57,9 +59,19 @@ public class RiskCustomer extends BusinessModel{
 	
 	
 	private String  custManagerId;
+	
+	private Date  CREATED_TIME;
 
 	
 	
+	public Date getCREATED_TIME() {
+		return CREATED_TIME;
+	}
+
+	public void setCREATED_TIME(Date cREATED_TIME) {
+		CREATED_TIME = cREATED_TIME;
+	}
+
 	public String getCustManagerId() {
 		return custManagerId;
 	}
