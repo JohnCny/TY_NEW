@@ -39,6 +39,7 @@ import com.cardpay.pccredit.product.model.ProductMarketingRules;
 import com.cardpay.pccredit.product.model.ProductRewardIncentive;
 import com.cardpay.pccredit.product.model.ProductsAgencyAssociation;
 import com.cardpay.pccredit.product.model.ScreeningResults;
+import com.cardpay.pccredit.zrrtz.model.IncomingData;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.model.QueryResult;
@@ -532,7 +533,7 @@ public class ProductService {
 	public Boolean delay(String id) {
 		//如果没有记录就返回true
 		//有记录就返回flase
-		List<TyCustomerRecord> list = accessoriesListDao.delay(id);
+		List<IncomingData> list = accessoriesListDao.delay(id);
 		if(list.size()>0){
 			return false;
 		}

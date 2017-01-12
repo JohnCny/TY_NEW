@@ -36,6 +36,7 @@ import com.cardpay.pccredit.customer.service.MaintenanceService;
 import com.cardpay.pccredit.customer.web.CustomerLoanForm;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.ipad.model.UserIpad;
+import com.cardpay.pccredit.jnpad.model.CustomerInfo;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
 import com.cardpay.pccredit.product.web.ProductAttributeForm;
 import com.cardpay.pccredit.report.filter.ReportFilter;
@@ -43,6 +44,7 @@ import com.cardpay.pccredit.report.model.YffdktjbbForm;
 import com.cardpay.pccredit.zrrtz.Util.ExportExcel;
 import com.cardpay.pccredit.zrrtz.dao.ZrrtzDao;
 import com.cardpay.pccredit.zrrtz.model.OutcomingData;
+import com.cardpay.pccredit.zrrtz.model.Pigeonhole;
 import com.cardpay.pccredit.zrrtz.model.ZrrtzFilter;
 import com.cardpay.pccredit.zrrtz.model.IncomingData;
 import com.cardpay.pccredit.zrrtz.service.ZrrtzcService;
@@ -125,7 +127,7 @@ public class CustomerZRRTZController extends BaseController{
 	@ResponseBody
 	@RequestMapping(value = "zrrtz.json", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
-	public AbstractModelAndView zrrtz(@ModelAttribute  ZrrtzFilter filter, HttpServletRequest request) {
+	public AbstractModelAndView zrrtz(@ModelAttribute  IncomingData filter, HttpServletRequest request) {
 		filter.setRequest(request);
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 			String date1 =null;   
@@ -136,6 +138,7 @@ public class CustomerZRRTZController extends BaseController{
 			Date transmissionfdate = null;
 			Date transmissionldate=null;
 			SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
+			if(user.getUserType()!=6){
 			try {
 				//判断传入的时间是否为空 如果不为空则将其转换为date类型
 				if(filter.getFdate()!=null && filter.getLdate()!=null && filter.getFdate()!="" && filter.getLdate()!=""){
@@ -173,6 +176,29 @@ public class CustomerZRRTZController extends BaseController{
 		JRadModelAndView mv = new JRadModelAndView("/customer/customerZRRTZ/zrrtz_browse", request);
 		mv.addObject(PAGED_RESULT, pagedResult);
 		return mv;
+		 }else{
+		String userId=request.getParameter("userId");
+		if(""!=userId&&null!=userId){
+		filter.setUserId(userId);
+		QueryResult<IncomingData> result = service.findintoPiecesByFilters(filter);
+		JRadPagedQueryResult<IncomingData> pagedResult = new JRadPagedQueryResult<IncomingData>(filter, result);
+		JRadModelAndView mv = new JRadModelAndView("/customer/customerZRRTZ/zrrtz_browse", request);
+		List<UserIpad> managers=cpService.queryAllManager();
+		mv.addObject("managers", managers);
+		mv.addObject(PAGED_RESULT, pagedResult);
+		mv.addObject("type", 6);//后台
+		return mv; 
+		}else{
+			QueryResult<IncomingData> result = service.findintoPiecesByFilters(filter);
+			JRadPagedQueryResult<IncomingData> pagedResult = new JRadPagedQueryResult<IncomingData>(filter, result);
+			JRadModelAndView mv = new JRadModelAndView("/customer/customerZRRTZ/zrrtz_browse", request);
+			List<UserIpad> managers=cpService.queryAllManager();
+			mv.addObject("managers", managers);
+			mv.addObject(PAGED_RESULT, pagedResult);
+			mv.addObject("type", 6);//后台
+			return mv; 
+		}
+		}
 	}
 	
 /*	//使用poi方法 导出excel
@@ -438,6 +464,23 @@ public class CustomerZRRTZController extends BaseController{
 			return returnMap;
 		}
 
-	
-	
+		
+		//手动归档 
+	 	@ResponseBody
+	 	@RequestMapping(value = "addCustomerPigeonhole.json", method = { RequestMethod.GET })
+	 	@JRadOperation(JRadOperation.BROWSE)
+	 	public JRadReturnMap addCustomerPigeonhole(
+				@ModelAttribute Pigeonhole pig,
+				HttpServletRequest request)
+	 		{
+	 			JRadReturnMap returnMap = new JRadReturnMap();
+	 			String ywbh = request.getParameter("id");
+				String userId =request.getParameter("userId");
+				pig.setYwbh(ywbh);
+				pig.setUserId(userId);
+				pig.setPigeonhole("0");
+				cpService.addCustomerPigeonhole(pig);
+				returnMap.put("mes", "归档成功");
+				return returnMap;
+	 }
 }

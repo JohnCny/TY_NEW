@@ -98,7 +98,7 @@
 	</resultMap>
 	<!--查询所有的客户经理  -->
 	<select id="queryAllManager" resultMap="userResultMap">
-	    select DISPLAY_NAME from SYS_USER where USER_TYPE=1
+	    select * from SYS_USER where USER_TYPE=1
 	</select>
 	
 	
@@ -181,5 +181,8 @@
 	 select * from CUSTOMER_PARAMETER where ywbh=#{ywbh}
 	</select>
 	    
+	    <insert id="addCustomerPigeonhole" parameterType="com.cardpay.pccredit.zrrtz.model.Pigeonhole">
+	   insert into CUSTOMER_PIGEONHOLE(ywbh,user_id,PIGEONHOLE)  values (#{ywbh},#{userId},#{pigeonhole})
+	</insert>
 	    
 </mapper>

@@ -4,7 +4,7 @@ import com.wicresoft.jrad.base.database.dao.business.BusinessFilter;
 
 public class ZrrtzFilter extends BusinessFilter{
 	
-	private String id;//进件编号
+	private String id;
 	private String chineseName;//客户名称
     private String productName; //产品名称
     private String cardId; //证件号码
