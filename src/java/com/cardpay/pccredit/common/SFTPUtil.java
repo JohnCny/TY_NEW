@@ -53,9 +53,7 @@ import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageDecoder;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
+import com.sun.image.codec.jpeg.*;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
 import com.wicresoft.util.spring.Beans;
 
@@ -65,10 +63,10 @@ import com.wicresoft.util.spring.Beans;
  */
 public class SFTPUtil {
 	
-	private static String host = "61.34.0.32";//生产
+	private static String host = "10.0.3.2";//生产
 //	private static String host = "61.98.0.31";//测试
     private static String username="root";  
-    private static String password="JNnsyh0825";  
+    private static String password="tynx123";  
     private static int port = 22;  
     private static ChannelSftp sftp = null;  
     private static String directory = "/usr/pccreditFile/";  
@@ -86,7 +84,7 @@ public class SFTPUtil {
             Session sshSession = jsch.getSession(username, host, port);  
             System.out.println("Session created.");
             DailyReportScheduleService dailyReportScheduleService =Beans.get(DailyReportScheduleService.class);
-            password = dailyReportScheduleService.findServer2();
+           // password = dailyReportScheduleService.findServer2();
             sshSession.setPassword(password);  
             Properties sshConfig = new Properties();  
             sshConfig.put("StrictHostKeyChecking", "no");  
@@ -241,7 +239,7 @@ public class SFTPUtil {
     }
     
     /**
-     * 批量上传图片 济南
+     * 批量上传图片 
      */
     
     public static Map<String, String>  uploadYxzlFileBySpring_qz(MultipartFile file,String batch_id) throws Exception {
@@ -413,7 +411,9 @@ public class SFTPUtil {
 				// 得到图片的真实路径
 
 				// 得到图片的文件流
-				BufferedInputStream imageIn = new BufferedInputStream(sftp.get(filePath.substring(53, filePath.length())));
+				//sftp.get(filePath.substring(53, filePath.length()))
+				//BufferedInputStream imageIn = new BufferedInputStream(sftp.get(filePath.substring(53, filePath.length())));
+				InputStream imageIn = new FileInputStream(new File(filePath));
 				// 得到输入的编码器，将文件流进行jpg格式编码
 				JPEGImageDecoder decoder = JPEGCodec.createJPEGDecoder(imageIn);
 				// 得到编码后的图片对象
@@ -444,6 +444,7 @@ public class SFTPUtil {
 			e.printStackTrace();
 		}
 	}
+    
     
  /*   public static void main(String[] args) throws Exception{    
     	SFTPUtil ftp= new SFTPUtil();  
