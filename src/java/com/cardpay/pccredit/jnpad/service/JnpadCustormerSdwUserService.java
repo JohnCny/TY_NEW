@@ -54,14 +54,30 @@ public class JnpadCustormerSdwUserService {
 	public int insertRiskSdwUser(RiskCustomer sdwuser){
 		return SdwUserDao.insertRiskSdwUser(sdwuser);
 	}
-	public int deleteCustormerSdwUser(CustormerSdwUser sdwuser){
-		return SdwUserDao.deleteCustormerSdwUser(sdwuser);
+	public int deleteCustormerSdwUser(@Param(value = "CAPID")String CAPID){
+		return SdwUserDao.deleteCustormerSdwUser(CAPID);
 	}
-	public int deleteCsJl(AppManagerAuditLog sdwuser){
-		return SdwUserDao.deleteCsJl(sdwuser);
+	public int deleteCsJl(@Param(value = "applicationId")String applicationId){
+		return SdwUserDao.deleteCsJl(applicationId);
 	}
 	
 	public JnpadCsSdModel findCsSd(@Param(value = "id")String id){
 		return SdwUserDao.findCsSd(id);
+	}
+	
+	public JnpadCsSdModel findCsSdRefuse(@Param(value = "id")String id){
+		return SdwUserDao.findCsSdRefuse(id);
+	}
+	
+	public JnpadCsSdModel findUser(@Param(value = "id")String id){
+		return SdwUserDao.findUser(id);
+	}
+	
+	public JnpadCsSdModel findCsSdBlack(@Param(value = "id")String id){
+		return SdwUserDao.findCsSdBlack(id);
+	}
+	
+	public int selectCount(@Param(value = "id")String id){
+		return SdwUserDao.selectCount(id);
 	}
 }

@@ -22,6 +22,7 @@
 			<result property="final_approval" column="final_approval" />
 			<result property="actual_quote" column="actual_quote" />
 			<result property="refusqlReason" column="REFUSAL_REASON" />
+			<result property="did" column="did" />
 	</resultMap>
 
 

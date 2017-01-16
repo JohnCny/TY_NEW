@@ -206,6 +206,7 @@ public class JnpadCustormerSdwUserController {
 						RiskCustomer.setRiskCreateType("manual");
 						RiskCustomer.setRefuseReason(request.getParameter("decisionRefusereason"));
 						RiskCustomer.setCREATED_TIME(new Date());
+						RiskCustomer.setCustManagerId(request.getParameter("did"));
 						String pid=null;
 						if(null==pid){
 							pid=UUID.randomUUID().toString();
@@ -262,6 +263,47 @@ public class JnpadCustormerSdwUserController {
 		String id=request.getParameter("id");
 		JnpadCsSdModel result=SdwUserService.findCsSd(id);
 		map.put("result", result);
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+}
+	/**
+	 * 拒绝审贷纪要
+	 * @param JnpadCsSdModel
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/ipad/findCsSdRefuse.json", method = {RequestMethod.GET })
+	public String findCsSdRefuse(@ModelAttribute JnpadCsSdModel JnpadCsSdModel,HttpServletRequest request) {
+		Map<String,Object> map = new LinkedHashMap<String,Object>();
+		String id=request.getParameter("id");
+		JnpadCsSdModel result=SdwUserService.findCsSdRefuse(id);
+		JnpadCsSdModel result1=SdwUserService.findUser(id);
+		map.put("result", result);
+		map.put("result1", result1);
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+}
+	
+	/**
+	 * 回退审贷纪要
+	 * @param JnpadCsSdModel
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/ipad/findCsSdBlack.json", method = {RequestMethod.GET })
+	public String findCsSdBlack(@ModelAttribute JnpadCsSdModel JnpadCsSdModel,HttpServletRequest request) {
+		Map<String,Object> map = new LinkedHashMap<String,Object>();
+		String id=request.getParameter("id");
+		JnpadCsSdModel result=SdwUserService.findCsSdBlack(id);
+		JnpadCsSdModel result1=SdwUserService.findUser(id);
+		map.put("result", result);
+		map.put("result1", result1);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);

@@ -6,7 +6,13 @@ import java.util.Date;
 import com.wicresoft.jrad.base.database.model.BusinessModel;
 
 public class IntoPieces  extends BusinessModel {
-	
+	private String did;//客户经理编号
+	public String getDid() {
+		return did;
+	}
+	public void setDid(String did) {
+		this.did = did;
+	}
 	private Date creatime;
 	private String id;//进件编号
 	private String customerId;//客户ID(外键)

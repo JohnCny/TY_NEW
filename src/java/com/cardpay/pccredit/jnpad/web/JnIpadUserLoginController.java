@@ -43,6 +43,7 @@ import com.cardpay.pccredit.jnpad.service.JnIpadCustAppInfoXxService;
 import com.cardpay.pccredit.jnpad.service.JnIpadJBUserService;
 import com.cardpay.pccredit.jnpad.service.JnIpadUserLoginService;
 import com.cardpay.pccredit.jnpad.service.JnIpadXDService;
+import com.cardpay.pccredit.jnpad.service.JnpadCustormerSdwUserService;
 import com.cardpay.pccredit.jnpad.service.JnpadZongBaoCustomerInsertService;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
 import com.cardpay.pccredit.manager.web.ManagerBelongMapForm;
@@ -93,6 +94,8 @@ public class JnIpadUserLoginController {
 	
 	@Autowired
 	private CustormerBlackListService cblservice;
+	@Autowired
+	private JnpadCustormerSdwUserService SdwUserService;
 	
 	
 	/**
@@ -309,6 +312,11 @@ public class JnIpadUserLoginController {
 	public String updateJj(HttpServletRequest request) {
 		String appId= request.getParameter("userId");
 		Map<String,Object> result = new LinkedHashMap<String,Object>();
+		int a=SdwUserService.selectCount(appId);
+		if(a>0){
+			int b=SdwUserService.deleteCsJl(appId);
+			int c=SdwUserService.deleteCustormerSdwUser(appId);
+		}
 		addIntoPiecesService.doMethod(appId);
 		result.put("result", "重新申请成功");
 		JsonConfig jsonConfig = new JsonConfig();
