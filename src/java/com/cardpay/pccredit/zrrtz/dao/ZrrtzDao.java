@@ -14,20 +14,13 @@ import com.wicresoft.util.annotation.Mapper;
 @Mapper
 public interface ZrrtzDao {
 
-	List<IncomingData> findIntoPiecesList(IncomingData filter);
+	List<IncomingData> findIntoPiecesList(ZrrtzFilter filter);
 
-	int findIntoPiecesCountList(IncomingData filter);
+	int findIntoPiecesCountList(ZrrtzFilter filter);
 
 
 	List<OutcomingData> findpiecesList(@Param("id")String id);
 
 	List<IncomingData> finddate(@Param("id")String id);
-
-	
-	List<IncomingData> findIntoPiecesLists(IncomingData filter);
-
-	int findIntoPiecesCountLists(IncomingData filter);
-
-	List<IncomingData> findate();
 
 }

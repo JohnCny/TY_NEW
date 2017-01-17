@@ -114,9 +114,10 @@ public class ManagerBelongMapController extends BaseController{
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "create.page")
+	@RequestMapping(value = "create.page", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
-	public AbstractModelAndView create(@ModelAttribute ManagerBelongMapFilter filter, HttpServletRequest request) {
+	public AbstractModelAndView create(@ModelAttribute ManagerBelongMapFilter filter,
+			HttpServletRequest request) {
 		JRadModelAndView mv = new JRadModelAndView("/manager/belong_map/manager_belong_create", request);
 		mv.addObject("organization", filter);
 		return mv;
@@ -150,7 +151,6 @@ public class ManagerBelongMapController extends BaseController{
 			} catch (Exception e) {
 				e.printStackTrace();
 				return WebRequestHelper.processException(e);
-
 			}
 		}
 		return returnMap;
@@ -210,8 +210,6 @@ public class ManagerBelongMapController extends BaseController{
 				returnMap.addGlobalError("该客户经理不存在下属客户经理不需要此操作");
 				return returnMap;
 			}
-			
-			
 			managerBelongMapService.copyXiaShuToTarget(childBelongMapList, targetId);
 			returnMap.addGlobalMessage(JRadConstants.CHANGE_SUCCESS);
 		} catch (Exception e) {

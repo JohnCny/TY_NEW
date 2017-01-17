@@ -19,7 +19,7 @@ import com.wicresoft.jrad.base.database.model.QueryResult;
 public class ZrrtzcService {
 	@Autowired
 	private ZrrtzDao dao;
-	public QueryResult<IncomingData> findintoPiecesByFilter(IncomingData filter, IUser user) {
+	public QueryResult<IncomingData> findintoPiecesByFilter(ZrrtzFilter filter, IUser user) {
 		        String name=user.getLogin();
 				List<IncomingData> plans = dao.findIntoPiecesList(filter);
 				int size = dao.findIntoPiecesCountList(filter);
@@ -30,16 +30,7 @@ public class ZrrtzcService {
 		// TODO Auto-generated method stub
 		return dao.finddate(id);
 	}
-	public List<IncomingData> finddate() {
-		// TODO Auto-generated method stub
-		return dao.findate();
-	}
 	
-	public QueryResult<IncomingData> findintoPiecesByFilters(IncomingData filter) {
-		List<IncomingData> plans = dao.findIntoPiecesLists(filter);
-		int size = dao.findIntoPiecesCountLists(filter);
-		QueryResult<IncomingData> queryResult = new QueryResult<IncomingData>(size,plans);
-		return queryResult;
-}
+	
 
 }
