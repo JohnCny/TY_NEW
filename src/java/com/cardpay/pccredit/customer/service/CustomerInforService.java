@@ -4662,5 +4662,9 @@ public class CustomerInforService {
 	public List<CustomerInfor> findCustomerInforByFilterAndProductId2(CustomerInforFilter filter){
 		return customerInforDao.findCustomerInforByFilterAndProductId2(filter);
 	}
+	public List<CustomerFirsthendFamilyCc> ffcustomerfirsthendccbyid(String khnm) {
+		// TODO Auto-generated method stub
+		return  commonDao.queryBySql(CustomerFirsthendFamilyCc.class, "select * from ty_customer_family_cc s where s.khnm='"+khnm+"'", null);
+	}
 	
 }

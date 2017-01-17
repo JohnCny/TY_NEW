@@ -404,6 +404,8 @@ public class SFTPUtil {
 		    String PNG = "image/png";
 		    
 			String imagePath = filePath.substring(53, filePath.length());
+			System.out.println(filePath);
+			System.out.println(imagePath);
 			OutputStream output = response.getOutputStream();// 得到输出流
 			if (imagePath.toLowerCase().endsWith(".jpg"))// 使用编码处理文件流的情况：
 			{
@@ -411,9 +413,10 @@ public class SFTPUtil {
 				// 得到图片的真实路径
 
 				// 得到图片的文件流
-				//sftp.get(filePath.substring(53, filePath.length()))
-				//BufferedInputStream imageIn = new BufferedInputStream(sftp.get(filePath.substring(53, filePath.length())));
-				InputStream imageIn = new FileInputStream(new File(filePath));
+				
+				BufferedInputStream imageIn = new BufferedInputStream(sftp.get(filePath.substring(53, filePath.length())));
+				//File f=new File(filePath);
+				//InputStream imageIn = new FileInputStream(f);
 				// 得到输入的编码器，将文件流进行jpg格式编码
 				JPEGImageDecoder decoder = JPEGCodec.createJPEGDecoder(imageIn);
 				// 得到编码后的图片对象

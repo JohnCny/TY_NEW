@@ -17,7 +17,7 @@
 	          	  <span>日期:&nbsp;<input type="text" name="startDate" value='$!date.format("yyyy-MM-dd",$!result.filter.startDate)' onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span>
               </li>
               <li>
-                  <span><input type="text" name="endDate" value='$!date.format("yyyy-MM-dd",$!result.filter.endDate)' onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span>
+                  <span>结束日期：<input type="text" name="endDate" value='$!date.format("yyyy-MM-dd",$!result.filter.endDate)' onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span>
               </li>
               <li class="search_button">
                 <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
@@ -81,7 +81,7 @@
       </div>
       <div class="pagebar">
       	<div class="controlbtn">
-          <a id="id_import_button" class="btn_gr" href="javascript:void(0);" title="导入">导入</a>
+          <a id="id_import_button"  href="javascript:void(0);" class="btn_g" title="导入">导入</a>
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
