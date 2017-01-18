@@ -61,9 +61,17 @@ public class RiskCustomer extends BusinessModel{
 	private String  custManagerId;
 	
 	private Date  CREATED_TIME;
+	private String userId;
+	
+	
+	public String getUserId() {
+		return userId;
+	}
 
-	
-	
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
 	public Date getCREATED_TIME() {
 		return CREATED_TIME;
 	}

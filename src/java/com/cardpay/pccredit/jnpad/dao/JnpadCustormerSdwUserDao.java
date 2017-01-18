@@ -20,7 +20,10 @@ public interface JnpadCustormerSdwUserDao {
 	AppManagerAuditLog selectaId(@Param(value = "cid")String cid,@Param(value = "pid")String pid);
 	//查询当前客户经理审贷信息
 	List<IntoPieces> selectSDH(@Param(value = "userId")String userId);
-	
+	//查询当前客户经理审贷通知
+		List<IntoPieces> selectSDH1(@Param(value = "userId")String userId);
+		//审贷委成员
+		IntoPieces sdwcy(@Param(value = "id")String id);
 	//查询初审信息
 	AppManagerAuditLog selectCSJLA(@Param(value = "id")String id);
 	//审贷决议
@@ -33,11 +36,22 @@ public interface JnpadCustormerSdwUserDao {
 	int insertRiskSdwUser(RiskCustomer sdwuser);
 	
 	//退回进件重新申请时删除初审以及审贷记录。
-	int deleteCustormerSdwUser(CustormerSdwUser sdwuser);
-	int deleteCsJl(AppManagerAuditLog sdwuser);
+	int deleteCustormerSdwUser(@Param(value = "CAPID")String CAPID);
+	int deleteCsJl(@Param(value = "applicationId")String applicationId);
 	
 	
 	//查询进件的审贷记录
 	JnpadCsSdModel findCsSd(@Param(value = "id")String id);
+	
+	//查询审贷后拒绝的进件信息
+	JnpadCsSdModel findCsSdRefuse(@Param(value = "id")String id);
+	//查询审贷后回退的进件信息
+	JnpadCsSdModel findCsSdBlack(@Param(value = "id")String id);
+	//查询审批人员
+	JnpadCsSdModel findUser(@Param(value = "id")String id);
+	
+	int selectCount(@Param(value = "id")String id);
+	
+	int selectSDH1Count(@Param(value = "userId")String userId);
 
 }

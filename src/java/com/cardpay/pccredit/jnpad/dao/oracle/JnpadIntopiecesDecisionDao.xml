@@ -138,6 +138,7 @@
 		and
 		A.NEXT_NODE_ID=p.NODE_ID and p.USER_ID=#{userId}
 		and b.status='audit'
+		and b.id not in (select APPLICATION_ID from T_APP_MANAGER_AUDIT_LOG)
 		<if test="cardId!=null and cardId!=''">
 			and U.card_id=#{cardId}
 		</if>

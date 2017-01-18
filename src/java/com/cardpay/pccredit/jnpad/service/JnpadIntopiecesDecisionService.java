@@ -1,5 +1,6 @@
 package com.cardpay.pccredit.jnpad.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -56,11 +57,14 @@ public class JnpadIntopiecesDecisionService {
 	private CustomerInforDao customerInforDao;
 	@Autowired
 	private JnIpadCustAppInfoXxService JnIpadCustAppInfoXxService;
+	@Autowired
+	private JnpadCustormerSdwUserService SdwUserService;
+	
 
 	//查询当前客户经理进件初审信息
 	public QueryResult<CustomerApplicationIntopieceWaitForm> findCustomerApplicationIntopieceDecison(IntoPiecesFilter filter) {
+		List list=new ArrayList();
 		List<CustomerApplicationIntopieceWaitForm> listCAI = jnpadIntopiecesDecisionDao.findCustomerApplicationIntopieceDecisionForm(filter);
-	/*	int size = jnpadIntopiecesDecisionDao.findCustomerApplicationIntopieceDecisionCountForm(filter);*/
 		int size = listCAI.size();
 		QueryResult<CustomerApplicationIntopieceWaitForm> qs = new QueryResult<CustomerApplicationIntopieceWaitForm>(size, listCAI);
 		return qs;
