@@ -20,7 +20,10 @@ public interface JnpadCustormerSdwUserDao {
 	AppManagerAuditLog selectaId(@Param(value = "cid")String cid,@Param(value = "pid")String pid);
 	//查询当前客户经理审贷信息
 	List<IntoPieces> selectSDH(@Param(value = "userId")String userId);
-	
+	//查询当前客户经理审贷通知
+		List<IntoPieces> selectSDH1(@Param(value = "userId")String userId);
+		//审贷委成员
+		IntoPieces sdwcy(@Param(value = "id")String id);
 	//查询初审信息
 	AppManagerAuditLog selectCSJLA(@Param(value = "id")String id);
 	//审贷决议
@@ -48,5 +51,7 @@ public interface JnpadCustormerSdwUserDao {
 	JnpadCsSdModel findUser(@Param(value = "id")String id);
 	
 	int selectCount(@Param(value = "id")String id);
+	
+	int selectSDH1Count(@Param(value = "userId")String userId);
 
 }

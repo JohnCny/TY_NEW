@@ -80,4 +80,19 @@ public class JnpadCustormerSdwUserService {
 	public int selectCount(@Param(value = "id")String id){
 		return SdwUserDao.selectCount(id);
 	}
+	
+	public List<IntoPieces> selectSDH1(@Param(value = "userId")String userId){
+		List<IntoPieces> result= SdwUserDao.selectSDH1(userId);
+		for(int a=0;a<result.size();a++){
+			IntoPieces sdwcy=SdwUserDao.sdwcy(result.get(a).getId());
+			result.get(a).setName1(sdwcy.getName1());
+			result.get(a).setName2(sdwcy.getName2());
+			result.get(a).setName3(sdwcy.getName3());
+		}
+		return result;
+	}
+	
+	public int selectSDH1Count(@Param(value = "userId")String userId){
+		return SdwUserDao.selectSDH1Count(userId);
+	}
 }

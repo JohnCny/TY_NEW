@@ -407,6 +407,7 @@ and b.user_id=#{userId}
 and s.id=b.user_id
 and (c.status='refuse'
 or c.status='nopass')
+ order by c.MODIFIED_TIME desc
 	</select>
 	
 	
@@ -423,6 +424,7 @@ and b.user_id=#{userId}
 and s.id=b.user_id
 and (c.status='success'
 or c.status='approved')
+ order by c.MODIFIED_TIME desc
 	</select>
 	
 	
@@ -437,6 +439,7 @@ and b.user_id=#{userId}
 and s.id=b.user_id
 and (c.status='nopass_replenish'
 or c.status='returnedToFirst')
+ order by c.MODIFIED_TIME desc
 	</select>
 	
 	

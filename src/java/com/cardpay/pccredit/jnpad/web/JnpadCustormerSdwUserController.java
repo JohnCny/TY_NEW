@@ -309,4 +309,23 @@ public class JnpadCustormerSdwUserController {
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);
 		return json.toString();
 }
+	/**
+	 *进件审贷通知
+	 * @param JnpadCsSdModel
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/ipad/selectSDH1.json", method = {RequestMethod.GET })
+	public String selectSDH1(@ModelAttribute JnpadCsSdModel JnpadCsSdModel,HttpServletRequest request) {
+		Map<String,Object> map = new LinkedHashMap<String,Object>();
+		String id=request.getParameter("userId");
+		List<IntoPieces> result=SdwUserService.selectSDH1(id);
+		map.put("result", result);
+		map.put("size", result.size());
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+}
 }

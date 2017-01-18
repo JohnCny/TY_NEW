@@ -158,8 +158,8 @@ c.product_id=p.id and
 </select>
 
 <select id="selectSDH1" resultMap="IntoPieces">
-select c.ID as id,c.CUSTOMER_ID as customerId,c.PRODUCT_ID as productId,s.display_name as displayName,p.product_name as productName,b.card_id as cardId
-,c.APPLY_QUOTA as applyQuota,c.CREATED_TIME as creatime,b.chinese_name as chineseName,PROD_CREDIT_RANGE as PRODCREDITRANGE
+select c.id as id,s.display_name as displayName,p.product_name as productName,b.card_id as cardId
+,c.APPLY_QUOTA as applyQuota,c.CREATED_TIME as creatime,b.chinese_name as chineseName
  from CUSTOMER_APPLICATION_INFO c,CUSTOMER_APPLICATION_SDH t,sys_user s,product_attribute p,BASIC_CUSTOMER_INFORMATION b
 where c.id=t.capid
 and s.id=b.user_id and
@@ -168,6 +168,37 @@ c.product_id=p.id and
  (t.sdwuser1=#{userId} or t.sdwuser2=#{userId} or t.sdwuser3=#{userId})
  and t.SDTIME is  null
 </select>
+
+
+<select id="selectSDH1Count" resultType="int">
+select count(*)
+ from CUSTOMER_APPLICATION_INFO c,CUSTOMER_APPLICATION_SDH t,sys_user s,product_attribute p,BASIC_CUSTOMER_INFORMATION b
+where c.id=t.capid
+and s.id=b.user_id and
+b.id=c.customer_id and
+c.product_id=p.id and
+ (t.sdwuser1=#{userId} or t.sdwuser2=#{userId} or t.sdwuser3=#{userId})
+ and t.SDTIME is  null
+</select>
+
+<select id="sdwcy" resultMap="IntoPieces">
+select 
+e.displayName5 as name1,f.displayName6 as name2,g.displayName7 as name3
+from 
+(select s.display_name as displayName5
+from CUSTOMER_APPLICATION_SDH t,sys_user s 
+where t.SDWUSER1=s.id
+and t.CAPID=#{id})e,
+(select s.display_name as displayName6
+from CUSTOMER_APPLICATION_SDH t,sys_user s 
+where t.SDWUSER2=s.id
+and t.CAPID=#{id})f,
+(select s.display_name as displayName7
+from CUSTOMER_APPLICATION_SDH t,sys_user s 
+where t.SDWUSER3=s.id
+and t.CAPID=#{id})g
+</select>
+
 
 
 <select id="selectCSJLA" resultMap="selectAUDITLOG">

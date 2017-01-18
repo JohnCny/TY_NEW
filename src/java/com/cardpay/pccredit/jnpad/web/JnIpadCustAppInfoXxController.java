@@ -34,6 +34,7 @@ import com.cardpay.pccredit.jnpad.model.RetrainUserVo;
 import com.cardpay.pccredit.jnpad.model.RetrainingVo;
 import com.cardpay.pccredit.jnpad.service.JnIpadCustAppInfoXxService;
 import com.cardpay.pccredit.jnpad.service.JnipadNodeService;
+import com.cardpay.pccredit.jnpad.service.JnpadCustormerSdwUserService;
 import com.cardpay.pccredit.jnpad.service.JnpadZongBaoCustomerInsertService;
 import com.cardpay.pccredit.manager.filter.RetrainingFilter;
 import com.cardpay.pccredit.manager.model.AccountManagerRetraining;
@@ -60,7 +61,8 @@ import com.cardpay.pccredit.system.model.SystemUser;
 @Controller
 public class JnIpadCustAppInfoXxController {
 	private List list1=new ArrayList();
-
+	@Autowired
+	private JnpadCustormerSdwUserService SdwUserService;
 	@Autowired
 	private JnpadZongBaoCustomerInsertService jnpadZongBaoCustomerInsertService;
 	@Autowired
@@ -391,7 +393,11 @@ public class JnIpadCustAppInfoXxController {
 				JRiskCount+=1;
 			}
 		}
+		
+		int a=SdwUserService.selectSDH1Count(userId);
+		System.out.println(a);
 		NotifyMsgListVo vo  = new NotifyMsgListVo();
+		vo.setShendaihui(a);
 		vo.setQita(count);
 		vo.setRefuseCount(JrefuseCount);
 		vo.setReturnCount(JblackCount);

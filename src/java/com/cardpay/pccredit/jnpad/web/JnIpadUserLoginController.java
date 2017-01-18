@@ -163,7 +163,7 @@ public class JnIpadUserLoginController {
 			}else if(qyjl==3){
 				map.put("zw", "客户经理");	
 			}
-		
+		if(user!=null){
 			if(CommonConstant.USER_TYPE.USER_TYPE_1 == user.getUserType()){
 				List<AccountManagerParameterForm> forms = maintenanceService.findSubListManagerByManagerId1(user.getId(),user.getUserType());
 				if(forms != null && forms.size() > 0){
@@ -178,6 +178,7 @@ public class JnIpadUserLoginController {
 					map.put("repay", str);
 				}
 			}
+		}
 		/*	NotifyMsgListVo vo=jjzkCount(user.getId());
 			map.put("vo", vo);*/
 		}
@@ -332,45 +333,48 @@ public class JnIpadUserLoginController {
 		String parentId="100000";
 		List list=new ArrayList();
 		List list1=new ArrayList();
-		String userId=user.getId();
-		//确认当前客户经理是否为区域经理
-		List<ManagerBelongMapForm> result1=ManagerBelongMapService.findAllqyjl(parentId);
-		for(int a=0;a<result1.size();a++){
-			if(result1.get(a).getId().equals(userId)){
-				b=1;
+		if(user!=null){
+			String userId=user.getId();
+			//确认当前客户经理是否为区域经理
+			List<ManagerBelongMapForm> result1=ManagerBelongMapService.findAllqyjl(parentId);
+			for(int a=0;a<result1.size();a++){
+				if(result1.get(a).getId().equals(userId)){
+					b=1;
+				}
 			}
-		}
-		if(b==1){
-			qyjl=1;
-			List<JBUser> depart=JnIpadJBUser.selectDepartUser(userId);
-			for(int i=0;i<depart.size();i++){
-				List<JBUser> findxzcy=JnIpadJBUser.selectUserByDid(depart.get(i).getId());
+			if(b==1){
+				qyjl=1;
+				List<JBUser> depart=JnIpadJBUser.selectDepartUser(userId);
+				for(int i=0;i<depart.size();i++){
+					List<JBUser> findxzcy=JnIpadJBUser.selectUserByDid(depart.get(i).getId());
+					for(int a=0;a<findxzcy.size();a++){
+						list.add(findxzcy.get(a));	
+					}
+				
+			}}else{
+				//确认当前客户经理是否为小组长
+				for(int i=0;i<result1.size();i++){
+					List<ManagerBelongMapForm> result2=ManagerBelongMapService.findxzz(result1.get(i).getId());
+					for(int c=0;c<result2.size();c++){
+						list1.add(result2.get(c).getId());
+					}
+				}
+				for(int d=0;d<list1.size();d++){
+					if(list1.get(d).equals(userId)){
+						c1=1;
+					}
+				}
+				if(c1>0){
+					qyjl=2;
+				}else{
+					qyjl=3;
+				}
+				List<JBUser> findxzcy=JnIpadJBUser.selectUserByDid1(userId);
 				for(int a=0;a<findxzcy.size();a++){
 					list.add(findxzcy.get(a));	
 				}
-			
-		}}else{
-			//确认当前客户经理是否为小组长
-			for(int i=0;i<result1.size();i++){
-				List<ManagerBelongMapForm> result2=ManagerBelongMapService.findxzz(result1.get(i).getId());
-				for(int c=0;c<result2.size();c++){
-					list1.add(result2.get(c).getId());
-				}
 			}
-			for(int d=0;d<list1.size();d++){
-				if(list1.get(d).equals(userId)){
-					c1=1;
-				}
-			}
-			if(c1>0){
-				qyjl=2;
-			}else{
-				qyjl=3;
-			}
-			List<JBUser> findxzcy=JnIpadJBUser.selectUserByDid1(userId);
-			for(int a=0;a<findxzcy.size();a++){
-				list.add(findxzcy.get(a));	
-			}
+			return list;
 		}
 		return list;
 	}
