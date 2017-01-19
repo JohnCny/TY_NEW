@@ -30,7 +30,13 @@ public class ZrrtzcService {
 		// TODO Auto-generated method stub
 		return dao.finddate(id);
 	}
-	
+	public QueryResult<IncomingData> findintoPiecesByFilters(ZrrtzFilter filter) {
+		List<IncomingData> plans = dao.findIntoPiecesLists(filter);
+		int size = dao.findIntoPiecesCountLists(filter);
+		QueryResult<IncomingData> queryResult = new QueryResult<IncomingData>(size,plans);
+		return queryResult;
+}
+
 	
 
 }

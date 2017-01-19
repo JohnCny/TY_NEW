@@ -8,11 +8,14 @@ import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.intopieces.model.AppManagerAuditLog;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
+import com.cardpay.pccredit.intopieces.model.IntoPiecesFilters;
 import com.cardpay.pccredit.jnpad.dao.JnpadCustomerSelectDao;
 import com.cardpay.pccredit.jnpad.dao.JnpadCustormerSdwUserDao;
 import com.cardpay.pccredit.jnpad.model.CustormerSdwUser;
 import com.cardpay.pccredit.jnpad.model.JnpadCsSdModel;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
+import com.cardpay.pccredit.zrrtz.model.IncomingData;
+import com.wicresoft.jrad.base.database.model.QueryResult;
 
 @Service
 public class JnpadCustormerSdwUserService {
@@ -63,5 +66,13 @@ public class JnpadCustormerSdwUserService {
 	
 	public JnpadCsSdModel findCsSd(@Param(value = "id")String id){
 		return SdwUserDao.findCsSd(id);
+	}
+
+	public QueryResult<IntoPiecesFilters> selectSDHs(IntoPiecesFilters filter) {
+		// TODO Auto-generated method stub
+		List<IntoPiecesFilters> plans = SdwUserDao.selectSDHLists(filter);
+		int size = SdwUserDao.selectSDHCountLists(filter);
+		QueryResult<IntoPiecesFilters> queryResult = new QueryResult<IntoPiecesFilters>(size,plans);
+		return queryResult;
 	}
 }
