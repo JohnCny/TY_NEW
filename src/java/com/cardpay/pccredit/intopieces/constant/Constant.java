@@ -31,6 +31,7 @@ public class Constant {
 	
 	/* 影像资料补扫上传路径 */
 	public static String FILE_PATH_BS = "/usr/pccreditFilebs/";
+	//public static String FILE_PATH_BS = "D://tp//";
 	
 	/* 保存进件*/
 	public static String SAVE_INTOPICES = "save";

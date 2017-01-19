@@ -1155,6 +1155,7 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 	@JRadOperation(JRadOperation.EXPORT)
 	public AbstractModelAndView downLoadDh(HttpServletRequest request,HttpServletResponse response){
 		try {
+		String id= request.getParameter(ID);	
 			addIntoPiecesService.downLoadDh(response,request.getParameter(ID));
 		} catch (Exception e) {
 			e.printStackTrace();

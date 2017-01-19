@@ -23,7 +23,7 @@
 				//'fileSizeLimit' : '1024KB',			 //文件大小限制 0为无限制 默认KB
 				'fileTypeDesc'  : 'All Files',		 //图片选择描述
 				'fileTypeExts'  : '*.jpg',//文件后缀限制 默认：'*.*'
-				'formData'      : {'someKey' : 'someValue', 'someOtherKey' : 1},//传输数据JSON格式
+				'formData'      : {'session':'<?php echo session_id();?>','someKey' : 'someValue', 'someOtherKey' : 1},//传输数据JSON格式
 				//'overrideEvents': ['onUploadProgress'],  // The progress will not be updated
 				//'progressData' : 'speed',				//默认percentage 进度显示方式
 				'queueID'		: 'queue',				//默认队列ID
@@ -59,7 +59,7 @@
                 },
                 //上传成功
                 'onUploadSuccess' : function(file, data, response) {
-                    //alert(file.name + ' | ' + response + ':' + data);
+                    alert(file.name + ' | ' + response + ':' + data);
                 },
                 //上传错误
                 'onUploadError' : function(file, errorCode, errorMsg, errorString) {
@@ -71,7 +71,7 @@
                 },
                 //上传完成
                 'onUploadComplete' : function(file) {
-                	//alert('The file ' + file.name + ' finished processing.');
+                	alert('The file ' + file.name + ' finished processing.');
             	},
              
 			});

@@ -16,7 +16,7 @@
 							<td><label for="childId">客户经理:</label></td>
 							<td>
 							  <select id="childId" name="childId">
-			                   #dict("CONGSHUMANAGER", '') 
+			                    #dict("CONGSHUMANAGER", '')
 			                  </select>
 			                </span></td>
 							<td>&nbsp;</td>
@@ -43,7 +43,7 @@
 
 	#set ($formName = "'#id_module_form'")
 	#validator($formName)
-	$(document).ready(function() {
+ 	$(document).ready(function() {
 		$("#id_save_button").click(function() {
 			if(submitFlag == 1){
 				alert("请勿重复提交!")
@@ -72,7 +72,7 @@
 				submitFlag = 0;
 			}
 	      });
-	});
+	}); 
 	
 	</script>
 </body>

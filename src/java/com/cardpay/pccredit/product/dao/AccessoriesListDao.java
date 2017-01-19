@@ -8,6 +8,7 @@ import com.cardpay.pccredit.customer.model.TyCustomerRecord;
 import com.cardpay.pccredit.intopieces.model.AppManagerAuditLog;
 import com.cardpay.pccredit.product.model.AccessoriesList;
 import com.cardpay.pccredit.product.model.AppendixDict;
+import com.cardpay.pccredit.zrrtz.model.IncomingData;
 import com.wicresoft.util.annotation.Mapper;
 
 /**
@@ -33,7 +34,7 @@ public interface AccessoriesListDao {
 	
 	public List<AppManagerAuditLog> findAppManagerAuditById(@Param("appId") String appId);
 
-	public List<TyCustomerRecord> delay(@Param("id")String id);
+	public List<IncomingData> delay(@Param("id")String id);
 	
 
 }

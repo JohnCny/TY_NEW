@@ -436,36 +436,39 @@ public class Loan_TY_JJB_Controller extends BaseController {
 	}
 	
 	//影像
-	@ResponseBody
-	@RequestMapping(value = "sunds_ocx.page")
-	public AbstractModelAndView sunds_ocx(HttpServletRequest request) {
-		JRadModelAndView mv = new JRadModelAndView("/intopieces/sunds_ocx1", request);
-		String appId = RequestHelper.getStringValue(request, "appId");
-		String custId = RequestHelper.getStringValue(request, "custId");
-		mv.addObject("appId", appId);
-		
-		DhApplnAttachmentList att = addIntoPiecesService.findDhAttachmentListByAppId(appId);
-		if(att==null){
-			DhApplnAttachmentList attlist = new DhApplnAttachmentList();
-			attlist.setApplicationId(appId);
-			attlist.setCustomerId(custId);
-			attlist.setChkValue("19");
-			//attlist.setBussType("1");
-			commonDao.insertObject(attlist);
+		@ResponseBody
+		@RequestMapping(value = "sunds_ocx.page")
+		public AbstractModelAndView sunds_ocx(HttpServletRequest request) {
+			JRadModelAndView mv = new JRadModelAndView("/intopieces/sunds_ocx1", request);
+			String appId = RequestHelper.getStringValue(request, "appId");
+			String custId = RequestHelper.getStringValue(request, "custId");
+			mv.addObject("appId", appId);
+			
+			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+			mv.addObject("type", user.getUserType());
+			
+			DhApplnAttachmentList att = addIntoPiecesService.findDhAttachmentListByAppId(appId);
+			if(att==null){
+				DhApplnAttachmentList attlist = new DhApplnAttachmentList();
+				attlist.setApplicationId(appId);
+				attlist.setCustomerId(custId);
+				attlist.setChkValue("19");
+				//attlist.setBussType("1");
+				commonDao.insertObject(attlist);
+			}
+			//查找sunds_ocx信息
+			List<DhApplnAttachmentBatch> batch_ls = addIntoPiecesService.findDhAttachmentBatchByAppId(appId);
+			//如果batch_ls为空 说明这是以前录得件 根据chk_value增加batch记录
+			if(batch_ls == null || batch_ls.size() == 0){
+				addIntoPiecesService.addDhBatchInfo(appId,custId);
+				batch_ls = addIntoPiecesService.findDhAttachmentBatchByAppId(appId);
+			}
+			//查询客户信息
+			CustomerInfor vo = addIntoPiecesService.findBasicCustomerInfor(custId);
+			mv.addObject("batch_ls", batch_ls);
+			mv.addObject("customerInfor",vo);
+			return mv;
 		}
-		//查找sunds_ocx信息
-		List<DhApplnAttachmentBatch> batch_ls = addIntoPiecesService.findDhAttachmentBatchByAppId(appId);
-		//如果batch_ls为空 说明这是以前录得件 根据chk_value增加batch记录
-		if(batch_ls == null || batch_ls.size() == 0){
-			addIntoPiecesService.addDhBatchInfo(appId,custId);
-			batch_ls = addIntoPiecesService.findDhAttachmentBatchByAppId(appId);
-		}
-		//查询客户信息
-		CustomerInfor vo = addIntoPiecesService.findBasicCustomerInfor(custId);
-		mv.addObject("batch_ls", batch_ls);
-		mv.addObject("customerInfor",vo);
-		return mv;
-	}
 	
 	
 			
@@ -530,35 +533,35 @@ public class Loan_TY_JJB_Controller extends BaseController {
 		}	
 			
 		//查看已上传的图片列表
-		@ResponseBody
-		@RequestMapping(value = "display_server.page")
-		public AbstractModelAndView display_server(@ModelAttribute IntoPiecesFilter filter,HttpServletRequest request) {
-			filter.setRequest(request);
-			filter.setIsUpload("1");
-			String batchId = request.getParameter("batchId");
-			String currentPage=request.getParameter("currentPage");
-			String pageSize=request.getParameter("pageSize");
-			int page = 0;//rowNum
-			int limit = 1;//每页显示图片数
-			if(StringUtils.isNotEmpty(currentPage)){
-				page = Integer.parseInt(currentPage);
-			}
-			if(StringUtils.isNotEmpty(pageSize)){
-				limit = Integer.parseInt(pageSize);
-			}
-			List<DhApplnAttachmentDetail> detaillist = addIntoPiecesService.findDhApplnDetail(page,limit,batchId);
-			int totalCount = addIntoPiecesService.findDhApplnDetailCount(batchId);
+				@ResponseBody
+				@RequestMapping(value = "display_server.page")
+				public AbstractModelAndView display_server(@ModelAttribute IntoPiecesFilter filter,HttpServletRequest request) {
+					filter.setRequest(request);
+					filter.setIsUpload("1");
+					String batchId = request.getParameter("batchId");
+					String currentPage=request.getParameter("currentPage");
+					String pageSize=request.getParameter("pageSize");
+					int page = 0;//rowNum
+					int limit = 1;//每页显示图片数
+					if(StringUtils.isNotEmpty(currentPage)){
+						page = Integer.parseInt(currentPage);
+					}
+					if(StringUtils.isNotEmpty(pageSize)){
+						limit = Integer.parseInt(pageSize);
+					}
+					List<DhApplnAttachmentDetail> detaillist = addIntoPiecesService.findDhApplnDetail(page,limit,batchId);
+					int totalCount = addIntoPiecesService.findDhApplnDetailCount(batchId);
+					
+					JRadModelAndView mv = null;
+					mv = new JRadModelAndView("/intopieces/sunds_display_server_page1", request);
 			
-			JRadModelAndView mv = null;
-			mv = new JRadModelAndView("/intopieces/sunds_display_server_page1", request);
-	
-			mv.addObject("Id",detaillist.get(0).getId());
-			mv.addObject("rowNum", page);
-			mv.addObject("rowNum1", page+1);
-			mv.addObject("totalCount",totalCount);
-			mv.addObject("batchId", batchId);
-			return mv;
-		}
+					mv.addObject("Id",detaillist.get(0).getId());
+					mv.addObject("rowNum", page);
+					mv.addObject("rowNum1", page+1);
+					mv.addObject("totalCount",totalCount);
+					mv.addObject("batchId", batchId);
+					return mv;
+				}
 		
 		
 		//删除影像平台上的文件

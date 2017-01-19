@@ -10,7 +10,6 @@
         <div class="search">
           <form id="submitForm" action="${modulePath}/zrrtz.json" >
             <ul>
-            
               <li>
              <!--    <span>客户状态：<select id="status" name="status"
 										value="$!result.filter.status">
@@ -22,8 +21,11 @@
 											<option #if($!result.filter.status=='approved') selected="selected" #end value="不良">不良</option>
 											<option #if($!result.filter.status=='end') selected="selected" #end value="空">空</option>
 									</select> -->
-									 起始日期:<input type="text" id="fdate" name="fdate" ><br/>
-										 结束日期:<input type="text" id="ldate"  name="ldate"></span>
+									<table><tr><td><label for="entryTime">开始时间:</label></td>
+									<td><input class="rinpsty" type="text" id="fdate" name="fdate" value=""  onmouseover="_calendar()" readonly="readonly"/></td>
+									<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+									<td><label for="entryTime">结束时间:</label></td>
+									<td><input class="rinpsty" type="text" id="ldate" name="ldate" value=""  onmouseover="_calendar()" readonly="readonly"/></span></td></tr></table>
               </li>
               
               <li class="search_button">

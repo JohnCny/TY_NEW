@@ -56,6 +56,7 @@ import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
 import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
+import com.wicresoft.util.date.DateHelper;
 import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 import com.wicresoft.util.web.RequestHelper;
@@ -128,45 +129,17 @@ public class CustomerZRRTZController extends BaseController{
 	public AbstractModelAndView zrrtz(@ModelAttribute  ZrrtzFilter filter, HttpServletRequest request) {
 		filter.setRequest(request);
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
-			String date1 =null;   
-			String fdate=null;
-			//查出来的date
-			Date fdate1 = null;
-			//传入的date
-			Date transmissionfdate = null;
-			Date transmissionldate=null;
-			SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
-			try {
-				//判断传入的时间是否为空 如果不为空则将其转换为date类型
-				if(filter.getFdate()!=null && filter.getLdate()!=null && filter.getFdate()!="" && filter.getLdate()!=""){
-					transmissionfdate=sdf.parse(filter.getFdate());
-					transmissionldate=sdf.parse(filter.getLdate());
-					//数据库的起始日期和终止日期都是varchar类型所以要先转换成date类型才能比较
-					List<IncomingData>date= service.finddate(user.getId());
-					for (int i = 0; i < date.size(); i++) {
-						date1=date.get(i).getFdate();
-					}
-					fdate1=sdf.parse(date1);
-				}
-				else{
-					filter.setUserId(user.getId());
-					QueryResult<IncomingData> result = service.findintoPiecesByFilter(filter,user);
-					JRadPagedQueryResult<IncomingData> pagedResult = new JRadPagedQueryResult<IncomingData>(filter, result);
-					JRadModelAndView mv = new JRadModelAndView("/customer/customerZRRTZ/zrrtz_browse", request);
-					mv.addObject(PAGED_RESULT, pagedResult);
-					return mv;
-				}
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf1=new SimpleDateFormat("yyyyMMdd");
+		try {
+			if(filter.getFdate()!=null && filter.getLdate()!=null){
+				filter.setFdate(sdf1.format(sdf1.parse(filter.getFdate())));
+				filter.setLdate(sdf1.format(sdf1.parse(filter.getLdate())));
 			}
-			//判断有哪些起始日期是在输入的日期时间段之内的
-			if(fdate1.after(transmissionfdate)){
-				if(fdate1.before(transmissionldate)){
-					fdate=sdf.format(fdate1);
-				}
-			}
-			filter.setFdate(fdate);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 			filter.setUserId(user.getId());
 		QueryResult<IncomingData> result = service.findintoPiecesByFilter(filter,user);
 		JRadPagedQueryResult<IncomingData> pagedResult = new JRadPagedQueryResult<IncomingData>(filter, result);

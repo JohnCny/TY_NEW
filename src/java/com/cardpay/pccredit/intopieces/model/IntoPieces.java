@@ -36,7 +36,7 @@ public class IntoPieces  extends BusinessModel {
     private Float bnqx;
     private Float bwqx;
     private String reqlmt;
-    
+    private String PRODCREDITRANGE;
     private BigDecimal actualAmt;
     
     private BigDecimal amt;
@@ -61,7 +61,13 @@ public class IntoPieces  extends BusinessModel {
     
     
     
-    public String getREFUSAL_REASON() {
+    public String getPRODCREDITRANGE() {
+		return PRODCREDITRANGE;
+	}
+	public void setPRODCREDITRANGE(String pRODCREDITRANGE) {
+		PRODCREDITRANGE = pRODCREDITRANGE;
+	}
+	public String getREFUSAL_REASON() {
 		return REFUSAL_REASON;
 	}
 	public void setREFUSAL_REASON(String rEFUSAL_REASON) {

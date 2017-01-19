@@ -116,7 +116,8 @@
 			              tkmx.jjh =lsz.jjh and
 			              protype.product_code=tkmx.cpmc
                    <if test="fdate!=null and ldate!=null and fdate!='' and ldate!=''">
-						    and tkmx.jkrq=#{fdate}
+						    and tkmx.jkrq<![CDATA[ <  ]]> #{ldate} 
+						    and tkmx.jkrq<![CDATA[ >  ]]> #{fdate} 
 						</if>
 						<if test="userId!='' and userId!=null and userId!='000001'">
 						    and sysuser.id=#{userId}
@@ -158,8 +159,9 @@
 			              yehz.jjh=tkmx.jjh and
 			              tkmx.jjh =lsz.jjh and
 			              protype.product_code=tkmx.cpmc
-                   <if test="fdate!=null and ldate!=null and fdate!='' and ldate!=''">
-						    and tkmx.jkrq=#{fdate}
+                    <if test="fdate!=null and ldate!=null and fdate!='' and ldate!=''">
+						    and tkmx.jkrq<![CDATA[ <  ]]> #{ldate} 
+						    and tkmx.jkrq<![CDATA[ >  ]]> #{fdate} 
 						</if>
 						<if test="userId!='' and userId!=null and userId!='000001'">
 						    and sysuser.id=#{userId}

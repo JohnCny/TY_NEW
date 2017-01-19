@@ -12,6 +12,7 @@ import com.cardpay.pccredit.customer.model.ParameterInformaion;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.ipad.model.UserIpad;
 import com.cardpay.pccredit.product.model.ProductAttribute;
+import com.cardpay.pccredit.zrrtz.model.Pigeonhole;
 
 
 @Service
@@ -46,6 +47,11 @@ public class CustomerParameterService {
 	public List<CustomerParameter> queryByIdCard(String idcard) {
 		// TODO Auto-generated method stub
 		return cpDao.queryByIdCard(idcard);
+	}
+	//手动纸质归档
+	public void addCustomerPigeonhole(Pigeonhole pig) {
+		// TODO Auto-generated method stub
+		cpDao.addCustomerPigeonhole(pig);
 	}
 
 }
