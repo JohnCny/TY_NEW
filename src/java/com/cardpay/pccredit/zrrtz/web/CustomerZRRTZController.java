@@ -131,16 +131,11 @@ public class CustomerZRRTZController extends BaseController{
 	public AbstractModelAndView zrrtz(@ModelAttribute  ZrrtzFilter filter, HttpServletRequest request) {
 		filter.setRequest(request);
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-		SimpleDateFormat sdf1=new SimpleDateFormat("yyyyMMdd");
-		try {
-			if(filter.getFdate()!=null && filter.getLdate()!=null){
-				filter.setFdate(sdf1.format(sdf1.parse(filter.getFdate())));
-				filter.setLdate(sdf1.format(sdf1.parse(filter.getLdate())));
-			}
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		String startdate=request.getParameter("fdate");
+		String enddate=request.getParameter("ldate");
+		if(startdate!=null && enddate!=null){
+			filter.setFdate(startdate);
+			filter.setLdate(enddate);
 		}
 		if(user.getUserType()!=6){
 			filter.setUserId(user.getId());
@@ -164,66 +159,6 @@ public class CustomerZRRTZController extends BaseController{
 		 }
 		}
 	
-/*	//使用poi方法 导出excel
-	@ResponseBody
-	@RequestMapping(value = "export.json", method = { RequestMethod.GET })
-	@JRadOperation(JRadOperation.BROWSE)
-	public JRadReturnMap zrrtzexport(@ModelAttribute  ZrrtzFilter filter, HttpServletRequest request,HttpServletResponse response) {
-		filter.setRequest(request);
-		String id=RequestHelper.getStringValue(request, ID);
-		JRadReturnMap returnMap = new JRadReturnMap();
-		if (returnMap.isSuccess()) {
-		String title="CUSTOMER_PARAMETER信息表";
-		String[] rowName={"客户名称","客户经理名称"
-				,"身份证号","产品名称","金额","期限"
-				,"发放日期","到期日期"
-				,"行业分类","经营内容","经营地址"
-				,"主调","辅调","组别","审贷会成员"
-				,"贷款方式","是否纳税","归还情况","备注"};
-		List<OutcomingData>plans=dao.findpiecesList(id);
-		List<Object[]>  dataList=new ArrayList<Object[]>();
-		for (int i=0;i<plans.size();i++) {
-			Object[] obj={
-					plans.get(i).getCustomername(),
-					plans.get(i).getManagername(),
-					plans.get(i).getIdcard(),
-					plans.get(i).getProductname(),
-					plans.get(i).getMoney(),
-					plans.get(i).getDeadline(),
-				//	plans.get(i).getInterstrate(),
-				//	plans.get(i).getLoantype(),
-					plans.get(i).getProvidedate(),
-					plans.get(i).getExpiredate(),
-				//	plans.get(i).getBondsman(),
-					plans.get(i).getClassification(),
-					plans.get(i).getScopeoperation(),
-					plans.get(i).getOperationaddress(),
-					plans.get(i).getPrincipal(),
-					plans.get(i).getAssist(),
-					plans.get(i).getGroupes(),
-					plans.get(i).getMembers(),
-					plans.get(i).getPatternslend(),
-					plans.get(i).getRatepaying(),
-					plans.get(i).getGiveback(),
-				//	plans.get(i).getBatchs(),
-				//	plans.get(i).getPhonenumber(),
-				//	plans.get(i).getEnlending(),
-					plans.get(i).getRemark()
-			};
-			dataList.add(obj);
-			
-		}
-		ExportExcel excel=new ExportExcel(title, rowName, dataList, response);
-		try {
-			excel.export();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		}
-		return returnMap;
-	}
-	*/
-	
 	
 	/**
 	 * 导出
@@ -235,7 +170,9 @@ public class CustomerZRRTZController extends BaseController{
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 		String id=user.getId();
 	//	String id=RequestHelper.getStringValue(request, ID);
-		List<OutcomingData>list=dao.findpiecesList(id);
+		String fdate=request.getParameter("fdate");
+		String ldate=request.getParameter("ldate");
+		List<OutcomingData>list=dao.findpiecesList(id,fdate,ldate);
 		create(list,response);
 	}
 	
@@ -283,7 +220,7 @@ public class CustomerZRRTZController extends BaseController{
 		cell.setCellStyle(style);
 		
 		cell = row.createCell((short) 6);
-		cell.setCellValue("期限");
+		cell.setCellValue("计划期数");
 		cell.setCellStyle(style);
 		
 		cell = row.createCell((short) 7);
@@ -341,7 +278,7 @@ public class CustomerZRRTZController extends BaseController{
 			row.createCell((short) 2).setCellValue(move.getManagername());
 			row.createCell((short) 3).setCellValue(move.getIdcard());
 			row.createCell((short) 4).setCellValue(move.getProductname());
-			row.createCell((short) 5).setCellValue(FormatTool.formatNumber(move.getMoney(), 5, 1));
+			row.createCell((short) 5).setCellValue(FormatTool.formatNumber(move.getActual_quote(), 5, 1));
 			row.createCell((short) 6).setCellValue(move.getDeadline());
 			row.createCell((short) 7).setCellValue(move.getProvidedate());
 			row.createCell((short) 8).setCellValue(move.getExpiredate());

@@ -119,8 +119,8 @@
 			              tkmx.jjh =lsz.jjh and
 			              protype.product_code=tkmx.cpmc
                    <if test="fdate!=null and ldate!=null and fdate!='' and ldate!=''">
-						    and tkmx.jkrq<![CDATA[ <  ]]> #{ldate} 
-						    and tkmx.jkrq<![CDATA[ >  ]]> #{fdate} 
+						    and tkmx.jkrq<![CDATA[ <  ]]> to_char( to_date( #{ldate} ,'yyyy/mm/dd'),'yyyymmdd')
+						    and tkmx.jkrq<![CDATA[ >  ]]> to_char( to_date( #{fdate} ,'yyyy/mm/dd'),'yyyymmdd')
 						</if>
 						<if test="userId!='' and userId!=null and userId!='000001'">
 						    and sysuser.id=#{userId}
@@ -162,9 +162,9 @@
 			              yehz.jjh=tkmx.jjh and
 			              tkmx.jjh =lsz.jjh and
 			              protype.product_code=tkmx.cpmc
-                    <if test="fdate!=null and ldate!=null and fdate!='' and ldate!=''">
-						    and tkmx.jkrq<![CDATA[ <  ]]> #{ldate} 
-						    and tkmx.jkrq<![CDATA[ >  ]]> #{fdate} 
+                   <if test="fdate!=null and ldate!=null and fdate!='' and ldate!=''">
+						    and tkmx.jkrq<![CDATA[ <  ]]> to_char( to_date( #{ldate} ,'yyyy/mm/dd'),'yyyymmdd')
+						    and tkmx.jkrq<![CDATA[ >  ]]> to_char( to_date( #{fdate} ,'yyyy/mm/dd'),'yyyymmdd')
 						</if>
 						<if test="userId!='' and userId!=null and userId!='000001'">
 						    and sysuser.id=#{userId}
@@ -205,7 +205,7 @@
                    base.zjhm as Idcard,
                    protype.product_name as Productname,
                    tkmx.ffje as actual_quote,
-                   '' as Deadline,
+                    max(jh.qs) as Deadline,
                    tkmx.jkrq as Providedate,
                     tkmx.DQRQ as Expiredate,
                     base.Cshy as Classification,
@@ -239,6 +239,11 @@
 		  <if test="id!=null and id!='' and id!='undefined' and id!='000001'">
 				       and sysuser.id=#{id}
 		 </if> 
+		 <if test="fdate!=null and ldate!=null and fdate!='' and ldate!=''">
+						    and tkmx.jkrq<![CDATA[ <  ]]> to_char( to_date( #{ldate} ,'yyyy/mm/dd'),'yyyymmdd')
+						    and tkmx.jkrq<![CDATA[ >  ]]> to_char( to_date( #{fdate} ,'yyyy/mm/dd'),'yyyymmdd')
+						</if>
+		  group by   tkmx.ywbh,base.khmc, sysuser.display_name, base.zjhm,protype.product_name,tkmx.ffje,tkmx.jkrq,tkmx.DQRQ,base.Cshy , base.ZYYW, base.yydz ,base.sj,sysuser.id
 	</select>
 	
 	
