@@ -18,19 +18,31 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cardpay.pccredit.intopieces.model.AppManagerAuditLog;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
+import com.cardpay.pccredit.intopieces.model.IntoPiecesFilters;
 import com.cardpay.pccredit.intopieces.web.AddIntoPiecesForm;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.jnpad.dao.JnpadCustormerSdwUserDao;
 import com.cardpay.pccredit.jnpad.model.CustormerSdwUser;
 import com.cardpay.pccredit.jnpad.model.JnpadCsSdModel;
 import com.cardpay.pccredit.jnpad.service.JnpadCustormerSdwUserService;
+import com.cardpay.pccredit.postLoan.model.CreditProcess;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
+import com.wicresoft.jrad.base.auth.IUser;
+import com.wicresoft.jrad.base.auth.JRadOperation;
+import com.wicresoft.jrad.base.database.model.QueryResult;
+import com.wicresoft.jrad.base.web.JRadModelAndView;
+import com.wicresoft.jrad.base.web.controller.BaseController;
+import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
+import com.wicresoft.jrad.base.web.result.JRadReturnMap;
+import com.wicresoft.jrad.base.web.security.LoginManager;
+import com.wicresoft.util.spring.Beans;
+import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 
 @Controller
-public class JnpadCustormerSdwUserController {
+public class JnpadCustormerSdwUserController{
 	
 	@Autowired
 	private JnpadCustormerSdwUserService SdwUserService;

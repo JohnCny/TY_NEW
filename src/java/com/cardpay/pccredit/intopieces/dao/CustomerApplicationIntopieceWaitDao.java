@@ -6,6 +6,7 @@ import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
+import com.cardpay.pccredit.intopieces.model.IntoPiecesFilters;
 import com.cardpay.pccredit.intopieces.web.CustomerApplicationIntopieceWaitForm;
 import com.wicresoft.util.annotation.Mapper;
 
@@ -52,6 +53,9 @@ public interface CustomerApplicationIntopieceWaitDao {
 	
 	public List<CustomerApplicationIntopieceWaitForm> findCustomerApplicationIntopieceDecisionForm(IntoPiecesFilter filter);
 	public int findCustomerApplicationIntopieceDecisionCountForm(IntoPiecesFilter filter);
+	
+	public List<IntoPiecesFilters> findCustomerApplicationIntopieceDecisionForms(IntoPiecesFilters filter);
+	public int findCustomerApplicationIntopieceDecisionCountForms(IntoPiecesFilters filter);
 	
 	public CustomerApplicationProcess findByAppId(String appId);
 }

@@ -24,6 +24,7 @@ import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.model.AppManagerAuditLog;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
+import com.cardpay.pccredit.intopieces.model.IntoPiecesFilters;
 import com.cardpay.pccredit.intopieces.web.CustomerApplicationIntopieceWaitForm;
 import com.cardpay.pccredit.riskControl.constant.RiskCreateTypeEnum;
 import com.cardpay.pccredit.riskControl.filter.RiskCustomerFilter;
@@ -97,7 +98,14 @@ public class CustomerApplicationIntopieceWaitService {
 		return qs;
 
 	}
+	// 查询所有的进件通过审核的
+	public QueryResult<IntoPiecesFilters> findCustomerApplicationIntopieceDecisons(IntoPiecesFilters filter) {
+		List<IntoPiecesFilters> listCAI = customerApplicationIntopieceWaitDao.findCustomerApplicationIntopieceDecisionForms(filter);
+		int size = customerApplicationIntopieceWaitDao.findCustomerApplicationIntopieceDecisionCountForms(filter);
+		QueryResult<IntoPiecesFilters> qs = new QueryResult<IntoPiecesFilters>(size, listCAI);
+		return qs;
 
+	}
 	// 根据serialNumber查询CUSTOMER_APPLICATION_PROCESS表
 	public CustomerApplicationIntopieceWaitForm findCustomerApplicationProcessBySerialNumber(String serialNumber) {
 		return customerApplicationIntopieceWaitDao.findCustomerApplicationProcessBySerialNumber(serialNumber);

@@ -27,25 +27,21 @@
           <table>
             <colgroup>
              <col width="5%" />
-              <col width="9%" />
-              <col width="9%" />
-              <col width="9%" />
-              <col width="9%"/>
-              <col width="15%"/>
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="20%"/>
+              <col width="20%"/>
               <col width="10%"/>
-              <col width="13%"/>
-              <col width="13%"/>
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
               <th nowrap="nowrap">客户名称</th>
               <th nowrap="nowrap">产品名称</th>
               <th nowrap="nowrap">申请金额(元)</th>
-              <th nowrap="nowrap">证件类型</th>
               <th nowrap="nowrap">证件号码</th>
-              <th nowrap="nowrap">审核状态</th>
               <th nowrap="nowrap">申请时间</th>
-              <th nowrap="nowrap">节点名称</th>
+              <th nowrap="nowrap">客户经理</th>
             </tr>
           </table>
         </div>
@@ -53,14 +49,12 @@
           <table>
             <colgroup>
               <col width="5%" />
-              <col width="9%" />
-              <col width="9%" />
-              <col width="9%" />
-              <col width="9%"/>
-              <col width="15%"/>
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="20%"/>
+              <col width="20%"/>
               <col width="10%"/>
-              <col width="13%"/>
-              <col width="13%"/>
             </colgroup>
            #foreach ($wait in $result.items)
             <tr ondblclick="javascript:$('#id_change_button').click();">
@@ -68,11 +62,9 @@
               <td nowrap="nowrap">$!wait.chineseName</td>
               <td nowrap="nowrap">$!wait.productName</td>
               <td nowrap="nowrap">$format.formatNumber($!wait.applyQuota,2,1)</td>
-              <td nowrap="nowrap">#dictVal("CARDTYPEJN", $!wait.cardType)</td>
               <td nowrap="nowrap">$!wait.cardId</td>
-              <td nowrap="nowrap">#dictVal("applicationStatus",$!wait.status) </td>
-              <td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:ss",$!wait.createdTime)</td>
-              <td nowrap="nowrap">$!wait.nodeName</td>
+              <td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:ss",$!wait.creatime)</td>
+              <td nowrap="nowrap">$!wait.displayName</td>
             </tr>
             #end
 

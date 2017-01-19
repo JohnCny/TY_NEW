@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.cardpay.pccredit.intopieces.model.AppManagerAuditLog;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
+import com.cardpay.pccredit.intopieces.model.IntoPiecesFilters;
 import com.cardpay.pccredit.jnpad.model.CustormerSdwUser;
 import com.cardpay.pccredit.jnpad.model.JnpadCsSdModel;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
@@ -39,5 +40,7 @@ public interface JnpadCustormerSdwUserDao {
 	
 	//查询进件的审贷记录
 	JnpadCsSdModel findCsSd(@Param(value = "id")String id);
+	List<IntoPiecesFilters> selectSDHLists(IntoPiecesFilters filter);
+	int selectSDHCountLists(IntoPiecesFilters filter);
 
 }
