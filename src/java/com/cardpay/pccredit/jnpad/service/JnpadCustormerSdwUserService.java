@@ -8,14 +8,11 @@ import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.intopieces.model.AppManagerAuditLog;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
-import com.cardpay.pccredit.intopieces.model.IntoPiecesFilters;
 import com.cardpay.pccredit.jnpad.dao.JnpadCustomerSelectDao;
 import com.cardpay.pccredit.jnpad.dao.JnpadCustormerSdwUserDao;
 import com.cardpay.pccredit.jnpad.model.CustormerSdwUser;
 import com.cardpay.pccredit.jnpad.model.JnpadCsSdModel;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
-import com.cardpay.pccredit.zrrtz.model.IncomingData;
-import com.wicresoft.jrad.base.database.model.QueryResult;
 
 @Service
 public class JnpadCustormerSdwUserService {
@@ -57,22 +54,45 @@ public class JnpadCustormerSdwUserService {
 	public int insertRiskSdwUser(RiskCustomer sdwuser){
 		return SdwUserDao.insertRiskSdwUser(sdwuser);
 	}
-	public int deleteCustormerSdwUser(CustormerSdwUser sdwuser){
-		return SdwUserDao.deleteCustormerSdwUser(sdwuser);
+	public int deleteCustormerSdwUser(@Param(value = "CAPID")String CAPID){
+		return SdwUserDao.deleteCustormerSdwUser(CAPID);
 	}
-	public int deleteCsJl(AppManagerAuditLog sdwuser){
-		return SdwUserDao.deleteCsJl(sdwuser);
+	public int deleteCsJl(@Param(value = "applicationId")String applicationId){
+		return SdwUserDao.deleteCsJl(applicationId);
 	}
 	
 	public JnpadCsSdModel findCsSd(@Param(value = "id")String id){
 		return SdwUserDao.findCsSd(id);
 	}
-
-	public QueryResult<IntoPiecesFilters> selectSDHs(IntoPiecesFilters filter) {
-		// TODO Auto-generated method stub
-		List<IntoPiecesFilters> plans = SdwUserDao.selectSDHLists(filter);
-		int size = SdwUserDao.selectSDHCountLists(filter);
-		QueryResult<IntoPiecesFilters> queryResult = new QueryResult<IntoPiecesFilters>(size,plans);
-		return queryResult;
+	
+	public JnpadCsSdModel findCsSdRefuse(@Param(value = "id")String id){
+		return SdwUserDao.findCsSdRefuse(id);
+	}
+	
+	public JnpadCsSdModel findUser(@Param(value = "id")String id){
+		return SdwUserDao.findUser(id);
+	}
+	
+	public JnpadCsSdModel findCsSdBlack(@Param(value = "id")String id){
+		return SdwUserDao.findCsSdBlack(id);
+	}
+	
+	public int selectCount(@Param(value = "id")String id){
+		return SdwUserDao.selectCount(id);
+	}
+	
+	public List<IntoPieces> selectSDH1(@Param(value = "userId")String userId){
+		List<IntoPieces> result= SdwUserDao.selectSDH1(userId);
+		for(int a=0;a<result.size();a++){
+			IntoPieces sdwcy=SdwUserDao.sdwcy(result.get(a).getId());
+			result.get(a).setName1(sdwcy.getName1());
+			result.get(a).setName2(sdwcy.getName2());
+			result.get(a).setName3(sdwcy.getName3());
+		}
+		return result;
+	}
+	
+	public int selectSDH1Count(@Param(value = "userId")String userId){
+		return SdwUserDao.selectSDH1Count(userId);
 	}
 }

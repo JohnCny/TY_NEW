@@ -160,7 +160,8 @@
 					 <if test="cardId != null and cardId != '' ">
 						AND customer.card_id like '%${cardId}%'
 					 </if>
-		 	
+		 							 order by risk.CREATED_TIME desc
+					 
 							) ROW_
 					
 	</select>
