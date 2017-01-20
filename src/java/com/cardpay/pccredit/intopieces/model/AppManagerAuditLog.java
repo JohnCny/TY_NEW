@@ -24,7 +24,14 @@ public class AppManagerAuditLog extends BusinessModel {
 	private String  name1;
 	private String  name2;
 	private String  name3;
+	private String did;
 	
+	public String getDid() {
+		return did;
+	}
+	public void setDid(String did) {
+		this.did = did;
+	}
 	public String getName1() {
 		return name1;
 	}

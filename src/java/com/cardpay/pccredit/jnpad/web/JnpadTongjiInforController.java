@@ -75,6 +75,10 @@ public class JnpadTongjiInforController {
 			}else{
 				map.put("yqze", "0.00");
 			}*/
+			Date datetime=new Date();
+			SimpleDateFormat sdfe=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String datetime1=sdfe.format(datetime);
+			String datetime2= datetime1.substring(0, 4);
 			List<NameValueRecord> ydlist=statisticalCommonService.selectYDyx(userId);
 			Integer ylist1=0;
 			Integer ylist2=0;
@@ -91,39 +95,40 @@ public class JnpadTongjiInforController {
 			for(int i=0;i<ydlist.size();i++){
 				String loantime=ydlist.get(i).getName();
 				String time2=loantime.substring(4, 6);
-				if(time2.equals("01")){
+				String nowTime=loantime.substring(0, 4);
+				if(time2.equals("01") && nowTime.equals(datetime2)){
 					ylist1+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
-				}else if(time2.equals("02")){
+				}else if(time2.equals("02") && nowTime.equals(datetime2)){
 					ylist2+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 				}
-				else if(time2.equals("03")){
+				else if(time2.equals("03") && nowTime.equals(datetime2)){
 					ylist3+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 				}
-				else if(time2.equals("04")){
+				else if(time2.equals("04") && nowTime.equals(datetime2)){
 					ylist4+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 				}
-				else if(time2.equals("05")){
+				else if(time2.equals("05") && nowTime.equals(datetime2)){
 					ylist5+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 				}
-				else if(time2.equals("06")){
+				else if(time2.equals("06") && nowTime.equals(datetime2)){
 					ylist6+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 				}
-				else if(time2.equals("07")){
+				else if(time2.equals("07") && nowTime.equals(datetime2)){
 					ylist7+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 				}
-				else if(time2.equals("08")){
+				else if(time2.equals("08") && nowTime.equals(datetime2)){
 					ylist8+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 				}
-				else if(time2.equals("09")){
+				else if(time2.equals("09") && nowTime.equals(datetime2)){
 					ylist9+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 				}
-				else if(time2.equals("10")){
+				else if(time2.equals("10") && nowTime.equals(datetime2)){
 					ylist10+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 				}
-				else if(time2.equals("11")){
+				else if(time2.equals("11") && nowTime.equals(datetime2)){
 					ylist11+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 				}
-				else if(time2.equals("12")){
+				else if(time2.equals("12") && nowTime.equals(datetime2)){
 					ylist12+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 				}
 			}
@@ -157,40 +162,41 @@ public class JnpadTongjiInforController {
 					for(int i=0;i<listt.size();i++){
 						SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 						String time1=sdf.format(listt.get(i).getCreatime());
+						String time3=time1.substring(0, 4);
 						String[] time2=time1.split("-");
-						if(time2[1].equals("01")){
+						if(time2[1].equals("01") && time3.equals(datetime2)){
 							clist1.add(listt.get(i));
-						}else if(time2[1].equals("02")){
+						}else if(time2[1].equals("02") && time3.equals(datetime2)){
 							clist2.add(listt.get(i));
 						}
-						else if(time2[1].equals("03")){
+						else if(time2[1].equals("03") && time3.equals(datetime2)){
 							clist3.add(listt.get(i));
 						}
-						else if(time2[1].equals("04")){
+						else if(time2[1].equals("04") && time3.equals(datetime2)){
 							clist4.add(listt.get(i));
 						}
-						else if(time2[1].equals("05")){
+						else if(time2[1].equals("05") && time3.equals(datetime2)){
 							clist5.add(listt.get(i));
 						}
-						else if(time2[1].equals("06")){
+						else if(time2[1].equals("06") && time3.equals(datetime2)){
 							clist6.add(listt.get(i));
 						}
-						else if(time2[1].equals("07")){
+						else if(time2[1].equals("07") && time3.equals(datetime2)){
 							clist7.add(listt.get(i));
 						}
-						else if(time2[1].equals("08")){
+						else if(time2[1].equals("08") && time3.equals(datetime2)){
 							clist8.add(listt.get(i));
 						}
-						else if(time2[1].equals("09")){
-							clist9.add(listt.get(i));
+						else if(time2[1].equals("09") && time3.equals(datetime2)){
+							clist9.add(listt.get(i)); 
 						}
-						else if(time2[1].equals("10")){
+						else if(time2[1].equals("10") && time3.equals(datetime2)){
 							clist10.add(listt.get(i));
 						}
-						else if(time2[1].equals("11")){
+						else if(time2[1].equals("11") && time3.equals(datetime2)){
 							clist11.add(listt.get(i));
 						}
-						else if(time2[1].equals("12")){
+						else if(time2[1].equals("12") && time3.equals(datetime2)){
 							clist12.add(listt.get(i));
 						}
 					}
@@ -223,40 +229,41 @@ public class JnpadTongjiInforController {
 			for(int i=0;i<list.size();i++){
 				SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				String time1=sdf.format(list.get(i).getCreatime());
+				String time4=time1.substring(0,4);
 				String[] time2=time1.split("-");
-				if(time2[1].equals("01")){
+				if(time2[1].equals("01") && time4.equals(datetime2)){
 					list1.add(list.get(i));
-				}else if(time2[1].equals("02")){
+				}else if(time2[1].equals("02") && time4.equals(datetime2)){
 					list2.add(list.get(i));
 				}
-				else if(time2[1].equals("03")){
+				else if(time2[1].equals("03")&& time4.equals(datetime2)){
 					list3.add(list.get(i));
 				}
-				else if(time2[1].equals("04")){
+				else if(time2[1].equals("04")&& time4.equals(datetime2)){
 					list4.add(list.get(i));
 				}
-				else if(time2[1].equals("05")){
+				else if(time2[1].equals("05")&& time4.equals(datetime2)){
 					list5.add(list.get(i));
 				}
-				else if(time2[1].equals("06")){
+				else if(time2[1].equals("06")&& time4.equals(datetime2)){
 					list6.add(list.get(i));
 				}
-				else if(time2[1].equals("07")){
+				else if(time2[1].equals("07")&& time4.equals(datetime2)){
 					list7.add(list.get(i));
 				}
-				else if(time2[1].equals("08")){
+				else if(time2[1].equals("08")&& time4.equals(datetime2)){
 					list8.add(list.get(i));
 				}
-				else if(time2[1].equals("09")){
+				else if(time2[1].equals("09")&& time4.equals(datetime2)){
 					list9.add(list.get(i));
 				}
-				else if(time2[1].equals("10")){
+				else if(time2[1].equals("10")&& time4.equals(datetime2)){
 					list10.add(list.get(i));
 				}
-				else if(time2[1].equals("11")){
+				else if(time2[1].equals("11")&& time4.equals(datetime2)){
 					list11.add(list.get(i));
 				}
-				else if(time2[1].equals("12")){
+				else if(time2[1].equals("12")&& time4.equals(datetime2)){
 					list12.add(list.get(i));
 				}
 			}
@@ -435,6 +442,10 @@ public class JnpadTongjiInforController {
 	@ResponseBody
 	@RequestMapping(value = "/ipad/customerIntopiece/selectByYF.json", method = { RequestMethod.GET })
 	public String selectByYF( HttpServletRequest request) {
+		Date datetime=new Date();
+		SimpleDateFormat sdfe=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String datetime1=sdfe.format(datetime);
+		String datetime2= datetime1.substring(0, 4);
 		Integer ylist1=0;
 		Integer ylist2=0;
 		Integer ylist3=0;
@@ -483,40 +494,41 @@ public class JnpadTongjiInforController {
 				for(int i=0;i<list.size();i++){
 					SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					String time1=sdf.format(list.get(i).getCreatime());
+					String nowTime=time1.substring(0, 4);
 					String[] time2=time1.split("-");
-					if(time2[1].equals("01")){
+					if(time2[1].equals("01") && nowTime.equals(datetime2)){
 						clist1.add(list.get(i));
-					}else if(time2[1].equals("02")){
+					}else if(time2[1].equals("02")&& nowTime.equals(datetime2)){
 						clist2.add(list.get(i));
 					}
-					else if(time2[1].equals("03")){
+					else if(time2[1].equals("03")&& nowTime.equals(datetime2)){
 						clist3.add(list.get(i));
 					}
-					else if(time2[1].equals("04")){
+					else if(time2[1].equals("04")&& nowTime.equals(datetime2)){
 						clist4.add(list.get(i));
 					}
-					else if(time2[1].equals("05")){
+					else if(time2[1].equals("05")&& nowTime.equals(datetime2)){
 						clist5.add(list.get(i));
 					}
-					else if(time2[1].equals("06")){
+					else if(time2[1].equals("06")&& nowTime.equals(datetime2)){
 						clist6.add(list.get(i));
 					}
-					else if(time2[1].equals("07")){
+					else if(time2[1].equals("07")&& nowTime.equals(datetime2)){
 						clist7.add(list.get(i));
 					}
-					else if(time2[1].equals("08")){
+					else if(time2[1].equals("08")&& nowTime.equals(datetime2)){
 						clist8.add(list.get(i));
 					}
-					else if(time2[1].equals("09")){
+					else if(time2[1].equals("09")&& nowTime.equals(datetime2)){
 						clist9.add(list.get(i));
 					}
-					else if(time2[1].equals("10")){
+					else if(time2[1].equals("10")&& nowTime.equals(datetime2)){
 						clist10.add(list.get(i));
 					}
-					else if(time2[1].equals("11")){
+					else if(time2[1].equals("11")&& nowTime.equals(datetime2)){
 						clist11.add(list.get(i));
 					}
-					else if(time2[1].equals("12")){
+					else if(time2[1].equals("12")&& nowTime.equals(datetime2)){
 						clist12.add(list.get(i));
 					}
 				}
@@ -527,40 +539,41 @@ public class JnpadTongjiInforController {
 			for(int i=0;i<list.size();i++){
 				SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				String time1=sdf.format(list.get(i).getCreatime());
+				String time4=time1.substring(0, 4);
 				String[] time2=time1.split("-");
-				if(time2[1].equals("01")){
+				if(time2[1].equals("01") && time4.equals(datetime2)){
 					list1.add(list.get(i));
-				}else if(time2[1].equals("02")){
+				}else if(time2[1].equals("02")&& time4.equals(datetime2)){
 					list2.add(list.get(i));
 				}
-				else if(time2[1].equals("03")){
+				else if(time2[1].equals("03")&& time4.equals(datetime2)){
 					list3.add(list.get(i));
 				}
-				else if(time2[1].equals("04")){
+				else if(time2[1].equals("04")&& time4.equals(datetime2)){
 					list4.add(list.get(i));
 				}
-				else if(time2[1].equals("05")){
+				else if(time2[1].equals("05")&& time4.equals(datetime2)){
 					list5.add(list.get(i));
 				}
-				else if(time2[1].equals("06")){
+				else if(time2[1].equals("06")&& time4.equals(datetime2)){
 					list6.add(list.get(i));
 				}
-				else if(time2[1].equals("07")){
+				else if(time2[1].equals("07")&& time4.equals(datetime2)){
 					list7.add(list.get(i));
 				}
-				else if(time2[1].equals("08")){
+				else if(time2[1].equals("08")&& time4.equals(datetime2)){
 					list8.add(list.get(i));
 				}
-				else if(time2[1].equals("09")){
+				else if(time2[1].equals("09")&& time4.equals(datetime2)){
 					list9.add(list.get(i));
 				}
-				else if(time2[1].equals("10")){
+				else if(time2[1].equals("10")&& time4.equals(datetime2)){
 					list10.add(list.get(i));
 				}
-				else if(time2[1].equals("11")){
+				else if(time2[1].equals("11")&& time4.equals(datetime2)){
 					list11.add(list.get(i));
 				}
-				else if(time2[1].equals("12")){
+				else if(time2[1].equals("12")&& time4.equals(datetime2)){
 					list12.add(list.get(i));
 				}
 			}
@@ -569,40 +582,41 @@ public class JnpadTongjiInforController {
 			List<NameValueRecord> ydlist=statisticalCommonService.selectYDyx(resultq.get(c).getId());	
 			for(int i=0;i<ydlist.size();i++){
 				String loantime=ydlist.get(i).getName();
+				String time3=loantime.substring(0, 4);
 				String time2=loantime.substring(4, 6);
-				if(time2.equals("01")){
+				if(time2.equals("01") && time3.equals(datetime2)){
 					ylist1+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
-				}else if(time2.equals("02")){
+				}else if(time2.equals("02") && time3.equals(datetime2)){
 					ylist2+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 				}
-				else if(time2.equals("03")){
+				else if(time2.equals("03") && time3.equals(datetime2)){
 					ylist3+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 				}
-				else if(time2.equals("04")){
+				else if(time2.equals("04") && time3.equals(datetime2)){
 					ylist4+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 				}
-				else if(time2.equals("05")){
+				else if(time2.equals("05") && time3.equals(datetime2)){
 					ylist5+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 				}
-				else if(time2.equals("06")){
+				else if(time2.equals("06") && time3.equals(datetime2)){
 					ylist6+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 				}
-				else if(time2.equals("07")){
+				else if(time2.equals("07") && time3.equals(datetime2)){
 					ylist7+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 				}
-				else if(time2.equals("08")){
+				else if(time2.equals("08") && time3.equals(datetime2)){
 					ylist8+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 				}
-				else if(time2.equals("09")){
+				else if(time2.equals("09") && time3.equals(datetime2)){
 					ylist9+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 				}
-				else if(time2.equals("10")){
+				else if(time2.equals("10") && time3.equals(datetime2)){
 					ylist10+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 				}
-				else if(time2.equals("11")){
+				else if(time2.equals("11") && time3.equals(datetime2)){
 					ylist11+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 				}
-				else if(time2.equals("12")){
+				else if(time2.equals("12") && time3.equals(datetime2)){
 					ylist12+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 				}}
 			}
@@ -619,40 +633,41 @@ public class JnpadTongjiInforController {
 				List<NameValueRecord> ydlist=statisticalCommonService.selectYDyx(qulist.get(a).getUserId());
 				for(int i=0;i<ydlist.size();i++){
 					String loantime=ydlist.get(i).getName();
+					String time5=loantime.substring(0,4);
 					String time2=loantime.substring(4, 6);
-					if(time2.equals("01")){
+					if(time2.equals("01") && time5.equals(datetime2)){
 						ylist1+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
-					}else if(time2.equals("02")){
+					}else if(time2.equals("02")&& time5.equals(datetime2)){
 						ylist2+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 					}
-					else if(time2.equals("03")){
+					else if(time2.equals("03")&& time5.equals(datetime2)){
 						ylist3+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 					}
-					else if(time2.equals("04")){
+					else if(time2.equals("04")&& time5.equals(datetime2)){
 						ylist4+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 					}
-					else if(time2.equals("05")){
+					else if(time2.equals("05")&& time5.equals(datetime2)){
 						ylist5+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 					}
-					else if(time2.equals("06")){
+					else if(time2.equals("06")&& time5.equals(datetime2)){
 						ylist6+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 					}
-					else if(time2.equals("07")){
+					else if(time2.equals("07")&& time5.equals(datetime2)){
 						ylist7+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 					}
-					else if(time2.equals("08")){
+					else if(time2.equals("08")&& time5.equals(datetime2)){
 						ylist8+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 					}
-					else if(time2.equals("09")){
+					else if(time2.equals("09")&& time5.equals(datetime2)){
 						ylist9+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 					}
-					else if(time2.equals("10")){
+					else if(time2.equals("10")&& time5.equals(datetime2)){
 						ylist10+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 					}
-					else if(time2.equals("11")){
+					else if(time2.equals("11")&& time5.equals(datetime2)){
 						ylist11+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 					}
-					else if(time2.equals("12")){
+					else if(time2.equals("12")&& time5.equals(datetime2)){
 						ylist12+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 					}
 				}
@@ -661,40 +676,41 @@ public class JnpadTongjiInforController {
 				for(int i=0;i<listt.size();i++){
 					SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					String time1=sdf.format(listt.get(i).getCreatime());
+					String time5=time1.substring(0,4);
 					String[] time2=time1.split("-");
-					if(time2[1].equals("01")){
+					if(time2[1].equals("01")&& time5.equals(datetime2)){
 						clist1.add(listt.get(i));
-					}else if(time2[1].equals("02")){
+					}else if(time2[1].equals("02")&& time5.equals(datetime2)){
 						clist2.add(listt.get(i));
 					}
-					else if(time2[1].equals("03")){
+					else if(time2[1].equals("03")&& time5.equals(datetime2)){
 						clist3.add(listt.get(i));
 					}
-					else if(time2[1].equals("04")){
+					else if(time2[1].equals("04")&& time5.equals(datetime2)){
 						clist4.add(listt.get(i));
 					}
-					else if(time2[1].equals("05")){
+					else if(time2[1].equals("05")&& time5.equals(datetime2)){
 						clist5.add(listt.get(i));
 					}
-					else if(time2[1].equals("06")){
+					else if(time2[1].equals("06")&& time5.equals(datetime2)){
 						clist6.add(listt.get(i));
 					}
-					else if(time2[1].equals("07")){
+					else if(time2[1].equals("07")&& time5.equals(datetime2)){
 						clist7.add(listt.get(i));
 					}
-					else if(time2[1].equals("08")){
+					else if(time2[1].equals("08")&& time5.equals(datetime2)){
 						clist8.add(listt.get(i));
 					}
-					else if(time2[1].equals("09")){
+					else if(time2[1].equals("09")&& time5.equals(datetime2)){
 						clist9.add(listt.get(i));
 					}
-					else if(time2[1].equals("10")){
+					else if(time2[1].equals("10")&& time5.equals(datetime2)){
 						clist10.add(listt.get(i));
 					}
-					else if(time2[1].equals("11")){
+					else if(time2[1].equals("11")&& time5.equals(datetime2)){
 						clist11.add(listt.get(i));
 					}
-					else if(time2[1].equals("12")){
+					else if(time2[1].equals("12")&& time5.equals(datetime2)){
 						clist12.add(listt.get(i));
 					}
 				}
@@ -703,40 +719,41 @@ public class JnpadTongjiInforController {
 				for(int i=0;i<list.size();i++){
 					SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					String time1=sdf.format(list.get(i).getCreatime());
+					String time5=time1.substring(0,4);
 					String[] time2=time1.split("-");
-					if(time2[1].equals("01")){
+					if(time2[1].equals("01")&& time5.equals(datetime2)){
 						list1.add(list.get(i));
-					}else if(time2[1].equals("02")){
+					}else if(time2[1].equals("02")&& time5.equals(datetime2)){
 						list2.add(list.get(i));
 					}
-					else if(time2[1].equals("03")){
+					else if(time2[1].equals("03")&& time5.equals(datetime2)){
 						list3.add(list.get(i));
 					}
-					else if(time2[1].equals("04")){
+					else if(time2[1].equals("04")&& time5.equals(datetime2)){
 						list4.add(list.get(i));
 					}
-					else if(time2[1].equals("05")){
+					else if(time2[1].equals("05")&& time5.equals(datetime2)){
 						list5.add(list.get(i));
 					}
-					else if(time2[1].equals("06")){
+					else if(time2[1].equals("06")&& time5.equals(datetime2)){
 						list6.add(list.get(i));
 					}
-					else if(time2[1].equals("07")){
+					else if(time2[1].equals("07")&& time5.equals(datetime2)){
 						list7.add(list.get(i));
 					}
-					else if(time2[1].equals("08")){
+					else if(time2[1].equals("08")&& time5.equals(datetime2)){
 						list8.add(list.get(i));
 					}
-					else if(time2[1].equals("09")){
+					else if(time2[1].equals("09")&& time5.equals(datetime2)){
 						list9.add(list.get(i));
 					}
-					else if(time2[1].equals("10")){
+					else if(time2[1].equals("10")&& time5.equals(datetime2)){
 						list10.add(list.get(i));
 					}
-					else if(time2[1].equals("11")){
+					else if(time2[1].equals("11")&& time5.equals(datetime2)){
 						list11.add(list.get(i));
 					}
-					else if(time2[1].equals("12")){
+					else if(time2[1].equals("12")&& time5.equals(datetime2)){
 						list12.add(list.get(i));
 					}
 				}

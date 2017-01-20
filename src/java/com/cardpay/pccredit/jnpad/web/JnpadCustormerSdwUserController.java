@@ -18,31 +18,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cardpay.pccredit.intopieces.model.AppManagerAuditLog;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
-import com.cardpay.pccredit.intopieces.model.IntoPiecesFilters;
 import com.cardpay.pccredit.intopieces.web.AddIntoPiecesForm;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.jnpad.dao.JnpadCustormerSdwUserDao;
 import com.cardpay.pccredit.jnpad.model.CustormerSdwUser;
 import com.cardpay.pccredit.jnpad.model.JnpadCsSdModel;
 import com.cardpay.pccredit.jnpad.service.JnpadCustormerSdwUserService;
-import com.cardpay.pccredit.postLoan.model.CreditProcess;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
-import com.wicresoft.jrad.base.auth.IUser;
-import com.wicresoft.jrad.base.auth.JRadOperation;
-import com.wicresoft.jrad.base.database.model.QueryResult;
-import com.wicresoft.jrad.base.web.JRadModelAndView;
-import com.wicresoft.jrad.base.web.controller.BaseController;
-import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
-import com.wicresoft.jrad.base.web.result.JRadReturnMap;
-import com.wicresoft.jrad.base.web.security.LoginManager;
-import com.wicresoft.util.spring.Beans;
-import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 
 @Controller
-public class JnpadCustormerSdwUserController{
+public class JnpadCustormerSdwUserController {
 	
 	@Autowired
 	private JnpadCustormerSdwUserService SdwUserService;
@@ -218,6 +206,7 @@ public class JnpadCustormerSdwUserController{
 						RiskCustomer.setRiskCreateType("manual");
 						RiskCustomer.setRefuseReason(request.getParameter("decisionRefusereason"));
 						RiskCustomer.setCREATED_TIME(new Date());
+						RiskCustomer.setCustManagerId(request.getParameter("did"));
 						String pid=null;
 						if(null==pid){
 							pid=UUID.randomUUID().toString();
@@ -274,6 +263,66 @@ public class JnpadCustormerSdwUserController{
 		String id=request.getParameter("id");
 		JnpadCsSdModel result=SdwUserService.findCsSd(id);
 		map.put("result", result);
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+}
+	/**
+	 * 拒绝审贷纪要
+	 * @param JnpadCsSdModel
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/ipad/findCsSdRefuse.json", method = {RequestMethod.GET })
+	public String findCsSdRefuse(@ModelAttribute JnpadCsSdModel JnpadCsSdModel,HttpServletRequest request) {
+		Map<String,Object> map = new LinkedHashMap<String,Object>();
+		String id=request.getParameter("id");
+		JnpadCsSdModel result=SdwUserService.findCsSdRefuse(id);
+		JnpadCsSdModel result1=SdwUserService.findUser(id);
+		map.put("result", result);
+		map.put("result1", result1);
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+}
+	
+	/**
+	 * 回退审贷纪要
+	 * @param JnpadCsSdModel
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/ipad/findCsSdBlack.json", method = {RequestMethod.GET })
+	public String findCsSdBlack(@ModelAttribute JnpadCsSdModel JnpadCsSdModel,HttpServletRequest request) {
+		Map<String,Object> map = new LinkedHashMap<String,Object>();
+		String id=request.getParameter("id");
+		JnpadCsSdModel result=SdwUserService.findCsSdBlack(id);
+		JnpadCsSdModel result1=SdwUserService.findUser(id);
+		map.put("result", result);
+		map.put("result1", result1);
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+}
+	/**
+	 *进件审贷通知
+	 * @param JnpadCsSdModel
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/ipad/selectSDH1.json", method = {RequestMethod.GET })
+	public String selectSDH1(@ModelAttribute JnpadCsSdModel JnpadCsSdModel,HttpServletRequest request) {
+		Map<String,Object> map = new LinkedHashMap<String,Object>();
+		String id=request.getParameter("userId");
+		List<IntoPieces> result=SdwUserService.selectSDH1(id);
+		map.put("result", result);
+		map.put("size", result.size());
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);
