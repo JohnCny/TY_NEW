@@ -9,8 +9,8 @@
       </div>
        
       <form id="id_module_form" action="${contextPath}/intopieces/intopiecesdecision/updateAll.json"/>
-      <input type="hidden" name="customerId" value="$!customerApplicationInfo.customerId"/>
-      <input type="hidden" name="id" value="$!customerApplicationInfo.id"/>
+      <input type="hidden" name="customerId" id="customerId" value="$!customerApplicationInfo.customerId"/>
+      <input type="hidden" name="id" id="id" value="$!customerApplicationInfo.id"/>
       <input type="hidden" name="serialNumber" value="$!customerApplicationInfo.serialNumber">
       <input type="hidden" id ="prodCreditRange" name="prodCreditRange" value="$!producAttribute.prodCreditRange"/>
       <input type="hidden" id ="productId" name="productId" value="$!producAttribute.id"/>
@@ -84,58 +84,67 @@
               <td  class="titlefc3"><label for="status">审贷结论:</label></td>
               <td><select id="status" name="status" onChange="changeDecisionRefusereason();">
                   	#dict("intopieces_decision",$!customerApplicationInfo.status)
-                  </select></td>
+                  </select> 
+                  </td>
                <td  class="titlefc3"><label for="prodId">产品名称:</label></td>
-               <td><select id="prodId" name="prodId">
+               <td ><!-- <select id="prodId" name="prodId" disabled="disabled" >
                     #dict("ProductName", $!producAttribute.id)
-                  </select>
+                  </select> -->
+                  <input  type="text" class="rinpsty" name="prodName" id="prodName" 
+	              value="$!producAttribute.productName" disabled="disabled"/>
                </td>
             </tr>
             <tr>
 			  <td class="titlefc3"><label for="decisionAmount">审贷额度(元):</label></td>
-              <td><input  type="text" class="rinpsty" name="decisionAmount" id="decisionAmount" value="$!customerApplicationInfo.decisionAmount" /></td>
+              <td><input  type="text" class="rinpsty" name="sxed" id="decisionAmount" value="$!sdwinfo.SDJE" /></td>
               <td class="titlefc3"><label for="decisionRate">利率(%):</label></td>
-              <td><input type="text" class="rinpsty" name="decisionRate" id="decisionRate" value="$!customerApplicationInfo.decisionRate" /></td>
+              <td><input type="text" class="rinpsty" name="decisionRate" id="decisionRate" value="$!sdwinfo.SDLV" /></td>
             </tr>
             <tr>
-              <td class="titlefc3"><label for="decisionTerm">参与审批客户经理:</label></td>
-              <td><select  name="cyUser1" id="cyUser1" style="width: 150px;">
-                  	#dict("MANAGERUSERS","")
-                  </select>
+              <td class="titlefc3">审贷委一:</td>
+              <td>
+                  <input type="text" class="rinpsty" name="cyUser1" id="cyUser1" value="$!result.name1" disabled="disabled"/>
               </td>
-              <td class="titlefc3"><label for="decisionTerm">参与审批客户经理:</label></td>
-              <td><select  name="cyUser2" id="cyUser2" style="width: 150px;">
-                  	#dict("MANAGERUSERS","")
-                  </select>
+              
+              <td class="titlefc3">意见:</td>
+              <td>
+              <textarea name="SDWUSER1YJ" id="SDWUSER1YJ" >$!sdwinfo.SDWUSER1YJ</textarea>
               </td>
             </tr>
             <tr>
-              <td class="titlefc3"><label for="decisionTerm">辅调客户经理:</label></td>
-              <td><select  name="fdUser" id="fdUser" style="width: 150px;">
-                  	#dict("MANAGERUSERS","")
-                  </select>
+              <td class="titlefc3">审贷委二:</td>
+              <td>
+                  <input type="text" class="rinpsty" name="cyUser2" id="cyUser2" value="$!result.name2" disabled="disabled"/>
               </td>
-              <td class="titlefc3"><label for="decisionTerm">审贷老师:</label></td>
-              <td><select  name="sdUser" style="width: 150px;">
-                  	#dict("XWTUDUUSERS",$!customerApplicationInfo.decisionTerm)
-                  </select>
+              
+              <td class="titlefc3">意见:</td>
+              <td>
+              <textarea name="SDWUSER2YJ" id="SDWUSER2YJ" >$!sdwinfo.SDWUSER2YJ</textarea> 
+              </td>
+            </tr>
+             <tr>
+              <td class="titlefc3"><label for="decisionTerm">审贷委三:</label></td>
+              <td>
+                  <input type="text" class="rinpsty"  name="cyUser3" id="cyUser3" value="$!result.name3" disabled="disabled"/>
+              </td>
+              
+              <td class="titlefc3">意见:</td>
+              <td>
+              <textarea name="SDWUSER3YJ" id="SDWUSER3YJ" >$!sdwinfo.SDWUSER3YJ</textarea>
               </td>
             </tr>
             <tr>
               <td class="titlefc3"><label for="decisionTerm">期限:</label></td>
-              <td><select  name="decisionTerm">
-                  	#dict("decision_term",$!customerApplicationInfo.decisionTerm)
-                  </select>
+              <td>
+               <select  name="qx" id="qx">
+                  	#dict("decision_term",$!sdwinfo.SDQX)
+              </select> 
               </td>
-              <td class="titlefc3"><label for="decisionTerm">还款方式:</label></td>
+             <!--  <td class="titlefc3"><label for="decisionTerm">还款方式:</label></td>
               <td><select  name="hkfs">
                   	#dict("HKFS",$!customerApplicationInfo.hkfs)
                   </select>
-              </td>
-            </tr>
-            <tr>
-            	<td  class="titlefc3"><label id ="beiZhu" for="beiZhu">备注:</label></td>
-				<td><textarea style="width: 300px;" name="beiZhu" id="beiZhu">$!appManagerAuditLog.beiZhu</textarea></td>
+              </td> -->
             </tr>
             <tr style="display :none">
               <td  class="titlefc3"><label id ="reason" for=reason>原因:</label></td>
@@ -168,13 +177,13 @@
 		//已提交的显示只读
 		
 		
-		if(info!='audit'){
+		 if(info!='audit'){
 			$("input[type='text']").attr("disabled",true);
 			$("input[type='radio']").attr("disabled",true);
 			$("input[type='checkbox']").attr("disabled",true);
 			$("select").attr("disabled",true);
 			$("textarea").attr("disabled",true);
-		}
+		} 
 		
 		$("#id_save_button").click(function() {
 			$(".myerror").remove();
@@ -232,15 +241,46 @@
 	    	if(leng > 0){
 	    		return;
 	    	}else{
-	    		if ($($formName).valid()) {
-					var formjson = $($formName).serialize();
-		 	          $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
-		 	            if (data.success) {
-		 	            	topWin.Dialog.message("保存成功!");
+		    	var status=$("#status").val();
+		    	var id=$("#id").val();
+		    	var decisionAmount=$("#decisionAmount").val();
+		    	var qx=$("#qx").val();
+		    	var SDWUSER1YJ=$("#SDWUSER1YJ").val();
+		    	var SDWUSER2YJ=$("#SDWUSER2YJ").val();
+		    	var SDWUSER3YJ=$("#SDWUSER3YJ").val();
+		    	var decisionRate=$("#decisionRate").val();
+		    	var decisionRefusereason=$("#decisionRefusereason").val();
+		    	var customerId=$("#customerId").val();
+		    	var productId=$("#productId").val();
+		    	alert(status)
+		    	alert(id)
+		    	alert(decisionAmount)
+		    	alert(qx)
+		    	alert(SDWUSER1YJ)
+		    	alert(SDWUSER2YJ)
+		    	alert(SDWUSER3YJ)
+		    	alert(decisionRate)
+		    	alert(decisionRefusereason)
+		    	alert(customerId)
+		    	alert(productId)
+		    	  $.ajax({
+						url : "${contextPath}/jnpad/CustormerSdwUserPc/insertsdjy.json?customerId="+customerId
+						+"&&productId="+productId+"&&decisionRate="+decisionRate+"&&decisionAmount="+decisionAmount
+						+"&&qx="+qx+"&&id="+id+"&&SDWUSER1YJ="+SDWUSER1YJ+"&&SDWUSER2YJ="+SDWUSER2YJ
+						+"&&SDWUSER3YJ="+SDWUSER3YJ+"&&decisionRefusereason="+decisionRefusereason+"&&status="+status,
+						
+						dataType : 'json',
+						type : "get",
+						success : function(data) {
+						if (data.success) {
+							topWin.Dialog.message("保存成功!");
 		 	            	window.location.href="${contextPath}/intopieces/intopiecesdecision/browse.page";
-		 	            }
-		 	          });
-				}
+						 }else{
+								window.top.Dialog.message("系统出现异常,请联系管理员"); 
+					    	}
+						}
+			    });
+				
 	    	}
 			
 		});

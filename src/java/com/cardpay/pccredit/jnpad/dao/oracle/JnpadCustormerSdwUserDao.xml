@@ -244,7 +244,7 @@
 	and t.CAPID=#{id})g
 	
 	where h.capid=#{id}
-	and t.application_id=#{id}'
+	and t.application_id=#{id}
 	</select>
 <!-- PC审贷会 -->
 <select id="selectSDHLists" resultMap="IntoPiecesFilters">
@@ -289,5 +289,78 @@
 				  and (t.sdwuser1=#{userId} or t.sdwuser2=#{userId} or t.sdwuser3=#{userId}) 
 				  </if>
                   )
+	</select>
+	
+<select id="selectCSJLAPC" resultMap="selectAUDITLOG">
+	select examine_amount as examineAmount,examine_lv as examineLv,qx as qx,a.displayName1 as userId_1,b.displayName2 as userId_2,c.displayName3 as userId_3,d.displayName4 as userId_4 
+	,e.displayName5 as name1,f.displayName6 as name2,g.displayName7 as name3
+	from 
+	T_APP_MANAGER_AUDIT_LOG,
+	(select s.display_name as displayName1
+	from T_APP_MANAGER_AUDIT_LOG t,sys_user s 
+	where t.user_id_1=s.id
+	and t.application_id=#{appId})a,
+	(select s.display_name as displayName2
+	from T_APP_MANAGER_AUDIT_LOG t,sys_user s 
+	where t.user_id_2=s.id
+	and t.application_id=#{appId})b,
+	(select s.display_name as displayName3
+	from T_APP_MANAGER_AUDIT_LOG t,sys_user s 
+	where t.user_id_3=s.id
+	and t.application_id=#{appId})c,
+	(select s.display_name as displayName4
+	from T_APP_MANAGER_AUDIT_LOG t,sys_user s 
+	where t.user_id_4=s.id
+	and t.application_id=#{appId})d,
+	(select s.display_name as displayName5
+	from CUSTOMER_APPLICATION_SDH t,sys_user s 
+	where t.SDWUSER1=s.id
+	and t.CAPID=#{appId})e,
+	(select s.display_name as displayName6
+	from CUSTOMER_APPLICATION_SDH t,sys_user s 
+	where t.SDWUSER2=s.id
+	and t.CAPID=#{appId})f,
+	(select s.display_name as displayName7
+	from CUSTOMER_APPLICATION_SDH t,sys_user s 
+	where t.SDWUSER3=s.id
+	and t.CAPID=#{appId})g
+	where application_id=#{appId}
+	</select>
+	
+	<!-- 成功的 -->
+	<select id="findCsSds" resultMap="selectResultMap">
+	select h.sdwuser1yj as SDWUSER1YJ,h.sdwuser2yj as SDWUSER2YJ,h.sdwuser3yj as SDWUSER3YJ,h.sdje as SDJE,h.sdqx as SDQX ,h.sdtime SDTIME ,h.lv as SDLV,t.created_time as created_time,t.examine_amount as examineAmount,t.examine_lv as examineLv,t.qx as qx,a.displayName1 as name1,b.displayName2 as name2,c.displayName3 as name3,d.displayName4 as name4 
+	,e.displayName5 as SDWUSER1,f.displayName6 as SDWUSER2,g.displayName7 as SDWUSER3
+	from CUSTOMER_APPLICATION_SDH h,T_APP_MANAGER_AUDIT_LOG t,
+	(select s.display_name as displayName1
+	from T_APP_MANAGER_AUDIT_LOG t,sys_user s 
+	where t.user_id_1=s.id
+	and t.application_id=#{appId})a,
+	(select s.display_name as displayName2
+	from T_APP_MANAGER_AUDIT_LOG t,sys_user s 
+	where t.user_id_2=s.id
+	and t.application_id=#{appId})b,
+	(select s.display_name as displayName3
+	from T_APP_MANAGER_AUDIT_LOG t,sys_user s 
+	where t.user_id_3=s.id
+	and t.application_id=#{appId})c,
+	(select s.display_name as displayName4
+	from T_APP_MANAGER_AUDIT_LOG t,sys_user s 
+	where t.user_id_4=s.id
+	and t.application_id=#{appId})d,
+	(select s.display_name as displayName5
+	from CUSTOMER_APPLICATION_SDH t,sys_user s 
+	where t.SDWUSER1=s.id
+	and t.CAPID=#{appId})e,
+	(select s.display_name as displayName6
+	from CUSTOMER_APPLICATION_SDH t,sys_user s 
+	where t.SDWUSER2=s.id
+	and t.CAPID=#{appId})f,
+	(select s.display_name as displayName7
+	from CUSTOMER_APPLICATION_SDH t,sys_user s 
+	where t.SDWUSER3=s.id
+	and t.CAPID=#{appId})g
+	where h.capid=#{appId}
+	and t.application_id=#{appId}
 	</select>
 </mapper> 

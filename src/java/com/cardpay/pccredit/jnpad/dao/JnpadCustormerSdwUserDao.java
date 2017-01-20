@@ -42,5 +42,8 @@ public interface JnpadCustormerSdwUserDao {
 	JnpadCsSdModel findCsSd(@Param(value = "id")String id);
 	List<IntoPiecesFilters> selectSDHLists(IntoPiecesFilters filter);
 	int selectSDHCountLists(IntoPiecesFilters filter);
-
+	//PC
+	//查询初审信息
+	AppManagerAuditLog selectCSJLAPC(@Param(value = "appId")String appId);
+	JnpadCsSdModel findCsSds(@Param(value = "appId")String appId);
 }

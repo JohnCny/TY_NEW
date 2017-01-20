@@ -42,6 +42,10 @@ public class JnpadCustormerSdwUserService {
 	public AppManagerAuditLog selectCSJLA(@Param(value = "id")String id){
 		return SdwUserDao.selectCSJLA(id);
 	}
+	//PC
+	public AppManagerAuditLog selectCSJLAPC(@Param(value = "appId")String appId){
+		return SdwUserDao.selectCSJLAPC(appId);
+	}
 	
 	public int updateCustormerSdwUser(CustormerSdwUser sdwuser){
 		return SdwUserDao.updateCustormerSdwUser(sdwuser);
@@ -67,12 +71,15 @@ public class JnpadCustormerSdwUserService {
 	public JnpadCsSdModel findCsSd(@Param(value = "id")String id){
 		return SdwUserDao.findCsSd(id);
 	}
-
+	
 	public QueryResult<IntoPiecesFilters> selectSDHs(IntoPiecesFilters filter) {
 		// TODO Auto-generated method stub
 		List<IntoPiecesFilters> plans = SdwUserDao.selectSDHLists(filter);
 		int size = SdwUserDao.selectSDHCountLists(filter);
 		QueryResult<IntoPiecesFilters> queryResult = new QueryResult<IntoPiecesFilters>(size,plans);
 		return queryResult;
+	}
+	public JnpadCsSdModel findCsSds(@Param(value ="appId")String appId){
+		return SdwUserDao.findCsSds(appId);
 	}
 }

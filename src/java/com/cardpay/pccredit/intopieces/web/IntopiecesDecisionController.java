@@ -22,6 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 
+
+
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.model.CustomerFirsthendBaseLocal;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
@@ -46,6 +48,8 @@ import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitS
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.intopieces.web.AddIntoPiecesForm;
 import com.cardpay.pccredit.intopieces.web.LocalImageForm;
+import com.cardpay.pccredit.jnpad.model.JnpadCsSdModel;
+import com.cardpay.pccredit.jnpad.service.JnpadCustormerSdwUserService;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
 import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.service.ProductService;
@@ -72,6 +76,8 @@ public class IntopiecesDecisionController extends BaseController {
 	final public static String AREA_SEPARATOR  = "_";
 
 	Logger logger = Logger.getLogger(this.getClass());
+	@Autowired
+	private JnpadCustormerSdwUserService SdwUserService;
 	
 	@Autowired
 	private CustomerInforService customerInforService;
@@ -142,6 +148,8 @@ public class IntopiecesDecisionController extends BaseController {
 		ProductAttribute producAttribute =  productService.findProductAttributeById(customerApplicationInfo.getProductId());
 		List<AppManagerAuditLog> appManagerAuditLog = productService.findAppManagerAuditLog(appId,"1");
 		CustomerInfor  customerInfor  = intoPiecesService.findCustomerManager(customerApplicationInfo.getCustomerId());
+		AppManagerAuditLog result=SdwUserService.selectCSJLAPC(appId);
+		JnpadCsSdModel sdwinfo=SdwUserService.findCsSds(appId);
 		
 		JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_decision/input_decision", request);
 		mv.addObject("customerApplicationInfo", customerApplicationInfo);
@@ -149,6 +157,8 @@ public class IntopiecesDecisionController extends BaseController {
 		mv.addObject("customerApplicationProcess", processForm);
 		mv.addObject("appManagerAuditLog", appManagerAuditLog.get(0));
 		mv.addObject("custManagerId", customerInfor.getUserId());
+		mv.addObject("result", result);
+		mv.addObject("sdwinfo", sdwinfo);
 		return mv;
 	}
 	
