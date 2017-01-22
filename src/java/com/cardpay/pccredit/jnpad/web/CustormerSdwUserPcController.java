@@ -1,9 +1,14 @@
 package com.cardpay.pccredit.jnpad.web;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+
+import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,9 +18,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cardpay.pccredit.intopieces.model.AppManagerAuditLog;
+import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.model.IntoPiecesFilters;
+import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.jnpad.model.CustormerSdwUser;
+import com.cardpay.pccredit.jnpad.model.JnpadCsSdModel;
 import com.cardpay.pccredit.jnpad.service.JnpadCustormerSdwUserService; 
+import com.cardpay.pccredit.riskControl.model.RiskCustomer;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
@@ -89,18 +98,103 @@ public class CustormerSdwUserPcController extends BaseController{
 		}
 	}
 	
+	
 	/**
-	 * 当前审贷委的审贷PC
+	 * 审贷决议
+	 * @param CustormerSdwUser
+	 * @param request
+	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value="SDHbowser.page", method = { RequestMethod.GET })
-	public AbstractModelAndView change(@ModelAttribute IntoPiecesFilters filter,HttpServletRequest request) {
+	@RequestMapping(value="insertsdjy.json", method = { RequestMethod.GET })
+	public JRadReturnMap insertsdjyPC(@ModelAttribute RiskCustomer RiskCustomer,@ModelAttribute CustormerSdwUser CustormerSdwUser,@ModelAttribute IntoPieces IntoPieces,HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
-		filter.setUserId(user.getId());
-		QueryResult<IntoPiecesFilters> result =SdwUserService.selectSDHs(filter);
-		JRadPagedQueryResult<IntoPiecesFilters> pagedResult = new JRadPagedQueryResult<IntoPiecesFilters>(filter, result);
-		JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_decision/intopieces_sdh", request);
-		mv.addObject(PAGED_RESULT, pagedResult);
-		return mv;
+		CustormerSdwUser.setSDJE(request.getParameter("decisionAmount"));
+		CustormerSdwUser.setSDTIME(new Date());
+		CustormerSdwUser.setSDQX(request.getParameter("qx"));
+		CustormerSdwUser.setSDWJLY(user.getId());
+		CustormerSdwUser.setSDWUSER1YJ(request.getParameter("SDWUSER1YJ"));
+		CustormerSdwUser.setSDWUSER2YJ(request.getParameter("SDWUSER2YJ"));
+		CustormerSdwUser.setSDWUSER3YJ(request.getParameter("SDWUSER3YJ"));
+		CustormerSdwUser.setLV(request.getParameter("decisionRate"));
+		CustormerSdwUser.setCAPID(request.getParameter("id"));
+		int a=SdwUserService.updateCustormerSdwUser(CustormerSdwUser);
+		if(a>0){
+			if(request.getParameter("status").equals("approved")){
+				IntoPieces.setFinal_approval(request.getParameter("decisionAmount"));
+				IntoPieces.setStatus("approved");
+				IntoPieces.setId(request.getParameter("id"));
+				IntoPieces.setCreatime(new Date());
+				int b=SdwUserService.updateCustormerInfoSdwUser(IntoPieces);
+				if(b>0){
+					returnMap.put("MESSAGE", "提交成功");
+					return returnMap;
+				}else{
+					returnMap.put("MESSAGE", "提交失败");
+					return returnMap;
+				}
+			}else if(request.getParameter("status").equals("refuse")){
+				int a1=SdwUserService.updateCustormerSdwUser(CustormerSdwUser);
+				IntoPieces.setStatus("refuse");
+				IntoPieces.setCreatime(new Date());
+				IntoPieces.setId(request.getParameter("id"));
+				IntoPieces.setUserId(user.getId());
+				IntoPieces.setREFUSAL_REASON(request.getParameter("decisionRefusereason"));
+				int c=SdwUserService.updateCustormerInfoSdwUser(IntoPieces);
+				if(c>0){
+					int d=SdwUserService.updateCustormerProSdwUser(IntoPieces);
+					if(d>0){
+						RiskCustomer.setCustomerId(request.getParameter("customerId"));
+						RiskCustomer.setProductId(request.getParameter("productId"));
+						RiskCustomer.setRiskCreateType("manual");
+						RiskCustomer.setRefuseReason(request.getParameter("decisionRefusereason"));
+						RiskCustomer.setCREATED_TIME(new Date());
+						String pid=null;
+						if(null==pid){
+							pid=UUID.randomUUID().toString();
+						}
+						RiskCustomer.setId(pid);
+						int e=SdwUserService.insertRiskSdwUser(RiskCustomer);
+						if(e>0){
+							returnMap.put("MESSAGE", "提交成功");
+							return returnMap;
+						}else{
+							returnMap.put("MESSAGE", "提交失败");
+							return returnMap;
+						}
+					}else{
+						returnMap.put("MESSAGE", "提交失败");
+						return returnMap;
+					}
+				}else{
+					returnMap.put("MESSAGE", "提交失败");
+					return returnMap;
+				}
+			}else if(request.getParameter("status").equals("nopass_replenish")){
+				int a2=SdwUserService.updateCustormerSdwUser(CustormerSdwUser);
+				IntoPieces.setStatus("nopass_replenish");
+				IntoPieces.setId(request.getParameter("id"));
+				IntoPieces.setFallBackReason(request.getParameter("decisionRefusereason"));
+				IntoPieces.setUserId(user.getId());
+				IntoPieces.setCreatime(new Date());
+				int c=SdwUserService.updateCustormerInfoSdwUser(IntoPieces);
+				if(c>0){
+					int d=SdwUserService.updateCustormerProSdwUser(IntoPieces);
+					if(d>0){
+						returnMap.put("MESSAGE", "提交成功");
+						return returnMap;
+					}else{
+						returnMap.put("MESSAGE", "提交失败");
+						return returnMap;
+					}
+				}
+			}
+		}else{
+			returnMap.put("MESSAGE", "提交失败");
+			return returnMap;
+		}
+		return returnMap;
 }
+
 }

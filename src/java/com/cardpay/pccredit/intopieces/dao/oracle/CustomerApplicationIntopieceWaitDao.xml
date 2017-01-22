@@ -332,7 +332,7 @@
 				  CUSTOMER_APPLICATION_INFO c,CUSTOMER_APPLICATION_SDH t,sys_user s,
 				  product_attribute p,BASIC_CUSTOMER_INFORMATION b
 				  where c.id=t.capid
-				  and s.id=b.user_id and b.id=c.customer_id and c.product_id=p.id and t.SDTIME is  null
+				  and s.id=b.user_id and b.id=c.customer_id and c.product_id=p.id 
 				  and (t.sdwuser1=#{userId} or t.sdwuser2=#{userId} or t.sdwuser3=#{userId}) 
 		 <if test="cardId!=null and cardId!=''">
 			and b.card_id=#{cardId}

@@ -19,8 +19,8 @@ public class JnpadCsSdModel {
 	private String name2;
 	private String name3;
 	private String created_time;
-	private String refusalreaso;
-	private String FALLBACK_REASON;
+	private String refusalreaso;//拒绝
+	private String FALLBACK_REASON;//退回
 	public String getFALLBACK_REASON() {
 		return FALLBACK_REASON;
 	}
