@@ -19,6 +19,20 @@ public class JnpadCsSdModel {
 	private String name2;
 	private String name3;
 	private String created_time;
+	private String refusalreaso;
+	private String FALLBACK_REASON;
+	public String getFALLBACK_REASON() {
+		return FALLBACK_REASON;
+	}
+	public void setFALLBACK_REASON(String fALLBACK_REASON) {
+		FALLBACK_REASON = fALLBACK_REASON;
+	}
+	public String getRefusalreaso() {
+		return refusalreaso;
+	}
+	public void setRefusalreaso(String refusalreaso) {
+		this.refusalreaso = refusalreaso;
+	}
 	private String name4;
 	public String getName4() {
 		return name4;
