@@ -253,19 +253,30 @@
 		<item name="0" title="否" />
 	</dictionary>
 	
-	<dictionary name="intopieces_decision" title="审议结论">
+	<!-- <dictionary name="intopieces_decision" title="审议结论">
 		<item name="APPROVE" title="通过" />
 		<item name="REJECTAPPROVE" title="拒绝" />
 		<item name="RETURNAPPROVE" title="退回" />
+		<item name="approved" title="通过" />
+		<item name="refuse" title="拒绝" />
+		<item name="nopass_replenish" title="补充调查" />
+		<item name="nopass_re" title="退回重新调查" />
+	</dictionary> -->
+	<dictionary name="intopieces_decision" title="审议结论">
+		<item name="approved" title="通过" />
+		<item name="refuse" title="拒绝" />
+		<item name="nopass_replenish" title="退回" />
 		<!-- <item name="approved" title="通过" />
 		<item name="refuse" title="拒绝" /> -->
 		<!-- <item name="nopass_replenish" title="补充调查" />
 		<item name="nopass_re" title="退回重新调查" /> -->
 	</dictionary>
 	
-	<dictionary name="intopieces_decision_chusheng" title="审议结论">
+	
+	<dictionary name="intopieces_decision_chusheng" title="初审结论">
 		<item name="APPROVE" title="通过" />
 		<item name="REJECTAPPROVE" title="拒绝" />
+		<item name="RETURNAPPROVE" title="退回" />
 		<!-- <item name="approved" title="通过" />
 		<item name="refuse" title="拒绝" /> -->
 		<!-- <item name="nopass_replenish" title="补充调查" />
