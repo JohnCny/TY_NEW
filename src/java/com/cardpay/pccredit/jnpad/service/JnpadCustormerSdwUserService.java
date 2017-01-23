@@ -95,4 +95,17 @@ public class JnpadCustormerSdwUserService {
 	public int selectSDH1Count(@Param(value = "userId")String userId){
 		return SdwUserDao.selectSDH1Count(userId);
 	}
+	//PC
+	public AppManagerAuditLog selectCSJLAPC(@Param(value = "appId")String appId){
+		return SdwUserDao.selectCSJLAPC(appId);
+	}
+	public JnpadCsSdModel findCsSds(@Param(value ="appId")String appId){
+		return SdwUserDao.findCsSds(appId);
+	}
+	public JnpadCsSdModel findCsSdRefuses(@Param(value = "appId")String appId){
+		return SdwUserDao.findCsSdRefuses(appId);
+	}
+	public JnpadCsSdModel findCsSdBlacks(@Param(value = "appId")String appId){
+		return SdwUserDao.findCsSdBlacks(appId);
+	}
 }

@@ -64,7 +64,7 @@
             </colgroup>
            #foreach ($wait in $result.items)
             <tr ondblclick="javascript:$('#id_change_button').click();">
-              <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.serialNumber@$!wait.customerId@$!wait.id@$!wait.applyQuota@$!wait.cardId"/></td>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.serialNumber@$!wait.customerId@$!wait.id@$!wait.applyQuota@$!wait.cardId@$!wait.productName"/></td>
               <td nowrap="nowrap">$!wait.chineseName</td>
               <td nowrap="nowrap">$!wait.productName</td>
               <td nowrap="nowrap">$format.formatNumber($!wait.applyQuota,2,1)</td>
@@ -134,6 +134,7 @@
 		$("#id_report_button").click(function() {
 			if ($(".checkbox :checked").length == 1) {
 				var rowid = $("input[name='checkbox']:checked").val();
+				if(rowid.split("@")[5]!="融耀卡"){
 				var url = "${contextPath}/customer/customerInfor_wh_ty/report_jy.page?appId=" + rowid.split("@")[2]+"&&cardId="+rowid.split("@")[4];
 				if (opsObj.formObj) {
 	                // 回调URL
@@ -151,6 +152,9 @@
 	                }
 	            }
 				window.location.href = url;
+				}else{
+					Dialog.message("荣耀卡无调查报告")
+				}
 			}
 			else{
 				Dialog.message("请选择一行!");

@@ -53,5 +53,12 @@ public interface JnpadCustormerSdwUserDao {
 	int selectCount(@Param(value = "id")String id);
 	
 	int selectSDH1Count(@Param(value = "userId")String userId);
-
+	//PC
+		//查询初审信息
+		AppManagerAuditLog selectCSJLAPC(@Param(value = "appId")String appId);
+		JnpadCsSdModel findCsSds(@Param(value = "appId")String appId);
+		//查询审贷后拒绝的进件信息
+		JnpadCsSdModel findCsSdRefuses(@Param(value = "appId")String appId);
+		//查询审贷后回退的进件信息
+		JnpadCsSdModel findCsSdBlacks(@Param(value = "appId")String appId);
 }
