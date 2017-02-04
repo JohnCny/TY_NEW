@@ -20,6 +20,7 @@ import com.cardpay.pccredit.postLoan.model.MibusidateView;
 import com.cardpay.pccredit.postLoan.model.Rarepaylist;
 import com.cardpay.pccredit.postLoan.model.RarepaylistForm;
 import com.cardpay.pccredit.postLoan.model.RefuseMibusidata;
+import com.cardpay.pccredit.postLoan.model.TyRarepaylistForm;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 
@@ -130,7 +131,7 @@ public class PostLoanService {
 	}
 	
 	
-	public List<RarepaylistForm> selectRarepaylistfoInfoByBusicode(FcloaninfoFilter filter) {
+	public List<TyRarepaylistForm> selectRarepaylistfoInfoByBusicode(FcloaninfoFilter filter) {
 		// TODO Auto-generated method stub
 		
 		return postLoanDao.selectRarepaylistfoInfoByBusicode(filter);

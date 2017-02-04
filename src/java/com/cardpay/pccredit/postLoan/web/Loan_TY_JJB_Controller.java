@@ -53,6 +53,7 @@ import com.cardpay.pccredit.postLoan.model.MibusidateView;
 import com.cardpay.pccredit.postLoan.model.Rarepaylist;
 import com.cardpay.pccredit.postLoan.model.RarepaylistForm;
 import com.cardpay.pccredit.postLoan.model.RefuseMibusidata;
+import com.cardpay.pccredit.postLoan.model.TyRarepaylistForm;
 import com.cardpay.pccredit.postLoan.service.PostLoanService;
 import com.cardpay.pccredit.report.model.CustomerMoveForm;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
@@ -693,8 +694,8 @@ public class Loan_TY_JJB_Controller extends BaseController {
 			filter.setRapayinterest(rapayinterest);
 			filter.setRepayamt(repayamt);
 			JRadModelAndView mv = new JRadModelAndView("/postLoan/lsh_info_browse", request);
-			List<RarepaylistForm> result = postLoanService.selectRarepaylistfoInfoByBusicode(filter);
-			RarepaylistForm rarepaylist = result.get(0);
+			List<TyRarepaylistForm> result = postLoanService.selectRarepaylistfoInfoByBusicode(filter);
+			TyRarepaylistForm rarepaylist = result.get(0);
 			mv.addObject("rarepaylist", rarepaylist);
 			return mv;
 			

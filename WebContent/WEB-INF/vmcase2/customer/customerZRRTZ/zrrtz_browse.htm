@@ -10,27 +10,13 @@
         <div class="search">
           <form id="submitForm" action="${modulePath}/zrrtz.json" method="GET">
             <ul>
-             #if($!type!=6)
               <li>
-									<table><tr><td><label for="entryTime">开始时间:</label></td>
-									<td><input class="rinpsty" type="text" id="fdate" name="fdate" value=""  onmouseover="_calendar()" readonly="readonly"/></td>
-									<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-									<td><label for="entryTime">结束时间:</label></td>
-									<td><input class="rinpsty" type="text" id="ldate" name="ldate" value=""  onmouseover="_calendar()" readonly="readonly"/></span></td></tr></table>
+					<table><tr><td><label for="entryTime">开始时间:</label></td>
+					<td><input class="rinpsty" type="text" id="fdate" name="fdate" value=""  onmouseover="_calendar()" readonly="readonly"/></td>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+					<td><label for="entryTime">结束时间:</label></td>
+					<td><input class="rinpsty" type="text" id="ldate" name="ldate" value=""  onmouseover="_calendar()" readonly="readonly"/></span></td></tr></table>
               </li>
-               #else
-               <li>
-           		<span> 客户经理:&nbsp;&nbsp;&nbsp;&nbsp;
-           						<select id="type" name="userId">
-							   <option value="">-----请选择------</option>
-							   #foreach ($m in $managers)
-                 			  <option value="$!m.id">$!m.displayName</option>
-                 			   #end
-                	</select>
-			    </span>
-              </li>
-               #end
-             
               
               <li class="search_button">
                 <input id="id_browse1_button" type="submit" value="#i18n('button.browse')" class="search_button_inquiry"
@@ -86,12 +72,12 @@
       </div>
       <div class="pagebar">
         <div class="controlbtn">
-          #if($!type==6)
-           <a id="pigeonhole"  class="btn_g" >纸质归档</a>
-           #else
-         <a id="addNew" class="btn_g" href="javascript:void(0);" title="#i18n('button.display.hint')">数据填补</a>
-          <a id="export" class="btn_g" href="javascript:void(0);" title="#i18n('button.export.hint')">excle导出</a>
-         #end   
+          <!-- #btnpriv("query")<a id="query" class="btn_gr" href="javascript:void(0);" title="#i18n('button.display.hint')">数据详情</a>#end -->
+         <a id="addNew" class="btn_gr" href="javascript:void(0);" title="#i18n('button.display.hint')">数据填补</a>
+         <a id="export" class="btn_g" href="javascript:void(0);" title="#i18n('button.export.hint')">excle导出</a>
+          <!-- #btnpriv("confignodeintopieces")<a id="id_config_button" class="btn_g" href="javascript:void(0);" title="配置选中产品进件审批流程节点">配置进件审批流程</a>#end -->
+           <!--#btnpriv("confignodeamountadjustment")<a id="id_adjust_button" class="btn_g" href="javascript:void(0);" title="配置选中产品调额审批流程节点">配置调额审批流程</a>#end -->
+         <!--  #btnpriv("display")<a id="id_display_button" class="btn_gr" href="javascript:void(0);" title="#i18n('button.display.hint')">#i18n("button.display")</a>#end -->
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
@@ -153,28 +139,7 @@
                 Dialog.message("请选择一行");
             }
         });
-		$("#pigeonhole").click(function() {
-            if ($(".checkbox :checked").length == 1) {
-            	var userId=$("#userIds").val();
-              	var id= $($(".checkbox :checked")[0]).attr("value");
-                $.ajax({
-					url : "${contextPath}/customer/customer_ZRRTZ/addCustomerPigeonhole.json?id="+id+"&&userId="+userId ,
-					dataType : 'json',
-					type : "get",
-					success : function(data) {
-					if (data.success) {
-						alert(data.mes);
-					var url = "${modulePath}/zrrtz.json" ;
-				    window.location.href = url;	
-					 }else{
-							window.top.Dialog.message("系统出现异常,请联系管理员"); 
-				    	}
-					}
-		    });
-            } else {
-                Dialog.message("请选择一行");
-            }
-		}); 
+		
 	});
 </script>
 #parse ("common/iframe_page_footer.htm")

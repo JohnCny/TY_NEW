@@ -2,6 +2,7 @@ package com.cardpay.pccredit.report.web;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -56,6 +57,20 @@ public class DisburseLoanController extends BaseController{
 	public AbstractModelAndView queryHaveBeenLoan(@ModelAttribute ReportFilter filter,HttpServletRequest request) {
 		JRadModelAndView mv = new JRadModelAndView("/report/disburseLoan/disburseLoan", request);
 		filter.setRequest(request);
+		String certiCode=request.getParameter("certiCode");
+		String custManagerName=request.getParameter("custManagerName");
+		String organName=request.getParameter("organName");
+		 try {
+			 if(certiCode!=null){ certiCode=new String(certiCode.getBytes("iso-8859-1"),"utf-8");}
+			 if(custManagerName!=null){ custManagerName=new String(custManagerName.getBytes("iso-8859-1"),"utf-8");}
+			 if(organName!=null){ organName=new String(organName.getBytes("iso-8859-1"),"utf-8");}
+			filter.setCertiCode(certiCode);
+			filter.setCustManagerName(custManagerName);
+			filter.setOrganName(organName);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// 查询团队
 		List<SxOutputData> team = services.findteam();
 	    QueryResult<YffdktjbbForm> result =  customerTransferFlowService.findYffdktjbbFormList(filter);

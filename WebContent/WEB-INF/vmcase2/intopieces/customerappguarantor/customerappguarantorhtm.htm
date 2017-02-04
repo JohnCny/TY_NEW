@@ -17,7 +17,8 @@
               <col width="10%" />
               <col width="30%" />
             </colgroup>
-              <tr><td class="titlec" colspan="4" style="text-align: center;">添加担保人信息</td></tr>
+              <tr>
+              <td class="titlec" colspan="4" style="text-align: center;">添加担保人信息</td></tr>
             <tr>
               <td class="titlefc3"><label for="chineseName">保证人/抵押人/质押人姓名:</label></td>
               <td><input class="rinpsty"  type="text" id="guarantorMortgagorPledge" name="guarantorMortgagorPledge" value="" /></td>
@@ -48,7 +49,7 @@
             </tr>
             <tr>
              	<td class="titlefc3"><label for="cardId">证件号码:</label></td>
-                <td><input class="rinpsty"  type="text" name="documentNumber" id="documentNumber"  value="" /></td>
+             	<td><input class="rinpsty"  type="text" name="documentNumber" id="documentNumber"  value="" /></td>
             </tr>
           </table>
         </div>
@@ -57,48 +58,49 @@
       <!-- #i18n('button.save') -->
         <input id="id_save_button" type="button" value="添加" class="current" />
          <input id="id_find_button" type="button" value="显示当前用户的担保情况" class="current" />
+         <input type="button" class="btn_g" onclick="returnClick();" value="返回" /> 
       <br/><br/><br/>
+      	<span id="span1"  style="display: none">
       	#foreach ($listss in $lists)
-      	<span id="span1" style="display: none">
       		 担保人 $!listss.guarantorMortgagorPledge
       		 为客户 $!listss.chinesename
       		 担保贷款$!listss.applyquota万.
-       </span>
-       <br/>
+       
+         <br/>
       	#end
       	<br/>
-      	#foreach ($lists1 in $lists1)
-      <span id="span2" style="display: none">
+       	#foreach ($lists1 in $lists1)
+    
       	 客户 $!lists1.guarantorMortgagorPledge
       	 为客户$!lists1.chinesename
-      	 担保贷款$!lists1.applyquota
-      	 万…客户N为客户X担保贷款XX万。
-      	</span>
+      	 担保贷款$!lists1.applyquota万
+      	
       	 #end
       	 <br/>
       	#foreach ($lists2 in $lists2)
-      	<span id="span3" style="display: none">
+      
       	 客户 $!lists2.guarantorMortgagorPledge
       	 为客户$!lists2.chinesename
       	 担保贷款$!lists2.applyquota万。
-      	 </span>
+      	
       	  #end
       	  <br/>
       	 #foreach ($lists3 in $lists3)
-      	<span id="span4" style="display: none">
+      
       	 客户 $!lists3.guarantorMortgagorPledge
       	 为客户$!lists3.chinesename
       	 担保贷款$!lists3.applyquota万。
-      	 </span>
+      	 
       	  #end
       	  <br/>
       	 #foreach ($lists4 in $lists4)
-      	<span id="span5" style="display: none">
+      
       	 客户 $!lists4.guarantorMortgagorPledge
       	 为客户$!lists4.chinesename
       	 担保贷款$!lists4.applyquota万。
+      	
+      	 #end 
       	 </span>
-      	 #end
       	  <div class="place">
       	</div>
       </div>
@@ -113,63 +115,57 @@
 	var layout = new FormsLayout("formsId");
 	window.top.currentWindow.setLayout(layout);
 	
-	$(document).ready(function() {		
-		$("#id_save_button").click(function() {
-			
-			 $("#cardIde").remove();	
-				var cardType = $("select[name=cardType]").val();
-				if( cardType == "0"){
-			   
-				var cardId = $("#cardId").val();
-				if(cardId !=""){
-				var idReg = /(^\d{15}$)|(^\d{17}([0-9]|[X]|[x])$)/;
-			
-			     if(idReg.test(cardId)){
-			    	 $("#cardIde").remove();	
-			       
-			        }else{
-				       $("input[name='cardId']").after("<label class='error' id='cardIde' generated='true' ><br>请输入正确的身份证号(15/18位)</label>");   
-			     }	
-				 }
+	$(document).ready(function() {	
+	      $("#id_save_button").click(function() {
 				
-				}
-			var leng = 0;
-	    	 leng = $("#cardIde").length;
-	    	if(leng > 0){
-	    		return;
-	    	}else{
-	   			if ($($formName).valid()) {
-	   				var formjson = $($formName).serialize();
-	   	   	        var url = $($formName).attr("action");
-	   				$.ajax({
-	   					url : url,
-	   					type : "post",
-	   					data : formjson,
-	   					success : function(data) {
-	   						if (data.success) {
-	   							topWin.Dialog.message("保存成功!");
-	   		   	            	window.location.reload() ;
-	   						}else{
-	   							topWin.Dialog.message(data.message);
-	   					    }
-	   					}
-	   				});
-	   			}
-	   	        
-	    	}
-	      });
+				 $("#cardIde").remove();	
+					var leng = 0;
+			    	 leng = $("#documentNumber").length;
+			    	 var documentNumbervalue=$("#documentNumber").val();
+			    	 var gmldvalue=$("#guarantorMortgagorPledge").val();
+		    	if(documentNumbervalue!=null&& documentNumbervalue!="" && gmldvalue!=null&& gmldvalue!=""){
+		    		var idReg = /(^\d{15}$)|(^\d{17}([0-9]|[X]|[x])$)/;
+					
+				     if(idReg.test(documentNumbervalue)){
+				    	 $("#cardIde").remove();	
+				    	 if ($($formName).valid()) {
+				   				var formjson = $($formName).serialize();
+				   	   	        var url = $($formName).attr("action");
+				   				$.ajax({
+				   					url : url,
+				   					type : "POST",
+				   					data : formjson,
+				   					success : function(data) {
+				   						if (data.success) {
+				   							topWin.Dialog.message("保存成功!");
+				   		   	            	window.location.reload() ;
+				   						}else{
+				   							topWin.Dialog.message(data.message);
+				   					    }
+				   					}
+				   				});
+				   			}
+				        }else{
+					       $("input[name='documentNumber']").after("<label class='error' id='cardIde' generated='true' ><br>请输入正确的身份证号(15/18位)</label>");   
+				     }
+		    	}else{
+		    		topWin.Dialog.message("姓名与身份证不能为空");
+		    		return;
+		    	}
+		      }); 
+
 		
 		$("#id_find_button").click(function() {
 			var ui=document.getElementById("span1");
 			ui.style.display="";
-			var ui=document.getElementById("span2");
+			/* var ui=document.getElementById("span2");
 			ui.style.display="";
 			var ui=document.getElementById("span3");
 			ui.style.display="";
 			var ui=document.getElementById("span4");
 			ui.style.display="";
 			var ui=document.getElementById("span5");
-			ui.style.display="";
+			ui.style.display=""; */
 		})
 		
 		$("#cardId").change(function (){
@@ -217,7 +213,7 @@
 	
 	//返回
 	function returnClick(){
-		window.location.href= contextPath + "/customer/basiccustomerinforCreate/insert.page";
+		window.location.href= contextPath + "/intopieces/addIntopieces/browseProduct.page";
 	}
 	
 	
