@@ -2348,7 +2348,6 @@ public class CustomerInforService {
 	/**
 	 * 查询流水信息
 	 */
-	
 	public QueryResult<TyRepayLsz> findRepayLszByFilter(CustomerInfoLszFilter filter) {
 		List<TyRepayLsz> plans = customerInforDao.findRepayLszList(filter);
 		int size = customerInforDao.findRepayLszCountList(filter);
@@ -2462,10 +2461,10 @@ public class CustomerInforService {
 		String dateString = format.format(new Date());
 		log.info(dateString+"******************开始读取原始信息文件********************"); 
 		//+dateString
-	        String gzFile = CardFtpUtils.bank_ftp_down_path;
+	        String gzFile = CardFtpUtils.bank_ftp_down_path+File.separator+dateString;
 	        for(int i=0;i<fileTxt.length;i++){
 	        	//File.separator
-				String url = gzFile+fileTxt[i];
+				String url = gzFile+File.separator+fileTxt[i];
 				log.info(url);
 				File f = new File(url);
 				if(f.exists()){
@@ -2501,43 +2500,43 @@ public class CustomerInforService {
 										log.info("*****************人员管理参数表********************");  
 										System.out.println(1111);
 										//+File.separator
-										saveRyglDataFile(gzFile+fn,dateString);
+										saveRyglDataFile(gzFile+File.separator+fn,dateString);
 										System.gc();
 									}
 									if(fn.startsWith("kkh_grxx")){
 										log.info("*****************客户基本表********************");  
-										saveBaseDataFile(gzFile+fn,dateString);
+										saveBaseDataFile(gzFile+File.separator+fn,dateString);
 										System.gc();
 									}
 									if(fn.startsWith("kkh_grjtcy")){
 										log.info("*****************客户家庭关系表********************");  
-										saveCyDataFile(gzFile+fn,dateString);
+										saveCyDataFile(gzFile+File.separator+fn,dateString);
 									}
 									if(fn.startsWith("kkh_grjtcc")){
 										log.info("*****************客户家庭财产表********************");  
-										saveCcDataFile(gzFile+fn,dateString);
+										saveCcDataFile(gzFile+File.separator+fn,dateString);
 									}
 									if(fn.startsWith("kkh_grxxll")){
 										log.info("*****************客户学习表********************");  
-										saveStudyDataFile(gzFile+fn,dateString);
+										saveStudyDataFile(gzFile+File.separator+fn,dateString);
 									}
 									if(fn.startsWith("kkh_grgzll")){
 										log.info("*****************客户工作履历表********************");  
-										saveWorkDataFile(gzFile+fn,dateString);
+										saveWorkDataFile(gzFile+File.separator+fn,dateString);
 									}
 									if(fn.startsWith("kkh_grscjy")){
 										log.info("*****************客户生产经营表********************");  
-									saveManageDataFile(gzFile+fn,dateString);
+									saveManageDataFile(gzFile+File.separator+fn,dateString);
 								}
 									if(fn.startsWith("kkh_grrbxx")){
 										log.info("*****************客户入保信息表********************");  
-										saveSafeDataFile(gzFile+fn,dateString);
+										saveSafeDataFile(gzFile+File.separator+fn,dateString);
 									}else if(fn.startsWith("cxd_dkcpmc")){
 										log.info("*****************产品信息********************");  
-										saveProductDataFile(gzFile+fn,dateString);
+										saveProductDataFile(gzFile+File.separator+fn,dateString);
 									}else if(fn.startsWith("kkh_hmdgl")){
 										log.info("*****************黑名单********************");  
-										saveHMDDataFile(gzFile+fn,dateString);
+										saveHMDDataFile(gzFile+File.separator+fn,dateString);
 									}
 								} 
 							}catch(Exception e){
@@ -2562,12 +2561,12 @@ public class CustomerInforService {
 		DateFormat format = new SimpleDateFormat("yyyyMMdd");
 		String dateString = format.format(new Date());
 		//+dateString
-		String gzFile = CardFtpUtils.bank_ftp_down_path;
+		String gzFile = CardFtpUtils.bank_ftp_down_path+File.separator+dateString;
 
 		log.info(dateString+"******************开始读取贷款文件********************");  
         for(int i=0;i<fileTxtRepay.length;i++){
         	//+File.separator
-			String url = gzFile+fileTxtRepay[i];
+			String url = gzFile+File.separator+fileTxtRepay[i];
 			log.info(url);
 			File f = new File(url);
 			if(f.exists()){
@@ -2622,19 +2621,19 @@ public class CustomerInforService {
 								if(fn.startsWith("kdk_lsz")){
 									log.info("*****************流水账信息********************");
 									//+File.separator
-									saveLSZDataFile(gzFile+fn,dateString);
+									saveLSZDataFile(gzFile+File.separator+fn,dateString);
 								}else if(fn.startsWith("kdk_yehz")){
 									log.info("*****************余额汇总信息********************");  
-									saveYEHZDataFile(gzFile+fn,dateString);
+									saveYEHZDataFile(gzFile+File.separator+fn,dateString);
 								}else if(fn.startsWith("kdk_tkmx")){
 									log.info("*****************借据表信息********************");  
-									saveTKMXDataFile(gzFile+fn,dateString);
+									saveTKMXDataFile(gzFile+File.separator+fn,dateString);
 								}else if(fn.startsWith("cxd_jggl")){
 									log.info("*****************机构信息********************");  
-									saveJGDataFile(gzFile+File.separator+fn,dateString);
+									saveJGDataFile(gzFile+File.separator+File.separator+fn,dateString);
 								}else if(fn.startsWith("kdk_jh")){
 									log.info("*****************还款计划信息********************");  
-									saveJHDataFile(gzFile+fn,dateString);
+									saveJHDataFile(gzFile+File.separator+fn,dateString);
 								}
 							} 
 						}catch(Exception e){

@@ -317,8 +317,11 @@ public class AddIntoPiecesControl extends BaseController {
 				Applicationid.setRequest(request);
 			 //services 因为银行客户担保连一条不能超过5 个人 所以 到五终止
 				//显示当前为当前客户担保的担保信息 (根据当前的进件表id)
-			 String infoid= Applicationid.getApplicationId();
-			 	List<CustomerApplicationGuarantor>lists=service.findguarantor(infoid);
+				JRadModelAndView mv = new JRadModelAndView("/intopieces/customerappguarantor/customerappguarantorhtm",request);
+				String infoid= Applicationid.getApplicationId();
+			//	String infoid="8a855a4759b9f24c0159ba7619360002";
+			 if(infoid!=null&& infoid!=""){
+				 List<CustomerApplicationGuarantor>lists=service.findguarantor(infoid);
 			 	//显示担保连上的信息   Applicationid.getCustomerId();   根据传过来的customerid
 			 	String customerid=Applicationid.getCustomerId();
 			 	List<CustomerApplicationGuarantor>lists1=service.findguarantorcustomer(customerid);
@@ -337,20 +340,21 @@ public class AddIntoPiecesControl extends BaseController {
 			 		lists3=service.findguarantorcustomer(customerid);
 			 	}
 			 	//5
-			 	if(lists2!=null&&lists3.size()!=0){
+			 	if(lists3!=null&&lists3.size()!=0){
 			 		customerid=lists3.get(0).getId();
 			 		lists4=service.findguarantorcustomer(customerid);
 			 	}
+			 		mv.addObject("lists", lists);
+			 		mv.addObject("lists1", lists1);
+			 		mv.addObject("lists2", lists2);
+			 		mv.addObject("lists3", lists3);
+			 		mv.addObject("lists4", lists4);
+			 	 }
 				
 			 	QueryResult<LocalImageForm> result =  addIntoPiecesService.findLocalImageByProductAndCustomer(Applicationid);
 				JRadPagedQueryResult<LocalImageForm> pagedResult = new JRadPagedQueryResult<LocalImageForm>(Applicationid, result);
-				JRadModelAndView mv = new JRadModelAndView("/intopieces/customerappguarantor/customerappguarantorhtm",request);
 				mv.addObject(PAGED_RESULT, pagedResult);
-				mv.addObject("lists", lists);
-				mv.addObject("lists1", lists1);
-				mv.addObject("lists2", lists2);
-				mv.addObject("lists3", lists3);
-				mv.addObject("lists4", lists4);
+				mv.addObject("infoid", infoid);
 				return mv;
 			}
 			
@@ -373,7 +377,7 @@ public class AddIntoPiecesControl extends BaseController {
 				String message="";
 				if(guarantorcount<5){
 					service.insertguarantor(filter);
-					returnMap.put(JRadConstants.SUCCESS, true);
+					//returnMap.put(JRadConstants.SUCCESS, true);
 				}else{
 					message="已经超过5个人 ，不能再加担保人了";
 					returnMap.put(JRadConstants.MESSAGE, message);

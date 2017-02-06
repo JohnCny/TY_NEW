@@ -27,36 +27,12 @@ private SxDao dao;
 	}
 
 	public List<SxOutputData> findSxListByFilterNoPage(SxInputData filter) {
-//		if(filter.getDeptId()!=null){
-//			if(filter.getDeptId().equals("0")){
-//				filter.setDeptId(null);
-//			}
-//		}
-//		if(filter.getYear()!=null&&filter.getMonth()!=null){
-//			if(filter.getMonth().length()<2){
-//				filter.setDate(filter.getYear()+"0"+filter.getMonth());
-//			}else{
-//				filter.setDate(filter.getYear()+filter.getMonth());
-//			}
-//		}
 		List<SxOutputData> lists = dao.findSxListByFilterNoPage(filter);
 		return lists;
 	}
 
 	public QueryResult<SxOutputData> findje(SxInputData filter) {
 		// TODO Auto-generated method stub
-		/*String displayname=filter.getDisplayName();
-		String deptname=filter.getDeptName();
-		if(displayname!=null||deptname!=null){
-		try {
-			String name=new String(displayname.getBytes("iso-8859-1"),"utf-8");
-			String deptmentname=new String(deptname.getBytes("iso-8859-1"),"utf-8");
-			filter.setDisplayName(name);
-			filter.setDeptName(deptmentname);
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}}*/
 		List<SxOutputData>lists= dao.findje(filter);
 		int size = dao.findSxListCountByFilterje(filter);
 		QueryResult<SxOutputData> qr = new QueryResult<SxOutputData>(size, lists);

@@ -126,14 +126,11 @@
 				
 	    });
 	    $("#id_export_button").click(function() {
-            if ($(".checkbox :checked").length == 1) {
                // $("#export").unbind();
                 var busicode = $($(".checkbox :checked")[0]).attr("value");
                 var url = "${modulePath}/tzexport.json"+ "?id=" + busicode;
 				window.location.href = url;
-            } else {
-                Dialog.message("请选择一行");
-            }
+          
         });
 	});
 </script>

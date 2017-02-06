@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 
 
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
 
 
 
@@ -79,53 +81,13 @@ public class LoanSxController extends BaseController {
 	public AbstractModelAndView sxbrowse(@ModelAttribute SxInputData filter,
 			HttpServletRequest request) {
 		filter.setRequest(request);
-		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
-		String userId = user.getId();
-		String date1 = null;
-		String fdate = null;
-		// 转换好的
-		Date fdate1 = null;
-		Date transmissionfdate = null;
-		Date transmissionldate = null;
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		
-		// 如果数据v库里面没有日期就直接跳向叶面
-			try {
-				//如果有传入值则把传入值转换成date类型如果没有传入值就直接查询
-				if (filter.getFdate() != null && filter.getLdate() != null) {
-					transmissionfdate = sdf.parse(filter.getFdate());
-					transmissionldate = sdf.parse(filter.getLdate());
-					List<IncomingData> date = service1.finddate(userId);
-					for (int i = 0; i < date.size(); i++) {
-						date1 = date.get(i).getFdate();
-					}
-					fdate1 = sdf.parse(date1);
-				} else {
-					QueryResult<SxOutputData> result = service
-							.findSxListByFilter(filter);
-					JRadPagedQueryResult<SxOutputData> pagedResult = new JRadPagedQueryResult<SxOutputData>(
-							filter, result);
-					JRadModelAndView mv = new JRadModelAndView("/SX/sx_browse",
-							request);
-					// 统计总笔数、总收息
-					List<SxOutputData> list =service.findSxListByFilterNoPage(filter);
-					mv.addObject(PAGED_RESULT, pagedResult);
-					mv.addObject("totalSx", list);
-					return mv;
-				}
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			String startdate=request.getParameter("fdate");
+			String enddate=request.getParameter("ldate");
+			if(startdate!=null && enddate!=null){
+				filter.setFdate(startdate);
+				filter.setLdate(enddate);
 			}
-			// 判断有哪些起始日期是在输入的日期时间段之内的
-			if (fdate1.after(transmissionfdate)) {
-				if (fdate1.before(transmissionldate)) {
-					fdate = sdf.format(fdate1);
-				}
-			}
-			filter.setFdate(fdate);
-			QueryResult<SxOutputData> result = service
-					.findSxListByFilter(filter);
+			QueryResult<SxOutputData> result = service.findSxListByFilter(filter);
 			JRadPagedQueryResult<SxOutputData> pagedResult = new JRadPagedQueryResult<SxOutputData>(
 					filter, result);
 			JRadModelAndView mv = new JRadModelAndView("/SX/sx_browse", request);
@@ -147,51 +109,12 @@ public class LoanSxController extends BaseController {
 		List<SxOutputData> team = service.findteam();
 		// 查询客户经理
 		List<SxOutputData> user = service.finduser();
-		IUser userself = Beans.get(LoginManager.class).getLoggedInUser(request);
-		String loginuserid=userself.getId();
-		String date1 = null;
-		String fdate = null;
-		// 转换好的
-		Date fdate1 = null;
-		Date transmissionfdate = null;
-		Date transmissionldate = null;
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		
-		// 如果数据库里面date没有数据则直接条向叶面
-			try {
-				if (filter.getFdate() != null && filter.getLdate() != null) {
-					transmissionfdate = sdf.parse(filter.getFdate());
-					transmissionldate = sdf.parse(filter.getLdate());
-					// 数据库的起始日期和终止日期都是varchar类型所以要先转换成date类型才能比较
-					List<IncomingData> date = service1.finddate(loginuserid);
-					for (int i = 0; i < date.size(); i++) {
-						date1 = date.get(i).getFdate();
-					}
-					fdate1 = sdf.parse(date1);
-				} else {
-					QueryResult<SxOutputData> result = service.findje(filter);
-					JRadPagedQueryResult<SxOutputData> pagedResult1 = new JRadPagedQueryResult<SxOutputData>(
-							filter, result);
-					JRadModelAndView mv = new JRadModelAndView(
-							"/SX/Jgnsx_browse", request);
-					// 统计总笔数、总收息
-				//	List<SxOutputData> list = service.findSxListByFilterNoPage(filter);
-					mv.addObject(PAGED_RESULT, pagedResult1);
-					mv.addObject("team", team);
-					mv.addObject("user", user);
-					return mv;
-				}
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			// 判断有哪些起始日期是在输入的日期时间段之内的
-			if (fdate1.after(transmissionfdate)) {
-				if (fdate1.before(transmissionldate)) {
-					fdate = sdf.format(fdate1);
-				}
-			}
-			filter.setFdate(fdate);
+		String startdate=request.getParameter("fdate");
+		String enddate=request.getParameter("ldate");
+		if(startdate!=null && enddate!=null){
+			filter.setFdate(startdate);
+			filter.setLdate(enddate);
+		}
 			QueryResult<SxOutputData> result = service.findje(filter);
 			JRadPagedQueryResult<SxOutputData> pagedResult1 = new JRadPagedQueryResult<SxOutputData>(
 					filter, result);
