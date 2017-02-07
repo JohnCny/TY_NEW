@@ -545,4 +545,13 @@ public class ProductService {
 		return productDao.findsfjq(id);
 	}
 	
+/*	public Boolean findsfjqs(String id) {
+		// TODO Auto-generated method stub
+		int a= productDao.findsfjq(id);
+		if(a>0){
+			return false;
+		}
+		return true;
+	}
+	*/
 }
