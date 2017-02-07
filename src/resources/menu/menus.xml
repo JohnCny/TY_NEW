@@ -38,7 +38,6 @@
  			<menu id="070008" name="trainmessage" title="管辖客户管理" url="/manager/khgl/browse.page" img="" operations="checked|display|browse"/>
  			<menu id="070009" name="model" title="四维授信评估模型" url="/manager/khgl/dimensionsCreditModel.page" img="" operations="checked|display|browse"/>		    
 			<menu id="070010" name="model" title="绩效查询" url="/manager/jxgl/browse.page" img="" operations="checked|display|browse"/>
-			<menu id="070011" name="gdgl" title="归档管理" url="/manager/gdgl/browse.page" img="" operations="checked|display|browse"/>
 		</menu>
 		<menu id="080000" name="riskcontrol" title="综合风控管理" operations=""> 
 			<menu id="080001" name="riskcustomermanager" title="风险客户管理" url="/riskcontrol/riskcustomermanager/managerbrowse.page" img="" operations="reported|browse"/>

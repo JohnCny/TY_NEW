@@ -141,7 +141,8 @@ public class AddIntoPiecesControl extends BaseController {
 			}
 		return mv;
 	}
-
+	
+	
 	/**
 	 * 查看是否7天内未归档
 	 * @param customerinfoForm
@@ -2710,6 +2711,34 @@ public class AddIntoPiecesControl extends BaseController {
 			return returnMap;
 		}
 	
-	
+	 
+	 /**
+		 * 校验客户是否有贷款未结清
+		 * @return
+		 */
+		 @ResponseBody
+		 @RequestMapping(value = "sfjq.json")
+			public JRadReturnMap sfjq(HttpServletRequest request) {
+			 String id=request.getParameter("customerId");
+				JRadReturnMap returnMap = new JRadReturnMap();
+				if (returnMap.isSuccess()) {
+					try {
+						int customer=productService.findsfjq(id);
+						if(customer>0){
+							returnMap.put("customer", false);
+						}
+						
+					}catch (Exception e) {
+						returnMap.put(JRadConstants.MESSAGE,"系统异常");
+						returnMap.put(JRadConstants.SUCCESS, false);
+						return WebRequestHelper.processException(e);
+					}
+				}else{
+					returnMap.setSuccess(false);
+					returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
+				}
+				return returnMap;
+			}
+		
 	
 }
