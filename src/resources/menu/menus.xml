@@ -11,6 +11,7 @@
 			<menu id="030006" name="intopiecesdecisionzj" title="零售业务部负责人审批" url="/intopieces/intopiecesdecision/zjBrowse.page" img="" operations="create|change|display|browse"/>
 			<menu id="030007" name="intopiecesdecisionhz" title="行长审批" url="/intopieces/intopiecesdecision/hzBrowse.page" img="" operations="create|change|display|browse"/>
 		</menu>
+		
 		<menu id="040000" name="customer" title="客户管理" operations="">
 			<menu id="040001" name="basiccustomerinfor" title="客户原始信息管理" url="/customer/firsthend/browse.page" img="" operations="create|browse"/>
 			<!-- /customer/basiccustomerinforCreate/insert.page -->  
@@ -42,7 +43,7 @@
 		<menu id="080000" name="riskcontrol" title="综合风控管理" operations=""> 
 			<menu id="080001" name="riskcustomermanager" title="风险客户管理" url="/riskcontrol/riskcustomermanager/managerbrowse.page" img="" operations="reported|browse"/>
 			<menu id="080002" name="riskcustomercollection" title="客户催收计划列表" url="/riskcontrol/riskcustomercollection/browse.page" img="" operations="create|change|display|browse"/>
-			<!-- <menu id="080003" name="riskcustomermanager1" title="黑名单管理" url="/riskcontrol/custormerblacklist/custormerblacklist11.page" img="" operations="reported|browse"/> -->
+			
 			<menu id="080004" name="hmdinput" title="黑名单导入" url="/report/inputhmdcomtroller/hmdbrowse.page" img="" operations="reported|browse"/>
 		</menu>
 		

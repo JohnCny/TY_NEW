@@ -82,7 +82,23 @@ public class TyRepayTkmxForm{
 	private String delayamtdays;
 	private String delayinterestdays;
 	private String state;
+	private String khlx;
+	private String zjlx;
 	
+	
+	
+	public String getZjlx() {
+		return zjlx;
+	}
+	public void setZjlx(String zjlx) {
+		this.zjlx = zjlx;
+	}
+	public String getKhlx() {
+		return khlx;
+	}
+	public void setKhlx(String khlx) {
+		this.khlx = khlx;
+	}
 	public String getCname() {
 		return cname;
 	}

@@ -67,6 +67,7 @@ public interface PostLoanDao {
 	 */
 	List<RarepaylistForm> findLshJnListByFilter(PostLoanFilter filter);
 	int findLshJnListCountByFilter(PostLoanFilter filter);
+	List<TyRepayTkmxForm> findJJJnListByFilters(PostLoanFilter filter);
 	
 	
 	/**
