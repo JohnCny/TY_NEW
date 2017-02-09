@@ -256,7 +256,7 @@ union all
 		select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  
 		union all
 		select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0)  as value from circle  where FIVECLASS in ('1','2','3') -->
-		 with circle as (
+		 <!-- with circle as (
 	    SELECT *
 		  FROM (    select
         distinct
@@ -309,20 +309,20 @@ union all
                  yehz.SHBJ,yehz.JKJE, yehz.KSQXRQ,yehz.SHLX, yehz.DKYE,yehz.BNQX, yehz.BWQX,yehz.DKYE  , yehz.dkye  , sysuser.display_name, sysuser.id ,yehz.wjfl3,
           yehz.wjfl4,yehz.wjfl5
               order by tkmx.jkrq)
-	    )
+	    ) -->
 	    
-	    select nvl(sum(REQLMT),0) as value from circle  
+	    select nvl(sum(REQLMT),0) as value from mibusidata  
 		union all
-		select nvl(sum(DKYE+BNQX+BWQX),0) as value from circle  a  where 1=1 and
+		select nvl(sum(DKYE+BNQX+BWQX),0) as value from mibusidata  a  where 1=1 and
 		 (nvl(a.DELAYINTERESTDAYS,0)  >   0 or nvl(a.DELAYAMTDAYS,0)  >  0)
 		union all
-		select nvl(sum(DKYE+BNQX+BWQX),0)  as value from circle  a  where 1=1 and
+		select nvl(sum(DKYE+BNQX+BWQX),0)  as value from mibusidata  a  where 1=1 and
 		 (nvl(a.DELAYINTERESTDAYS,0)  >   0 or nvl(a.DELAYAMTDAYS,0)  >  0) and (wjfl3!=0 or wjfl4!=0 or wjfl3!=0)
 	</select>
 	
 	<!-- 放款总金额 -->
 	<select id="statisticalsxorgan" resultMap="ResultMap" >
-	   with circle as (
+	  <!--  with circle as (
 	    SELECT *
 		  FROM (select
         distinct
@@ -373,17 +373,17 @@ union all
               group by tkmx.YWBH ,b.id ,b.KHH,b.KHMC, b.ZJHM,rygl.SSBM, b.SJ, b.SXED, b.GHJL,tkmx.JKRQ , tkmx.DQRQ, tkmx.DKQX,tkmx.JZLL, tkmx.FFJE  ,
                  yehz.SHBJ,yehz.JKJE, yehz.KSQXRQ,yehz.SHLX, yehz.DKYE,yehz.BNQX, yehz.BWQX,yehz.DKYE  , yehz.dkye  , sysuser.display_name, sysuser.id 
               order by tkmx.jkrq)
-	    )
+	    ) -->
 	    
-	    select nvl(sum(REQLMT),0) as value from circle  where YWJG ='一区'
+	    select nvl(sum(REQLMT),0) as value from mibusidata  where YWJG ='一区'
 		union all
-		select nvl(sum(REQLMT),0) as value from circle  where YWJG ='二区'
+		select nvl(sum(REQLMT),0) as value from mibusidata  where YWJG ='二区'
 		union all
-		select nvl(sum(REQLMT),0) as value from circle  where YWJG ='三区'
+		select nvl(sum(REQLMT),0) as value from mibusidata  where YWJG ='三区'
 		union all
-		select nvl(sum(REQLMT),0) as value from circle  where YWJG ='四区'
+		select nvl(sum(REQLMT),0) as value from mibusidata  where YWJG ='四区'
 		union all
-		select nvl(sum(REQLMT),0) as value from circle  where YWJG ='后台'
+		select nvl(sum(REQLMT),0) as value from mibusidata  where YWJG ='后台'
 		<!-- union all
 		select nvl(sum(money),0) as value from circle  where DEPTCODE ='200731'
 		union all
@@ -392,72 +392,15 @@ union all
 	
 	<!-- 逾期总金额 -->
 	<select id="statisticalyqorgan" resultMap="ResultMap" >
-	   with circle as (
-	    SELECT *
-		  FROM (select
-        distinct
-          tkmx.YWBH ,
-          b.id as id ,
-          b.KHH,
-          b.KHMC,
-          b.ZJHM,
-          rygl.SSBM,
-          b.SJ,
-          b.SXED,
-          b.GHJL,
-          tkmx.JKRQ as LOANDATE, 
-          tkmx.DQRQ,
-          tkmx.DKQX,
-          tkmx.JZLL,
-          tkmx.FFJE   as REQLMT,
-           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end ) as DELAYINTERESTDAYS,  
-           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end )as DELAYAMTDAYS, 
-           max(lsz.jzrq) as DLAYDT,
-          yehz.SHBJ,
-          yehz.JKJE,
-          yehz.KSQXRQ,
-          yehz.SHLX as PAYDEBT,  
-          yehz.DKYE,
-          yehz.BNQX,
-          yehz.BWQX,
-          yehz.DKYE as BALAMT  ,
-          yehz.dkye as yxye,
-          yehz.wjfl3,
-          yehz.wjfl4,
-          yehz.wjfl5,
-          sysuser.id userid,
-          sysuser.display_name,
-         ( select org.name from SYS_ORGANIZATION org where org.id in (select t.ORG_ID from sys_department t where t.id in (select tt.dept_id 
-          from sys_dept_user tt  where tt.user_id = sysuser.id)))  as YWJG
-       from
-              ty_repay_tkmx tkmx,
-              ty_customer_base b,
-              ty_customer_rygl rygl,
-              sys_user sysuser,
-             ty_kdk_jh jh,
-              ty_repay_yehz yehz,
-              ty_repay_lsz lsz
-              where b.khjl=rygl.dm and
-              rygl.ddrq=sysuser.external_id and
-              b.khnm=tkmx.khh and
-              jh.ywbh=tkmx.ywbh||'HT' and
-              yehz.jjh=tkmx.jjh and
-              tkmx.jjh =lsz.jjh
-              group by tkmx.YWBH ,b.id ,b.KHH,b.KHMC, b.ZJHM,rygl.SSBM, b.SJ, b.SXED, b.GHJL,tkmx.JKRQ , tkmx.DQRQ, tkmx.DKQX,tkmx.JZLL, tkmx.FFJE  ,
-                 yehz.SHBJ,yehz.JKJE, yehz.KSQXRQ,yehz.SHLX, yehz.DKYE,yehz.BNQX, yehz.BWQX,yehz.DKYE  , yehz.dkye  , sysuser.display_name, sysuser.id, yehz.wjfl3,
-          yehz.wjfl4,yehz.wjfl5
-              order by tkmx.jkrq)
-	    )
-	    
-	select nvl(sum(DKYE+BNQX+BWQX),0) as value from circle   where YWJG ='一区' and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0)
+	select nvl(sum(DKYE+BNQX+BWQX),0) as value from mibusidata   where YWJG ='一区' and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0)
     union all
-    select nvl(sum(DKYE+BNQX+BWQX),0) as value from circle  where YWJG ='二区' and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0)
+    select nvl(sum(DKYE+BNQX+BWQX),0) as value from mibusidata  where YWJG ='二区' and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0)
     union all
-    select nvl(sum(DKYE+BNQX+BWQX),0) as value from circle  where YWJG ='三区' and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0)
+    select nvl(sum(DKYE+BNQX+BWQX),0) as value from mibusidata  where YWJG ='三区' and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0)
     union all
-    select nvl(sum(DKYE+BNQX+BWQX),0) as value from circle  where YWJG ='四区' and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0)
+    select nvl(sum(DKYE+BNQX+BWQX),0) as value from mibusidata  where YWJG ='四区' and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0)
     union all
-    select nvl(sum(DKYE+BNQX+BWQX),0) as value from circle  where YWJG ='后台' and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0)
+    select nvl(sum(DKYE+BNQX+BWQX),0) as value from mibusidata  where YWJG ='后台' and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0)
   <!--   union all
     select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='200731'
     union all
@@ -466,76 +409,19 @@ union all
 	
 	<!-- 不良总金额 -->
 	<select id="statisticalblorgan" resultMap="ResultMap" >
-	   with circle as (
-	    SELECT *
-		  FROM (select
-        distinct
-          tkmx.YWBH ,
-          b.id as id ,
-          b.KHH,
-          b.KHMC,
-          b.ZJHM,
-          rygl.SSBM,
-          b.SJ,
-          b.SXED,
-          b.GHJL,
-          tkmx.JKRQ as LOANDATE, 
-          tkmx.DQRQ,
-          tkmx.DKQX,
-          tkmx.JZLL,
-          tkmx.FFJE   as REQLMT,
-           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end ) as DELAYINTERESTDAYS,  
-           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end )as DELAYAMTDAYS, 
-           max(lsz.jzrq) as DLAYDT,
-          yehz.SHBJ,
-          yehz.JKJE,
-          yehz.KSQXRQ,
-          yehz.SHLX as PAYDEBT,  
-          yehz.DKYE,
-          yehz.BNQX,
-          yehz.BWQX,
-          yehz.DKYE as BALAMT  ,
-          yehz.dkye as yxye,
-           yehz.wjfl3,
-          yehz.wjfl4,
-          yehz.wjfl5,
-          sysuser.id userid,
-          sysuser.display_name,
-         ( select org.name from SYS_ORGANIZATION org where org.id in (select t.ORG_ID from sys_department t where t.id in (select tt.dept_id 
-          from sys_dept_user tt  where tt.user_id = sysuser.id)))  as YWJG
-       from
-              ty_repay_tkmx tkmx,
-              ty_customer_base b,
-              ty_customer_rygl rygl,
-              sys_user sysuser,
-             ty_kdk_jh jh,
-              ty_repay_yehz yehz,
-              ty_repay_lsz lsz
-              where b.khjl=rygl.dm and
-              rygl.ddrq=sysuser.external_id and
-              b.khnm=tkmx.khh and
-              jh.ywbh=tkmx.ywbh||'HT' and
-              yehz.jjh=tkmx.jjh and
-              tkmx.jjh =lsz.jjh
-              group by tkmx.YWBH ,b.id ,b.KHH,b.KHMC, b.ZJHM,rygl.SSBM, b.SJ, b.SXED, b.GHJL,tkmx.JKRQ , tkmx.DQRQ, tkmx.DKQX,tkmx.JZLL, tkmx.FFJE  ,
-              yehz.SHBJ,yehz.JKJE, yehz.KSQXRQ,yehz.SHLX, yehz.DKYE,yehz.BNQX, yehz.BWQX,yehz.DKYE  , yehz.dkye  , sysuser.display_name, sysuser.id , yehz.wjfl3, yehz.wjfl4,
-         	  yehz.wjfl5
-              order by tkmx.jkrq)
-	    )
-	    
-	select nvl(sum(DKYE+BNQX+BWQX),0) as value from circle  where YWJG ='一区'  and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0) and
+	select nvl(sum(DKYE+BNQX+BWQX),0) as value from mibusidata  where YWJG ='一区'  and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0) and
 	(wjfl3!=0 or wjfl4!=0 or wjfl3!=0)
     union all
-    select nvl(sum(DKYE+BNQX+BWQX),0) as value from circle  where YWJG ='二区'  and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0) and
+    select nvl(sum(DKYE+BNQX+BWQX),0) as value from mibusidata  where YWJG ='二区'  and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0) and
 	(wjfl3!=0 or wjfl4!=0 or wjfl3!=0)
     union all
-    select nvl(sum(DKYE+BNQX+BWQX),0) as value from circle  where YWJG ='三区'  and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0) and
+    select nvl(sum(DKYE+BNQX+BWQX),0) as value from mibusidata  where YWJG ='三区'  and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0) and
 	(wjfl3!=0 or wjfl4!=0 or wjfl3!=0)
     union all
-  select nvl(sum(DKYE+BNQX+BWQX),0) as value from circle  where YWJG ='四区'  and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0) and
+  select nvl(sum(DKYE+BNQX+BWQX),0) as value from mibusidata  where YWJG ='四区'  and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0) and
 	(wjfl3!=0 or wjfl4!=0 or wjfl3!=0)
     union all
-   select nvl(sum(DKYE+BNQX+BWQX),0) as value from circle  where YWJG ='后台'  and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0) and
+   select nvl(sum(DKYE+BNQX+BWQX),0) as value from mibusidata  where YWJG ='后台'  and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0) and
 	(wjfl3!=0 or wjfl4!=0 or wjfl3!=0)
    <!--  union all
     select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='200731' and FIVECLASS in ('1','2','3')
@@ -730,7 +616,7 @@ select allsp.e as id, nopaa.a as name ,nosq.b as value,bcak.c as value1,succwss.
 	
 	<!-- 逾期总金额 -->
 	<select id="statisticalyqorgan1" resultMap="ResultMap" >
-	   with circle as (
+	  <!--  with circle as (
 	    SELECT *
 		  FROM (select
         distinct
@@ -785,17 +671,17 @@ select allsp.e as id, nopaa.a as name ,nosq.b as value,bcak.c as value1,succwss.
                  yehz.SHBJ,yehz.JKJE, yehz.KSQXRQ,yehz.SHLX, yehz.DKYE,yehz.BNQX, yehz.BWQX,yehz.DKYE  , yehz.dkye  , sysuser.display_name, sysuser.id, yehz.wjfl3,
           yehz.wjfl4,yehz.wjfl5
               order by tkmx.jkrq)
-	    )
+	    ) -->
 	    
-	select nvl(sum(DKYE+BNQX+BWQX),0) as value from circle   where YWJG ='一区' and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0)
+	select nvl(sum(DKYE+BNQX+BWQX),0) as value from mibusidata   where YWJG ='一区' and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0)
     union all
-    select nvl(sum(DKYE+BNQX+BWQX),0) as value from circle  where YWJG ='二区' and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0)
+    select nvl(sum(DKYE+BNQX+BWQX),0) as value from mibusidata  where YWJG ='二区' and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0)
     union all
-    select nvl(sum(DKYE+BNQX+BWQX),0) as value from circle  where YWJG ='三区' and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0)
+    select nvl(sum(DKYE+BNQX+BWQX),0) as value from mibusidata  where YWJG ='三区' and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0)
     union all
-    select nvl(sum(DKYE+BNQX+BWQX),0) as value from circle  where YWJG ='四区' and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0)
+    select nvl(sum(DKYE+BNQX+BWQX),0) as value from mibusidata  where YWJG ='四区' and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0)
     union all
-    select nvl(sum(DKYE+BNQX+BWQX),0) as value from circle  where YWJG ='后台' and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0)
+    select nvl(sum(DKYE+BNQX+BWQX),0) as value from mibusidata  where YWJG ='后台' and (nvl(DELAYINTERESTDAYS,0)  >   0 or nvl(DELAYAMTDAYS,0)  >  0)
 	</select>
 	
 	

@@ -348,6 +348,70 @@
 					]]>
 	</select>
 	
+	<select id="findJJJnListByFilters" resultMap="BaseResultMap" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
+			 select distinct tkmx.ywbh as ywbh,
+              base.khh as khh,
+              base.khmc as cname,
+              base.Khlx as khlx,
+              base.Zjlx as zjlx,
+              base.zjhm as zjhm,
+              tkmx.jkrq,
+              tkmx.ffje as ffje,
+              yehz.DKYE as balamt,
+              tkmx.jkrq as jkrq,
+              tkmx.dqrq as dqrq,
+              yehz.bnqx+yehz.bwqx as debtinterest,
+              tkmx.ffje as reqlmt,
+              jh.ts as delayamtdays,  
+              jh.ts as delayinterestdays
+                from
+           (select  tkmx.ywbh as ywbh,
+                      max(to_number(jh.qs)) as qs
+          from
+                      TY_REPAY_TKMX tkmx,
+                      TY_CUSTOMER_BASE  b,
+                      TY_REPAY_YEHZ yehz,
+                      ty_kdk_jh jh,
+                      ty_customer_rygl rygl,
+                      sys_user sysuser
+                      where 1=1 and
+                      b.khnm=tkmx.khh and
+                      yehz.JJH = tkmx.JJH and
+                      jh.ywbh=tkmx.ywbh||'HT' and
+                      b.khjl=rygl.dm and
+                      rygl.ddrq=sysuser.external_id
+                   group by tkmx.ywbh)  maxqs,
+                   
+                    ty_customer_rygl rygl,
+                    ty_customer_base base,
+                     ty_product_type protype,
+                    ty_repay_tkmx tkmx,
+                    SYS_USER sysuser  ,
+                    ty_repay_yehz yehz,
+                    ty_kdk_jh jh,
+                    ty_repay_lsz lsz
+                    WHERE 
+                    base.khjl=rygl.dm
+                    and rygl.ddrq=sysuser.external_id
+                    and base.khnm=tkmx.khh
+                    and tkmx.JJH=yehz.JJH
+                    and protype.product_code=tkmx.cpmc
+                    and jh.ywbh=tkmx.ywbh||'HT' 
+                    and lsz.jjh=tkmx.jjh
+                    and maxqs.ywbh=tkmx.ywbh
+                    and maxqs.qs=jh.qs
+                     <if test="userId != null and userId != '' and userId!='000001'">
+						AND sysuser.id=#{userId}
+					   </if>
+					   <if test="busiCode != null and busiCode != '' ">
+						AND trim(tkmx.ywbh)=#{busiCode}
+					   </if>
+					  <if test="cardNum != null and cardNum != '' ">
+							AND trim(base.zjhm)=#{cardNum}
+					  </if>
+                    order  by tkmx.jkrq
+	</select>
+	
 	<select id="findJJJnListCountByFilter" resultType="int" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
 	  	select count(distinct tkmx.ywbh)    from
            (select  tkmx.ywbh as ywbh,

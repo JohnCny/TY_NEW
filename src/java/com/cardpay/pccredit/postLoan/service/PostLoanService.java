@@ -122,7 +122,7 @@ public class PostLoanService {
 	
 	public List<TyRepayTkmxForm> selectfcloanifoInfoByBusicode(PostLoanFilter filter) {
 		// TODO Auto-generated method stub
-		return postLoanDao.findJJJnListByFilter(filter);
+		return postLoanDao.findJJJnListByFilters(filter);
 	}
 	
 	public List<MibusidateView> selectTz(PostLoanFilter filter) {
