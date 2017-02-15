@@ -302,15 +302,10 @@
 	
 	<!--统计当天的拒绝申请次数  -->
 	<select id="queryRefuse" resultType="int">
-	select count(status) from customer_application_info cai  
-				  	  left join customer_application_process aa on cai.id=aa.application_id
-			          left join basic_customer_information b on cai.customer_id=b.id
-		              left join sys_user su on su.id=b.user_id
-		              left join  wf_process_record pr on pr.id = aa.serial_number
-		              left join wf_status_queue_record t on t.current_process = pr.id 
-		              left join wf_status_info s on t.current_status = s.id 
-		              where t.examine_result='REJECTAPPROVE'
-	and ((select trunc (sysdate) from dual)=trunc (cai.CREATED_TIME) or (select trunc (sysdate) from dual)=trunc (cai.MODIFIED_TIME))
+	select count(*) from customer_application_info cai,basic_customer_information b
+	where cai.CUSTOMER_ID = b.id and cai.status='refuse'
+  	and ((select trunc (sysdate) from dual)=trunc (cai.CREATED_TIME) 
+  	or (select trunc (sysdate) from dual)=trunc (cai.MODIFIED_TIME))
 	and b.USER_ID=#{userId}
 	</select>
 	
@@ -358,15 +353,10 @@
 	
 	<!--统计当天的通过次数  -->
 	<select id="queryPass" resultType="int">
-	select count(*) from customer_application_info cai  
-				  	  left join customer_application_process aa on cai.id=aa.application_id
-			          left join basic_customer_information b on cai.customer_id=b.id
-		              left join sys_user su on su.id=b.user_id
-		              left join  wf_process_record pr on pr.id = aa.serial_number
-		              left join wf_status_queue_record t on t.current_process = pr.id 
-		              left join wf_status_info s on t.current_status = s.id 
-		              where t.examine_result='APPROVE'
-	and ((select trunc (sysdate) from dual)=trunc (cai.CREATED_TIME) or (select trunc (sysdate) from dual)=trunc (cai.MODIFIED_TIME))
+	select count(*) from customer_application_info cai,basic_customer_information b
+	where cai.CUSTOMER_ID = b.id and cai.status='cai.refuse' 
+  	and ((select trunc (sysdate) from dual)=trunc (cai.CREATED_TIME) 
+  	or (select trunc (sysdate) from dual)=trunc (cai.MODIFIED_TIME))
 	and b.USER_ID=#{userId}
 	</select>
 

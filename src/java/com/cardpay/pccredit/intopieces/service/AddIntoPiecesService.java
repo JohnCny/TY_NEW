@@ -58,6 +58,7 @@ import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentList;
 import com.cardpay.pccredit.intopieces.web.AddIntoPiecesForm;
 import com.cardpay.pccredit.intopieces.web.LocalExcelForm;
 import com.cardpay.pccredit.intopieces.web.LocalImageForm;
+import com.cardpay.pccredit.jnpad.dao.JnpadCustormerSdwUserDao;
 import com.cardpay.pccredit.manager.model.BatchTask;
 import com.cardpay.pccredit.system.constants.NodeAuditTypeEnum;
 import com.cardpay.pccredit.system.constants.YesNoEnum;
@@ -83,7 +84,9 @@ import com.wicresoft.jrad.base.web.message.Messages;
 public class AddIntoPiecesService {
 
 	// TODO 路径使用相对路径，首先获得应用所在路径，之后建立上传文件目录，图片类型使用IMG，文件使用DOC
-
+	@Autowired
+	private JnpadCustormerSdwUserDao sdwDao;
+	
 	@Autowired
 	private CommonDao commonDao;
 	
@@ -705,6 +708,9 @@ public class AddIntoPiecesService {
 		//更新状态为--audit
 		applicationInfo.setStatus("audit");
 		commonDao.updateObject(applicationInfo);
+		//重新提交进件时删除审贷表中的数据
+		sdwDao.deletePCCustormerSdwUser(applicationId);
+		sdwDao.deletePCCsJl(applicationId);
 		String sql = "select * from dict where dict_type = 'RETRUN_STATUS_PARAM' ";
 		String PARAM = (String) commonDao.queryBySql(sql, null).get(0).get("TYPE_CODE");
 		if("1".equals(PARAM)){

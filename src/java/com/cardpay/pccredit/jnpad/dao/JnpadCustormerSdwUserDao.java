@@ -1,5 +1,6 @@
 package com.cardpay.pccredit.jnpad.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -61,4 +62,15 @@ public interface JnpadCustormerSdwUserDao {
 		JnpadCsSdModel findCsSdRefuses(@Param(value = "appId")String appId);
 		//查询审贷后回退的进件信息
 		JnpadCsSdModel findCsSdBlacks(@Param(value = "appId")String appId);
+		//退回进件重新申请时删除初审以及审贷记录。
+		int deletePCCustormerSdwUser(@Param(value = "applicationId")String applicationId);
+		int deletePCCsJl(@Param(value = "applicationId")String applicationId);
+		//退回
+		void updateHistory(@Param(value = "userId")String userId,@Param(value = "times")Date times, @Param(value = "applicationId")String applicationId);
+		//拒绝
+		void updateHistorys(@Param(value = "userId")String userId,@Param(value = "times")Date times, @Param(value = "applicationId")String applicationId);
+		//通过
+		void updateCSZTs(@Param(value = "userId")String userId, @Param(value = "times")Date times, @Param(value = "money")String money, @Param(value = "applicationId")String applicationId);
+		//初审通过
+		void updateCSZT(@Param(value = "userId")String userId, @Param(value = "times")Date times, @Param(value = "money")String money, @Param(value = "applicationId")String applicationId);
 }

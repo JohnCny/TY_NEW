@@ -148,7 +148,7 @@
             </tr>
             <tr style="display :none">
               <td  class="titlefc3"><label id ="reason" for=reason>原因:</label></td>
-               #if($!customerApplicationInfo.status=='nopass_replenish')
+               #if($!customerApplicationInfo.status=='returnedToFirst')
               <td><textarea name="decisionRefusereason" id="decisionRefusereason">$!htyj.FALLBACK_REASON</textarea></td>
               #else
               <td><textarea name="decisionRefusereason" id="decisionRefusereason">$!jjyj.refusalreaso</textarea></td>
@@ -181,18 +181,20 @@
 		//已提交的显示只读
 		if( info == "refuse"){
 			$("tr:eq(9)").hide();
+			$("tr:eq(13)").hide();
 			$("tr:eq(14)").show();
 			if($("textarea[name=decision_refusereason]").val() == ""){
 				 $("textarea[name='decision_refusereason']").after("<label class='error myerror' generated='true' >拒绝原因不能为空</label>");   
 			}
 		}
 		
-		if( info == "nopass_replenish"){
+		if( info == "returnedToFirst"){
 			$("tr:eq(9)").hide();
+			$("tr:eq(13)").hide();
 			$("tr:eq(14)").show();
 		}
 		
-			if(info =='nopass_replenish'){
+			if(info =='returnedToFirst'){
 			  $("#reason").text("退回原因");	
 			}else{
 		      $("#reason").text("拒绝原因");	
@@ -242,7 +244,7 @@
 				}
 			}
 			
-			if( status == "nopass_replenish"){
+			if( status == "returnedToFirst"){
 				if($("#decisionRefusereason").val() == ""){
 					 $("#decisionRefusereason").after("<label class='error myerror' generated='true' >退回原因不能为空</label>");   
 					 return;
@@ -312,18 +314,21 @@
 			
 			if( status == "refuse"){
 				$("tr:eq(9)").hide();
+				$("tr:eq(13)").hide();
 				$("tr:eq(14)").show();
 				if($("textarea[name=decision_refusereason]").val() == ""){
 					 $("textarea[name='decision_refusereason']").after("<label class='error myerror' generated='true' >拒绝原因不能为空</label>");   
 				}
 			}
 			
-			if( status == "nopass_replenish"){
+			if( status == "returnedToFirst"){
 				$("tr:eq(9)").hide();
+				$("tr:eq(13)").hide();
 				$("tr:eq(14)").show();
+				
 			}
 			
- 			if(status =='nopass_replenish'){
+ 			if(status =='returnedToFirst'){
  			  $("#reason").text("退回原因");	
  			}else{
  		      $("#reason").text("拒绝原因");	

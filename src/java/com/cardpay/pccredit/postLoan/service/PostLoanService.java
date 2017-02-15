@@ -150,21 +150,6 @@ public class PostLoanService {
 	public QueryResult<CreditProcess> queryCreditProcess(CreditProcess filter) {
 		// TODO Auto-generated method stub
 		List<CreditProcess> cplist = postLoanDao.queryCreditProcess(filter);
-		for(CreditProcess cc:cplist){
-			if(null!=cc.getStatus()){
-				if(cc.getStatus().equals("audit")){
-					cc.setStatus("已申请 ");
-				}else if(cc.getStatus().equals("refuse")){
-					cc.setStatus("被拒绝");
-				}else if(cc.getStatus().equals("approved")){
-					cc.setStatus("审批结束");
-				}else if(cc.getStatus().equals("returnedToFirst")){
-					cc.setStatus("退回至客户经理");
-				}else if(cc.getStatus().equals("end")){
-					cc.setStatus("放款成功");
-				}
-			}
-		}
 		int size = postLoanDao.querySize(filter);
 		QueryResult<CreditProcess> queryResult = new QueryResult<CreditProcess>(size,cplist);
 		return queryResult;

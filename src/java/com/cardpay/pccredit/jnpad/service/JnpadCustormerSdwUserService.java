@@ -1,5 +1,6 @@
 package com.cardpay.pccredit.jnpad.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -108,4 +109,25 @@ public class JnpadCustormerSdwUserService {
 	public JnpadCsSdModel findCsSdBlacks(@Param(value = "appId")String appId){
 		return SdwUserDao.findCsSdBlacks(appId);
 	}
+	//退回时修改节点状态
+	public void updateHistory(@Param(value = "userId")String userId,@Param(value = "times")Date times, @Param(value = "applicationId")String applicationId) {
+		// TODO Auto-generated method stub
+		SdwUserDao.updateHistory(userId,times,applicationId);
+	}
+	//拒绝时修改节点状态
+	public void updateHistorys(@Param(value = "userId")String userId,@Param(value = "times")Date times, @Param(value = "applicationId")String applicationId) {
+		// TODO Auto-generated method stub
+		SdwUserDao.updateHistorys(userId,times,applicationId);
+	}
+	//通过时的状态
+		public void updateCSZTs(@Param(value = "userId")String userId, @Param(value = "times")Date times, @Param(value = "money")String money, @Param(value = "applicationId")String applicationId) {
+			// TODO Auto-generated method stub
+			SdwUserDao.updateCSZTs(userId,times,money,applicationId);
+		}
+	//初审通过时的状态
+		public void updateCSZT(@Param(value = "userId")String userId, @Param(value = "times")Date times, @Param(value = "money")String money, @Param(value = "applicationId")String applicationId) {
+			// TODO Auto-generated method stub
+			SdwUserDao.updateCSZT(userId,times,money,applicationId);
+		}
+
 }
