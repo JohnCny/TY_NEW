@@ -133,7 +133,8 @@
 	<result column="yxye" property="yxye" jdbcType="VARCHAR" /> 
 	<result column="HKFS" property="HKFS" jdbcType="VARCHAR" />  
 	<result column="je" property="je" jdbcType="VARCHAR" />  
-	<result column="CREATE_TIME" property="CREATE_TIME" jdbcType="VARCHAR" />  
+	<result column="CREATE_TIME" property="CREATE_TIME" jdbcType="VARCHAR" /> 
+	<result column="dlayamtsum" property="dlayamtsum" jdbcType="VARCHAR" /> 
  	 </resultMap>
  	 
  	 <resultMap id="BaseResultMap3" type="com.cardpay.pccredit.postLoan.model.MibusidataForm" >
@@ -739,8 +740,22 @@
 					SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
-				<!-- trim(a.ACCOUNTSTATE) as STATE -->
-					  select
+				select distinct YWBH,ID,KHH,KHMC,ZJHM,SSBM,SJ,SXED,GHJL,LOANDATE, DQRQ,DKQX,JZLL,REQLMT,nvl(DELAYINTERESTDAYS,0) as DELAYINTERESTDAYS ,  nvl(DELAYAMTDAYS,0) as DELAYAMTDAYS,
+        DLAYDT,SHBJ,JKJE,KSQXRQ,PAYDEBT,DKYE as YE ,BNQX,BWQX,sum(DKYE+BNQX+BWQX) as dlayamtsum,BALAMT ,YXYE,USERID as  userid,DISPLAY_NAME as display_name
+                 from ty_mibusidata where 1=1 
+			           <if test="userId != null and userId != '' and userId !='000001'">
+			             and USERID  =#{userId}
+				         </if>
+				         <if test="busiCode != null and busiCode != '' ">
+							AND trim(YWBH)=#{busiCode}
+						</if>
+						<if test="customerName != null and customerName != '' ">
+							AND KHMC=#{customerName}
+						</if>
+						  group by YWBH,ID,KHH,KHMC,ZJHM,SSBM,SJ,SXED,GHJL,LOANDATE, DQRQ,DKQX,JZLL,REQLMT,nvl(DELAYINTERESTDAYS,0),  nvl(DELAYAMTDAYS,0),
+        DLAYDT,SHBJ,JKJE,KSQXRQ,PAYDEBT,DKYE ,BNQX,BWQX,BALAMT ,YXYE,USERID ,DISPLAY_NAME 
+         order by LOANDATE
+					<!--   select
 			        distinct
 			          tkmx.YWBH ,
 			          b.id as id ,
@@ -794,8 +809,8 @@
 							AND b.khmc=#{customerName}
 						</if>
 			              group by tkmx.YWBH ,b.id ,b.KHH,b.KHMC, b.ZJHM,rygl.SSBM, b.SJ, b.SXED, b.GHJL,tkmx.JKRQ , tkmx.DQRQ, tkmx.DKQX,tkmx.JZLL, tkmx.FFJE  ,
-			                 yehz.SHBJ,yehz.JKJE, yehz.KSQXRQ,yehz.SHLX, yehz.DKYE,yehz.BNQX, yehz.BWQX,yehz.DKYE  , yehz.dkye  , sysuser.display_name, sysuser.id 
-			              order by tkmx.jkrq
+			                 yehz.SHBJ,yehz.JKJE, yehz.KSQXRQ,yehz.SHLX, yehz.DKYE,yehz.BNQX, yehz.BWQX,yehz.DKYE  , yehz.dkye  , sysuser.display_name, sysuser.id  
+			              order by tkmx.jkrq-->
 		 <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -806,62 +821,19 @@
 	
 	<select id="findTzJnListCountByFilter" resultType="int" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
 	  	select count(*)  from (
-	   select
-			        distinct
-			          tkmx.YWBH ,
-			          b.id as id ,
-			          b.KHH,
-			          b.KHMC,
-			          b.ZJHM,
-			          rygl.SSBM,
-			          b.SJ,
-			          b.SXED,
-			          b.GHJL,
-			          tkmx.JKRQ as LOANDATE, 
-			          tkmx.DQRQ,
-			          tkmx.DKQX,
-			          tkmx.JZLL,
-			          tkmx.FFJE   as REQLMT,
-			           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end ) as DELAYINTERESTDAYS,  
-			           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end )as DELAYAMTDAYS, 
-			           max(lsz.jzrq) as DLAYDT,
-			          yehz.SHBJ,
-			          yehz.JKJE,
-			          yehz.KSQXRQ,
-			          yehz.SHLX as PAYDEBT,  
-			          yehz.DKYE,
-			          yehz.BNQX,
-			          yehz.BWQX,
-			          yehz.DKYE as BALAMT  ,
-			          yehz.dkye as yxye,
-			          sysuser.id userid,
-			          sysuser.display_name
-			       from
-			              ty_repay_tkmx tkmx,
-			              ty_customer_base b,
-			              ty_customer_rygl rygl,
-			              sys_user sysuser,
-			              ty_kdk_jh jh,
-			              ty_repay_yehz yehz,
-			              ty_repay_lsz lsz
-			              where b.khjl=rygl.dm and
-			              rygl.ddrq=sysuser.external_id and
-			              b.khnm=tkmx.khh and
-			              jh.ywbh=tkmx.ywbh||'HT' and
-			              yehz.jjh=tkmx.jjh and
-			              tkmx.jjh =lsz.jjh
-			            <if test="userId != null and userId != '' and userId !='000001' ">
-			             and sysuser.id  =#{userId}
+	  select distinct YWBH,ID,KHH,KHMC,ZJHM,SSBM,SJ,SXED,GHJL,LOANDATE, DQRQ,DKQX,JZLL,REQLMT,DELAYINTERESTDAYS,  DELAYAMTDAYS,
+				DLAYDT,SHBJ,JKJE,KSQXRQ,PAYDEBT,DKYE as YE ,BNQX,BWQX,BALAMT ,YXYE,USERID as  userid,DISPLAY_NAME as display_name
+			           from ty_mibusidata where 1=1 
+			           <if test="userId != null and userId != '' and userId !='000001'">
+			             and USERID  =#{userId}
+			             order by LOANDATE
 				         </if>
 				         <if test="busiCode != null and busiCode != '' ">
-							AND trim(tkmx.ywbh)=#{busiCode}
+							AND trim(YWBH)=#{busiCode}
 						</if>
 						<if test="customerName != null and customerName != '' ">
-							AND b.khmc=#{customerName}
+							AND KHMC=#{customerName}
 						</if>
-			              group by tkmx.YWBH ,b.id ,b.KHH,b.KHMC, b.ZJHM,rygl.SSBM, b.SJ, b.SXED, b.GHJL,tkmx.JKRQ , tkmx.DQRQ, tkmx.DKQX,tkmx.JZLL, tkmx.FFJE  ,
-			                 yehz.SHBJ,yehz.JKJE, yehz.KSQXRQ,yehz.SHLX, yehz.DKYE,yehz.BNQX, yehz.BWQX,yehz.DKYE  , yehz.dkye  , sysuser.display_name, sysuser.id 
-			              order by tkmx.jkrq
 	  	) a
 	 
 	</select>
@@ -870,7 +842,7 @@
 					SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
-				   select tkmx.ywbh,basic.CHINESE_NAME,basic.CARD_ID,b.SJ as TELEPHONE,b.Cshy as industry,b.GTSPMC as spmc,b.YYDZ as RESIDENTIAL_ADDRESS,
+				  <!--  select tkmx.ywbh,basic.CHINESE_NAME,basic.CARD_ID,b.SJ as TELEPHONE,b.Cshy as industry,b.GTSPMC as spmc,b.YYDZ as RESIDENTIAL_ADDRESS,
                       yehz.JKJE,tkmx.JKRQ,pro.AUDIT_TIME,pro.REFUSAL_REASON,sysuser.DISPLAY_NAME, pro.PROCESS_OP_STATUS
                       from basic_customer_information basic,
                       ty_customer_base b,
@@ -885,29 +857,21 @@
                             app.customer_id=basic.id and 
                             app.id=pro.application_id and
                             sysuser.id=basic.user_id
+                             and pro.PROCESS_OP_STATUS ='REJECTAPPROVE' -->
+					    select app.ID as ywbh,basic.CHINESE_NAME as CHINESE_NAME,basic.CARD_ID as CARD_ID,''as TELEPHONE,'' as industry,'' as spmc,'' as RESIDENTIAL_ADDRESS,
+  				app.APPLY_QUOTA as JKJE,app.created_time as JKRQ,
+                     pro.AUDIT_TIME as AUDIT_TIME,pro.REFUSAL_REASON as REFUSAL_REASON,sysuser.DISPLAY_NAME DISPLAY_NAME, pro.PROCESS_OP_STATUS
+                      from basic_customer_information basic,
+                      customer_application_info app,
+                      customer_application_process pro,
+                      sys_user sysuser
+                      where 
+                            app.customer_id=basic.id and 
+                            app.id=pro.application_id and
+                            sysuser.id=basic.user_id
                              and pro.PROCESS_OP_STATUS ='REJECTAPPROVE'
-					    <!--   select info.SPMC,lsz.JF,pro.AUDIT_TIME,pro.REFUSAL_REASON,sysuser.DISPLAY_NAME
-		           from   mibusidata a,
-		                  ty_customer_base b,
-		                  customer_application_info app,
-		                  basic_customer_information info,
-		                  ty_repay_tkmx tkmx,
-		                  TY_REPAY_LSZ lsz,
-		                  product_attribute prod,
-		                  customer_application_process pro,
-		                  sys_user sysuser
-		                  where 1=1
-		                  and b.id=info.TY_CUSTOMER_ID
-		                  and b.khnm = tkmx.KHH
-		                  and a.YWBH=tkmx.ywbh
-		                  and tkmx.JJH=lsz.JJH
-		                  and app.customer_id = info.id
-		                  and app.product_id = prod.id
-		                  and app.id = pro.application_id
-		            and sysuser.id = info.user_id 
-		                  and app.status ='refuse' -->
 					 <if test="busiCode != null and busiCode != '' ">
-						AND trim(tkmx.ywbh)=#{busiCode}
+						AND trim(app.ID)=#{busiCode}
 					 </if>
 					 
 					 <if test="customerName != null and customerName != '' ">
@@ -921,27 +885,25 @@
 	</select>
 	
 		<select id="findrefusedMibusidatasize" resultType="int" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
-	  	select count(*)  from basic_customer_information basic,
-                      ty_customer_base b,
-                      ty_repay_tkmx tkmx,
-                      ty_repay_yehz yehz,
+	  	select count(*) from (select app.ID as ywbh,basic.CHINESE_NAME as CHINESE_NAME,basic.CARD_ID as CARD_ID,''as TELEPHONE,'' as industry,'' as spmc,'' as RESIDENTIAL_ADDRESS,
+  				app.APPLY_QUOTA as JKJE,app.created_time as JKRQ,
+                     pro.AUDIT_TIME as AUDIT_TIME,pro.REFUSAL_REASON as REFUSAL_REASON,sysuser.DISPLAY_NAME DISPLAY_NAME, pro.PROCESS_OP_STATUS
+                      from basic_customer_information basic,
                       customer_application_info app,
                       customer_application_process pro,
                       sys_user sysuser
-                      where b.id=basic.ty_customer_id and
-                            b.khnm=tkmx.khh and
-                            tkmx.jjh=yehz.jjh and
+                      where 
                             app.customer_id=basic.id and 
                             app.id=pro.application_id and
                             sysuser.id=basic.user_id
                              and pro.PROCESS_OP_STATUS ='REJECTAPPROVE'
-	  	<if test="busiCode != null and busiCode != '' ">
-			AND trim(tkmx.ywbh)=#{busiCode}
-		</if>
-		
-	  	<if test="customerName != null and customerName != '' ">
-			AND basic.CHINESE_NAME =#{customerName}
-		 </if>
+					 <if test="busiCode != null and busiCode != '' ">
+						AND trim(app.ID)=#{busiCode}
+					 </if>
+					 
+					 <if test="customerName != null and customerName != '' ">
+						AND basic.CHINESE_NAME =#{customerName}
+					 </if>)
 	</select>
 	
 	<select id="findtzList"  resultMap="BaseResultMap3" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">

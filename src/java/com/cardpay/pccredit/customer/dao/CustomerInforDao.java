@@ -12,6 +12,7 @@ import com.cardpay.pccredit.customer.model.CustomerFirsthendBase;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.model.CustomerInforWeb;
 import com.cardpay.pccredit.customer.model.MaintenanceLog;
+import com.cardpay.pccredit.customer.model.TyMibusidataForm;
 import com.cardpay.pccredit.customer.model.TyRepayLsz;
 import com.cardpay.pccredit.customer.model.TyRepayYehz;
 import com.cardpay.pccredit.customer.model.TyRepayYehzVo;
@@ -301,6 +302,8 @@ public interface CustomerInforDao {
 	public int insertFCRESULTHIS(Map<String, Object> map);
 	public int insertMIBUSIDATA(Map<String, Object> map);
 	public int insertCipersonBasinfo(Map<String, Object> map);
+	public int inserTyMIBUSIDATA(TyMibusidataForm tyMibusidataForm);
+	public List<TyMibusidataForm> findmibusidata();
 
 	
 }

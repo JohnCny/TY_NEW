@@ -57,6 +57,7 @@ import com.cardpay.pccredit.customer.model.CustomerFirsthendWork;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.model.CustomerInforWeb;
 import com.cardpay.pccredit.customer.model.MaintenanceLog;
+import com.cardpay.pccredit.customer.model.TyMibusidataForm;
 import com.cardpay.pccredit.customer.model.TyProductType;
 import com.cardpay.pccredit.customer.model.TyRepayLsz;
 import com.cardpay.pccredit.customer.model.TyRepayYehzVo;
@@ -4664,6 +4665,19 @@ public class CustomerInforService {
 	public List<CustomerFirsthendFamilyCc> ffcustomerfirsthendccbyid(String khnm) {
 		// TODO Auto-generated method stub
 		return  commonDao.queryBySql(CustomerFirsthendFamilyCc.class, "select * from ty_customer_family_cc s where s.khnm='"+khnm+"'", null);
+	}
+	
+	/**
+	 * 添加台帐临时表信息
+	 * @throws IOException 
+	 */
+	public void addmibusidata() throws IOException{
+		//List<TyMibusidataForm>lists=commonDao.queryBySql(TyMibusidataForm.class, "select * from Mibusidata", null);
+		List<TyMibusidataForm>lists=customerInforDao.findmibusidata();
+		for (TyMibusidataForm tyMibusidataForm : lists) {
+			customerInforDao.inserTyMIBUSIDATA(tyMibusidataForm);
+		}
+		log.info("success!");
 	}
 	
 }
