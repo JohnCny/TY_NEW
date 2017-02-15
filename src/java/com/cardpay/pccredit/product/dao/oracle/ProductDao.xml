@@ -317,12 +317,22 @@
 	
 	<!--是否有贷款未结清  -->
 	<select id="findsfjq" resultType="int">
-		  select count(*) from basic_customer_information basic,
+		<!--   select count(*) from basic_customer_information basic,
         ty_customer_base base ,ty_repay_tkmx tkmx , SYS_USER su
        where basic.ty_customer_id=base.id  
 		and base.khnm=tkmx.khh  
 		and su.id=basic.user_id
 		and tkmx.sfjq='0.0'
-		and su.id=#{id}
+		and basic.id=#{id} -->
+		select count(*) from basic_customer_information basic,
+        ty_customer_base base ,ty_repay_tkmx tkmx , SYS_USER su ,ty_repay_yehz yehz
+       	where basic.ty_customer_id=base.id  
+		and base.khnm=tkmx.khh  
+		and su.id=basic.user_id
+		and yehz.DKYE !='0.00'
+    	and yehz.jjh=tkmx.jjh
+		and basic.id=#{id}
 	</select>
+	
+
 </mapper>

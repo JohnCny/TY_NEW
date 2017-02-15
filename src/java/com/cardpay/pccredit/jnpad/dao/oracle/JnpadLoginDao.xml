@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.jnpad.dao.JnpadLoginDao" >
+<resultMap type="com.cardpay.pccredit.jnpad.model.LoginInfo" id="LoginInfo">
+<result property="ID" column="ID" />
+<result property="LOGIN" column="LOGIN" />
+<result property="ACTION_TIME" column="ACTION_TIME" />
+</resultMap>
+    
+    
+<select id="selecTime" resultMap="LoginInfo">
+select max(ACTION_TIME) as ACTION_TIME from SYS_LOGIN_LOG  where login=#{login}
+</select>
+
+<insert id="insetTime" parameterType="java.lang.Integer">
+insert into SYS_LOGIN_LOG (ID,LOGIN,ACTION_TIME) values (#{ID},#{LOGIN},#{ACTION_TIME})
+</insert>
+</mapper> 
