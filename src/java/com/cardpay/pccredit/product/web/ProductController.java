@@ -22,7 +22,11 @@ import com.cardpay.pccredit.common.PccOrganizationService;
 import com.cardpay.pccredit.common.UploadFileTool;
 import com.cardpay.pccredit.customer.model.CIPERSONBASINFOCOPY;
 import com.cardpay.pccredit.customer.model.CIPERSONBASINFOCOPYFORM;
+import com.cardpay.pccredit.customer.model.CustomerFirsthendBase;
+import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.model.TyProductType;
+import com.cardpay.pccredit.customer.service.CustomerInforService;
+import com.cardpay.pccredit.customer.web.CustomerInforForm;
 import com.cardpay.pccredit.datapri.web.FlatTreeNode;
 import com.cardpay.pccredit.product.filter.ProductFilter;
 import com.cardpay.pccredit.product.model.AccessoriesList;
@@ -70,7 +74,8 @@ import com.wicresoft.util.web.RequestHelper;
 @RequestMapping("/product/productinformation/*")
 @JRadModule("product.productinformation")
 public class ProductController extends BaseController {
-
+	@Autowired
+	private CustomerInforService InforService;
 	@Autowired
 	private ProductService productService;
 
@@ -1934,7 +1939,7 @@ public class ProductController extends BaseController {
 		return returnMap;
 	}
 	
-	@ResponseBody
+	/*@ResponseBody
 	@RequestMapping(value = "updateBaseCustomer.json", method = { RequestMethod.POST })
 	//@JRadOperation(JRadOperation.CHANGE)
 	public JRadReturnMap updateBaseCustomer(@ModelAttribute CIPERSONBASINFOCOPYFORM from, HttpServletRequest request) {
@@ -1943,6 +1948,7 @@ public class ProductController extends BaseController {
 		if (returnMap.isSuccess()) {
 			try {
 				CIPERSONBASINFOCOPY copy = from.createModel(CIPERSONBASINFOCOPY.class);
+				copy.setIslook("1");
 				int i = productService.updateCustomerBase(copy);
 				returnMap.put(MESSAGE, "修改成功");
 			} catch (Exception e) {
@@ -1951,8 +1957,41 @@ public class ProductController extends BaseController {
 		}
 
 		return returnMap;
+	}*/
+	
+	@ResponseBody
+	@RequestMapping(value = "updateBaseCustomer.json", method = { RequestMethod.GET })
+	//@JRadOperation(JRadOperation.CHANGE)
+	public JRadReturnMap updateBaseCustomer(@ModelAttribute CustomerFirsthendBase from, HttpServletRequest request) {
+
+		JRadReturnMap returnMap = new JRadReturnMap();
+		from.setId(request.getParameter("id"));
+		from.setXb(request.getParameter("xb"));
+		from.setMz(request.getParameter("mz"));
+		from.setHyzk(request.getParameter("hyzk"));
+		from.setXxdz(request.getParameter("xxdz"));
+		from.setGtspmc(request.getParameter("gtspmc"));
+		from.setHjdz(request.getParameter("hjdz"));
+		from.setSj(request.getParameter("sj"));
+		from.setJtdh(request.getParameter("jtdh"));
+		from.setXl(request.getParameter("xl"));
+		from.setXw(request.getParameter("xw"));
+		from.setUpdatetime(new Date());
+		int a=InforService.updateCustormerBytyId(from);
+		returnMap.put("message", "操作成功");
+		/*if (returnMap.isSuccess()) {
+			try {
+				CustomerInfor copy = from.createModel(CustomerInfor.class);
+				copy.setIslook("1");
+				copy.setModifiedTime(new Date());
+				int i = productService.updateCustomerInfor(copy);
+				returnMap.put(MESSAGE, "修改成功");
+			} catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
+		}*/
+
+		return returnMap;
 	}
-	
-	
 
 }

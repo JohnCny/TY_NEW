@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import net.sf.json.JSONArray;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -488,13 +489,13 @@ public class MaintenanceController extends BaseController{
 	}
 	
 	
-	/**
+/*	*//**
 	 * 浏览维护计划日志页面
 	 * 
 	 * @param filter
 	 * @param request
 	 * @return
-	 */
+	 *//*
 	@ResponseBody
 	@RequestMapping(value = "log.page", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
@@ -516,6 +517,54 @@ public class MaintenanceController extends BaseController{
 		mv.addObject("forms", forms);
 		return mv;
 
+	}*/
+	
+	
+	/**
+	 * 浏览维护计划日志页面
+	 * 
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "log.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView log(@ModelAttribute CustomerInforFilter filter, HttpServletRequest request) {
+		filter.setRequest(request);
+		JRadModelAndView mv;
+			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+			filter.setUserId(user.getId());
+			QueryResult<CustomerInforFilter> result = customerInforService.findUpdateCustormer(filter);
+			JRadPagedQueryResult<CustomerInforFilter> pagedResult = new JRadPagedQueryResult<CustomerInforFilter>(filter, result);
+			mv = new JRadModelAndView("/customer/maintenance/maintenance_plan_log", request);
+			mv.addObject(PAGED_RESULT, pagedResult);
+			return mv;
+	}
+	
+	
+	/**
+	 * 浏览查找维护计划日志页面
+	 * 
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "log1.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView log1(@ModelAttribute CustomerInforFilter filter, HttpServletRequest request) {
+		filter.setRequest(request);
+		JRadModelAndView mv;
+			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+			filter.setUserId(user.getId());
+			filter.setCardId(request.getParameter("cardId")+"%");
+			filter.setChineseName(request.getParameter("name")+"%");
+			QueryResult<CustomerInforFilter> result = customerInforService.findUpdateCustormer1(filter);
+			JRadPagedQueryResult<CustomerInforFilter> pagedResult = new JRadPagedQueryResult<CustomerInforFilter>(filter, result);
+			mv = new JRadModelAndView("/customer/maintenance/maintenance_plan_log", request);
+			mv.addObject(PAGED_RESULT, pagedResult);
+			return mv;
 	}
 	
 	/**
@@ -544,6 +593,8 @@ public class MaintenanceController extends BaseController{
 		mv.addObject("appId", appId);
 		return mv;
 	}
+	
+	
 	/**
 	 * 显示维护计划信息页面
 	 * 

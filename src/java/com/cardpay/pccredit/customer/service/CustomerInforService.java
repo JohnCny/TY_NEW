@@ -17,6 +17,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -4665,6 +4666,27 @@ public class CustomerInforService {
 	public List<CustomerFirsthendFamilyCc> ffcustomerfirsthendccbyid(String khnm) {
 		// TODO Auto-generated method stub
 		return  commonDao.queryBySql(CustomerFirsthendFamilyCc.class, "select * from ty_customer_family_cc s where s.khnm='"+khnm+"'", null);
+	}
+	public QueryResult<CustomerInforFilter> findUpdateCustormer(CustomerInforFilter filter){
+		List<CustomerInforFilter> plans = customerInforDao.findUpdateCustormer(filter);
+		for(int a=0;a<plans.size();a++){
+			String dateStr = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(plans.get(a).getUpdatetime());
+			plans.get(a).setCreatetime2(dateStr);
+		}
+		QueryResult<CustomerInforFilter> qr = new QueryResult<CustomerInforFilter>(plans.size(),plans);
+		return qr;
+	}
+	public QueryResult<CustomerInforFilter> findUpdateCustormer1(CustomerInforFilter filter){
+		List<CustomerInforFilter> plans = customerInforDao.findUpdateCustormer1(filter);
+		for(int a=0;a<plans.size();a++){
+			String dateStr = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(plans.get(a).getUpdatetime());
+			plans.get(a).setCreatetime2(dateStr);
+		}
+		QueryResult<CustomerInforFilter> qr = new QueryResult<CustomerInforFilter>(plans.size(),plans);
+		return qr;
+	}
+	public int updateCustormerBytyId(CustomerFirsthendBase filter){
+		return customerInforDao.updateCustormerBytyId(filter);
 	}
 	
 }

@@ -132,18 +132,18 @@ public class JnpadTongjiInforController {
 					ylist12+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 				}
 			}
-			map.put("ylist1", ylist1);
-			map.put("ylist2", ylist2);
-			map.put("ylist3", ylist3);
-			map.put("ylist4", ylist4);
-			map.put("ylist5", ylist5);
-			map.put("ylist6", ylist6);
-			map.put("ylist7", ylist7);
-			map.put("ylist8", ylist8);
-			map.put("ylist9", ylist9);
-			map.put("ylist10", ylist10);
-			map.put("ylist11", ylist11);
-			map.put("ylist12", ylist12);
+			map.put("ylist1", ylist1/1000000);
+			map.put("ylist2", ylist2/1000000);
+			map.put("ylist3", ylist3/1000000);
+			map.put("ylist4", ylist4/1000000);
+			map.put("ylist5", ylist5/1000000);
+			map.put("ylist6", ylist6/1000000);
+			map.put("ylist7", ylist7/1000000);
+			map.put("ylist8", ylist8/1000000);
+			map.put("ylist9", ylist9/1000000);
+			map.put("ylist10", ylist10/1000000);
+			map.put("ylist11", ylist11/1000000);
+			map.put("ylist12", ylist12/1000000);
 			
 			//申请拒绝
 					List clist1=new ArrayList();
@@ -776,18 +776,18 @@ public class JnpadTongjiInforController {
 		map.put("list10", list10.size());
 		map.put("list11", list11.size());
 		map.put("list12", list12.size());
-		map.put("ylist1", ylist1);
-		map.put("ylist2", ylist2);
-		map.put("ylist3", ylist3);
-		map.put("ylist4", ylist4);
-		map.put("ylist5", ylist5);
-		map.put("ylist6", ylist6);
-		map.put("ylist7", ylist7);
-		map.put("ylist8", ylist8);
-		map.put("ylist9", ylist9);
-		map.put("ylist10", ylist10);
-		map.put("ylist11", ylist11);
-		map.put("ylist12", ylist12);
+		map.put("ylist1", ylist1/1000000);
+		map.put("ylist2", ylist2/1000000);
+		map.put("ylist3", ylist3/1000000);
+		map.put("ylist4", ylist4/1000000);
+		map.put("ylist5", ylist5/1000000);
+		map.put("ylist6", ylist6/1000000);
+		map.put("ylist7", ylist7/1000000);
+		map.put("ylist8", ylist8/1000000);
+		map.put("ylist9", ylist9/1000000);
+		map.put("ylist10", ylist10/1000000);
+		map.put("ylist11", ylist11/1000000);
+		map.put("ylist12", ylist12/1000000);
 		map.put("clist1", clist1.size());
 		map.put("clist2", clist2.size());
 		map.put("clist3", clist3.size());

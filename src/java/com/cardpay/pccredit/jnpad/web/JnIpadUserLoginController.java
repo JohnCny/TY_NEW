@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -37,6 +38,7 @@ import com.cardpay.pccredit.jnpad.model.CustomerManagerVo;
 import com.cardpay.pccredit.jnpad.model.JBUser;
 import com.cardpay.pccredit.jnpad.model.JnUserLoginIpad;
 import com.cardpay.pccredit.jnpad.model.JnUserLoginResult;
+import com.cardpay.pccredit.jnpad.model.LoginInfo;
 import com.cardpay.pccredit.jnpad.model.NODEAUDIT;
 import com.cardpay.pccredit.jnpad.model.NotifyMsgListVo;
 import com.cardpay.pccredit.jnpad.service.JnIpadCustAppInfoXxService;
@@ -44,6 +46,7 @@ import com.cardpay.pccredit.jnpad.service.JnIpadJBUserService;
 import com.cardpay.pccredit.jnpad.service.JnIpadUserLoginService;
 import com.cardpay.pccredit.jnpad.service.JnIpadXDService;
 import com.cardpay.pccredit.jnpad.service.JnpadCustormerSdwUserService;
+import com.cardpay.pccredit.jnpad.service.JnpadLoginService;
 import com.cardpay.pccredit.jnpad.service.JnpadZongBaoCustomerInsertService;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
 import com.cardpay.pccredit.manager.web.ManagerBelongMapForm;
@@ -96,6 +99,9 @@ public class JnIpadUserLoginController {
 	private CustormerBlackListService cblservice;
 	@Autowired
 	private JnpadCustormerSdwUserService SdwUserService;
+	@Autowired
+	private JnpadLoginService LoginService;
+	
 	
 	
 	/**
@@ -107,10 +113,11 @@ public class JnIpadUserLoginController {
 	@RequestMapping(value = "/ipad/user/JnLogin.json")
 	public String login(@ModelAttribute NODEAUDIT NODEAUDIT,HttpServletRequest request) {
 		qyjl=0;
+		JnUserLoginIpad user = null;
 		Map<String,Object> map = new LinkedHashMap<String,Object>();
 		String login = RequestHelper.getStringValue(request, "login");
 		String passwd = RequestHelper.getStringValue(request, "password");
-		HttpSession session=request.getSession();
+	/*	HttpSession session=request.getSession();
 		String time= (String) session.getAttribute("loginTime");
 		JnUserLoginIpad user = null;
 		//上次登录时间
@@ -131,7 +138,7 @@ public class JnIpadUserLoginController {
 			String noTime="有";
 			map.put("noTime", noTime);
 			map.put("time", time);
-		}
+		}*/
 		
 		Result result = null;
 		JnUserLoginResult loginResult = null;
@@ -152,6 +159,19 @@ public class JnIpadUserLoginController {
 				loginResult.setReason(IpadConstant.LOGINFAIL);
 			}
 			map.put("result",loginResult);
+			LoginInfo Time=LoginService.selecTime(login);
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+			String str1=sdf.format(Time.getACTION_TIME()); 
+			map.put("Time", str1);
+		LoginInfo LoginInfo=new LoginInfo();
+		LoginInfo.setACTION_TIME(new Date());
+		LoginInfo.setLOGIN(login);
+		String id=null;
+		if(null==id){
+			id=UUID.randomUUID().toString();
+		}
+		LoginInfo.setID(id);
+		int a=LoginService.insetTime(LoginInfo);
 			//查询是否为区域经理或者小组长，以及小组成员
 			List list1=cxke(user);
 			map.put("list", list1);

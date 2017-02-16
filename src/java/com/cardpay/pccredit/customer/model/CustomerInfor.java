@@ -1,5 +1,7 @@
 package com.cardpay.pccredit.customer.model;
 
+import java.util.Date;
+
 import com.wicresoft.jrad.base.database.id.IDType;
 import com.wicresoft.jrad.base.database.model.BusinessModel;
 import com.wicresoft.jrad.base.database.model.ModelParam;
@@ -36,11 +38,36 @@ public class CustomerInfor extends BusinessModel{
 	private String customerBusinessType;
 	private String customerBusinessAptitude;
 	private String tyCustomerId;
-	
+	private String islook;
 	private String spmc;
-	
 	private String tyUserId;
-	
+	private Date createtime;
+	private Date updatetime;
+	private String createtime1;
+	public String getCreatetime1() {
+		return createtime1;
+	}
+	public void setCreatetime1(String createtime1) {
+		this.createtime1 = createtime1;
+	}
+	public String getIslook() {
+		return islook;
+	}
+	public void setIslook(String islook) {
+		this.islook = islook;
+	}
+	public Date getCreatetime() {
+		return createtime;
+	}
+	public void setCreatetime(Date createtime) {
+		this.createtime = createtime;
+	}
+	public Date getUpdatetime() {
+		return updatetime;
+	}
+	public void setUpdatetime(Date updatetime) {
+		this.updatetime = updatetime;
+	}
 	public String getChineseName() {
 		return chineseName;
 	}
