@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.customer.model.CIPERSONBASINFOCOPY;
+import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.model.TyCustomerRecord;
 import com.cardpay.pccredit.customer.model.TyProductType;
 import com.cardpay.pccredit.intopieces.model.AppManagerAuditLog;
@@ -384,6 +385,9 @@ public class ProductService {
 	
 	// 修改客户原始信息
 	public int updateCustomerBase(CIPERSONBASINFOCOPY copy) {
+		return commonDao.updateObject(copy);
+	}
+	public int updateCustomerInfor(CustomerInfor copy) {
 		return commonDao.updateObject(copy);
 	}
 

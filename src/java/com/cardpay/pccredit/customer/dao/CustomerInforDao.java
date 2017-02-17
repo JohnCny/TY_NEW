@@ -302,8 +302,14 @@ public interface CustomerInforDao {
 	public int insertFCRESULTHIS(Map<String, Object> map);
 	public int insertMIBUSIDATA(Map<String, Object> map);
 	public int insertCipersonBasinfo(Map<String, Object> map);
+
 	public int inserTyMIBUSIDATA(TyMibusidataForm tyMibusidataForm);
 	public List<TyMibusidataForm> findmibusidata();
+	public List<CustomerInforFilter> findUpdateCustormer(CustomerInforFilter filter);
+	public List<CustomerInforFilter> findUpdateCustormer1(CustomerInforFilter filter);
+	public int updateCustormerBytyId(CustomerFirsthendBase filter);
+	
+	public List<CustomerInforFilter> padfindUpdateCustormer(@Param("userId") String userId);
 
 	
 }

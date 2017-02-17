@@ -14,22 +14,6 @@
      <div class="search">
           <form id="submitForm">
             <ul>
-            <li>
-                <span>客户经理：
-                <select id="userId" name="userId">
-                <option value="">请选择...</option>
-                #web($forms,$!result.filter.userId)
-                  </select>
-                </span>
-              </li>
-              <li>
-                <span>产品名称：
-                <select id="productId" name="productId">
-                <option value="">请选择...</option>
-                #dict("CMMCPLX", "$!result.filter.productId")
-                  </select>
-                </span>
-              </li>
               <li>
                <span>客户名称：<input type="text" id="chineseName" name="chineseName" /></span>
               </li>
@@ -38,8 +22,8 @@
               </li>
               <li>
               <li class="search_button">
-                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
-                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+                <input id="selectq" type="button" value="筛选" class="search_button_inquiry"
+                  style="height: 26px; line-height: 24px;" />
               </li>
             </ul>
           </form>
@@ -58,8 +42,12 @@
               <th nowrap="nowrap"></th>
               <th nowrap="nowrap">客户名称</th>
               <th nowrap="nowrap">证件号码</th>
-              <th nowrap="nowrap">产品名称</th>
-              <th nowrap="nowrap">所属客户经理</th>
+              <th nowrap="nowrap">手机</th>
+               <th nowrap="nowrap">家庭电话</th>
+              <th nowrap="nowrap">户籍地址</th>
+              <th nowrap="nowrap">家庭住址</th>
+              <th nowrap="nowrap">创建时间</th>
+              <th nowrap="nowrap">修改时间</th>
               
             </tr>
           </table>
@@ -79,17 +67,21 @@
                  <!--   #if ($!request.getParameter("recordId") == $!customer.id) checked="checked" #end -->
               <td nowrap="nowrap">$!customer.chineseName</td>
               <td nowrap="nowrap">$!customer.cardId</td>
-              <td nowrap="nowrap">$!customer.productName</td>
-              <td nowrap="nowrap">$!customer.userName</td>
+              <td nowrap="nowrap">$!customer.telephone</td>
+                <td nowrap="nowrap">$!customer.homePhone</td>
+                   <td nowrap="nowrap">$!customer.mail</td>
+              <td nowrap="nowrap">$!customer.residentialAddress</td>
+              <td nowrap="nowrap">$!customer.createtime1</td>
+              <td nowrap="nowrap">$!customer.Createtime2</td>
             </tr>
             #end
           </table>
         </div>
       </div>
       <div class="pagebar">
-        <div class="controlbtn">
+        <!-- <div class="controlbtn">
           #btnpriv("create")<a  class="btn_g" onclick="show()" href="javascript:void(0);" title="#i18n('button.create.hint')">维护计划列表</a>#end 
-        </div>
+        </div> -->
         #parse ("common/pagination.htm")
         <div class="clear"></div>
       </div>
@@ -124,7 +116,16 @@
 				topWin.Dialog.message("请选择记录！");
 			}
 	}
-	
+	 $("#selectq").click(function() {
+		 var name=$("#chineseName").val();
+		 var cardId=$("#cardId").val();
+		 var url="${modulePath}/log1.page?name=" + name+"&cardId="+cardId;
+		 if(name=="" & cardId==""){
+			 Dialog.message("输入不能为空!!");
+		 }else{
+			 window.location.href=url;
+		 }
+	 });
 	
 </script>
 #parse ("common/iframe_page_footer.htm")

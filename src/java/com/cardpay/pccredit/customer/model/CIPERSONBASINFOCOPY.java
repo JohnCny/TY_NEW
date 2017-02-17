@@ -98,6 +98,13 @@ public class CIPERSONBASINFOCOPY extends BusinessModel{
 	private String  backoperator;        
 	private String  busiflag;            
 	private String  create_time;
+	private String islook;
+	public String getIslook() {
+		return islook;
+	}
+	public void setIslook(String islook) {
+		this.islook = islook;
+	}
 	public String getId() {
 		return id;
 	}

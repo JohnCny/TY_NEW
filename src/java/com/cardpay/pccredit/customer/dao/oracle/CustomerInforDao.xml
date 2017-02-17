@@ -8,6 +8,30 @@
 		<result property="cardId" column="card_id" />
 		<result property="eesidentialAddress" column="residential_address" />
 		<result property="telephone" column="telephone" />
+		<result property="homePhone" column="homePhone" />
+		<result property="TELEPHONE" column="TELEPHONE" />
+		<result property="mail" column="mail" />
+		<result property="userId" column="userId" />
+		<result property="createtime" column="createtime" />
+		<result property="createtime1" column="createtime1" />
+		<result property="updatetime" column="updatetime" />
+	</resultMap>
+	
+		<resultMap id="ResultMap1"
+		type="com.cardpay.pccredit.customer.filter.CustomerInforFilter">
+		<result property="chineseName" column="chinese_name" />
+		<result property="cardType" column="card_type" />
+		<result property="cardId" column="card_id" />
+		<result property="eesidentialAddress" column="residential_address" />
+		<result property="telephone" column="telephone" />
+		<result property="createtime1" column="createtime1" />
+		<result property="createtime2" column="createtime2" />
+		<result property="homePhone" column="homePhone" />
+		<result property="telephone" column="telephone" />
+		<result property="mail" column="mail" />
+		<result property="userId" column="userId" />
+		<result property="createtime" column="createtime" />
+		<result property="updatetime" column="updatetime" />
 	</resultMap>
 
 	<resultMap id="MibusidataMap"
@@ -34,7 +58,89 @@
 		<result property="beforeYearWorkUnit" column="before_Year_Work_Unit" />
 		<result property="workTime" column="work_Time" />
 	</resultMap>
-
+	
+		<resultMap id="ResultMap3"
+		type="com.cardpay.pccredit.customer.model.CustomerFirsthendBase">
+		<result property="id" column="id" />
+		<result property="khmc" column="khmc" />
+		<result property="khh" column="khh" />
+		<result property="khlx" column="khlx" />
+		<result property="zjlx" column="zjlx" />
+		<result property="zjhm" column="zjhm" />
+		<result property="xb" column="xb" />
+		<result property="mz" column="mz" />
+		<result property="hyzk" column="hyzk" />
+		<result property="csrq" column="csrq" />
+		<result property="xxdz" column="xxdz" />
+		<result property="dqrq" column="dqrq" />
+		<result property="gtspmc" column="gtspmc" />
+		<result property="hjdz" column="hjdz" />
+		<result property="sj" column="sj" />
+			<result property="jtdh" column="jtdh" />
+		<result property="sfhz" column="sfhz" />
+		<result property="xl" column="xl" />
+		<result property="xw" column="xw" />
+		<result property="updatetime" column="updatetime" />
+	</resultMap>
+	
+		
+	<update id="updateCustormerBytyId" >
+		update TY_CUSTOMER_BASE
+		set XB=#{xb},MZ=#{mz},HYZK=#{hyzk},XXDZ=#{xxdz},GTSPMC=#{gtspmc},HJDZ=#{hjdz},SJ=#{sj},JTDH=#{jtdh},xl=#{xl},xw=#{xw},updatetime=#{updatetime}
+		where id=#{id}
+	</update>	
+			
+	<select id="findUpdateCustormer"  resultMap="ResultMap1" parameterType="com.cardpay.pccredit.customer.filter.CustomerInforFilter">
+	    	SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		 	select t.khmc as chineseName,t.zjhm as cardId,t.khlx as cardType,t.xxdz as residentialAddress,t.jtdh as homePhone,t.sj as telephone,t.hjdz as mail
+		,b.id as userId,t.CREATE_TIME as createtime1 ,t.updatetime as updatetime from TY_CUSTOMER_BASE t,BASIC_CUSTOMER_INFORMATION b
+		where 1=1 
+						AND b.user_id=#{userId}
+					and b.TY_CUSTOMER_ID=t.id
+		and t.updatetime is not null
+		order by t.updatetime desc
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	
+		<select id="padfindUpdateCustormer"  resultMap="ResultMap1" >
+		 	select t.khmc as chineseName,t.zjhm as cardId,t.khlx as cardType,t.xxdz as residentialAddress,t.jtdh as homePhone,t.sj as telephone,t.hjdz as mail
+		,t.id as userId,t.CREATE_TIME as createtime1 ,t.updatetime as updatetime from TY_CUSTOMER_BASE t,BASIC_CUSTOMER_INFORMATION b
+		where 1=1 
+						AND b.user_id=#{userId}
+					and b.TY_CUSTOMER_ID=t.id
+		and t.updatetime is not null
+	</select>
+	
+	<select id="findUpdateCustormer1"  resultMap="ResultMap1" parameterType="com.cardpay.pccredit.customer.filter.CustomerInforFilter">
+	    	SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		select t.khmc as chineseName,t.zjhm as cardId,t.khlx as cardType,t.xxdz as residentialAddress,t.jtdh as homePhone,t.sj as telephone,t.hjdz as mail
+		,b.id as userId,t.CREATE_TIME as createtime1 ,t.updatetime as updatetime from TY_CUSTOMER_BASE t,BASIC_CUSTOMER_INFORMATION b
+		where 1=1 
+			<if test="cardId != null and cardId != '' ">
+			AND t.zjhm like #{cardId}
+		</if>
+			<if test="cardId != null and cardId != '' ">
+			AND t.khmc like #{chineseName}
+		</if>
+		
+		AND b.user_id=#{userId}
+		and b.TY_CUSTOMER_ID=t.id
+		and t.updatetime is not null
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
 	<select id="findcloneCustomerCareersByCustomerId" resultMap="customerCareersInformationMap">
 		select * from customer_careers_information_s t
 		where t.customer_id=#{customerId}
