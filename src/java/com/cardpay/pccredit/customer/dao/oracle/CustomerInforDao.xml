@@ -34,6 +34,11 @@
 		<result property="updatetime" column="updatetime" />
 	</resultMap>
 
+	<resultMap id="MibusidataMap"
+		type="com.cardpay.pccredit.customer.model.TyMibusidataForm">
+		<result property="YWBH" column="YWBH" />
+	</resultMap>
+	
 	<resultMap id="customerCareersInformationMap"
 		type="com.cardpay.pccredit.customer.model.CustomerCareersInformation">
 		<result property="customerId" column="customer_Id" />
@@ -2010,5 +2015,16 @@
                                             		    #{backoperator},                              
                                             		    #{busiflag},
                                             		    #{create_time})
+	</insert>
+	
+	<select id="findmibusidata"  resultMap="MibusidataMap">
+			select * from Mibusidata
+	</select>
+	
+	<insert id="inserTyMIBUSIDATA" parameterType="com.cardpay.pccredit.customer.model.TyMibusidataForm">
+	     insert into TY_MIBUSIDATA(YWBH,ID,KHH,KHMC,ZJHM,SSBM,SJ,SXED,GHJL,LOANDATE,DQRQ,DKQX,JZLL,REQLMT,DELAYINTERESTDAYS,DELAYAMTDAYS,
+	DLAYDT,SHBJ,JKJE,KSQXRQ,PAYDEBT,DKYE,BNQX,BWQX,BALAMT,YXYE,WJFL3,WJFL4,WJFL5,OPERDATETIME,USERID,DISPLAY_NAME,YWJG)
+	values(#{YWBH},#{ID},#{KHH},#{KHMC},#{ZJHM},#{SSBM},#{SJ},#{SXED},#{GHJL},#{LOANDATE},#{DQRQ},#{DKQX},#{JZLL},#{REQLMT},#{DELAYINTERESTDAYS},#{DELAYAMTDAYS},
+	#{DLAYDT},#{SHBJ},#{JKJE},#{KSQXRQ},#{PAYDEBT},#{DKYE},#{BNQX},#{BWQX},#{BALAMT},#{YXYE},#{WJFL3},#{WJFL4},#{WJFL5},#{OPERDATETIME},#{USERID},#{DISPLAY_NAME},#{YWJG}) 
 	</insert>
 </mapper>

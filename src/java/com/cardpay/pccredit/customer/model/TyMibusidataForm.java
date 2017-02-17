@@ -1,11 +1,17 @@
-package com.cardpay.pccredit.postLoan.model;
+package com.cardpay.pccredit.customer.model;
 
+
+import com.wicresoft.jrad.base.database.id.IDType;
 import com.wicresoft.jrad.base.database.model.BusinessModel;
-
-public class MibusidateView extends BusinessModel{
+import com.wicresoft.jrad.base.database.model.ModelParam;
+/**
+ * 台帐临时表Form
+ * @author zb
+ */
+@ModelParam(table = "Mibusidata",generator=IDType.uuid32)
+public class TyMibusidataForm extends BusinessModel {
 	private String YWBH;
-	private String ywbh;
-	private String id;
+	private String ID;
 	private String KHH;
 	private String KHMC;
 	private String ZJHM;
@@ -14,88 +20,73 @@ public class MibusidateView extends BusinessModel{
 	private String SXED;
 	private String GHJL;
 	private String LOANDATE;
-	private String loandate;
 	private String DQRQ;
 	private String DKQX;
 	private String JZLL;
 	private String REQLMT;
-	private String reqlmt;
 	private String DELAYINTERESTDAYS;
 	private String DELAYAMTDAYS;
-	private String qs;
 	private String DLAYDT;
-	private String DF;
-	private String YE;
 	private String SHBJ;
 	private String JKJE;
 	private String KSQXRQ;
-	private String SHLX;
+	private String PAYDEBT;
 	private String DKYE;
 	private String BNQX;
 	private String BWQX;
 	private String BALAMT;
-	private String balamt;
-	private String yxye;
-	private String HKFS;
-	private String je;
-	private String CREATE_TIME;
-	private String operdatetime;
-	private String dlayamtsum;
+	private String YXYE;
+	private String WJFL3;
+	private String WJFL4;
+	private String WJFL5;
+	private String OPERDATETIME;
+	private String USERID;
+	private String DISPLAY_NAME;
+	private String YWJG;
 	
-	
-	public String getDlayamtsum() {
-		return dlayamtsum;
-	}
-	public void setDlayamtsum(String dlayamtsum) {
-		this.dlayamtsum = dlayamtsum;
-	}
-	public String getLoandate() {
-		return loandate;
-	}
-	public void setLoandate(String loandate) {
-		this.loandate = loandate;
-	}
-	public String getReqlmt() {
-		return reqlmt;
-	}
-	public void setReqlmt(String reqlmt) {
-		this.reqlmt = reqlmt;
-	}
-	public String getYwbh() {
-		return ywbh;
-	}
-	public void setYwbh(String ywbh) {
-		this.ywbh = ywbh;
-	}
-	public String getBalamt() {
-		return balamt;
-	}
-	public void setBalamt(String balamt) {
-		this.balamt = balamt;
-	}
-	public String getOperdatetime() {
-		return operdatetime;
-	}
-	public void setOperdatetime(String operdatetime) {
-		this.operdatetime = operdatetime;
-	}
-	public String getJe() {
-		return je;
-	}
-	public void setJe(String je) {
-		this.je = je;
-	}
-	public String getCREATE_TIME() {
-		return CREATE_TIME;
-	}
-	public void setCREATE_TIME(String cREATE_TIME) {
-		CREATE_TIME = cREATE_TIME;
-	}
-	public String getHKFS() {
-		return HKFS;
-	}
-	public void setHKFS(String hKFS) {
-		HKFS = hKFS;
+	public TyMibusidataForm(){}
+	public TyMibusidataForm(String yWBH, String iD, String kHH, String kHMC,
+			String zJHM, String sSBM, String sJ, String sXED, String gHJL,
+			String lOANDATE, String dQRQ, String dKQX, String jZLL,
+			String rEQLMT, String dELAYINTERESTDAYS, String dELAYAMTDAYS,
+			String dLAYDT, String sHBJ, String jKJE, String kSQXRQ,
+			String pAYDEBT, String dKYE, String bNQX, String bWQX,
+			String bALAMT, String yXYE, String wJFL3, String wJFL4,
+			String wJFL5, String oPERDATETIME, String uSERID,
+			String dISPLAY_NAME, String yWJG) {
+		YWBH = yWBH;
+		ID = iD;
+		KHH = kHH;
+		KHMC = kHMC;
+		ZJHM = zJHM;
+		SSBM = sSBM;
+		SJ = sJ;
+		SXED = sXED;
+		GHJL = gHJL;
+		LOANDATE = lOANDATE;
+		DQRQ = dQRQ;
+		DKQX = dKQX;
+		JZLL = jZLL;
+		REQLMT = rEQLMT;
+		DELAYINTERESTDAYS = dELAYINTERESTDAYS;
+		DELAYAMTDAYS = dELAYAMTDAYS;
+		DLAYDT = dLAYDT;
+		SHBJ = sHBJ;
+		JKJE = jKJE;
+		KSQXRQ = kSQXRQ;
+		PAYDEBT = pAYDEBT;
+		DKYE = dKYE;
+		BNQX = bNQX;
+		BWQX = bWQX;
+		BALAMT = bALAMT;
+		YXYE = yXYE;
+		WJFL3 = wJFL3;
+		WJFL4 = wJFL4;
+		WJFL5 = wJFL5;
+		OPERDATETIME = oPERDATETIME;
+		USERID = uSERID;
+		DISPLAY_NAME = dISPLAY_NAME;
+		YWJG = yWJG;
 	}
 	public String getYWBH() {
 		return YWBH;
@@ -103,11 +94,11 @@ public class MibusidateView extends BusinessModel{
 	public void setYWBH(String yWBH) {
 		YWBH = yWBH;
 	}
-	public String getId() {
-		return id;
+	public String getID() {
+		return ID;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setID(String iD) {
+		ID = iD;
 	}
 	public String getKHH() {
 		return KHH;
@@ -193,29 +184,11 @@ public class MibusidateView extends BusinessModel{
 	public void setDELAYAMTDAYS(String dELAYAMTDAYS) {
 		DELAYAMTDAYS = dELAYAMTDAYS;
 	}
-	public String getQs() {
-		return qs;
-	}
-	public void setQs(String qs) {
-		this.qs = qs;
-	}
 	public String getDLAYDT() {
 		return DLAYDT;
 	}
 	public void setDLAYDT(String dLAYDT) {
 		DLAYDT = dLAYDT;
-	}
-	public String getDF() {
-		return DF;
-	}
-	public void setDF(String dF) {
-		DF = dF;
-	}
-	public String getYE() {
-		return YE;
-	}
-	public void setYE(String yE) {
-		YE = yE;
 	}
 	public String getSHBJ() {
 		return SHBJ;
@@ -235,11 +208,11 @@ public class MibusidateView extends BusinessModel{
 	public void setKSQXRQ(String kSQXRQ) {
 		KSQXRQ = kSQXRQ;
 	}
-	public String getSHLX() {
-		return SHLX;
+	public String getPAYDEBT() {
+		return PAYDEBT;
 	}
-	public void setSHLX(String sHLX) {
-		SHLX = sHLX;
+	public void setPAYDEBT(String pAYDEBT) {
+		PAYDEBT = pAYDEBT;
 	}
 	public String getDKYE() {
 		return DKYE;
@@ -265,12 +238,55 @@ public class MibusidateView extends BusinessModel{
 	public void setBALAMT(String bALAMT) {
 		BALAMT = bALAMT;
 	}
-	public String getYxye() {
-		return yxye;
+	public String getYXYE() {
+		return YXYE;
 	}
-	public void setYxye(String yxye) {
-		this.yxye = yxye;
+	public void setYXYE(String yXYE) {
+		YXYE = yXYE;
+	}
+	public String getWJFL3() {
+		return WJFL3;
+	}
+	public void setWJFL3(String wJFL3) {
+		WJFL3 = wJFL3;
+	}
+	public String getWJFL4() {
+		return WJFL4;
+	}
+	public void setWJFL4(String wJFL4) {
+		WJFL4 = wJFL4;
+	}
+	public String getWJFL5() {
+		return WJFL5;
+	}
+	public void setWJFL5(String wJFL5) {
+		WJFL5 = wJFL5;
+	}
+	public String getOPERDATETIME() {
+		return OPERDATETIME;
+	}
+	public void setOPERDATETIME(String oPERDATETIME) {
+		OPERDATETIME = oPERDATETIME;
+	}
+	public String getUSERID() {
+		return USERID;
+	}
+	public void setUSERID(String uSERID) {
+		USERID = uSERID;
+	}
+	public String getDISPLAY_NAME() {
+		return DISPLAY_NAME;
+	}
+	public void setDISPLAY_NAME(String dISPLAY_NAME) {
+		DISPLAY_NAME = dISPLAY_NAME;
+	}
+	public String getYWJG() {
+		return YWJG;
+	}
+	public void setYWJG(String yWJG) {
+		YWJG = yWJG;
 	}
 	
+	 
 	
 }
