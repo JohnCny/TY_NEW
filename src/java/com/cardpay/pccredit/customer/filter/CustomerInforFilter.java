@@ -1,5 +1,6 @@
 package com.cardpay.pccredit.customer.filter;
 
+import java.util.Date;
 import java.util.List;
 
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
@@ -38,7 +39,34 @@ public class CustomerInforFilter extends BaseQueryFilter{
 	private String cashAdvanceRatio;
 	private String cardStatus;
 	private String userId;
-	private String productId;
+	private String productId;	private Date createtime;
+	private Date updatetime;
+	private String createtime1;
+	private String createtime2;
+	public String getCreatetime2() {
+		return createtime2;
+	}
+	public void setCreatetime2(String createtime2) {
+		this.createtime2 = createtime2;
+	}
+	public String getCreatetime1() {
+		return createtime1;
+	}
+	public void setCreatetime1(String createtime1) {
+		this.createtime1 = createtime1;
+	}
+	public Date getCreatetime() {
+		return createtime;
+	}
+	public void setCreatetime(Date createtime) {
+		this.createtime = createtime;
+	}
+	public Date getUpdatetime() {
+		return updatetime;
+	}
+	public void setUpdatetime(Date updatetime) {
+		this.updatetime = updatetime;
+	}
 	private List<AccountManagerParameterForm> customerManagerIds;
 	
 	private String moveStatus;

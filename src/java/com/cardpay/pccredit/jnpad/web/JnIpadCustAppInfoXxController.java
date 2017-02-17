@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.customer.model.CIPERSONBASINFOCOPY;
+import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.jnpad.filter.CustomerApprovedFilter;
@@ -71,6 +73,8 @@ public class JnIpadCustAppInfoXxController {
 	private JnipadNodeService nodeservice;
 	@Autowired
 	private CustormerBlackListService cblservice;
+	@Autowired
+	private CustomerInforService InforService;
 	/**
 	 * 进件信息查询 
 	 * 【查询进件数量/拒绝进件数量/申请通过进件数量/补充调查进件数量】
@@ -328,6 +332,7 @@ public class JnIpadCustAppInfoXxController {
 		int JblackCount=0;
 		int JpassCount=0;
 		int count=0;
+		int yscount=0;
 		List<CustomerInfo> customerList = jnpadZongBaoCustomerInsertService.selectCustomerInfo(userId);
 		if(customerList!=null){
 			for(int a=0;a<customerList.size();a++){
@@ -393,9 +398,18 @@ public class JnIpadCustAppInfoXxController {
 				JRiskCount+=1;
 			}
 		}
-		
+		//每日客户原始信息修改通知
+				List<CustomerInforFilter> result=InforService.padfindUpdateCustormer(userId);
+				for(int a=0;a<result.size();a++){
+					String passTime=sdf.format(result.get(a).getUpdatetime());
+					String[] passtime=passTime.split("-");
+					String passtime1=passtime[0]+passtime[1]+passtime[2].substring(0, 2);
+					System.out.println(passtime1);
+					if(passtime1.equals(logntime)){
+						yscount+=1;
+					}
+				}
 		int a=SdwUserService.selectSDH1Count(userId);
-		System.out.println(a);
 		NotifyMsgListVo vo  = new NotifyMsgListVo();
 		vo.setShendaihui(a);
 		vo.setQita(count);
@@ -403,7 +417,8 @@ public class JnIpadCustAppInfoXxController {
 		vo.setReturnCount(JblackCount);
 		vo.setRisk(JRiskCount);
 		vo.setPassCount(JpassCount);
-		vo.setKaocha(JrefuseCount+JRiskCount+JblackCount+JpassCount);
+		vo.setYsUpdateCount(yscount);
+		vo.setKaocha(JrefuseCount+JRiskCount+JblackCount+JpassCount+yscount);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(vo, jsonConfig);

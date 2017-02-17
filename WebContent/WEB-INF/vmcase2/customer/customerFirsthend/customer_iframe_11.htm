@@ -35,29 +35,33 @@
               <tr><td class="titlec" colspan="4" style="text-align: center;">基本信息</td></tr>
             <tr>
               <td class="titlefc3"><label for="khh">客户初始ID:</label></td>
-              <td><input class="rinpsty"  type="text" id="khh" name="khh" value="$!customerInfor.khh" /></td>
-              <td class="titlefc3"><label for="khmc">客户编号(客户内码):</label></td>
+              <td><input class="rinpsty"  type="text" id="khh" name="khh" value="$!customerInfor.khh" readonly/></td>
+            <!--   <td class="titlefc3"><label for="khmc">客户编号(客户内码):</label></td>
               <td><input class="rinpsty"  type="text" id="khmc" name="khmc" value="$!customerInfor.khnm" /></td>
             </tr>
              <tr>
               <td class="titlefc3"><label for="rh">客户类型:</label></td>
-              <!-- <td><input class="rinpsty"  type="text" id="rh" name="rh" value="$!customerInfor.custtype" /></td> -->
+              <td><input class="rinpsty"  type="text" id="rh" name="rh" value="$!customerInfor.custtype" /></td>
               <td><select id="CUSTTYPEJN" name="CUSTTYPEJN" class="rinpsty"> 
               		#dict("CUSTTYPEJN", $!customerInfor.khlx)
               	  </select>
-              </td>
+              </td> -->
               <td class="titlefc3"><label for="khlx">客户名称:</label></td>
-              <td><input class="rinpsty"  type="text" id="khlx" name="khlx" value="$!customerInfor.khmc" /></td>
+              <td><input class="rinpsty"  type="text" id="khlx" name="khlx" value="$!customerInfor.khmc" readonly/></td>
             </tr>
             <tr>
-              <td class="titlefc3"><label for="zjlx">证件类型:</label></td>
-              <!-- <td><input class="rinpsty"  type="text" id="zjlx" name="zjlx" value="$!customerInfor.cardtype" /></td> -->
+             <!--  <td class="titlefc3"><label for="zjlx">证件类型:</label></td>
+              <td><input class="rinpsty"  type="text" id="zjlx" name="zjlx" value="$!customerInfor.cardtype" /></td>
               <td><select id="CARDTYPE" name="CARDTYPE" class="rinpsty"> 
               		#dict("CARDTYPE", $!customerInfor.zjlx)
               	  </select>
-              </td>
+              </td> -->
+                <td class="titlefc3"><label for="zjlx">证件类型:</label></td>
+              #if($!customerInfor.zjlx=="0")
+             <td><input class="rinpsty"  type="text" id="zjlx" name="zjlx" value="身份证" readonly/></td> 
+              #end
               <td class="titlefc3"><label for="zjhm">证件号码:</label></td>
-              <td><input class="rinpsty"  type="text" id="zjhm" name="zjhm" value="$!customerInfor.zjhm" /></td>
+              <td><input class="rinpsty"  type="text" id="zjhm" name="zjhm" value="$!customerInfor.zjhm" readonly/></td>
             </tr>
              <tr>
               <td class="titlefc3"><label for="qfjg">性别:</label></td>
@@ -87,13 +91,13 @@
               <td class="titlefc3"><label for="gltx">住址:</label></td>
               <td><input class="rinpsty"  type="text" id="gltx" name="gltx" value="$!customerInfor.xxdz" /></td>
               <td class="titlefc3"><label for="pqdz">有效期限:</label></td>
-              <td><input class="rinpsty"  type="text" id="pqdz" name="pqdz" value="$!customerInfor.usefullife" /></td>
+              <td><input class="rinpsty"  type="text" id="pqdz" name="pqdz" value="$!customerInfor.dqrq" /></td>
             </tr>
             <tr>
               <td class="titlefc3"><label for="csrq">工作单位名称:</label></td>
               <td><input class="rinpsty"  type="text" id="csrq" name="csrq" value="$!customerInfor.gtspmc" /></td>
-              <td class="titlefc3"><label for="xb">工作单位地址:</label></td>
-              <td><input class="rinpsty"  type="text" id="xb" name="xb" value="$!customerInfor.xxdz" /></td>
+              <td class="titlefc3"><label for="xb">户籍地址:</label></td>
+              <td><input class="rinpsty"  type="text" id="xb" name="xb" value="$!customerInfor.hjdz" /></td>
             </tr>
             <!-- <tr>
               <td class="titlefc3"><label for="gtspmc">行政区划（市）:</label></td>
@@ -114,16 +118,16 @@
               <td><input class="rinpsty"  type="text" id="yzbm" name="yzbm" value="$!customerInfor.jtdh" /></td>
             </tr>
             <tr>
-              <td class="titlefc3"><label for="hjdz">居住状况:</label></td>
-              <!-- <td><input class="rinpsty"  type="text" id="hjdz" name="hjdz" value="$!customerInfor.reside" /></td> -->
-              <td><select id="RESIDE" name="RESIDE" class="rinpsty"> 
-              		#dict("RESIDE", $!customerInfor.xxdz)
+              <td class="titlefc3"><label for="hjdz">是否户主:</label></td>
+              <td><input class="rinpsty"  type="text" id="hjdz" name="hjdz" value="$!customerInfor.sfhz" /></td> 
+            <!--   <td><select id="RESIDE" name="RESIDE" class="rinpsty"> 
+              		#dict("RESIDE", $!customerInfor.sfhz)
               	  </select>
-              </td>
+              </td> -->
               <td class="titlefc3"><label for="jtdh">评级结果（对应评级的信用等级）:</label></td>
               <td><input class="rinpsty"  type="text" id="jtdh" name="jtdh" value="$!customerInfor.levelcal" /></td>
             </tr>
-            <tr>
+        <!--     <tr>
               <td class="titlefc3"><label for="cz">家庭总资产:</label></td>
               <td><input class="rinpsty"  type="text" id="cz" name="cz" value="$!customerInfor.famasset" /></td>
               <td class="titlefc3"><label for="sj">家庭总负债:</label></td>
@@ -134,7 +138,7 @@
               <td><input class="rinpsty"  type="text" id="dzyx" name="dzyx" value="$!customerInfor.famannuincome" /></td>
               <td class="titlefc3"><label for="gj">家庭年支出:</label></td>
               <td><input class="rinpsty"  type="text" id="gj" name="gj" value="$!customerInfor.famannupayout" /></td>
-            </tr>
+            </tr> -->
             <tr>
               <td class="titlefc3"><label for="mz">最高学位:</label></td>
               <!-- <td><input class="rinpsty"  type="text" id="mz" name="mz" value="$!customerInfor.educationlevel" /></td> -->
