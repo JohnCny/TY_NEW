@@ -4688,5 +4688,8 @@ public class CustomerInforService {
 	public int updateCustormerBytyId(CustomerFirsthendBase filter){
 		return customerInforDao.updateCustormerBytyId(filter);
 	}
+	public List<CustomerInforFilter> padfindUpdateCustormer(@Param("userId") String userId){
+		return customerInforDao.padfindUpdateCustormer(userId);
+	}
 	
 }

@@ -132,19 +132,88 @@ public class JnpadTongjiInforController {
 					ylist12+=Integer.parseInt(ydlist.get(i).getValue().replace(".00",""));
 				}
 			}
-			map.put("ylist1", ylist1/1000000);
-			map.put("ylist2", ylist2/1000000);
-			map.put("ylist3", ylist3/1000000);
-			map.put("ylist4", ylist4/1000000);
-			map.put("ylist5", ylist5/1000000);
-			map.put("ylist6", ylist6/1000000);
-			map.put("ylist7", ylist7/1000000);
-			map.put("ylist8", ylist8/1000000);
-			map.put("ylist9", ylist9/1000000);
-			map.put("ylist10", ylist10/1000000);
-			map.put("ylist11", ylist11/1000000);
-			map.put("ylist12", ylist12/1000000);
 			
+			Integer ys1=ylist1;
+			String s1=ys1+"";
+			Float f1=Float.parseFloat(s1);
+			f1=f1/1000000;
+			
+			Integer ys2=ylist2;
+			String s2=ys2+"";
+			Float f2=Float.parseFloat(s2);
+			f2=f2/1000000;
+			
+			Integer ys3=ylist3;
+			String s3=ys3+"";
+			Float f3=Float.parseFloat(s3);
+			f3=f3/1000000;
+			
+			Integer ys4=ylist4;
+			String s4=ys4+"";
+			Float f4=Float.parseFloat(s4);
+			f4=f4/1000000;
+			
+			Integer ys5=ylist5;
+			String s5=ys5+"";
+			Float f5=Float.parseFloat(s5);
+			f5=f5/1000000;
+			
+			Integer ys6=ylist6;
+			String s6=ys6+"";
+			Float f6=Float.parseFloat(s6);
+			f6=f6/1000000;
+
+
+			Integer ys7=ylist7;
+			String s7=ys7+"";
+			Float f7=Float.parseFloat(s7);
+			f7=f7/1000000;
+			
+			Integer ys8=ylist8;
+			String s8=ys8+"";
+			Float f8=Float.parseFloat(s8);
+			f8=f8/1000000;
+			
+			Integer ys9=ylist9;
+			String s9=ys9+"";
+			Float f9=Float.parseFloat(s9);
+			f9=f9/1000000;
+			
+			Integer ys10=ylist10;
+			String s10=ys10+"";
+			Float f10=Float.parseFloat(s10);
+			f10=f10/1000000;
+			
+			Integer ys11=ylist11;
+			String s11=ys11+"";
+			Float f11=Float.parseFloat(s11);
+			f11=f11/1000000;
+			
+			Integer ys12=ylist12;
+			String s12=ys12+"";
+			Float f12=Float.parseFloat(s12);
+			f12=f12/1000000;
+			map.put("ylist1", f1);
+			map.put("ylist2", f2);
+			map.put("ylist3", f3);
+			map.put("ylist4", f4);
+			map.put("ylist5", f5);
+			map.put("ylist6", f6);
+			map.put("ylist7", f7);
+			map.put("ylist8",f8);
+			map.put("ylist9", f9);
+			map.put("ylist10", f10);
+			map.put("ylist11", f11);
+			map.put("ylist12", f12);
+			
+		/*	
+			for(int yxcount=1;yxcount<13;yxcount++){
+				Integer ys=Integer.parseInt("ylist"+yxcount);
+				String s=ys+"";
+				Float f=Float.parseFloat(s);
+				f=f/1000000;
+				map.put("ylist"+yxcount, f);
+			}*/
 			//申请拒绝
 					List clist1=new ArrayList();
 					List clist2=new ArrayList();
@@ -776,7 +845,7 @@ public class JnpadTongjiInforController {
 		map.put("list10", list10.size());
 		map.put("list11", list11.size());
 		map.put("list12", list12.size());
-		map.put("ylist1", ylist1/1000000);
+/*		map.put("ylist1", ylist1/1000000);
 		map.put("ylist2", ylist2/1000000);
 		map.put("ylist3", ylist3/1000000);
 		map.put("ylist4", ylist4/1000000);
@@ -787,7 +856,7 @@ public class JnpadTongjiInforController {
 		map.put("ylist9", ylist9/1000000);
 		map.put("ylist10", ylist10/1000000);
 		map.put("ylist11", ylist11/1000000);
-		map.put("ylist12", ylist12/1000000);
+		map.put("ylist12", ylist12/1000000);*/
 		map.put("clist1", clist1.size());
 		map.put("clist2", clist2.size());
 		map.put("clist3", clist3.size());
@@ -800,6 +869,78 @@ public class JnpadTongjiInforController {
 		map.put("clist10", clist10.size());
 		map.put("clist11", clist11.size());
 		map.put("clist12", clist12.size());
+		Integer ys1=ylist1;
+		String s1=ys1+"";
+		Float f1=Float.parseFloat(s1);
+		f1=f1/1000000;
+		
+		Integer ys2=ylist2;
+		String s2=ys2+"";
+		Float f2=Float.parseFloat(s2);
+		f2=f2/1000000;
+		
+		Integer ys3=ylist3;
+		String s3=ys3+"";
+		Float f3=Float.parseFloat(s3);
+		f3=f3/1000000;
+		
+		Integer ys4=ylist4;
+		String s4=ys4+"";
+		Float f4=Float.parseFloat(s4);
+		f4=f4/1000000;
+		
+		Integer ys5=ylist5;
+		String s5=ys5+"";
+		Float f5=Float.parseFloat(s5);
+		f5=f5/1000000;
+		
+		Integer ys6=ylist6;
+		String s6=ys6+"";
+		Float f6=Float.parseFloat(s6);
+		f6=f6/1000000;
+
+
+		Integer ys7=ylist7;
+		String s7=ys7+"";
+		Float f7=Float.parseFloat(s7);
+		f7=f7/1000000;
+		
+		Integer ys8=ylist8;
+		String s8=ys8+"";
+		Float f8=Float.parseFloat(s8);
+		f8=f8/1000000;
+		
+		Integer ys9=ylist9;
+		String s9=ys9+"";
+		Float f9=Float.parseFloat(s9);
+		f9=f9/1000000;
+		
+		Integer ys10=ylist10;
+		String s10=ys10+"";
+		Float f10=Float.parseFloat(s10);
+		f10=f10/1000000;
+		
+		Integer ys11=ylist11;
+		String s11=ys11+"";
+		Float f11=Float.parseFloat(s11);
+		f11=f11/1000000;
+		
+		Integer ys12=ylist12;
+		String s12=ys12+"";
+		Float f12=Float.parseFloat(s12);
+		f12=f12/1000000;
+		map.put("ylist1", f1);
+		map.put("ylist2", f2);
+		map.put("ylist3", f3);
+		map.put("ylist4", f4);
+		map.put("ylist5", f5);
+		map.put("ylist6", f6);
+		map.put("ylist7", f7);
+		map.put("ylist8",f8);
+		map.put("ylist9", f9);
+		map.put("ylist10", f10);
+		map.put("ylist11", f11);
+		map.put("ylist12", f12);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);

@@ -24,6 +24,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cardpay.pccredit.customer.constant.CommonConstant;
+import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
+import com.cardpay.pccredit.customer.model.CustomerFirsthendBase;
+import com.cardpay.pccredit.customer.model.CustomerInfor;
+import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.customer.service.MaintenanceService;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
@@ -58,9 +62,12 @@ import com.cardpay.pccredit.riskControl.model.RiskCustomer;
 import com.cardpay.pccredit.riskControl.service.CustormerBlackListService;
 import com.cardpay.pccredit.system.model.SystemUser;
 import com.wicresoft.jrad.base.auth.IUser;
+import com.wicresoft.jrad.base.auth.JRadOperation;
+import com.wicresoft.jrad.base.web.JRadModelAndView;
 import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.jrad.modules.privilege.model.User;
 import com.wicresoft.util.spring.Beans;
+import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 import com.wicresoft.util.web.RequestHelper;
 
 /**
@@ -92,6 +99,8 @@ public class JnIpadUserLoginController {
 	private MaintenanceService maintenanceService;
 	@Autowired
 	private JnIpadXDService XDService;
+	@Autowired
+	private CustomerInforService InforService;
 	@Autowired
 	private com.cardpay.pccredit.manager.service.ManagerBelongMapService ManagerBelongMapService;
 	
@@ -161,8 +170,12 @@ public class JnIpadUserLoginController {
 			map.put("result",loginResult);
 			LoginInfo Time=LoginService.selecTime(login);
 			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
-			String str1=sdf.format(Time.getACTION_TIME()); 
-			map.put("Time", str1);
+			if(Time!=null){
+				String str1=sdf.format(Time.getACTION_TIME()); 
+				map.put("Time", str1);
+			}else{
+				map.put("Time", null);
+			}
 		LoginInfo LoginInfo=new LoginInfo();
 		LoginInfo.setACTION_TIME(new Date());
 		LoginInfo.setLOGIN(login);
@@ -417,6 +430,7 @@ public class JnIpadUserLoginController {
 		int JblackCount=0;
 		int JpassCount=0;
 		int count=0;
+		int yscount=0;
 		List<CustomerInfo> customerList = jnpadZongBaoCustomerInsertService.selectCustomerInfo(userId);
 		if(customerList!=null){
 			for(int a=0;a<customerList.size();a++){
@@ -466,7 +480,6 @@ public class JnIpadUserLoginController {
 				JpassCount+=1;
 			}
 		}
-				
 		//风险客户通知
 		RiskCustomerFilter filters = new RiskCustomerFilter();
 		filters.setCustManagerId(userId);
@@ -482,13 +495,65 @@ public class JnIpadUserLoginController {
 				JRiskCount+=1;
 			}
 		}
+		//每日客户原始信息修改通知
+		List<CustomerInforFilter> result=InforService.padfindUpdateCustormer(userId);
+		for(int a=0;a<result.size();a++){
+			String passTime=sdf.format(result.get(a).getUpdatetime());
+			String[] passtime=passTime.split("-");
+			String passtime1=passtime[0]+passtime[1]+passtime[2].substring(0, 2);
+			System.out.println(passtime1);
+			if(passtime1.equals(logntime)){
+				yscount+=1;
+				System.out.println("修改的数量"+yscount);
+			}
+		}
+		
 		NotifyMsgListVo vo  = new NotifyMsgListVo();
 		vo.setQita(count);
 		vo.setRefuseCount(JrefuseCount);
 		vo.setReturnCount(JblackCount);
 		vo.setRisk(JRiskCount);
 		vo.setPassCount(JpassCount);
-		vo.setKaocha(JrefuseCount+JRiskCount+JblackCount+JpassCount);
+		vo.setYsUpdateCount(yscount);
+		vo.setKaocha(JrefuseCount+JRiskCount+JblackCount+JpassCount+yscount);
 		return vo;
 	}
+	/**
+	 * 客户变更信息通知
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/user/updateCustormerInfo.json")
+	public String updateCustormerInfo(HttpServletRequest request) {
+		String userId= request.getParameter("userId");
+		Map<String,Object> map = new LinkedHashMap<String,Object>();
+		List<CustomerInforFilter> result=InforService.padfindUpdateCustormer(userId);
+		map.put("result", result);
+		map.put("size", result.size());
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+	}
+	
+	
+	/**
+	 * 查看客户原始信息
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/user/selectCustormerInfo.json")
+	public String selectCustormerInfo(HttpServletRequest request) {
+		String tyid=request.getParameter("id");
+			CustomerFirsthendBase cust = InforService.findCustomerFirsthendBase(tyid);
+			Map<String,Object> map = new LinkedHashMap<String,Object>();
+			map.put("result", cust);
+			JsonConfig jsonConfig = new JsonConfig();
+			jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+			JSONObject json = JSONObject.fromObject(map, jsonConfig);
+			return json.toString();
+	}
+	
 }

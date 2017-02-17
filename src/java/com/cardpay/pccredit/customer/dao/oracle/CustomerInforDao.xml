@@ -95,11 +95,22 @@
 						AND b.user_id=#{userId}
 					and b.TY_CUSTOMER_ID=t.id
 		and t.updatetime is not null
+		order by t.updatetime desc
 		 <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
 					WHERE ROWNUM_ > #{limit}*#{page}
 					]]>
+	</select>
+	
+	
+		<select id="padfindUpdateCustormer"  resultMap="ResultMap1" >
+		 	select t.khmc as chineseName,t.zjhm as cardId,t.khlx as cardType,t.xxdz as residentialAddress,t.jtdh as homePhone,t.sj as telephone,t.hjdz as mail
+		,t.id as userId,t.CREATE_TIME as createtime1 ,t.updatetime as updatetime from TY_CUSTOMER_BASE t,BASIC_CUSTOMER_INFORMATION b
+		where 1=1 
+						AND b.user_id=#{userId}
+					and b.TY_CUSTOMER_ID=t.id
+		and t.updatetime is not null
 	</select>
 	
 	<select id="findUpdateCustormer1"  resultMap="ResultMap1" parameterType="com.cardpay.pccredit.customer.filter.CustomerInforFilter">

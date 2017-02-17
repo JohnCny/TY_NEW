@@ -304,6 +304,8 @@ public interface CustomerInforDao {
 	public List<CustomerInforFilter> findUpdateCustormer(CustomerInforFilter filter);
 	public List<CustomerInforFilter> findUpdateCustormer1(CustomerInforFilter filter);
 	public int updateCustormerBytyId(CustomerFirsthendBase filter);
+	
+	public List<CustomerInforFilter> padfindUpdateCustormer(@Param("userId") String userId);
 
 	
 }
