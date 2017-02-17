@@ -265,7 +265,7 @@
 	<dictionary name="intopieces_decision" title="审议结论">
 		<item name="approved" title="通过" />
 		<item name="refuse" title="拒绝" />
-		<item name="nopass_replenish" title="退回" />
+		<item name="returnedToFirst" title="退回" />
 		<!-- <item name="approved" title="通过" />
 		<item name="refuse" title="拒绝" /> -->
 		<!-- <item name="nopass_replenish" title="补充调查" />

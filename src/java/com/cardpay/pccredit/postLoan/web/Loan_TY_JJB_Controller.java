@@ -672,21 +672,6 @@ public class Loan_TY_JJB_Controller extends BaseController {
 			JRadModelAndView mv =null;
 			String id=RequestHelper.getStringValue(request, ID);
 			List<CreditProcess> cplist=postLoanService.queryAll(id);
-			for(CreditProcess cc:cplist){
-				if(null!=cc.getStatus()){
-					if(cc.getStatus().equals("audit")){
-						cc.setStatus("已申请 ");
-					}else if(cc.getStatus().equals("refuse")){
-						cc.setStatus("被拒绝");
-					}else if(cc.getStatus().equals("approved")){
-						cc.setStatus("审批结束");
-					}else if(cc.getStatus().equals("returnedToFirst")){
-						cc.setStatus("退回至客户经理");
-					}else if(cc.getStatus().equals("end")){
-						cc.setStatus("放款成功");
-					}
-				}
-			}
 			mv = new JRadModelAndView("/postLoan/creditProcess_queryAll", request);
 			mv.addObject("cplist",cplist);
 			return mv;
@@ -893,13 +878,7 @@ public class Loan_TY_JJB_Controller extends BaseController {
 					row.createCell((short) 21).setCellValue("");//决议时间
 				}
 				if(move.getAuditopinion()!=null){
-					if(move.getAuditopinion().equals("REJECTAPPROVE")){
-						row.createCell((short) 22).setCellValue("审核拒绝");//决议结果
-					}else if(move.getAuditopinion().equals("APPROVE")){
-						row.createCell((short) 22).setCellValue("审核通过");//决议结果
-					}else if(move.getAuditopinion().equals("RETURNAPPROVE")){
-						row.createCell((short) 22).setCellValue("审核退回");//决议结果
-					}
+					row.createCell((short) 22).setCellValue(move.getAuditopinion());//决议结果
 				}
 				if(move.getAuditopinion()==null){
 					row.createCell((short) 22).setCellValue("");//决议结果
@@ -929,17 +908,7 @@ public class Loan_TY_JJB_Controller extends BaseController {
 					row.createCell((short) 28).setCellValue(days);//办理时间总计
 				}
 				if(move.getStatus()!=null){
-					if(move.getStatus().equals("audit")){
-						row.createCell((short) 29).setCellValue("已申请");//当前状态
-					}else if(move.getStatus().equals("refuse")){
-						row.createCell((short) 29).setCellValue("被拒绝");//当前状态
-					}else if(move.getStatus().equals("approved")){
-						row.createCell((short) 29).setCellValue("审批结束");//当前状态
-					}else if(move.getStatus().equals("returnedToFirst")){
-						row.createCell((short) 29).setCellValue("退回至客户经理");//当前状态
-					}else if(move.getStatus().equals("end")){
-						row.createCell((short) 29).setCellValue("放款成功");//当前状态
-					}
+					row.createCell((short) 29).setCellValue(move.getStatus());//当前状态
 				}
 				 if(move.getStatus()==null){
 						row.createCell((short) 29).setCellValue("");//当前状态

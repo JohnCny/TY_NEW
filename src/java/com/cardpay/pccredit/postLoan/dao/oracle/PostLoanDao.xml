@@ -984,18 +984,23 @@
              su.display_name,
             cai.created_time,
             cai.apply_quota,
-             cai.status,
+            (case 
+	         when cai.status ='audit'and sdh.time is null and sdh.sdtime is null then
+	          '已申请'
+	         when cai.status ='refuse' then
+	          '被拒绝'
+	         when cai.status ='returnedToFirst' then
+	          '退回至客户经理'
+	         when cai.status ='end' then
+	          '放款成功'
+	         when cai.id  in (select capid from CUSTOMER_APPLICATION_SDH) 
+	           and cai.status ='audit' and sdh.time is not null and sdh.sdtime is null then
+	          '进件初审'
+	         when cai.status ='approved' then
+	          '审贷决议' 
+	         when cai.id not in (select capid from CUSTOMER_APPLICATION_SDH) then
+	          ''  end) as status,
              cai.id
-             <!-- from wf_status_queue_record t 
-             left join wf_status_info s on t.current_status = s.id 
-             left join wf_process_record pr on t.current_process = pr.id 
-             left join customer_application_process aa on pr.id = aa.serial_number
-              left join customer_application_info cai on cai.id=aa.application_id
-              left join basic_customer_information bai on cai.customer_id=bai.id
-              left join sys_user su on su.id=bai.user_id
-              left join ty_customer_base base on bai.ty_customer_id=base.id
-              left join PRODUCT_ATTRIBUTE p on p.id=cai.product_id
-              where 1=1 -->
               from customer_application_info cai  
 				  	  left join customer_application_process aa on cai.id=aa.application_id
 			          left join basic_customer_information bai on cai.customer_id=bai.id
@@ -1005,6 +1010,8 @@
 		              left join  wf_process_record pr on pr.id = aa.serial_number
 		              left join wf_status_queue_record t on t.current_process = pr.id 
 		              left join wf_status_info s on t.current_status = s.id 
+		              left join T_APP_MANAGER_AUDIT_LOG tlog on tlog.application_id =cai.id
+                  	  left join CUSTOMER_APPLICATION_SDH sdh on sdh.capid=cai.id
 		              where 1=1
 					<if test="customername!=null and customername!='' ">
 						    and bai.chinese_name like  '%'||#{customername}||'%'
@@ -1019,15 +1026,6 @@
 	<!-- 统计行数 -->
 	<select id="querySize" resultType="int" parameterType="com.cardpay.pccredit.postLoan.model.CreditProcess">
 		  select count(*)
-			<!-- wf_status_queue_record t 
-						 left join wf_status_info s on t.current_status = s.id 
-						 left join wf_process_record pr on t.current_process = pr.id 
-						 left join customer_application_process aa on pr.id = aa.serial_number
-						  left join sys_user su on t.examine_user = su.id 
-						  left join customer_application_info cai on cai.id=aa.application_id
-						  left join basic_customer_information bai on cai.customer_id=bai.id
-						  left join ty_customer_base base on bai.ty_customer_id=base.id
-			  			left join PRODUCT_ATTRIBUTE p on p.id=cai.product_id -->
 			  			from customer_application_info cai  
 				  	  left join customer_application_process aa on cai.id=aa.application_id
 			          left join basic_customer_information bai on cai.customer_id=bai.id
@@ -1037,6 +1035,8 @@
 		              left join  wf_process_record pr on pr.id = aa.serial_number
 		              left join wf_status_queue_record t on t.current_process = pr.id 
 		              left join wf_status_info s on t.current_status = s.id 
+		              left join T_APP_MANAGER_AUDIT_LOG tlog on tlog.application_id =cai.id
+                  	  left join CUSTOMER_APPLICATION_SDH sdh on sdh.capid=cai.id
 		               where 1=1
 			        <if test="customername!=null and customername!='' ">
 						    and bai.chinese_name like  '%'||#{customername}||'%'
@@ -1045,7 +1045,7 @@
 	
 	<!-- 显示详情 -->
 	<select id="queryAll" resultMap="CreditProcess" parameterType="String">
-		      select
+		   <!--    select
             bai.spmc,
             bai.chinese_name,
             (select t.name from sys_department t where t.id in 
@@ -1074,7 +1074,82 @@
 		              left join  wf_process_record pr on pr.id = aa.serial_number
 		              left join wf_status_queue_record t on t.current_process = pr.id 
 		              left join wf_status_info s on t.current_status = s.id 
-              where 1=1 and cai.id=#{id}
+              where 1=1 and cai.id=#{id} -->
+              
+              select  bai.spmc, bai.chinese_name,
+             (select t.name from sys_department t where t.id in 
+             (select tt.dept_id from sys_dept_user tt where tt.user_id = su.id)) as teamname,
+             (select org.name from sys_organization org where id in(select t.org_id from sys_department t where t.id in 
+             (select tt.dept_id from sys_dept_user tt where tt.user_id = su.id)))as bljg ,
+             ''as dklx,
+             (SELECT  A.TYPE_NAME  FROM DICT A ,PRODUCT_ATTRIBUTE p 
+             WHERE A .DICT_TYPE = 'CMMSCLNM-贷款担保方式' and A.TYPE_CODE=p.assure_means and p.id=cai.product_id) as assure_means,
+             '' as hyfl,
+             su.display_name,
+             cai.created_time,
+             cai.apply_quota,
+             (case
+             when cai.id  in (select capid from CUSTOMER_APPLICATION_SDH) 
+             and sdh.time is not null and sdh.sdtime is null then
+             sdh.time
+             when cai.status ='approved' then
+             sdh.sdtime
+             when cai.status ='refuse' or cai.status ='returnedToFirst' then
+             cai.modified_time
+             end) as start_examine_time ,
+	         (case 
+	         when cai.status ='refuse' then
+	         '审核拒绝'
+	         when cai.status ='returnedToFirst' then
+	         '审核退回'
+	         when cai.id  in (select capid from CUSTOMER_APPLICATION_SDH) 
+	         and sdh.time is not null and sdh.sdtime is null then 
+	         '初审通过'
+	         when cai.status ='approved' then
+	         '决议通过'
+	         else '' end) as examine_result，
+	         (case 
+	         when cai.id  in (select capid from CUSTOMER_APPLICATION_SDH) 
+	         and sdh.time is not null and sdh.sdtime is null then 
+	         tlog.examine_amount
+	         when cai.status ='approved' then
+	         sdh.sdje
+	         else  '' end) as examine_amount,cai.jkrq,
+             (case 
+	         when cai.id  in (select capid from CUSTOMER_APPLICATION_SDH) 
+	         and sdh.time is not null and sdh.sdtime is null then 
+	         tlog.examine_lv
+	         when cai.status ='approved' then
+	         sdh.lv else '' end) as examine_lv,
+             (case 
+	         when cai.status ='audit'and sdh.time is null and sdh.sdtime is null then
+	          '已申请'
+	         when cai.status ='refuse' then
+	          '被拒绝'
+	         when cai.status ='returnedToFirst' then
+	          '退回至客户经理'
+	         when cai.status ='end' then
+	          '放款成功'
+	         when cai.id  in (select capid from CUSTOMER_APPLICATION_SDH) 
+	           and cai.status ='audit' and sdh.time is not null and sdh.sdtime is null then
+	          '进件初审'
+	         when cai.status ='approved' then
+	          '审贷决议' 
+	         when cai.id not in (select capid from CUSTOMER_APPLICATION_SDH) then
+	          ''  end) as status
+             from customer_application_info cai  
+              	  left join customer_application_process aa on cai.id=aa.application_id
+                  left join basic_customer_information bai on cai.customer_id=bai.id
+                  left join sys_user su on su.id=bai.user_id
+                  left join ty_customer_base base on bai.ty_customer_id=base.id
+                  left join PRODUCT_ATTRIBUTE p on p.id=cai.product_id
+                  left join  wf_process_record pr on pr.id = aa.serial_number
+                  left join wf_status_queue_record t on t.current_process = pr.id 
+                  left join wf_status_info s on t.current_status = s.id 
+                  left join T_APP_MANAGER_AUDIT_LOG tlog on tlog.application_id =cai.id
+                  left join CUSTOMER_APPLICATION_SDH sdh on sdh.capid=cai.id
+                  where 1=1 and cai.id=#{id}
+              
 	</select>
 	
 	<!-- 导出-->
@@ -1093,12 +1168,56 @@
              su.display_name,
             cai.created_time,
             cai.apply_quota,
-             t.start_examine_time,
-              t.examine_result,
-             t.examine_amount,
+             (case
+             when cai.id  in (select capid from CUSTOMER_APPLICATION_SDH) 
+             and sdh.time is not null and sdh.sdtime is null then
+             sdh.time
+             when cai.status ='approved' then
+             sdh.sdtime
+             when cai.status ='refuse' or cai.status ='returnedToFirst' then
+             cai.modified_time
+             end) as start_examine_time ,
+             (case 
+	         when cai.status ='refuse' then
+	         '审核拒绝'
+	         when cai.status ='returnedToFirst' then
+	         '审核退回'
+	         when cai.id  in (select capid from CUSTOMER_APPLICATION_SDH) 
+	         and sdh.time is not null and sdh.sdtime is null then 
+	         '初审通过'
+	         when cai.status ='approved' then
+	         '决议通过'
+	         else '' end) as examine_result，
+	         (case 
+	         when cai.id  in (select capid from CUSTOMER_APPLICATION_SDH) 
+	         and sdh.time is not null and sdh.sdtime is null then 
+	         tlog.examine_amount
+	         when cai.status ='approved' then
+	         sdh.sdje
+	         else  '' end) as examine_amount,
              trunc(to_timestamp(cai.jkrq, 'yyyy-mm-dd hh24:mi:ss.ff')) as jkrq,
-             aa.examine_lv,
-             cai.status,
+            (case 
+	         when cai.id  in (select capid from CUSTOMER_APPLICATION_SDH) 
+	         and sdh.time is not null and sdh.sdtime is null then 
+	         tlog.examine_lv
+	         when cai.status ='approved' then
+	         sdh.lv else '' end) as examine_lv,
+             (case 
+	         when cai.status ='audit'and sdh.time is null and sdh.sdtime is null then
+	          '已申请'
+	         when cai.status ='refuse' then
+	          '被拒绝'
+	         when cai.status ='returnedToFirst' then
+	          '退回至客户经理'
+	         when cai.status ='end' then
+	          '放款成功'
+	         when cai.id  in (select capid from CUSTOMER_APPLICATION_SDH) 
+	           and cai.status ='audit' and sdh.time is not null and sdh.sdtime is null then
+	          '进件初审'
+	         when cai.status ='approved' then
+	          '审贷决议' 
+	         when cai.id not in (select capid from CUSTOMER_APPLICATION_SDH) then
+	          ''  end) as status,
              bai.CARD_ID
           from customer_application_info cai  
 				  	  left join customer_application_process aa on cai.id=aa.application_id
@@ -1109,6 +1228,8 @@
 		              left join  wf_process_record pr on pr.id = aa.serial_number
 		              left join wf_status_queue_record t on t.current_process = pr.id 
 		              left join wf_status_info s on t.current_status = s.id 
+		              left join T_APP_MANAGER_AUDIT_LOG tlog on tlog.application_id =cai.id
+                      left join CUSTOMER_APPLICATION_SDH sdh on sdh.capid=cai.id
 	</select>
 	
 	<!-- 根据身份证号查询是否转贷 -->

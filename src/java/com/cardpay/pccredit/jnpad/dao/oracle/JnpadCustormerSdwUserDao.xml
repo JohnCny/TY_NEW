@@ -481,5 +481,54 @@ select p.FALLBACK_REASON as FALLBACK_REASON, h.sdwuser1yj as SDWUSER1YJ,h.sdwuse
  left join CUSTOMER_APPLICATION_SDH h on t.application_id=h.capid left join CUSTOMER_APPLICATION_PROCESS p on p.application_id=h.capid
 where c.id=#{appId}
 </select>
+<!-- 重新提交时删除审贷表中的数据 -->
+<delete id="deletePCCustormerSdwUser" parameterType="java.lang.Integer" >
+   delete from CUSTOMER_APPLICATION_SDH where CAPID=#{applicationId}
+</delete>
+<delete id="deletePCCsJl" parameterType="java.lang.Integer" >
+   delete from T_APP_MANAGER_AUDIT_LOG where APPLICATION_ID=#{applicationId}
+</delete>
+<update id="updateHistory" parameterType="java.lang.Integer">
+ update  WF_STATUS_QUEUE_RECORD set EXAMINE_USER=#{userId},EXAMINE_RESULT='RETURNAPPROVE',START_EXAMINE_TIME=#{times}
+   where CURRENT_PROCESS in
+(select A.CURRENT_PROCESS from wf_status_queue_record a,wf_process_record c,
+        customer_application_process cap,customer_application_info cai
+        where cai.id=cap.application_id
+        and cap.serial_number=c.id
+        and c.id=a.current_process
+        and cai.id=#{applicationId})
+</update>
+<update id="updateCSZT" parameterType="java.lang.Integer">
+ update  WF_STATUS_QUEUE_RECORD set EXAMINE_RESULT='初审通过',START_EXAMINE_TIME=#{times},
+ EXAMINE_USER= #{userId} ,EXAMINE_AMOUNT = #{money}
+ where CURRENT_PROCESS in
+(select A.CURRENT_PROCESS from wf_status_queue_record a,wf_process_record c,
+        customer_application_process cap,customer_application_info cai
+        where cai.id=cap.application_id
+        and cap.serial_number=c.id
+        and c.id=a.current_process
+        and cai.id=#{applicationId})
+</update>
+<update id="updateHistorys" parameterType="java.lang.Integer">
+ update  WF_STATUS_QUEUE_RECORD set EXAMINE_USER=#{userId},EXAMINE_RESULT='REJECTAPPROVE',START_EXAMINE_TIME=#{times}
+   where CURRENT_PROCESS in
+(select A.CURRENT_PROCESS from wf_status_queue_record a,wf_process_record c,
+        customer_application_process cap,customer_application_info cai
+        where cai.id=cap.application_id
+        and cap.serial_number=c.id
+        and c.id=a.current_process
+        and cai.id=#{applicationId})
+</update>
 
+<update id="updateCSZTs" parameterType="java.lang.Integer">
+ update  WF_STATUS_QUEUE_RECORD set EXAMINE_RESULT='APPROVE',START_EXAMINE_TIME=#{times},
+ EXAMINE_USER= #{userId} ,EXAMINE_AMOUNT = #{money}
+ where CURRENT_PROCESS in
+(select A.CURRENT_PROCESS from wf_status_queue_record a,wf_process_record c,
+        customer_application_process cap,customer_application_info cai
+        where cai.id=cap.application_id
+        and cap.serial_number=c.id
+        and c.id=a.current_process
+        and cai.id=#{applicationId})
+</update>
 </mapper> 

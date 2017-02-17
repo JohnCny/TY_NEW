@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cardpay.pccredit.intopieces.model.AppManagerAuditLog;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.model.IntoPiecesFilters;
+import com.cardpay.pccredit.intopieces.web.ApproveHistoryForm;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.jnpad.model.CustormerSdwUser;
 import com.cardpay.pccredit.jnpad.model.JnpadCsSdModel;
@@ -85,6 +86,12 @@ public class CustormerSdwUserPcController extends BaseController{
 			}
 			CustormerSdwUser.setId(pid);
 			int b=SdwUserService.insertCustormerSdwUser(CustormerSdwUser);
+			//初审通过状态
+			String applicationId=result.getApplicationId();
+			String userId=user.getId();
+			Date times=new Date();
+			String money=request.getParameter("decisionAmount");
+			SdwUserService.updateCSZT(userId,times,money,applicationId);
 			if(b>0){
 				returnMap.put("MESSAGE", "提交成功");
 				return returnMap;
@@ -107,7 +114,8 @@ public class CustormerSdwUserPcController extends BaseController{
 	 */
 	@ResponseBody
 	@RequestMapping(value="insertsdjy.json", method = { RequestMethod.GET })
-	public JRadReturnMap insertsdjyPC(@ModelAttribute RiskCustomer RiskCustomer,@ModelAttribute CustormerSdwUser CustormerSdwUser,@ModelAttribute IntoPieces IntoPieces,HttpServletRequest request) {
+	public JRadReturnMap insertsdjyPC(@ModelAttribute RiskCustomer RiskCustomer,@ModelAttribute CustormerSdwUser CustormerSdwUser,@ModelAttribute IntoPieces IntoPieces,
+			@ModelAttribute ApproveHistoryForm ahistory, HttpServletRequest request) {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 		CustormerSdwUser.setSDJE(request.getParameter("decisionAmount"));
@@ -127,6 +135,12 @@ public class CustormerSdwUserPcController extends BaseController{
 				IntoPieces.setId(request.getParameter("id"));
 				IntoPieces.setCreatime(new Date());
 				int b=SdwUserService.updateCustormerInfoSdwUser(IntoPieces);
+				//通过状态
+				String applicationId=request.getParameter("id");
+				String userId=user.getId();
+				Date times=new Date();
+				String money=request.getParameter("decisionAmount");
+				SdwUserService.updateCSZTs(userId,times,money,applicationId);
 				if(b>0){
 					returnMap.put("MESSAGE", "提交成功");
 					return returnMap;
@@ -156,6 +170,11 @@ public class CustormerSdwUserPcController extends BaseController{
 						}
 						RiskCustomer.setId(pid);
 						int e=SdwUserService.insertRiskSdwUser(RiskCustomer);
+						//拒绝时修改节点状态
+						String applicationId=request.getParameter("id");
+						String userId=user.getId();
+						Date times=new Date();
+						SdwUserService.updateHistorys(userId,times,applicationId);
 						if(e>0){
 							returnMap.put("MESSAGE", "提交成功");
 							return returnMap;
@@ -171,9 +190,9 @@ public class CustormerSdwUserPcController extends BaseController{
 					returnMap.put("MESSAGE", "提交失败");
 					return returnMap;
 				}
-			}else if(request.getParameter("status").equals("nopass_replenish")){
+			}else if(request.getParameter("status").equals("returnedToFirst")){
 				int a2=SdwUserService.updateCustormerSdwUser(CustormerSdwUser);
-				IntoPieces.setStatus("nopass_replenish");
+				IntoPieces.setStatus("returnedToFirst");
 				IntoPieces.setId(request.getParameter("id"));
 				IntoPieces.setFallBackReason(request.getParameter("decisionRefusereason"));
 				IntoPieces.setUserId(user.getId());
@@ -181,6 +200,11 @@ public class CustormerSdwUserPcController extends BaseController{
 				int c=SdwUserService.updateCustormerInfoSdwUser(IntoPieces);
 				if(c>0){
 					int d=SdwUserService.updateCustormerProSdwUser(IntoPieces);
+					//退回时修改节点状态
+					String applicationId=request.getParameter("id");
+					String userId=user.getId();
+					Date times=new Date();
+					SdwUserService.updateHistory(userId,times,applicationId);
 					if(d>0){
 						returnMap.put("MESSAGE", "提交成功");
 						return returnMap;

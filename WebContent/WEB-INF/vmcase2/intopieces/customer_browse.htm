@@ -95,10 +95,11 @@
             if ($(".checkbox :checked").length == 1) {
                 var rowid = $($(".checkbox :checked")[0]).attr("value").split("/");
                 var productId = $("#productId").val();
-                
+               
                 //当客户处于风险名单中时，无法进行新增进件操作
                 var isInRisk = false;
                 var isonBlackList=false;
+                var customer=true;
   				$.ajax({
 						url : "${contextPath}/intopieces/addIntopieces/isInRiskList.json?id="+rowid[0],
 						type : "get",
@@ -141,9 +142,13 @@
 					success : function(data) {
 						if (data.success) {
 							if(data.customer==false){
-							window.top.Dialog.message("尚有贷款未结清");
+								customer=false
 							}
 						}}});
+				if(customer==false){
+					window.top.Dialog.message("尚有贷款未结清");
+					return;
+					}
                 var url = "${contextPath}/intopieces/addIntopieces/reportImport.page?customerId="+rowid[0]+"&productId="+productId;
                 window.location.href = url;
             } else {
