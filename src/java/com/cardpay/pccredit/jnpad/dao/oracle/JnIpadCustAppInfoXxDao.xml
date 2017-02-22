@@ -290,9 +290,12 @@ and t.apply_quota not in ('此产品无申请金额'))tt
 	</select>
 	
 	<select id="findyxByUser" resultType="String" >	          
-	  select sum(cc.applyQuota)  from
+<!-- 	  select sum(cc.applyQuota)  from
    (SELECT DISTINCT (m.YWBH),m.REQLMT as applyQuota FROM MIBUSIDATA m,BASIC_CUSTOMER_INFORMATION b 
-    where m.id=b.TY_CUSTOMER_ID and b.user_id=#{userId}) cc
+    where m.id=b.TY_CUSTOMER_ID and b.user_id=#{userId}) cc -->
+      select sum(cc.applyQuota)  from
+   (SELECT DISTINCT (YWBH),REQLMT as applyQuota FROM MIBUSIDATA 
+    where userid=#{userId}) cc
 	</select>
 	
 	<select id="findyqByUser" resultType="int" >	      
@@ -421,7 +424,7 @@ and c.product_id=p.id
 and b.user_id=#{userId}
 and s.id=b.user_id
 and (c.status='success'
-or c.status='approved')
+or c.status='approved' or c.status='end')
 	</select>
 	
 	
