@@ -64,6 +64,15 @@
 		 and c.created_by is not null
 </select>
 
+<select id="selectCustomerInfoCount" resultType="int">
+		select count(*)
+		from BASIC_CUSTOMER_INFORMATION c
+		where 
+		 c.user_id is null
+		 and c.created_by is not null
+		 and card_id=#{cardId}
+</select>
+
 <update id="updateCustomerInfo">
     
    UPDATE  BASIC_CUSTOMER_INFORMATION  SET  user_id =#{userId} WHERE id =#{customerId}

@@ -108,4 +108,9 @@ public class JnpadZongBaoCustomerInsertService {
 		return jnpadZongBaoCustomerInsertDao.selectAllMyZb(userId);
 		
 	}
+	
+	
+	public int selectCustomerInfoCount(@Param (value ="cardId") String cardId){
+		return jnpadZongBaoCustomerInsertDao.selectCustomerInfoCount(cardId);
+	}
 }

@@ -501,10 +501,8 @@ public class JnIpadUserLoginController {
 			String passTime=sdf.format(result.get(a).getUpdatetime());
 			String[] passtime=passTime.split("-");
 			String passtime1=passtime[0]+passtime[1]+passtime[2].substring(0, 2);
-			System.out.println(passtime1);
 			if(passtime1.equals(logntime)){
 				yscount+=1;
-				System.out.println("修改的数量"+yscount);
 			}
 		}
 		
