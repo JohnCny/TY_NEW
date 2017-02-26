@@ -32,6 +32,13 @@ public class AppManagerAuditLog extends BusinessModel {
 	private String cid;
 	private String applyQuota;
 	private String PRODCREDITRANGE;
+	private String FINAL_APPROVAL;
+	public String getFINAL_APPROVAL() {
+		return FINAL_APPROVAL;
+	}
+	public void setFINAL_APPROVAL(String fINAL_APPROVAL) {
+		FINAL_APPROVAL = fINAL_APPROVAL;
+	}
 	public String getApplyQuota() {
 		return applyQuota;
 	}

@@ -65,14 +65,14 @@
             </tr>
              <tr>
               <td class="titlefc3"><label for="qfjg">性别:</label></td>
-             <!--  <td><input class="rinpsty"  type="text" id="qfjg" name="qfjg" value="$!customerInfor.sex" /></td> -->
+             <!--  <td><input class="rinpsty"  type="text" id="qfjg" name="qfjg" value="$!customerInfor.sex" readonly/></td> -->
              <td><select id="SEX" name="SEX" class="rinpsty"> 
               		#dict("SEX", $!customerInfor.xb)
               	  </select>
               </td>
               <td class="titlefc3"><label for="sfcq">民族:</label></td>
               <!-- <td><input class="rinpsty"  type="text" id="sfcq" name="sfcq" value="$!customerInfor.ethical" /></td> -->
-               <td><select id="sfcq" name="sfcq" class="rinpsty"> 
+               <td><select id="sfcq" name="sfcq" class="rinpsty" readonly> 
               		#dict("MINGZHU", $!customerInfor.mz)
               	  </select>
               </td>
@@ -85,13 +85,13 @@
               	  </select>
               </td>
               <td class="titlefc3"><label for="dqrq">出生日期:</label></td>
-              <td><input class="rinpsty"  type="text" id="dqrq" name="dqrq" value="$!customerInfor.csrq" /></td>
+              <td><input class="rinpsty"  type="text" id="dqrq" name="dqrq" value="$!customerInfor.csrq" readonly/></td>
             </tr>
             <tr>
               <td class="titlefc3"><label for="gltx">住址:</label></td>
               <td><input class="rinpsty"  type="text" id="gltx" name="gltx" value="$!customerInfor.xxdz" /></td>
               <td class="titlefc3"><label for="pqdz">有效期限:</label></td>
-              <td><input class="rinpsty"  type="text" id="pqdz" name="pqdz" value="$!customerInfor.dqrq" /></td>
+              <td><input class="rinpsty"  type="text" id="pqdz" name="pqdz" value="$!customerInfor.dqrq"  readonly/></td>
             </tr>
             <tr>
               <td class="titlefc3"><label for="csrq">工作单位名称:</label></td>
@@ -158,7 +158,8 @@
         </div>
       </form>
       <div class="submit">
-         <input type="button" class="btn_g" onclick="returnClick();" value="返回" /> 
+        <!-- <input type="button" onclick="returnClick();" value="返回" /> -->
+        <a href="javascript:history.back();" class="btn_g">返回</a>
       </div>
     </div>
   </div>

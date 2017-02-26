@@ -384,6 +384,30 @@ public class CustomerFirsthendController extends BaseController{
 				//customerInforService.findCIPERSONBASINFOCOPYISEXIT(customerInforId);
 				//查询
 				CustomerFirsthendBase copy=customerInforService.findCustomerFirsthendBase(customerInforId);
+				if(copy.getHyzk()==null){
+					copy.setHyzk("00");	
+				}
+				if(copy.getXxdz()==null){
+					copy.setXxdz("00");	
+				}
+				if(copy.getGtspmc()==null){
+					copy.setGtspmc("00");	
+				}
+				if(copy.getSj()==null){
+					copy.setSj("00");
+				}
+				if(copy.getJtdh()==null){
+					copy.setJtdh("00");
+				}
+				if(copy.getHjdz()==null){
+					copy.setHjdz("00");
+				}
+				if(copy.getXw()==null){
+					copy.setXw("00");
+				}
+				if(copy.getXl()==null){
+					copy.setXl("00");
+				}
 				//CIPERSONBASINFOCOPY copy = customerInforService.findCIPERSONBASINFOCOPY(customerInforId);
 				mv.addObject("customerInfor", copy);
 				mv.addObject("customerNm", copy.getId());

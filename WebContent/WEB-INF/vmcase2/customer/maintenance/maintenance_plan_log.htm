@@ -63,7 +63,7 @@
             </colgroup>
             #foreach ($customer in $result.items)
             <tr >
-              <td class="checkbox"><input type="radio" name="checkbox" value="$!customer.id@$!customer.productId"/>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!customer.cardId"/>
                  <!--   #if ($!request.getParameter("recordId") == $!customer.id) checked="checked" #end -->
               <td nowrap="nowrap">$!customer.chineseName</td>
               <td nowrap="nowrap">$!customer.cardId</td>
@@ -77,6 +77,11 @@
             #end
           </table>
         </div>
+         <div class="submit">
+     		<input type="button" id='id_create_button' value="查看详情" />
+      
+               
+      </div>
       </div>
       <div class="pagebar">
         <!-- <div class="controlbtn">
@@ -93,7 +98,7 @@
 	window.top.currentWindow.setLayout(layout);
 	
 	$(document).ready(function() {
-		var opsObj = new Object();
+		/* var opsObj = new Object();
 		opsObj.formObj = $("#submitForm");
 		opsObj.browseUrl = "${modulePath}/log.page";
 		if (opsObj.browseUrl) {
@@ -104,7 +109,16 @@
 		                opsObj.formObj.submit();
 		            }
 		        });
-		}
+		} */
+		 $("#id_create_button").click(function() {
+				if ($(".checkbox :checked").length == 1) {
+					var rowid = $("input[name='checkbox']:checked").val();
+					 var url="/PCCredit/product/productinformation/findCustormerUpdate.json?cardid="+rowid;
+					window.location.href = url;
+				}else{
+					topWin.Dialog.message("请选择记录！");
+				}
+		 });
 	});
 	
 	function show(){

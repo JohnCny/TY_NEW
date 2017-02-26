@@ -57,13 +57,13 @@
              <tr>
               <td class="titlefc3"><label for="qfjg">性别:</label></td>
              <!--  <td><input class="rinpsty"  type="text" id="qfjg" name="qfjg" value="$!customerInfor.sex" /></td> -->
-             <td><select id="SEX" name="SEX" class="rinpsty"> 
+             <td><select id="SEX" name="SEX" class="rinpsty" disabled> 
               		#dict("SEX", $!customerInfor.xb)
               	  </select>
               </td>
               <td class="titlefc3"><label for="mz">民族:</label></td>
               <!-- <td><input class="rinpsty"  type="text" id="sfcq" name="sfcq" value="$!customerInfor.ethical" /></td> -->
-               <td><select id="mz" name="mz" class="rinpsty"> 
+               <td><select id="mz" name="mz" class="rinpsty" disabled> 
               		#dict("MINGZHU", $!customerInfor.mz)
               	  </select>
               </td>
@@ -80,15 +80,27 @@
             </tr>
             <tr>
               <td class="titlefc3"><label for="xxdz">住址:</label></td>
+                 #if($!customerInfor.xxdz!="0")
               <td><input class="rinpsty"  type="text" id="xxdz" name="xxdz" value="$!customerInfor.xxdz" /></td>
+                #else
+               <td><input class="rinpsty"  type="text" id="xxdz" name="xxdz" value=""/></td>
+              #end
               <td class="titlefc3"><label for="dqrq">有效期限:</label></td>
               <td><input class="rinpsty"  type="text" id="pqdz" name="pqdz" value="$!customerInfor.dqrq" readonly /></td>
             </tr>
             <tr>
               <td class="titlefc3"><label for="csrq">个体商户名称:</label></td>
+                #if($!customerInfor.gtspmc!="00")
               <td><input class="rinpsty"  type="text" id="gtspmc" name="gtspmc" value="$!customerInfor.gtspmc" /></td>
+                #else           
+              <td><input class="rinpsty"  type="text" id="gtspmc" name="gtspmc" value="" /></td>
+              	#end
               <td class="titlefc3"><label for="xb">户籍地址:</label></td>
+               #if($!customerInfor.hjdz!="00")
               <td><input class="rinpsty"  type="text" id="hjdz" name="hjdz" value="$!customerInfor.hjdz" /></td>
+                 #else     
+                <td><input class="rinpsty"  type="text" id="hjdz" name="hjdz" value="" /></td>
+          	#end
             </tr>
             <!-- <tr>
               <td class="titlefc3"><label for="gtspmc">行政区划（市）:</label></td>
@@ -104,9 +116,17 @@
             </tr> -->
             <tr>
               <td class="titlefc3"><label for="xxdz">联系方式(手机):</label></td>
+                #if($!customerInfor.sj!="00")
               <td><input class="rinpsty"  type="text" id="sj" name="sj" value="$!customerInfor.sj" /></td>
+                #else   
+              <td><input class="rinpsty"  type="text" id="sj" name="sj" value="" /></td>
+              	#end
               <td class="titlefc3"><label for="yzbm">联系方式(固话):</label></td>
+                #if($!customerInfor.jtdh!="00")
               <td><input class="rinpsty"  type="text" id="jtdh" name="jtdh" value="$!customerInfor.jtdh" /></td>
+                 #else   
+                <td><input class="rinpsty"  type="text" id="jtdh" name="jtdh" value="" /></td>
+           #end
             </tr>
             <tr>
               <td class="titlefc3"><label for="sfhz">是否户主:</label></td>
@@ -140,18 +160,48 @@
               		#dict("DEGREE", $!customerInfor.xl)
               	  </select>
               </td>
+              
+               <td><input   type="hidden" id="xl1" name="xl1" value="$!customerInfor.xl" /></td>
+          <td><input   type="hidden" id="xw1" name="xw1" value="$!customerInfor.xw" /></td>
+               <td><input   type="hidden" id="jtdh1" name="jtdh1" value="$!customerInfor.jtdh" /></td>
+            <td><input   type="hidden" id="sj1" name="sj1" value="$!customerInfor.sj" /></td>
+             <td><input   type="hidden" id="hjdz1" name="hjdz1" value="$!customerInfor.hjdz" /></td>
+                <td><input   type="hidden" id="gtspmc1" name="gtspmc1" value="$!customerInfor.gtspmc" /></td>
+                  <td><input   type="hidden" id="xxdz1" name="xxdz1" value="$!customerInfor.xxdz" /></td>
+               <td><input   type="hidden" id="hyzk1" name="hyzk1" value="$!customerInfor.hyzk" /></td>
+               
             </tr>
-          
+              
+               
+               
+              
           </table>
         </div>
       <!-- </form> -->
       <div class="submit">
-     		<input type="button" onclick="updateClick();" value="修改" />
+     		<input type="button" id='id_create_button' value="修改" />
  			<input type="button" onclick="returnClick();" value="返回" />
+ 			 <input   type="hidden" id="xl1" name="xl1" value="$!customerInfor.xl" />
+        <input   type="hidden" id="xw1" name="xw1" value="$!customerInfor.xw" />
+              <input   type="hidden" id="jtdh1" name="jtdh1" value="$!customerInfor.jtdh" />
+           <input   type="hidden" id="sj1" name="sj1" value="$!customerInfor.sj" />
+             <input   type="hidden" id="hjdz1" name="hjdz1" value="$!customerInfor.hjdz" />
+                <input   type="hidden" id="gtspmc1" name="gtspmc1" value="$!customerInfor.gtspmc" />
+                 <input   type="hidden" id="xxdz1" name="xxdz1" value="$!customerInfor.xxdz" />
+               <input   type="hidden" id="hyzk1" name="hyzk1" value="$!customerInfor.hyzk" />
+               
+                <input   type="hidden" id="cardid" name="cardid" value="$!customerInfor.zjhm" />
+              <input   type="hidden" id="chinesename" name="chinesename" value="$!customerInfor.khmc" />
+               
       </div>
     </div>
   </div>
   <script type="text/javascript">
+  
+  
+  
+  
+  
 	var layout = new FormsLayout("formsId");
 	window.top.currentWindow.setLayout(layout);
 	#set ($formName = "'#id_module_form'")
@@ -161,7 +211,46 @@
 		$("input[type='radio']").attr("disabled",true);
 		$("input[type='checkbox']").attr("disabled",true);
 		$("select").attr("disabled",true); */
-		
+		$("#id_create_button").click(function() {
+			var xb=$("#SEX").val();
+			var mz=$("#mz").val();
+			var hyzk=$("#hyzk").val();
+			var xxdz=$("#xxdz").val();
+			var gtspmc=$("#gtspmc").val();
+			var hjdz=$("#hjdz").val();
+			var sj=$("#sj").val();
+			var jtdh=$("#jtdh").val();
+			var xw=$("#xw").val();
+			var xl=$("#xl").val();
+			var id=$("#id").val();
+			
+			var hjdz1=$("#hjdz1").val();
+			var hyzk1=$("#hyzk1").val();
+			var xxdz1=$("#xxdz1").val();
+			var gtspmc1=$("#gtspmc1").val();
+			var sj1=$("#sj1").val();
+			var jtdh1=$("#jtdh1").val();
+			var xw1=$("#xw1").val();
+			var xl1=$("#xl1").val();
+			var cardid=$("#cardid").val();
+			var chinesename=$("#chinesename").val();
+			 var url="${contextPath}/product/productinformation/updateBaseCustomer.json?id="+id+"&xb="+xb+"&mz="+mz+"&hyzk="+hyzk+"&xxdz="+xxdz+"&gtspmc="+gtspmc+"&hjdz="+hjdz+
+			"&sj="+sj+"&jtdh="+jtdh+"&xw="+xw+"&xl="+xl+"&hyzk1="+hyzk1+"&xxdz1="+xxdz1+"&gtspmc1="+gtspmc1+"&hjdz1="+hjdz1+
+			"&sj1="+sj1+"&jtdh1="+jtdh1+"&xw1="+xw1+"&xl1="+xl1+"&cardid="+cardid+"&chinesename="+chinesename;
+			
+		  	$.ajax({
+					url : url,
+					type : "get",
+					success : function(data) {
+					if(data.message=="操作成功"){
+						 Dialog.message(data.message);
+						window.location.href="/PCCredit/customer/firsthend/showCustomerInfoJn.page?id="+id;
+					}else{
+						 Dialog.message("操作失败");
+					}
+					}
+		});  
+		});
 	});
 	
 	//返回
@@ -172,19 +261,6 @@
 	
 	//修改
 	function updateClick(){
-		var xb=$("#SEX").val();
-		var mz=$("#mz").val();
-		var hyzk=$("#hyzk").val();
-		var xxdz=$("#xxdz").val();
-		var gtspmc=$("#gtspmc").val();
-		var hjdz=$("#hjdz").val();
-		var sj=$("#sj").val();
-		var jtdh=$("#jtdh").val();
-		var xw=$("#xw").val();
-		var xl=$("#xl").val();
-		var id=$("#id").val();
-		var url="${contextPath}/product/productinformation/updateBaseCustomer.json?id="+id+"&xb="+xb+"&mz="+mz+"&hyzk="+hyzk+"&xxdz="+xxdz+"&gtspmc="+gtspmc+"&hjdz="+hjdz+
-		"&sj="+sj+"&jtdh="+jtdh+"&xw="+xw+"&xl="+xl;
 		$.ajax({
 				url : url,
 				type : "get",

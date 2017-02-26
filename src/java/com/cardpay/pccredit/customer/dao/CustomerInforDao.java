@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.cardpay.pccredit.customer.filter.CustomerInfoLszFilter;
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
+import com.cardpay.pccredit.customer.model.CUSTORMERINFOUPDATE;
 import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
 import com.cardpay.pccredit.customer.model.CustomerFirsthendBase;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
@@ -310,6 +311,15 @@ public interface CustomerInforDao {
 	public int updateCustormerBytyId(CustomerFirsthendBase filter);
 	
 	public List<CustomerInforFilter> padfindUpdateCustormer(@Param("userId") String userId);
+	
+	
+	
+
+	
+	
+	public int insertCustormerUpdate(CUSTORMERINFOUPDATE CUSTORMERINFOUPDATE);
+	public List<CUSTORMERINFOUPDATE> findCustormerUpdate(@Param("cardid") String cardid);
+	public int findCustormerUpdateCount(@Param("cardid") String cardid);
 
 	
 }
