@@ -83,7 +83,47 @@
 		<result property="updatetime" column="updatetime" />
 	</resultMap>
 	
-		
+		<resultMap id="ResultMap4"
+		type="com.cardpay.pccredit.customer.model.CUSTORMERINFOUPDATE">
+		<result property="id" column="id" />
+		<result property="cardid" column="cardid" />
+		<result property="chinesename" column="chinesename" />
+		<result property="zdname" column="zdname" />
+		<result property="originalvalue" column="originalvalue" />
+		<result property="modifiedvalue" column="modifiedvalue" />
+		<result property="updatetime" column="updatetime" />
+	</resultMap>
+	
+	
+	<insert id="insertCustormerUpdate">
+		insert into CUSTORMERINFOUPDATE(id,cardid,chinesename,zdname,originalvalue,modifiedvalue,updatetime)
+		values(#{id},#{cardid},#{chinesename},#{zdname},#{originalvalue},#{modifiedvalue},#{updatetime})
+	</insert>
+	
+	<select id="findCustormerUpdate"  resultMap="ResultMap4" parameterType="com.cardpay.pccredit.customer.model.CUSTORMERINFOUPDATE">
+	    <!-- 	SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM ( -->
+		 	select id as id,cardid as cardid,
+		 	chinesename as chinesename,
+		 	zdname as zdname,
+		 	originalvalue as originalvalue,
+		 	modifiedvalue as modifiedvalue,
+		 	updatetime as updatetime
+		 	from CUSTORMERINFOUPDATE
+		 	where cardid=#{cardid}
+		<!--  <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]> -->
+	</select>
+	
+	
+		<select id="findCustormerUpdateCount"  resultType="int">
+		 	select count(*) from CUSTORMERINFOUPDATE
+		 	where cardid=#{cardid}
+	</select>
 	<update id="updateCustormerBytyId" >
 		update TY_CUSTOMER_BASE
 		set XB=#{xb},MZ=#{mz},HYZK=#{hyzk},XXDZ=#{xxdz},GTSPMC=#{gtspmc},HJDZ=#{hjdz},SJ=#{sj},JTDH=#{jtdh},xl=#{xl},xw=#{xw},updatetime=#{updatetime}

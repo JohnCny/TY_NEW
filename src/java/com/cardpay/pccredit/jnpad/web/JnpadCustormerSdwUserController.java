@@ -203,8 +203,12 @@ public class JnpadCustormerSdwUserController {
 		CustormerSdwUser.setSDWUSER3YJ(request.getParameter("fdUser"));*/
 		CustormerSdwUser.setLV(request.getParameter("lv"));
 		CustormerSdwUser.setCAPID(request.getParameter("id"));
-	/*	int a=SdwUserService.updateCustormerSdwUser(CustormerSdwUser);
-		if(a>0){*/
+		CustormerSdwUser.setSDWUSER2YJ(request.getParameter("decisionRefusereason"));
+		CustormerSdwUser.setPID(request.getParameter("productId"));
+		CustormerSdwUser.setCAPID(request.getParameter("id"));
+		CustormerSdwUser.setCID(request.getParameter("customerId"));
+		int a=SdwUserService.insertCustormerSdwUser1(CustormerSdwUser);
+		if(a>0){
 			if(request.getParameter("status").equals("APPROVE")){
 				IntoPieces.setFinal_approval(request.getParameter("sxed"));
 				IntoPieces.setStatus("approved");
@@ -232,7 +236,7 @@ public class JnpadCustormerSdwUserController {
 						RiskCustomer.setRiskCreateType("manual");
 						RiskCustomer.setRefuseReason(request.getParameter("decisionRefusereason"));
 						RiskCustomer.setCREATED_TIME(new Date());
-						RiskCustomer.setCustManagerId(request.getParameter("userId"));
+						RiskCustomer.setCustManagerId(request.getParameter("user_id"));
 						String pid=null;
 						if(null==pid){
 							pid=UUID.randomUUID().toString();
@@ -267,9 +271,9 @@ public class JnpadCustormerSdwUserController {
 					}
 				}
 			}
-	/*	}else{
+		}else{
 			map.put("message", "提交失败");
-		}*/
+		}
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);
@@ -296,6 +300,7 @@ public class JnpadCustormerSdwUserController {
 		CustomerSpUser.setBeizhu(request.getParameter("cyUser1"));
 		CustomerSpUser.setSplv(request.getParameter("lv"));
 		CustomerSpUser.setCapid(request.getParameter("id"));
+		CustomerSpUser.setJlyys(request.getParameter("decisionRefusereason"));
 		if(request.getParameter("status").equals("APPROVE")){
 			CustomerSpUser.setStatus("1");
 		}else if(request.getParameter("status").equals("REJECTAPPROVE")){
@@ -337,8 +342,19 @@ public class JnpadCustormerSdwUserController {
 	public String findCsSd(@ModelAttribute JnpadCsSdModel JnpadCsSdModel,HttpServletRequest request) {
 		Map<String,Object> map = new LinkedHashMap<String,Object>();
 		String id=request.getParameter("id");
-		JnpadCsSdModel result=SdwUserService.findCsSd(id);
-		map.put("result", result);
+		AppManagerAuditLog result=SdwUserService.selectCSJLA(id);
+		map.put("result1", result);
+		List<CustomerSpUser> result1=UserService.findspUser3(request.getParameter("id"));
+		for(int a=0;a<result1.size();a++){
+			CustomerSpUser name=UserService.selectUser(result1.get(a).getSpuserid());
+			result1.get(a).setName1(name.getName1());
+		}
+		map.put("result",result1);
+		
+		CustormerSdwUser result3=SdwUserService.selectSpJy(id);
+		CustomerSpUser name=UserService.selectUser(result3.getSDWJLY());
+		result3.setSDWUSER1(name.getName1());
+		map.put("result3",result3);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);
@@ -397,6 +413,17 @@ public class JnpadCustormerSdwUserController {
 		Map<String,Object> map = new LinkedHashMap<String,Object>();
 		String id=request.getParameter("userId");
 		List<IntoPieces> result=SdwUserService.selectSDH1(id);
+		if(result!=null){
+			for(int a=0;a<result.size();a++){
+				List<CustomerSpUser> result1=UserService.selectUser1(result.get(a).getId());
+					CustomerSpUser name=UserService.selectUser(result1.get(0).getSpuserid());
+					result.get(a).setName1(name.getName1());
+					CustomerSpUser name1=UserService.selectUser(result1.get(1).getSpuserid());
+					result.get(a).setName2(name1.getName1());
+					CustomerSpUser name2=UserService.selectUser(result1.get(2).getSpuserid());
+					result.get(a).setName3(name2.getName1());
+			}
+		}
 		map.put("result", result);
 		map.put("size", result.size());
 		JsonConfig jsonConfig = new JsonConfig();
@@ -413,48 +440,26 @@ public class JnpadCustormerSdwUserController {
 	@ResponseBody
 	@RequestMapping(value = "/ipad/customerIntopiece/selectSpUser.json", method = { RequestMethod.GET })
 	public String selectSpUser( HttpServletRequest request) {
-		List<CustomerSpUser> c=new ArrayList<CustomerSpUser>();
+		List c=new ArrayList();
 		List<AppManagerAuditLog> d=new ArrayList<AppManagerAuditLog>();
+		List<CustomerSpUser> result1=null;
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<CustomerSpUser>result=UserService.findspUser();
-		try {
-			if(result!=null){
 				for(int a=0;a<result.size();a++){
-					List<CustomerSpUser> result1=UserService.findspUser2(result.get(a).getCapid());
-					try {
-						if(result1==null){
-							
+				 result1=UserService.findspUser2(result.get(a).getCapid());
+					if(result1.size()!=0){
+						if(!result1.get(0).getStatus().equals("0") && !result1.get(1).getStatus().equals("0") && !result1.get(2).getStatus().equals("0")){
+							c.add(result1.get(0).getCapid());
 						}
-						else{
-							try {
-								if(result1.get(0).getStatus().equals("0") && result1.get(1).getStatus().equals("0") && result1.get(2).getStatus().equals("0")){
-									CustomerSpUser CustomerSpUser=new CustomerSpUser();
-									CustomerSpUser.setCapid(result.get(a).getCapid());
-									c.add(a, CustomerSpUser);
-								}else{
-									result1.remove(a);
-								}
-							} catch (Exception e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						}
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
 					}
 				}
 				for(int b=0;b<c.size();b++){
-					AppManagerAuditLog result2=SdwUserService.selectCSJLA(c.get(b).getCapid());
+					AppManagerAuditLog result2=SdwUserService.selectCSJLA(c.get(b).toString());
 					if(result2!=null){
 						d.add(b, result2);
 					}
 				}
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		map.put("size", d.size());
 		map.put("result", d);
 		JsonConfig jsonConfig = new JsonConfig();

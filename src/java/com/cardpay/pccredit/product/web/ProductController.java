@@ -1,5 +1,6 @@
 package com.cardpay.pccredit.product.web;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +23,7 @@ import com.cardpay.pccredit.common.PccOrganizationService;
 import com.cardpay.pccredit.common.UploadFileTool;
 import com.cardpay.pccredit.customer.model.CIPERSONBASINFOCOPY;
 import com.cardpay.pccredit.customer.model.CIPERSONBASINFOCOPYFORM;
+import com.cardpay.pccredit.customer.model.CUSTORMERINFOUPDATE;
 import com.cardpay.pccredit.customer.model.CustomerFirsthendBase;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.model.TyProductType;
@@ -46,6 +48,7 @@ import com.cardpay.pccredit.product.service.ProductService;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
+import com.wicresoft.jrad.base.database.id.IDGenerator;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.jrad.base.web.JRadModelAndView;
 import com.wicresoft.jrad.base.web.controller.BaseController;
@@ -1963,7 +1966,7 @@ public class ProductController extends BaseController {
 	@RequestMapping(value = "updateBaseCustomer.json", method = { RequestMethod.GET })
 	//@JRadOperation(JRadOperation.CHANGE)
 	public JRadReturnMap updateBaseCustomer(@ModelAttribute CustomerFirsthendBase from, HttpServletRequest request) {
-
+		CUSTORMERINFOUPDATE c=new CUSTORMERINFOUPDATE();
 		JRadReturnMap returnMap = new JRadReturnMap();
 		from.setId(request.getParameter("id"));
 		from.setXb(request.getParameter("xb"));
@@ -1978,6 +1981,153 @@ public class ProductController extends BaseController {
 		from.setXw(request.getParameter("xw"));
 		from.setUpdatetime(new Date());
 		int a=InforService.updateCustormerBytyId(from);
+		c.setId(IDGenerator.generateID());
+		c.setCardid(request.getParameter("cardid"));
+		c.setChinesename(request.getParameter("chinesename"));
+		if(!request.getParameter("hyzk").equals(request.getParameter("hyzk1")) && request.getParameter("hyzk")!=null && request.getParameter("hyzk1")!="00"){
+			c.setZdname("婚姻状况");
+			
+			if(request.getParameter("hyzk").equals("0")){
+				c.setModifiedvalue("未婚");
+			}else if(request.getParameter("hyzk").equals("1")){
+				c.setModifiedvalue("已婚");
+			}else if(request.getParameter("hyzk").equals("2")){
+				c.setModifiedvalue("丧偶");
+			}else if(request.getParameter("hyzk").equals("3")){
+				c.setModifiedvalue("离婚");
+			}
+			
+			if(request.getParameter("hyzk1").equals("0")){
+				c.setOriginalvalue("未婚");
+			}else if(request.getParameter("hyzk1").equals("1")){
+				c.setOriginalvalue("已婚");
+			}else if(request.getParameter("hyzk1").equals("2")){
+				c.setOriginalvalue("丧偶");
+			}else if(request.getParameter("hyzk1").equals("3")){
+				c.setOriginalvalue("离婚");
+			}
+			c.setUpdatetime(new Date());
+			int b=InforService.insertCustormerUpdate(c);
+		}
+		if(!request.getParameter("xxdz").equals(request.getParameter("xxdz1") )  && request.getParameter("xxdz1")!="00" && request.getParameter("xxdz")!=null){
+			c.setZdname("家庭地址");
+			c.setModifiedvalue(request.getParameter("xxdz"));
+			c.setOriginalvalue(request.getParameter("xxdz1"));
+			c.setUpdatetime(new Date());
+			int b=InforService.insertCustormerUpdate(c);
+		}
+		if(!request.getParameter("gtspmc").equals(request.getParameter("gtspmc1")) && request.getParameter("gtspmc1")!="00" && request.getParameter("gtspmc")!=null){
+			c.setZdname("个体商户名称");
+			c.setModifiedvalue(request.getParameter("gtspmc"));
+			c.setOriginalvalue(request.getParameter("gtspmc1"));
+			c.setUpdatetime(new Date());
+			int b=InforService.insertCustormerUpdate(c);
+		}	
+		if(!request.getParameter("hjdz").equals(request.getParameter("hjdz1")) && request.getParameter("hjdz1")!="00" && request.getParameter("hjdz")!=null){
+			c.setZdname("户籍地址");
+			c.setModifiedvalue(request.getParameter("hjdz"));
+			c.setOriginalvalue(request.getParameter("hjdz1"));
+			c.setUpdatetime(new Date());
+			int b=InforService.insertCustormerUpdate(c);
+		}
+		if(!request.getParameter("sj").equals(request.getParameter("sj1")) && request.getParameter("sj1")!="00" && request.getParameter("sj")!=null){
+			c.setZdname("手机");
+			c.setModifiedvalue(request.getParameter("sj"));
+			c.setOriginalvalue(request.getParameter("sj1"));
+			c.setUpdatetime(new Date());
+			int b=InforService.insertCustormerUpdate(c);
+		}
+		if(!request.getParameter("jtdh").equals(request.getParameter("jtdh1")) && request.getParameter("jtdh1")!="00" && request.getParameter("jtdh")!=null){
+			c.setZdname("家庭电话");
+			c.setModifiedvalue(request.getParameter("jtdh"));
+			c.setOriginalvalue(request.getParameter("jtdh1"));
+			c.setUpdatetime(new Date());
+			int b=InforService.insertCustormerUpdate(c);
+		}
+		if(!request.getParameter("xl").equals(request.getParameter("xl1"))&& request.getParameter("xl1")!="00" && request.getParameter("xl")!=null){
+			c.setZdname("学历");
+			if(request.getParameter("xl").equals("4")){
+				c.setModifiedvalue("中等专业或技术学校");
+			}else if(request.getParameter("xl").equals("1")){
+				c.setModifiedvalue("研究生");
+			}else if(request.getParameter("xl").equals("2")){
+				c.setModifiedvalue("大学本科");
+			}else if(request.getParameter("xl").equals("3")){
+				c.setModifiedvalue("大学本科或者专科学校");
+			}else if(request.getParameter("xl").equals("5")){
+				c.setModifiedvalue("高中");
+			}else if(request.getParameter("xl").equals("6")){
+				c.setModifiedvalue("初中");
+			}else if(request.getParameter("xl").equals("7")){
+				c.setModifiedvalue("小学");
+			}else if(request.getParameter("xl").equals("8")){
+				c.setModifiedvalue("文盲或半文盲");
+			}else if(request.getParameter("xl").equals("9")){
+				c.setModifiedvalue("未知");
+			}
+			
+			
+			
+			if(request.getParameter("xl1").equals("4")){
+				c.setOriginalvalue("中等专业或技术学校");
+			}else if(request.getParameter("xl1").equals("1")){
+				c.setOriginalvalue("研究生");
+			}else if(request.getParameter("xl1").equals("2")){
+				c.setOriginalvalue("大学本科");
+			}else if(request.getParameter("xl1").equals("3")){
+				c.setOriginalvalue("大学本科或者专科学校");
+			}else if(request.getParameter("xl1").equals("5")){
+				c.setOriginalvalue("高中");
+			}else if(request.getParameter("xl1").equals("6")){
+				c.setOriginalvalue("初中");
+			}else if(request.getParameter("xl1").equals("7")){
+				c.setOriginalvalue("小学");
+			}else if(request.getParameter("xl1").equals("8")){
+				c.setOriginalvalue("文盲或半文盲");
+			}else if(request.getParameter("xl1").equals("9")){
+				c.setOriginalvalue("未知");
+			}
+			
+			
+			
+			c.setUpdatetime(new Date());
+			int b=InforService.insertCustormerUpdate(c);
+		}
+		if(!request.getParameter("xw").equals(request.getParameter("xw1"))&& request.getParameter("xw1")!="00" && request.getParameter("xw")!=null){
+			c.setZdname("学位");
+			if(request.getParameter("xw1").equals("0")){
+				c.setOriginalvalue("博士");
+			}else if(request.getParameter("xw1").equals("1")){
+				c.setOriginalvalue("名誉博士");
+			}else if(request.getParameter("xw1").equals("2")){
+				c.setOriginalvalue("硕士");
+			}else if(request.getParameter("xw1").equals("3")){
+				c.setOriginalvalue("学士");
+			}else if(request.getParameter("xw1").equals("4")){
+				c.setOriginalvalue("其他");
+			}else if(request.getParameter("xw1").equals("5")){
+				c.setOriginalvalue("无");
+			}else if(request.getParameter("xw1").equals("6")){
+				c.setOriginalvalue("未知");
+			}
+			if(request.getParameter("xw").equals("0")){
+				c.setModifiedvalue("博士");
+			}else if(request.getParameter("xw").equals("1")){
+				c.setModifiedvalue("名誉博士");
+			}else if(request.getParameter("xw").equals("2")){
+				c.setModifiedvalue("硕士");
+			}else if(request.getParameter("xw").equals("3")){
+				c.setModifiedvalue("学士");
+			}else if(request.getParameter("xw").equals("4")){
+				c.setModifiedvalue("其他");
+			}else if(request.getParameter("xw").equals("5")){
+				c.setModifiedvalue("无");
+			}else if(request.getParameter("xw").equals("6")){
+				c.setModifiedvalue("未知");
+			}
+			c.setUpdatetime(new Date());
+			int b=InforService.insertCustormerUpdate(c);
+		}
 		returnMap.put("message", "操作成功");
 		/*if (returnMap.isSuccess()) {
 			try {
@@ -1993,5 +2143,33 @@ public class ProductController extends BaseController {
 
 		return returnMap;
 	}
+	
+	
+	
+	/**
+	 * 查询修改字段
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "findCustormerUpdate.json", method = { RequestMethod.GET })
+	public AbstractModelAndView findCustormerUpdate(HttpServletRequest request) {
+		String cardid=request.getParameter("cardid");
+		List<CUSTORMERINFOUPDATE> result = InforService.findCustormerUpdate(cardid);
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		for(int a=0;a<result.size();a++){
+			String time1=sdf.format(result.get(a).getUpdatetime());
+			result.get(a).setUpdatetime1(time1);
+		}
+		CUSTORMERINFOUPDATE CUSTORMERINFOUPDATE=new CUSTORMERINFOUPDATE();
+		CUSTORMERINFOUPDATE.setChinesename(result.get(0).getChinesename());
+		CUSTORMERINFOUPDATE.setCardid(result.get(0).getCardid());
+		JRadModelAndView mv = new JRadModelAndView("/customer/customerFirsthend/customer_iframe_13", request);
+		mv.addObject("result", result);
+		mv.addObject("result1", CUSTORMERINFOUPDATE);
+
+		return mv;
+	}
+	
 
 }

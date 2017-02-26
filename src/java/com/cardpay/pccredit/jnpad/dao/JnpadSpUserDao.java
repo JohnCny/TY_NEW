@@ -13,5 +13,7 @@ public interface JnpadSpUserDao {
 	int addSpUser1(CustomerSpUser CustomerSpUser);
 	List<CustomerSpUser>findspUser();
 	List<CustomerSpUser>findspUser2(@Param("capid") String capid);
+	List<CustomerSpUser>findspUser3(@Param("capid") String capid);
 	CustomerSpUser selectUser(@Param("id") String id);
+	List<CustomerSpUser>selectUser1(@Param("id") String id);
 }

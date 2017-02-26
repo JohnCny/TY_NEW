@@ -30,5 +30,10 @@ public class JnpadSpUserService {
 	public CustomerSpUser selectUser(@Param("id") String id){
 		return UserDao.selectUser(id);
 	}
-
+	public List<CustomerSpUser>findspUser3(@Param("capid") String capid){
+		return UserDao.findspUser3(capid);
+	}
+	public List<CustomerSpUser>selectUser1(@Param("id") String id){
+		return UserDao.selectUser1(id);
+	}
 }

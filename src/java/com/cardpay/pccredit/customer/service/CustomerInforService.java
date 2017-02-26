@@ -45,6 +45,7 @@ import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.customer.filter.VideoAccessoriesFilter;
 import com.cardpay.pccredit.customer.model.CIPERSONBASINFO;
 import com.cardpay.pccredit.customer.model.CIPERSONBASINFOCOPY;
+import com.cardpay.pccredit.customer.model.CUSTORMERINFOUPDATE;
 import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
 import com.cardpay.pccredit.customer.model.CustomerFirsthendBase;
 import com.cardpay.pccredit.customer.model.CustomerFirsthendBaseLocal;
@@ -2215,7 +2216,6 @@ public class CustomerInforService {
 				}
 	        }
 	        log.info(dateString+"******************完成读取原始信息文件********************");
-
 	}*/
 	
 	/**
@@ -2228,7 +2228,6 @@ public class CustomerInforService {
 		DateFormat format = new SimpleDateFormat("yyyyMMdd");
 		String dateString = format.format(new Date());
 		String gzFile = CardFtpUtils.bank_ftp_down_path+dateString;
-
 		log.info(dateString+"******************开始读取贷款文件********************");  
         for(int i=0;i<fileTxtRepay.length;i++){
 			String url = gzFile+File.separator+fileTxtRepay[i];
@@ -2291,7 +2290,6 @@ public class CustomerInforService {
 			}
         }
         log.info(dateString+"******************完成读取贷款文件********************");
-
 	}*/
 	
 	/*
@@ -4703,6 +4701,17 @@ public class CustomerInforService {
 			customerInforDao.inserTyMIBUSIDATA(tyMibusidataForm);
 		}
 		log.info("success!");
+	}
+	
+	
+	public int insertCustormerUpdate(CUSTORMERINFOUPDATE CUSTORMERINFOUPDATE){
+		return customerInforDao.insertCustormerUpdate(CUSTORMERINFOUPDATE);
+	}
+	public List<CUSTORMERINFOUPDATE> findCustormerUpdate(@Param("cardid") String cardid){
+		return customerInforDao.findCustormerUpdate(cardid);
+	}
+	public int findCustormerUpdateCount(@Param("cardid") String cardid){
+		return customerInforDao.findCustormerUpdateCount(cardid);
 	}
 	
 }
