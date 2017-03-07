@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.cardpay.pccredit.manager.model.TPerformanceParameters;
 import com.cardpay.pccredit.manager.model.TyPerformanceCenter;
 import com.cardpay.pccredit.manager.model.TyPerformanceParameters;
+import com.cardpay.pccredit.manager.model.TyTPerformanceParameters;
+import com.cardpay.pccredit.system.model.Dict;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 /**
  * 
@@ -50,14 +52,32 @@ public class ManagerPerformanceParamersComdao {
 	}
 	
 	//===================================================济南绩效==============================================//
-	public List<TPerformanceParameters> getTManagerPerformanceParamers(){
+	public List<TyTPerformanceParameters> getTManagerPerformanceParamers(){
 		String sql = "select * from t_performance_parameters";
-		List<TPerformanceParameters> list = commonDao.queryBySql(TPerformanceParameters.class, sql, null);
+		List<TyTPerformanceParameters> list = commonDao.queryBySql(TyTPerformanceParameters.class, sql, null);
 			return list;	
 	}
 	
 	public void deleteTList(){
 		String sql = "delete from t_performance_parameters";
-		commonDao.queryBySql(TPerformanceParameters.class, sql, null);
+		commonDao.queryBySql(TyTPerformanceParameters.class, sql, null);
+	}
+	public List<Dict> findPostAllowancedict() {
+		// TODO Auto-generated method stub
+		String sql = "select  * from dict where DICT_TYPE='PostAllowance'";
+		List<Dict> list = commonDao.queryBySql(Dict.class, sql, null);
+			return list;
+	}
+	public List<Dict> findTaskSuccessdict() {
+		// TODO Auto-generated method stub
+		String sql = "select  * from dict where DICT_TYPE='TaskSuccess'";
+		List<Dict> list = commonDao.queryBySql(Dict.class, sql, null);
+			return list;
+	}
+	public List<Dict> findToleratedict() {
+		// TODO Auto-generated method stub
+		String sql = "select  * from dict where DICT_TYPE='Tolerate'";
+		List<Dict> list = commonDao.queryBySql(Dict.class, sql, null);
+			return list;
 	}
 }

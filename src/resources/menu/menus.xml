@@ -63,7 +63,7 @@
 			 <menu id="092001" name="managerPromotionRule" title="客户经理绩效工资参数配置" url="/manager/managerPromotionRule/updateJxParam.page" img="" operations="browse|change|create"/>
 	         <menu id="092002" name="jbxc" 	 title="客户经理基本薪酬配置" url="/manager/leveladjustment/browsejnjbxc.page" img="" operations="display|browse"/>
 			 <menu id="092003" name="jxcs"   title="客户经理绩效每月绩效参数" url="/manager/leveladjustment/browseMonthJx.page" img="" operations="browse|change|create"/>
-		     <menu id="092004" name="dkye"   title="客户每月日均贷款余额" url="/manager/leveladjustment/browseCustDayBalamt.page" img="" operations="browse|change|create"/>
+		 <!--<menu id="092004" name="dkye"   title="客户每月日均贷款余额" url="/manager/leveladjustment/browseCustDayBalamt.page" img="" operations="browse|change|create"/> -->
 		     <menu id="092005" name="dkywjx" title="客户经理每月工资信息" url="/manager/leveladjustment/jnJxbrowse.page" img="" operations="display|browse"/>
 	     <!--<menu id="092006" name="qtywjx" title="客户经理其他业务员绩效" url="/manager/leveladjustment/browse.page" img="" operations="display|browse"/>
 			 <menu id="092007" name="fxbzj"  title="客户经理风险保证金" url="/manager/leveladjustment/browse.page" img="" operations="display|browse"/>

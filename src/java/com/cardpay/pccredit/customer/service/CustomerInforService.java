@@ -33,6 +33,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cardpay.pccredit.Sx.model.SxOutputData;
 import com.cardpay.pccredit.common.Dictionary;
 import com.cardpay.pccredit.common.UploadFileTool;
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
@@ -4696,11 +4697,17 @@ public class CustomerInforService {
 	 */
 	public void addmibusidata() throws IOException{
 		//List<TyMibusidataForm>lists=commonDao.queryBySql(TyMibusidataForm.class, "select * from Mibusidata", null);
+		customerInforDao.deletelastmibusidata();
 		List<TyMibusidataForm>lists=customerInforDao.findmibusidata();
+		customerInforDao.deletelastsx();
+		List<SxOutputData> lists1 = customerInforDao.findSxListByFilter();
 		for (TyMibusidataForm tyMibusidataForm : lists) {
 			customerInforDao.inserTyMIBUSIDATA(tyMibusidataForm);
 		}
-		log.info("success!");
+		for (SxOutputData sxOutputData : lists1) {
+			customerInforDao.insertsxOoutputDate(sxOutputData);
+		}
+		log.info("addmibusidata success!");
 	}
 	
 	

@@ -29,6 +29,17 @@
 		<result property="competerPerform" column="competer_perform" />
 	</resultMap>
 	
+	<resultMap id="ResultMaps" type="com.cardpay.pccredit.manager.web.ManagerBelongMapForms">
+		<result property="id" column="ID" />
+		<result property="parentId" column="PARENT_ID" />
+		<result property="childId" column="CHILD_ID" />
+		<result property="isLeaf" column="IS_LEAF" />
+		<result property="userName" column="DISPLAY_NAME" />
+		<result property="levelInformation" column="LEVEL_INFORMATION" />
+		<result property="userid" column="userid" />
+		<result property="userType" column="user_type" />
+	</resultMap>
+	
 	<resultMap id="ResultMapJn" type="com.cardpay.pccredit.manager.model.ManagerSalaryForm">
 		<result property="id" column="id" />
 		<result property="customerId" column="customer_id" />
@@ -65,6 +76,9 @@
 		<result property="managerType" column="MANAGER_TYPE" />
 		<result property="subsidies" column="SUBSIDIES" />
 		<result property="auditNum"  column="AUDIT_NUM" />
+		<result property="MonthPerformance"  column="MONTH_PERFORMANCE" />
+		<result property="MonthApprovalNum"  column="MONTH_APPROVAL_NUM" />
+		<result property="MonthAcasiNum"  column="MONTH_ACASI_NUM" />
 	</resultMap>
 	
 	<select id="findManagerSalarysByFilter" resultMap="ResultMap" 
@@ -625,7 +639,8 @@
 	
 	
 	<select id="findManagerSalaryForm" resultMap="ResultMapJn"  
-	    parameterType="com.cardpay.pccredit.manager.filter.ManagerSalaryFilter">
+	    parameterType="String">
+		<!--  com.cardpay.pccredit.manager.filter.ManagerSalaryFilter -->
 					SELECT salary.*, 
 						   parmeter.*,
 						   usr.display_name as managerName,
@@ -671,4 +686,133 @@
 	values (#{customerManagerId},#{Id},#{month},#{monthEffectNum},#{monthLoanNum},#{monthOverdueDays},#{monthOverdueLoannum},#{monthTimes},#{year})
 	</select> 
 	<!-- =====================================济南绩效相关end============================= -->
+	<select id="findffjebyManagerId" parameterType="String" resultType="com.cardpay.pccredit.customer.model.TyMibusidataForm">
+		select REQLMT from ty_mibusidata a where 1=1 
+		<if test="year != null and year != '' ">
+			and substr(a.loandate, '0', '4') = #{year}
+		</if>
+		<if test="month != null and month != '' ">
+			and substr(a.loandate, '5', '2') = #{month}
+		</if>
+		<if test="managerId != null and managerId != '' ">
+			and USERID=#{managerId}
+		</if>
+		
+	</select> 
+	
+	<select id="deletejxparametersbyuserid" parameterType="String">
+		delete from T_JX_PARAMETERS where 1=1 and customer_manager_id=#{userId}
+ 	</select>
+	
+	<select id="deleteSalarybyuserid" parameterType="String">
+		delete from manager_salary where 1=1 and CUSTOMER_ID=#{managerId}
+ 	</select>
+	
+	<update id="updateTJxParameters" parameterType="String">
+		update T_JX_PARAMETERS a set a.MONTH_LOAN_NUM=#{zhmonthLoanNum} where CUSTOMER_MANAGER_ID=#{managerId}
+	</update> 
+	
+	<select id="findrwjebyManagerId" parameterType="String"  resultType="String">
+		select sum(a.jkje)  from ty_mibusidata a where 1=1
+		<if test="year != null and year != '' ">
+			and substr(a.loandate, '0', '4') = #{year}
+		</if>
+		<if test="month != null and month != '' ">
+			and substr(a.loandate, '5', '2') = #{month}
+		</if>
+		<if test="managerId != null and managerId != '' ">
+			and USERID=#{managerId}
+		</if>
+	</select> 
+	
+	<insert id="insertjxs" parameterType="com.cardpay.pccredit.manager.model.TJxParameters" >
+	    insert into T_JX_PARAMETERS (ID,YEAR,MONTH,MONTH_LOAN_NUM,MONTH_TIMES,MONTH_EFFECT_NUM,MONTH_OVERDUE_LOANNUM,MONTH_OVERDUE_DAYS,CUSTOMER_MANAGER_ID,MONTH_APPROVAL_NUM,MONTH_ACASI_NUM) 
+	values (#{id},#{year},#{month},#{monthLoanNum},#{monthTimes},#{monthEffectNum},
+	#{monthOverdueLoannum},#{monthOverdueDays},#{customerManagerId},#{monthApprovalNum},#{monthAcasiNum})
+	</insert>
+	
+	<select id="findblsum" parameterType="String" resultType="String">
+ 	<!-- ywbh,ffje,yhbj,ffje-yhbj,DELAYINTERESTDAYS,DELAYAMTDAYS  -->
+ 	select  nvl( sum(ffje-yhbj) ,0)
+from
+(select distinct tkmx.ywbh ,yhbj.yhbj,tkmx.ffje,
+ (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end ) as DELAYINTERESTDAYS,  
+ (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end )as DELAYAMTDAYS
+from 
+ (   select 
+              tkmx.ywbh,
+              sum(lsz.df) as yhbj from  
+              ty_repay_tkmx tkmx,
+              ty_product_type protype,
+              ty_customer_base b,
+              ty_customer_rygl rygl,
+              sys_user sysuser,
+              ty_repay_yehz yehz,
+              ty_repay_lsz lsz
+              where b.khjl=rygl.dm and
+              rygl.ddrq=sysuser.external_id and
+              protype.product_code=tkmx.cpmc and
+              b.khnm=tkmx.khh and
+              yehz.jjh=tkmx.jjh and
+              tkmx.jjh =lsz.jjh  and
+              (lsz.zy='批量自动扣本金'
+            or lsz.zy='贷款柜台提前还款'
+            or lsz.zy='批量贷款自动扣本金' )
+            group by tkmx.ywbh)yhbj,
+            basic_customer_information basic,
+            ty_customer_base base,
+            ty_repay_tkmx tkmx,
+            ty_repay_lsz lsz,
+            ty_repay_yehz yehz,
+            ty_kdk_jh jh,
+            sys_user sysuser
+            where 1=1 and
+            basic.ty_customer_id =base.id and
+            base.khnm=tkmx.khh and
+            tkmx.jjh=lsz.jjh and 
+            yehz.jjh=tkmx.jjh and
+            jh.ywbh =tkmx.ywbh||'HT' and
+            basic.user_id=sysuser.id and
+            yhbj.ywbh=tkmx.ywbh
+            and sysuser.id=#{managerId}
+            group by tkmx.ywbh ,yhbj.yhbj,tkmx.dqrq,tkmx.ffje) a
+            where 1=1 and
+            ( DELAYINTERESTDAYS<![CDATA[ >  ]]>0 or DELAYAMTDAYS<![CDATA[ >  ]]>0)
+	</select>
+	
+	<select id="findDkyesum" parameterType="String" resultType="String">
+	    select nvl(sum(a.dkye),0) from ty_mibusidata  a  
+	    where a.userid=#{managerId}
+	</select>
+	
+	<select id="findchildrenbymanagerid" parameterType="String" resultMap="ResultMaps">
+	     SELECT mbm.*,
+	     	su.id as userid,
+              su.DISPLAY_NAME,
+               su.user_type,
+              amp.LEVEL_INFORMATION
+           FROM  manager_belong_map mbm
+           LEFT JOIN account_manager_parameter amp
+            on amp.id = mbm.child_id
+           LEFT JOIN sys_user su
+              ON su.id = amp.user_id
+           WHERE 1=1 and  mbm.parent_id = (
+            SELECT mbm.Child_Id
+           FROM  manager_belong_map mbm
+           LEFT JOIN account_manager_parameter amp
+            on amp.id = mbm.child_id
+           LEFT JOIN sys_user su
+              ON su.id = amp.user_id
+           WHERE 1=1 and su.id=#{managerId})
+	</select>
+	
+	<select id="findchildrenbyparentid" parameterType="String" resultType="int">
+	      SELECT count(*)
+           FROM  manager_belong_map mbm
+           LEFT JOIN account_manager_parameter amp
+            on amp.id = mbm.child_id
+           LEFT JOIN sys_user su
+              ON su.id = amp.user_id
+           WHERE 1=1 and  mbm.parent_id =#{childId}
+	</select>
 </mapper>

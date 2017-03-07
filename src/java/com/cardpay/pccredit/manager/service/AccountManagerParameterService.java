@@ -1,5 +1,6 @@
 package com.cardpay.pccredit.manager.service;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -450,7 +451,7 @@ public class AccountManagerParameterService {
 		
 		
 
-	public int updateAccountManagerParameter(AccountManagerParameter accountManagerParameter) {
+	/*public int updateAccountManagerParameter(AccountManagerParameter accountManagerParameter) {
 		accountManagerParameter.setModifiedTime(Calendar.getInstance().getTime());
 		if(accountManagerParameter != null){
 		String basePay = accountManagerParameter.getBasePay();
@@ -461,8 +462,46 @@ public class AccountManagerParameterService {
 		   }
 		}
 		return commonDao.updateObject(accountManagerParameter);
-	}
+	}*/
 
+	public void updateAccountManagerParameter(AccountManagerParameter accountManagerParameter) {
+		accountManagerParameter.setModifiedTime(Calendar.getInstance().getTime());
+		if(accountManagerParameter != null){
+		String basePay = accountManagerParameter.getBasePay();
+		String FOOD_SUBSIDY=accountManagerParameter.getFoodSubsidy();
+		String TRAVEL_ALLOWANCE=accountManagerParameter.getTravelAllowance();
+		String PHONE_ALLOWANCE=accountManagerParameter.getPhoneAllowance();
+		String AGE_ALLOWANCE=accountManagerParameter.getAgeAllowance();
+		String EDUCATION_ALLOWANCE=accountManagerParameter.getEducationAllowance();
+		String deliverTime=accountManagerParameter.getDeliverTime();
+		if(FOOD_SUBSIDY!=null&&FOOD_SUBSIDY!=""){
+			BigDecimal FOOD_SUBSIDYs=new BigDecimal(FOOD_SUBSIDY).multiply(new BigDecimal(deliverTime));
+			accountManagerParameter.setFoodSubsidy(FOOD_SUBSIDYs.toString());
+		}
+		if(TRAVEL_ALLOWANCE!=null && TRAVEL_ALLOWANCE!=""){
+			accountManagerParameter.setTravelAllowance(TRAVEL_ALLOWANCE);
+		}
+		if(PHONE_ALLOWANCE!=null && PHONE_ALLOWANCE!=""){
+			accountManagerParameter.setPhoneAllowance(PHONE_ALLOWANCE);
+		}
+		if(AGE_ALLOWANCE!=null && AGE_ALLOWANCE!=""){
+			BigDecimal AGE_ALLOWANCEs=new BigDecimal(AGE_ALLOWANCE).divide(BigDecimal.valueOf(12),2,BigDecimal.ROUND_HALF_UP);
+			accountManagerParameter.setAgeAllowance(AGE_ALLOWANCEs.toString());
+		}
+		if(EDUCATION_ALLOWANCE!=null&& EDUCATION_ALLOWANCE!=""){
+			accountManagerParameter.setEducationAllowance(EDUCATION_ALLOWANCE);
+		}
+		
+		if(basePay !=null && basePay !=""){
+			//Double basePayDouble = Double.parseDouble(basePay) * 100;
+			//String basePayValue = basePayDouble.toString();
+			accountManagerParameter.setBasePay(basePay);
+		   }
+		}
+		 accountManagerParameterDao.updateObject(accountManagerParameter);
+			//commonDao.updateObject(accountManagerParameter);
+	}
+	
 	public int deleteAccountManagerParameter(String managerId) {
 		return commonDao.deleteObject(AccountManagerParameter.class, managerId);
 	}

@@ -70,8 +70,166 @@ public class ManagerSalaryForm extends BaseForm {
 	
 	private String subsidies;
 	private String auditNum;
+	
+	//太原添加部分
+		//基本工资
+		private String zhbasepay;
+		
+		//当月贷款绩效
+		private String MonthPerformance;
+		
+		//主办
+		private String zb;
+		
+		//协办
+		private String xb;
+		
+		//当月放款绩效
+		private String dyffdkjx;
+		
+		//当月管户绩效
+		private String gh;
+		
+		//当月承担审批的贷款笔数绩效
+		private String sp;
+		
+		//客户经理等级岗位绩效
+		private String dj;
+		
+		//理辅助调查绩效
+		private String fd;
+		
+		//任务完成度绩效
+		private String rw;
+		
+		//不良贷款比率超过容忍度的处罚标准blje-被扣掉的绩效
+		private String bl;
+		
+		//客户经理主管加成绩效
+		private String zg;
+		
+		
+		//当月承担审批的避暑
+		private String MonthApprovalNum;
+		
+		//客户经理当月辅助调查笔数
+		private String MonthAcasiNum;
+		
+		
 
 	
+	public String getMonthAcasiNum() {
+			return MonthAcasiNum;
+		}
+
+		public void setMonthAcasiNum(String monthAcasiNum) {
+			MonthAcasiNum = monthAcasiNum;
+		}
+
+	public String getMonthApprovalNum() {
+			return MonthApprovalNum;
+		}
+
+		public void setMonthApprovalNum(String monthApprovalNum) {
+			MonthApprovalNum = monthApprovalNum;
+		}
+
+	public String getZb() {
+			return zb;
+		}
+
+		public void setZb(String zb) {
+			this.zb = zb;
+		}
+
+		public String getXb() {
+			return xb;
+		}
+
+		public void setXb(String xb) {
+			this.xb = xb;
+		}
+
+	public String getZhbasepay() {
+			return zhbasepay;
+		}
+
+		public void setZhbasepay(String zhbasepay) {
+			this.zhbasepay = zhbasepay;
+		}
+
+		public String getMonthPerformance() {
+			return MonthPerformance;
+		}
+
+		public void setMonthPerformance(String monthPerformance) {
+			MonthPerformance = monthPerformance;
+		}
+
+		public String getDyffdkjx() {
+			return dyffdkjx;
+		}
+
+		public void setDyffdkjx(String dyffdkjx) {
+			this.dyffdkjx = dyffdkjx;
+		}
+
+		public String getGh() {
+			return gh;
+		}
+
+		public void setGh(String gh) {
+			this.gh = gh;
+		}
+
+		public String getSp() {
+			return sp;
+		}
+
+		public void setSp(String sp) {
+			this.sp = sp;
+		}
+
+		public String getDj() {
+			return dj;
+		}
+
+		public void setDj(String dj) {
+			this.dj = dj;
+		}
+
+		public String getFd() {
+			return fd;
+		}
+
+		public void setFd(String fd) {
+			this.fd = fd;
+		}
+
+		public String getRw() {
+			return rw;
+		}
+
+		public void setRw(String rw) {
+			this.rw = rw;
+		}
+
+		public String getBl() {
+			return bl;
+		}
+
+		public void setBl(String bl) {
+			this.bl = bl;
+		}
+
+		public String getZg() {
+			return zg;
+		}
+
+		public void setZg(String zg) {
+			this.zg = zg;
+		}
+
 	public String getAuditNum() {
 		return auditNum;
 	}

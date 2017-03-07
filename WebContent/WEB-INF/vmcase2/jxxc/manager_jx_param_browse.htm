@@ -38,7 +38,7 @@
                <col  width="10%" />
                <col  width="10%" />
                <col  width="10%" />
-               <col  width="10%" />
+               <col  width="20%" />
                <col  width="10%" />
             </colgroup>
             <tr class="title">
@@ -46,11 +46,11 @@
               <th nowrap="nowrap">年份</th>
               <th nowrap="nowrap">月份</th>
               <th nowrap="nowrap">客户经理姓名</th>
-              <th nowrap="nowrap">当月发放贷款户数</th>
               <th nowrap="nowrap">当月有效管户数</th>
               <th nowrap="nowrap">当月协办次数</th>
               <th nowrap="nowrap">当月逾期贷款笔数</th>
               <th nowrap="nowrap">当月逾期贷款天数</th>
+              <th nowrap="nowrap">当月发放贷款户数(按照绩效标准折算后)</th>
               <th nowrap="nowrap">所属机构</th>
             </tr>
           </table>
@@ -66,7 +66,7 @@
                <col  width="10%" />
                <col  width="10%" />
                <col  width="10%" />
-               <col  width="10%" />
+               <col  width="20%" />
                <col  width="10%" />
             </colgroup>
             #foreach ($manager in $result.items)
@@ -75,11 +75,11 @@
               <td nowrap="nowrap">$!manager.year</td>
               <td nowrap="nowrap">$!manager.month</td>
               <td nowrap="nowrap">$!manager.customerManagerId</td>
-              <td nowrap="nowrap">$!manager.monthLoanNum</td>
               <td nowrap="nowrap">$!manager.monthEffectNum</td>
               <td nowrap="nowrap">$!manager.monthTimes</td>
               <td nowrap="nowrap">$!manager.monthOverdueLoannum</td>
               <td nowrap="nowrap">$!manager.monthOverdueDays</td>
+              <td nowrap="nowrap">$!manager.monthLoanNum</td>
               <td nowrap="nowrap">$!manager.instcode</td>
             </tr>
             #end
