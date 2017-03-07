@@ -57,5 +57,8 @@ public interface CustomerApplicationIntopieceWaitDao {
 	public List<IntoPiecesFilters> findCustomerApplicationIntopieceDecisionForms(IntoPiecesFilters filter);
 	public int findCustomerApplicationIntopieceDecisionCountForms(IntoPiecesFilters filter);
 	
+	public List<IntoPiecesFilters> findCustomerApplicationIntopieceDecisionFormes(IntoPiecesFilters filter);
+	public int findCustomerApplicationIntopieceDecisionCountFormes(IntoPiecesFilters filter);
+	
 	public CustomerApplicationProcess findByAppId(String appId);
 }

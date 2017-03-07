@@ -19,12 +19,7 @@ public class CustormerSdwUser {
 	private String CID;
 	private String SDWJLY;
 	private String LV;
-	public String getLV() {
-		return LV;
-	}
-	public void setLV(String lV) {
-		LV = lV;
-	}
+	
 	public String getSDWJLY() {
 		return SDWJLY;
 	}
@@ -114,6 +109,12 @@ public class CustormerSdwUser {
 	}
 	public void setSDTIME(Date sDTIME) {
 		SDTIME = sDTIME;
+	}
+	public String getLV() {
+		return LV;
+	}
+	public void setLV(String lV) {
+		LV = lV;
 	}
 
 }

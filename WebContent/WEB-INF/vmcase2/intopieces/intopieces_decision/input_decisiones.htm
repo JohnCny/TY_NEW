@@ -5,7 +5,7 @@
   <div class="content_main">
     <div class="contentinner">
       <div class="place">
-        <div class="title">填写审贷结论>审贷结论</div>
+        <div class="title">填写最终审贷结论>最终审贷结论</div>
       </div>
        
       <form id="id_module_form" action="${contextPath}/intopieces/intopiecesdecision/updateAll.json"/>
@@ -71,6 +71,145 @@
             </tr>
           </table>
          </div>
+          <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
+          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%;height: 250px">
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="30%" />
+            </colgroup>  
+           
+              <tr><td class="titlec" colspan="4" style="text-align: center;">审贷结论</td></tr>
+        
+             <tr>
+              <td class="titlefc3">审贷委一:</td>
+              <td>
+                  <input type="text" class="rinpsty" name="cyUser1s" id="cyUser1s" value="$!sdwinfo1.names" disabled="disabled"/>
+              </td>
+              
+              <td class="titlefc3">意见:</td>
+              <td>
+              <textarea name="SDWUSER1YJs" id="SDWUSER1YJs" disabled="disabled">$!sdwinfo1.SDWUSER1YJ</textarea>
+              </td>
+              </tr>
+            
+             <tr>
+              <td  class="titlefc3"><label for="status">审贷结论:</label></td>
+              <td><select id="statuss" name="statuss" onChange="changeDecisionRefusereason();" disabled="disabled">
+                  	#dict("intopieces_decision",$!sdwinfo1.status)
+                  </select> 
+                  </td>
+            </tr>
+           
+           #if($!sdwinfo1.status=='approved')
+          <!-- 11 --> <tr>
+			  <td class="titlefc3"><label for="decisionAmounts">审贷额度(元):</label></td>
+              <td><input  type="text" class="rinpsty" name="sxeds" id="decisionAmounts" value="$!sdwinfo1.SDJE" disabled="disabled"/></td>
+              <td class="titlefc3"><label for="decisionRate">利率(%):</label></td>
+              <td><input type="text" class="rinpsty" name="decisionRatess" id="decisionRatess" value="$!sdwinfo1.SDLV" disabled="disabled"/></td>
+            </tr>
+             <tr>
+              <td class="titlefc3"><label for="decisionTerms">期限:</label></td>
+              <td>
+               <select  name="qxs" id="qxs" disabled="disabled">
+                  	#dict("decision_term",$!sdwinfo1.SDQX)
+              </select> 
+              </td>
+            </tr>
+            #else
+            <tr>
+              <td  class="titlefc3"><label id ="reasons" for=reason>原因:</label></td>
+              <td><textarea name="decisionRefusereasons" id="decisionRefusereasons" disabled="disabled">$!sdwinfo1.jlyys</textarea></td>
+            </tr>
+           #end
+           
+            
+             <tr>
+              <td class="titlefc3">审贷委二:</td>
+              <td>
+                  <input type="text" class="rinpsty" name="cyUser1s" id="cyUser1s" value="$!sdwinfo2.names" disabled="disabled"/>
+              </td>
+              
+              <td class="titlefc3">意见:</td>
+              <td>
+              <textarea name="SDWUSER1YJs" id="SDWUSER1YJs" disabled="disabled">$!sdwinfo2.SDWUSER1YJ</textarea>
+              </td>
+            </tr>
+            <tr>
+              <td  class="titlefc3"><label for="status">审贷结论:</label></td>
+              <td><select id="statuss" name="statuss" onChange="changeDecisionRefusereason();" disabled="disabled">
+                  	#dict("intopieces_decision",$!sdwinfo2.status)
+                  </select> 
+                  </td>
+            </tr>
+           
+           #if($!sdwinfo2.status=='approved')
+          <!-- 16  --> <tr>
+			  <td class="titlefc3"><label for="decisionAmounts">审贷额度(元):</label></td>
+              <td><input  type="text" class="rinpsty" name="sxeds" id="decisionAmounts" value="$!sdwinfo2.SDJE" disabled="disabled"/></td>
+              <td class="titlefc3"><label for="decisionRate">利率(%):</label></td>
+              <td><input type="text" class="rinpsty" name="decisionRatess" id="decisionRatess" value="$!sdwinfo2.SDLV" disabled="disabled"/></td>
+            </tr>
+             <tr>
+              <td class="titlefc3"><label for="decisionTerms">期限:</label></td>
+              <td>
+               <select  name="qxs" id="qxs" disabled="disabled">
+                  	#dict("decision_term",$!sdwinfo2.SDQX)
+              </select> 
+              </td>
+            </tr>
+            #else
+            <tr>
+              <td  class="titlefc3"><label id ="reasons" for=reason>原因:</label></td>
+              <td><textarea name="decisionRefusereasons" id="decisionRefusereasons" disabled="disabled">$!sdwinfo2.jlyys</textarea></td>
+            </tr>
+           #end
+           
+            
+             <tr>
+              <td class="titlefc3">审贷委三:</td>
+              <td>
+                  <input type="text" class="rinpsty" name="cyUser1s" id="cyUser1s" value="$!sdwinfo3.names" disabled="disabled"/>
+              </td>
+              
+              <td class="titlefc3">意见:</td>
+              <td>
+              <textarea name="SDWUSER1YJs" id="SDWUSER1YJs" disabled="disabled">$!sdwinfo3.SDWUSER1YJ</textarea>
+              </td>
+            </tr>
+           
+           <tr>
+              <td  class="titlefc3"><label for="status">审贷结论:</label></td>
+              <td><select id="statuss" name="statuss" onChange="changeDecisionRefusereason();" disabled="disabled">
+                  	#dict("intopieces_decision",$!sdwinfo3.status)
+                  </select> 
+                  </td>
+            </tr>
+            
+           #if($!sdwinfo3.status=='approved')
+          <!-- 21  --> <tr>
+			  <td class="titlefc3"><label for="decisionAmounts">审贷额度(元):</label></td>
+              <td><input  type="text" class="rinpsty" name="sxeds" id="decisionAmounts" value="$!sdwinfo3.SDJE" disabled="disabled"/></td>
+              <td class="titlefc3"><label for="decisionRate">利率(%):</label></td>
+              <td><input type="text" class="rinpsty" name="decisionRatess" id="decisionRatess" value="$!sdwinfo3.SDLV" disabled="disabled"/></td>
+            </tr>
+             <tr>
+              <td class="titlefc3"><label for="decisionTerms">期限:</label></td>
+              <td>
+               <select  name="qxs" id="qxs" disabled="disabled">
+                  	#dict("decision_term",$!sdwinfo3.SDQX)
+              </select> 
+              </td>
+            </tr>
+            #else
+            <tr>
+              <td  class="titlefc3"><label id ="reasons" for=reason>原因:</label></td>
+              <td><textarea name="decisionRefusereasons" id="decisionRefusereasons" disabled="disabled">$!sdwinfo3.jlyys</textarea></td>
+            </tr>
+           #end
+          </table>
+        </div>
          <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
           <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%;height: 250px">
             <colgroup>
@@ -79,80 +218,52 @@
               <col width="10%" />
               <col width="30%" />
             </colgroup>
-              <tr><td class="titlec" colspan="4" style="text-align: center;">审贷结论</td></tr>
+              <tr><td class="titlec" colspan="4" style="text-align: center;">最终审贷结论</td></tr>
             <tr>
               <td  class="titlefc3"><label for="status">审贷结论:</label></td>
               <td><select id="status" name="status" onChange="changeDecisionRefusereason();">
-                  	#dict("intopieces_decision",$!sdwinfo.status)
+                  	#dict("intopieces_decision",$!customerApplicationInfo.status)
                   </select> 
                   </td>
                <td  class="titlefc3"><label for="prodId">产品名称:</label></td>
-               <td ><!-- <select id="prodId" name="prodId" disabled="disabled" >
-                    #dict("ProductName", $!producAttribute.id)
-                  </select> -->
+               <td >
                   <input  type="text" class="rinpsty" name="prodName" id="prodName" 
 	              value="$!producAttribute.productName" disabled="disabled"/>
                </td>
             </tr>
-            <tr>
+           <!-- 26 --> <tr id="tr26">
 			  <td class="titlefc3"><label for="decisionAmount">审贷额度(元):</label></td>
               <td><input  type="text" class="rinpsty" name="sxed" id="decisionAmount" value="$!sdwinfo.SDJE" /></td>
               <td class="titlefc3"><label for="decisionRate">利率(%):</label></td>
               <td><input type="text" class="rinpsty" name="decisionRate" id="decisionRate" value="$!sdwinfo.SDLV" /></td>
             </tr>
+            
             <tr>
-              <td class="titlefc3">审贷委:</td>
-              <td>
-                  <input type="text" class="rinpsty" name="cyUser1" id="cyUser1" value="$!result.name1" disabled="disabled"/>
+              <td class="titlefc3">最终审贷委:</td>
+               
+              <td id="t1">
+                  <input type="text" class="rinpsty" name="cyUser1" id="cyUser1" value="$!sdwinfo.names" disabled="disabled"/>
               </td>
               
+              <td id="t2">
+                  <input type="text" class="rinpsty" name="cyUser1" id="cyUser1" value="$!result.name1" disabled="disabled"/>
+              </td>
               <td class="titlefc3">意见:</td>
               <td>
               <textarea name="SDWUSER1YJ" id="SDWUSER1YJ" >$!sdwinfo.SDWUSER1YJ</textarea>
               </td>
             </tr>
-            <!--  <tr>
-              <td class="titlefc3">审贷委二:</td>
-              <td>
-                  <input type="text" class="rinpsty" name="cyUser2" id="cyUser2" value="$!result.name2" disabled="disabled"/>
-              </td>
-              
-              <td class="titlefc3">意见:</td>
-              <td>
-              <textarea name="SDWUSER2YJ" id="SDWUSER2YJ" >$!sdwinfo.SDWUSER2YJ</textarea> 
-              </td>
-            </tr>
-             <tr>
-              <td class="titlefc3"><label for="decisionTerm">审贷委三:</label></td>
-              <td>
-                  <input type="text" class="rinpsty"  name="cyUser3" id="cyUser3" value="$!result.name3" disabled="disabled"/>
-              </td>
-              
-              <td class="titlefc3">意见:</td>
-              <td>
-              <textarea name="SDWUSER3YJ" id="SDWUSER3YJ" >$!sdwinfo.SDWUSER3YJ</textarea>
-              </td>
-            </tr> -->
-            <tr>
+           <!-- 28 --> <tr id="tr27">
               <td class="titlefc3"><label for="decisionTerm">期限:</label></td>
               <td>
                <select  name="qx" id="qx">
                   	#dict("decision_term",$!sdwinfo.SDQX)
               </select> 
               </td>
-             <!--  <td class="titlefc3"><label for="decisionTerm">还款方式:</label></td>
-              <td><select  name="hkfs">
-                  	#dict("HKFS",$!customerApplicationInfo.hkfs)
-                  </select>
-              </td> -->
             </tr>
-            <tr style="display :none">
+            <tr id="tr28" style="display:none">
               <td  class="titlefc3"><label id ="reason" for=reason>原因:</label></td>
-               #if($!customerApplicationInfo.status=='returnedToFirst')
               <td><textarea name="decisionRefusereason" id="decisionRefusereason">$!sdwinfo.jlyys</textarea></td>
-              #else
-              <td><textarea name="decisionRefusereason" id="decisionRefusereason">$!sdwinfo.jlyys</textarea></td>
-              #end
             </tr>
           </table>
         </div>
@@ -176,22 +287,34 @@
 	window.top.currentWindow.setLayout(layout);
 	
 	
-	$(document).ready(function() {		
-		var info = "$!sdwinfo.status";
+	$(document).ready(function() {
+		var a="$!sdwinfo.names";
+		if(a != ''){
+			$("#t1").show();
+			$("#t2").hide();
+			}else{
+				$("#t2").show();
+				$("#t1").hide();
+				}
+		var info = "$!customerApplicationInfo.status";
 		//已提交的显示只读
 		if( info == "refuse"){
-			$("tr:eq(9)").hide();
-			$("tr:eq(11)").hide();
-			$("tr:eq(12)").show();
+			$("#tr26").hide();
+			$("#tr27").hide();
+			$("#tr28").show();
+			
 			if($("textarea[name=decision_refusereason]").val() == ""){
 				 $("textarea[name='decision_refusereason']").after("<label class='error myerror' generated='true' >拒绝原因不能为空</label>");   
 			}
 		}
 		
 		if( info == "returnedToFirst"){
-			$("tr:eq(9)").hide();
-			$("tr:eq(11)").hide();
-			$("tr:eq(12)").show();
+			$("#tr26").hide();
+			$("#tr27").hide();
+			$("#tr28").show();
+			/* $("tr:eq(26)").hide();
+			$("tr:eq(28)").hide();
+			$("tr:eq(29)").show(); */
 		}
 		
 			if(info =='returnedToFirst'){
@@ -200,7 +323,7 @@
 		      $("#reason").text("拒绝原因");	
 			} 
 	
-		 if(info!='0'){
+		 if(info!='audit'){
 			$("input[type='text']").attr("disabled",true);
 			$("input[type='radio']").attr("disabled",true);
 			$("input[type='checkbox']").attr("disabled",true);
@@ -210,16 +333,6 @@
 		
 		$("#id_save_button").click(function() {
 			$(".myerror").remove();
-			
-			/* if($("#decisionAmount").val() == ""){
-				 $("#decisionAmount").after("<label class='error myerror' generated='true' >金额不能为空</label>");  
-				 return;
-			}
-			if($("#decisionAmount").val() == ""){
-				 $("#decisionAmount").after("<label class='error myerror' generated='true' >金额不能为空</label>");  
-				 return;
-			} */
-			
 			
 			var status = $("select[name=status]").val();
 			if( status == "approved"){
@@ -231,11 +344,6 @@
 					 $("#decisionRate").after("<label class='error myerror'generated='true' >利率不能为空</label>");  
 					 return;
 				}
-				/* var fdUser = $("#fdUser").val();
-				if(fdUser=="0"){
-					$("#fdUser").after("<label class='error myerror'generated='true' >辅调客户经理不能为空</label>");  
-					 return;
-				} */
 			}
 			if( status == "refuse"){
 				if($("#decisionRefusereason").val() == ""){
@@ -268,25 +376,22 @@
 		    	var id=$("#id").val();
 		    	var decisionAmount=$("#decisionAmount").val();
 		    	var qx=$("#qx").val();
-		    	var SDWUSER1YJ=$("#SDWUSER1YJ").val();/* 
-		    	var SDWUSER2YJ=$("#SDWUSER2YJ").val();
-		    	var SDWUSER3YJ=$("#SDWUSER3YJ").val(); */
+		    	var SDWUSER1YJ=$("#SDWUSER1YJ").val();
 		    	var decisionRate=$("#decisionRate").val();
 		    	var decisionRefusereason=$("#decisionRefusereason").val();
 		    	var customerId=$("#customerId").val();
 		    	var productId=$("#productId").val();
 		    	  $.ajax({
-						url : "${contextPath}/jnpad/CustormerSdwUserPc/insertsdjycs.json?customerId="+customerId
+						url : "${contextPath}/jnpad/CustormerSdwUserPc/insertsdjy.json?customerId="+customerId
 						+"&&productId="+productId+"&&decisionRate="+decisionRate+"&&decisionAmount="+decisionAmount
-						+"&&qx="+qx+"&&id="+id+"&&SDWUSER1YJ="+SDWUSER1YJ/* +"&&SDWUSER2YJ="+SDWUSER2YJ
-						+"&&SDWUSER3YJ="+SDWUSER3YJ */+"&&decisionRefusereason="+decisionRefusereason+"&&status="+status,
-						
+						+"&&qx="+qx+"&&id="+id+"&&SDWUSER1YJ="+SDWUSER1YJ+"&&decisionRefusereason="+decisionRefusereason
+						+"&&status="+status,
 						dataType : 'json',
 						type : "get",
 						success : function(data) {
 						if (data.success) {
 							topWin.Dialog.message("保存成功!");
-		 	            	window.location.href="${contextPath}/intopieces/intopiecesdecision/browse.page";
+		 	            	window.location.href="${contextPath}/intopieces/intopiecesdecision/zzbrowse.page";
 						 }else{
 								window.top.Dialog.message("系统出现异常,请联系管理员"); 
 					    	}
@@ -302,9 +407,9 @@
 			
 			var status = $("select[name=status]").val();
 			if( status == "approved"){
-				$("tr:eq(9)").show();
-				$("tr:eq(11)").show();
-				$("tr:eq(12)").hide();
+				$("#tr26").show();
+				$("#tr27").show();
+				$("#tr28").hide();
 				if($("input[name=decision_amount]").val() == ""){
 					 $("input[name='decision_amount']").after("<label class='error myerror' generated='true' >金额不能为空</label>");   
 				}
@@ -314,18 +419,18 @@
 			}
 			
 			if( status == "refuse"){
-				$("tr:eq(9)").hide();
-				$("tr:eq(11)").hide();
-				$("tr:eq(12)").show();
+				$("#tr26").hide();
+				$("#tr27").hide();
+				$("#tr28").show();
 				if($("textarea[name=decision_refusereason]").val() == ""){
 					 $("textarea[name='decision_refusereason']").after("<label class='error myerror' generated='true' >拒绝原因不能为空</label>");   
 				}
 			}
 			
 			if( status == "returnedToFirst"){
-				$("tr:eq(9)").hide();
-				$("tr:eq(11)").hide();
-				$("tr:eq(12)").show();
+				$("#tr26").hide();
+				$("#tr27").hide();
+				$("#tr28").show();
 				
 			}
 			
