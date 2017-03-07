@@ -121,6 +121,24 @@ public class IntopiecesDecisionController extends BaseController {
 		return mv;
 	}
 	
+	//最终审贷决议
+		@ResponseBody
+		@RequestMapping(value = "zzbrowse.page", method = { RequestMethod.GET })
+		@JRadOperation(JRadOperation.BROWSE)
+		public AbstractModelAndView zzbrowse(@ModelAttribute IntoPiecesFilters filter,HttpServletRequest request) {
+			filter.setRequest(request);
+			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+			String userId = user.getId();
+			filter.setUserId(userId);
+			QueryResult<IntoPiecesFilters> result = customerApplicationIntopieceWaitService.findCustomerApplicationIntopieceDecisones(filter,request);
+			JRadPagedQueryResult<IntoPiecesFilters> pagedResult = new JRadPagedQueryResult<IntoPiecesFilters>(filter, result);
+			JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_decision/intopieces_browse2s", request);
+			mv.addObject(PAGED_RESULT, pagedResult);
+			return mv;
+		}
+	
+	
+	
 	//初审进件zjBrowse.page
 	@ResponseBody
 	@RequestMapping(value = "csBrowse.page", method = { RequestMethod.GET })
@@ -138,24 +156,26 @@ public class IntopiecesDecisionController extends BaseController {
 		return mv;
 	}
 	
-	//显示审议决议
+	//显示审议决议(初审)
 	@ResponseBody
 	@RequestMapping(value = "input_decision.page", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView input_decision(HttpServletRequest request) {
 		String appId = request.getParameter("appId");
+		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		String uId=user.getId();
 		CustomerApplicationInfo customerApplicationInfo = intoPiecesService.findCustomerApplicationInfoById(appId);
 		CustomerApplicationProcessForm  processForm  = intoPiecesService.findCustomerApplicationProcessById(appId);
 		ProductAttribute producAttribute =  productService.findProductAttributeById(customerApplicationInfo.getProductId());
 		List<AppManagerAuditLog> appManagerAuditLog = productService.findAppManagerAuditLog(appId,"1");
 		CustomerInfor  customerInfor  = intoPiecesService.findCustomerManager(customerApplicationInfo.getCustomerId());
-		AppManagerAuditLog result=SdwUserService.selectCSJLAPC(appId);
-		JnpadCsSdModel sdwinfo=SdwUserService.findCsSds(appId);
-		//拒绝
+		AppManagerAuditLog result=SdwUserService.selectCSJLAPC(appId,uId);
+		JnpadCsSdModel sdwinfo=SdwUserService.findCsSds(appId,uId);
+		/*//拒绝
 		JnpadCsSdModel jjyj=SdwUserService.findCsSdRefuses(appId);
 		//回退
 		JnpadCsSdModel htyj=SdwUserService.findCsSdBlacks(appId);
-		
+		*/
 		JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_decision/input_decision", request);
 		mv.addObject("customerApplicationInfo", customerApplicationInfo);
 		mv.addObject("producAttribute", producAttribute);
@@ -163,11 +183,56 @@ public class IntopiecesDecisionController extends BaseController {
 		mv.addObject("appManagerAuditLog", appManagerAuditLog.get(0));
 		mv.addObject("custManagerId", customerInfor.getUserId());
 		mv.addObject("result", result);
-		mv.addObject("sdwinfo", sdwinfo);
+		mv.addObject("sdwinfo", sdwinfo);/*
 		mv.addObject("jjyj", jjyj);
-		mv.addObject("htyj", htyj);
+		mv.addObject("htyj", htyj);*/
 		return mv;
 	}
+	
+	//显示审议决议(最终)
+	@ResponseBody
+	@RequestMapping(value = "input_decisiones.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView input_decisiones(HttpServletRequest request) {
+		String appId = request.getParameter("appId");
+		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		String uId=user.getId();
+		String names=user.getFirstName()+user.getLastName();
+		CustomerApplicationInfo customerApplicationInfo = intoPiecesService.findCustomerApplicationInfoById(appId);
+		CustomerApplicationProcessForm  processForm  = intoPiecesService.findCustomerApplicationProcessById(appId);
+		ProductAttribute producAttribute =  productService.findProductAttributeById(customerApplicationInfo.getProductId());
+		List<AppManagerAuditLog> appManagerAuditLog = productService.findAppManagerAuditLog(appId,"1");
+		CustomerInfor  customerInfor  = intoPiecesService.findCustomerManager(customerApplicationInfo.getCustomerId());
+		AppManagerAuditLog result=SdwUserService.selectCSJLAPC(appId,uId);
+		JnpadCsSdModel sdwinfo=SdwUserService.findZzCsSds(appId);
+		List<JnpadCsSdModel> sdwinfos=SdwUserService.findCsSdId(appId);
+		String sdwId1 = null;
+		String sdwId2 = null;
+		String sdwId3 = null;
+		for(int i=0; i<sdwinfos.size();i++){ 
+			sdwId1=sdwinfos.get(0).getSpuserid();
+			sdwId2=sdwinfos.get(1).getSpuserid();
+			sdwId3=sdwinfos.get(2).getSpuserid();
+		}
+		JnpadCsSdModel sdwinfo1=SdwUserService.findBySdwId(sdwId1,appId);
+		JnpadCsSdModel sdwinfo2=SdwUserService.findBySdwId(sdwId2,appId);
+		JnpadCsSdModel sdwinfo3=SdwUserService.findBySdwId(sdwId3,appId);
+		
+		JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_decision/input_decisiones", request);
+		mv.addObject("customerApplicationInfo", customerApplicationInfo);
+		mv.addObject("producAttribute", producAttribute);
+		mv.addObject("customerApplicationProcess", processForm);
+		mv.addObject("appManagerAuditLog", appManagerAuditLog.get(0));
+		mv.addObject("custManagerId", customerInfor.getUserId());
+		mv.addObject("result", result);
+		mv.addObject("sdwinfo1", sdwinfo1);
+		mv.addObject("sdwinfo2", sdwinfo2);
+		mv.addObject("sdwinfo3", sdwinfo3);
+		mv.addObject("sdwinfo", sdwinfo);
+		mv.addObject("names",names);
+		return mv;
+	}
+	
 	
 	
 	//显示进件初审 界面
@@ -183,7 +248,7 @@ public class IntopiecesDecisionController extends BaseController {
 		mv.addObject("customerApplicationInfo", customerApplicationInfo);
 		mv.addObject("producAttribute", producAttribute);
 		mv.addObject("custManagerId", customerInfor.getUserId());
-		return mv;
+		return mv; 
 	}
 	
 	//保存审议决议

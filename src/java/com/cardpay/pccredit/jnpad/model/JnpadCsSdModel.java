@@ -21,6 +21,10 @@ public class JnpadCsSdModel {
 	private String created_time;
 	private String refusalreaso;//拒绝
 	private String FALLBACK_REASON;//退回
+	private String status;//状态
+	private String jlyys;
+	private String spuserid;
+	private String names;
 	public String getFALLBACK_REASON() {
 		return FALLBACK_REASON;
 	}
@@ -147,6 +151,30 @@ public class JnpadCsSdModel {
 	}
 	public void setName3(String name3) {
 		this.name3 = name3;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getJlyys() {
+		return jlyys;
+	}
+	public void setJlyys(String jlyys) {
+		this.jlyys = jlyys;
+	}
+	public String getSpuserid() {
+		return spuserid;
+	}
+	public void setSpuserid(String spuserid) {
+		this.spuserid = spuserid;
+	}
+	public String getNames() {
+		return names;
+	}
+	public void setNames(String names) {
+		this.names = names;
 	}
 
 }

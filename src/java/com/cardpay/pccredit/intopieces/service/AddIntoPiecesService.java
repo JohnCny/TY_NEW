@@ -82,7 +82,6 @@ import com.wicresoft.jrad.base.web.message.Messages;
 
 @Service
 public class AddIntoPiecesService {
-
 	// TODO 路径使用相对路径，首先获得应用所在路径，之后建立上传文件目录，图片类型使用IMG，文件使用DOC
 	@Autowired
 	private JnpadCustormerSdwUserDao sdwDao;
@@ -708,6 +707,8 @@ public class AddIntoPiecesService {
 		//更新状态为--audit
 		applicationInfo.setStatus("audit");
 		commonDao.updateObject(applicationInfo);
+		//重新进件删除审批表中的进件信息
+		sdwDao.deleteByApplicationId(applicationId);
 		//重新提交进件时删除审贷表中的数据
 		sdwDao.deletePCCustormerSdwUser(applicationId);
 		sdwDao.deletePCCsJl(applicationId);

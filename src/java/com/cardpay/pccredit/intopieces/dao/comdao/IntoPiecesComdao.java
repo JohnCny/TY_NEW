@@ -433,11 +433,12 @@ public class IntoPiecesComdao {
 					" where aa.amount_adjustment_id = #{id}";
 		}
 		sql += " order by t.start_examine_time desc";*/
-		String sql= " select(case when cai.id  in (select capid from CUSTOMER_APPLICATION_SDH) and sdh.sdtime is null and sdh.time is not null then '初审通过' "
+		String sql= " select (case when cai.status ='audit' and tlog.examine_amount is null and sdh.sdtime is null then '已申请' " 
+				   +" when cai.id  in (select capid from CUSTOMER_APPLICATION_SDH) and sdh.sdtime is null and sdh.time is not null then '初审通过' "
 				   +" when t.examine_result is not null and cai.id not in (select capid from CUSTOMER_APPLICATION_SDH) then s.status_name "
 				   +" when cai.id  in (select capid from CUSTOMER_APPLICATION_SDH) and sdh.sdtime is not null then  '审贷决议'  else '' end) as status_name,"
 		           +" t.examine_result, su.display_name, "
-		           +" (case when cai.id  in (select capid from CUSTOMER_APPLICATION_SDH) and sdh.sdtime is null and sdh.time is not null then t.examine_amount"
+		           +" (case when cai.id  in (select application_id from T_APP_MANAGER_AUDIT_LOG) and sdh.sdtime is null then tlog.examine_amount"
 		           +" when t.examine_result='APPROVE' then t.examine_amount else '' end) as examine_amount, t.start_examine_time " 
 				   +" from wf_status_queue_record t left join wf_status_info s on t.current_status = s.id " 
 				   +" left join wf_process_record pr on t.current_process = pr.id";
