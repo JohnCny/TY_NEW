@@ -32,6 +32,28 @@
                   	#dict("MANAGER_TYPE",$!accountManagerParameter.managerType)
                   </select>
               </td>
+              <td><label for="basePay">餐饮补贴:</label></td>
+              <td><input class="rinpsty"  type="text" id="foodSubsidy" name="foodSubsidy" value="$!accountManagerParameter.foodSubsidy" /></td>
+             </tr>
+             <tr>
+              <td><label for="userId">交通补贴：</label></td>
+              <td>
+                  <input class="rinpsty"  type="text" id="travelAllowance" name="travelAllowance" value="$!accountManagerParameter.travelAllowance" />
+              </td>
+              <td><label for="basePay">通讯补贴:</label></td>
+              <td><input class="text"  type="text" id="phoneAllowance" name="phoneAllowance" value="$!accountManagerParameter.phoneAllowance" /></td>
+             </tr>
+             <tr>
+              <td><label for="userId">工龄补贴：</label></td>
+              <td>
+                  <input class="rinpsty"  type="text" id="ageAllowance" name="ageAllowance" value="$!accountManagerParameter.ageAllowance" />
+              </td>
+              <td><label for="basePay">学历补贴:</label></td>
+              <td><input class="text"  type="text" id="educationAllowance" name="educationAllowance" value="$!accountManagerParameter.educationAllowance" /></td>
+             </tr>
+             <tr>
+             	<td><label for="basePay">有效工作日(每月工作日或有不同):</label></td>
+              <td><input class="text"  type="text" id="deliverTime" name="deliverTime" value="" /></td>
              </tr>
           </table>
         </div>
@@ -50,32 +72,36 @@
 	#parse ("/manager/account_manager/manager_create_validation.js")
 	
 	$("#id_save_button").click(function() {
-		if(submitFlag == 1){
-			alert("请勿重复提交!")
-			return;
-		}
-		submitFlag = 1;
-		if ($($formName).valid()) {
-			var formjson = $($formName).serialize();
-   	       var url = "${modulePath}/update.json";
-			$.ajax({
-				url : url,
-				type : "get",
-				data : formjson,
-				success : function(data) {
-					if (data.success) {
-						topWin.Dialog.message("保存成功！");
-						window.location.href= contextPath+"/manager/leveladjustment/browsejnjbxc.page" ;
-					}
-					else{
-						topWin.Dialog.message(data.message);
-				    }
-					submitFlag = 0;
-				}
-			});
-				
+		if($('#deliverTime').val() == "" || $('#deliverTime').val() == null){
+			Dialog.message("月有效工作日期不能为空!");
 		}else{
-			submitFlag = 0;
+			if(submitFlag == 1){
+				alert("请勿重复提交!")
+				return;
+			}
+			submitFlag = 1;
+			if ($($formName).valid()) {
+				var formjson = $($formName).serialize();
+	   	       var url = "${modulePath}/update.json";
+				$.ajax({
+					url : url,
+					type : "get",
+					data : formjson,
+					success : function(data) {
+						if (data.success) {
+							topWin.Dialog.message("保存成功！");
+							window.location.href= contextPath+"/manager/leveladjustment/browsejnjbxc.page" ;
+						}
+						else{
+							topWin.Dialog.message(data.message);
+					    }
+						submitFlag = 0;
+					}
+				});
+					
+			}else{
+				submitFlag = 0;
+			}
 		}
     });
 	</script>

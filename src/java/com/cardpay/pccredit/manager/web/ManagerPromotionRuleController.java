@@ -5,7 +5,10 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.sf.json.JSONObject;
+
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,15 +25,18 @@ import com.cardpay.pccredit.manager.model.MangerMonthAssessment;
 import com.cardpay.pccredit.manager.model.TPerformanceParameters;
 import com.cardpay.pccredit.manager.model.TyPerformanceCenter;
 import com.cardpay.pccredit.manager.model.TyPerformanceParameters;
+import com.cardpay.pccredit.manager.model.TyTPerformanceParameters;
 import com.cardpay.pccredit.manager.service.AccountManagerParameterService;
 import com.cardpay.pccredit.manager.service.MaintenanceAccountManagerService;
 import com.cardpay.pccredit.manager.service.ManagerDownRuleService;
 import com.cardpay.pccredit.manager.service.ManagerMonthAssessmentService;
 import com.cardpay.pccredit.manager.service.ManagerPerformanceParametersService;
 import com.cardpay.pccredit.manager.service.ManagerPromotionRuleService;
+import com.cardpay.pccredit.system.model.Dict;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.web.JRadModelAndView;
+import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.modules.dictionary.DictionaryManager;
 import com.wicresoft.jrad.modules.dictionary.model.Dictionary;
 import com.wicresoft.jrad.modules.dictionary.model.DictionaryItem;
@@ -571,12 +577,11 @@ public class ManagerPromotionRuleController {
 	@RequestMapping(value = "updateJxParam.page", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.CREATE)
 	public AbstractModelAndView updateJxParam(HttpServletRequest request) {
-		List<TPerformanceParameters> parmeters = managerPerformanceParametersService.getTManagerPerformanceParamers();
+		List<TyTPerformanceParameters> parmeters = managerPerformanceParametersService.getTManagerPerformanceParamers();
 		JRadModelAndView mv = new JRadModelAndView("/manager/performanceParameters/manager_jx_param_actor", request);
 		mv.addObject("parmeters",parmeters);
 		return mv;
 	}
-	
 	
 	/**
 	 * 客户经理绩效参数配置保存
@@ -590,11 +595,40 @@ public class ManagerPromotionRuleController {
 		JRadModelAndView mv = new JRadModelAndView("/manager/performanceParameters/manager_jx_param_actor", request);
 		try {
 			managerPerformanceParametersService.updateTManagerPerformanceParamers(request);
-			List<TPerformanceParameters> parmeters = managerPerformanceParametersService.getTManagerPerformanceParamers();
+			List<TyTPerformanceParameters> parmeters = managerPerformanceParametersService.getTManagerPerformanceParamers();
 			mv.addObject("parmeters",parmeters);
 		} catch (Exception e) {
 			logger.error("执行修改客户经理绩效参数"+e.getMessage());
 		}
 		return mv;
+	}
+	
+	/**
+	 * 客户经理绩效参数配置保存
+	 * @param request
+	 * @return
+	 *//*
+	@ResponseBody
+	@RequestMapping(value = "saveJxParam.json", method = { RequestMethod.POST })
+	//@JRadOperation(JRadOperation.CHANGE)
+	public JRadReturnMap saveJxParam( HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		managerPerformanceParametersService.updateTManagerPerformanceParamers(request);
+		return returnMap;
+	}*/
+	
+	@ResponseBody
+	@RequestMapping(value = "Echange.json", method = { RequestMethod.GET })
+	//@JRadOperation(JRadOperation.CHANGE)
+	public JRadReturnMap updateBaseCustomer( HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		List<Dict>lists=managerPerformanceParametersService.findPostAllowancedict();
+		List<Dict>tslists=managerPerformanceParametersService.findTaskSuccessdict();
+		List<Dict>trlists=managerPerformanceParametersService.findToleratedict();
+		returnMap.put("values", lists);
+		returnMap.put("message", "操作成功");
+		returnMap.put("tslists", tslists);
+		returnMap.put("trlists", trlists);
+		return returnMap;
 	}
 }

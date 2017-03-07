@@ -16,10 +16,13 @@ public class SxOutputData{
 	private String totalSX;//收息总额度
 	private String jkje;//贷款额度
 	private String productName;//产品名称
+	private String  jkrq; // 借款日期
+	
 	public SxOutputData(){}
+	
 	public SxOutputData(String userId, String month, String name,
 			String displayName, String total, String countSx, String totalSX,
-			String jkje, String productName) {
+			String jkje, String productName, String jkrq) {
 		this.userId = userId;
 		this.month = month;
 		Name = name;
@@ -29,6 +32,13 @@ public class SxOutputData{
 		this.totalSX = totalSX;
 		this.jkje = jkje;
 		this.productName = productName;
+		this.jkrq = jkrq;
+	}
+	public String getJkrq() {
+		return jkrq;
+	}
+	public void setJkrq(String jkrq) {
+		this.jkrq = jkrq;
 	}
 	public String getUserId() {
 		return userId;

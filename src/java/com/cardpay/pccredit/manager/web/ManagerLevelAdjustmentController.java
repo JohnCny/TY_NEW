@@ -26,6 +26,7 @@ import com.cardpay.pccredit.manager.service.AccountManagerParameterService;
 import com.cardpay.pccredit.manager.service.ManagerBelongMapService;
 import com.cardpay.pccredit.manager.service.ManagerLevelAdjustmentService;
 import com.cardpay.pccredit.manager.service.ManagerSalaryService;
+import com.cardpay.pccredit.manager.service.TyManagerSalaryService;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
@@ -58,7 +59,7 @@ public class ManagerLevelAdjustmentController extends BaseController{
 	private AccountManagerParameterService accountManagerParameterService;
 	
 	@Autowired
-	private ManagerSalaryService managerSalaryService;
+	private TyManagerSalaryService managerSalaryService;
 	
 	@Autowired
 	private ManagerBelongMapService managerBelongMapService;
@@ -302,7 +303,9 @@ public class ManagerLevelAdjustmentController extends BaseController{
 		JRadReturnMap returnMap = new JRadReturnMap();
 		try {
 			String date = request.getParameter("date");
-			managerSalaryService.docalculateMonthlySalaryTy(date.substring(0, 4),date.substring(5, 7));
+			String managerNum=request.getParameter("managerNum");
+			//managerSalaryService.docalculateMonthlySalaryTy(date.substring(0, 4),date.substring(5, 7));
+			managerSalaryService.docalculateMonthlySalaryTy(date.substring(0, 4),date.substring(5, 7),managerNum);
 			returnMap.setSuccess(true);
 		}
 		catch (Exception e) {
@@ -409,6 +412,7 @@ public class ManagerLevelAdjustmentController extends BaseController{
 		returnMap.setSuccess(true);
 		if (returnMap.isSuccess()) {
 			try {
+				alert("success");
 			    managerSalaryService.getExportWageData(filter,response);
 				
 			}
@@ -420,6 +424,11 @@ public class ManagerLevelAdjustmentController extends BaseController{
 	}
 	
 	
+	private void alert(String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	@ResponseBody
 	@RequestMapping(value = "exportDatas.json",method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.CHANGE)

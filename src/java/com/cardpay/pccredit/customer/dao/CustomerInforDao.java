@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.cardpay.pccredit.Sx.model.SxOutputData;
 import com.cardpay.pccredit.customer.filter.CustomerInfoLszFilter;
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.customer.model.CUSTORMERINFOUPDATE;
@@ -320,6 +321,10 @@ public interface CustomerInforDao {
 	public int insertCustormerUpdate(CUSTORMERINFOUPDATE CUSTORMERINFOUPDATE);
 	public List<CUSTORMERINFOUPDATE> findCustormerUpdate(@Param("cardid") String cardid);
 	public int findCustormerUpdateCount(@Param("cardid") String cardid);
+	public void deletelastmibusidata();
+	public void deletelastsx();
+	public void insertsxOoutputDate(SxOutputData sxOutputData);
+	public List<SxOutputData> findSxListByFilter();
 
 	
 }
