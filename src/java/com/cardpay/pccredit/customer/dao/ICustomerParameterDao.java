@@ -28,6 +28,4 @@ public interface ICustomerParameterDao {
 	public List<CustomerParameter> queryByIdCard(@Param("ywbh")String ywbh);
 	//手动纸质归档
 	public void addCustomerPigeonhole(Pigeonhole pig);
-	
-
 }

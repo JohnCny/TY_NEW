@@ -89,6 +89,7 @@
 		<item name="4" title="微贷团队" />
 		<item name="5" title="风险岗" />
 		<item name="6" title="后台" />
+		<item name="7" title="副机构主管" />
 	</dictionary>
 	<dictionary name="MarketingEndResult" title="营销计划最终结果">
 		<item name="marketing" title="营销中" />

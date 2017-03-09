@@ -128,11 +128,6 @@
 		<result property="names" column="names" />
 	</resultMap>
 	
-		
-		
-
-
-
 
 
 <delete id="deleteCustormerSdwUser" parameterType="java.lang.Integer" >

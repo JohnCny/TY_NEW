@@ -26,6 +26,8 @@ import com.cardpay.pccredit.customer.service.BusinessTacklingService;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.datapri.constant.DataPriConstants;
 import com.cardpay.pccredit.jnpad.model.CustomerInfo;
+import com.cardpay.pccredit.report.dao.InputHmdDao;
+import com.cardpay.pccredit.report.model.CustomerHmd;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
 import com.cardpay.pccredit.system.model.SystemUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
@@ -51,6 +53,9 @@ public class CustomerInforInsertController extends BaseController{
 	
 	@Autowired
 	private CustomerInforService customerInforService;
+	
+	@Autowired
+	private InputHmdDao hmdDao;
 	
 	@Autowired
 	private UserLogService userLogService;
@@ -98,6 +103,23 @@ public class CustomerInforInsertController extends BaseController{
 					return returnMap;
 				}
 				filter.setCardType(customerinfoForm.getCardType());
+				//查询是否为存在于失信人名单中
+				CustomerHmd hmd = hmdDao.queryByCardId(customerinfoForm.getCardId());
+				if(hmd!=null){
+					String message = "";
+					if(hmd.getComefrom().equals("系统内部")){
+						message+="该用户存在系统内部黑名单之中，为失信人";
+					}
+					else{
+						message+="该用户存在全国黑名单之中，为失信人";
+					}
+					returnMap.put(JRadConstants.MESSAGE, message);
+					returnMap.put(JRadConstants.SUCCESS, false);
+					return returnMap;
+				}else{
+					returnMap.put(JRadConstants.SUCCESS, true);
+				}
+				
 				List<CustomerInfor> ls = customerInforService.findCustomerInforByFilter(filter).getItems();
 				if(ls != null && ls.size()>0){
 					String message = "";
@@ -116,6 +138,7 @@ public class CustomerInforInsertController extends BaseController{
 						String dateString = format.format(riskCustomers.get(0).getCreatedTime());
 						message+="此客户于"+dateString+"被"+user.getDisplayName()+"拒绝，原因为"+riskCustomers.get(0).getRefuseReason();
 					}
+					
 					returnMap.put(JRadConstants.MESSAGE, message);
 					returnMap.put(JRadConstants.SUCCESS, false);
 					return returnMap;

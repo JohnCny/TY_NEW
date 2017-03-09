@@ -358,7 +358,13 @@ public class MaintenanceService {
 					sql+="FROM TY_REPAY_LSZ o,	TY_REPAY_TKMX P ,	BASIC_CUSTOMER_INFORMATION A,	SYS_USER b,	CUSTOMER_APPLICATION_INFO c ";
 					sql+="WHERE b.ID in "+userIds+" AND A .USER_ID = b. ID AND c.customer_id = A . ID and  c.jjh=o.jjh  ";//AND zy = '批量自动扣本金'
 					sql+=" AND o.jjh = P .jjh AND P .sfjq = '0.0' ) tk GROUP BY tk.jjh,	tk.rq,tk.CHINESE_NAME,tk.DISPLAY_NAME";*/
-		String sql="select jjh,rq,customer,name  from ( select distinct  tk.jjh,SUBSTR(lsz.jzrq, 7, 9) as rq ,b.chinese_name as customer,a.display_name as name, row_number() over (partition by b.chinese_name order by lsz.jzrq desc) cn from TY_REPAY_LSZ lsz,ty_repay_tkmx tk ,ty_repay_yehz yehz,ty_customer_base base, BASIC_CUSTOMER_INFORMATION b, SYS_USER a where zy = '批量自动扣本金' and tk.sfjq= '0.0' and  to_date(tk.dqrq,'yy-mm-dd')>trunc(sysdate) and tk.jjh =lsz.jjh and yehz.jjh=tk.jjh and base.khnm=tk.khh and base.id=b.ty_customer_id and a.id=b.user_id and a.id in "+userIds+") where cn=1";	
+		String sql=" select jjh,rq,customer,name  from "
+				  +" ( select distinct  tk.jjh,SUBSTR(lsz.jzrq, 7, 9) as rq ,b.chinese_name as customer,"
+				  +" a.display_name as name, row_number() over (partition by b.chinese_name order by lsz.jzrq desc) cn "
+				  +" from TY_REPAY_LSZ lsz,ty_repay_tkmx tk ,ty_repay_yehz yehz,ty_customer_base base,"
+				  +" BASIC_CUSTOMER_INFORMATION b, SYS_USER a where zy = '批量自动扣本金' and tk.sfjq= '0.0' "
+				  +" and  to_date(tk.dqrq,'yy-mm-dd')>trunc(sysdate) and tk.jjh =lsz.jjh and yehz.jjh=tk.jjh "
+				  +" and base.khnm=tk.khh and base.id=b.ty_customer_id and a.id=b.user_id and a.id in  "+userIds+") where cn=1";	
 		List<RepayCustomerInfor> list = commonDao.queryBySql(RepayCustomerInfor.class, sql, null);
 		Calendar calendar = Calendar.getInstance();
 		String date1 = calendar.get(Calendar.DAY_OF_MONTH)+"";
@@ -375,13 +381,13 @@ public class MaintenanceService {
 				rq = rq.substring(1, 2);
 			}
 			if(date1.equals(rq)){
-				buffer.append("客户经理"+userName+"名下的"+customerName+"客户将于2日后还款，请注意提醒！</br>");
+				buffer.append("客户经理"+userName+"名下的"+customerName+"客户将于今日后还款，请注意提醒！</br>");
 			}
 			if(date2.equals(rq)){
 				buffer.append("客户经理"+userName+"名下的"+customerName+"客户将于1日后还款，请注意提醒！</br>");
 			}
 			if(date3.equals(rq)){
-				buffer.append("客户经理"+userName+"名下的"+customerName+"客户将于今日后还款，请注意提醒！</br>");
+				buffer.append("客户经理"+userName+"名下的"+customerName+"客户将于2日后还款，请注意提醒！</br>");
 			}
 		}
 		return buffer.toString();
