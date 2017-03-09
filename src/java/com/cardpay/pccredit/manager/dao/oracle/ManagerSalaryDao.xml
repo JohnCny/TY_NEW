@@ -482,6 +482,18 @@
                                   where tt.user_id = #{managerId}))
 	</select>
 	
+	<select id="findmanagernum" resultType="int">
+		    select count(*) from sys_user sysuser,
+         sys_dept_user sdu,
+         sys_department sd,
+         sys_organization so
+         where 1=1 and
+         sysuser.id=sdu.user_id and
+         sdu.dept_id=sd.id and
+         sd.org_id=so.id and
+         so.name=#{organName}
+	</select>
+	
 	<select id="findManagerSalaryCount" resultType="int">
 		SELECT count(*)
 		   FROM manager_salary salary
@@ -495,8 +507,8 @@
 	  select count(0) from customer_application_info info,
               t_app_manager_audit_log log
 	  where   info.id = log.application_id 
-	      and info.status = 'approved'
-	      and log.audit_type = '2'
+	      <!-- and info.status = 'approved'
+	      and log.audit_type = '2' -->
 	      and log .user_id_3 = #{managerId}
 	      and substr(to_char(info.created_time,'yyyyMMdd'),'0','4') = #{year}
 	      and substr(to_char(info.created_time,'yyyyMMdd'),'5','2') = #{month}
@@ -668,6 +680,24 @@
 					 order by salary.inst_code desc,salary.year desc,salary.month desc
 	</select>
 	
+	<select id="findManagerSalaryForms" resultMap="ResultMapJn"  
+	    parameterType="String">
+		<!--  com.cardpay.pccredit.manager.filter.ManagerSalaryFilter -->
+					SELECT salary.*, 
+						   parmeter.*,
+						   usr.display_name as managerName,
+						   acc.manager_type
+					  FROM manager_salary salary
+					 INNER join sys_user usr ON usr.id = salary.customer_id
+    				 left join t_jx_parameters parmeter on parmeter.customer_manager_id = salary.customer_id
+    				 inner join account_manager_parameter acc on acc.user_id = usr.id
+					 WHERE 1=1
+					 <if test="id != null and id != '' ">
+						and salary.id=#{id}
+					 </if>
+					 order by salary.inst_code desc,salary.year desc,salary.month desc
+	</select>
+	
 	
 	<select id="findSdAprovedCountByManagerId" resultType="int">
 	  select count(0) from 
@@ -737,7 +767,10 @@
 from
 (select distinct tkmx.ywbh ,yhbj.yhbj,tkmx.ffje,
  (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end ) as DELAYINTERESTDAYS,  
- (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end )as DELAYAMTDAYS
+ (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end )as DELAYAMTDAYS,
+   (select a.name from sys_organization a where id in (select t.org_id
+    from sys_department t
+    where t.id in(select tt.dept_id from sys_dept_user tt where tt.user_id =sysuser.id))) YWJG
 from 
  (   select 
               tkmx.ywbh,
@@ -774,15 +807,25 @@ from
             jh.ywbh =tkmx.ywbh||'HT' and
             basic.user_id=sysuser.id and
             yhbj.ywbh=tkmx.ywbh
-            and sysuser.id=#{managerId}
-            group by tkmx.ywbh ,yhbj.yhbj,tkmx.dqrq,tkmx.ffje) a
+             <if test="managerId != null and managerId != '' ">
+				and sysuser.id=#{managerId}
+			</if>
+            group by tkmx.ywbh ,yhbj.yhbj,tkmx.dqrq,tkmx.ffje,sysuser.id) a
             where 1=1 and
+            <if test="organName != null and organName != '' ">
+			 	 a.YWJG=#{organName}
+			</if>
             ( DELAYINTERESTDAYS<![CDATA[ >  ]]>0 or DELAYAMTDAYS<![CDATA[ >  ]]>0)
 	</select>
 	
 	<select id="findDkyesum" parameterType="String" resultType="String">
-	    select nvl(sum(a.dkye),0) from ty_mibusidata  a  
-	    where a.userid=#{managerId}
+	     select nvl(sum(a.dkye),0) from ty_mibusidata  a   where 1=1
+		  <if test="managerId != null and managerId != '' ">
+				and  a.userid = #{managerId}
+			</if>
+			<if test="organName != null and organName != '' ">
+				and a.ywjg = #{organName}
+			</if>
 	</select>
 	
 	<select id="findchildrenbymanagerid" parameterType="String" resultMap="ResultMaps">
@@ -814,5 +857,18 @@ from
            LEFT JOIN sys_user su
               ON su.id = amp.user_id
            WHERE 1=1 and  mbm.parent_id =#{childId}
+	</select>
+	
+	<select id="findrwjebyorganName" parameterType="String" resultType="String">
+	     select sum(REQLMT) from ty_mibusidata a where 1=1 
+	     <if test="year != null and year != '' ">
+			and substr(a.loandate, '0', '4') = #{year}
+		</if>
+		<if test="month != null and month != '' ">
+			and substr(a.loandate, '5', '2') = #{month}
+		</if>
+		<if test="managerId != null and managerId != '' ">
+			and  a.ywjg=#{organName}
+		</if>
 	</select>
 </mapper>

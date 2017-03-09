@@ -14,12 +14,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cardpay.pccredit.manager.constant.ManagerLevelAdjustmentConstant;
+import com.cardpay.pccredit.manager.dao.ManagerSalaryDao;
 import com.cardpay.pccredit.manager.filter.AccountManagerParameterFilter;
 import com.cardpay.pccredit.manager.filter.ManagerLevelAdjustmentFilter;
 import com.cardpay.pccredit.manager.filter.ManagerSalaryFilter;
 import com.cardpay.pccredit.manager.model.AccountManagerParameter;
 import com.cardpay.pccredit.manager.model.ManagerMonthTargetData;
 import com.cardpay.pccredit.manager.model.ManagerSalary;
+import com.cardpay.pccredit.manager.model.ManagerSalaryForm;
 import com.cardpay.pccredit.manager.model.TJxParameters;
 import com.cardpay.pccredit.manager.model.TJxSpecificParameters;
 import com.cardpay.pccredit.manager.service.AccountManagerParameterService;
@@ -60,6 +62,9 @@ public class ManagerLevelAdjustmentController extends BaseController{
 	
 	@Autowired
 	private TyManagerSalaryService managerSalaryService;
+	
+	@Autowired
+	private ManagerSalaryDao managerSalaryDao;
 	
 	@Autowired
 	private ManagerBelongMapService managerBelongMapService;
@@ -157,9 +162,9 @@ public class ManagerLevelAdjustmentController extends BaseController{
 
 		String str [] = RequestHelper.getStringValue(request, ID).split("@");
 		mv.addObject("displayName", str[1]);
-		
 		if (StringUtils.isNotEmpty(str[0])) {
 			AccountManagerParameter accountManagerParameter = accountManagerParameterService.findAccountManagerParameterById(str[0]);
+			accountManagerParameter.setManagerType(accountManagerParameterService.finduserTypebyid(accountManagerParameter.getUserId()).getUserType().toString());
 			mv.addObject("accountManagerParameter", accountManagerParameter);
 		}
 		return mv;
@@ -364,8 +369,11 @@ public class ManagerLevelAdjustmentController extends BaseController{
 		JRadModelAndView mv = new JRadModelAndView("/jxxc/manager_adjust_update", request);
 		String id = RequestHelper.getStringValue(request, ID);
 		if (StringUtils.isNotEmpty(id)) {
-			ManagerSalary salary = managerSalaryService.findManagerSalaryById(id);
-			mv.addObject("salary", salary);
+			
+			
+			List<ManagerSalaryForm> salaryList = managerSalaryDao.findManagerSalaryForms(id);
+			//ManagerSalary salary = managerSalaryService.findManagerSalaryById(id);
+			mv.addObject("salaryList", salaryList);
 			mv.addObject("id", id);
 		}
 		return mv;

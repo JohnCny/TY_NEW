@@ -48,9 +48,9 @@
               <col width="6%" />
               
               <col width="4%" />
-              <col width="4%" />
               <col width="6%" />
               <col width="4%" />
+              <col width="6%" />
               <col width="4%" />
               <col width="4%" />
               <col width="6%" />
@@ -67,10 +67,11 @@
               <th nowrap="nowrap"><font color="red">当月总绩效</font></th>
               
               <th nowrap="nowrap">当月放款</th>
+              <th nowrap="nowrap">当月协办放款</th>
               <th nowrap="nowrap">当月管户</th>
               <th nowrap="nowrap">当月承担审批</th>
               <th nowrap="nowrap">等级岗位</th>
-              <th nowrap="nowrap">辅助调查</th>
+             <!--  <th nowrap="nowrap">辅助调查</th> -->
               <th nowrap="nowrap">任务完成度</th>
               <th nowrap="nowrap">不良贷款被扣掉的</th>
               <th nowrap="nowrap">主管加成绩效</th>
@@ -89,9 +90,9 @@
               <col width="6%" />
               
               <col width="4%" />
-              <col width="4%" />
               <col width="6%" />
               <col width="4%" />
+              <col width="6%" />
               <col width="4%" />
               <col width="4%" />
               <col width="6%" />
@@ -104,14 +105,15 @@
               <td nowrap="nowrap">$!managerSalary.month</td>
               <td nowrap="nowrap">$!managerSalary.instCode</td>
               <td nowrap="nowrap">$!managerSalary.managerName</td>
-              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.basePay)</td>
+              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.zhbasepay)</td>
               <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.MonthPerformance)</td>
               
-              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.dyffdkjx)</td>
+              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.zb)</td>
+              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.xb)</td>
               <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.gh)</td>
               <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.sp)</td>
               <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.dj)</td>
-              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.fd)</td>
+             <!--  <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.xb)</td> -->
               <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.rw)</td>
                <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.bl)</td>
               <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.zg)</td>
