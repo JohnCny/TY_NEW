@@ -249,6 +249,35 @@
 	
 	<!-- 后台 -->
 	
+	<select id="findIntoPiecesListes" resultMap="SHILIMap">
+			  select
+			        distinct
+			        sysuser.id as id,
+			        tkmx.ywbh ,
+			        sysuser.display_name as display_name,
+			        b.khmc as chinese_name,
+			        b.zjhm as card_id,
+			        protype.product_name,
+			        tkmx.ffje as actual_quote
+			       from
+			              ty_repay_tkmx tkmx,
+			              ty_customer_base b,
+			              ty_customer_rygl rygl,
+			             ty_product_type protype,
+			              sys_user sysuser,
+			             ty_kdk_jh jh,
+			              ty_repay_yehz yehz,
+			              ty_repay_lsz lsz
+			              where b.khjl=rygl.dm and
+			              rygl.ddrq=sysuser.external_id and
+			              b.khnm=tkmx.khh and
+			              jh.ywbh=tkmx.ywbh||'HT' and
+			              yehz.jjh=tkmx.jjh and
+			              tkmx.jjh =lsz.jjh and
+			              protype.product_code=tkmx.cpmc
+			              and tkmx.ywbh not in (select ywbh from CUSTOMER_PIGEONHOLE)
+	</select>
+	
 	<select id="findIntoPiecesLists" resultMap="SHILIMap">
 		  SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_

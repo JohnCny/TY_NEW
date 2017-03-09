@@ -381,11 +381,12 @@
 		    	var decisionRefusereason=$("#decisionRefusereason").val();
 		    	var customerId=$("#customerId").val();
 		    	var productId=$("#productId").val();
+		    	var custManagerId=$("#custManagerId").val();
 		    	  $.ajax({
 						url : "${contextPath}/jnpad/CustormerSdwUserPc/insertsdjy.json?customerId="+customerId
 						+"&&productId="+productId+"&&decisionRate="+decisionRate+"&&decisionAmount="+decisionAmount
 						+"&&qx="+qx+"&&id="+id+"&&SDWUSER1YJ="+SDWUSER1YJ+"&&decisionRefusereason="+decisionRefusereason
-						+"&&status="+status,
+						+"&&status="+status+"&&custManagerId="+custManagerId,
 						dataType : 'json',
 						type : "get",
 						success : function(data) {

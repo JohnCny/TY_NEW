@@ -987,18 +987,21 @@
             (case 
 	        when cai.status ='audit'and tlog.examine_amount is null and sdh.sdtime is null then
 	          '已申请'
-	         when cai.status ='refuse' then
+	         when cai.status ='refuse' and cai.id not in (select capid from CUSTOMER_APPLICATION_SDH) then
 	          '被拒绝'
-	         when cai.status ='returnedToFirst' then
+	         when cai.status ='returnedToFirst' and cai.id not in (select capid from CUSTOMER_APPLICATION_SDH) then
 	          '退回至客户经理'
 	         when cai.status ='end' then
 	          '放款成功'
 	         when cai.id  in (select application_id from T_APP_MANAGER_AUDIT_LOG) 
-             and cai.status ='audit' and sdh.sdtime is null then
+             and cai.status ='audit' and sdh.sdtime is null and cai.id not in (select capid from customer_sp) then
              '进件初审'
-	         when cai.status ='approved' then
-	          '审贷决议' 
-	         when cai.id not in (select capid from CUSTOMER_APPLICATION_SDH) then
+	         when cai.id not in (select capid from CUSTOMER_APPLICATION_SDH) 
+           	 and  cai.id in (select capid from customer_sp) then
+             '审贷决议'
+             when cai.id in (select capid from CUSTOMER_APPLICATION_SDH) then
+             '审批结束' 
+             else
 	          ''  end) as status,
              cai.id
               from customer_application_info cai  
@@ -1091,20 +1094,23 @@
            when cai.status ='approved' then
            sdh.lv else '' end) as examine_lv,
              (case 
-           when cai.status ='audit'and tlog.examine_amount is null and sdh.sdtime is null then
+           when cai.status ='audit' and tlog.examine_amount is null and sdh.sdtime is null then
             '已申请'
-           when cai.status ='refuse' then
+           when cai.status ='refuse' and cai.id not in (select capid from CUSTOMER_APPLICATION_SDH) then
             '被拒绝'
-           when cai.status ='returnedToFirst' then
+           when cai.status ='returnedToFirst' and cai.id not in (select capid from CUSTOMER_APPLICATION_SDH) then
             '退回至客户经理'
            when cai.status ='end' then
             '放款成功'
-           when cai.id  in (select application_id from T_APP_MANAGER_AUDIT_LOG) 
-            and sdh.sdtime is null then
+           when cai.id  in (select application_id from T_APP_MANAGER_AUDIT_LOG) and cai.status ='audit'
+            and sdh.sdtime is null and cai.id not in (select capid from customer_sp) then
             '进件初审'
-           when cai.status ='approved' then
-            '审贷决议' 
-           when cai.id not in (select capid from CUSTOMER_APPLICATION_SDH) then
+           when cai.id not in (select capid from CUSTOMER_APPLICATION_SDH) 
+           and  cai.id in (select capid from customer_sp) then
+            '审贷决议'
+           when cai.id in (select capid from CUSTOMER_APPLICATION_SDH) then
+            '审批结束' 
+            else
             ''  end) as status
              from customer_application_info cai  
                   left join customer_application_process aa on cai.id=aa.application_id
@@ -1171,18 +1177,21 @@
              (case 
            when cai.status ='audit'and tlog.examine_amount is null and sdh.sdtime is null then
             '已申请'
-           when cai.status ='refuse' then
+           when cai.status ='refuse' and  cai.id not in (select capid from CUSTOMER_APPLICATION_SDH) then
             '被拒绝'
-           when cai.status ='returnedToFirst' then
+           when cai.status ='returnedToFirst' and cai.id not in (select capid from CUSTOMER_APPLICATION_SDH) then
             '退回至客户经理'
            when cai.status ='end' then
             '放款成功'
-           when cai.id  in (select application_id from T_APP_MANAGER_AUDIT_LOG) 
-            and sdh.sdtime is null then
+           when cai.id  in (select application_id from T_APP_MANAGER_AUDIT_LOG) and cai.status ='audit'
+           and sdh.sdtime is null and cai.id not in (select capid from customer_sp)then
             '进件初审'
-           when cai.status ='approved' then
-            '审贷决议' 
-           when cai.id not in (select capid from CUSTOMER_APPLICATION_SDH) then
+           when cai.id not in (select capid from CUSTOMER_APPLICATION_SDH) 
+           and  cai.id in (select capid from customer_sp) then
+            '审贷决议'
+           when cai.id in (select capid from CUSTOMER_APPLICATION_SDH) then
+            '审批结束' 
+            else
             ''  end) as status, bai.CARD_ID
              from customer_application_info cai  
                   left join customer_application_process aa on cai.id=aa.application_id

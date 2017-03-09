@@ -8,9 +8,9 @@
 		    <menu id="030003" name="intopiecesps " title="进件初审" url="/intopieces/intopiecesdecision/csBrowse.page" img="" operations="create|change|display|browse"/>
 			<menu id="030004" name="intopiecesdecision " title="审贷决议" url="/intopieces/intopiecesdecision/browse.page" img="" operations="create|change|display|browse"/>
 			<menu id="030005" name="intopiecesdecisions " title="最终审贷" url="/intopieces/intopiecesdecision/zzbrowse.page" img="" operations="create|change|display|browse"/>
-			<menu id="030006" name="intopiecesdecisionbz" title="小微负责人审批" url="/intopieces/intopiecesdecision/bzBrowse.page" img="" operations="create|change|display|browse"/>
+			<!-- <menu id="030006" name="intopiecesdecisionbz" title="小微负责人审批" url="/intopieces/intopiecesdecision/bzBrowse.page" img="" operations="create|change|display|browse"/>
 			<menu id="030007" name="intopiecesdecisionzj" title="零售业务部负责人审批" url="/intopieces/intopiecesdecision/zjBrowse.page" img="" operations="create|change|display|browse"/>
-			<menu id="030008" name="intopiecesdecisionhz" title="行长审批" url="/intopieces/intopiecesdecision/hzBrowse.page" img="" operations="create|change|display|browse"/>
+			<menu id="030008" name="intopiecesdecisionhz" title="行长审批" url="/intopieces/intopiecesdecision/hzBrowse.page" img="" operations="create|change|display|browse"/> -->
 		</menu>
 		
 		<menu id="040000" name="customer" title="客户管理" operations="">
@@ -38,7 +38,7 @@
  			<menu id="070006" name="performmanceinput" title="业绩进度录入" url="/manager/performmance/insert.page" img="" operations="checked|display|browse"/>		    
  			<menu id="070007" name="performmancebrowse" title="业绩进度查询" url="/manager/performmance/browse.page" img="" operations="checked|display|browse"/>
  			<menu id="070008" name="trainmessage" title="管辖客户管理" url="/manager/khgl/browse.page" img="" operations="checked|display|browse"/>
- 			<menu id="070009" name="model" title="四维授信评估模型" url="/manager/khgl/dimensionsCreditModel.page" img="" operations="checked|display|browse"/>		    
+ 			<menu id="070009" name="model" title="四维授信评估模型" url="/manager/khgl/dimensionsCreditModel.page" img="" operations="checked|display|browse"/>		     
 			<menu id="070010" name="model" title="绩效查询" url="/manager/jxgl/browse.page" img="" operations="checked|display|browse"/>
 		</menu>
 		<menu id="080000" name="riskcontrol" title="综合风控管理" operations=""> 
