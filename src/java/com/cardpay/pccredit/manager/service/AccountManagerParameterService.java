@@ -23,6 +23,7 @@ import com.cardpay.pccredit.manager.model.BatchTask;
 import com.cardpay.pccredit.manager.model.TJxParameters;
 import com.cardpay.pccredit.manager.model.TJxSpecificParameters;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
+import com.cardpay.pccredit.system.model.SystemUser;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.model.QueryResult;
@@ -474,30 +475,124 @@ public class AccountManagerParameterService {
 		String AGE_ALLOWANCE=accountManagerParameter.getAgeAllowance();
 		String EDUCATION_ALLOWANCE=accountManagerParameter.getEducationAllowance();
 		String deliverTime=accountManagerParameter.getDeliverTime();
-		if(FOOD_SUBSIDY!=null&&FOOD_SUBSIDY!=""){
-			BigDecimal FOOD_SUBSIDYs=new BigDecimal(FOOD_SUBSIDY).multiply(new BigDecimal(deliverTime));
-			accountManagerParameter.setFoodSubsidy(FOOD_SUBSIDYs.toString());
-		}
-		if(TRAVEL_ALLOWANCE!=null && TRAVEL_ALLOWANCE!=""){
-			accountManagerParameter.setTravelAllowance(TRAVEL_ALLOWANCE);
-		}
-		if(PHONE_ALLOWANCE!=null && PHONE_ALLOWANCE!=""){
-			accountManagerParameter.setPhoneAllowance(PHONE_ALLOWANCE);
-		}
-		if(AGE_ALLOWANCE!=null && AGE_ALLOWANCE!=""){
-			BigDecimal AGE_ALLOWANCEs=new BigDecimal(AGE_ALLOWANCE).divide(BigDecimal.valueOf(12),2,BigDecimal.ROUND_HALF_UP);
-			accountManagerParameter.setAgeAllowance(AGE_ALLOWANCEs.toString());
-		}
-		if(EDUCATION_ALLOWANCE!=null&& EDUCATION_ALLOWANCE!=""){
-			accountManagerParameter.setEducationAllowance(EDUCATION_ALLOWANCE);
+		String managerType=accountManagerParameter.getManagerType();
+		
+		if(managerType.equals("1")){
+			if(FOOD_SUBSIDY!=null&&FOOD_SUBSIDY!=""){
+				BigDecimal FOOD_SUBSIDYs=new BigDecimal(FOOD_SUBSIDY).multiply(new BigDecimal(deliverTime));
+				accountManagerParameter.setFoodSubsidy(FOOD_SUBSIDYs.toString());
+			}
+			if(TRAVEL_ALLOWANCE!=null && TRAVEL_ALLOWANCE!=""){
+				accountManagerParameter.setTravelAllowance(TRAVEL_ALLOWANCE);
+			}
+			if(PHONE_ALLOWANCE!=null && PHONE_ALLOWANCE!=""){
+				accountManagerParameter.setPhoneAllowance(PHONE_ALLOWANCE);
+			}
+			if(AGE_ALLOWANCE!=null && AGE_ALLOWANCE!=""){
+				BigDecimal AGE_ALLOWANCEs=new BigDecimal(AGE_ALLOWANCE).divide(BigDecimal.valueOf(12),2,BigDecimal.ROUND_HALF_UP);
+				accountManagerParameter.setAgeAllowance(AGE_ALLOWANCEs.toString());
+			}
+			if(EDUCATION_ALLOWANCE!=null&& EDUCATION_ALLOWANCE!=""){
+				accountManagerParameter.setEducationAllowance(EDUCATION_ALLOWANCE);
+			}
+			
+			if(basePay !=null && basePay !=""){
+				//Double basePayDouble = Double.parseDouble(basePay) * 100;
+				//String basePayValue = basePayDouble.toString();
+				accountManagerParameter.setBasePay(basePay);
+			   }
+			}
+		if(managerType.equals("2")){
+			if(FOOD_SUBSIDY!=null&&FOOD_SUBSIDY!=""){
+				BigDecimal FOOD_SUBSIDYs=new BigDecimal(FOOD_SUBSIDY).multiply(new BigDecimal(deliverTime)).multiply(BigDecimal.valueOf(1.7));
+				accountManagerParameter.setFoodSubsidy(FOOD_SUBSIDYs.toString());
+			}
+			if(TRAVEL_ALLOWANCE!=null && TRAVEL_ALLOWANCE!=""){
+				BigDecimal TRAVEL_ALLOWANCEs=new BigDecimal(TRAVEL_ALLOWANCE).multiply(BigDecimal.valueOf(1.7));
+				accountManagerParameter.setTravelAllowance(TRAVEL_ALLOWANCEs.toString());
+			}
+			if(PHONE_ALLOWANCE!=null && PHONE_ALLOWANCE!=""){
+				BigDecimal PHONE_ALLOWANCEs=new BigDecimal(PHONE_ALLOWANCE).multiply(BigDecimal.valueOf(1.7));
+				accountManagerParameter.setPhoneAllowance(PHONE_ALLOWANCEs.toString());
+			}
+			if(AGE_ALLOWANCE!=null && AGE_ALLOWANCE!=""){
+				BigDecimal AGE_ALLOWANCEs=new BigDecimal(AGE_ALLOWANCE).divide(BigDecimal.valueOf(12),2,BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(1.7));
+				accountManagerParameter.setAgeAllowance(AGE_ALLOWANCEs.toString());
+			}
+			if(EDUCATION_ALLOWANCE!=null&& EDUCATION_ALLOWANCE!=""){
+				BigDecimal EDUCATION_ALLOWANCEs=new BigDecimal(EDUCATION_ALLOWANCE).multiply(BigDecimal.valueOf(1.7));
+				accountManagerParameter.setEducationAllowance(EDUCATION_ALLOWANCEs.toString());
+			}
+			
+			if(basePay !=null && basePay !=""){
+				//Double basePayDouble = Double.parseDouble(basePay) * 100;
+				//String basePayValue = basePayDouble.toString();
+				BigDecimal basePays=new BigDecimal(basePay).multiply(BigDecimal.valueOf(1.7));
+				accountManagerParameter.setBasePay(basePays.toString());
+			   }
 		}
 		
-		if(basePay !=null && basePay !=""){
-			//Double basePayDouble = Double.parseDouble(basePay) * 100;
-			//String basePayValue = basePayDouble.toString();
-			accountManagerParameter.setBasePay(basePay);
-		   }
+		if(managerType.equals("3")){
+			if(FOOD_SUBSIDY!=null&&FOOD_SUBSIDY!=""){
+				BigDecimal FOOD_SUBSIDYs=new BigDecimal(FOOD_SUBSIDY).multiply(new BigDecimal(deliverTime)).multiply(BigDecimal.valueOf(1.4));
+				accountManagerParameter.setFoodSubsidy(FOOD_SUBSIDYs.toString());
+			}
+			if(TRAVEL_ALLOWANCE!=null && TRAVEL_ALLOWANCE!=""){
+				BigDecimal TRAVEL_ALLOWANCEs=new BigDecimal(TRAVEL_ALLOWANCE).multiply(BigDecimal.valueOf(1.4));
+				accountManagerParameter.setTravelAllowance(TRAVEL_ALLOWANCEs.toString());
+			}
+			if(PHONE_ALLOWANCE!=null && PHONE_ALLOWANCE!=""){
+				BigDecimal PHONE_ALLOWANCEs=new BigDecimal(PHONE_ALLOWANCE).multiply(BigDecimal.valueOf(1.4));
+				accountManagerParameter.setPhoneAllowance(PHONE_ALLOWANCEs.toString());
+			}
+			if(AGE_ALLOWANCE!=null && AGE_ALLOWANCE!=""){
+				BigDecimal AGE_ALLOWANCEs=new BigDecimal(AGE_ALLOWANCE).divide(BigDecimal.valueOf(12),2,BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(1.4));
+				accountManagerParameter.setAgeAllowance(AGE_ALLOWANCEs.toString());
+			}
+			if(EDUCATION_ALLOWANCE!=null&& EDUCATION_ALLOWANCE!=""){
+				BigDecimal EDUCATION_ALLOWANCEs=new BigDecimal(EDUCATION_ALLOWANCE).multiply(BigDecimal.valueOf(1.4));
+				accountManagerParameter.setEducationAllowance(EDUCATION_ALLOWANCEs.toString());
+			}
+			
+			if(basePay !=null && basePay !=""){
+				//Double basePayDouble = Double.parseDouble(basePay) * 100;
+				//String basePayValue = basePayDouble.toString();
+				BigDecimal basePays=new BigDecimal(basePay).multiply(BigDecimal.valueOf(1.4));
+				accountManagerParameter.setBasePay(basePays.toString());
+			   }
 		}
+		
+		if(managerType.equals("7")){
+			if(FOOD_SUBSIDY!=null&&FOOD_SUBSIDY!=""){
+				BigDecimal FOOD_SUBSIDYs=new BigDecimal(FOOD_SUBSIDY).multiply(new BigDecimal(deliverTime)).multiply(BigDecimal.valueOf(1.6));
+				accountManagerParameter.setFoodSubsidy(FOOD_SUBSIDYs.toString());
+			}
+			if(TRAVEL_ALLOWANCE!=null && TRAVEL_ALLOWANCE!=""){
+				BigDecimal TRAVEL_ALLOWANCEs=new BigDecimal(TRAVEL_ALLOWANCE).multiply(BigDecimal.valueOf(1.6));
+				accountManagerParameter.setTravelAllowance(TRAVEL_ALLOWANCEs.toString());
+			}
+			if(PHONE_ALLOWANCE!=null && PHONE_ALLOWANCE!=""){
+				BigDecimal PHONE_ALLOWANCEs=new BigDecimal(PHONE_ALLOWANCE).multiply(BigDecimal.valueOf(1.6));
+				accountManagerParameter.setPhoneAllowance(PHONE_ALLOWANCEs.toString());
+			}
+			if(AGE_ALLOWANCE!=null && AGE_ALLOWANCE!=""){
+				BigDecimal AGE_ALLOWANCEs=new BigDecimal(AGE_ALLOWANCE).divide(BigDecimal.valueOf(12),2,BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(1.6));
+				accountManagerParameter.setAgeAllowance(AGE_ALLOWANCEs.toString());
+			}
+			if(EDUCATION_ALLOWANCE!=null&& EDUCATION_ALLOWANCE!=""){
+				BigDecimal EDUCATION_ALLOWANCEs=new BigDecimal(EDUCATION_ALLOWANCE).multiply(BigDecimal.valueOf(1.6));
+				accountManagerParameter.setEducationAllowance(EDUCATION_ALLOWANCEs.toString());
+			}
+			
+			if(basePay !=null && basePay !=""){
+				//Double basePayDouble = Double.parseDouble(basePay) * 100;
+				//String basePayValue = basePayDouble.toString();
+				BigDecimal basePays=new BigDecimal(basePay).multiply(BigDecimal.valueOf(1.6));
+				accountManagerParameter.setBasePay(basePays.toString());
+			   }
+		}
+		}
+		
 		 accountManagerParameterDao.updateObject(accountManagerParameter);
 			//commonDao.updateObject(accountManagerParameter);
 	}
@@ -627,5 +722,9 @@ public class AccountManagerParameterService {
 		return accountManagerParameterDao.findAccountManagerParametersByAllCount(filter);
 	}
 	//---------------------------------------------------------济南绩效 end------------------------------------------------//
+	public SystemUser finduserTypebyid(String userId) {
+		// TODO Auto-generated method stub
+		return commonDao.findObjectById(SystemUser.class, userId);
+	}
 	
 }

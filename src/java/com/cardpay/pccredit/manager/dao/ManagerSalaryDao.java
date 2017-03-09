@@ -145,12 +145,19 @@ public interface ManagerSalaryDao {
 		
 		public int insertjxs(TJxParameters jxParameters);
 		
-		public String findblsum(@Param("managerId")String managerId);
+		public String findblsum(@Param("managerId")String managerId, @Param("organName")String organName);
 		
-		public String findDkyesum(@Param("managerId")String managerId);
+		public String findDkyesum(@Param("managerId")String managerId, @Param("organName")String organName);
 		
 		public List<ManagerBelongMapForms> findchildrenbymanagerid(@Param("managerId")String managerId);
 		
 		public int findchildrenbyparentid(@Param("childId")String childId);
 		public void deleteSalarybyuserid(@Param("managerId")String managerId);
+		public List<ManagerSalaryForm> findManagerSalaryForms(@Param("id")String id);
+		
+		public int findmanagernum(@Param("organName")String organName);
+		
+		public String findrwjebyorganName(@Param("organName")String organName,
+				@Param("year")String year,
+				@Param("month")String month);
 }

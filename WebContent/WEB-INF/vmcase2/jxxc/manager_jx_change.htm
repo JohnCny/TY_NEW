@@ -26,22 +26,10 @@
               <td><input class="rinpsty"  type="text" id="basePay" name="basePay" value="$!accountManagerParameter.basePay" /></td>
              </tr>
              <tr>
-              <td><label for="userId">客户经理类型：</label></td>
-              <td>
-                  <select  name="managerType"  >
-                  	#dict("MANAGER_TYPE",$!accountManagerParameter.managerType)
-                  </select>
-              </td>
-              <td><label for="basePay">餐饮补贴:</label></td>
-              <td><input class="rinpsty"  type="text" id="foodSubsidy" name="foodSubsidy" value="$!accountManagerParameter.foodSubsidy" /></td>
-             </tr>
-             <tr>
-              <td><label for="userId">交通补贴：</label></td>
-              <td>
-                  <input class="rinpsty"  type="text" id="travelAllowance" name="travelAllowance" value="$!accountManagerParameter.travelAllowance" />
-              </td>
               <td><label for="basePay">通讯补贴:</label></td>
               <td><input class="text"  type="text" id="phoneAllowance" name="phoneAllowance" value="$!accountManagerParameter.phoneAllowance" /></td>
+              <td><label for="basePay">餐饮补贴:</label></td>
+              <td><input class="rinpsty"  type="text" id="foodSubsidy" name="foodSubsidy" value="$!accountManagerParameter.foodSubsidy" /></td>
              </tr>
              <tr>
               <td><label for="userId">工龄补贴：</label></td>
@@ -52,9 +40,20 @@
               <td><input class="text"  type="text" id="educationAllowance" name="educationAllowance" value="$!accountManagerParameter.educationAllowance" /></td>
              </tr>
              <tr>
+              <td><label for="userId">交通补贴：</label></td>
+              <td>
+                  <input class="rinpsty"  type="text" id="travelAllowance" name="travelAllowance" value="$!accountManagerParameter.travelAllowance" />
+              </td>
              	<td><label for="basePay">有效工作日(每月工作日或有不同):</label></td>
               <td><input class="text"  type="text" id="deliverTime" name="deliverTime" value="" /></td>
+             <!--  <td><label for="userId">客户经理类型：</label></td>
+              <td>
+                  <select  name="managerType"  >
+                  	#dict("MANAGER_TYPE",$!accountManagerParameter.managerType)
+                  </select>
+              </td> -->
              </tr>
+             
           </table>
         </div>
          <div class="submit">

@@ -578,12 +578,12 @@ public class TyManagerSalaryService {
 						"select * from account_manager_parameter where manager_type in ('1','2')",
 						null);
 
-		// 查询风险岗list
+		/*// 查询风险岗list
 		List<AccountManagerParameter> alist = commonDao
 				.queryBySql(
 						AccountManagerParameter.class,
 						"select * from account_manager_parameter where manager_type in ('3')",
-						null);
+						null);*/
 
 		// 生成 T_JX_PARAMETERS表数据
 		for (AccountManagerParameter accountManagerParameter : list) {
@@ -595,7 +595,10 @@ public class TyManagerSalaryService {
 			generateJxSpecificParameters(accountManagerParameter.getUserId(),year, month);
 		}*/
 
-		BigDecimal zhMonthPerformance=null;
+		BigDecimal zhMonthPerformance=BigDecimal.valueOf(0); //各客户经理总绩效用于算后台平均绩效初始值为0
+		BigDecimal MonthPerformance1=BigDecimal.valueOf(0); //一区客户经理总绩效  //用于计算各区域经理绩效初始值为0
+		BigDecimal MonthPerformance2=BigDecimal.valueOf(0);	//二区客户经理总绩效初始值为0
+		BigDecimal MonthPerformance3=BigDecimal.valueOf(0);  //三区客户经理总绩效初始值为0
 		// 具体计算行编以及外聘客户经理的当月工资
 		for (AccountManagerParameter accountManagerParameter : list) {
 			if(accountManagerParameter.getManagerType().equals("1")){
@@ -603,7 +606,18 @@ public class TyManagerSalaryService {
 					accountManagerParameter.getUserId(),
 					accountManagerParameter.getBasePay(),
 					accountManagerParameter.getManagerType());
-			zhMonthPerformance=new BigDecimal(dcsmap.get("MonthPerformance").toString());
+			if(dcsmap.get("organName").equals("一区")){
+				MonthPerformance1=new BigDecimal(dcsmap.get("MonthPerformance").toString())
+					.add(MonthPerformance1);
+			}
+			if(dcsmap.get("organName").equals("二区")){
+				MonthPerformance2=new BigDecimal(dcsmap.get("MonthPerformance").toString())
+					.add(MonthPerformance2);
+			}if(dcsmap.get("organName").equals("三区")){
+				MonthPerformance3=new BigDecimal(dcsmap.get("MonthPerformance").toString())
+				.add(MonthPerformance3);
+			}
+			zhMonthPerformance=new BigDecimal(dcsmap.get("MonthPerformance").toString()).add(zhMonthPerformance);
 			System.out.println("create success!");
 			}
 		}
@@ -618,14 +632,17 @@ public class TyManagerSalaryService {
 			}
 		}
 				
-		/*// 具体计算管理层人员的当月工资
-		for (AccountManagerParameter accountManagerParameter : alist) {
-			if(accountManagerParameter.getManagerType()=="2"||accountManagerParameter.getManagerType()=="3"){ // 部门主管
+		// 具体计算管理层人员的当月工资
+		for (AccountManagerParameter accountManagerParameter : list) {
+			if(accountManagerParameter.getManagerType()=="2"||			// 部门主管
+					accountManagerParameter.getManagerType()=="3"||		//机构主管
+					accountManagerParameter.getManagerType()=="7"){ 	//副机构主管
 			doManagermentSalary(year, month, accountManagerParameter.getUserId(),
 					accountManagerParameter.getBasePay(),
-					accountManagerParameter.getManagerType());
+					accountManagerParameter.getManagerType(),
+					zhMonthPerformance,MonthPerformance1,MonthPerformance2,MonthPerformance3);
 			}
-		}*/
+		}
 	}
 	
 	/**
@@ -635,10 +652,14 @@ public class TyManagerSalaryService {
 	 * @param userId 客户经理id
 	 * @param basePay 基本工资
 	 * @param managerType 客户经理类型
+	 * @param monthPerformance3  三区客户经理 总绩效
+	 * @param monthPerformance2  二区客户经理总绩效
+	 * @param monthPerformance1  一区客户经理总绩效
+	 * @param zhMonthPerformance 所有客户经理总绩效
 	 * @return 
 	 */
 	private void doManagermentSalary(String year, String month, String userId,
-			String basePay, String managerType) {
+			String basePay, String managerType, BigDecimal zhMonthPerformance, BigDecimal monthPerformance1, BigDecimal monthPerformance2, BigDecimal monthPerformance3) {
 		// TODO Auto-generated method stub
 		//查询客户所属机构
 		String organName = managerSalaryDao.getOrganName(userId);
@@ -646,7 +667,106 @@ public class TyManagerSalaryService {
 		//1.计算基本工资
 		Map<String, Object> basemap = managerBasePay(year,month,userId);
 		
+		if(managerType.equals("2")){   //辖区域客户经理平均绩效*岗位系数+所辖区域任务完成度绩效-所辖区域不良贷款超过容忍度的绩效处罚
+			int managernum=managerSalaryDao.findmanagernum(organName);
+			if(organName.equals("一区")){
+				//辖区域客户经理平均绩效*岗位系数
+				BigDecimal departmanagersjx=monthPerformance1.divide(BigDecimal.valueOf(managernum),2, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(2.5));
+				//所辖区域任务完成度绩效
+			 	BigDecimal rw=findrw(managernum,organName,year,month);
+				//所辖区域不良贷款超过容忍度的绩效处罚
+			 	BigDecimal G=findbl(organName); //扣款比率
+			 	BigDecimal blje=departmanagersjx.add(rw).multiply(G);
+			 	
+			 	zhMonthPerformance=new BigDecimal(basemap.get("zhbasepay").toString()).add(departmanagersjx)
+			 			.add(rw).subtract(blje);
+			 	
+			 	BigDecimal zhMonthPerformance1=new BigDecimal(basemap.get("zhbasepay").toString()).add(departmanagersjx)
+			 			.add(rw).multiply(BigDecimal.valueOf(1).subtract(G));
+			 // 保存当月工资单
+				ManagerSalary salary = new ManagerSalary();
+				salary.setYear(year);
+				salary.setMonth(month);
+				salary.setInstCode(organName);//所属机构
+				salary.setCustomerId(userId);//客户经理
+				salary.setBasePay(basePay);//固定工资
+				salary.setZhbasepay(basemap.get("zhbasepay").toString());
+				salary.setMonthPerformance(zhMonthPerformance.toString());
+				managerSalaryDao.deleteSalarybyuserid(userId);
+				commonDao.insertObject(salary);
+			 	
+			}
+		}
+		if(managerType.equals("3")){
+					
+		}
+		if(managerType.equals("7")){
+			
+		}
 		
+		
+	}
+
+	private BigDecimal findbl(String organName) {
+		// TODO Auto-generated method stub
+		BigDecimal G=new BigDecimal(0);
+	 	String managerId=null;
+		BigDecimal bl=new BigDecimal(findblsum(managerId,organName));
+		BigDecimal Dkye=new BigDecimal(findDkyesum(managerId,organName));
+		BigDecimal lv=bl.divide(Dkye,2, BigDecimal.ROUND_HALF_UP);
+		if(lv.compareTo(BigDecimal.valueOf(0.01))==-1||lv.compareTo(BigDecimal.valueOf(0.01))==0){ //小于或者d等于0.01的 
+			G=BigDecimal.valueOf(0);
+		}
+		if(lv.compareTo(BigDecimal.valueOf(0.01))==1){ //大于0.01的 
+			if(lv.compareTo(BigDecimal.valueOf(0.015))==0||lv.compareTo(BigDecimal.valueOf(0.015))==-1){ //小于或者等于0.015的
+				G=BigDecimal.valueOf(0.3);
+			}
+		}
+		if(lv.compareTo(BigDecimal.valueOf(0.015))==1){ //大于0.015的 
+			if(lv.compareTo(BigDecimal.valueOf(0.02))==0||lv.compareTo(BigDecimal.valueOf(0.02))==-1){ //小于或者等于0.02的
+				G=BigDecimal.valueOf(0.5);
+			}
+		}
+		if(lv.compareTo(BigDecimal.valueOf(0.02))==1){ //大于0.02的
+			G=BigDecimal.valueOf(1);
+		}
+		return G;
+	}
+
+	private BigDecimal findrw(int managernum, String organName, String year, String month) {
+		// TODO Auto-generated method stub
+		BigDecimal a=new BigDecimal(0);
+		String rwlists=managerSalaryDao.findrwjebyorganName(organName,year,month);
+		BigDecimal reqlmtsum=new BigDecimal(rwlists); //区域内总贷款
+		BigDecimal zrw=BigDecimal.valueOf(100).multiply(BigDecimal.valueOf(managernum));//区域内总任务
+		BigDecimal rwwcl=reqlmtsum.divide(zrw,2, BigDecimal.ROUND_HALF_UP);
+		if(rwwcl.compareTo(BigDecimal.valueOf(0.6))==-1){ //小于0.6
+			a=BigDecimal.valueOf(0);
+		}
+		if(rwwcl.compareTo(BigDecimal.valueOf(0.6))==0||rwwcl.compareTo(BigDecimal.valueOf(0.6))==1){ //大于或等于0.6
+			if(rwwcl.compareTo(BigDecimal.valueOf(0.8))==-1){ //小于 0.8
+				a=BigDecimal.valueOf(1000);
+			}
+		}
+		if(rwwcl.compareTo(BigDecimal.valueOf(0.8))==0||rwwcl.compareTo(BigDecimal.valueOf(0.8))==1){ //大于或等于0.8
+			if(rwwcl.compareTo(BigDecimal.valueOf(1))==-1){ //小于 1
+				a=BigDecimal.valueOf(2000);
+			}
+		}
+		if(rwwcl.compareTo(BigDecimal.valueOf(1))==0||rwwcl.compareTo(BigDecimal.valueOf(1))==1){ //大于或等于1
+			if(rwwcl.compareTo(BigDecimal.valueOf(1.1))==-1){ //小于 1.1
+				a=BigDecimal.valueOf(3000);
+			}
+		}
+		if(rwwcl.compareTo(BigDecimal.valueOf(1.1))==0||rwwcl.compareTo(BigDecimal.valueOf(1.1))==1){ //大于或等于1
+			if(rwwcl.compareTo(BigDecimal.valueOf(1.2))==-1){ //小于 1.1
+				a=BigDecimal.valueOf(4000);
+			}
+		}
+		if(rwwcl.compareTo(BigDecimal.valueOf(1.2))==1){ //大于或等于1
+			a=BigDecimal.valueOf(5000);
+		}
+		return a;
 	}
 
 	private void doBackgroundoperationSalary(String year, String month,
@@ -660,7 +780,7 @@ public class TyManagerSalaryService {
 				
 		//2.计算后台绩效  第八条后台运营岗绩效  后台运营岗绩效工资=客户经理的平均绩效*80% 
 		//注：客户经理平均绩效=客户经理绩效总和÷客户经理总数
-		BigDecimal htjx=new BigDecimal(managerNum).divide(zhMonthPerformance,
+		BigDecimal htjx=zhMonthPerformance.divide(new BigDecimal(managerNum),
 				   2, BigDecimal.ROUND_HALF_UP);
 		
 		// 保存当月工资单
@@ -710,7 +830,7 @@ public class TyManagerSalaryService {
 				salary.setGh(map.get("gh").toString());
 				salary.setSp(map.get("sp").toString());
 				salary.setDj(map.get("dj").toString());
-				salary.setFd(map.get("fd").toString());
+				//salary.setFd(map.get("fd").toString());
 				salary.setRw(map.get("rw").toString());
 				salary.setBl(map.get("bl").toString());
 				salary.setZg(map.get("zg").toString());
@@ -719,8 +839,9 @@ public class TyManagerSalaryService {
 				
 		//返回客户经理当月的绩效工资便于后台人员的绩效工资的计算
 		Map<String, Object> dcsmap = new HashMap<String, Object>();
-		dcsmap.put("MonthPerformance1", map.get("MonthPerformance"));
-		return map;
+		dcsmap.put("organName", organName);
+		dcsmap.put("MonthPerformance", map.get("MonthPerformance"));
+		return dcsmap;
 	}
 	
 	private Map<String, Object> managerBasePay(String year, String month,
@@ -779,25 +900,25 @@ public class TyManagerSalaryService {
 		//int levelInformationjx=findlevelInformationjxbyManagerId(ManagerId,levelInformation);
 		BigDecimal dj=new BigDecimal(findlevelInformationjxbyManagerId(ManagerId,levelInformation));
 		
-		//5、客户经理辅助调查的笔数绩效（100×E）此处所计算笔数为贷款自然笔数
-		BigDecimal fd=new BigDecimal(jxParameters.getMonthAcasiNum()).multiply(new BigDecimal(parameters.getK()));
+		//5、客户经理辅助调查的笔数绩效（100×E）此处所计算笔数为贷款自然笔数  (协办就是辅调 只拿一笔绩效)
+		//BigDecimal fd=new BigDecimal(jxParameters.getMonthAcasiNum()).multiply(new BigDecimal(parameters.getK()));
 		
 		//6、客户经理任务完成度绩效(F)   询问后台人员全部按照正式员工完成度绩效
 		BigDecimal rw=findfwbyManagerId(ManagerId,year,month);
 		
 		//7、不良贷款比率超过容忍度的处罚标准（G） 不良贷款比率(指不良贷款本息金额/维护贷款余额) blje-被扣掉的绩效
 		BigDecimal G=findG(ManagerId);
-		BigDecimal blje=dyffdkjx.add(gh).add(sp).add(dj).add(fd)
-				.add(rw).multiply(G);
+		BigDecimal blje=(dyffdkjx.add(gh).add(sp).add(dj)
+				.add(rw)).multiply(G);  
 		
 		// 8.当月贷款业务绩效    	绩效工资=150×A+20×B+10×C+D+100×E+F-G
-		BigDecimal MonthPerformance=dyffdkjx.add(gh).add(sp).add(dj).add(fd)
-				.add(rw).multiply(new BigDecimal("1").subtract(G));
-		BigDecimal MonthPerformance1=dyffdkjx.add(gh).add(sp).add(dj).add(fd)
+		BigDecimal MonthPerformance=(dyffdkjx.add(gh).add(sp).add(dj)
+				.add(rw)).multiply(new BigDecimal("1").subtract(G));
+		BigDecimal MonthPerformance1=dyffdkjx.add(gh).add(sp).add(dj)
 				.add(rw).subtract(blje);
 		
 		//第九条审贷会委员绩效 10/笔(统计当月承担审批的贷款笔数绩效相同)
-		BigDecimal sdwjx=null;
+		//BigDecimal sdwjx=null;
 		
 		//第十条业务主管绩效(客户经理主管)    
 		BigDecimal zg=new BigDecimal(0);
@@ -821,7 +942,7 @@ public class TyManagerSalaryService {
 		map.put("gh", gh);
 		map.put("sp", sp);
 		map.put("dj", dj);
-		map.put("fd", fd);
+		//map.put("fd", fd);
 		map.put("rw", rw);
 		map.put("bl", blje);
 		map.put("zg", zg);
@@ -849,9 +970,10 @@ public class TyManagerSalaryService {
 		BigDecimal b = (BigDecimal) list.get(0).get("HYK");
 		zchildreqlmt=b.add(zchildreqlmt);
 		
-		BigDecimal bl=new BigDecimal(findblsum(child.getUserid()));
+		String organName=null;
+		BigDecimal bl=new BigDecimal(findblsum(child.getUserid(),organName));
 		zbl=bl.add(zbl);
-		BigDecimal Dkye=new BigDecimal(findDkyesum(child.getUserid()));
+		BigDecimal Dkye=new BigDecimal(findDkyesum(child.getUserid(),organName));
 		zDkye=Dkye.add(zDkye);
 		}
 		String sql= " select  nvl(sum(a.reqlmt),0) as HYK from ty_mibusidata a where 1=1 and             "+
@@ -870,8 +992,9 @@ public class TyManagerSalaryService {
 			G2=new BigDecimal(0);
 		}
 		
-		zbl=zbl.add(new BigDecimal(findblsum(ManagerId)));
-		zDkye=zDkye.add(new BigDecimal(findDkyesum(ManagerId)));
+		String organName=null;
+		zbl=zbl.add(new BigDecimal(findblsum(ManagerId,organName)));
+		zDkye=zDkye.add(new BigDecimal(findDkyesum(ManagerId,organName)));
 	    G=zbl.divide(zDkye,2, BigDecimal.ROUND_HALF_UP);
 		if(G.compareTo(BigDecimal.valueOf(0.015))==-1||G.compareTo(BigDecimal.valueOf(0.015))==0){
 			G3=new BigDecimal(0);
@@ -901,8 +1024,9 @@ public class TyManagerSalaryService {
 	private BigDecimal findG(String managerId) {
 		// TODO Auto-generated method stub
 		BigDecimal G=null;
-		BigDecimal bl=new BigDecimal(findblsum(managerId));
-		BigDecimal Dkye=new BigDecimal(findDkyesum(managerId));
+		String organName=null;
+		BigDecimal bl=new BigDecimal(findblsum(managerId,organName));
+		BigDecimal Dkye=new BigDecimal(findDkyesum(managerId,organName));
 		BigDecimal lv=bl.divide(Dkye,2, BigDecimal.ROUND_HALF_UP);
 		if(lv.compareTo(BigDecimal.valueOf(0.015))==-1||lv.compareTo(BigDecimal.valueOf(0.015))==0){  //小于或者等于1.5%的
 			G=new BigDecimal("0");
@@ -923,14 +1047,14 @@ public class TyManagerSalaryService {
 		return G;
 	}
 
-	private String findDkyesum(String managerId) {
+	private String findDkyesum(String managerId, String organName) {
 		// TODO Auto-generated method stub
-		return managerSalaryDao.findDkyesum(managerId);
+		return managerSalaryDao.findDkyesum(managerId,organName);
 	}
 
-	private String findblsum(String managerId) {
+	private String findblsum(String managerId, String organName) {
 		// TODO Auto-generated method stub
-		return managerSalaryDao.findblsum(managerId);
+		return managerSalaryDao.findblsum(managerId,organName);
 	}
 
 	private BigDecimal findfwbyManagerId(String managerId, String year, String month) {
@@ -1191,8 +1315,8 @@ public class TyManagerSalaryService {
 		jxParameters.setMonthOverdueDays(findOverdueDays(userId,year,month)+"");//当月逾期贷款天数
 		jxParameters.setMonthTimes(xbNum+"");//当月协办次数
 		jxParameters.setMonthApprovalNum(findMonthApprovalNum(userId,year,month)+"");//客户经理当月承担审批的贷款笔数()
-		jxParameters.setMonthAcasiNum(findMonthacasiNum(userId,year,month)+""); //客户经理当月辅助调查笔数
-		jxParameters.setMonthApprovalDecisionNum(findMonthApprovalDecisionNum(userId,year,month)+"");//客户经理当月承担审贷委次数
+		jxParameters.setMonthAcasiNum(findMonthacasiNum(userId,year,month)+""); //客户经理当月辅助调查笔数 (协办就是辅掉  只拿一笔绩效)
+		jxParameters.setMonthApprovalDecisionNum(findMonthApprovalDecisionNum(userId,year,month)+"");//客户经理当月承担审贷委次数 (与当月承担审批的贷款笔数相同)
 		/*try {
 			int a=managerSalaryDao.insertjxs(jxParameters);
 			System.out.println(a);
@@ -1207,7 +1331,7 @@ public class TyManagerSalaryService {
 	private int findMonthApprovalDecisionNum(String userId, String year,
 			String month) {
 		// TODO Auto-generated method stub
-		String sql="select count(*) as HYK from CUSTOMER_APPLICATION_SDH cas,                                     "+
+		/*String sql="select count(*) as HYK from CUSTOMER_APPLICATION_SDH cas,                                     "+
 					"	sys_user sysuser,                                                           "+
 					"	customer_application_info app,                                              "+
 					"	basic_customer_information basic                                            "+
@@ -1219,7 +1343,14 @@ public class TyManagerSalaryService {
 					"	and substr(to_char(cas.time,'yyyy/mm/dd'), '6', '2') = '"+month+"'  and              "+
 					"	(cas.sdwuser1='"+userId+"' or                         "+
 					"	cas.sdwuser2='"+userId+"' or                                                          "+
-					"	cas.sdwuser3='"+userId+"')															";
+					"	cas.sdwuser3='"+userId+"')															"*/;
+					String sql="select  count(*) as HYK from customer_sp sp,                              "+
+							"	sys_user sysuser                                                          "+
+							"	where 1=1 and                                                             "+
+							"	sp.spuserid=sysuser.id                                                    "+
+							"	and substr(to_char(sp.sptime,'yyyy/mm/dd'), '0', '4') = '"+year+"'        "+       
+							"	and substr(to_char(sp.sptime,'yyyy/mm/dd'), '6', '2') ='"+month+"'  and   "+
+							"	sp.spuserid='"+userId+"'";
 		List<HashMap<String, Object>> list = commonDao.queryBySql(sql, null);
 		BigDecimal c = (BigDecimal) list.get(0).get("HYK");
 		return c.intValue();
@@ -1248,20 +1379,7 @@ public class TyManagerSalaryService {
 		//客户经理当月承担审批的贷款笔数
 		private int findMonthApprovalNum(String userId, String year, String month) {
 			// TODO Auto-generated method stub
-			/*String sql="select count(*) as HYK from "+ 	   
-						   "( select applog.*,sysuser.id ,applog.user_id_1 as uid1,applog.user_id_2 as uid2 from sys_user sysuser,"+
-					       "   basic_customer_information basic,                                                                                   "+
-					       "   customer_application_info app,                                                                                      "+
-					       "   T_APP_MANAGER_AUDIT_LOG applog                                                                                      "+
-					       "   where 1=1 and                                                                                                       "+
-					       "   app.customer_id=basic.id and                                                                                        "+
-					       "   basic.user_id=sysuser.id and                                                                                        "+
-					       "   app.id=applog.application_id                                                                                     	"+
-					       "   and substr(to_char(app.created_time,'yyyy/mm/dd'), '0', '4') = '"+year+"'                                            "+
-					       "    and substr(to_char(app.created_time,'yyyy/mm/dd'), '6', '2') = '"+month+"' and                                      "+
-					       "   (applog.user_id_1='"+userId+"'                                                                "+
-					       "   or applog.user_id_2='"+userId+"')) a";*/
-		String sql="select count(*) as HYK from CUSTOMER_APPLICATION_SDH cas,                                     "+
+		/*String sql="select count(*) as HYK from CUSTOMER_APPLICATION_SDH cas,                                     "+
 					"	sys_user sysuser,                                                           "+
 					"	customer_application_info app,                                              "+
 					"	basic_customer_information basic                                            "+
@@ -1273,7 +1391,14 @@ public class TyManagerSalaryService {
 					"	and substr(to_char(cas.time,'yyyy/mm/dd'), '6', '2') = '"+month+"'  and              "+
 					"	(cas.sdwuser1='"+userId+"' or                         "+
 					"	cas.sdwuser2='"+userId+"' or                                                          "+
-					"	cas.sdwuser3='"+userId+"')															";
+					"	cas.sdwuser3='"+userId+"')															";*/
+			String sql="select  count(*) as HYK from customer_sp sp,                              "+
+					"	sys_user sysuser                                                          "+
+					"	where 1=1 and                                                             "+
+					"	sp.spuserid=sysuser.id                                                    "+
+					"	and substr(to_char(sp.sptime,'yyyy/mm/dd'), '0', '4') = '"+year+"'        "+       
+					"	and substr(to_char(sp.sptime,'yyyy/mm/dd'), '6', '2') ='"+month+"'  and   "+
+					"	sp.spuserid='"+userId+"'";
 			List<HashMap<String, Object>> list = commonDao.queryBySql(sql, null);
 			BigDecimal b = (BigDecimal) list.get(0).get("HYK");
 			return b.intValue();
@@ -1788,7 +1913,7 @@ public class TyManagerSalaryService {
 	        sheet.setColumnWidth(4, 10*256);
 	        
 	        cell = row.createCell((short) 5);  
-	        cell.setCellValue(mon+"月总贷款\n绩效\n（元）");  
+	        cell.setCellValue(mon+"月总绩效\n（元）");  
 	        cell.setCellStyle(style);
 	        sheet.setColumnWidth(5, 10*256);
 	        
@@ -1852,7 +1977,7 @@ public class TyManagerSalaryService {
 	        cell.setCellStyle(style);
 	        sheet.setColumnWidth(13, 10*256);
 	        
-	        cell = row.createCell((short) 14);  
+	        /*cell = row.createCell((short) 14);  
 	        cell.setCellValue(mon+"月辅助调查数\n（户）");  
 	        cell.setCellStyle(style);
 	        sheet.setColumnWidth(14, 10*256);
@@ -1860,54 +1985,54 @@ public class TyManagerSalaryService {
 	        cell = row.createCell((short) 15);  
 	        cell.setCellValue(mon+"月辅助调查绩效\n（元）");  
 	        cell.setCellStyle(style);
-	        sheet.setColumnWidth(15, 10*256);
+	        sheet.setColumnWidth(15, 10*256);*/
 	        
-	        cell = row.createCell((short) 16);  
+	        cell = row.createCell((short) 14);  
 	        cell.setCellValue(mon+"月任务完成度绩效\n（元）");  
 	        cell.setCellStyle(style);
 	        sheet.setColumnWidth(16, 10*256);
 	        
-	        cell = row.createCell((short) 17);  
+	        cell = row.createCell((short) 15);  
 	        cell.setCellValue(mon+"超过不良贷款容忍度\n扣（元）");  
 	        cell.setCellStyle(style);
 	        sheet.setColumnWidth(17, 10*256);
 	        
-	        cell = row.createCell((short) 18);  
+	        cell = row.createCell((short) 16);  
 	        cell.setCellValue(mon+"主管加成绩效\n扣（元）");  
 	        cell.setCellStyle(style);
 	        sheet.setColumnWidth(18, 10*256);
 	        
-	        cell = row.createCell((short) 19);  
+	        cell = row.createCell((short) 17);  
 	        cell.setCellValue(mon+"月缺勤\n扣（元）");  
 	        cell.setCellStyle(style);
 	        sheet.setColumnWidth(19, 10*256);
 	        
-	        cell = row.createCell((short) 20);  
+	        cell = row.createCell((short) 18);  
 	        cell.setCellValue("前期差\n错补扣\n（元）");  
 	        cell.setCellStyle(style);
 	        sheet.setColumnWidth(20, 10*256);
 	        
-	        cell = row.createCell((short) 21);  
+	        cell = row.createCell((short) 19);  
 	        cell.setCellValue(mon+"月其他\n业务绩\n效\n（元）");  
 	        cell.setCellStyle(style);
 	        sheet.setColumnWidth(21, 10*256);
 	        
-	        cell = row.createCell((short) 22);  
+	        cell = row.createCell((short) 20);  
 	        cell.setCellValue(mon+"月应发\n绩效\n（元）");  
 	        cell.setCellStyle(style);
 	        sheet.setColumnWidth(22, 10*256);
 	        
-	        cell = row.createCell((short) 23);  
+	        cell = row.createCell((short) 21);  
 	        cell.setCellValue(nextMonth+"月应发\n薪酬\n（元）");  
 	        cell.setCellStyle(style);
 	        sheet.setColumnWidth(23, 10*256);
 	        
-	        cell = row.createCell((short) 24);  
+	        cell = row.createCell((short) 22);  
 	        cell.setCellValue("风险保\n证金\n（元）");  
 	        cell.setCellStyle(style);
 	        sheet.setColumnWidth(24, 10*256);
 	        
-	        cell = row.createCell((short) 25);  
+	        cell = row.createCell((short) 23);  
 	        cell.setCellValue(nextMonth+"月实发\n薪酬\n（元）");  
 	        cell.setCellStyle(style);
 	        sheet.setColumnWidth(25, 10*256);
@@ -1921,7 +2046,7 @@ public class TyManagerSalaryService {
 	        	row.createCell((short) 1).setCellValue((String) salary.getInstCode());            //管辖行
 	        	row.createCell((short) 2).setCellValue((String) salary.getManagerName());         //姓名                       
 	        	row.createCell((short) 3).setCellValue("");     						          //岗位  备注： 暂无  后续会设定客户经理级别 级别与基本工资挂钩                     
-	        	row.createCell((short) 4).setCellValue((String) salary.getBasePay());             //9月基本工资（元）          
+	        	row.createCell((short) 4).setCellValue((String) salary.getZhbasepay());             //9月基本工资（元）          
 	        	row.createCell((short) 5).setCellValue((String) salary.getMonthPerformance());      //8月基础任务量奖金（元） 备注:外聘客户经理所有 行编客户经理无   
 	        	row.createCell((short) 6).setCellValue((String) salary.getDyffdkjx());        //8月主办放款户数（户）      
 	        	row.createCell((short) 7).setCellValue((String) salary.getZb());//8月主办放款户数奖金（元）  
@@ -1932,18 +2057,18 @@ public class TyManagerSalaryService {
 	        	/*new BigDecimal(parameters.getD()).multiply(new BigDecimal(salary.getMonthEffectNum()))+""*/
 	        	row.createCell((short) 12).setCellValue((String) salary.getSp());  //承担审批的绩效     
 	        	row.createCell((short) 13).setCellValue((String) salary.getDj());   //等级岗位绩效      
-	        	row.createCell((short) 14).setCellValue(salary.getMonthAcasiNum());//辅助调查          
-	        	row.createCell((short) 15).setCellValue((String) salary.getFd());  //辅助调查绩效
-	        	row.createCell((short) 16).setCellValue((String) salary.getRw());  	//月任务完成度绩效								
-	        	row.createCell((short) 17).setCellValue((String) salary.getBl());  	//超过不良贷款容忍度扣款								
-	        	row.createCell((short) 18).setCellValue((String) salary.getZg());  	//主管加成绩效								 
-	        	row.createCell((short) 19).setCellValue("");  			 //8月缺勤扣（元）             手填						 
-	        	row.createCell((short) 20).setCellValue("");  			 //前期差错补扣（元）        手填						 
-	        	row.createCell((short) 21).setCellValue((String) salary.getInsertPrepareAmount());//8月其他业务绩效（元） 手填
-	        	row.createCell((short) 22).setCellValue("");  //8月应发绩效（元）         待确定      
-	        	row.createCell((short) 23).setCellValue(""); //9月应发薪酬（元）        待确定        
-	        	row.createCell((short) 24).setCellValue(""); //风险保证金（元）           待确定   
-	        	row.createCell((short) 25).setCellValue(""); //9月实发薪酬（元）        待确定      
+	        	//row.createCell((short) 14).setCellValue(salary.getMonthAcasiNum());//辅助调查          
+	        	//row.createCell((short) 15).setCellValue((String) salary.getFd());  //辅助调查绩效
+	        	row.createCell((short) 14).setCellValue((String) salary.getRw());  	//月任务完成度绩效								
+	        	row.createCell((short) 15).setCellValue((String) salary.getBl());  	//超过不良贷款容忍度扣款								
+	        	row.createCell((short) 16).setCellValue((String) salary.getZg());  	//主管加成绩效								 
+	        	row.createCell((short) 17).setCellValue("");  			 //8月缺勤扣（元）             手填						 
+	        	row.createCell((short) 18).setCellValue("");  			 //前期差错补扣（元）        手填						 
+	        	row.createCell((short) 19).setCellValue((String) salary.getInsertPrepareAmount());//8月其他业务绩效（元） 手填
+	        	row.createCell((short) 20).setCellValue("");  //8月应发绩效（元）         待确定      
+	        	row.createCell((short) 21).setCellValue(""); //9月应发薪酬（元）        待确定        
+	        	row.createCell((short) 22).setCellValue(""); //风险保证金（元）           待确定   
+	        	row.createCell((short) 23).setCellValue(""); //9月实发薪酬（元）        待确定      
 	        }
 	        title = title+".xls";
 	        response.setHeader("Connection", "close");
