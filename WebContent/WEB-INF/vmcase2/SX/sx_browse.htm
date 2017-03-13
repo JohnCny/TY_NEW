@@ -11,12 +11,9 @@
            <form id="submitForm" action="${modulePath}/SxBrowse.page" >
             <ul>
             
-              <li>
-                <span><table><tr>
-					<td> 起始日期:<input class="rinpsty" type="text" id="fdate" name="fdate" value=""  onmouseover="_calendar()" readonly="readonly"/></td>
-					<td>  结束日期:<input class="rinpsty" type="text" id="ldate" name="ldate" value=""  onmouseover="_calendar()" readonly="readonly"/></td>
-					<td>   产品:<input  type="text" class="/rinpsty" name="product" id="product"   /></td></span>
-              </tr></table></li>
+              <li>起始日期:<input class="rinpsty" type="text" id="fdate" name="fdate" value=""  onmouseover="_calendar()" readonly="readonly"/></li>
+				<li>  结束日期:<input class="rinpsty" type="text" id="ldate" name="ldate" value=""  onmouseover="_calendar()" readonly="readonly"/></li>
+				<li>产品:<input  type="text" class="/rinpsty" name="product" id="product"   /></li>
               
               <li class="search_button">
                 <input id="id_browse1_button" type="submit" value="#i18n('button.browse')" class="search_button_inquiry"
@@ -108,7 +105,6 @@
            	document.getElementById("submitForm").action = url;
            	document.getElementById("submitForm").submit();
 	    });
-		
 	});
 </script>
 #parse ("common/iframe_page_footer.htm")

@@ -372,7 +372,7 @@
          <!-- <property name="startDelay" value="0"/>
         <property name="repeatInterval" value="60000" /> -->
          <property name="cronExpression">
-            <value>0 56 15 * * ?</value>
+            <value>0 35 16 * * ?</value>
         </property> 
     </bean>
        <!--贷款信息 start -->
@@ -393,10 +393,10 @@
         </property>
         <!-- cron表达式 每月1号1点执行 0 0 1 1 * ? -->
         <!-- <property name="cronExpression">
-            <value>0 45 16 * * ?</value>
+            <value>0 30 16 * * ?</value>
         </property> -->
         <property name="cronExpression">
-            <value>0 55 15 * * ?</value>
+            <value>0 32 16 * * ?</value>
         </property> 
     </bean>
      <!--同步系统中的进件的status 每两个小时跑一次-->
@@ -468,7 +468,7 @@
        <!--  cron表达式 -->
         <property name="cronExpression">
             <!-- 0 10 18 ? * *  -->
-            <value>0 50 15 * * ?</value><!-- 下午3点 -->
+            <value>0 27 16 * * ?</value><!-- 下午3点 -->
         </property>
     </bean>
 	<!-- 每日下载和解压数据 end -->
@@ -492,7 +492,7 @@
          <!-- <property name="startDelay" value="0"/>
         <property name="repeatInterval" value="60000" /> -->
          <property name="cronExpression">
-            <value>0 07 17 * * ?</value>
+            <value>0 11 9 * * ?</value>
         </property> 
     </bean>
     <!-- 每日加载tymibusidata数据end-->

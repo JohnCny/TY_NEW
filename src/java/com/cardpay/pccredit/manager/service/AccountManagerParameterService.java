@@ -502,7 +502,7 @@ public class AccountManagerParameterService {
 				accountManagerParameter.setBasePay(basePay);
 			   }
 			}
-		if(managerType.equals("2")){
+		if(managerType.equals("3")){
 			if(FOOD_SUBSIDY!=null&&FOOD_SUBSIDY!=""){
 				BigDecimal FOOD_SUBSIDYs=new BigDecimal(FOOD_SUBSIDY).multiply(new BigDecimal(deliverTime)).multiply(BigDecimal.valueOf(1.7));
 				accountManagerParameter.setFoodSubsidy(FOOD_SUBSIDYs.toString());
@@ -532,7 +532,7 @@ public class AccountManagerParameterService {
 			   }
 		}
 		
-		if(managerType.equals("3")){
+		if(managerType.equals("2")){
 			if(FOOD_SUBSIDY!=null&&FOOD_SUBSIDY!=""){
 				BigDecimal FOOD_SUBSIDYs=new BigDecimal(FOOD_SUBSIDY).multiply(new BigDecimal(deliverTime)).multiply(BigDecimal.valueOf(1.4));
 				accountManagerParameter.setFoodSubsidy(FOOD_SUBSIDYs.toString());

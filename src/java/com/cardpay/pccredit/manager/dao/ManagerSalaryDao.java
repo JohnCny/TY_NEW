@@ -157,7 +157,8 @@ public interface ManagerSalaryDao {
 		
 		public int findmanagernum(@Param("organName")String organName);
 		
-		public String findrwjebyorganName(@Param("organName")String organName,
-				@Param("year")String year,
+		public int findrwjebyorganName(@Param("organName")String organName,@Param("year") String year,
 				@Param("month")String month);
+		
+		
 }

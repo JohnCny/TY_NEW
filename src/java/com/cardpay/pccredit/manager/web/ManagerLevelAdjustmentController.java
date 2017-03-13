@@ -309,8 +309,9 @@ public class ManagerLevelAdjustmentController extends BaseController{
 		try {
 			String date = request.getParameter("date");
 			String managerNum=request.getParameter("managerNum");
+			String managerNums=request.getParameter("managerNums");
 			//managerSalaryService.docalculateMonthlySalaryTy(date.substring(0, 4),date.substring(5, 7));
-			managerSalaryService.docalculateMonthlySalaryTy(date.substring(0, 4),date.substring(5, 7),managerNum);
+			managerSalaryService.docalculateMonthlySalaryTy(date.substring(0, 4),date.substring(5, 7),managerNum,managerNums);
 			returnMap.setSuccess(true);
 		}
 		catch (Exception e) {

@@ -155,7 +155,7 @@ public class DisburseLoanController extends BaseController{
 		for(int i = 0; i < list.size(); i++){
 			YffdktjbbForm move = list.get(i);
 			row = sheet.createRow((int) i+1);
-			row.createCell((short) 0).setCellValue(move.getRowIndex());
+			row.createCell((short) 0).setCellValue((int) i+1);
 			row.createCell((short) 1).setCellValue(move.getCname());
 			row.createCell((short) 2).setCellValue(move.getCardtype());
 			row.createCell((short) 3).setCellValue(move.getProdName());
