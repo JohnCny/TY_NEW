@@ -562,8 +562,10 @@ public class TyManagerSalaryService {
 	 * 
 	 * @param year
 	 * @param month
+	 * @param managerNum
+	 * @param managerNums 
 	 */
-	public void docalculateMonthlySalaryTy(String year,String month,String managerNum) {
+	public void docalculateMonthlySalaryTy(String year,String month,String managerNum, String managerNums) {
 		
 		// 判断该月客户经理月度薪资是否已经存在
 		int count = managerSalaryDao.findManagerSalaryCount(year, month);
@@ -571,11 +573,11 @@ public class TyManagerSalaryService {
 			throw new RuntimeException("该月客户经理薪资已存在！");
 		}
 
-		// 查询行编以及外聘客户经理list
+		// 查询行内各职级人员list
 		List<AccountManagerParameter> list = commonDao
 				.queryBySql(
 						AccountManagerParameter.class,
-						"select * from account_manager_parameter where manager_type in ('1','2')",
+						"select * from account_manager_parameter where manager_type in ('1','2','3','7')",
 						null);
 
 		/*// 查询风险岗list
@@ -623,28 +625,88 @@ public class TyManagerSalaryService {
 		}
 
 		// 具体计算后台运营岗的当月工资
+		BigDecimal htjx=new BigDecimal(0);
 		for(AccountManagerParameter accountManagerParameter : list) {
 			if(accountManagerParameter.getManagerType().equals("6")){
-				doBackgroundoperationSalary(year, month,managerNum,zhMonthPerformance,
+				Map<String, Object> map=doBackgroundoperationSalary(year, month,managerNum,zhMonthPerformance,
 						accountManagerParameter.getUserId(),
 						accountManagerParameter.getBasePay(),
 						accountManagerParameter.getManagerType());
+				htjx=htjx.add(new BigDecimal(map.get("htjx").toString()));
 			}
 		}
 				
-		// 具体计算管理层人员的当月工资
+		// 具体计算管理层-区域经理岗位系数1.4绩效系数2.5人员的当月工资
+		BigDecimal mzjx=new BigDecimal(0);
 		for (AccountManagerParameter accountManagerParameter : list) {
-			if(accountManagerParameter.getManagerType()=="2"||			// 部门主管
-					accountManagerParameter.getManagerType()=="3"||		//机构主管
-					accountManagerParameter.getManagerType()=="7"){ 	//副机构主管
-			doManagermentSalary(year, month, accountManagerParameter.getUserId(),
+			if(accountManagerParameter.getManagerType().equals("2")){ 	//副机构主管
+				Map<String, Object> map=doManagermentSalary(year, month, accountManagerParameter.getUserId(),
 					accountManagerParameter.getBasePay(),
 					accountManagerParameter.getManagerType(),
 					zhMonthPerformance,MonthPerformance1,MonthPerformance2,MonthPerformance3);
+				mzjx=mzjx.add(new BigDecimal(map.get("MonthPerformance").toString()));
+			}
+		}
+		//具体计算管理层
+		for (AccountManagerParameter accountManagerParameter : list) {
+			if(accountManagerParameter.getManagerType().equals("3")||
+					accountManagerParameter.getManagerType().equals("7")){ 	//副机构主管
+				doManagermentsSalary(year, month, accountManagerParameter.getUserId(),
+					accountManagerParameter.getBasePay(),
+					accountManagerParameter.getManagerType(),
+					zhMonthPerformance,htjx,mzjx,managerNums);
 			}
 		}
 	}
-	
+
+	private void doManagermentsSalary(String year, String month,
+			String userId, String basePay, String managerType,
+			BigDecimal zhMonthPerformance, BigDecimal htjx, BigDecimal mzjx, String managerNums) {
+		//查询客户所属机构
+		String organName = managerSalaryDao.getOrganName(userId);
+		
+		//1.计算基本工资
+		Map<String, Object> basemap = managerBasePay(year,month,userId);
+		
+		// 查询客户经理绩效参数
+		TyTPerformanceParameters parameters = commonDao.queryBySql(TyTPerformanceParameters.class,"select * from T_PERFORMANCE_PARAMETERS ",null).get(0);
+		
+		// 查询客户经理绩效每月绩效参数表 
+		TJxParameters jxParameters = findTJxParameters(year,month,userId);
+		// TODO Auto-generated method stub
+		
+		//机构主管     （小微金融事业部部门整体平均绩效*岗位系数+任务完成度绩效)-不良贷款超过容忍度的绩效处罚+审批绩效
+		if(managerType.equals("3")||managerType.equals("7")){ 
+			//小微金融事业部部门整体平均绩效(客户经理总体绩效+区域经理总绩效+后台总绩效)*岗位系数
+			BigDecimal  departmanagersjx =(zhMonthPerformance.add(mzjx).add(htjx)).divide(new BigDecimal(managerNums),2, BigDecimal.ROUND_HALF_UP)
+			.multiply(BigDecimal.valueOf(4));
+			//任务完成度绩效
+			organName=null;
+			BigDecimal rw=findrw(Integer.parseInt(managerNums),organName,managerType,year,month);
+			//不良贷款超过容忍度的绩效处罚
+			BigDecimal G=findbl(organName); //扣款比率
+		 	BigDecimal blje=departmanagersjx.add(rw).multiply(G);
+		 	//审批绩效
+		 	BigDecimal sp=new BigDecimal(jxParameters.getMonthApprovalNum()).multiply(new BigDecimal(parameters.getC()));
+		 	//总绩效
+		 	BigDecimal MonthPerformance=departmanagersjx.add(rw).subtract(blje).add(sp);
+		 	 // 保存当月工资单
+			ManagerSalary salary = new ManagerSalary();
+			salary.setYear(year);
+			salary.setMonth(month);
+			salary.setInstCode(organName);//所属机构
+			salary.setCustomerId(userId);//客户经理
+			salary.setBasePay(basePay);//固定工资
+			salary.setZhbasepay(basemap.get("zhbasepay").toString()); //固定工资+各项补贴
+			salary.setRw(rw.toString());
+			salary.setBl(blje.toString());
+			salary.setSp(sp.toString());
+			salary.setMonthPerformance(MonthPerformance.toString());
+			managerSalaryDao.deleteSalarybyuserid(userId);
+			commonDao.insertObject(salary);
+		}
+	}
+
 	/**
 	 * 具体计算 管理岗绩效
 	 * @param year 年份
@@ -658,7 +720,7 @@ public class TyManagerSalaryService {
 	 * @param zhMonthPerformance 所有客户经理总绩效
 	 * @return 
 	 */
-	private void doManagermentSalary(String year, String month, String userId,
+	private Map<String, Object> doManagermentSalary(String year, String month, String userId,
 			String basePay, String managerType, BigDecimal zhMonthPerformance, BigDecimal monthPerformance1, BigDecimal monthPerformance2, BigDecimal monthPerformance3) {
 		// TODO Auto-generated method stub
 		//查询客户所属机构
@@ -667,44 +729,98 @@ public class TyManagerSalaryService {
 		//1.计算基本工资
 		Map<String, Object> basemap = managerBasePay(year,month,userId);
 		
-		if(managerType.equals("2")){   //辖区域客户经理平均绩效*岗位系数+所辖区域任务完成度绩效-所辖区域不良贷款超过容忍度的绩效处罚
+		// 查询客户经理绩效参数
+		TyTPerformanceParameters parameters = commonDao.queryBySql(TyTPerformanceParameters.class,"select * from T_PERFORMANCE_PARAMETERS ",null).get(0);
+		
+		// 查询客户经理绩效每月绩效参数表 
+		TJxParameters jxParameters = findTJxParameters(year,month,userId);
+		
+		 //辖区域客户经理平均绩效*岗位系数+所辖区域任务完成度绩效-所辖区域不良贷款超过容忍度的绩效处罚+审批绩效
 			int managernum=managerSalaryDao.findmanagernum(organName);
+			Map<String, Object> map=new HashMap<String, Object>();
 			if(organName.equals("一区")){
 				//辖区域客户经理平均绩效*岗位系数
 				BigDecimal departmanagersjx=monthPerformance1.divide(BigDecimal.valueOf(managernum),2, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(2.5));
-				//所辖区域任务完成度绩效
-			 	BigDecimal rw=findrw(managernum,organName,year,month);
-				//所辖区域不良贷款超过容忍度的绩效处罚
-			 	BigDecimal G=findbl(organName); //扣款比率
-			 	BigDecimal blje=departmanagersjx.add(rw).multiply(G);
-			 	
-			 	zhMonthPerformance=new BigDecimal(basemap.get("zhbasepay").toString()).add(departmanagersjx)
-			 			.add(rw).subtract(blje);
-			 	
-			 	BigDecimal zhMonthPerformance1=new BigDecimal(basemap.get("zhbasepay").toString()).add(departmanagersjx)
-			 			.add(rw).multiply(BigDecimal.valueOf(1).subtract(G));
-			 // 保存当月工资单
-				ManagerSalary salary = new ManagerSalary();
-				salary.setYear(year);
-				salary.setMonth(month);
-				salary.setInstCode(organName);//所属机构
-				salary.setCustomerId(userId);//客户经理
-				salary.setBasePay(basePay);//固定工资
-				salary.setZhbasepay(basemap.get("zhbasepay").toString());
-				salary.setMonthPerformance(zhMonthPerformance.toString());
-				managerSalaryDao.deleteSalarybyuserid(userId);
-				commonDao.insertObject(salary);
-			 	
+				map=doManagermentSalarys(year,month,userId,basePay,parameters,jxParameters,managernum,organName,basemap,
+						zhMonthPerformance,departmanagersjx,managerType);
 			}
-		}
-		if(managerType.equals("3")){
-					
-		}
-		if(managerType.equals("7")){
-			
-		}
-		
-		
+			if(organName.equals("二区")){
+				//辖区域客户经理平均绩效*岗位系数
+				BigDecimal departmanagersjx=monthPerformance2.divide(BigDecimal.valueOf(managernum),2, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(2.5));
+				map=doManagermentSalarys(year,month,userId,basePay,parameters,jxParameters,managernum,organName,basemap,
+						zhMonthPerformance,departmanagersjx,managerType);
+			}
+			if(organName.equals("三区")){
+				//辖区域客户经理平均绩效*岗位系数
+				BigDecimal departmanagersjx=monthPerformance3.divide(BigDecimal.valueOf(managernum),2, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(2.5));
+				map=doManagermentSalarys(year,month,userId,basePay,parameters,jxParameters,managernum,organName,basemap,
+						zhMonthPerformance,departmanagersjx,managerType);
+			}
+			 // 保存当月工资单
+			ManagerSalary salary = new ManagerSalary();
+			salary.setYear(year);
+			salary.setMonth(month);
+			salary.setInstCode(organName);//所属机构
+			salary.setCustomerId(userId);//客户经理
+			salary.setBasePay(basePay);//固定工资
+			salary.setZhbasepay(basemap.get("zhbasepay").toString()); //固定工资+各项补贴
+			salary.setRw(map.get("rw").toString());
+			salary.setBl(map.get("blje").toString());
+			salary.setSp(map.get("sp").toString());
+			salary.setMonthPerformance(map.get("MonthPerformance").toString());
+			managerSalaryDao.deleteSalarybyuserid(userId);
+			commonDao.insertObject(salary);
+		return map;
+	}
+	
+	/**
+	 * 具体计算 区域经理绩效
+	 * @param year 年份
+	 * @param month  月份
+	 * @param userId 客户经理id
+	 * @param basePay 基本工资
+	 * @param parameters 客户经理绩效参数 ABCD
+	 * @param jxParameters  客户经理绩效每月绩效参数表
+	 * @param managernum  区域内人数
+	 * @param organName 区域名称
+	 * @param basemap 计算基本工资
+	 * @param managerType 客户经理类型
+	 * @param departmanagersjx  辖区域客户经理平均绩效*岗位系数
+	 * @param zhMonthPerformance 所有客户经理总绩效
+	 * @param managerType 
+	 * @return 
+	 */
+	private Map<String, Object> doManagermentSalarys(String year, String month, String userId,
+			String basePay, TyTPerformanceParameters parameters,
+			TJxParameters jxParameters, int managernum, String organName,
+			Map<String, Object> basemap, BigDecimal zhMonthPerformance,
+			BigDecimal departmanagersjx, String managerType) {
+		// TODO Auto-generated method stub
+		//所辖区域任务完成度绩效
+	 	BigDecimal rw=findrw(managernum,organName,managerType,year,month);
+		//所辖区域不良贷款超过容忍度的绩效处罚
+	 	BigDecimal G=findbl(organName); //扣款比率
+	 	BigDecimal blje=departmanagersjx.add(rw).multiply(G);
+	 	//审批绩效
+	 	BigDecimal sp=new BigDecimal(jxParameters.getMonthApprovalNum()).multiply(new BigDecimal(parameters.getC()));
+	 	
+	 	//总绩效
+	 	BigDecimal MonthPerformance=departmanagersjx.add(rw).subtract(blje).add(sp);
+	 	/*//总工资 
+	 	zhMonthPerformance=new BigDecimal(basemap.get("zhbasepay").toString()).add(departmanagersjx)
+	 			.add(rw).subtract(blje).add(sp);
+	 	
+	 	BigDecimal zhMonthPerformance1=new BigDecimal(basemap.get("zhbasepay").toString()).add(departmanagersjx)
+	 			.add(rw).multiply(BigDecimal.valueOf(1).subtract(G)).add(sp);*/
+	 	
+	 	
+	 // map
+	 		Map<String, Object> map = new HashMap<String, Object>();
+	 		map.put("rw", rw);
+	 		map.put("blje", blje);
+	 		map.put("sp", sp);
+	 		map.put("MonthPerformance", MonthPerformance);
+	 		return map;
 	}
 
 	private BigDecimal findbl(String organName) {
@@ -733,43 +849,102 @@ public class TyManagerSalaryService {
 		return G;
 	}
 
-	private BigDecimal findrw(int managernum, String organName, String year, String month) {
+	private BigDecimal findrw(int managernum, String organName, String managerType, String year, String month) {
 		// TODO Auto-generated method stub
 		BigDecimal a=new BigDecimal(0);
-		String rwlists=managerSalaryDao.findrwjebyorganName(organName,year,month);
+		String managerId=null;
+		int rwlists=managerSalaryDao.findrwjebyorganName(organName,year,month);
 		BigDecimal reqlmtsum=new BigDecimal(rwlists); //区域内总贷款
-		BigDecimal zrw=BigDecimal.valueOf(100).multiply(BigDecimal.valueOf(managernum));//区域内总任务
+		BigDecimal zrw=BigDecimal.valueOf(1000000).multiply(BigDecimal.valueOf(managernum));//区域内总任务
 		BigDecimal rwwcl=reqlmtsum.divide(zrw,2, BigDecimal.ROUND_HALF_UP);
-		if(rwwcl.compareTo(BigDecimal.valueOf(0.6))==-1){ //小于0.6
-			a=BigDecimal.valueOf(0);
-		}
-		if(rwwcl.compareTo(BigDecimal.valueOf(0.6))==0||rwwcl.compareTo(BigDecimal.valueOf(0.6))==1){ //大于或等于0.6
-			if(rwwcl.compareTo(BigDecimal.valueOf(0.8))==-1){ //小于 0.8
-				a=BigDecimal.valueOf(1000);
+		if(managerType.equals("3")){
+			if(rwwcl.compareTo(BigDecimal.valueOf(0.6))==-1){ //小于0.6
+				a=BigDecimal.valueOf(0);
+			}
+			if(rwwcl.compareTo(BigDecimal.valueOf(0.6))==0||rwwcl.compareTo(BigDecimal.valueOf(0.6))==1){ //大于或等于0.6
+				if(rwwcl.compareTo(BigDecimal.valueOf(0.8))==-1){ //小于 0.8
+					a=BigDecimal.valueOf(2000);
+				}
+			}
+			if(rwwcl.compareTo(BigDecimal.valueOf(0.8))==0||rwwcl.compareTo(BigDecimal.valueOf(0.8))==1){ //大于或等于0.8
+				if(rwwcl.compareTo(BigDecimal.valueOf(1))==-1){ //小于 1
+					a=BigDecimal.valueOf(4000);
+				}
+			}
+			if(rwwcl.compareTo(BigDecimal.valueOf(1))==0||rwwcl.compareTo(BigDecimal.valueOf(1))==1){ //大于或等于1
+				if(rwwcl.compareTo(BigDecimal.valueOf(1.1))==-1){ //小于 1.1
+					a=BigDecimal.valueOf(6000);
+				}
+			}
+			if(rwwcl.compareTo(BigDecimal.valueOf(1.1))==0||rwwcl.compareTo(BigDecimal.valueOf(1.1))==1){ //大于或等于1
+				if(rwwcl.compareTo(BigDecimal.valueOf(1.2))==-1){ //小于 1.1
+					a=BigDecimal.valueOf(8000);
+				}
+			}
+			if(rwwcl.compareTo(BigDecimal.valueOf(1.2))==1){ //大于或等于1
+				a=BigDecimal.valueOf(10000);
 			}
 		}
-		if(rwwcl.compareTo(BigDecimal.valueOf(0.8))==0||rwwcl.compareTo(BigDecimal.valueOf(0.8))==1){ //大于或等于0.8
-			if(rwwcl.compareTo(BigDecimal.valueOf(1))==-1){ //小于 1
-				a=BigDecimal.valueOf(2000);
+		if(managerType.equals("7")){
+			if(rwwcl.compareTo(BigDecimal.valueOf(0.6))==-1){ //小于0.6
+				a=BigDecimal.valueOf(0);
+			}
+			if(rwwcl.compareTo(BigDecimal.valueOf(0.6))==0||rwwcl.compareTo(BigDecimal.valueOf(0.6))==1){ //大于或等于0.6
+				if(rwwcl.compareTo(BigDecimal.valueOf(0.8))==-1){ //小于 0.8
+					a=BigDecimal.valueOf(1500);
+				}
+			}
+			if(rwwcl.compareTo(BigDecimal.valueOf(0.8))==0||rwwcl.compareTo(BigDecimal.valueOf(0.8))==1){ //大于或等于0.8
+				if(rwwcl.compareTo(BigDecimal.valueOf(1))==-1){ //小于 1
+					a=BigDecimal.valueOf(3000);
+				}
+			}
+			if(rwwcl.compareTo(BigDecimal.valueOf(1))==0||rwwcl.compareTo(BigDecimal.valueOf(1))==1){ //大于或等于1
+				if(rwwcl.compareTo(BigDecimal.valueOf(1.1))==-1){ //小于 1.1
+					a=BigDecimal.valueOf(4500);
+				}
+			}
+			if(rwwcl.compareTo(BigDecimal.valueOf(1.1))==0||rwwcl.compareTo(BigDecimal.valueOf(1.1))==1){ //大于或等于1
+				if(rwwcl.compareTo(BigDecimal.valueOf(1.2))==-1){ //小于 1.1
+					a=BigDecimal.valueOf(6000);
+				}
+			}
+			if(rwwcl.compareTo(BigDecimal.valueOf(1.2))==1){ //大于或等于1
+				a=BigDecimal.valueOf(7500);
 			}
 		}
-		if(rwwcl.compareTo(BigDecimal.valueOf(1))==0||rwwcl.compareTo(BigDecimal.valueOf(1))==1){ //大于或等于1
-			if(rwwcl.compareTo(BigDecimal.valueOf(1.1))==-1){ //小于 1.1
-				a=BigDecimal.valueOf(3000);
+		if(managerType.equals("2")){
+			if(rwwcl.compareTo(BigDecimal.valueOf(0.6))==-1){ //小于0.6
+				a=BigDecimal.valueOf(0);
 			}
-		}
-		if(rwwcl.compareTo(BigDecimal.valueOf(1.1))==0||rwwcl.compareTo(BigDecimal.valueOf(1.1))==1){ //大于或等于1
-			if(rwwcl.compareTo(BigDecimal.valueOf(1.2))==-1){ //小于 1.1
-				a=BigDecimal.valueOf(4000);
+			if(rwwcl.compareTo(BigDecimal.valueOf(0.6))==0||rwwcl.compareTo(BigDecimal.valueOf(0.6))==1){ //大于或等于0.6
+				if(rwwcl.compareTo(BigDecimal.valueOf(0.8))==-1){ //小于 0.8
+					a=BigDecimal.valueOf(1000);
+				}
 			}
-		}
-		if(rwwcl.compareTo(BigDecimal.valueOf(1.2))==1){ //大于或等于1
-			a=BigDecimal.valueOf(5000);
+			if(rwwcl.compareTo(BigDecimal.valueOf(0.8))==0||rwwcl.compareTo(BigDecimal.valueOf(0.8))==1){ //大于或等于0.8
+				if(rwwcl.compareTo(BigDecimal.valueOf(1))==-1){ //小于 1
+					a=BigDecimal.valueOf(2000);
+				}
+			}
+			if(rwwcl.compareTo(BigDecimal.valueOf(1))==0||rwwcl.compareTo(BigDecimal.valueOf(1))==1){ //大于或等于1
+				if(rwwcl.compareTo(BigDecimal.valueOf(1.1))==-1){ //小于 1.1
+					a=BigDecimal.valueOf(3000);
+				}
+			}
+			if(rwwcl.compareTo(BigDecimal.valueOf(1.1))==0||rwwcl.compareTo(BigDecimal.valueOf(1.1))==1){ //大于或等于1
+				if(rwwcl.compareTo(BigDecimal.valueOf(1.2))==-1){ //小于 1.1
+					a=BigDecimal.valueOf(4000);
+				}
+			}
+			if(rwwcl.compareTo(BigDecimal.valueOf(1.2))==1){ //大于或等于1
+				a=BigDecimal.valueOf(5000);
+			}
 		}
 		return a;
 	}
 
-	private void doBackgroundoperationSalary(String year, String month,
+	private Map<String, Object> doBackgroundoperationSalary(String year, String month,
 			String managerNum, BigDecimal zhMonthPerformance, String ManagerId,
 			String basePay, String managerType) {
 		// TODO Auto-generated method stub
@@ -791,6 +966,9 @@ public class TyManagerSalaryService {
 		salary.setCustomerId(ManagerId);//客户经理
 		salary.setBasePay(basePay);//固定工资
 		salary.setMonthPerformance(htjx+""); //当月后台绩效
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("htjx", htjx);
+		return map;
 	}
 
 	/**
@@ -1065,7 +1243,7 @@ public class TyManagerSalaryService {
 			rwlists="0";
 		}
 		BigDecimal reqlmtsum=new BigDecimal(rwlists);
-		BigDecimal rwwcl=reqlmtsum.divide(new BigDecimal("100"),2, BigDecimal.ROUND_HALF_UP);
+		BigDecimal rwwcl=reqlmtsum.divide(new BigDecimal("1000000"),2, BigDecimal.ROUND_HALF_UP);
 		if(rwwcl.compareTo(BigDecimal.valueOf(0.80))==-1){		//小于0.8
 			a=new BigDecimal("0");
 		}
@@ -1089,14 +1267,30 @@ public class TyManagerSalaryService {
 			String levelInformation) {
 		// TODO Auto-generated method stub
 		int a =0;
-		switch (levelInformation) {
+		if(levelInformation.equals("MANA001")){
+			a=0;
+		}
+		if(levelInformation.equals("MANA001")){
+			a=400;
+		}
+		if(levelInformation.equals("MANA001")){
+			a=800;
+		}
+		if(levelInformation.equals("MANA001")){
+			a=1200;
+		}
+		if(levelInformation.equals("MANA001")){
+			a=2000;
+		}
+		
+		/*switch (levelInformation) {
 		case "MANA001": a=0; break;
 		case "MANA002": a=400; break;
 		case "MANA003": a=800; break;
 		case "MANA004": a=1200; break;
 		case "MANA005": a=2000; break;
 		default: break;
-		}
+		}*/
 		return a;
 	}
 

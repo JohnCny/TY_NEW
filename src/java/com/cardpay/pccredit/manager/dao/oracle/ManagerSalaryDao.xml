@@ -811,11 +811,11 @@ from
 				and sysuser.id=#{managerId}
 			</if>
             group by tkmx.ywbh ,yhbj.yhbj,tkmx.dqrq,tkmx.ffje,sysuser.id) a
-            where 1=1 and
+            where 1=1 
             <if test="organName != null and organName != '' ">
-			 	 a.YWJG=#{organName}
+			 	and a.YWJG=#{organName}
 			</if>
-            ( DELAYINTERESTDAYS<![CDATA[ >  ]]>0 or DELAYAMTDAYS<![CDATA[ >  ]]>0)
+            and ( DELAYINTERESTDAYS<![CDATA[ >  ]]>0 or DELAYAMTDAYS<![CDATA[ >  ]]>0)
 	</select>
 	
 	<select id="findDkyesum" parameterType="String" resultType="String">
@@ -859,7 +859,7 @@ from
            WHERE 1=1 and  mbm.parent_id =#{childId}
 	</select>
 	
-	<select id="findrwjebyorganName" parameterType="String" resultType="String">
+	<select id="findrwjebyorganName" parameterType="String" resultType="int">
 	     select sum(REQLMT) from ty_mibusidata a where 1=1 
 	     <if test="year != null and year != '' ">
 			and substr(a.loandate, '0', '4') = #{year}
@@ -867,7 +867,7 @@ from
 		<if test="month != null and month != '' ">
 			and substr(a.loandate, '5', '2') = #{month}
 		</if>
-		<if test="managerId != null and managerId != '' ">
+		<if test="organName != null and organName != '' ">
 			and  a.ywjg=#{organName}
 		</if>
 	</select>

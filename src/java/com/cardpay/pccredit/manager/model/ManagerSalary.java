@@ -81,7 +81,7 @@ public class ManagerSalary extends BusinessModel {
 	//基本工资
 	private String zhbasepay;
 	
-	//当月贷款绩效
+	//当月绩效
 	private String MonthPerformance;
 	
 	//主办

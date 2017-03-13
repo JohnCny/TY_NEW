@@ -29,6 +29,9 @@
               <li>
                 <span>有效客户经理人数：<input type="text" id="managerNum" name="managerNum" value="" maxlength="50"/></span>
               </li>
+               <li>
+                <span>小微金融部有效人数：<input type="text" id="managerNums" name="managerNums" value="" maxlength="50"/></span>
+              </li>
               <li class="search_button">
                 <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
                   title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
@@ -165,19 +168,23 @@
 		//生成工资
 		$("#id_genertae_button").click(function() {
 	    	if($('#date').val() == "" || $('#date').val() == null||
-	    			$('#managerNum').val() == "" || $('#managerNum').val() == null){
+	    			$('#managerNum').val() == "" || $('#managerNum').val() == null||
+	    			$('#managerNums').val() == "" || $('#managerNums').val() == null){
 	    		if($('#date').val() == "" || $('#date').val() == null){
 	    			Dialog.message("请输入日期");
 	    		}
 	    		if($('#managerNum').val() == "" || $('#managerNum').val() == null){
-	    			Dialog.message("请输入客户经理总人数");
+	    			Dialog.message("请输入有效客户经理人数");
+	    		}
+	    		if($('#managerNums').val() == "" || $('#managerNums').val() == null){
+	    			Dialog.message("请输入小微金融部有效总人数");
 	    		}
 	    	}else{
 	    		Dialog.load();
 				$.ajax({
 					type:'GET',
 					url:"${modulePath}/generateData.json",
-					data:{'date': $('#date').val(),'managerNum':$('#managerNum').val()},
+					data:{'date': $('#date').val(),'managerNum':$('#managerNum').val(),'managerNums':$('#managerNums').val()},
 					success:function(data){
 						Dialog.closeLoad();
 						if(data.success == true){

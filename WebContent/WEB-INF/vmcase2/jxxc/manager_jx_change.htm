@@ -46,13 +46,15 @@
               </td>
              	<td><label for="basePay">有效工作日(每月工作日或有不同):</label></td>
               <td><input class="text"  type="text" id="deliverTime" name="deliverTime" value="" /></td>
-             <!--  <td><label for="userId">客户经理类型：</label></td>
-              <td>
-                  <select  name="managerType"  >
-                  	#dict("MANAGER_TYPE",$!accountManagerParameter.managerType)
-                  </select>
-              </td> -->
              </tr>
+             <tr>  
+             <td><label for="userId">客户经理类型：</label></td>
+             <td>
+                  <select  name="managerType"  >
+                  	#dict("userType",$!accountManagerParameter.managerType)
+                  </select>
+              </td> 
+              </tr>
              
           </table>
         </div>
