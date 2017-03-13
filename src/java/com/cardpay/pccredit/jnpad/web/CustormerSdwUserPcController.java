@@ -271,10 +271,11 @@ public class CustormerSdwUserPcController extends BaseController{
 	public JRadReturnMap insertsdjy(@ModelAttribute RiskCustomer RiskCustomer,@ModelAttribute CustormerSdwUser CustormerSdwUser,@ModelAttribute IntoPieces IntoPieces,HttpServletRequest request) {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		String userId=user.getId();
 		CustormerSdwUser.setSDJE(request.getParameter("decisionAmount"));
 		CustormerSdwUser.setSDTIME(new Date());
 		CustormerSdwUser.setSDQX(request.getParameter("qx"));
-		CustormerSdwUser.setSDWJLY(user.getId());
+		CustormerSdwUser.setSDWJLY(userId);
 		CustormerSdwUser.setSDWUSER1YJ(request.getParameter("SDWUSER1YJ"));
 		CustormerSdwUser.setLV(request.getParameter("decisionRate"));
 		CustormerSdwUser.setCAPID(request.getParameter("id"));
@@ -292,7 +293,6 @@ public class CustormerSdwUserPcController extends BaseController{
 				int b=SdwUserService.updateCustormerInfoSdwUser(IntoPieces);
 				//通过状态
 				String applicationId=request.getParameter("id");
-				String userId=user.getId();
 				Date times=new Date();
 				String money=request.getParameter("decisionAmount");
 				SdwUserService.updateCSZTs(userId,times,money,applicationId);
@@ -306,7 +306,7 @@ public class CustormerSdwUserPcController extends BaseController{
 				IntoPieces.setStatus("refuse");
 				IntoPieces.setCreatime(new Date());
 				IntoPieces.setId(request.getParameter("id"));
-				IntoPieces.setUserId(user.getId());
+				IntoPieces.setUserId(userId);
 				IntoPieces.setREFUSAL_REASON(request.getParameter("decisionRefusereason"));
 				int c=SdwUserService.updateCustormerInfoSdwUser(IntoPieces);
 				if(c>0){
@@ -317,7 +317,8 @@ public class CustormerSdwUserPcController extends BaseController{
 						RiskCustomer.setRiskCreateType("manual");
 						RiskCustomer.setRefuseReason(request.getParameter("decisionRefusereason"));
 						RiskCustomer.setCREATED_TIME(new Date());
-						RiskCustomer.setCustManagerId(user.getId());
+						RiskCustomer.setUserId(userId);
+						RiskCustomer.setCustManagerId(request.getParameter("custManagerId"));
 						String pid=null;
 						if(null==pid){
 							pid=UUID.randomUUID().toString();
@@ -326,7 +327,6 @@ public class CustormerSdwUserPcController extends BaseController{
 						int e=SdwUserService.insertRiskSdwUser(RiskCustomer);
 						//拒绝时修改节点状态
 						String applicationId=request.getParameter("id");
-						String userId=user.getId();
 						Date times=new Date();
 						SdwUserService.updateHistorys(userId,times,applicationId);
 						if(e>0){
@@ -345,12 +345,11 @@ public class CustormerSdwUserPcController extends BaseController{
 				IntoPieces.setStatus("returnedToFirst");
 				IntoPieces.setId(request.getParameter("id"));
 				IntoPieces.setFallBackReason(request.getParameter("decisionRefusereason"));
-				IntoPieces.setUserId(user.getId());
+				IntoPieces.setUserId(userId);
 				IntoPieces.setCreatime(new Date());
 				int c=SdwUserService.updateCustormerInfoSdwUser(IntoPieces);
 				//退回时修改节点状态
 				String applicationId=request.getParameter("id");
-				String userId=user.getId();
 				Date times=new Date();
 				SdwUserService.updateHistory(userId,times,applicationId);
 				if(c>0){

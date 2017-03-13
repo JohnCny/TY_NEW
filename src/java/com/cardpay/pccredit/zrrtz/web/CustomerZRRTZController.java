@@ -88,6 +88,7 @@ public class CustomerZRRTZController extends BaseController{
 	
 	@Autowired
 	private ZrrtzDao dao;
+	
 	/**
 	 * 浏览借款人信息信息页面
 	 * 
@@ -381,5 +382,5 @@ public class CustomerZRRTZController extends BaseController{
 				returnMap.put("mes", "归档成功");
 				return returnMap;
 	 }
-	
+	 	
 }
