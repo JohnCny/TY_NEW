@@ -323,7 +323,7 @@
 	    SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
-		 select 
+		<!--  select 
 		          c.ID as id,c.CUSTOMER_ID as customerId,c.PRODUCT_ID as productId,
 		          s.display_name as displayName,p.product_name as productName,b.card_id as cardId,
 		          c.APPLY_QUOTA as applyQuota,c.CREATED_TIME as creatime,b.chinese_name as chineseName,
@@ -333,7 +333,18 @@
 				  product_attribute p,BASIC_CUSTOMER_INFORMATION b
 				  where c.id=t.capid
 				  and s.id=b.user_id and b.id=c.customer_id and c.product_id=p.id 
-				  and (t.sdwuser1=#{userId} or t.sdwuser2=#{userId} or t.sdwuser3=#{userId}) 
+				  and (t.sdwuser1=#{userId} or t.sdwuser2=#{userId} or t.sdwuser3=#{userId})  -->
+				  select 
+              c.ID as id,c.CUSTOMER_ID as customerId,c.PRODUCT_ID as productId,
+              s.display_name as displayName,p.product_name as productName,b.card_id as cardId,
+              c.APPLY_QUOTA as applyQuota,c.CREATED_TIME as creatime,b.chinese_name as chineseName,
+          PROD_CREDIT_RANGE as PRODCREDITRANGE
+          from 
+          CUSTOMER_APPLICATION_INFO c,CUSTOMER_SP t,sys_user s,
+          product_attribute p,BASIC_CUSTOMER_INFORMATION b
+          where c.id=t.capid
+          and s.id=b.user_id and b.id=c.customer_id and c.product_id=p.id 
+          and (t.SPUSERID=#{userId}) 
 		 <if test="cardId!=null and cardId!=''">
 			and b.card_id=#{cardId}
 		</if>
@@ -352,7 +363,7 @@
 		COUNT (*)
 		FROM
 		(
-		 select 
+		<!--  select 
 		          c.ID as id,c.CUSTOMER_ID as customerId,c.PRODUCT_ID as productId,
 		          s.display_name as displayName,p.product_name as productName,b.card_id as cardId,
 		          c.APPLY_QUOTA as applyQuota,c.CREATED_TIME as creatime,b.chinese_name as chineseName,
@@ -362,7 +373,75 @@
 				  product_attribute p,BASIC_CUSTOMER_INFORMATION b
 				  where c.id=t.capid
 				  and s.id=b.user_id and b.id=c.customer_id and c.product_id=p.id and t.SDTIME is  null
-				  and (t.sdwuser1=#{userId} or t.sdwuser2=#{userId} or t.sdwuser3=#{userId}) 
+				  and (t.sdwuser1=#{userId} or t.sdwuser2=#{userId} or t.sdwuser3=#{userId})  -->
+				   select 
+              c.ID as id,c.CUSTOMER_ID as customerId,c.PRODUCT_ID as productId,
+              s.display_name as displayName,p.product_name as productName,b.card_id as cardId,
+              c.APPLY_QUOTA as applyQuota,c.CREATED_TIME as creatime,b.chinese_name as chineseName,
+          PROD_CREDIT_RANGE as PRODCREDITRANGE
+          from 
+          CUSTOMER_APPLICATION_INFO c,CUSTOMER_SP t,sys_user s,
+          product_attribute p,BASIC_CUSTOMER_INFORMATION b
+          where c.id=t.capid
+          and s.id=b.user_id and b.id=c.customer_id and c.product_id=p.id 
+          and (t.SPUSERID=#{userId}) 
+		 <if test="cardId!=null and cardId!=''">
+			and b.card_id=#{cardId}
+		</if>
+		<if test="chineseName!=null ">
+			<![CDATA[ and b.chinese_name like '%'||#{chineseName}||'%' ]]>
+		</if>
+		
+		)
+	</select>
+	
+	<!-- 查询最终审贷 -->
+	<select id="findCustomerApplicationIntopieceDecisionFormes" resultMap="IntoPiecesFilters">
+	    SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+		  select 
+          c.ID as id,c.CUSTOMER_ID as customerId,c.PRODUCT_ID as productId,
+          s.display_name as displayName,p.product_name as productName,b.card_id as cardId,
+          c.APPLY_QUOTA as applyQuota,c.CREATED_TIME as creatime,b.chinese_name as chineseName,
+          PROD_CREDIT_RANGE as PRODCREDITRANGE
+          from 
+          CUSTOMER_APPLICATION_INFO c,CUSTOMER_SP t,sys_user s,
+          product_attribute p,BASIC_CUSTOMER_INFORMATION b
+          where c.id=t.capid
+          and s.id=b.user_id and b.id=c.customer_id and c.product_id=p.id 
+          and c.id in (select b.capid from (select sp.capid ,count(sp.capid) as nums from CUSTOMER_SP sp where sp.status not in '0' group by  sp.capid) b where b.nums=3) 
+          group by c.id,c.CUSTOMER_ID,c.PRODUCT_ID,s.display_name,p.product_name,b.card_id ,c.APPLY_QUOTA ，c.CREATED_TIME，b.chinese_name，PROD_CREDIT_RANGE
+		 <if test="cardId!=null and cardId!=''">
+			and b.card_id=#{cardId}
+		</if>
+		<if test="chineseName!=null ">
+			<![CDATA[ and b.chinese_name like '%'||#{chineseName}||'%' ]]>
+		</if>
+		<![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	<select id="findCustomerApplicationIntopieceDecisionCountFormes"
+		resultType="int">
+		SELECT
+		COUNT (*)
+		FROM
+		(
+		 select 
+          c.ID as id,c.CUSTOMER_ID as customerId,c.PRODUCT_ID as productId,
+          s.display_name as displayName,p.product_name as productName,b.card_id as cardId,
+          c.APPLY_QUOTA as applyQuota,c.CREATED_TIME as creatime,b.chinese_name as chineseName,
+          PROD_CREDIT_RANGE as PRODCREDITRANGE
+          from 
+          CUSTOMER_APPLICATION_INFO c,CUSTOMER_SP t,sys_user s,
+          product_attribute p,BASIC_CUSTOMER_INFORMATION b
+          where c.id=t.capid
+          and s.id=b.user_id and b.id=c.customer_id and c.product_id=p.id 
+          and c.id in (select b.capid from (select sp.capid ,count(sp.capid) as nums from CUSTOMER_SP sp where sp.status not in '0' group by  sp.capid) b where b.nums=3) 
+          group by c.id,c.CUSTOMER_ID,c.PRODUCT_ID,s.display_name,p.product_name,b.card_id ,c.APPLY_QUOTA ，c.CREATED_TIME，b.chinese_name，PROD_CREDIT_RANGE
 		 <if test="cardId!=null and cardId!=''">
 			and b.card_id=#{cardId}
 		</if>

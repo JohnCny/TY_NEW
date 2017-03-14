@@ -3,7 +3,6 @@
  */
 package com.cardpay.pccredit.zrrtz.web;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.ParseException;
@@ -89,6 +88,7 @@ public class CustomerZRRTZController extends BaseController{
 	
 	@Autowired
 	private ZrrtzDao dao;
+	
 	/**
 	 * 浏览借款人信息信息页面
 	 * 
@@ -157,7 +157,7 @@ public class CustomerZRRTZController extends BaseController{
 				mv.addObject("type", 6);//后台
 				return mv; 
 		 }
-		}
+	}
 	
 	
 	/**
@@ -165,7 +165,7 @@ public class CustomerZRRTZController extends BaseController{
 	 */
 	@ResponseBody
 	@RequestMapping(value = "export.json", method = { RequestMethod.GET })
-	public void exportAll(@ModelAttribute ReportFilter filter, HttpServletRequest request,HttpServletResponse response){
+	public void exportAll(@ModelAttribute ReportFilter filter,ZrrtzFilter filter1, HttpServletRequest request,HttpServletResponse response){
 		filter.setRequest(request);
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 		String id=user.getId();
@@ -364,7 +364,6 @@ public class CustomerZRRTZController extends BaseController{
 			return returnMap;
 		}
 
-		
 		//手动归档 
 	 	@ResponseBody
 	 	@RequestMapping(value = "addCustomerPigeonhole.json", method = { RequestMethod.GET })
@@ -383,5 +382,5 @@ public class CustomerZRRTZController extends BaseController{
 				returnMap.put("mes", "归档成功");
 				return returnMap;
 	 }
-	
+	 	
 }

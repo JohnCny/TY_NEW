@@ -1,5 +1,7 @@
 package com.cardpay.pccredit.customer.model;
 
+import java.util.Date;
+
 import com.wicresoft.jrad.base.database.id.IDType;
 import com.wicresoft.jrad.base.database.model.BusinessModel;
 import com.wicresoft.jrad.base.database.model.ModelParam;
@@ -71,6 +73,13 @@ public class CustomerFirsthendBase extends BusinessModel{
 	private String zhxgry;//最后修改人员
 	private String zhxgsj;//最后修改时间
 	private String createTime;
+	private Date updatetime;
+	public Date getUpdatetime() {
+		return updatetime;
+	}
+	public void setUpdatetime(Date updatetime) {
+		this.updatetime = updatetime;
+	}
 	public String getKhnm() {
 		return khnm;
 	}

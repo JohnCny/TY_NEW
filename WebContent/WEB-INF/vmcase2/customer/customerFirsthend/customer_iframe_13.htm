@@ -1,0 +1,121 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+  <script src="${contextPath}/common/js/common/jquery.form.js"></script>
+  <script type="text/javascript" src="${contextPath}/common/js/common/tinybox.js"></script>
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户原始信息修改>修改详情</div>
+      </div>
+        <div class="tabplace">
+            <ul class="com-tab" >
+            	<li class="tab activeTab">修改详情</li>
+         	</ul>
+        </div>
+      <!-- <form id="id_module_form" action="${contextPath}/product/productinformation/updateBaseCustomer.json"  method="post"> -->
+         <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
+          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 90%">
+         <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="30%" />
+            </colgroup>
+             <tr>
+              <td class="titlefc3"><label for="khlx">客户姓名:</label></td>
+              <td><input class="rinpsty"  type="text" id="khlx" name="khlx" value="$result1.chinesename" readonly/></td>
+                <td class="titlefc3"><label for="khlx">证件号码:</label></td>
+              <td><input class="rinpsty"  type="text" id="khlx" name="khlx" value="$result1.cardid" readonly/></td>
+            </tr>
+          #foreach($customer in $result)
+             <tr><td class="titlec" colspan="4" style="text-align: center;">$!customer.zdname,$!customer.updatetime1</td></tr>
+            <tr>
+              <td class="titlefc3"><label for="khlx">原始值:</label></td>
+              <td><input class="rinpsty"  type="text" id="khlx" name="khlx" value="$!customer.originalvalue" readonly/></td>
+                <td class="titlefc3"><label for="khlx">修改值:</label></td>
+              <td><input class="rinpsty"  type="text" id="khlx" name="khlx" value="$!customer.modifiedvalue" readonly/></td>
+            </tr>
+          
+                 #end
+          </table>
+        </div>
+      <!-- </form> -->
+      <div class="submit">
+ 			<input type="button" id="id_create_button;" value="返回" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+  
+  
+  
+  
+  
+	var layout = new FormsLayout("formsId");
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	
+	$(document).ready(function() {		
+		/* $("input[type='text']").attr("disabled",true);
+		$("input[type='radio']").attr("disabled",true);
+		$("input[type='checkbox']").attr("disabled",true);
+		$("select").attr("disabled",true); */
+		$("#id_create_button").click(function() {
+			window.location.href="/PCCredit/customer/maintenance/log.page";
+		});
+	});
+	
+	//返回
+	function returnClick(){
+		window.location.href= contextPath + "/customer/customerInfor_wh_ty/browse.page";
+		// window.location.href= contextPath + "/customer/firsthend/browse.page" ;
+	}
+	
+	//修改
+	function updateClick(){
+		$.ajax({
+				url : url,
+				type : "get",
+				success : function(data) {
+				if(data.message=="操作成功"){
+					 Dialog.message(data.message);
+					window.location.href="/PCCredit/customer/firsthend/showCustomerInfoJn.page?id="+id;
+				}else{
+					 Dialog.message("操作失败");
+				}
+					/* if (data.success) {
+					window.location.href="${modulePath}/custormerblacklist11.page";
+					}
+					else{
+						topWin.Dialog.message(data.message);
+				    } 
+					submitFlag = 0; */
+				}
+	});  
+	/* 	$('#id_module_form').ajaxSubmit({
+			dataType : 'json',
+			type : "post",
+			success : function(data) {
+				if (data.success) {
+					Dialog.message(data.message,"提示", function() {
+						window.location.reload(true);
+					 });
+				} else {
+					Dialog.message(data.errors.errors[0].message);
+					return false;
+				}
+			},
+			error : function(data) {
+				Dialog.closeLoad();
+				Dialog.message("操作失败");
+				return false;
+			}
+		}); */
+	}
+  </script>
+   <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
+  
+</body>
+#parse ("common/iframe_page_footer.htm")

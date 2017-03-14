@@ -1,5 +1,6 @@
 package com.cardpay.pccredit.customer.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,13 +13,19 @@ import com.cardpay.pccredit.customer.model.ParameterInformaion;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.ipad.model.UserIpad;
 import com.cardpay.pccredit.product.model.ProductAttribute;
+import com.cardpay.pccredit.zrrtz.dao.ZrrtzDao;
+import com.cardpay.pccredit.zrrtz.model.IncomingData;
 import com.cardpay.pccredit.zrrtz.model.Pigeonhole;
+import com.cardpay.pccredit.zrrtz.model.ZrrtzFilter;
 
 
 @Service
 public class CustomerParameterService {
 	@Autowired
 	private ICustomerParameterDao cpDao;
+	
+	@Autowired
+	private ZrrtzDao dao;
 
 	public void addCustomerParameter(CustomerParameter cp) {
 		// TODO Auto-generated method stub
@@ -53,5 +60,19 @@ public class CustomerParameterService {
 		// TODO Auto-generated method stub
 		cpDao.addCustomerPigeonhole(pig);
 	}
+	
+		//归档所有档案
+	public void addAllCustomerPigeonhole() throws IOException{
+		ZrrtzFilter filter = new ZrrtzFilter();
+		Pigeonhole pig = new Pigeonhole();
+		List<IncomingData> pigs=dao.findIntoPiecesListes(filter);
+		System.out.println(pigs.size());
+		for(IncomingData datas:pigs){
+		pig.setYwbh(datas.getYwbh());
+		pig.setUserId(datas.getUserId());
+		pig.setPigeonhole("0");
+		cpDao.addCustomerPigeonhole(pig);
+		}
+}
 
 }

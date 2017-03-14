@@ -12,11 +12,11 @@
             <ul>
              #if($!type!=6)
               <li>
-									<table><tr><td><label for="entryTime">开始时间:</label></td>
-									<td><input class="rinpsty" type="text" id="fdate" name="fdate" value=""  onmouseover="_calendar()" readonly="readonly"/></td>
-									<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-									<td><label for="entryTime">结束时间:</label></td>
-									<td><input class="rinpsty" type="text" id="ldate" name="ldate" value=""  onmouseover="_calendar()" readonly="readonly"/></span></td></tr></table>
+					<table><tr><td><label for="entryTime">开始时间:</label></td>
+					<td><input class="rinpsty" type="text" id="fdate" name="fdate" value=""  onmouseover="_calendar()" readonly="readonly"/></td>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+					<td><label for="entryTime">结束时间:</label></td>
+					<td><input class="rinpsty" type="text" id="ldate" name="ldate" value=""  onmouseover="_calendar()" readonly="readonly"/></span></td></tr></table>
               </li>
                #else
                <li>
@@ -30,7 +30,6 @@
 			    </span>
               </li>
                #end
-             
               
               <li class="search_button">
                 <input id="id_browse1_button" type="submit" value="#i18n('button.browse')" class="search_button_inquiry"
@@ -86,12 +85,12 @@
       </div>
       <div class="pagebar">
         <div class="controlbtn">
-          #if($!type==6)
+         #if($!type==6)
            <a id="pigeonhole"  class="btn_g" >纸质归档</a>
            #else
-         <a id="addNew" class="btn_g" href="javascript:void(0);" title="#i18n('button.display.hint')">数据填补</a>
-          <a id="export" class="btn_g" href="javascript:void(0);" title="#i18n('button.export.hint')">excle导出</a>
-         #end   
+         <a id="addNew" class="btn_gr" href="javascript:void(0);" title="#i18n('button.display.hint')">数据填补</a>
+         <a id="export" class="btn_g" href="javascript:void(0);" title="#i18n('button.export.hint')">excle导出</a>
+       	 #end  
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>

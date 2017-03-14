@@ -55,4 +55,6 @@ public interface AccountManagerParameterDao {
 	 * 根据filter查询所有客户经理信息数量
 	 */
 	public int findAccountManagerParametersByAllCount(AccountManagerParameterFilter filter);
+	
+	public void updateObject(AccountManagerParameter accountManagerParameter);
 }

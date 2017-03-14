@@ -15,11 +15,12 @@ public class TyRarepaylistForm extends BusinessModel {
 	String jzrq;
 	String create_time;
 	String khmc;
-	
+	String display_name;
 	
 	public TyRarepaylistForm(){}
 	public TyRarepaylistForm(String ywbh, String jkrq, String bj, String lx,
-			String jxfs, String jzrq, String create_time, String khmc) {
+			String jxfs, String jzrq, String create_time, String khmc,
+			String display_name) {
 		this.ywbh = ywbh;
 		this.jkrq = jkrq;
 		this.bj = bj;
@@ -28,6 +29,7 @@ public class TyRarepaylistForm extends BusinessModel {
 		this.jzrq = jzrq;
 		this.create_time = create_time;
 		this.khmc = khmc;
+		this.display_name = display_name;
 	}
 	public String getKhmc() {
 		return khmc;
@@ -76,6 +78,12 @@ public class TyRarepaylistForm extends BusinessModel {
 	}
 	public void setCreate_time(String create_time) {
 		this.create_time = create_time;
+	}
+	public String getDisplay_name() {
+		return display_name;
+	}
+	public void setDisplay_name(String display_name) {
+		this.display_name = display_name;
 	}
 	
 	

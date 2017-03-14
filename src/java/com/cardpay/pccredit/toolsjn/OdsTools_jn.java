@@ -117,7 +117,7 @@ public class OdsTools_jn {
 			}
 		}
 		log.error(dateString+"******************开始解压********************");  
-		String gzFile = FtpUtils.bank_ftp_down_path+File.separator+dateString;
+		/*String gzFile = FtpUtils.bank_ftp_down_path+File.separator+dateString;
 		for(int i=0;i<fileName.length;i++){
 			String url1 = gzFile+File.separator+fileName[i];
 			File fileUrl = new File(url1);
@@ -126,12 +126,47 @@ public class OdsTools_jn {
 				SFTPUtil31 csftp = new SFTPUtil31();
 				csftp.connect();  
 				//gzFile    "tar -zxvf "+ fileUrl+ "-C " + fileUrl;
-				String command = "unzip -n"+fileUrl+"-d"+fileUrl;
+				String command = "unzip"+fileUrl;
 				log.info("tar命令:"+command);
 				Runtime.getRuntime().exec(command);
 				//删除压缩包  存在解压未完成 删包的condition
-				//fileUrl.delete();
+				fileUrl.delete();
 				csftp.disconnect();
+			}
+		}*/
+		String gzFile = FtpUtils.bank_ftp_down_path+File.separator+dateString;
+		for(int i=0;i<fileName.length;i++){
+			String url1 = gzFile+File.separator+fileName[i];
+			File fileUrl = new File(url1);
+			if(fileUrl.exists()){
+				ZipFile zip = new ZipFile(url1);  
+				for(Enumeration entries = zip.getEntries();entries.hasMoreElements();){
+					ZipEntry entry = (ZipEntry)entries.nextElement();  
+					String zipEntryName = entry.getName();  
+					InputStream in = zip.getInputStream(entry);  
+					String outPath = (gzFile+File.separator+zipEntryName).replaceAll("\\*", "/");
+					//判断路径是否存在,不存在则创建文件路径  
+					File file = new File(outPath.substring(0, outPath.lastIndexOf('/')));  
+					if(!file.exists()){  
+						file.mkdirs();  
+					}  
+					//判断文件全路径是否为文件夹,如果是上面已经上传,不需要解压  
+					if(new File(outPath).isDirectory()){  
+						continue;  
+					}  
+					
+					OutputStream out = new FileOutputStream(outPath);  
+					byte[] buf1 = new byte[1024];  
+					int len;  
+					while((len=in.read(buf1))>0){
+						out.write(buf1,0,len);  
+					}  
+					in.close();  
+					out.close();         
+					zip.close();
+				}
+				//删除压缩包
+				fileUrl.delete();
 			}
 		}
 		log.error(dateString+"******************解压完毕********************");  

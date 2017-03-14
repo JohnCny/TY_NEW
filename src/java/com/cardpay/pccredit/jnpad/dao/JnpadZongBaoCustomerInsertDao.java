@@ -16,4 +16,5 @@ public interface JnpadZongBaoCustomerInsertDao {
 	//抢单
 	Object updateCustomerInfo(@Param (value ="customerId")String customerId,@Param (value ="userId")String userId);
 	List<IntoPieces> selectAllMyZb(@Param (value ="userId") String userId);
+	int selectCustomerInfoCount(@Param (value ="cardId") String cardId);
 }

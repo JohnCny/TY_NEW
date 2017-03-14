@@ -5,13 +5,16 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.cardpay.pccredit.Sx.model.SxOutputData;
 import com.cardpay.pccredit.customer.filter.CustomerInfoLszFilter;
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
+import com.cardpay.pccredit.customer.model.CUSTORMERINFOUPDATE;
 import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
 import com.cardpay.pccredit.customer.model.CustomerFirsthendBase;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.model.CustomerInforWeb;
 import com.cardpay.pccredit.customer.model.MaintenanceLog;
+import com.cardpay.pccredit.customer.model.TyMibusidataForm;
 import com.cardpay.pccredit.customer.model.TyRepayLsz;
 import com.cardpay.pccredit.customer.model.TyRepayYehz;
 import com.cardpay.pccredit.customer.model.TyRepayYehzVo;
@@ -301,6 +304,27 @@ public interface CustomerInforDao {
 	public int insertFCRESULTHIS(Map<String, Object> map);
 	public int insertMIBUSIDATA(Map<String, Object> map);
 	public int insertCipersonBasinfo(Map<String, Object> map);
+
+	public int inserTyMIBUSIDATA(TyMibusidataForm tyMibusidataForm);
+	public List<TyMibusidataForm> findmibusidata();
+	public List<CustomerInforFilter> findUpdateCustormer(CustomerInforFilter filter);
+	public List<CustomerInforFilter> findUpdateCustormer1(CustomerInforFilter filter);
+	public int updateCustormerBytyId(CustomerFirsthendBase filter);
+	
+	public List<CustomerInforFilter> padfindUpdateCustormer(@Param("userId") String userId);
+	
+	
+	
+
+	
+	
+	public int insertCustormerUpdate(CUSTORMERINFOUPDATE CUSTORMERINFOUPDATE);
+	public List<CUSTORMERINFOUPDATE> findCustormerUpdate(@Param("cardid") String cardid);
+	public int findCustormerUpdateCount(@Param("cardid") String cardid);
+	public void deletelastmibusidata();
+	public void deletelastsx();
+	public void insertsxOoutputDate(SxOutputData sxOutputData);
+	public List<SxOutputData> findSxListByFilter();
 
 	
 }

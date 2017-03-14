@@ -40,8 +40,15 @@ public class MibusidateView extends BusinessModel{
 	private String je;
 	private String CREATE_TIME;
 	private String operdatetime;
+	private String dlayamtsum;
 	
 	
+	public String getDlayamtsum() {
+		return dlayamtsum;
+	}
+	public void setDlayamtsum(String dlayamtsum) {
+		this.dlayamtsum = dlayamtsum;
+	}
 	public String getLoandate() {
 		return loandate;
 	}

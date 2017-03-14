@@ -1,6 +1,8 @@
 package com.cardpay.pccredit.jnpad.web;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,10 +23,13 @@ import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.web.AddIntoPiecesForm;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.jnpad.dao.JnpadCustormerSdwUserDao;
+import com.cardpay.pccredit.jnpad.model.CustomerSpUser;
 import com.cardpay.pccredit.jnpad.model.CustormerSdwUser;
 import com.cardpay.pccredit.jnpad.model.JnpadCsSdModel;
 import com.cardpay.pccredit.jnpad.service.JnpadCustormerSdwUserService;
+import com.cardpay.pccredit.jnpad.service.JnpadSpUserService;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
+import com.wicresoft.jrad.base.database.id.IDGenerator;
 
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
@@ -34,8 +39,8 @@ public class JnpadCustormerSdwUserController {
 	
 	@Autowired
 	private JnpadCustormerSdwUserService SdwUserService;
-	
-	
+	@Autowired
+	private JnpadSpUserService UserService;
 	/**
 	 * 添加审贷会成员
 	 * @param CustormerSdwUser
@@ -78,14 +83,11 @@ public class JnpadCustormerSdwUserController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/ipad/CustormerSdwUser/insertCS.json", method = { RequestMethod.GET })
-	public String insertCS(@ModelAttribute AppManagerAuditLog AppManagerAuditLog,@ModelAttribute CustormerSdwUser CustormerSdwUser,HttpServletRequest request) {
+	public String insertCS(@ModelAttribute CustomerSpUser CustomerSpUser,@ModelAttribute AppManagerAuditLog AppManagerAuditLog,@ModelAttribute CustormerSdwUser CustormerSdwUser,HttpServletRequest request) {
 		Map<String,Object> map = new LinkedHashMap<String,Object>();
+		List<CustomerSpUser> list=new ArrayList<CustomerSpUser>();
 		AppManagerAuditLog result=SdwUserService.selectaId(request.getParameter("cid"),request.getParameter("pid"));
-		String cid=null;
-		if(null==cid){
-			cid=UUID.randomUUID().toString();
-		}
-		AppManagerAuditLog.setId(cid);
+		AppManagerAuditLog.setId(IDGenerator.generateID());
 		AppManagerAuditLog.setApplicationId(result.getApplicationId());
 		AppManagerAuditLog.setAuditType("1");
 		AppManagerAuditLog.setExamineLv(request.getParameter("lv"));
@@ -97,7 +99,31 @@ public class JnpadCustormerSdwUserController {
 		AppManagerAuditLog.setUserId_4(request.getParameter("userId"));
 		int a=SdwUserService.insertCsJl(AppManagerAuditLog);
 		if(a>0){
-			CustormerSdwUser.setSDWUSER1(request.getParameter("user_Id1"));
+			CustomerSpUser.setId(IDGenerator.generateID());
+			CustomerSpUser.setCid(request.getParameter("cid"));
+			CustomerSpUser.setPid(request.getParameter("pid"));
+			CustomerSpUser.setCapid(result.getApplicationId());
+			CustomerSpUser.setTime(new Date());
+			CustomerSpUser.setStatus("0");
+			CustomerSpUser c=new CustomerSpUser();
+			c.setSpuserid(request.getParameter("user_Id1"));
+			list.add(0, c);
+			CustomerSpUser c1=new CustomerSpUser();
+			c1.setSpuserid(request.getParameter("user_Id2"));
+			list.add(1, c1);
+			CustomerSpUser c2=new CustomerSpUser();
+			c2.setSpuserid(request.getParameter("user_Id3"));
+			list.add(2, c2);
+			for(int sd=0;sd<list.size();sd++){
+				CustomerSpUser.setSpuserid(list.get(sd).getSpuserid());
+				int b=UserService.addSpUser(CustomerSpUser);
+				if(b>0 && sd==2){
+					map.put("message", "提交成功");
+				}else if(b<=0){
+					map.put("message", "提交失败");
+				}
+			}
+			/*CustormerSdwUser.setSDWUSER1(request.getParameter("user_Id1"));
 			CustormerSdwUser.setSDWUSER2(request.getParameter("user_Id2"));
 			CustormerSdwUser.setSDWUSER3(request.getParameter("user_Id3"));
 			CustormerSdwUser.setTIME(new Date());
@@ -114,9 +140,9 @@ public class JnpadCustormerSdwUserController {
 				map.put("message", "提交成功");
 			}else{
 				map.put("message", "提交失败");
-			}
+			}*/
 		}else{
-			map.put("message", "提交成功");
+			map.put("message", "提交失败");
 		}
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
@@ -173,11 +199,15 @@ public class JnpadCustormerSdwUserController {
 		CustormerSdwUser.setSDQX(request.getParameter("qx"));
 		CustormerSdwUser.setSDWJLY(request.getParameter("userId"));
 		CustormerSdwUser.setSDWUSER1YJ(request.getParameter("cyUser1"));
-		CustormerSdwUser.setSDWUSER2YJ(request.getParameter("cyUser2"));
-		CustormerSdwUser.setSDWUSER3YJ(request.getParameter("fdUser"));
+/*		CustormerSdwUser.setSDWUSER2YJ(request.getParameter("cyUser2"));
+		CustormerSdwUser.setSDWUSER3YJ(request.getParameter("fdUser"));*/
 		CustormerSdwUser.setLV(request.getParameter("lv"));
 		CustormerSdwUser.setCAPID(request.getParameter("id"));
-		int a=SdwUserService.updateCustormerSdwUser(CustormerSdwUser);
+		CustormerSdwUser.setSDWUSER2YJ(request.getParameter("decisionRefusereason"));
+		CustormerSdwUser.setPID(request.getParameter("productId"));
+		CustormerSdwUser.setCAPID(request.getParameter("id"));
+		CustormerSdwUser.setCID(request.getParameter("customerId"));
+		int a=SdwUserService.insertCustormerSdwUser1(CustormerSdwUser);
 		if(a>0){
 			if(request.getParameter("status").equals("APPROVE")){
 				IntoPieces.setFinal_approval(request.getParameter("sxed"));
@@ -206,7 +236,7 @@ public class JnpadCustormerSdwUserController {
 						RiskCustomer.setRiskCreateType("manual");
 						RiskCustomer.setRefuseReason(request.getParameter("decisionRefusereason"));
 						RiskCustomer.setCREATED_TIME(new Date());
-						RiskCustomer.setCustManagerId(request.getParameter("did"));
+						RiskCustomer.setCustManagerId(request.getParameter("user_id"));
 						String pid=null;
 						if(null==pid){
 							pid=UUID.randomUUID().toString();
@@ -250,6 +280,57 @@ public class JnpadCustormerSdwUserController {
 		return json.toString();
 }
 	
+	
+	/**
+	 * 当前审贷委审批
+	 * @param RiskCustomer
+	 * @param CustormerSdwUser
+	 * @param IntoPieces
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/ipad/insertsdjy1.json", method = { RequestMethod.GET })
+	public String insertsdjy1(@ModelAttribute CustomerSpUser CustomerSpUser,HttpServletRequest request) {
+		Map<String,Object> map = new LinkedHashMap<String,Object>();
+		CustomerSpUser.setSpje(request.getParameter("sxed"));
+		CustomerSpUser.setSptime(new Date());
+		CustomerSpUser.setSpqx(request.getParameter("qx"));
+		CustomerSpUser.setSpuserid(request.getParameter("userId"));
+		CustomerSpUser.setBeizhu(request.getParameter("cyUser1"));
+		CustomerSpUser.setSplv(request.getParameter("lv"));
+		CustomerSpUser.setCapid(request.getParameter("id"));
+		CustomerSpUser.setJlyys(request.getParameter("decisionRefusereason"));
+		if(request.getParameter("status").equals("APPROVE")){
+			CustomerSpUser.setStatus("1");
+		}else if(request.getParameter("status").equals("REJECTAPPROVE")){
+			CustomerSpUser.setStatus("2");
+		}else if(request.getParameter("status").equals("RETURNAPPROVE")){
+			CustomerSpUser.setStatus("3");
+		}
+		int a=UserService.addSpUser1(CustomerSpUser);
+		if(a>0){
+			map.put("message", "提交成功");	
+		}else{
+			map.put("message", "提交失败");
+		}
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * 查询初审审贷纪要
 	 * @param JnpadCsSdModel
@@ -261,8 +342,19 @@ public class JnpadCustormerSdwUserController {
 	public String findCsSd(@ModelAttribute JnpadCsSdModel JnpadCsSdModel,HttpServletRequest request) {
 		Map<String,Object> map = new LinkedHashMap<String,Object>();
 		String id=request.getParameter("id");
-		JnpadCsSdModel result=SdwUserService.findCsSd(id);
-		map.put("result", result);
+		AppManagerAuditLog result=SdwUserService.selectCSJLA(id);
+		map.put("result1", result);
+		List<CustomerSpUser> result1=UserService.findspUser3(request.getParameter("id"));
+		for(int a=0;a<result1.size();a++){
+			CustomerSpUser name=UserService.selectUser(result1.get(a).getSpuserid());
+			result1.get(a).setName1(name.getName1());
+		}
+		map.put("result",result1);
+		
+		CustormerSdwUser result3=SdwUserService.selectSpJy(id);
+		CustomerSpUser name=UserService.selectUser(result3.getSDWJLY());
+		result3.setSDWUSER1(name.getName1());
+		map.put("result3",result3);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);
@@ -321,6 +413,17 @@ public class JnpadCustormerSdwUserController {
 		Map<String,Object> map = new LinkedHashMap<String,Object>();
 		String id=request.getParameter("userId");
 		List<IntoPieces> result=SdwUserService.selectSDH1(id);
+		if(result!=null){
+			for(int a=0;a<result.size();a++){
+				List<CustomerSpUser> result1=UserService.selectUser1(result.get(a).getId());
+					CustomerSpUser name=UserService.selectUser(result1.get(0).getSpuserid());
+					result.get(a).setName1(name.getName1());
+					CustomerSpUser name1=UserService.selectUser(result1.get(1).getSpuserid());
+					result.get(a).setName2(name1.getName1());
+					CustomerSpUser name2=UserService.selectUser(result1.get(2).getSpuserid());
+					result.get(a).setName3(name2.getName1());
+			}
+		}
 		map.put("result", result);
 		map.put("size", result.size());
 		JsonConfig jsonConfig = new JsonConfig();
@@ -328,4 +431,65 @@ public class JnpadCustormerSdwUserController {
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);
 		return json.toString();
 }
+	
+	/**
+	 * 最终审批
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/customerIntopiece/selectSpUser.json", method = { RequestMethod.GET })
+	public String selectSpUser( HttpServletRequest request) {
+		List c=new ArrayList();
+		List<AppManagerAuditLog> d=new ArrayList<AppManagerAuditLog>();
+		List<CustomerSpUser> result1=null;
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<CustomerSpUser>result=UserService.findspUser();
+				for(int a=0;a<result.size();a++){
+				 result1=UserService.findspUser2(result.get(a).getCapid());
+					if(result1.size()!=0){
+						if(!result1.get(0).getStatus().equals("0") && !result1.get(1).getStatus().equals("0") && !result1.get(2).getStatus().equals("0")){
+							c.add(result1.get(0).getCapid());
+						}
+					}
+				}
+				for(int b=0;b<c.size();b++){
+					AppManagerAuditLog result2=SdwUserService.selectCSJLA(c.get(b).toString());
+					if(result2!=null){
+						d.add(b, result2);
+					}
+				}
+		
+		map.put("size", d.size());
+		map.put("result", d);
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		c.clear();
+		d.clear();
+		return json.toString();
+	}
+	
+	/**
+	 * 查找当前进件的审贷会信息
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/customerIntopiece/selectSpUser1.json", method = { RequestMethod.GET })
+	public String selectSpUser1( HttpServletRequest request) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<CustomerSpUser> result=UserService.findspUser2(request.getParameter("id"));
+		for(int a=0;a<result.size();a++){
+			CustomerSpUser name=UserService.selectUser(result.get(a).getSpuserid());
+			result.get(a).setName1(name.getName1());
+		}
+		map.put("size", result.size());
+		map.put("result",result);
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+	}
+
 }

@@ -27,9 +27,8 @@
 		<property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
 		
  		  <!-- <property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521/orcl"/>   -->
-  		 <property name="jdbcUrl" value="jdbc:oracle:thin:@10.0.3.4:1521/primary" />  
-    
-  <property name="user" value="pccredit_ty" />
+  		 <property name="jdbcUrl" value="jdbc:oracle:thin:@10.0.3.4:1521/tynxnew" />  
+ 		 <property name="user" value="pccredit_ty" />
 		<property name="password" value="pccredit_ty" />
 		
 		<property name="minPoolSize" value="2" />

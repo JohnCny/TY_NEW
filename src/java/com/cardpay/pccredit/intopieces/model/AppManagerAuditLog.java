@@ -24,6 +24,69 @@ public class AppManagerAuditLog extends BusinessModel {
 	private String  name1;
 	private String  name2;
 	private String  name3;
+	private String  displayName;
+	private String  pname;
+	private String  sqje;
+	private String cardId;
+	private String pid;
+	private String cid;
+	private String applyQuota;
+	private String PRODCREDITRANGE;
+	private String FINAL_APPROVAL;
+	public String getFINAL_APPROVAL() {
+		return FINAL_APPROVAL;
+	}
+	public void setFINAL_APPROVAL(String fINAL_APPROVAL) {
+		FINAL_APPROVAL = fINAL_APPROVAL;
+	}
+	public String getApplyQuota() {
+		return applyQuota;
+	}
+	public void setApplyQuota(String applyQuota) {
+		this.applyQuota = applyQuota;
+	}
+	public String getPRODCREDITRANGE() {
+		return PRODCREDITRANGE;
+	}
+	public void setPRODCREDITRANGE(String pRODCREDITRANGE) {
+		PRODCREDITRANGE = pRODCREDITRANGE;
+	}
+	public String getPid() {
+		return pid;
+	}
+	public void setPid(String pid) {
+		this.pid = pid;
+	}
+	public String getCid() {
+		return cid;
+	}
+	public void setCid(String cid) {
+		this.cid = cid;
+	}
+	public String getCardId() {
+		return cardId;
+	}
+	public void setCardId(String cardId) {
+		this.cardId = cardId;
+	}
+	public String getDisplayName() {
+		return displayName;
+	}
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
+	}
+	public String getPname() {
+		return pname;
+	}
+	public void setPname(String pname) {
+		this.pname = pname;
+	}
+	public String getSqje() {
+		return sqje;
+	}
+	public void setSqje(String sqje) {
+		this.sqje = sqje;
+	}
 	private String did;
 	
 	public String getDid() {

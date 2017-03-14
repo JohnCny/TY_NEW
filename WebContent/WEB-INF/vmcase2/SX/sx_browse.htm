@@ -8,31 +8,12 @@
       <div class="inquiry">
         <div class="search_tag">#i18n("label.browse.filter")</div>
         <div class="search">
-       <!--    <form id="submitForm">
-            <ul>
-              <li class="search_button">
-                	起始日期:<input  type="text" class="/rinpsty" name="fdate" id="fdate" value=""  />
-                	结束日期:<input  type="text" class="/rinpsty" name="ldate" id="ldate" value=""  />
-                	产品:<input  type="text" class="/rinpsty" name="product" id="product" value=""   />
-                  
-              </li>
-              <li class="search_button">
-                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
-                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
-                 <input id="id_export_button" type="button" value="导出" class="search_button_inquiry"
-                  title="导出" style="height: 26px; line-height: 24px;" />
-              </li>
-            </ul>
-          </form> -->
            <form id="submitForm" action="${modulePath}/SxBrowse.page" >
             <ul>
             
-              <li>
-                <span>
-					 起始日期:<input type="text" id="fdate" >
-					结束日期:<input type="text" id="ldate" >
-					 产品:<input  type="text" class="/rinpsty" name="product" id="product"   /></span>
-              </li>
+              <li>起始日期:<input class="rinpsty" type="text" id="fdate" name="fdate" value=""  onmouseover="_calendar()" readonly="readonly"/></li>
+				<li>  结束日期:<input class="rinpsty" type="text" id="ldate" name="ldate" value=""  onmouseover="_calendar()" readonly="readonly"/></li>
+				<li>产品:<input  type="text" class="/rinpsty" name="product" id="product"   /></li>
               
               <li class="search_button">
                 <input id="id_browse1_button" type="submit" value="#i18n('button.browse')" class="search_button_inquiry"
@@ -124,7 +105,6 @@
            	document.getElementById("submitForm").action = url;
            	document.getElementById("submitForm").submit();
 	    });
-		
 	});
 </script>
 #parse ("common/iframe_page_footer.htm")

@@ -58,25 +58,24 @@ public class ManagerPerformmanceController extends BaseController {
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView create(HttpServletRequest request) {        
 		JRadModelAndView mv = new JRadModelAndView("/manager/performmance/performmanceInsert", request);
-		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
-		
+		//User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 		//统计每天申请拒绝数
-		int refuseNum=managerPerformmanceService.queryRefuse(user.getId());
+		//int refuseNum=managerPerformmanceService.queryRefuse(user.getId());
 		//统计每天申请数
-		int applyNum= managerPerformmanceService.queryApply(user.getId());
+		//int applyNum= managerPerformmanceService.queryApply(user.getId());
 		//统计每天内审数
 		//int auditNum=managerPerformmanceService.queryAudit(user.getId());
 		//统计每天上会数
 		//int willNum=managerPerformmanceService.queryWill(user.getId());
 		//统计每天通过数
-		int passNum=managerPerformmanceService.queryPass(user.getId());
-		Map<String, Integer> map=new HashMap<String, Integer>();
-		map.put("applyNum", applyNum);
-		map.put("refuseNum", refuseNum);
+		//int passNum=managerPerformmanceService.queryPass(user.getId());
+		//Map<String, Integer> map=new HashMap<String, Integer>();
+		//map.put("applyNum", applyNum);
+		//map.put("refuseNum", refuseNum);
 		//map.put("auditNum", auditNum);
 		//map.put("willNum", willNum);
-		map.put("passNum", passNum);
-		mv.addObject("ssss", map);
+		//map.put("passNum", passNum);
+		//mv.addObject("ssss", map);
 		return mv;
 	}
 	/**

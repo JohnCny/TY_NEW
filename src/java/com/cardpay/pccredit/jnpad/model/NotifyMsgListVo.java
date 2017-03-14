@@ -23,12 +23,18 @@ public class NotifyMsgListVo {
 	private int Pcount;
 	private int blackcount;/*黑名单数量*/
 	private int passCount;
-	
+	private int ysUpdateCount;
 	private int ziliaobiangeng;
 	private List<JnpadCustomerBianGeng> bianggeng;
 	
 	
 	
+	public int getYsUpdateCount() {
+		return ysUpdateCount;
+	}
+	public void setYsUpdateCount(int ysUpdateCount) {
+		this.ysUpdateCount = ysUpdateCount;
+	}
 	public int getPassCount() {
 		return passCount;
 	}

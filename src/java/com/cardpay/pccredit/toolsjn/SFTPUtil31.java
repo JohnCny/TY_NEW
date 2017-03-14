@@ -33,10 +33,11 @@ import com.wicresoft.util.spring.Beans;
  */
 public class SFTPUtil31 {
 	
-	private static String host = "61.34.0.31";//生产 
+	//private static String host = "61.34.0.31";//生产 
+	private static String host = "10.0.3.2";//生产 
 	//private static String host = "61.98.0.32";//测试
     private static String username="root";  
-    private static String password="1234567";  
+    private static String password="tynx123";  
     private static int port = 22;  
     private static ChannelSftp csftp = null;  
     private static String directory = "/usr/pccreditFile/";  
@@ -53,8 +54,8 @@ public class SFTPUtil31 {
             jsch.getSession(username, host, port);  
             Session sshSession = jsch.getSession(username, host, port);  
             System.out.println("Session created.");
-            DailyReportScheduleService dailyReportScheduleService =Beans.get(DailyReportScheduleService.class);
-            password = dailyReportScheduleService.findServer1();
+           //DailyReportScheduleService dailyReportScheduleService =Beans.get(DailyReportScheduleService.class);
+           //password = dailyReportScheduleService.findServer1();
             sshSession.setPassword(password);  
             Properties sshConfig = new Properties();  
             sshConfig.put("StrictHostKeyChecking", "no");  

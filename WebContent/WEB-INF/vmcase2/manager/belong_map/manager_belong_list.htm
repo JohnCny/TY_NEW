@@ -84,8 +84,7 @@
 		if (opsObj.createUrl) {
 	        $("#id_create_button").click(function() {
 	            var url = opsObj.createUrl;
-	            window.location.href = url;
-	           /*   if (opsObj.formObj) {
+	            if (opsObj.formObj) {
 	                // 回调URL
 	                var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
 	                if (callBackUrlObj) {
@@ -99,7 +98,8 @@
 		                    });
 	                	}
 	                }
-	            }   */
+	            }
+	            window.location.href = url;
 	        });
 	    }
 		$("#id_change_button").click(function() {

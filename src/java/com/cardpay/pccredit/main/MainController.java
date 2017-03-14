@@ -238,7 +238,7 @@ public class MainController {
 		    mv.addObject("organApplicationApprovedNumJson",statisticalCommonService.getOrganApplicationApprovedNumJson());
 		    
 		    //放款总金额 逾期总金额 不良总金额  sj 20160810
-		    String lists=statisticalCommonService.statisticaljine();
+		   // String lists=statisticalCommonService.statisticaljine();
 		    mv.addObject("organApplicationjineJson",statisticalCommonService.statisticaljine());
 		    //放款总金额 逾期总金额 不良总金额 按支行汇总 sj 20160810
 		    mv.addObject("organApplicationsxJson",statisticalCommonService.statisticalsxorgan());
@@ -316,7 +316,9 @@ public class MainController {
 				StringBuffer userIds = new StringBuffer();
 				userIds.append("(");
 				for(AccountManagerParameterForm form : forms){
+					if(form.getUserId().equals(user.getId())){
 					userIds.append("'").append(form.getUserId()).append("'").append(",");
+					}
 				}
 				userIds = userIds.deleteCharAt(userIds.length() - 1);
 				userIds.append(")");

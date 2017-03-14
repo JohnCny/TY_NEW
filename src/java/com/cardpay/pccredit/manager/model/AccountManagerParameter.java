@@ -32,7 +32,53 @@ public class AccountManagerParameter extends BusinessModel{
 	private Date modifiedTime;
 	private String managerType;
 	
+	private String foodSubsidy;//餐补
+	private String travelAllowance;//交通补贴
+	private String phoneAllowance;//通讯补贴
+	private String ageAllowance;//工龄补贴
+	private String educationAllowance;//学历补贴
 	
+	private String deliverTime; //有效工作日
+	
+	
+	
+	public String getDeliverTime() {
+		return deliverTime;
+	}
+	public void setDeliverTime(String deliverTime) {
+		this.deliverTime = deliverTime;
+	}
+	public String getFoodSubsidy() {
+		return foodSubsidy;
+	}
+	public void setFoodSubsidy(String foodSubsidy) {
+		this.foodSubsidy = foodSubsidy;
+	}
+	
+	public String getTravelAllowance() {
+		return travelAllowance;
+	}
+	public void setTravelAllowance(String travelAllowance) {
+		this.travelAllowance = travelAllowance;
+	}
+	public String getPhoneAllowance() {
+		return phoneAllowance;
+	}
+	public void setPhoneAllowance(String phoneAllowance) {
+		this.phoneAllowance = phoneAllowance;
+	}
+	public String getAgeAllowance() {
+		return ageAllowance;
+	}
+	public void setAgeAllowance(String ageAllowance) {
+		this.ageAllowance = ageAllowance;
+	}
+	public String getEducationAllowance() {
+		return educationAllowance;
+	}
+	public void setEducationAllowance(String educationAllowance) {
+		this.educationAllowance = educationAllowance;
+	}
 	public String getManagerType() {
 		return managerType;
 	}

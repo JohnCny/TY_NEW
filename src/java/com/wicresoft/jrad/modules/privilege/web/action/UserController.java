@@ -156,8 +156,8 @@ public class UserController extends BaseController {
 		try {
 			String displayName=new String(name.getBytes("iso-8859-1"),"utf-8");
 			String gender=new String(sex.getBytes("iso-8859-1"),"utf-8");
-			user.setDisplayName(displayName);
-			user.setGender(gender);
+			user.setDisplayName(name);
+			user.setGender(sex);
 		} catch (UnsupportedEncodingException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

@@ -851,7 +851,7 @@
 	
 	<select id="getDqzzdktjbbFormList" resultMap="DqzzdktjbbFormResultMap" 
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
-					 select distinct c.khmc as cname,c.zjhm as cardtype,tkmx.CPMC as prodName,yehz.qxrq as loandate,tkmx.DQRQ as enddate,tkmx.ffje as money,tkmx.HTLL as baserate,jh.QS as qs, jh.JE as bjzh,jh.YHLX as lxzh,sysuser.display_name as busimanager,
+					 select distinct c.khmc as cname,c.zjhm as cardtype,protype.product_name as prodName,yehz.qxrq as loandate,tkmx.DQRQ as enddate,tkmx.ffje as money,tkmx.HTLL as baserate,jh.QS as qs, jh.JE as bjzh,jh.YHLX as lxzh,sysuser.display_name as busimanager,
 					   (select t.name from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt
                   where tt.user_id = sysuser.id)) as name
                 from

@@ -307,5 +307,6 @@ public class JnpadCustomerInfoInsertController extends BaseController {
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);
 		return json.toString();
 	}
+	
 
 }

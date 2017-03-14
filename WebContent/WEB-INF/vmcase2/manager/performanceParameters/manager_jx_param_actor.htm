@@ -6,7 +6,7 @@
        <div class="title">客户经理绩效参数配置</div>
       </div>
        #parse ("common/place_tab_jlcj.htm")
-      <form id="id_module_form" action="${contextPath}/manager/managerPromotionRule/saveJxParam.page" method="post">
+      <form id="id_module_form" action="${contextPath}/manager/managerPromotionRule/saveJxParam.page" method="POST">
         <div class="form-bd" id="formsId" style="padding-top: 0px;">
           <input type="hidden" name="id" value="$!parmeter.id">
           <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%">
@@ -26,15 +26,15 @@
             <tr>
                 <td class="titlefc3" >主办客户经理计提单价(元/户)</td>
                 <td class="titlefc3" >协办客户经理计提单价(元/户)</td>
+                <td class="titlefc3" >客户经理当月承担审批的贷款笔数单价(元/户)</td>
                 <td class="titlefc3" >管户维护奖金(元/户)</td>
-                <td class="titlefc3" >FTP价格(%)</td>
-                <td class="titlefc3" >利润提成系数(A)(%)</td>
-                <td class="titlefc3" >风险保障系数(R-信用类)</td>
-                <td class="titlefc3" >风险保障系数(R-保证类)</td>
-                <td class="titlefc3" >风险保障系数(R-抵押类)</td>
-                <td class="titlefc3" >逾期扣款(元/笔/天)</td>
-                <td class="titlefc3" >风险管理岗岗位津贴</td>
-                <td class="titlefc3" >风险保证金返回年限(月)</td>
+                <td class="titlefc3" >等级岗位</td>
+                <td class="titlefc3" >等级岗位绩效</td>
+                <td class="titlefc3" >任务完成度(%)</td>
+                <td class="titlefc3" >任务完成度绩效</td>
+                <td class="titlefc3" >不良贷款比例超过容忍度范围(%)</td>
+                <td class="titlefc3" >不良贷款比例超过容忍度扣款</td>
+                <td class="titlefc3" >辅助调查(元/笔)</td>
             </tr>
             </table>
              <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%">
@@ -51,39 +51,61 @@
 			  <col width="9%" />
 			  <col width="9%" />
             </colgroup>
-            #if($parmeters.size()!=0)
+             #if($parmeters.size()!=0)
 	             #foreach($parmeter in $!parmeters)
 		            <tr>
 		              <td><input class="rinpsty" type="text" class="rinpstynum" id="A" name="A" value="$!parmeter.A" /></td>
 		              <td><input class="rinpsty" type="text" class="rinpstynum" id="B" name="B" value="$!parmeter.B" /></td>
+		              <td><input class="rinpsty" type="text" class="rinpstynum" id="C" name="C" value="$!parmeter.C" /></td>
 		              <td><input class="rinpsty" type="text" class="rinpstynum" id="D" name="D" value="$!parmeter.D" /></td>
-		              <td><input class="rinpsty" type="text" class="rinpstynum" id="E" name="E" value="$!parmeter.E" /></td>
-		              <td><input class="rinpsty" type="text" class="rinpstynum" id="F" name="F" value="$!parmeter.F" /></td>
-		              <td><input class="rinpsty" type="text" class="rinpstynum" id="G" name="G" value="$!parmeter.G" /></td>
+		               <td nowrap="nowrap"><select id="E" name="E" class="rinpsty" value=""> 
+			               <option value="">--请选择--</option>
+	                   #dict("CUSTOMERMANAGERLEVEL","") </select></td>
+		              <td><input class="rinpsty" type="text" class="rinpstynum" id="F" name="F" value="" /></td>
+		                <td nowrap="nowrap"><select id="G" name="G" class="rinpsty" value=""> 
+		                 <option value="">--请选择--</option>
+			               <option value="TaskSuccess01">80%(不含)以下</option>
+	                    	<option value="TaskSuccess02">80%(含)-100%(不含)</option>
+	                    	<option value="TaskSuccess03">100%(含)-120%(不含)</option>
+	                    	<option value="TaskSuccess04">120%(含)以上</option></select></td>
 		              <td><input class="rinpsty" type="text" class="rinpstynum" id="H" name="H" value="$!parmeter.H" /></td>
-		              <td><input class="rinpsty" type="text" class="rinpstynum" id="I" name="I" value="$!parmeter.I" /></td>
+		               <td nowrap="nowrap"><select id="I" name="I" class="rinpsty" value=""> 
+		                 <option value="">--请选择--</option>
+			               <option value="Tolerate01">1.5%以下</option>
+	                    	<option value="Tolerate02">1.5%-2%</option>
+	                    	<option value="Tolerate03">2%-2.5%</option>
+	                    	<option value="Tolerate04">2.5%以上</option></select></td>
 		              <td><input class="rinpsty" type="text" class="rinpstynum" id="J" name="J" value="$!parmeter.J" /></td>
-		              <td><input class="rinpsty" type="text" class="rinpstynum" id="L" name="L" value="$!parmeter.L" /></td>
-		              <td><input  type="text" class="rinpstynum" id="K" name="K" value="$!parmeter.K" /></td>
+		              <td><input class="rinpsty" type="text" class="rinpstynum" id="K" name="K" value="$!parmeter.K" /></td>
 		            </tr>
 	            #end
-            #else
-            	#foreach($dict in $!dictItems)
-		            <tr>
-		              <td><input class="rinpsty" type="text" class="rinpstynum" id="A" name="A" value="" /></td>
-		              <td><input class="rinpsty" type="text" class="rinpstynum" id="B" name="B" value="" /></td>
-		              <td><input class="rinpsty" type="text" class="rinpstynum" id="D" name="D" value="" /></td>
-		              <td><input class="rinpsty" type="text" class="rinpstynum" id="E" name="E" value="" /></td>
-		              <td><input class="rinpsty" type="text" class="rinpstynum" id="F" name="F" value="" /></td>
-		              <td><input class="rinpsty" type="text" class="rinpstynum" id="G" name="G" value="" /></td>
-		              <td><input class="rinpsty" type="text" class="rinpstynum" id="H" name="H" value="" /></td>
-		              <td><input class="rinpsty" type="text" class="rinpstynum" id="I" name="I" value="" /></td>
-		              <td><input class="rinpsty" type="text" class="rinpstynum" id="J" name="J" value="" /></td>
-		              <td><input class="rinpsty" type="text" class="rinpstynum" id="L" name="L" value="" /></td>
-		              <td><input  type="text" class="rinpstynum" id="K" name="K" value="" /></td>
+           #else
+            	<tr>
+		            <td><input class="rinpsty" type="text" class="rinpstynum" id="A" name="A" value="0.00" /></td>
+		              <td><input class="rinpsty" type="text" class="rinpstynum" id="B" name="B" value="0.00" /></td>
+		              <td><input class="rinpsty" type="text" class="rinpstynum" id="C" name="C" value="0.00" /></td>
+		              <td><input class="rinpsty" type="text" class="rinpstynum" id="D" name="D" value="0.00" /></td>
+		              <td nowrap="nowrap"><select id="E" name="E" class="rinpsty" value=""> 
+			               <option value="">--请选择--</option>
+	                   #dict("CUSTOMERMANAGERLEVEL","") </select></td>
+		              <td><input class="rinpsty" type="text" class="rinpstynum" id="F" name="F" value="0.00" /></td>
+		              <td nowrap="nowrap"><select id="G" name="G" class="rinpsty" value=""> 
+		                 <option value="">--请选择--</option>
+			               <option value="TaskSuccess01">80%(不含)以下</option>
+	                    	<option value="TaskSuccess02">80%(含)-100%(不含)</option>
+	                    	<option value="TaskSuccess03">100%(含)-120%(不含)</option>
+	                    	<option value="TaskSuccess04">120%(含)以上</option></select></td>
+		              <td><input class="rinpsty" type="text" class="rinpstynum" id="H" name="H" value="0.00" /></td>
+		               <td nowrap="nowrap"><select id="I" name="I" class="rinpsty" value=""> 
+		                 <option value="">--请选择--</option>
+			               <option value="a">1.5%以下</option>
+	                    	<option value="b">1.5%-2%</option>
+	                    	<option value="c">2%-2.5%</option>
+	                    	<option value="d">2.5%以上</option></select></td>
+		              <td><input class="rinpsty" type="text" class="rinpstynum" id="J" name="J" value="0.00" /></td>
+		              <td><input class="rinpsty" type="text" class="rinpstynum" id="K" name="K" value="0.00" /></td>
 		            </tr>
-		         #end
-		    #end
+		    #end 
           </table>
         </div>
       </form>
@@ -98,6 +120,7 @@
   <script type="text/javascript">
 	var layout=new FormsLayout("formsId");			
 	window.top.currentWindow.setLayout(layout);
+	var v;
 			
 	#set ($formName = "'#id_module_form'")
 	$(document).ready(function() {	
@@ -109,10 +132,104 @@
 	    	if(leng > 0){
 	    		return;
 	    	}else{
-			  $("#id_module_form").submit();  
+			  $("#id_module_form").submit();   
+	    		/* $.ajax({
+					url : $("#id_module_form").submit(),
+					type : "POST",
+					success : function(data) {
+						 //window.location.reload(true);
+						 if(data.success=="ture"){
+							 alert("操作成功！");
+						 }
+					}
+				});  */
 	    	}
 	       });
 
+	     
+	     
+	     $('#E').change(function(){
+	    	$.ajax({
+				url : "${contextPath}/manager/managerPromotionRule/Echange.json",
+				type : "get",
+				success : function(data) {
+				if(data.message=="操作成功"){
+					//alert($('#E').val());
+					if($('#E').val()=="MANA001"){
+						$('#F').val(data.values[0].typeName);
+					}
+					if($('#E').val()=="MANA002"){
+						$('#F').val(data.values[1].typeName);
+					}
+					if($('#E').val()=="MANA003"){
+						$('#F').val(data.values[2].typeName);
+					}
+					if($('#E').val()=="MANA004"){
+						$('#F').val(data.values[3].typeName);
+					}
+					if($('#E').val()=="MANA005"){
+						$('#F').val(data.values[4].typeName);
+					}
+					// Dialog.message(data.message);
+					//window.location.href="/PCCredit/customer/firsthend/showCustomerInfoJn.page?id="+id;
+				}else{
+					 Dialog.message("操作失败");
+				}
+				}
+			});  
+	     })
+	     
+	      $('#G').change(function(){
+	    	$.ajax({
+				url : "${contextPath}/manager/managerPromotionRule/Echange.json",
+				type : "get",
+				success : function(data) {
+				if(data.message=="操作成功"){
+					//alert($('#G').val());
+					if($('#G').val()=="TaskSuccess01"){
+						$('#H').val(data.tslists[2].typeName);
+					}
+					if($('#G').val()=="TaskSuccess02"){
+						$('#H').val(data.tslists[0].typeName);
+					}
+					if($('#G').val()=="TaskSuccess03"){
+						$('#H').val(data.tslists[3].typeName);
+					}
+					if($('#G').val()=="TaskSuccess04"){
+						$('#H').val(data.tslists[1].typeName);
+					}
+				}else{
+					 Dialog.message("操作失败");
+				}
+				}
+			});  
+	     })
+	     
+	     $('#I').change(function(){
+	    	$.ajax({
+				url : "${contextPath}/manager/managerPromotionRule/Echange.json",
+				type : "get",
+				success : function(data) {
+				if(data.message=="操作成功"){
+					//alert($('#I').val());
+					if($('#I').val()=="Tolerate01"){
+						$('#J').val(data.trlists[1].typeName);
+					}
+					if($('#I').val()=="Tolerate02"){
+						$('#J').val(data.trlists[2].typeName);
+					}
+					if($('#I').val()=="Tolerate03"){
+						$('#J').val(data.trlists[3].typeName);
+					}
+					if($('#I').val()=="Tolerate04"){
+						$('#J').val(data.trlists[0].typeName);
+					}
+				}else{
+					 Dialog.message("操作失败");
+				}
+				}
+			});  
+	     })
 	});
 	</script>
 </body>

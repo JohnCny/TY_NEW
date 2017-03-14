@@ -27,6 +27,7 @@
 				<div class="forms" id="formsId">
 					<input type="hidden" name="id" value="$!id" />
 					<table class="rule">
+					#foreach ($salary in $salaryList)
 						<colgroup>
 							<col width="10%" />
 							<col width="30%" />
@@ -35,21 +36,21 @@
 							<col width="30%" />
 						</colgroup>
 						<tr>
-							<td><label for="name">客户姓名:</label></td>
+							<td><label for="name">序号:</label></td>
 							<td><input type="text" id="managerName" name="managerName"
-								value="$!salary.managerName" disabled="disabled"/></td>
+								value="$!salary.id" disabled="disabled"/></td>
 							<td></td>
-							<td><label for="name">所属机构:</label></td>
+							<td><label for="name">管辖行:</label></td>
 							<td><input type="text" id="instCode" name="instCode"
 								value="$!salary.instCode" disabled="disabled"/></td>
 						</tr>
 						
 						<tr>
-							<td><label for="name">年份:</label></td>
+							<td><label for="name">姓名:</label></td>
 							<td><input type="text" id="year" name="year"
-								value="$!salary.year" disabled="disabled"/></td>
+								value="$!salary.managerName" disabled="disabled"/></td>
 							<td></td>
-							<td><label for="name">月份:</label></td>
+							<td><label for="name">等级：</label></td>
 							<td><input type="text" id="month" name="month"
 								value="$!salary.month" disabled="disabled"/></td>
 						</tr>
@@ -58,72 +59,74 @@
 						<tr>
 							<td><label for="name">基本工资:</label></td>
 							<td><input type="text" id="basePay" name="basePay"
-								value="$!salary.basePay" disabled="disabled"/></td>
+								value="$!salary.zhbasepay" disabled="disabled"/></td>
 							<td></td>
-							<td><label for="name">基础任务量奖金(外聘):</label></td>
+							<td><label for="name">月总绩效:</label></td>
 							<td><input type="text" id="basicTaskBonus" name="basicTaskBonus"
-								value="$!salary.basicTaskBonus" disabled="disabled"/></td>
+								value="$!salary.MonthPerformance" disabled="disabled"/></td>
 						</tr>
 						
 						<tr>
-							<td><label for="name">岗位津贴(风险岗):</label></td>
+							<td><label for="name">月放款绩效:</label></td>
 							<td><input type="text" id="subsidies" name="subsidies"
-								value="$!salary.subsidies" disabled="disabled"/></td>
-							<td></td>
+								value="$!salary.dyffdkjx" disabled="disabled"/></td>
+								<td></td>
+							<td><label for="name">月主办放款绩效:</label></td>
+							<td><input type="text" id="basicTaskBonus" name="basicTaskBonus"
+								value="$!salary.zb" disabled="disabled"/></td>
 						</tr>
 						
 						
 						<tr>
-							<td><label for="name">贷款业务绩效:</label></td>
+							<td><label for="name">月协办放款绩效:</label></td>
 							<td><input type="text" id="rewardIncentiveInformation" name="rewardIncentiveInformation"
-								value="$!salary.rewardIncentiveInformation" disabled="disabled"/></td>
+								value="$!salary.xb" disabled="disabled"/></td>
 							<td></td>
-							<td><label for="name">业务量绩效:</label></td>
+							<td><label for="name">月管户数:</label></td>
 							<td><input type="text" id="volumePerformance" name="volumePerformance"
-								value="$!salary.volumePerformance" disabled="disabled"/></td>
+								value="$!salary.monthEffectNum" disabled="disabled"/></td>
 						</tr>
 						
 						<tr>
-							<td><label for="name">利润提成:</label></td>
+							<td><label for="name">月管户数绩效:</label></td>
 							<td><input type="text" id="profitDraw" name="profitDraw"
-								value="$!salary.profitDraw" disabled="disabled"/></td>
+								value="$!salary.gh" disabled="disabled"/></td>
 							<td></td>
-							<td><label for="name">逾期扣款:</label></td>
+							<td><label for="name">月承担审批数:</label></td>
 							<td><input type="text" id="overdueDeduct" name="overdueDeduct"
-								value="$!salary.overdueDeduct" disabled="disabled"/></td>
+								value="$!salary.MonthApprovalNum" disabled="disabled"/></td>
 						</tr>
 						
 						
 						
 						<tr>
-							<td><label for="name">风险准备金余额:</label></td>
-							<td><input type="text" id="riskReserveBalances" name="riskReserveBalances"
-								value="$!salary.riskReserveBalances" disabled="disabled"/></td>
+							<td><label for="name">月承担审批数绩效:</label></td>
+							<td><input type="text" id="profitDraw" name="profitDraw"
+								value="$!salary.sp" disabled="disabled"/></td>
 							<td></td>
+							<td><label for="name">等级岗位绩效:</label></td>
+							<td><input type="text" id="overdueDeduct" name="overdueDeduct"
+								value="$!salary.dj" disabled="disabled"/></td>
 						</tr>
 						
 						
 						<tr>
-							<td><label for="name">新增风险保证金:</label></td>
-							<td><input type="text" id="insertPrepareAmount" name="insertPrepareAmount"
-								value="$!salary.insertPrepareAmount" disabled="disabled"/></td>
+							<td><label for="name">月任务完成度绩效:</label></td>
+							<td><input type="text" id="profitDraw" name="profitDraw"
+								value="$!salary.rw" disabled="disabled"/></td>
 							<td></td>
-							<td><label for="name">返还的风险保证金:</label></td>
-							<td><input type="text" id="returnPrepareAmount" name="returnPrepareAmount"
-								value="$!salary.returnPrepareAmount" disabled="disabled"/></td>
+							<td><label for="name">超过不良贷款容忍度扣除绩效:</label></td>
+							<td><input type="text" id="overdueDeduct" name="overdueDeduct"
+								value="$!salary.bl" disabled="disabled"/></td>
 						</tr>
 						
-						<!-- <tr>
-							<td><label for="name">奖金(劳动):</label></td>
+						 <tr>
+							<td><label for="name">主管加成绩效:</label></td>
 							<td><input class="rinpsty" type="text" id="allowance" name="allowance"
-								value="$!salary.allowance" /></td>
-							<td></td>
-							<td><label for="name">中间业务奖金:</label></td>
-							<td><input class="rinpsty" type="text" id="middleAllowance" name="middleAllowance"
-								value="$!salary.middleAllowance" /></td>
+								value="$!salary.zg" /></td>
 						</tr>
 						
-						<tr>
+						<!--<tr>
 							<td><label for="name">调整:</label></td>
 							<td><input class="rinpsty" type="text" id="fine" name="fine"
 								value="$!salary.fine" /></td>
@@ -137,7 +140,7 @@
 							<td  class="titlefc3"><label id ="name" for="name">备注:</label></td>
               				<td><textarea style="height:80px;" name="describe" id="describe">$!salary.describe</textarea></td>
 						</tr> -->
-						
+						 #end
 					</table>
 				</div>
 			</form>

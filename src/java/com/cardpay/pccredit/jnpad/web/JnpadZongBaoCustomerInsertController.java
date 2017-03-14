@@ -77,11 +77,15 @@ public class JnpadZongBaoCustomerInsertController  extends BaseController{
 				if(ls != null ){
 					String message = "";
 					String gId = ls.getUserId();
+					int a=jnpadZongBaoCustomerInsertService.selectCustomerInfoCount(filter.getCardId());
 					String managerName = jnpadCustomerSelectService.selectManagerNameById(gId);
 					if(gId==null){
 						message = "保存失败，此客户已存在，请线下及时联系!";
 					}else{
 						message = "保存失败，此客户已挂在客户经理【"+managerName+"】名下!";
+					}
+					if(a>0){
+						message = "保存失败，该客户已经通过众包发布出去，请去抢单!!!";	
 					}
 					returnMap.put(JRadConstants.MESSAGE, message);
 					}else{

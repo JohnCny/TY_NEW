@@ -420,7 +420,7 @@ public class IntoPiecesComdao {
 	 * @return
 	 */
 	public List<ApproveHistoryForm> findApproveHistoryByDataId(String id, String dataType){
-		String sql = "select s.status_name, t.examine_result, su.display_name, t.examine_amount, t.start_examine_time " +
+		/*String sql = "select s.status_name, t.examine_result, su.display_name, t.examine_amount, t.start_examine_time " +
 				" from wf_status_queue_record t left join wf_status_info s on t.current_status = s.id " +
 				" left join wf_process_record pr on t.current_process = pr.id";
 		if(dataType.equals("application")){
@@ -432,7 +432,32 @@ public class IntoPiecesComdao {
 					" left join sys_user su on t.examine_user = su.id " +
 					" where aa.amount_adjustment_id = #{id}";
 		}
-		sql += " order by t.start_examine_time desc";
+		sql += " order by t.start_examine_time desc";*/
+		String sql= " select (case when cai.status ='audit' and tlog.examine_amount is null and sdh.sdtime is null then '已申请' " 
+				   +" when cai.id  in (select capid from CUSTOMER_APPLICATION_SDH) and sdh.sdtime is null and sdh.time is not null then '初审通过' "
+				   +" when t.examine_result is not null and cai.id not in (select capid from CUSTOMER_APPLICATION_SDH) then s.status_name "
+				   +" when cai.id  in (select capid from CUSTOMER_APPLICATION_SDH) and sdh.sdtime is not null then  '审贷决议'  else '' end) as status_name,"
+		           +" t.examine_result, su.display_name, "
+		           +" (case when cai.id  in (select application_id from T_APP_MANAGER_AUDIT_LOG) and sdh.sdtime is null then tlog.examine_amount"
+		           +" when t.examine_result='APPROVE' then t.examine_amount else '' end) as examine_amount, t.start_examine_time " 
+				   +" from wf_status_queue_record t left join wf_status_info s on t.current_status = s.id " 
+				   +" left join wf_process_record pr on t.current_process = pr.id";
+		if(dataType.equals("application")){
+			 sql += " left join customer_application_process aa on pr.id = aa.serial_number" +
+					" left join sys_user su on t.examine_user = su.id " +
+					" left join customer_application_info cai  on cai.id=aa.application_id"+
+					" left join T_APP_MANAGER_AUDIT_LOG tlog on tlog.application_id =cai.id"+
+					" left join CUSTOMER_APPLICATION_SDH sdh on sdh.capid=cai.id"+
+					" where aa.application_id = #{id}";
+		} else if(dataType.equals("amountadjustment")){
+			 sql += " left join amount_adjustment_process aa on pr.id = aa.serial_number" +
+					" left join sys_user su on t.examine_user = su.id " +
+					" left join customer_application_info cai  on cai.id=aa.application_id"+
+					" left join T_APP_MANAGER_AUDIT_LOG tlog on tlog.application_id =cai.id"+
+					" left join CUSTOMER_APPLICATION_SDH sdh on sdh.capid=cai.id"+
+					" where aa.amount_adjustment_id = #{id}";
+		}
+		     sql += " order by t.start_examine_time desc";
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", id);
 		

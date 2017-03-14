@@ -59,18 +59,60 @@ public class TJxParameters extends BusinessModel {
     
     
     
-    private String Id;
+    private String id;
     
-	
-	
+    /**
+	 * 客户经理当月承担审批的贷款笔数
+	 */
+    private String monthApprovalNum ;
+    
+    /**
+   	 * 客户经理当月辅助调查笔数
+   	 */
+    private String monthAcasiNum ;
+    
+    /**
+   	 * 客户经理当月审贷会委员笔数
+   	 */
+    private String monthApprovalDecisionNum ;
+    
+    
+    public TJxParameters(){}
 	
 
+	public String getMonthApprovalDecisionNum() {
+		return monthApprovalDecisionNum;
+	}
+
+
+	public void setMonthApprovalDecisionNum(String monthApprovalDecisionNum) {
+		this.monthApprovalDecisionNum = monthApprovalDecisionNum;
+	}
+
+
+	public String getMonthApprovalNum() {
+		return monthApprovalNum;
+	}
+	public void setMonthApprovalNum(String monthApprovalNum) {
+		this.monthApprovalNum = monthApprovalNum;
+	}
+	public String getMonthAcasiNum() {
+		return monthAcasiNum;
+	}
+	public void setMonthAcasiNum(String monthAcasiNum) {
+		this.monthAcasiNum = monthAcasiNum;
+	}
+
 	public String getId() {
-		return Id;
+		return id;
 	}
+
+
 	public void setId(String id) {
-		Id = id;
+		this.id = id;
 	}
+
+
 	public String getInstcode() {
 		return instcode;
 	}

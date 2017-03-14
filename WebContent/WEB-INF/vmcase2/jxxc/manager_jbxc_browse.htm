@@ -56,7 +56,7 @@
               <td class="checkbox"><input type="radio" name="checkbox" value="$!manager.id@$!manager.displayName" #if ($!request.getParameter("recordId") == $manager.id) checked="checked" #end /></td>
               <td nowrap="nowrap">$!manager.displayName</td>
               <td nowrap="nowrap">$!manager.instcode</td>
-              <td nowrap="nowrap">#dictVal("MANAGER_TYPE",$!manager.managerType)</td>
+              <td nowrap="nowrap">#dictVal("userType",$!manager.managerType)</td>
               <td nowrap="nowrap">$format.formatNumber($!manager.basePay,2,1)</td>
             </tr>
             #end

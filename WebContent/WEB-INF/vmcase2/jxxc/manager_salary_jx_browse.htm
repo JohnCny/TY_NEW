@@ -16,15 +16,21 @@
               <li>
                 <span>所属机构：<select id="organName" name="organName"><option value="">请选择</option>#dict("ORGANJN","")</select></span>
               </li>
-              <li>
+             <!--  <li>
               	  <span style="color:red">客户经理类型：<select  name="managerType" id ="managerType">
               	    <option value=""></option>
                   	#dict("MANAGER_TYPE","")
                   </select></span>
-              </li>
+              </li> -->
               <li>
 	          	<span style="color:red">日期:&nbsp;<input type="text" id ="date" name="date" value='$!date.format("yyyy-MM-dd",$!result.filter.startDate)' 
 	          		onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span>
+              </li>
+              <li>
+                <span>有效客户经理人数：<input type="text" id="managerNum" name="managerNum" value="" maxlength="50"/></span>
+              </li>
+               <li>
+                <span>小微金融部有效人数：<input type="text" id="managerNums" name="managerNums" value="" maxlength="50"/></span>
               </li>
               <li class="search_button">
                 <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
@@ -37,19 +43,21 @@
           <table>
             <colgroup>
               <col width="2%" />
+              <col width="4%" />
               <col width="2%" />
-              <col width="2%" />
               <col width="4%" />
               <col width="4%" />
-              <col width="4%" />
-              <col width="5%" />
+              <col width="6%" />
+              <col width="6%" />
               
-              <col width="5%" />
-              <col width="5%" />
-              <col width="5%" />
-              <col width="5%" />
-              <col width="5%" />
-              <col width="5%" />
+              <col width="4%" />
+              <col width="6%" />
+              <col width="4%" />
+              <col width="6%" />
+              <col width="4%" />
+              <col width="4%" />
+              <col width="6%" />
+              <col width="6%" />
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
@@ -57,15 +65,19 @@
               <th nowrap="nowrap">月份</th>
               <th nowrap="nowrap">管辖行</th>
               <th nowrap="nowrap">客户经理</th>
-              <th nowrap="nowrap">基本工资(元)</th>
-              <th nowrap="nowrap">基础任务量奖金</th>
+              <th nowrap="nowrap" ><font color="red">基本工资(元)</font></th>
               
-              <th nowrap="nowrap">业务量绩效</th>
-              <th nowrap="nowrap">利润提成</th>
-              <th nowrap="nowrap">逾期扣款</th>
-              <th nowrap="nowrap">风险准备金余额</th>
-              <th nowrap="nowrap">返还风险准备金</th>
-              <th nowrap="nowrap">存入风险准备金</th>
+              <th nowrap="nowrap"><font color="red">当月总绩效</font></th>
+              
+              <th nowrap="nowrap">当月放款</th>
+              <th nowrap="nowrap">当月协办放款</th>
+              <th nowrap="nowrap">当月管户</th>
+              <th nowrap="nowrap">当月承担审批</th>
+              <th nowrap="nowrap">等级岗位</th>
+             <!--  <th nowrap="nowrap">辅助调查</th> -->
+              <th nowrap="nowrap">任务完成度</th>
+              <th nowrap="nowrap">不良贷款被扣掉的</th>
+              <th nowrap="nowrap">主管加成绩效</th>
             </tr>
           </table>
         </div>
@@ -73,19 +85,21 @@
           <table>
             <colgroup>
               <col width="2%" />
+              <col width="4%" />
               <col width="2%" />
-              <col width="2%" />
               <col width="4%" />
               <col width="4%" />
-              <col width="4%" />
-              <col width="5%" />
+              <col width="6%" />
+              <col width="6%" />
               
-              <col width="5%" />
-              <col width="5%" />
-              <col width="5%" />
-              <col width="5%" />
-              <col width="5%" />
-              <col width="5%" />
+              <col width="4%" />
+              <col width="6%" />
+              <col width="4%" />
+              <col width="6%" />
+              <col width="4%" />
+              <col width="4%" />
+              <col width="6%" />
+              <col width="6%" />
             </colgroup>
             #foreach ($managerSalary in $result.items)
             <tr>
@@ -94,15 +108,18 @@
               <td nowrap="nowrap">$!managerSalary.month</td>
               <td nowrap="nowrap">$!managerSalary.instCode</td>
               <td nowrap="nowrap">$!managerSalary.managerName</td>
-              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.basePay)</td>
-              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.basicTaskBonus)</td>
+              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.zhbasepay)</td>
+              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.MonthPerformance)</td>
               
-              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.volumePerformance)</td>
-              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.profitDraw)</td>
-              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.overdueDeduct)</td>
-              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.riskReserveBalances)</td>
-              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.returnPrepareAmount)</td>
-              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.insertPrepareAmount)</td>
+              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.zb)</td>
+              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.xb)</td>
+              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.gh)</td>
+              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.sp)</td>
+              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.dj)</td>
+             <!--  <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.xb)</td> -->
+              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.rw)</td>
+               <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.bl)</td>
+              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.zg)</td>
             </tr>
             #end
           </table>
@@ -150,14 +167,24 @@
 		
 		//生成工资
 		$("#id_genertae_button").click(function() {
-	    	if($('#date').val() == "" || $('#date').val() == null){
-	    		Dialog.message("请输入日期");
+	    	if($('#date').val() == "" || $('#date').val() == null||
+	    			$('#managerNum').val() == "" || $('#managerNum').val() == null||
+	    			$('#managerNums').val() == "" || $('#managerNums').val() == null){
+	    		if($('#date').val() == "" || $('#date').val() == null){
+	    			Dialog.message("请输入日期");
+	    		}
+	    		if($('#managerNum').val() == "" || $('#managerNum').val() == null){
+	    			Dialog.message("请输入有效客户经理人数");
+	    		}
+	    		if($('#managerNums').val() == "" || $('#managerNums').val() == null){
+	    			Dialog.message("请输入小微金融部有效总人数");
+	    		}
 	    	}else{
 	    		Dialog.load();
 				$.ajax({
 					type:'GET',
 					url:"${modulePath}/generateData.json",
-					data:{'date': $('#date').val()},
+					data:{'date': $('#date').val(),'managerNum':$('#managerNum').val(),'managerNums':$('#managerNums').val()},
 					success:function(data){
 						Dialog.closeLoad();
 						if(data.success == true){
@@ -188,22 +215,22 @@
 	    		return;
 	    	}
 	    	
-			if($('#managerType').val() == "" || $('#managerType').val() == null){
+			/* if($('#managerType').val() == "" || $('#managerType').val() == null){
 	    		Dialog.message("请选择客户经理类型");
 	    		return;
-	    	}
+	    	} */
 	       
-			if($('#managerType').val() == '3'){
+			/* if($('#managerType').val() == '3'){
 				//风险岗
 				var url = "${modulePath}/exportDatas.json";
           		document.getElementById("submitForm").action = url;
           		document.getElementById("submitForm").submit();
-			}else{
+			}else{ */
 				//行编及外聘客户经理
    				var url = opsObj.exportUrl;
           		document.getElementById("submitForm").action = url;
           		document.getElementById("submitForm").submit();
-			}
+			
 	    	
 	    }); 
 	 	

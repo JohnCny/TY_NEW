@@ -53,6 +53,7 @@ import com.cardpay.pccredit.postLoan.model.MibusidateView;
 import com.cardpay.pccredit.postLoan.model.Rarepaylist;
 import com.cardpay.pccredit.postLoan.model.RarepaylistForm;
 import com.cardpay.pccredit.postLoan.model.RefuseMibusidata;
+import com.cardpay.pccredit.postLoan.model.TyRarepaylistForm;
 import com.cardpay.pccredit.postLoan.service.PostLoanService;
 import com.cardpay.pccredit.report.model.CustomerMoveForm;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
@@ -110,8 +111,6 @@ public class Loan_TY_JJB_Controller extends BaseController {
 		filter.setRequest(request);
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 		String userId = user.getId();
-	/*	QueryResult<TyRepayTkmxForm> result = postLoanService.findListByFilter(filter);
-		JRadPagedQueryResult<TyRepayTkmxForm> pagedResult = new JRadPagedQueryResult<TyRepayTkmxForm>(filter, result);*/
 		filter.setUserid(userId);
 		QueryResult<TyRepayTkmxForm> result = postLoanService.findJJJnListByFilter(filter);
 		JRadPagedQueryResult<TyRepayTkmxForm> pagedResult = new JRadPagedQueryResult<TyRepayTkmxForm>(filter, result);
@@ -254,55 +253,6 @@ public class Loan_TY_JJB_Controller extends BaseController {
 		return mv;
 	}
 	
-	/*//使用poi方法 导出拒绝台帐
-    @ResponseBody
-    @RequestMapping(value = "rftzexport.json", method = { RequestMethod.GET })
-    @JRadOperation(JRadOperation.BROWSE)
-    public JRadReturnMap rfexport(@ModelAttribute  PostLoanFilter filter, HttpServletRequest request,HttpServletResponse response) {
-      filter.setRequest(request);
-      String busicode=RequestHelper.getStringValue(request, ID);
-      IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
-      String userId = user.getId();
-      JRadReturnMap returnMap = new JRadReturnMap();
-      if (returnMap.isSuccess()) {
-      String title="refusedMIBUSIDATA拒绝台帐表";
-      String[] rowName={"业务编号","客户名称","客户证件号(核心)"
-          ,"客户联系方式","行业","店铺名称","工作地址"
-          ,"申请金额 ","申请时间 ","拒绝日期 ","拒绝原因 ","客户经理 "};
-      filter.setUserid(userId);
-      List<RefuseMibusidata> lists = postLoanDao.findrefusedMibusidata(filter);
-      List<Object[]>  dataList=new ArrayList<Object[]>();
-      for (int i=0;i<lists.size();i++) {
-        Object[] obj={
-        		lists.get(i).getYwbh(),
-        		lists.get(i).getCHINESE_NAME(),
-        		lists.get(i).getCARD_ID(),
-        		lists.get(i).getTELEPHONE(),
-        		lists.get(i).getIndustry(),
-        		lists.get(i).getSpmc(),
-        		lists.get(i).getRESIDENTIAL_ADDRESS(),
-        		lists.get(i).getJKJE(),
-        		lists.get(i).getJKRQ(),
-        		lists.get(i).getAUDIT_TIME(),
-        		lists.get(i).getREFUSAL_REASON(),
-        		lists.get(i).getDISPLAY_NAME()
-            //plans.get(i).getAccountstate()
-            
-        };
-        dataList.add(obj);
-        
-      }
-      ExportExcel excel=new ExportExcel(title, rowName, dataList, response);
-      try {
-        excel.export();
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-      }
-      return returnMap;
-    }*/
-	
-	
 	
 	/**
 	   * 导出拒绝台帐
@@ -343,34 +293,22 @@ public class Loan_TY_JJB_Controller extends BaseController {
 	    cell.setCellValue("客户证件号");
 	    cell.setCellStyle(style);
 	    cell = row.createCell((short) 3);
-	    cell.setCellValue("客户联系方式");
-	    cell.setCellStyle(style);
-	    cell = row.createCell((short) 4);
-	    cell.setCellValue("行业");
-	    cell.setCellStyle(style);
-	    cell = row.createCell((short) 5);
-	    cell.setCellValue("店铺名称");
-	    cell.setCellStyle(style);
-	    cell = row.createCell((short) 6);
-	    cell.setCellValue("工作地址");
-	    cell.setCellStyle(style);
-	    cell = row.createCell((short) 7);
 	    cell.setCellValue("申请金额");
 	    cell.setCellStyle(style);
-	    cell = row.createCell((short) 8);
+	    cell = row.createCell((short) 4);
 	    cell.setCellValue("申请时间");
 	    cell.setCellStyle(style);
-	    cell = row.createCell((short) 9);
+	    cell = row.createCell((short) 5);
 	    cell.setCellValue("拒绝日期");
 	    cell.setCellStyle(style);
-	    cell = row.createCell((short) 10);
+	    cell = row.createCell((short) 6);
 	    cell.setCellValue("拒绝原因");
 	    cell.setCellStyle(style);
-	    cell = row.createCell((short) 11);
+	    cell = row.createCell((short) 7);
 	    cell.setCellValue("客户经理");
 	    cell.setCellStyle(style);
-	    cell = row.createCell((short) 12);
-	    cell.setCellValue("操作时间");
+	    cell = row.createCell((short) 8);
+	    cell.setCellValue("状态");
 	    cell.setCellStyle(style);
 	    
 	    
@@ -380,16 +318,12 @@ public class Loan_TY_JJB_Controller extends BaseController {
 	      row.createCell((short) 0).setCellValue(move.getYwbh());
 	      row.createCell((short) 1).setCellValue(move.getCHINESE_NAME());
 	      row.createCell((short) 2).setCellValue(move.getCARD_ID());
-	      row.createCell((short) 3).setCellValue(move.getTELEPHONE());
-	      row.createCell((short) 4).setCellValue(move.getIndustry());
-	      row.createCell((short) 5).setCellValue(move.getSpmc());
-	      row.createCell((short) 6).setCellValue(move.getRESIDENTIAL_ADDRESS());
-	      row.createCell((short) 7).setCellValue(move.getJKJE());
-	      row.createCell((short) 8).setCellValue(move.getJKRQ());
-	      row.createCell((short) 9).setCellValue(move.getAUDIT_TIME());
-	      row.createCell((short) 10).setCellValue(move.getREFUSAL_REASON());
-	      row.createCell((short) 11).setCellValue(move.getDISPLAY_NAME());
-	      row.createCell((short) 12).setCellValue(move.getPROCESS_OP_STATUS());
+	      row.createCell((short) 3).setCellValue(move.getJKJE());
+	      row.createCell((short) 4).setCellValue(move.getJKRQ());
+	      row.createCell((short) 5).setCellValue(move.getAUDIT_TIME());
+	      row.createCell((short) 6).setCellValue(move.getREFUSAL_REASON());
+	      row.createCell((short) 7).setCellValue(move.getDISPLAY_NAME());
+	      row.createCell((short) 8).setCellValue(move.getPROCESS_OP_STATUS());
 	    }
 	    String fileName = "拒绝台帐";
 	    try{
@@ -693,8 +627,8 @@ public class Loan_TY_JJB_Controller extends BaseController {
 			filter.setRapayinterest(rapayinterest);
 			filter.setRepayamt(repayamt);
 			JRadModelAndView mv = new JRadModelAndView("/postLoan/lsh_info_browse", request);
-			List<RarepaylistForm> result = postLoanService.selectRarepaylistfoInfoByBusicode(filter);
-			RarepaylistForm rarepaylist = result.get(0);
+			List<TyRarepaylistForm> result = postLoanService.selectRarepaylistfoInfoByBusicode(filter);
+			TyRarepaylistForm rarepaylist = result.get(0);
 			mv.addObject("rarepaylist", rarepaylist);
 			return mv;
 			
@@ -738,21 +672,6 @@ public class Loan_TY_JJB_Controller extends BaseController {
 			JRadModelAndView mv =null;
 			String id=RequestHelper.getStringValue(request, ID);
 			List<CreditProcess> cplist=postLoanService.queryAll(id);
-			for(CreditProcess cc:cplist){
-				if(null!=cc.getStatus()){
-					if(cc.getStatus().equals("audit")){
-						cc.setStatus("已申请 ");
-					}else if(cc.getStatus().equals("refuse")){
-						cc.setStatus("被拒绝");
-					}else if(cc.getStatus().equals("approved")){
-						cc.setStatus("审批结束");
-					}else if(cc.getStatus().equals("returnedToFirst")){
-						cc.setStatus("退回至客户经理");
-					}else if(cc.getStatus().equals("end")){
-						cc.setStatus("放款成功");
-					}
-				}
-			}
 			mv = new JRadModelAndView("/postLoan/creditProcess_queryAll", request);
 			mv.addObject("cplist",cplist);
 			return mv;
@@ -959,13 +878,7 @@ public class Loan_TY_JJB_Controller extends BaseController {
 					row.createCell((short) 21).setCellValue("");//决议时间
 				}
 				if(move.getAuditopinion()!=null){
-					if(move.getAuditopinion().equals("REJECTAPPROVE")){
-						row.createCell((short) 22).setCellValue("审核拒绝");//决议结果
-					}else if(move.getAuditopinion().equals("APPROVE")){
-						row.createCell((short) 22).setCellValue("审核通过");//决议结果
-					}else if(move.getAuditopinion().equals("RETURNAPPROVE")){
-						row.createCell((short) 22).setCellValue("审核退回");//决议结果
-					}
+					row.createCell((short) 22).setCellValue(move.getAuditopinion());//决议结果
 				}
 				if(move.getAuditopinion()==null){
 					row.createCell((short) 22).setCellValue("");//决议结果
@@ -995,17 +908,7 @@ public class Loan_TY_JJB_Controller extends BaseController {
 					row.createCell((short) 28).setCellValue(days);//办理时间总计
 				}
 				if(move.getStatus()!=null){
-					if(move.getStatus().equals("audit")){
-						row.createCell((short) 29).setCellValue("已申请");//当前状态
-					}else if(move.getStatus().equals("refuse")){
-						row.createCell((short) 29).setCellValue("被拒绝");//当前状态
-					}else if(move.getStatus().equals("approved")){
-						row.createCell((short) 29).setCellValue("审批结束");//当前状态
-					}else if(move.getStatus().equals("returnedToFirst")){
-						row.createCell((short) 29).setCellValue("退回至客户经理");//当前状态
-					}else if(move.getStatus().equals("end")){
-						row.createCell((short) 29).setCellValue("放款成功");//当前状态
-					}
+					row.createCell((short) 29).setCellValue(move.getStatus());//当前状态
 				}
 				 if(move.getStatus()==null){
 						row.createCell((short) 29).setCellValue("");//当前状态

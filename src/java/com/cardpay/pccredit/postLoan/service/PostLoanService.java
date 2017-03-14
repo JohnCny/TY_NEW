@@ -20,6 +20,7 @@ import com.cardpay.pccredit.postLoan.model.MibusidateView;
 import com.cardpay.pccredit.postLoan.model.Rarepaylist;
 import com.cardpay.pccredit.postLoan.model.RarepaylistForm;
 import com.cardpay.pccredit.postLoan.model.RefuseMibusidata;
+import com.cardpay.pccredit.postLoan.model.TyRarepaylistForm;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 
@@ -121,7 +122,7 @@ public class PostLoanService {
 	
 	public List<TyRepayTkmxForm> selectfcloanifoInfoByBusicode(PostLoanFilter filter) {
 		// TODO Auto-generated method stub
-		return postLoanDao.findJJJnListByFilter(filter);
+		return postLoanDao.findJJJnListByFilters(filter);
 	}
 	
 	public List<MibusidateView> selectTz(PostLoanFilter filter) {
@@ -130,7 +131,7 @@ public class PostLoanService {
 	}
 	
 	
-	public List<RarepaylistForm> selectRarepaylistfoInfoByBusicode(FcloaninfoFilter filter) {
+	public List<TyRarepaylistForm> selectRarepaylistfoInfoByBusicode(FcloaninfoFilter filter) {
 		// TODO Auto-generated method stub
 		
 		return postLoanDao.selectRarepaylistfoInfoByBusicode(filter);
@@ -149,21 +150,6 @@ public class PostLoanService {
 	public QueryResult<CreditProcess> queryCreditProcess(CreditProcess filter) {
 		// TODO Auto-generated method stub
 		List<CreditProcess> cplist = postLoanDao.queryCreditProcess(filter);
-		for(CreditProcess cc:cplist){
-			if(null!=cc.getStatus()){
-				if(cc.getStatus().equals("audit")){
-					cc.setStatus("已申请 ");
-				}else if(cc.getStatus().equals("refuse")){
-					cc.setStatus("被拒绝");
-				}else if(cc.getStatus().equals("approved")){
-					cc.setStatus("审批结束");
-				}else if(cc.getStatus().equals("returnedToFirst")){
-					cc.setStatus("退回至客户经理");
-				}else if(cc.getStatus().equals("end")){
-					cc.setStatus("放款成功");
-				}
-			}
-		}
 		int size = postLoanDao.querySize(filter);
 		QueryResult<CreditProcess> queryResult = new QueryResult<CreditProcess>(size,cplist);
 		return queryResult;
