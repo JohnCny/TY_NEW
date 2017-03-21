@@ -196,7 +196,7 @@ public class CustomerZRRTZController extends BaseController{
 		HSSFRow row = sheet.createRow((int) 0);
 		
 		HSSFCell cell = row.createCell((short) 0);
-		cell.setCellValue("业务编号");
+		cell.setCellValue("编号");
 		cell.setCellStyle(style);
 		
 		cell = row.createCell((short) 1);
@@ -273,7 +273,7 @@ public class CustomerZRRTZController extends BaseController{
 		for(int i = 0; i < list.size(); i++){
 			OutcomingData move = list.get(i);
 			row = sheet.createRow((int) i+1);
-			row.createCell((short) 0).setCellValue(move.getYwbh());
+			row.createCell((short) 0).setCellValue((int) i+1);
 			row.createCell((short) 1).setCellValue(move.getCustomername());
 			row.createCell((short) 2).setCellValue(move.getManagername());
 			row.createCell((short) 3).setCellValue(move.getIdcard());

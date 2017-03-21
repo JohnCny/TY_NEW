@@ -10,6 +10,7 @@ import com.cardpay.pccredit.report.model.BjjdktjbbForm;
 import com.cardpay.pccredit.report.model.CustomerMoveForm;
 import com.cardpay.pccredit.report.model.DkyetjbbForm;
 import com.cardpay.pccredit.report.model.DqzzdktjbbForm;
+import com.cardpay.pccredit.report.model.TkmxLszBasic;
 import com.cardpay.pccredit.report.model.XdlctjbbForm;
 import com.cardpay.pccredit.report.model.YffdktjbbForm;
 import com.cardpay.pccredit.report.model.YqdktjbbForm;
@@ -45,7 +46,7 @@ public interface CustomerTransferFlowDao {
 	
 	List<YqhkdktjbbForm> findYqhkdktjbbFormList(ReportFilter filter);
 	int findYqhkdktjbbFormCountList(ReportFilter filter);
-	public List<YqhkdktjbbForm> getYqhkdktjbbFormList(ReportFilter filter);
+	public List<TkmxLszBasic> getYqhkdktjbbFormList(ReportFilter filter);
 	
 	
 	List<XdlctjbbForm> findXdlctjbbFormList(ReportFilter filter);

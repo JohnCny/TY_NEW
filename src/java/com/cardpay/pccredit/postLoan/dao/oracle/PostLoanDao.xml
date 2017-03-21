@@ -474,7 +474,7 @@
        tkmx.jkrq,
        shbj.df as bj,
        shlx.df as lx,
-       tkmx.jxfs,
+       tkmx.HKFS as jxfs,
        shbj.jzrq,
        yehz.create_time
        from

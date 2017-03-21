@@ -64,6 +64,7 @@ public class JXLReadExcel {
             for(int i=0;i<wb.getNumberOfSheets();i++)
             {
             	System.out.println(wb.getSheetAt(i).getSheetName());
+            	System.out.println(wb.getSheetAt(i).getSheetName().indexOf("建议"));
             	if(wb.getSheetAt(i).getSheetName().indexOf("建议")>=0){
             		if (wb instanceof XSSFWorkbook) {
                         XSSFWorkbook xWb = (XSSFWorkbook) wb;

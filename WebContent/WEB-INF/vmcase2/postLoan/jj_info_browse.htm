@@ -23,9 +23,9 @@
 							<col width="30%" />
 						</colgroup>
 						<tr>
-							<td><label for="name">所属年份:</label></td>
-							<td><input type="text" id="suoshunf" name="suoshunf"
-								value="$!fcloanifo.year" disabled="true"/></td>
+						<td><label for="name">客户名称:</label></td>
+							<td><input type="text" id="kehumc" name="kehumc"
+								value="$!fcloanifo.cname" disabled="true"/></td>
 							<td></td>
 							<td><label for="name">客户编号:</label></td>
 						    <td><input type="text" id="kehubh" name="kehubh" 
@@ -48,18 +48,19 @@
 						</tr> -->
 
 						<tr>
-							<td><label for="name">客户名称:</label></td>
-							<td><input type="text" id="kehumc" name="kehumc"
-								value="$!fcloanifo.cname" disabled="true"/></td>
+							<td><label for="name">所属年份:</label></td>
+							<td><input type="text" id="suoshunf" name="suoshunf"
+								value="$!fcloanifo.year" disabled="true"/></td>
 							<td></td>
 							<td><label for="name">客户类型:</label></td>
 							<td><input type="text" id="kehulx" name="kehulx"
-								value="$!fcloanifo.khlx" disabled="true"/></td>
+								value=#dictVal("khlx",$!fcloanifo.khlx) disabled="true"/></td>
 						</tr>
 						<tr>
 							<td><label for="name">证件类型:</label></td>
-							<td><input type="text" id="cardType" name="cardType"
-								value="$!fcloanifo.zjlx" disabled="true"/></td>
+							<td><input type="text" id="kehulx" name="kehulx"
+								value=#dictVal("CARDTYPE",$!fcloanifo.zjlx) disabled="true"/>
+							</td>
 							<td></td>
 							<td><label for="name">证件号码:</label></td>
 							<td><input type="text" id="cardId" name="cardId"

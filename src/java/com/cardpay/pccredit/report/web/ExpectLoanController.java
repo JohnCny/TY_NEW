@@ -24,6 +24,7 @@ import com.cardpay.pccredit.Sx.service.SxService;
 import com.cardpay.pccredit.report.filter.CustomerMoveFilter;
 import com.cardpay.pccredit.report.filter.ReportFilter;
 import com.cardpay.pccredit.report.model.CustomerMoveForm;
+import com.cardpay.pccredit.report.model.TkmxLszBasic;
 import com.cardpay.pccredit.report.model.YqhkdktjbbForm;
 import com.cardpay.pccredit.report.service.CustomerTransferFlowService;
 import com.wicresoft.jrad.base.auth.JRadModule;
@@ -73,11 +74,11 @@ public class ExpectLoanController extends BaseController{
 	@RequestMapping(value = "exportAll.page", method = { RequestMethod.GET })
 	public void exportAll(@ModelAttribute ReportFilter filter, HttpServletRequest request,HttpServletResponse response){
 		filter.setRequest(request);
-		List<YqhkdktjbbForm> list = customerTransferFlowService.getYqhkdktjbbFormList(filter);
+		List<TkmxLszBasic> list = customerTransferFlowService.getYqhkdktjbbFormList(filter);
 		create(list,response);
 	}
 	
-	public void create(List<YqhkdktjbbForm> list,HttpServletResponse response){
+	public void create(List<TkmxLszBasic> list,HttpServletResponse response){
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFSheet sheet = wb.createSheet("预期还款贷款统计报表");
 		HSSFCellStyle style = wb.createCellStyle();
@@ -127,18 +128,18 @@ public class ExpectLoanController extends BaseController{
 		cell.setCellStyle(style);
 		
 		for(int i = 0; i < list.size(); i++){
-			YqhkdktjbbForm move = list.get(i);
+			TkmxLszBasic move = list.get(i);
 			row = sheet.createRow((int) i+1);
-			row.createCell((short) 0).setCellValue(move.getRowIndex());
-			row.createCell((short) 1).setCellValue(move.getCname());
-			row.createCell((short) 2).setCellValue(move.getCardnum());
-			row.createCell((short) 3).setCellValue(move.getProdName());
-			row.createCell((short) 4).setCellValue(move.getMoney());
+			row.createCell((short) 0).setCellValue((int) i+1);
+			row.createCell((short) 1).setCellValue(move.getCHINESE_NAME());
+			row.createCell((short) 2).setCellValue(move.getCARD_ID());
+			row.createCell((short) 3).setCellValue(move.getCPMC());
+			row.createCell((short) 4).setCellValue(move.getDF());
 			row.createCell((short) 5).setCellValue(move.getHkr());
-			row.createCell((short) 6).setCellValue(move.getHkbj());
-			row.createCell((short) 7).setCellValue(move.getYhlx());
-			row.createCell((short) 8).setCellValue(move.getBusimanager());
-			row.createCell((short) 9).setCellValue(move.getInstcode());
+			row.createCell((short) 6).setCellValue(move.getJE());
+			row.createCell((short) 7).setCellValue(move.getYHLX());
+			row.createCell((short) 8).setCellValue(move.getKHJL());
+			row.createCell((short) 9).setCellValue(move.getYWJG());
 		}
 		String fileName = "预期还款贷款统计报表";
 		try{

@@ -63,7 +63,7 @@ import com.wicresoft.util.spring.Beans;
  */
 public class SFTPUtil {
 	
-	private static String host = "10.0.3.2";//生产
+	private static String host = "10.0.3.6";//生产
 //	private static String host = "61.98.0.31";//测试
     private static String username="root";  
     private static String password="tynx123";  
@@ -279,6 +279,7 @@ public class SFTPUtil {
 	        	try {
 	    			sftp.cd(path);
 				} catch (Exception e) {
+					System.out.println(Constant.FILE_PATH_BS);
 					sftp.cd(Constant.FILE_PATH_BS);
 					sftp.mkdir(batch_id);  
 					sftp.cd(path);
@@ -396,6 +397,7 @@ public class SFTPUtil {
 			int bytesRead;
 			response.setHeader("Content-Disposition", "attachment; filename="+ java.net.URLEncoder.encode(fileName, "UTF-8"));
 			connect();
+			System.out.println(filePath.substring(0, 52));
 			sftp.cd(filePath.substring(0, 52));
 			
 			String GIF = "image/gif;charset=GB2312";// 设定输出的类型
@@ -457,28 +459,28 @@ public class SFTPUtil {
         System.exit(0); 
      }*/
 	
-	
-	/**
+
+    /**
      * 程序入口方法
      * @param filePath 文件的路径
      * @param isWithStyle 是否需要表格样式 包含 字体 颜色 边框 对齐方式
      * @return <table>...</table> 字符串
      */
-    public static  String[] readExcelToHtml(String filePath, boolean isWithStyle){
+    public static String[] readExcelToHtml(String filePath, boolean isWithStyle){
         
-    	String sheet[] = new String[11];
-        BufferedInputStream is = null;
+    	String sheet[] = new String[20];
+        InputStream is = null;
         String approveValue="";
+//        String htmlExcel = null;
         Map<String, String> map = new HashMap<String, String>();
         try {
-        	SFTPUtil.connect();
-        	//System.out.println(filePath.substring(0, 50));
-        	sftp.cd(filePath.substring(0, 50));//filePath.split("\\\\")[0]
-        	is = new BufferedInputStream(sftp.get(filePath.substring(51, filePath.length())));
+            File sourcefile = new File(filePath);
+            is = new FileInputStream(sourcefile);
             Workbook wb = WorkbookFactory.create(is);
             for(int i=0;i<wb.getNumberOfSheets();i++)
             {
-            	//System.out.println(wb.getSheetAt(i).getSheetName());
+            	System.out.println(wb.getSheetAt(i).getSheetName());
+            	System.out.println(wb.getSheetAt(i).getSheetName().indexOf("建议"));
             	if(wb.getSheetAt(i).getSheetName().indexOf("建议")>=0){
             		if (wb instanceof XSSFWorkbook) {
                         XSSFWorkbook xWb = (XSSFWorkbook) wb;
@@ -512,7 +514,7 @@ public class SFTPUtil {
             		sheet[1] = content_base64;
             	}
             	
-            	/*if(wb.getSheetAt(i).getSheetName().indexOf("经营状态")>=0){
+            	if(wb.getSheetAt(i).getSheetName().indexOf("经营状态")>=0){
             		if (wb instanceof XSSFWorkbook) {
                         XSSFWorkbook xWb = (XSSFWorkbook) wb;
                         map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_jyzk,ImportParameter.editAble_jyzk,false);
@@ -546,7 +548,7 @@ public class SFTPUtil {
                     }
                 	String content_base64 = getBASE64(map.get("computerData").toString());
             		sheet[4] = content_base64;
-            	}*/
+            	}
             	
             	if(wb.getSheetAt(i).getSheetName().indexOf("资产负债")>=0){
             		if (wb instanceof XSSFWorkbook) {
@@ -557,9 +559,9 @@ public class SFTPUtil {
                         map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_zf,ImportParameter.editAble_fz,true);
                     }
                 	String content_base64 = getBASE64(map.get("computerData").toString());
-            		sheet[2] = content_base64;
+            		sheet[5] = content_base64;
             	}
-            	/*else if(wb.getSheetAt(i).getSheetName().indexOf("利润简表")>=0){
+            	else if(wb.getSheetAt(i).getSheetName().indexOf("利润简表")>=0){
             		if (wb instanceof XSSFWorkbook) {
                         XSSFWorkbook xWb = (XSSFWorkbook) wb;
                         map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_lrjb,ImportParameter.editAble_lrjb,false);
@@ -569,7 +571,7 @@ public class SFTPUtil {
                     }
                 	String content_base64 = getBASE64(map.get("computerData").toString());
             		sheet[6] = content_base64;
-            	}*/
+            	}
 				else if(wb.getSheetAt(i).getSheetName().indexOf("标准利润表")>=0){
 					if (wb instanceof XSSFWorkbook) {
                         XSSFWorkbook xWb = (XSSFWorkbook) wb;
@@ -579,9 +581,9 @@ public class SFTPUtil {
                         map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_bzlrb,ImportParameter.editAble_bzlrb,false);
                     }
                 	String content_base64 = getBASE64(map.get("computerData").toString());
-					sheet[3] = content_base64;
+					sheet[7] = content_base64;
             	}
-				/*else if(wb.getSheetAt(i).getSheetName().indexOf("主营业务明细表")>=0){
+				else if(wb.getSheetAt(i).getSheetName().indexOf("主营业务明细表")>=0){
 					if (wb instanceof XSSFWorkbook) {
                         XSSFWorkbook xWb = (XSSFWorkbook) wb;
                         map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_zyyw,ImportParameter.editAble_zyyw,false);
@@ -591,7 +593,7 @@ public class SFTPUtil {
                     }
                 	String content_base64 = getBASE64(map.get("computerData").toString());
 					sheet[8] = content_base64;
-            	}*/
+            	}
 				else if(wb.getSheetAt(i).getSheetName().indexOf("现金流量表")>=0){
 					if (wb instanceof XSSFWorkbook) {
                         XSSFWorkbook xWb = (XSSFWorkbook) wb;
@@ -601,7 +603,7 @@ public class SFTPUtil {
                         map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_xjllb,ImportParameter.editAble_xjllb,false);
                     }
                 	String content_base64 = getBASE64(map.get("computerData").toString());
-					sheet[4] = content_base64;
+					sheet[9] = content_base64;
 				}
 				else if(wb.getSheetAt(i).getSheetName().indexOf("交叉检验")>=0){
 					if (wb instanceof XSSFWorkbook) {
@@ -612,10 +614,10 @@ public class SFTPUtil {
                         map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_jc,ImportParameter.editAble_jc,true);
                     }
                 	String content_base64 = getBASE64(map.get("computerData").toString());
-					sheet[5] = content_base64;
+					sheet[10] = content_base64;
 				}
             	
-				/*else if(wb.getSheetAt(i).getSheetName().indexOf("点货单")>=0){
+				else if(wb.getSheetAt(i).getSheetName().indexOf("点货单")>=0){
 					if (wb instanceof XSSFWorkbook) {
                         XSSFWorkbook xWb = (XSSFWorkbook) wb;
                         map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_dhd,ImportParameter.editAble_dhd,false);
@@ -625,7 +627,7 @@ public class SFTPUtil {
                     }
                 	String content_base64 = getBASE64(map.get("computerData").toString());
 					sheet[11] = content_base64;
-				}*/
+				}
 				else if(wb.getSheetAt(i).getSheetName().indexOf("固定资产")>=0){
 					if (wb instanceof XSSFWorkbook) {
                         XSSFWorkbook xWb = (XSSFWorkbook) wb;
@@ -635,7 +637,7 @@ public class SFTPUtil {
                         map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_gdzc,ImportParameter.editAble_gdzc,false);
                     }
                 	String content_base64 = getBASE64(map.get("computerData").toString());
-					sheet[6] = content_base64;
+					sheet[12] = content_base64;
 				}
 				else if(wb.getSheetAt(i).getSheetName().indexOf("应付预收")>=0){
 					if (wb instanceof XSSFWorkbook) {
@@ -646,7 +648,7 @@ public class SFTPUtil {
                         map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_yfys,ImportParameter.editAble_yfys,false);
                     }
                 	String content_base64 = getBASE64(map.get("computerData").toString());
-					sheet[7] = content_base64;
+					sheet[13] = content_base64;
 				}
 				else if(wb.getSheetAt(i).getSheetName().indexOf("应收预付")>=0){
 					if (wb instanceof XSSFWorkbook) {
@@ -657,9 +659,9 @@ public class SFTPUtil {
                         map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_ysyf,ImportParameter.editAble_ysyf,false);
                     }
                 	String content_base64 = getBASE64(map.get("computerData").toString());
-					sheet[8] = content_base64;
+					sheet[14] = content_base64;
 				}
-				/*else if(wb.getSheetAt(i).getSheetName().indexOf("流水分析")>=0){
+				else if(wb.getSheetAt(i).getSheetName().indexOf("流水分析")>=0){
 					if (wb instanceof XSSFWorkbook) {
                         XSSFWorkbook xWb = (XSSFWorkbook) wb;
                         map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_lsfx,ImportParameter.editAble_lsfx,false);
@@ -669,19 +671,39 @@ public class SFTPUtil {
                     }
                 	String content_base64 = getBASE64(map.get("computerData").toString());
 					sheet[15] = content_base64;
-				}*/
-				else if(wb.getSheetAt(i).getSheetName().indexOf("决议表")>=0){
+				}
+				else if(wb.getSheetAt(i).getSheetName().indexOf("调查表")>=0){
 					if (wb instanceof XSSFWorkbook) {
                         XSSFWorkbook xWb = (XSSFWorkbook) wb;
-                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_jyb,ImportParameter.editAble_jyb,false);
+                        Sheet st = wb.getSheetAt(0);
+                        Row row = st.getRow(36);
+                        Cell cell = row.getCell(3);
+                       
+                        approveValue = getCellValue(cell);
+                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_jy,ImportParameter.editAble_jy,false);
                     }else if(wb instanceof HSSFWorkbook){
                         HSSFWorkbook hWb = (HSSFWorkbook) wb;
-                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_jyb,ImportParameter.editAble_jyb,false);
+                        Sheet st = wb.getSheetAt(0);
+                        Row row = st.getRow(36);
+                        Cell cell = row.getCell(3);
+                        approveValue = getCellValue(cell);
+                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_jy,ImportParameter.editAble_jy,false);
                     }
                 	String content_base64 = getBASE64(map.get("computerData").toString());
-					sheet[9] = content_base64;
+					sheet[17] = content_base64;
 				}
-            	sheet[10] = approveValue;
+				else if(wb.getSheetAt(i).getSheetName().indexOf("月份损益表")>=0){
+					if (wb instanceof XSSFWorkbook) {
+                        XSSFWorkbook xWb = (XSSFWorkbook) wb;
+                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_syb,ImportParameter.editAble_syb,false);
+                    }else if(wb instanceof HSSFWorkbook){
+                        HSSFWorkbook hWb = (HSSFWorkbook) wb;
+                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_syb,ImportParameter.editAble_syb,false);
+                    }
+                	String content_base64 = getBASE64(map.get("computerData").toString());
+					sheet[18] = content_base64;
+				}
+            	sheet[19] = approveValue;
             }
             
         } catch (Exception e) {
@@ -732,8 +754,9 @@ public class SFTPUtil {
     				   sb.append("<td>&nbsp;</td>");
     				   continue;
     			   }
+    			   cell.setCellType(Cell.CELL_TYPE_STRING);
 					String	stringValue = getCellValue(cell);
-					//System.out.println(stringValue);
+					System.out.println(stringValue);
     			   if (map[0].containsKey(rowNum + "," + colNum)) {
     				   String pointString = map[0].get(rowNum + "," + colNum);
     				   map[0].remove(rowNum + "," + colNum);
@@ -824,7 +847,7 @@ public class SFTPUtil {
      * @param cell
      * @return
      */
-    private static String getCellValue(Cell cell) {
+    public static String getCellValue(Cell cell) {
 	        String result = new String();  
 	        switch (cell.getCellType()) {  
 	        case Cell.CELL_TYPE_NUMERIC:// 数字类型  
@@ -1095,6 +1118,5 @@ public class SFTPUtil {
         } while (index > 0);
         return column;
     }
-    
     
 }
