@@ -94,30 +94,30 @@
 		  SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
-			  select
-			        distinct
-			        tkmx.ywbh ,
-			        sysuser.display_name as display_name,
-			        b.khmc as chinese_name,
-			        b.zjhm as card_id,
-			        protype.product_name,
-			        tkmx.ffje as actual_quote
-			       from
-			              ty_repay_tkmx tkmx,
-			              ty_customer_base b,
-			              ty_customer_rygl rygl,
-			             ty_product_type protype,
-			              sys_user sysuser,
-			             ty_kdk_jh jh,
-			              ty_repay_yehz yehz,
-			              ty_repay_lsz lsz
-			              where b.khjl=rygl.dm and
-			              rygl.ddrq=sysuser.external_id and
-			              b.khnm=tkmx.khh and
-			              jh.ywbh=tkmx.ywbh||'HT' and
-			              yehz.jjh=tkmx.jjh and
-			              tkmx.jjh =lsz.jjh and
-			              protype.product_code=tkmx.cpmc
+			select  distinct
+              tkmx.ywbh ,
+              sysuser.display_name as display_name,
+              b.khmc as chinese_name,
+              b.zjhm as card_id,
+              protype.product_name,
+              tkmx.ffje as actual_quote
+             from
+                    ty_repay_tkmx tkmx,
+                    ty_customer_base b,
+                   basic_customer_information basic,
+                   ty_product_type protype,
+                    sys_user sysuser,
+                   ty_kdk_jh jh,
+                    ty_repay_yehz yehz,
+                    ty_repay_lsz lsz
+                    where 
+                   basic.user_id= sysuser.id and
+                   basic.ty_customer_id=b.id and
+                    b.khnm=tkmx.khh and
+                    jh.ywbh=tkmx.ywbh||'HT' and
+                    yehz.jjh=tkmx.jjh and
+                    tkmx.jjh =lsz.jjh and
+                    protype.product_code=tkmx.cpmc
                    <if test="fdate!=null and ldate!=null and fdate!='' and ldate!=''">
 						    and tkmx.jkrq<![CDATA[ <  ]]> to_char( to_date( #{ldate} ,'yyyy/mm/dd'),'yyyymmdd')
 						    and tkmx.jkrq<![CDATA[ >  ]]> to_char( to_date( #{fdate} ,'yyyy/mm/dd'),'yyyymmdd')
@@ -138,30 +138,30 @@
 	
 	<select id="findIntoPiecesCountList" resultType="int" parameterType="com.cardpay.pccredit.zrrtz.model.ZrrtzFilter">
 		  select count(*)
-		          from (select
-			        distinct
-			        tkmx.ywbh ,
-			        sysuser.display_name as display_name,
-			        b.khmc as chinese_name,
-			        b.zjhm as card_id,
-			        protype.product_name,
-			        tkmx.ffje as actual_quote
-			       from
-			              ty_repay_tkmx tkmx,
-			              ty_customer_base b,
-			              ty_customer_rygl rygl,
-			             ty_product_type protype,
-			              sys_user sysuser,
-			             ty_kdk_jh jh,
-			              ty_repay_yehz yehz,
-			              ty_repay_lsz lsz
-			              where b.khjl=rygl.dm and
-			              rygl.ddrq=sysuser.external_id and
-			              b.khnm=tkmx.khh and
-			              jh.ywbh=tkmx.ywbh||'HT' and
-			              yehz.jjh=tkmx.jjh and
-			              tkmx.jjh =lsz.jjh and
-			              protype.product_code=tkmx.cpmc
+		          from (select  distinct
+              tkmx.ywbh ,
+              sysuser.display_name as display_name,
+              b.khmc as chinese_name,
+              b.zjhm as card_id,
+              protype.product_name,
+              tkmx.ffje as actual_quote
+             from
+                    ty_repay_tkmx tkmx,
+                    ty_customer_base b,
+                   basic_customer_information basic,
+                   ty_product_type protype,
+                    sys_user sysuser,
+                   ty_kdk_jh jh,
+                    ty_repay_yehz yehz,
+                    ty_repay_lsz lsz
+                    where 
+                   basic.user_id= sysuser.id and
+                   basic.ty_customer_id=b.id and
+                    b.khnm=tkmx.khh and
+                    jh.ywbh=tkmx.ywbh||'HT' and
+                    yehz.jjh=tkmx.jjh and
+                    tkmx.jjh =lsz.jjh and
+                    protype.product_code=tkmx.cpmc
                    <if test="fdate!=null and ldate!=null and fdate!='' and ldate!=''">
 						    and tkmx.jkrq<![CDATA[ <  ]]> to_char( to_date( #{ldate} ,'yyyy/mm/dd'),'yyyymmdd')
 						    and tkmx.jkrq<![CDATA[ >  ]]> to_char( to_date( #{fdate} ,'yyyy/mm/dd'),'yyyymmdd')

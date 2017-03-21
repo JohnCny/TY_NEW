@@ -47,7 +47,7 @@
         <div id="topDiv" class="inquiry_list inquiry_top">
           <table>
             <colgroup>
-              <col width="5%" />
+            <!--  <col width="5%" /> -->
 			  <col width="8%" />
               <col width="8%" />
               <col width="8%" />
@@ -55,13 +55,13 @@
               <col width="8%" />
               <col width="8%" />
               <col width="8%" />
-              <col width="8%" />
+              <!-- <col width="8%" /> -->
               <col width="8%" />
               <col width="8%" />
               <col width="8%" />
             </colgroup>
             <tr class="title">
-              <th nowrap="nowrap"></th>
+              <!--  <th nowrap="nowrap"></th> -->
               <th nowrap="nowrap">客户名称</th>
               <th nowrap="nowrap">客户证件号码</th>
               <th nowrap="nowrap">客户手机</th>
@@ -69,8 +69,9 @@
               <th nowrap="nowrap">贷款金额</th>
               <th nowrap="nowrap">利率</th>
               <th nowrap="nowrap">还款总额</th>
-              <th nowrap="nowrap">应还本金</th>
-              <th nowrap="nowrap">应还利息</th>
+              <th nowrap="nowrap">贷款余额</th>
+              <th nowrap="nowrap">已还本金</th>
+               <th nowrap="nowrap">已还利息</th>
               <th nowrap="nowrap">所属客户经理</th>
               <th nowrap="nowrap">所属机构</th>
             </tr>
@@ -79,7 +80,7 @@
         <div id="downDiv" class="inquiry_list inquiry_down">
           <table>
             <colgroup>
-              <col width="5%" />
+             <!--    <col width="5%" /> -->
 			  <col width="8%" />
               <col width="8%" />
               <col width="8%" />
@@ -88,13 +89,13 @@
               <col width="8%" />
               <col width="8%" />
               <col width="8%" />
-              <col width="8%" />
+              <!-- <col width="8%" /> -->
               <col width="8%" />
               <col width="8%" />
             </colgroup>
             #foreach ($customer in $result.items)
             <tr>
-              <td class="checkbox"><input type="radio" name="checkbox" value="$!customer.appId/$!customer.customerManagerId"/>
+            <!--   <td class="checkbox"><input type="radio" name="checkbox" value="$!customer.appId/$!customer.customerManagerId"/> -->
               <td nowrap="nowrap">$!customer.CHINESE_NAME</td>
               <td nowrap="nowrap">$!customer.CARD_ID</td>
               <td nowrap="nowrap">$!customer.TELEPHONE</td>
@@ -104,8 +105,9 @@
               <td nowrap="nowrap">$!customer.JZLL</td>
               <td nowrap="nowrap">$!customer.BXHJ</td>
               <td nowrap="nowrap">$!customer.JE</td>
-              <td nowrap="nowrap">$!customer.YHLX</td>
-              <td nowrap="nowrap">$!customer.KHJL</td>
+              <td nowrap="nowrap">$!customer.Shbj</td> 
+              <td nowrap="nowrap">$!customer.Shlx</td> 
+              <td nowrap="nowrap">$!customer.KHJL</td> 
               <td nowrap="nowrap">$!customer.YWJG</td>
             </tr>
             #end

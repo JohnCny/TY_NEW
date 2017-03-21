@@ -119,22 +119,28 @@ public class OverDueLoanController extends BaseController{
 		cell.setCellValue("还款总额");
 		cell.setCellStyle(style);
 		cell = row.createCell((short) 8);
-		cell.setCellValue("应还本金");
+		cell.setCellValue("贷款余额");
 		cell.setCellStyle(style);
 		cell = row.createCell((short) 9);
-		cell.setCellValue("应还利息");
+		cell.setCellValue("已还本金");
+		cell.setCellStyle(style);
 		cell.setCellStyle(style);
 		cell = row.createCell((short) 10);
-		cell.setCellValue("所属客户经理");
+		cell.setCellValue("已还利息");
 		cell.setCellStyle(style);
 		cell = row.createCell((short) 11);
+		cell.setCellValue("所属客户经理");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 12);
 		cell.setCellValue("所属机构");
 		cell.setCellStyle(style);
+		/*cell = row.createCell((short) 13);
+		cell.setCellValue("所属机构");*/
 		
 		for(int i = 0; i < list.size(); i++){
 			YqdktjbbForm move = list.get(i);
 			row = sheet.createRow((int) i+1);
-			row.createCell((short) 0).setCellValue(move.getRowIndex());
+			row.createCell((short) 0).setCellValue((int) i+1);
 			row.createCell((short) 1).setCellValue(move.getCname());
 			row.createCell((short) 2).setCellValue(move.getCardnum());
 			row.createCell((short) 3).setCellValue(move.getContactmobiletel());
@@ -143,9 +149,10 @@ public class OverDueLoanController extends BaseController{
 			row.createCell((short) 6).setCellValue(FormatTool.formatNumber(move.getInterest(), 5, 1));
 			row.createCell((short) 7).setCellValue(move.getHkze());
 			row.createCell((short) 8).setCellValue(move.getHkbj());
-			row.createCell((short) 9).setCellValue(move.getYhlx());
-			row.createCell((short) 10).setCellValue(move.getBusimanager());
-			row.createCell((short) 11).setCellValue(move.getInstcode());
+			row.createCell((short) 9).setCellValue(move.getShbj());
+			row.createCell((short) 10).setCellValue(move.getShlx());
+			row.createCell((short) 11).setCellValue(move.getBusimanager());
+			row.createCell((short) 12).setCellValue(move.getInstcode());
 		}
 		String fileName = "逾期贷款统计报表";
 		try{

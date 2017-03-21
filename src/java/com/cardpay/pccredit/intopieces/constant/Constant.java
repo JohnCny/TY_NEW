@@ -25,11 +25,11 @@ public class Constant {
 	/* 结果集 */
 	public static String RESULT_LIST2 = "resultList2";
 	
-	/* 影像资料上传路径 */
+	/* 影像资料上传路径/usr/pccreditFile/ */
 	public static String FILE_PATH = "/usr/pccreditFile/";
 	//public static String FILE_PATH = "/home/sealy/TFile/";
 	
-	/* 影像资料补扫上传路径 */
+	/* 影像资料补扫上传路径 /usr/pccreditFilebs/    /root/Pictures/*/
 	public static String FILE_PATH_BS = "/usr/pccreditFilebs/";
 	//public static String FILE_PATH_BS = "D://tp//";
 	

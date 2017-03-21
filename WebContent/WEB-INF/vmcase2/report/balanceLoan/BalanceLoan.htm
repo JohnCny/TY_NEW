@@ -50,7 +50,7 @@
         <div id="topDiv" class="inquiry_list inquiry_top">
           <table>
             <colgroup>
-              <col width="5%" />
+            <!--   <col width="5%" /> -->
 			  <col width="8%" />
               <col width="8%" />
               <col width="8%" />
@@ -65,7 +65,7 @@
               <col width="7%" />
             </colgroup>
             <tr class="title">
-              <th nowrap="nowrap"></th>
+             <!--  <th nowrap="nowrap"></th> -->
               <th nowrap="nowrap">客户名称</th>
               <th nowrap="nowrap">客户证件号码</th>
               <th nowrap="nowrap">所属产品</th>
@@ -84,7 +84,7 @@
         <div id="downDiv" class="inquiry_list inquiry_down">
           <table>
             <colgroup>
-              <col width="5%" />
+             <!--  <col width="5%" /> -->
 			  <col width="8%" />
               <col width="8%" />
               <col width="8%" />
@@ -100,7 +100,7 @@
             </colgroup>
             #foreach ($customer in $result.items)
             <tr>
-              <td class="checkbox"><input type="radio" name="checkbox" value="$!customer.appId/$!customer.customerManagerId"/>
+           <!--    <td class="checkbox"><input type="radio" name="checkbox" value="$!customer.appId/$!customer.customerManagerId"/> -->
               <td nowrap="nowrap">$!customer.CHINESE_NAME</td>
               <td nowrap="nowrap">$!customer.CARD_ID</td>
               <td nowrap="nowrap">$!customer.CPMC</td>
