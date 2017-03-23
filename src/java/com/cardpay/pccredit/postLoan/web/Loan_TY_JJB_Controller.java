@@ -897,15 +897,23 @@ public class Loan_TY_JJB_Controller extends BaseController {
 					Date audittime=sdf.parse(move.getAudittime());
 					Date applytime=move.getApplytime();
 					int days=sumdays(audittime,applytime);
+					if(days!=-1){
 					int alldays=sumalldays(audittime, applytime);
 					int day=alldays-days;
 					row.createCell((short) 27).setCellValue(day);//周末及假日调整
+					}else{
+						row.createCell((short) 27).setCellValue("");//周末及假日调整
+					}
 				}
 				if(move.getAudittime()!=null&&move.getApplytime()!=null){
 					Date audittime=sdf.parse(move.getAudittime());
 					Date applytime=move.getApplytime();
 					int days=sumdays(audittime,applytime);
+					if(days!=-1){
 					row.createCell((short) 28).setCellValue(days);//办理时间总计
+					}else{
+						row.createCell((short) 28).setCellValue("");//办理时间总计
+					}
 				}
 				if(move.getStatus()!=null){
 					row.createCell((short) 29).setCellValue(move.getStatus());//当前状态
@@ -946,7 +954,10 @@ public class Loan_TY_JJB_Controller extends BaseController {
 			Date endDate = sdf.parse("2016-12-31");*/
 			Date begDate =applytime;
 			Date endDate =audittime;
-			if (begDate.after(endDate))throw new Exception("日期范围非法");
+			/*if (begDate.after(endDate))throw new Exception("日期范围非法");*/
+			if (begDate.after(endDate)){
+				return -1;
+			}else{
 			// 总天数
 			int days = (int) ((endDate.getTime() - begDate.getTime()) / (24 * 60 * 60 * 1000)) + 1;
 			// 总周数，
@@ -978,6 +989,7 @@ public class Loan_TY_JJB_Controller extends BaseController {
 					}
 					System.out.println(sdf.format(begDate)+"到"+sdf.format(endDate)+"中间有"+rs+"个工作日");
 					return rs;
+			}
 					}
 		 //计算两个日期之间的总天数
 		 static int sumalldays(Date audittime, Date applytime) throws Exception {

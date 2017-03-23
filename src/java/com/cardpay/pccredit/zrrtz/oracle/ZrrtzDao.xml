@@ -118,6 +118,7 @@
                     yehz.jjh=tkmx.jjh and
                     tkmx.jjh =lsz.jjh and
                     protype.product_code=tkmx.cpmc
+                     and tkmx.ywbh not in (select ywbh from CUSTOMER_PARAMETER)
                    <if test="fdate!=null and ldate!=null and fdate!='' and ldate!=''">
 						    and tkmx.jkrq<![CDATA[ <  ]]> to_char( to_date( #{ldate} ,'yyyy/mm/dd'),'yyyymmdd')
 						    and tkmx.jkrq<![CDATA[ >  ]]> to_char( to_date( #{fdate} ,'yyyy/mm/dd'),'yyyymmdd')
@@ -162,6 +163,7 @@
                     yehz.jjh=tkmx.jjh and
                     tkmx.jjh =lsz.jjh and
                     protype.product_code=tkmx.cpmc
+                     and tkmx.ywbh not in (select ywbh from CUSTOMER_PARAMETER)
                    <if test="fdate!=null and ldate!=null and fdate!='' and ldate!=''">
 						    and tkmx.jkrq<![CDATA[ <  ]]> to_char( to_date( #{ldate} ,'yyyy/mm/dd'),'yyyymmdd')
 						    and tkmx.jkrq<![CDATA[ >  ]]> to_char( to_date( #{fdate} ,'yyyy/mm/dd'),'yyyymmdd')
@@ -236,6 +238,7 @@
                     yehz.jjh=tkmx.jjh and
                     tkmx.jjh =lsz.jjh and
                     protype.product_code=tkmx.cpmc
+                    and tkmx.ywbh not in (select ywbh from CUSTOMER_PARAMETER)
 		  <if test="id!=null and id!='' and id!='undefined' and id!='000001'">
 				       and sysuser.id=#{id}
 		 </if> 

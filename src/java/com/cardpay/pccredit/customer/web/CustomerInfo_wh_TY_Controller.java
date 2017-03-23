@@ -162,6 +162,17 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 				String idcard=RequestHelper.getStringValue(request, "cardId");
 				if (StringUtils.isNotEmpty(appId)) {
 					List<BusinessTackling> btlist=btService.queryByIdCard(idcard);
+					for(BusinessTackling bb:btlist){
+						if (null!=bb.getSettle()&&""!=bb.getSettle()) {
+							if(bb.getSettle().equals("0.0")){
+								bb.setSettle("未结清");
+							}else{
+								bb.setSettle("已结清");
+							}
+						}else{
+							bb.setSettle("");
+						}
+					}
 					mv.addObject("btlist",btlist);
 					mv.addObject("appId", appId);
 					mv.addObject("urlType", urlType);

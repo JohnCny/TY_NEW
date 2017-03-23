@@ -423,7 +423,7 @@
             <value>0 39 22 * * ?</value>
         </property>  -->
         <property name="cronExpression">
-            <value>0 29 10 * * ?</value>
+            <value>0 46 14 * * ?</value>
         </property> 
     </bean>
     
