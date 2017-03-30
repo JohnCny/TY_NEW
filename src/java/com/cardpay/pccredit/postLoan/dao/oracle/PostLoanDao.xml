@@ -1064,7 +1064,7 @@
              when cai.id  in (select application_id from T_APP_MANAGER_AUDIT_LOG) 
             and sdh.sdtime is null then
              t.start_examine_time
-             when cai.status ='approved' then
+             when cai.status ='approved' or cai.status ='end' then
              sdh.sdtime
              when cai.status ='refuse' or cai.status ='returnedToFirst' then
              cai.modified_time
@@ -1077,21 +1077,21 @@
            when cai.id  in (select application_id from T_APP_MANAGER_AUDIT_LOG) 
             and sdh.sdtime is null then
            '初审通过'
-           when cai.status ='approved' then
+           when cai.status ='approved' or cai.status ='end' then
            '决议通过'
            else '' end) as examine_result，
            (case 
            when cai.id  in (select application_id from T_APP_MANAGER_AUDIT_LOG) 
             and sdh.sdtime is null then
            tlog.examine_amount
-           when cai.status ='approved' then
+           when cai.status ='approved' or cai.status ='end' then
            sdh.sdje
-           else  '' end) as examine_amount,cai.jkrq,
+           else  '' end) as examine_amount,to_date(cai.jkrq,'yyyy-mm-dd') as jkrq,
              (case 
            when cai.id  in (select application_id from T_APP_MANAGER_AUDIT_LOG) 
             and sdh.sdtime is null then
            tlog.examine_lv
-           when cai.status ='approved' then
+           when cai.status ='approved' or cai.status ='end' then
            sdh.lv else '' end) as examine_lv,
              (case 
            when cai.status ='audit' and tlog.examine_amount is null and sdh.sdtime is null then
@@ -1145,7 +1145,7 @@
              when cai.id  in (select application_id from T_APP_MANAGER_AUDIT_LOG) 
             and sdh.sdtime is null then
              t.start_examine_time
-             when cai.status ='approved' then
+             when cai.status ='approved' or cai.status ='end' then
              sdh.sdtime
              when cai.status ='refuse' or cai.status ='returnedToFirst' then
              cai.modified_time
@@ -1158,21 +1158,21 @@
            when cai.id  in (select application_id from T_APP_MANAGER_AUDIT_LOG) 
             and sdh.sdtime is null then
            '初审通过'
-           when cai.status ='approved' then
+           when cai.status ='approved' or cai.status ='end' then
            '决议通过'
            else '' end) as examine_result，
            (case 
            when cai.id  in (select application_id from T_APP_MANAGER_AUDIT_LOG) 
             and sdh.sdtime is null then
            tlog.examine_amount
-           when cai.status ='approved' then
+           when cai.status ='approved' or cai.status ='end' then
            sdh.sdje
-           else  '' end) as examine_amount,cai.jkrq,
+           else  '' end) as examine_amount,to_date(cai.jkrq,'yyyy-mm-dd') as jkrq,
              (case 
            when cai.id  in (select application_id from T_APP_MANAGER_AUDIT_LOG) 
             and sdh.sdtime is null then
            tlog.examine_lv
-           when cai.status ='approved' then
+           when cai.status ='approved' or cai.status ='end' then
            sdh.lv else '' end) as examine_lv,
              (case 
            when cai.status ='audit'and tlog.examine_amount is null and sdh.sdtime is null then
