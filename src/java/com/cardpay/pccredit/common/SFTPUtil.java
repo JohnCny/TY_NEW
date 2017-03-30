@@ -330,10 +330,10 @@ public class SFTPUtil {
 			connect();
 //			System.out.println("download1:"+filePath.substring(0, 50));
 //			System.out.println("download2:"+sftp.get(filePath.substring(50, filePath.length())));
-			//System.out.println(filePath.substring(0, 50));
-			sftp.cd(filePath.substring(0, 50));
+			System.out.println(filePath.substring(0, 54));
+			sftp.cd(filePath.substring(0, 54));
 			//System.out.println(filePath.substring(51, filePath.length()));
-			BufferedInputStream bis = new BufferedInputStream(sftp.get(filePath.substring(51, filePath.length())));//filePath.split("\\\\")[4]
+			BufferedInputStream bis = new BufferedInputStream(sftp.get(filePath.substring(55, filePath.length())));//filePath.split("\\\\")[4]
 			BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream());
 			while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
 				bos.write(buff, 0, bytesRead);
@@ -370,9 +370,9 @@ public class SFTPUtil {
 //			System.out.println("download1:"+filePath.substring(0, 50));
 //			System.out.println("download2:"+sftp.get(filePath.substring(50, filePath.length())));
 			//System.out.println(filePath.substring(0, 50));
-			sftp.cd(filePath.substring(0, 52));
+			sftp.cd(filePath.substring(0, 56));
 			//System.out.println(filePath.substring(51, filePath.length()));
-			BufferedInputStream bis = new BufferedInputStream(sftp.get(filePath.substring(53, filePath.length())));//filePath.split("\\\\")[4]
+			BufferedInputStream bis = new BufferedInputStream(sftp.get(filePath.substring(57, filePath.length())));//filePath.split("\\\\")[4]
 			BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream());
 			while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
 				bos.write(buff, 0, bytesRead);
@@ -397,15 +397,15 @@ public class SFTPUtil {
 			int bytesRead;
 			response.setHeader("Content-Disposition", "attachment; filename="+ java.net.URLEncoder.encode(fileName, "UTF-8"));
 			connect();
-			System.out.println(filePath.substring(0, 52));
-			sftp.cd(filePath.substring(0, 52));
+			System.out.println(filePath.substring(0, 56));
+			sftp.cd(filePath.substring(0, 56));
 			
 			String GIF = "image/gif;charset=GB2312";// 设定输出的类型
 			String JPG = "image/jpeg;charset=GB2312";
 			String BMP = "image/bmp";
 		    String PNG = "image/png";
 		    
-			String imagePath = filePath.substring(53, filePath.length());
+			String imagePath = filePath.substring(57, filePath.length());
 			System.out.println(filePath);
 			System.out.println(imagePath);
 			OutputStream output = response.getOutputStream();// 得到输出流
@@ -416,7 +416,7 @@ public class SFTPUtil {
 
 				// 得到图片的文件流
 				
-				BufferedInputStream imageIn = new BufferedInputStream(sftp.get(filePath.substring(53, filePath.length())));
+				BufferedInputStream imageIn = new BufferedInputStream(sftp.get(filePath.substring(57, filePath.length())));
 				//File f=new File(filePath);
 				//InputStream imageIn = new FileInputStream(f);
 				// 得到输入的编码器，将文件流进行jpg格式编码
@@ -432,7 +432,7 @@ public class SFTPUtil {
 			else if (imagePath.toLowerCase().endsWith(".png")
 					|| imagePath.toLowerCase().endsWith(".bmp")) {
 				
-				BufferedImage bi = ImageIO.read(sftp.get(filePath.substring(53, filePath.length())));
+				BufferedImage bi = ImageIO.read(sftp.get(filePath.substring(57, filePath.length())));
 				
 				if(imagePath.toLowerCase().endsWith(".png")){
 					response.setContentType(PNG);

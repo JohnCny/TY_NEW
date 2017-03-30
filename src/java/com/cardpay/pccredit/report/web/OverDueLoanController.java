@@ -146,7 +146,7 @@ public class OverDueLoanController extends BaseController{
 			row.createCell((short) 3).setCellValue(move.getContactmobiletel());
 			row.createCell((short) 4).setCellValue(move.getProdName());
 			row.createCell((short) 5).setCellValue(move.getMoney());
-			row.createCell((short) 6).setCellValue(FormatTool.formatNumber(move.getInterest(), 5, 1));
+			row.createCell((short) 6).setCellValue(FormatTool.formatNumber(move.getInterest(), 5, 1)+"‰ ");
 			row.createCell((short) 7).setCellValue(move.getHkze());
 			row.createCell((short) 8).setCellValue(move.getHkbj());
 			row.createCell((short) 9).setCellValue(move.getShbj());
