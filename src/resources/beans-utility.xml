@@ -497,14 +497,14 @@
     </bean>
     <!-- 每日加载tymibusidata数据end-->
     
-    <!-- 
-     		 跑批纸质档案归档 start
+    
+     		<!--  跑批纸质档案归档 start -->
         <bean id="addCustomerPigeonholeJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-       		 调用的类
+       		<!--  调用的类 -->
         <property name="targetObject">
             <ref bean="customerParameterService"/>
         </property>
-       		 调用类中的方法
+       		<!--  调用类中的方法 -->
         <property name="targetMethod">
             <value>addAllCustomerPigeonhole</value>
         </property>
@@ -513,15 +513,37 @@
         <property name="jobDetail">
             <ref bean="addCustomerPigeonholeJob"/>
         </property>
-        cron表达式 每月1号1点执行 0 0 1 1 * ?
-         <property name="startDelay" value="0"/>
-        <property name="repeatInterval" value="60000" />
-         <property name="cronExpression">
-            <value>0 32 14 * * ?</value>
+      <!--   cron表达式 每月1号1点执行 0 0 1 1 * ? -->
+          <property name="cronExpression">
+            <value>0 29 11 * * ?</value>
         </property> 
     	</bean>
-    		跑批纸质档案归档end
-      -->
+    		<!-- 跑批纸质档案归档end -->
+      
+      
+   <!-- 每日删除过期的日志 节省服务器空间 start-->
+       <bean id="dailyTestClearLogJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="customerInforService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>dailyTestClearLog</value>
+        </property>
+    </bean>
+     <bean id="dailyTestClearLogTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="dailyTestClearLogJob"/>
+        </property>
+        <!-- cron表达式 每月1号1点执行 0 0 1 1 * ? -->
+         <!-- <property name="startDelay" value="0"/>
+        <property name="repeatInterval" value="60000" /> -->
+         <property name="cronExpression">
+            <value>0 32 16 * * ?</value>
+        </property> 
+    </bean>
+    <!-- 每日删除过期的日志 节省服务器空间end-->
     <!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序  -->
    
     <bean id="scheduler" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
@@ -537,10 +559,10 @@
 				 <!-- 每日执行客户经理统计信息信息 start -->
 				<ref bean="addStatisticalTableTigger"/> 
          		<ref bean="dailyReportScheduleTigger"/>
-         		<ref bean="dailyaddtymibusidataTigger"/>
-        
+         		<ref bean="dailyaddtymibusidataTigger"/>   <!-- 添加mibusidata任务-->
+        		<ref bean="dailyTestClearLogTigger"/>    <!-- 每日删除过期的日志 节省服务器空间-->
         <!--     
-         		<ref bean="addCustomerPigeonholeTigger"/>
+         		<ref bean="addCustomerPigeonholeTigger"/>     纸质归档清零任务 
 
             	<ref bean="statisticsMonthScheduleServicerTrigger"/>
             	
