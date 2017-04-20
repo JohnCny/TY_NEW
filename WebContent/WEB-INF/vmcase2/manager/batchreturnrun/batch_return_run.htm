@@ -32,10 +32,11 @@
               <col width="5%" />
               <col width="10%" />
               <col width="10%" />
-              <col width="20%" />
-              <col width="20%" />
-              <col width="20%" />
-              <col width="20%" />
+              <col width="16%" />
+              <col width="16%" />
+              <col width="16%" />
+              <col width="16%" />
+              <col width="16%" />
               <col />
             </colgroup>
             <tr class="title">
@@ -43,6 +44,7 @@
               <th nowrap="nowrap">批处理代码</th>
               <th nowrap="nowrap">批处理名称</th>
               <th nowrap="nowrap">批处理运行状态</th>
+              <th nowrap="nowrap">特殊重跑时间</th>
               <th nowrap="nowrap">操作</th>
               <th nowrap="nowrap">运行时间</th>
               <th nowrap="nowrap">修改时间</th>
@@ -55,10 +57,11 @@
               <col width="5%" />
               <col width="10%" />
               <col width="10%" />
-              <col width="20%" />
-              <col width="20%" />
-              <col width="20%" />
-              <col width="20%" />
+              <col width="16%" />
+              <col width="16%" />
+              <col width="16%" />
+              <col width="16%" />
+              <col width="16%" />
               <col />
             </colgroup>
             #foreach ($run in $result.items)
@@ -66,10 +69,26 @@
               <td class="checkbox"><input type="radio" name="checkbox" value="$!run.id" /></td>
               <td nowrap="nowrap">$!{run.batchCode}</td>
               <td nowrap="nowrap">$!{run.batchName}</td>
-              <td nowrap="nowrap">#dictVal("status", $!run.status)</td>
               <td nowrap="nowrap">
-				#if($!run.status == "001"||$!run.status == "000")
-				<a onclick="handle('$!run.id@$!run.batchCode@$!date.format('yyyy-MM-dd HH:mm:ss ',$!{run.createdTime})')" class="btn_g" href="javascript:void(0);" >处理</a>	
+              		<input id="runstatus" name="runstatus" value='$!{run.status}' style="display: none"/>
+             		 #dictVal("status", $!run.status)
+              </td>
+              <td nowrap="nowrap">
+				#if($!run.status == "002")
+					#if($!run.batchName=="下载和解压数据")
+					<input id="InputTime0" type="text" name="InputTime0" value='' onmouseover="_calendar()" readonly="readonly" maxlength="30"/>
+					#end
+					#if($!run.batchName=="增量数据")
+					<input id="InputTime1" type="text" name="InputTime1" value='' onmouseover="_calendar()" readonly="readonly" maxlength="30"/>
+					#end
+					  #else
+					  	<input id="InputTime0" type="text" name="InputTime0" style="display: none"/>
+					  <input id="InputTime1" type="text" name="InputTime1"style="display: none"/>
+				#end
+			  </td>
+              <td nowrap="nowrap">
+				#if($!run.status == "001"||$!run.status == "000"||$!run.status == "002")
+				<a onclick="handle('$!run.id@$!run.batchCode@$!run.status@$!date.format('yyyy-MM-dd HH:mm:ss ',$!{run.createdTime})')" class="btn_g" href="javascript:void(0);" >处理</a>	
 				#end
 			  </td>
 			  <td nowrap="nowrap">$!date.format('yyyy-MM-dd HH:mm:ss ',$!{run.createdTime})</td>
@@ -101,7 +120,13 @@
 	});
 	
 	function handle(id){
-		var url = "${modulePath}/handleAdjustmentLevel.json";
+		var InputTime0='';
+		var InputTime1='';
+		InputTime0=$('#InputTime0').val();
+	//	 alert(typeof(InputTime0)+"++"+InputTime0); 
+		InputTime01=$('#InputTime1').val();
+	//	alert(typeof(InputTime1)+"--"+InputTime1);
+	    var url = "${modulePath}/handleAdjustmentLevel.json?InputTime0="+InputTime0+"&InputTime1="+InputTime01;
 		if(submitFlag == 1){
 			alert("请勿重复提交!")
 			return;
@@ -112,14 +137,15 @@
      			$.ajax({
       				url : url,
       				type : "get",
-      				data : "id=" + id,//要发送的数据
+      				//data:{id:id,InputTime:InputTime}
+      				data : "id=" + id,
       				success : function(data) {
       					if (data.success) {
       						topWin.Dialog.message("处理成功！");
       						window.location.reload(true);
       					}
       					else{
-      						topWin.Dialog.message(data.message);
+      							topWin.Dialog.message(data.message);
       				    }
       					submitFlag = 0;
       				}

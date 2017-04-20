@@ -2082,50 +2082,50 @@
 	
 	<select id="findSxListByFilter"  resultMap="SxResultMap">
 			select a.deptname as Name, a.productName,sum(a.ffje) as jkje ,count(a.ywbh)
-	as countSx,sum(a.df) as total from
-	(select distinct tkmx.ywbh,base.khmc,protype.product_name as
-	productName,sysuser.display_name,DeptName.name as
-	deptname,tkmx.jkrq,shlx.df ,tkmx.ffje
-	from (
-	select sum(lsz.df) as df ,tkmx.ywbh as ywbh
-	from ty_customer_rygl rygl,
-	ty_customer_base base,
-	ty_product_type protype,
-	ty_repay_tkmx tkmx,
-	SYS_USER sysuser ,
-	ty_repay_yehz yehz,
-	ty_repay_lsz lsz
-	where base.khjl=rygl.dm and
-	rygl.ddrq=sysuser.external_id
-	and base.khnm=tkmx.khh
-	and tkmx.JJH=yehz.JJH
-	and protype.product_code=tkmx.cpmc
-	and lsz.jjh=tkmx.jjh
-	and lsz.zy='批量自动扣利息'
-	group by tkmx.ywbh ) shlx,
-	( select distinct t.name,sysuser.id from sys_department t,sys_dept_user
-	tt,sys_user sysuser
-	where
-	t.id=tt.dept_id and
-	sysuser.id=tt.user_id) DeptName,
-	ty_customer_rygl rygl,
-	ty_customer_base base,
-	ty_product_type protype,
-	ty_repay_tkmx tkmx,
-	SYS_USER sysuser ,
-	ty_repay_yehz yehz,
-	ty_kdk_jh jh,
-	ty_repay_lsz lsz
-	WHERE
-	base.khjl=rygl.dm
-	and rygl.ddrq=sysuser.external_id
-	and base.khnm=tkmx.khh
-	and tkmx.JJH=yehz.JJH
-	and protype.product_code=tkmx.cpmc
-	and jh.ywbh=tkmx.ywbh||'HT'
-	and lsz.jjh=tkmx.jjh
-	and shlx.ywbh=tkmx.ywbh
-	and DeptName.id=sysuser.id
+  as countSx,sum(a.df) as total from
+  (select distinct tkmx.ywbh,base.khmc,protype.product_name as
+  productName,sysuser.display_name,DeptName.name as
+  deptname,tkmx.jkrq,shlx.df ,tkmx.ffje
+  from (
+  select sum(lsz.df) as df ,tkmx.ywbh as ywbh
+  from basic_customer_information basic,
+  ty_customer_base base,
+  ty_product_type protype,
+  ty_repay_tkmx tkmx,
+  SYS_USER sysuser ,
+  ty_repay_yehz yehz,
+  ty_repay_lsz lsz
+  where basic.ty_customer_id=base.id 
+ and basic.user_id=sysuser.id 
+  and base.khnm=tkmx.khh
+  and tkmx.JJH=yehz.JJH
+  and protype.product_code=tkmx.cpmc
+  and lsz.jjh=tkmx.jjh
+  and lsz.zy='批量自动扣利息'
+  group by tkmx.ywbh ) shlx,
+  ( select distinct t.name,sysuser.id from sys_department t,sys_dept_user
+  tt,sys_user sysuser
+  where
+  t.id=tt.dept_id and
+  sysuser.id=tt.user_id) DeptName,
+  basic_customer_information basic,
+  ty_customer_base base,
+  ty_product_type protype,
+  ty_repay_tkmx tkmx,
+  SYS_USER sysuser ,
+  ty_repay_yehz yehz,
+  ty_kdk_jh jh,
+  ty_repay_lsz lsz
+  WHERE
+ basic.ty_customer_id=base.id 
+ and basic.user_id=sysuser.id 
+  and base.khnm=tkmx.khh
+  and tkmx.JJH=yehz.JJH
+  and protype.product_code=tkmx.cpmc
+  and jh.ywbh=tkmx.ywbh||'HT'
+  and lsz.jjh=tkmx.jjh
+  and shlx.ywbh=tkmx.ywbh
+  and DeptName.id=sysuser.id
                     order  by tkmx.jkrq ) a
                       where 1=1 
               group by  a.deptname, a.productName

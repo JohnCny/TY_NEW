@@ -1569,7 +1569,7 @@ public class CustomerInforService {
 	 * @return
 	 * @throws Exception 
 	 */
-	public void saveRyglDataFile(String fileName,String date) {
+	public  void saveRyglDataFile(String fileName,String date) {
 		try {
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
 			// 解析数据文件配置
@@ -1641,7 +1641,7 @@ public class CustomerInforService {
 	 * @return
 	 * @throws Exception 
 	 */
-	public void saveBaseDataFile(String fileName,String date) {
+	public  void saveBaseDataFile(String fileName,String date) {
 		try {
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
 			// 解析数据文件配置
@@ -1784,7 +1784,7 @@ public class CustomerInforService {
 	 * @return
 	 * @throws Exception 
 	 */
-	public void saveCyDataFile(String fileName,String date) {
+	public  void saveCyDataFile(String fileName,String date) {
 		try {
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
 			// 解析数据文件配置
@@ -1821,7 +1821,7 @@ public class CustomerInforService {
 	 * @return
 	 * @throws Exception 
 	 */
-	public void saveCcDataFile(String fileName,String date) {
+	public  void saveCcDataFile(String fileName,String date) {
 		try {
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
 			// 解析数据文件配置
@@ -1858,7 +1858,7 @@ public class CustomerInforService {
 	 * @return
 	 * @throws Exception 
 	 */
-	public void saveStudyDataFile(String fileName,String date) {
+	public  void saveStudyDataFile(String fileName,String date) {
 		try {
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
 			// 解析数据文件配置
@@ -1895,7 +1895,7 @@ public class CustomerInforService {
 	 * @return
 	 * @throws Exception 
 	 */
-	public void saveWorkDataFile(String fileName,String date) {
+	public  void saveWorkDataFile(String fileName,String date) {
 		try {
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
 			// 解析数据文件配置
@@ -1932,7 +1932,7 @@ public class CustomerInforService {
 	 * @return
 	 * @throws Exception 
 	 */
-	public void saveManageDataFile(String fileName,String date) {
+	public  void saveManageDataFile(String fileName,String date) {
 		try {
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
 			// 解析数据文件配置
@@ -1969,7 +1969,7 @@ public class CustomerInforService {
 	 * @return
 	 * @throws Exception 
 	 */
-	public void saveSafeDataFile(String fileName,String date) {
+	public  void saveSafeDataFile(String fileName,String date) {
 		try {
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
 			// 解析数据文件配置
@@ -2590,12 +2590,12 @@ public class CustomerInforService {
 							spFile.add(fileN+".txt");
 						}
 					}
-					
-					if(fileN.startsWith("kdk_lsz")){
+					//太原流水表从20170411开始使用增量数据
+					/*if(fileN.startsWith("kdk_lsz")){
 						//删除流水号历史数据
 						String sql = " truncate   table   ty_repay_lsz";
 						commonDao.queryBySql(sql, null);
-					}
+					}*/
 					if(fileN.startsWith("kdk_yehz")){
 						//删除余额汇总历史数据
 						String sql = " truncate   table   ty_repay_yehz";
@@ -4724,24 +4724,26 @@ public class CustomerInforService {
 //====
 	public static void dailyTestClearLog() throws IOException {
 		// 读取文件,插入数据到表里
-		// String log_path = "/home/log/";
+		//String log_path = "/home/log/";
 		String log_path = "/usr/local/jboss-as-7.1.1.Final/standalone/log/";
 		File file = new File(log_path);
 		File[] tempList = file.listFiles();
-		// System.out.println("该目录下对象个数"+tempList.length);
+		 System.out.println("该目录下对象个数"+tempList.length);
 		for (int i = 0; i < tempList.length; i++) {
 			String[] str = tempList[i].getName().split("\\.");
 			
 			if (str.length != 2) {// jradbaseweb.log
 				String dateString = str[2];
-				//System.out.println(tempList[i].getName() + "--" + dateString);
-				if (CheckIsTrue(dateString)) {
-					//删除该文件
-					String path = log_path + "server.log." + dateString;
-					System.out.println("要删除的文件是："+path);
-					File f = new File(path);
-					System.out.println(f.exists());
-					f.delete();
+				System.out.println(tempList[i].getName() + "--" + dateString);
+				if(!str[0].isEmpty()){ //隐藏文件乎略不删
+					if (CheckIsTrue(dateString)) {
+						//删除该文件
+						String path = log_path + "server.log." + dateString;
+						System.out.println("要删除的文件是："+path);
+						File f = new File(path);
+						System.out.println(f.exists());
+						f.delete();
+					}
 				}
 			}
 		}
@@ -4753,7 +4755,7 @@ public class CustomerInforService {
 		Map<Integer, Integer> map = getMonthAndDaysBetweenDate(dateString,
 				dateNow);
 		int days = map.get(2).intValue();//月数
-		//System.out.println("相差的月份数：" + months);
+		System.out.println("相差的天数：" + days);
 		if (days >= 7) {//  相差7天
 			return true;
 		}
@@ -4780,12 +4782,15 @@ public class CustomerInforService {
 		int days = 0;
 		int y1 = d1.getYear();
 		int y2 = d2.getYear();
-		int dm1 = d2.getMonth();// 起始日期月份
+		int dm1 = d1.getMonth();// 起始日期月份
 		int dm2 = d2.getMonth();// 结束日期月份
 		int dd1 = d1.getDate(); //起始日期天
 		int dd2 = d2.getDate(); // 结束日期天
+		long a=d1.getTime();
+		long a1=d2.getTime();
 		if (d1.getTime() < d2.getTime()) {
-			days = d2.getDate() - d1.getDate() ;
+			days=(int)((d2.getTime()-d1.getTime())/86400000);
+			//	days = d2.getDate() - d1.getDate() ;
 			map.put(1, months);
 			map.put(2, days);
 		}

@@ -11,4 +11,6 @@ public class ManagerLevelAdjustmentConstant {
 	public static final String IF_PASS_STANDARD_1 = "1";
 	
 	public static final String IF_HANDLE_SUCCESS = "级别调整成功";
+	
+	public static final String IF_flase = "失败";
 }

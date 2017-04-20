@@ -540,7 +540,7 @@
          <!-- <property name="startDelay" value="0"/>
         <property name="repeatInterval" value="60000" /> -->
          <property name="cronExpression">
-            <value>0 32 16 * * ?</value>
+            <value>0 30 10 * * ?</value>
         </property> 
     </bean>
     <!-- 每日删除过期的日志 节省服务器空间end-->

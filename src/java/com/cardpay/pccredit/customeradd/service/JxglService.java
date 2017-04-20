@@ -29,4 +29,9 @@ public class JxglService {
 		return qr;
 	}
 
+	public List<JxglForm> findalljxgllists(MaintenanceFilter filter) {
+		// TODO Auto-generated method stub
+		return dao.findAlljxglLists(filter);
+	}
+
 }

@@ -18,4 +18,6 @@ public interface JxglDao {
 
 	int findAlljxglCountList(MaintenanceFilter filter);
 
+	List<JxglForm> findAlljxglLists(MaintenanceFilter filter);
+
 }

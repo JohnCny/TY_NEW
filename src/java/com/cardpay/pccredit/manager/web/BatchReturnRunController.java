@@ -45,6 +45,7 @@ import com.wicresoft.jrad.base.constant.JRadConstants;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.jrad.base.web.JRadModelAndView;
 import com.wicresoft.jrad.base.web.controller.BaseController;
+import com.wicresoft.jrad.base.web.message.Messages;
 import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
 import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
@@ -109,25 +110,43 @@ public class BatchReturnRunController extends BaseController{
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "handleAdjustmentLevel.json")
-	public JRadReturnMap handleAdjustmentLevel(HttpServletRequest request) {
+	@RequestMapping(value = "handleAdjustmentLevel.json",method = { RequestMethod.GET })
+	public JRadReturnMap handleAdjustmentLevel(@ModelAttribute BatchRunFilter filter,HttpServletRequest request) {
+		filter.setRequest(request);
 		JRadReturnMap returnMap = new JRadReturnMap();
+		String dateString = null;
 		try {
 			String param = RequestHelper.getStringValue(request, ID);
 			String batchCode = param.split("@")[1];
-			String time = param.split("@")[2];
+			String status=param.split("@")[2];
+			String createtime = param.split("@")[3];
 			//DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			//String dateString = format.format(new Date(time));
-			String dateString = time.substring(0, 10).replace("-", "");
+			if("000".equals(status)||"001".equals(status)){
+				dateString = createtime.substring(0, 10).replace("-", "");
+			}
+			if("002".equals(status)){
+				if("downLoad".equals(batchCode)){
+					dateString=request.getParameter("InputTime0").replace("-", "");
+				}
+				if("incre".equals(batchCode)){
+					dateString=request.getParameter("InputTime1").replace("-", "");
+				}
+				if(dateString==null||dateString==""){
+					returnMap.put(JRadConstants.SUCCESS, false);
+					returnMap.put(JRadConstants.MESSAGE, "处理失败!特殊时间搜索时间不可为空");
+					return returnMap;
+				}
+			}
 			//下载和解压数据
 			if(batchCode.equals("downLoad")){
-				odsTools_jn.downloadFilesbyDate(dateString);
+				odsTools_jn.downloadFilesbyDate(dateString,status);
 			//客户经理日报batch
 			}else if(batchCode.equals("rb")){
 				dailyReportScheduleService.insertWeekScheduleByDate(dateString);
 			//ODS增量数据
 			}else if(batchCode.equals("incre")){
-				incrementService.doReadFileIncrementByDate(dateString);
+				incrementService.doReadFileIncrementByDate(dateString,status);
 			//ODS全量数据(暂无)
 			}/*else if(batchCode.equals("whole")){
 				incrementService.doReadFileWholeByDate(dateString);

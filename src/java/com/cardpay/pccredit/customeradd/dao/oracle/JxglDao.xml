@@ -37,121 +37,91 @@
 		FROM ACCOUNT_MANAGER_PARAMETER T
 		LEFT JOIN SYS_USER s ON s.id = T.USER_ID
 		WHERE  s.USER_TYPE = '1'
-		ORDER BY t.CREATED_TIME DESC
+	    order by  nlssort(S.DISPLAY_NAME,'NlS_SORT=SCHINESE_PINYIN_M')
 	</select>
 	
 <select id="findAlljxglList" resultMap="jxgl" parameterType="com.cardpay.pccredit.customer.filter.MaintenanceFilter">
-	 with jgnsxlx as (
-	     SELECT *
-		  FROM (
-		 select distinct tkmx.ywbh,base.khmc,protype.product_name as productName,sysuser.display_name,tkmx.jkrq,shlx.df ,tkmx.ffje
-                    from (
-                    select sum(lsz.df) as df ,tkmx.ywbh as ywbh
-                    from   
-                    ty_customer_rygl rygl,
-                    ty_customer_base base,
-                    ty_product_type protype,
-                    ty_repay_tkmx tkmx,
-                    SYS_USER sysuser  ,
-                    ty_repay_yehz yehz,
-                    ty_repay_lsz lsz
-                    where   base.khjl=rygl.dm and
-                      rygl.ddrq=sysuser.external_id
-                    and base.khnm=tkmx.khh
-                    and tkmx.JJH=yehz.JJH
-                    and protype.product_code=tkmx.cpmc
-                    and lsz.jjh=tkmx.jjh
-                    and lsz.zy='批量自动扣利息'
-                    group by tkmx.ywbh )  shlx,
-                    ty_customer_rygl rygl,
-                    ty_customer_base base,
-                     ty_product_type protype,
-                    ty_repay_tkmx tkmx,
-                    SYS_USER sysuser  ,
-                    ty_repay_yehz yehz,
-                    ty_kdk_jh jh,
-                    ty_repay_lsz lsz
-                    WHERE 
-                    base.khjl=rygl.dm and
-                      rygl.ddrq=sysuser.external_id
-                    and base.khnm=tkmx.khh
-                    and tkmx.JJH=yehz.JJH
-                    and protype.product_code=tkmx.cpmc
-                    and substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh 
-                    and lsz.jjh=tkmx.jjh
-                    and shlx.ywbh=tkmx.ywbh
-                     order  by tkmx.jkrq
-	 	    ))
-    
     SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
-				FROM (	
-          select sysuser.DISPLAY_NAME displayname,
+				FROM (
+                 select * from (select 
+      sysuser.id ,
+      sysuser.DISPLAY_NAME displayname,
       T_JX_PARAMETERS.MONTH_LOAN_NUM monthloannum,
       T_JX_PARAMETERS.MONTH_EFFECT_NUM montheffectnum,
-     ffje1.zffje byffje,
-     ffje2.zffje ffje,
-     sum(jgnsxlx.df) zsx
-      from
-      jgnsxlx,
-       (select sum(ffje) as zffje,sysuserid from
-      (select distinct tkmx.ywbh, tkmx.FFJE as ffje ,b.id ,tkmx.jkrq as id,sysuser.id as sysuserid
-       from  ty_repay_tkmx tkmx,
-              ty_customer_base b,
-              ty_customer_rygl rygl,
-              sys_user sysuser,
-             ty_kdk_jh jh,
-              ty_repay_yehz yehz,
-              ty_repay_lsz lsz
-              where b.khjl=rygl.dm and
-              rygl.ddrq=sysuser.external_id and
-              b.khnm=tkmx.khh and
-              jh.ywbh=tkmx.ywbh||'HT' and
-              yehz.jjh=tkmx.jjh and
-              tkmx.jjh =lsz.jjh
-              and tkmx.jkrq>'20161201')
-              group by sysuserid
-      ) ffje1,
-      (select sum(ffje) as zffje ,sysuserid from
-      (select distinct tkmx.ywbh, tkmx.FFJE ,b.id ,tkmx.jkrq as id,sysuser.id as sysuserid
-       from  ty_repay_tkmx tkmx,
-              ty_customer_base b,
-              ty_customer_rygl rygl,
-              sys_user sysuser,
-             ty_kdk_jh jh,
-              ty_repay_yehz yehz,
-              ty_repay_lsz lsz
-              where b.khjl=rygl.dm and
-              rygl.ddrq=sysuser.external_id and
-              b.khnm=tkmx.khh and
-              jh.ywbh=tkmx.ywbh||'HT' and
-              yehz.jjh=tkmx.jjh and
-              tkmx.jjh =lsz.jjh)
-              group by sysuserid
-        )ffje2,
-        ty_repay_tkmx tkmx,
-              ty_customer_base b,
-              ty_customer_rygl rygl,
-              sys_user sysuser,
-             ty_kdk_jh jh,
-              ty_repay_yehz yehz,
-              ty_repay_lsz lsz,
-              T_JX_PARAMETERS 
-              where b.khjl=rygl.dm and
-              rygl.ddrq=sysuser.external_id and
-              b.khnm=tkmx.khh and
-              jgnsxlx.ywbh=tkmx.ywbh and
-              jh.ywbh=tkmx.ywbh||'HT' and
-              yehz.jjh=tkmx.jjh and
-              tkmx.jjh =lsz.jjh and
-              T_JX_PARAMETERS.Customer_Manager_Id=sysuser.id  and
-              ffje1.sysuserid=sysuser.id and
-              ffje2.sysuserid=sysuser.id 
-               <if test="customerManagerId!=null and customerManagerId!=''">
-		            and users1.ID=#{customerManagerId}
-		        </if>
-              group by sysuser.DISPLAY_NAME, T_JX_PARAMETERS.MONTH_LOAN_NUM,
-              T_JX_PARAMETERS.MONTH_EFFECT_NUM,ffje1.zffje,ffje2.zffje
+       ffje1.zffje byffje,
+       ffje2.zffje ffje,
+     jgnsxlx.df zsx
+     from  sys_user sysuser 
+     left join T_JX_PARAMETERS 
+     on sysuser.id=T_JX_PARAMETERS.Customer_Manager_Id 
+     left join 
+     (select sum(ffje) as zffje,sysuserid from
+            (select distinct tkmx.ywbh, tkmx.FFJE as ffje ,b.id ,tkmx.jkrq as id,sysuser.id as sysuserid
+             from  ty_repay_tkmx tkmx,
+                    ty_customer_base b,
+                    basic_customer_information basic,
+                    sys_user sysuser,
+                   ty_kdk_jh jh,
+                    ty_repay_yehz yehz,
+                    ty_repay_lsz lsz
+                    where b.id=basic.ty_customer_id and
+                    basic.user_id= sysuser.id and
+                    b.khnm=tkmx.khh and
+                    jh.ywbh=tkmx.ywbh||'HT' and
+                    yehz.jjh=tkmx.jjh and
+                    tkmx.jjh =lsz.jjh
+                    and substr(tkmx.jkrq, '0', '4') = substr(to_char( sysdate,'yyyy'), '0', '4')
+                   and substr(lsz.jzrq, '5', '2') = to_char(sysdate,'MM')
+                    )
+                    group by sysuserid
+      ) ffje1
+      on  ffje1.sysuserid=sysuser.id 
+      left join
+       (select sum(ffje) as zffje ,sysuserid from
+            (select distinct tkmx.ywbh, tkmx.FFJE ,b.id ,tkmx.jkrq as id,sysuser.id as sysuserid
+             from  ty_repay_tkmx tkmx,
+                    ty_customer_base b,
+                    basic_customer_information basic,
+                    sys_user sysuser,
+                    ty_kdk_jh jh,
+                    ty_repay_yehz yehz,
+                    ty_repay_lsz lsz
+                    where b.id =basic.ty_customer_id and
+                    basic.user_id=sysuser.id and
+                    b.khnm=tkmx.khh and
+                    jh.ywbh=tkmx.ywbh||'HT' and
+                    yehz.jjh=tkmx.jjh and
+                    tkmx.jjh =lsz.jjh
+                    )
+                    group by sysuserid
+        )ffje2
+        on  ffje2.sysuserid=sysuser.id 
+        left join ( select sum(shlx.df) as df,shlx.sysuserid,shlx.display_name
+                    from (
+                   select tkmx.ywbh as ywbh,basic.chinese_name,sysuser.id as sysuserid,sysuser.display_name, sum(lsz.df) as df 
+                    from   
+                    basic_customer_information basic,
+                    ty_customer_base base,
+                    ty_repay_tkmx tkmx,
+                    SYS_USER sysuser  ,
+                    ty_repay_lsz lsz
+                    where  base.id =basic.ty_customer_id and
+                     basic.user_id=sysuser.id
+                    and base.khnm=tkmx.khh
+                    and lsz.jjh=tkmx.jjh
+                    and lsz.zy='批量自动扣利息'
+                  
+                    and substr(lsz.jzrq, '0', '4') = substr(to_char( sysdate,'yyyy'), '0', '4')
+                    and substr(lsz.jzrq, '5', '2') = to_char(sysdate,'MM')
+                    group by tkmx.ywbh,basic.chinese_name,sysuser.id,sysuser.display_name ,tkmx.jkrq )  shlx
+                    group by shlx.sysuserid,shlx.display_name
+                    )jgnsxlx
+                    on   jgnsxlx.sysuserid=sysuser.id )  a
+                      where 1=1 
+        <if test="customerManagerId!=null and customerManagerId!=''">
+		   and a.ID=#{customerManagerId}    
+		</if>
        <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -161,119 +131,167 @@
 	
 <select id="findAlljxglCountList" resultType="int"
 			parameterType="com.cardpay.pccredit.customer.filter.MaintenanceFilter">
-	with jgnsxlx as (
-	SELECT *
-	FROM (
-	select distinct tkmx.ywbh,base.khmc,protype.product_name as
-	productName,sysuser.display_name,tkmx.jkrq,shlx.df ,tkmx.ffje
-	from (
-	select sum(lsz.df) as df ,tkmx.ywbh as ywbh
-	from
-	ty_customer_rygl rygl,
-	ty_customer_base base,
-	ty_product_type protype,
-	ty_repay_tkmx tkmx,
-	SYS_USER sysuser ,
-	ty_repay_yehz yehz,
-	ty_repay_lsz lsz
-	where base.khjl=rygl.dm and
-	rygl.ddrq=sysuser.external_id
-	and base.khnm=tkmx.khh
-	and tkmx.JJH=yehz.JJH
-	and protype.product_code=tkmx.cpmc
-	and lsz.jjh=tkmx.jjh
-	and lsz.zy='批量自动扣利息'
-	group by tkmx.ywbh ) shlx,
-	ty_customer_rygl rygl,
-	ty_customer_base base,
-	ty_product_type protype,
-	ty_repay_tkmx tkmx,
-	SYS_USER sysuser ,
-	ty_repay_yehz yehz,
-	ty_kdk_jh jh,
-	ty_repay_lsz lsz
-	WHERE
-	base.khjl=rygl.dm and
-	rygl.ddrq=sysuser.external_id
-	and base.khnm=tkmx.khh
-	and tkmx.JJH=yehz.JJH
-	and protype.product_code=tkmx.cpmc
-	and substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh
-	and lsz.jjh=tkmx.jjh
-	and shlx.ywbh=tkmx.ywbh
-	order by tkmx.jkrq
-	))
-
 	select count(*)
 	from
-	(select sysuser.DISPLAY_NAME displayname,
-	T_JX_PARAMETERS.MONTH_LOAN_NUM monthloannum,
-	T_JX_PARAMETERS.MONTH_EFFECT_NUM montheffectnum,
-	ffje1.zffje byffje,
-	ffje2.zffje ffje,
-	sum(jgnsxlx.df) zsx
-	from
-	jgnsxlx,
-	(select sum(ffje) as zffje,sysuserid from
-	(select distinct tkmx.ywbh, tkmx.FFJE as ffje ,b.id ,tkmx.jkrq as
-	id,sysuser.id as sysuserid
-	from ty_repay_tkmx tkmx,
-	ty_customer_base b,
-	ty_customer_rygl rygl,
-	sys_user sysuser,
-	ty_kdk_jh jh,
-	ty_repay_yehz yehz,
-	ty_repay_lsz lsz
-	where b.khjl=rygl.dm and
-	rygl.ddrq=sysuser.external_id and
-	b.khnm=tkmx.khh and
-	jh.ywbh=tkmx.ywbh||'HT' and
-	yehz.jjh=tkmx.jjh and
-	tkmx.jjh =lsz.jjh
-	and tkmx.jkrq>'20161201')
-	group by sysuserid
-	) ffje1,
-	(select sum(ffje) as zffje ,sysuserid from
-	(select distinct tkmx.ywbh, tkmx.FFJE ,b.id ,tkmx.jkrq as id,sysuser.id as
-	sysuserid
-	from ty_repay_tkmx tkmx,
-	ty_customer_base b,
-	ty_customer_rygl rygl,
-	sys_user sysuser,
-	ty_kdk_jh jh,
-	ty_repay_yehz yehz,
-	ty_repay_lsz lsz
-	where b.khjl=rygl.dm and
-	rygl.ddrq=sysuser.external_id and
-	b.khnm=tkmx.khh and
-	jh.ywbh=tkmx.ywbh||'HT' and
-	yehz.jjh=tkmx.jjh and
-	tkmx.jjh =lsz.jjh)
-	group by sysuserid
-	)ffje2,
-	ty_repay_tkmx tkmx,
-	ty_customer_base b,
-	ty_customer_rygl rygl,
-	sys_user sysuser,
-	ty_kdk_jh jh,
-	ty_repay_yehz yehz,
-	ty_repay_lsz lsz,
-	T_JX_PARAMETERS
-	where b.khjl=rygl.dm and
-	rygl.ddrq=sysuser.external_id and
-	b.khnm=tkmx.khh and
-	jgnsxlx.ywbh=tkmx.ywbh and
-	jh.ywbh=tkmx.ywbh||'HT' and
-	yehz.jjh=tkmx.jjh and
-	tkmx.jjh =lsz.jjh and
-	T_JX_PARAMETERS.Customer_Manager_Id=sysuser.id and
-	ffje1.sysuserid=sysuser.id and
-	ffje2.sysuserid=sysuser.id
-	<if test="customerManagerId!=null and customerManagerId!=''">
-		and users1.ID=#{customerManagerId}
-	</if>
-	group by sysuser.DISPLAY_NAME, T_JX_PARAMETERS.MONTH_LOAN_NUM,
-	T_JX_PARAMETERS.MONTH_EFFECT_NUM,ffje1.zffje,ffje2.zffje)
+	(   select * from (select 
+      sysuser.id ,
+      sysuser.DISPLAY_NAME displayname,
+      T_JX_PARAMETERS.MONTH_LOAN_NUM monthloannum,
+      T_JX_PARAMETERS.MONTH_EFFECT_NUM montheffectnum,
+       ffje1.zffje byffje,
+       ffje2.zffje ffje,
+     jgnsxlx.df zsx
+     from  sys_user sysuser 
+     left join T_JX_PARAMETERS 
+     on sysuser.id=T_JX_PARAMETERS.Customer_Manager_Id 
+     left join 
+     (select sum(ffje) as zffje,sysuserid from
+            (select distinct tkmx.ywbh, tkmx.FFJE as ffje ,b.id ,tkmx.jkrq as id,sysuser.id as sysuserid
+             from  ty_repay_tkmx tkmx,
+                    ty_customer_base b,
+                    basic_customer_information basic,
+                    sys_user sysuser,
+                   ty_kdk_jh jh,
+                    ty_repay_yehz yehz,
+                    ty_repay_lsz lsz
+                    where b.id=basic.ty_customer_id and
+                    basic.user_id= sysuser.id and
+                    b.khnm=tkmx.khh and
+                    jh.ywbh=tkmx.ywbh||'HT' and
+                    yehz.jjh=tkmx.jjh and
+                    tkmx.jjh =lsz.jjh
+                    and substr(tkmx.jkrq, '0', '4') = substr(to_char( sysdate,'yyyy'), '0', '4')
+                   and substr(lsz.jzrq, '5', '2') = to_char(sysdate,'MM')
+                    )
+                    group by sysuserid
+      ) ffje1
+      on  ffje1.sysuserid=sysuser.id 
+      left join
+       (select sum(ffje) as zffje ,sysuserid from
+            (select distinct tkmx.ywbh, tkmx.FFJE ,b.id ,tkmx.jkrq as id,sysuser.id as sysuserid
+             from  ty_repay_tkmx tkmx,
+                    ty_customer_base b,
+                    basic_customer_information basic,
+                    sys_user sysuser,
+                    ty_kdk_jh jh,
+                    ty_repay_yehz yehz,
+                    ty_repay_lsz lsz
+                    where b.id =basic.ty_customer_id and
+                    basic.user_id=sysuser.id and
+                    b.khnm=tkmx.khh and
+                    jh.ywbh=tkmx.ywbh||'HT' and
+                    yehz.jjh=tkmx.jjh and
+                    tkmx.jjh =lsz.jjh
+                    )
+                    group by sysuserid
+        )ffje2
+        on  ffje2.sysuserid=sysuser.id 
+        left join ( select sum(shlx.df) as df,shlx.sysuserid,shlx.display_name
+                    from (
+                   select tkmx.ywbh as ywbh,basic.chinese_name,sysuser.id as sysuserid,sysuser.display_name, sum(lsz.df) as df 
+                    from   
+                    basic_customer_information basic,
+                    ty_customer_base base,
+                    ty_repay_tkmx tkmx,
+                    SYS_USER sysuser  ,
+                    ty_repay_lsz lsz
+                    where  base.id =basic.ty_customer_id and
+                     basic.user_id=sysuser.id
+                    and base.khnm=tkmx.khh
+                    and lsz.jjh=tkmx.jjh
+                    and lsz.zy='批量自动扣利息'
+                  
+                    and substr(lsz.jzrq, '0', '4') = substr(to_char( sysdate,'yyyy'), '0', '4')
+                    and substr(lsz.jzrq, '5', '2') = to_char(sysdate,'MM')
+                    group by tkmx.ywbh,basic.chinese_name,sysuser.id,sysuser.display_name ,tkmx.jkrq )  shlx
+                    group by shlx.sysuserid,shlx.display_name
+                    )jgnsxlx
+                    on   jgnsxlx.sysuserid=sysuser.id )  a
+                      where 1=1 
+        <if test="customerManagerId!=null and customerManagerId!=''">
+		   and a.ID=#{customerManagerId}    
+		</if>)
         
+	</select>
+	
+<select id="findAlljxglLists" resultMap="jxgl" parameterType="com.cardpay.pccredit.customer.filter.MaintenanceFilter">
+                 select * from (select 
+      sysuser.id ,
+      sysuser.DISPLAY_NAME displayname,
+      T_JX_PARAMETERS.MONTH_LOAN_NUM monthloannum,
+      T_JX_PARAMETERS.MONTH_EFFECT_NUM montheffectnum,
+       ffje1.zffje byffje,
+       ffje2.zffje ffje,
+     jgnsxlx.df zsx
+     from  sys_user sysuser 
+     left join T_JX_PARAMETERS 
+     on sysuser.id=T_JX_PARAMETERS.Customer_Manager_Id 
+     left join 
+     (select sum(ffje) as zffje,sysuserid from
+            (select distinct tkmx.ywbh, tkmx.FFJE as ffje ,b.id ,tkmx.jkrq as id,sysuser.id as sysuserid
+             from  ty_repay_tkmx tkmx,
+                    ty_customer_base b,
+                    basic_customer_information basic,
+                    sys_user sysuser,
+                   ty_kdk_jh jh,
+                    ty_repay_yehz yehz,
+                    ty_repay_lsz lsz
+                    where b.id=basic.ty_customer_id and
+                    basic.user_id= sysuser.id and
+                    b.khnm=tkmx.khh and
+                    jh.ywbh=tkmx.ywbh||'HT' and
+                    yehz.jjh=tkmx.jjh and
+                    tkmx.jjh =lsz.jjh
+                    and substr(tkmx.jkrq, '0', '4') = substr(to_char( sysdate,'yyyy'), '0', '4')
+                   and substr(lsz.jzrq, '5', '2') = to_char(sysdate,'MM')
+                    )
+                    group by sysuserid
+      ) ffje1
+      on  ffje1.sysuserid=sysuser.id 
+      left join
+       (select sum(ffje) as zffje ,sysuserid from
+            (select distinct tkmx.ywbh, tkmx.FFJE ,b.id ,tkmx.jkrq as id,sysuser.id as sysuserid
+             from  ty_repay_tkmx tkmx,
+                    ty_customer_base b,
+                    basic_customer_information basic,
+                    sys_user sysuser,
+                    ty_kdk_jh jh,
+                    ty_repay_yehz yehz,
+                    ty_repay_lsz lsz
+                    where b.id =basic.ty_customer_id and
+                    basic.user_id=sysuser.id and
+                    b.khnm=tkmx.khh and
+                    jh.ywbh=tkmx.ywbh||'HT' and
+                    yehz.jjh=tkmx.jjh and
+                    tkmx.jjh =lsz.jjh
+                    )
+                    group by sysuserid
+        )ffje2
+        on  ffje2.sysuserid=sysuser.id 
+        left join ( select sum(shlx.df) as df,shlx.sysuserid,shlx.display_name
+                    from (
+                   select tkmx.ywbh as ywbh,basic.chinese_name,sysuser.id as sysuserid,sysuser.display_name, sum(lsz.df) as df 
+                    from   
+                    basic_customer_information basic,
+                    ty_customer_base base,
+                    ty_repay_tkmx tkmx,
+                    SYS_USER sysuser  ,
+                    ty_repay_lsz lsz
+                    where  base.id =basic.ty_customer_id and
+                     basic.user_id=sysuser.id
+                    and base.khnm=tkmx.khh
+                    and lsz.jjh=tkmx.jjh
+                    and lsz.zy='批量自动扣利息'
+                  
+                    and substr(lsz.jzrq, '0', '4') = substr(to_char( sysdate,'yyyy'), '0', '4')
+                    and substr(lsz.jzrq, '5', '2') = to_char(sysdate,'MM')
+                    group by tkmx.ywbh,basic.chinese_name,sysuser.id,sysuser.display_name ,tkmx.jkrq )  shlx
+                    group by shlx.sysuserid,shlx.display_name
+                    )jgnsxlx
+                    on   jgnsxlx.sysuserid=sysuser.id )  a
+                      where 1=1 
+        <if test="customerManagerId!=null and customerManagerId!=''">
+		   and a.ID=#{customerManagerId}    
+		</if>
 	</select>
 </mapper>
