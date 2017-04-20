@@ -295,8 +295,8 @@
 			        yehz.DKYE as balamt,
 			        yehz.bnqx+yehz.bwqx as debtinterest,
 			        tkmx.ffje as reqlmt,
-			        jh.ts as delayamtdays,  
-			        jh.ts as delayinterestdays
+			        (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else 0  end ) as DELAYINTERESTDAYS,
+           			(case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else 0  end )as DELAYAMTDAYS
 			          from
            (select  tkmx.ywbh as ywbh,
                       max(to_number(jh.qs)) as qs
@@ -341,7 +341,10 @@
 					  <if test="cardNum != null and cardNum != '' ">
 							AND trim(base.zjhm)=#{cardNum}
 					  </if>
+					    group by tkmx.ywbh, base.khmc,base.zjhm,tkmx.jkrq,
+              tkmx.ffje,yehz.DKYE,yehz.bnqx,yehz.bwqx,tkmx.dqrq
 					  order  by tkmx.jkrq
+					  
 		 <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -363,8 +366,8 @@
               tkmx.dqrq as dqrq,
               yehz.bnqx+yehz.bwqx as debtinterest,
               tkmx.ffje as reqlmt,
-              jh.ts as delayamtdays,  
-              jh.ts as delayinterestdays
+              (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else 0  end ) as DELAYINTERESTDAYS,
+           	(case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else 0  end )as DELAYAMTDAYS
                 from
            (select  tkmx.ywbh as ywbh,
                       max(to_number(jh.qs)) as qs
@@ -410,6 +413,8 @@
 					  <if test="cardNum != null and cardNum != '' ">
 							AND trim(base.zjhm)=#{cardNum}
 					  </if>
+					   group by tkmx.ywbh,base.khh, base.khmc,base.zjhm,tkmx.jkrq,
+              tkmx.ffje,yehz.DKYE,yehz.bnqx,yehz.bwqx,tkmx.dqrq,base.Khlx,base.Zjlx
                     order  by tkmx.jkrq
 	</select>
 	
@@ -740,21 +745,28 @@
 					SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
-				select distinct YWBH,ID,KHH,KHMC,ZJHM,SSBM,SJ,SXED,GHJL,LOANDATE, DQRQ,DKQX,JZLL,REQLMT,nvl(DELAYINTERESTDAYS,0) as DELAYINTERESTDAYS ,  nvl(DELAYAMTDAYS,0) as DELAYAMTDAYS,
-        DLAYDT,SHBJ,JKJE,KSQXRQ,PAYDEBT,DKYE as YE ,BNQX,BWQX,sum(DKYE+BNQX+BWQX) as dlayamtsum,BALAMT ,YXYE,USERID as  userid,DISPLAY_NAME as display_name
-                 from ty_mibusidata where 1=1 
+				select distinct tym.YWBH,tym.ID,tym.KHH,tym.KHMC,tym.ZJHM,tym.SSBM,tym.SJ,tym.SXED,tym.GHJL,tym.LOANDATE, tym.DQRQ,tym.DKQX,
+tym.JZLL,tym.REQLMT,nvl(tym.DELAYINTERESTDAYS,0) as DELAYINTERESTDAYS ,  nvl(tym.DELAYAMTDAYS,0) as DELAYAMTDAYS,
+        tym.DLAYDT,tym.SHBJ,tym.JKJE,tym.KSQXRQ,nvl(sum(lsz.df)-tkmx.ffje,0) as PAYDEBT,DKYE as YE ,tym.BNQX,tym.BWQX,sum(tym.DKYE+tym.BNQX+tym.BWQX) as dlayamtsum,tym.BALAMT ,tym.YXYE,tym.USERID as  userid,tym.DISPLAY_NAME as display_name
+                 from ty_mibusidata tym,
+                 ty_repay_tkmx tkmx,
+                 ty_repay_lsz lsz 
+                 where 1=1  and
+                 tym.ywbh=tkmx.ywbh and
+                 tkmx.jjh=lsz.jjh 
 			           <if test="userId != null and userId != '' and userId !='000001'">
-			             and USERID  =#{userId}
+			             and tym.USERID  =#{userId}
 				         </if>
 				         <if test="busiCode != null and busiCode != '' ">
-							AND trim(YWBH)=#{busiCode}
+							AND trim(tym.YWBH)=#{busiCode}
 						</if>
 						<if test="customerName != null and customerName != '' ">
-							AND KHMC=#{customerName}
+							AND tym.KHMC=#{customerName}
 						</if>
-						  group by YWBH,ID,KHH,KHMC,ZJHM,SSBM,SJ,SXED,GHJL,LOANDATE, DQRQ,DKQX,JZLL,REQLMT,nvl(DELAYINTERESTDAYS,0),  nvl(DELAYAMTDAYS,0),
-        DLAYDT,SHBJ,JKJE,KSQXRQ,PAYDEBT,DKYE ,BNQX,BWQX,BALAMT ,YXYE,USERID ,DISPLAY_NAME 
-         order by LOANDATE
+						  group by tym.YWBH,tym.ID,tym.KHH,tym.KHMC,tym.ZJHM,tym.SSBM,tym.SJ,tym.SXED,tym.GHJL,tym.LOANDATE, tym.DQRQ,tym.DKQX,
+tym.JZLL,tym.REQLMT,nvl(tym.DELAYINTERESTDAYS,0)  ,  nvl(tym.DELAYAMTDAYS,0),tkmx.ffje,
+        tym.DLAYDT,tym.SHBJ,tym.JKJE,tym.KSQXRQ,tym.PAYDEBT,DKYE ,tym.BNQX,tym.BWQX ,tym.BALAMT ,tym.YXYE,tym.USERID ,tym.DISPLAY_NAME
+         order by tym.LOANDATE
 					<!--   select
 			        distinct
 			          tkmx.YWBH ,

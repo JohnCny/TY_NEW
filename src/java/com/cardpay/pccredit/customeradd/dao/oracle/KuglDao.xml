@@ -96,7 +96,7 @@
 					SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
-					  select  b.chinese_name,
+					 <!--  select  b.chinese_name,
           					  b.card_id,
           					  p.product_name,
 				  			  u.display_name,
@@ -110,17 +110,37 @@
 				       left join ty_customer_base base on  b.TY_CUSTOMER_ID = base.ID
 				       left join ty_repay_tkmx tkmx	   on base.KHH = tkmx.KHH  and p.product_type_code = tkmx.cpmc
 				       left join ty_repay_yehz  yehz  on yehz.JJH = tkmx.JJH
-				       --left join MAINTENANCE_PLAN m on m.app_id = c.id
-					  WHERE 1=1 
-					  --and c.status in ('approved','end')
+					  WHERE 1=1 -->
+				select distinct tkmx.ywbh,
+           basic.chinese_name,
+                      basic.card_id,
+                     pro.product_name,
+                  sysuser.display_name,
+                      basic.user_id,
+                      nvl(yehz.dkye,0) as dkye
+                      from  ty_repay_tkmx tkmx,
+                          ty_customer_base b,
+                          basic_customer_information basic,
+                          sys_user sysuser,
+                         ty_kdk_jh jh,
+                          ty_repay_yehz yehz,
+                          ty_repay_lsz lsz,
+                          ty_product_type pro
+                          where basic.ty_customer_id=b.id and
+                          basic.user_id=sysuser.id and
+                          b.khnm=tkmx.khh and
+                          jh.ywbh=tkmx.ywbh||'HT' and
+                          yehz.jjh=tkmx.jjh and
+                          tkmx.jjh =lsz.jjh and
+                          pro.product_code =tkmx.cpmc
 					<if test="customerManagerIds != null and customerManagerIds != '' ">  
- 					  	AND b.user_id in  
+ 					  	AND basic.user_id in  
 	 					<foreach collection="customerManagerIds" index="index" item="item" open="(" separator="," close=")"> 
 							#{item.userId} 
 						</foreach>
 					</if>
 					 <if test="customerManagerId != null and customerManagerId != '' ">
-						AND b.user_id = #{customerManagerId}
+						AND basic.user_id = #{customerManagerId}
 					 </if>
 		 <![CDATA[		
 							) ROW_
@@ -131,25 +151,30 @@
 	
 <select id="findMaintenancePlansCountList" resultType="int"
 			parameterType="com.cardpay.pccredit.customer.filter.MaintenanceFilter">
-		  select  	   count(*)
-				       from customer_application_info c
-				       inner join product_attribute p on c.product_id = p.id
-				       inner join basic_customer_information b  on c.customer_id=b.id
-				       inner join sys_user u on b.user_id = u.id
-				       --left join MAINTENANCE_PLAN m on m.app_id = c.id
-				       left join ty_customer_base base on  b.TY_CUSTOMER_ID = base.ID
-				       left join ty_repay_tkmx tkmx	   on base.KHH = tkmx.KHH  and p.product_type_code = tkmx.cpmc
-				       left join ty_repay_yehz  yehz  on yehz.JJH = tkmx.JJH
-					  WHERE 1=1 
-					 	  --and c.status in ('approved','end')
-		<if test="customerManagerIds != null and customerManagerIds != '' ">  
- 			AND b.user_id in  
-	 		<foreach collection="customerManagerIds" index="index" item="item" open="(" separator="," close=")"> 
-				#{item.userId} 
-			</foreach>
-		</if>
-		<if test="customerManagerId != null and customerManagerId != '' ">
-			AND b.user_id=#{customerManagerId}
-		</if>
+		  select  	   count(distinct tkmx.ywbh )
+				       from  ty_repay_tkmx tkmx,
+                          ty_customer_base b,
+                          basic_customer_information basic,
+                          sys_user sysuser,
+                         ty_kdk_jh jh,
+                          ty_repay_yehz yehz,
+                          ty_repay_lsz lsz,
+                          ty_product_type pro
+                          where basic.ty_customer_id=b.id and
+                          basic.user_id=sysuser.id and
+                          b.khnm=tkmx.khh and
+                          jh.ywbh=tkmx.ywbh||'HT' and
+                          yehz.jjh=tkmx.jjh and
+                          tkmx.jjh =lsz.jjh and
+                          pro.product_code =tkmx.cpmc
+			<if test="customerManagerIds != null and customerManagerIds != '' ">  
+ 					  	AND basic.user_id in  
+	 					<foreach collection="customerManagerIds" index="index" item="item" open="(" separator="," close=")"> 
+							#{item.userId} 
+						</foreach>
+					</if>
+					 <if test="customerManagerId != null and customerManagerId != '' ">
+						AND basic.user_id = #{customerManagerId}
+					 </if>
 	</select>
 </mapper>

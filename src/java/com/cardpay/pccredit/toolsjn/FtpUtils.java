@@ -22,7 +22,7 @@ public class FtpUtils {
 	public static int bank_ftp_port = 21;						// ftp端口
 	public static String bank_ftp_username="xdls";// 制卡ftp用户名
 	public static String bank_ftp_password="xdls";// 制卡ftp密码
-//	public static String bank_ftp_path="/home/xwdftp";     	    // ftp文件目录
+//	public static String bank_ftp_path="/home";     	    // ftp文件目录
 	public static String bank_ftp_path="/xdls/";// 制卡ftp文件目录
 	public static String bank_ftp_down_path="/usr/local/tmp";// 下发数据存放
 //    public static String bank_ftp_down_path="F://sql//新建文件夹数据//新建文件夹数据//A";// 下发数据存放

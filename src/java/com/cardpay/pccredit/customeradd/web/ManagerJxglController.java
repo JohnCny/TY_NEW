@@ -100,15 +100,19 @@ public class ManagerJxglController extends BaseController{
 				//lists是档次  lists1是人数
 				List<JxglpmForm>lists=new ArrayList<JxglpmForm>();
 				
-				List<JxglForm>ffje=result.getItems();
+				List<JxglForm>ffje=service.findalljxgllists(filter);
 				for (int i=0;i<ffje.size();i++) {
 					JxglpmForm e=new JxglpmForm();
 					e.setId(Integer.toString(i));
-					ffjew=Integer.parseInt(ffje.get(i).getFfje().trim());
+					String money=ffje.get(i).getFfje();
+					if(ffje.get(i).getFfje()==null){ //如果是后台等人员则处理空为零
+						money="0";
+					}
+					ffjew=Integer.parseInt(money.trim());
 					e.setFpm(ffjew);
-					e.setLpm(ffjew+1000);
+					e.setLpm(ffjew+10000);
 					//取模用来区分是什么档次      80 
-					int results=ffjew/1000;
+					int results=ffjew/10000;
 					e.setResult(results);
 					if(i!=0){
 						for(int ii=0;ii<lists.size();ii++){
@@ -143,5 +147,5 @@ public class ManagerJxglController extends BaseController{
 		mv.addObject("lists", lists);
 		return mv;
 	}
-
+	
 }

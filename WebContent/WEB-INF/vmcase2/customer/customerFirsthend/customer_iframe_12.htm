@@ -244,7 +244,7 @@
 					success : function(data) {
 					if(data.message=="操作成功"){
 						 Dialog.message(data.message);
-						window.location.href="/PCCredit/customer/firsthend/showCustomerInfoJn.page?id="+id;
+						window.location.href="${contextPath}/customer/firsthend/showCustomerInfoJn.page?id="+id;
 					}else{
 						 Dialog.message("操作失败");
 					}

@@ -84,7 +84,7 @@ public class ManagerkhglController extends BaseController{
 		}else{
 			//如果页面穿过来没有信息则显示所有客户经理手下信息
 			if(forms.size()>0){
-				filter.setCustomerManagerIds(forms);
+				//filter.setCustomerManagerIds(forms);
 				result = service.findMaintenancePlansList(filter);
 			}else{
 				//直接返回页面

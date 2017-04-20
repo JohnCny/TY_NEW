@@ -608,6 +608,7 @@ public class TyManagerSalaryService {
 					accountManagerParameter.getUserId(),
 					accountManagerParameter.getBasePay(),
 					accountManagerParameter.getManagerType());
+			
 			if(dcsmap.get("organName").equals("一区")){
 				MonthPerformance1=new BigDecimal(dcsmap.get("MonthPerformance").toString())
 					.add(MonthPerformance1);

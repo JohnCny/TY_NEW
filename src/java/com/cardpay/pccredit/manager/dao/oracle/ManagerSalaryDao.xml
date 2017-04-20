@@ -860,7 +860,7 @@ from
 	</select>
 	
 	<select id="findrwjebyorganName" parameterType="String" resultType="int">
-	     select sum(REQLMT) from ty_mibusidata a where 1=1 
+	     select nvl(sum(REQLMT),0) from ty_mibusidata a where 1=1 
 	     <if test="year != null and year != '' ">
 			and substr(a.loandate, '0', '4') = #{year}
 		</if>

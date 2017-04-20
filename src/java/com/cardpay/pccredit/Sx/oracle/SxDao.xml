@@ -198,80 +198,42 @@
 	</select>
 	
 	 	<select id="findje" parameterType="com.cardpay.pccredit.Sx.model.SxInputData" resultMap="SxResultMap">
-	 	   with jgnsxlx as (
-	     SELECT *
-		  FROM (
-		 select distinct tkmx.ywbh,base.khmc,protype.product_name as productName,sysuser.display_name,tkmx.jkrq,shlx.df ,tkmx.ffje
-                    from (
-                    select sum(lsz.df) as df ,tkmx.ywbh as ywbh
-                    from   
-                    ty_customer_rygl rygl,
-                    ty_customer_base base,
-                    ty_product_type protype,
-                    ty_repay_tkmx tkmx,
-                    SYS_USER sysuser  ,
-                    ty_repay_yehz yehz,
-                    ty_repay_lsz lsz
-                    where   base.khjl=rygl.dm and
-                      rygl.ddrq=sysuser.external_id
-                    and base.khnm=tkmx.khh
-                    and tkmx.JJH=yehz.JJH
-                    and protype.product_code=tkmx.cpmc
-                    and lsz.jjh=tkmx.jjh
-                    and lsz.zy='批量自动扣利息'
-                    group by tkmx.ywbh )  shlx,
-                    ty_customer_rygl rygl,
-                    ty_customer_base base,
-                     ty_product_type protype,
-                    ty_repay_tkmx tkmx,
-                    SYS_USER sysuser  ,
-                    ty_repay_yehz yehz,
-                    ty_kdk_jh jh,
-                    ty_repay_lsz lsz
-                    WHERE 
-                    base.khjl=rygl.dm and
-                      rygl.ddrq=sysuser.external_id
-                    and base.khnm=tkmx.khh
-                    and tkmx.JJH=yehz.JJH
-                    and protype.product_code=tkmx.cpmc
-                    and substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh 
-                    and lsz.jjh=tkmx.jjh
-                    and shlx.ywbh=tkmx.ywbh
-                       <if test=" ldate!=null  and ldate!=''">
-	                and tkmx.jkrq<![CDATA[ <  ]]> to_char( to_date( #{ldate} ,'yyyy/mm/dd'),'yyyymmdd')
-	                 </if>
-	                    <if test=" fdate!=null  and fdate!=''">
-	                and tkmx.jkrq<![CDATA[ >  ]]> to_char( to_date( #{fdate} ,'yyyy/mm/dd'),'yyyymmdd')
-	            </if>
-                     order  by tkmx.jkrq
-	 	    ))
-	 	    
-	 	   
 	 		SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (  
-				   select 
-       DeptName.Name, protype.product_name as productName,sysuser.display_name as displayName,sum(jgnsxlx.df) as total,count(jgnsxlx.df) as countSx,sum(jgnsxlx.ffje) as jkje
+				  select 
+       DeptName.Name, protype.product_name as productName,sysuser.display_name as displayName,sum(tkmx.ffje) as jkje,sum(jgnsxlx.df) as total,count(tkmx.ywbh) as countSx
        from
-          jgnsxlx,
+          (
+                    select sum(lsz.df) as df,tkmx.ffje ,tkmx.ywbh as ywbh,basic.id,basic.chinese_name
+                    from   
+                    basic_customer_information basic,
+                    ty_customer_base base,
+                    ty_repay_tkmx tkmx,
+                    SYS_USER sysuser  ,
+                    ty_repay_lsz lsz
+                    where   basic.ty_customer_id=base.id 
+                    and basic.user_id=sysuser.id 
+                    and base.khnm=tkmx.khh
+                    and lsz.jjh=tkmx.jjh
+                    and lsz.zy='批量自动扣利息'
+                    group by tkmx.ywbh ,basic.id,basic.chinese_name,tkmx.ffje) jgnsxlx,
           ( select distinct t.name,sysuser.id from sys_department t,sys_dept_user tt,sys_user sysuser
               where 
                     t.id=tt.dept_id and 
                     sysuser.id=tt.user_id)  DeptName,
-                    ty_customer_rygl rygl,
+                    basic_customer_information basic,
                     ty_customer_base base,
                     ty_product_type protype,
                     ty_repay_tkmx tkmx,
-                    SYS_USER sysuser  ,
-                    ty_repay_yehz yehz
+                    SYS_USER sysuser 
                     WHERE 
-                    base.khjl=rygl.dm and
-                      rygl.ddrq=sysuser.external_id
+                    basic.ty_customer_id=base.id 
+                    and basic.user_id=sysuser.id 
                     and base.khnm=tkmx.khh
                     and jgnsxlx.ywbh=tkmx.ywbh
-                    and tkmx.JJH=yehz.JJH
                     and protype.product_code=tkmx.cpmc
-                    and DeptName.id=sysuser.id  
+                    and DeptName.id=sysuser.id 
 						<if test="product!=null and product!=''">
 						    and protype.product_name like '%'||#{product}||'%'
 						</if> 
@@ -281,6 +243,12 @@
 						<if test="displayName!=null and displayName!=''">
 						    and sysuser.display_name  like '%'||#{displayName}||'%'
 						</if>
+						<if test=" ldate!=null  and ldate!=''">
+			                and tkmx.jkrq<![CDATA[ <  ]]> to_char( to_date( #{ldate} ,'yyyy/mm/dd'),'yyyymmdd')
+			                 </if>
+			                    <if test=" fdate!=null  and fdate!=''">
+			                and tkmx.jkrq<![CDATA[ >  ]]> to_char( to_date( #{fdate} ,'yyyy/mm/dd'),'yyyymmdd')
+			            </if>
                     group by  DeptName.Name,sysuser.display_name, protype.product_name 
                     order by nlssort (protype.product_name ,'nls_sort=schinese_pinyin_m')
 	   					 <![CDATA[		
@@ -292,76 +260,40 @@
 	 	
 	 	<select id="findSxListCountByFilterje" resultType="int"
 			parameterType="com.cardpay.pccredit.Sx.model.SxInputData">
-						with jgnsxlx as (
-	     SELECT *
-		  FROM (
-		  select distinct tkmx.ywbh,base.khmc,protype.product_name as productName,sysuser.display_name,tkmx.jkrq,shlx.df ,tkmx.ffje
-                    from (
-                    select sum(lsz.df) as df ,tkmx.ywbh as ywbh
-                    from   
-                    ty_customer_rygl rygl,
-                    ty_customer_base base,
-                    ty_product_type protype,
-                    ty_repay_tkmx tkmx,
-                    SYS_USER sysuser  ,
-                    ty_repay_yehz yehz,
-                    ty_repay_lsz lsz
-                    where   base.khjl=rygl.dm and
-                      rygl.ddrq=sysuser.external_id
-                    and base.khnm=tkmx.khh
-                    and tkmx.JJH=yehz.JJH
-                    and protype.product_code=tkmx.cpmc
-                    and lsz.jjh=tkmx.jjh
-                    and lsz.zy='批量自动扣利息'
-                    group by tkmx.ywbh )  shlx,
-                    ty_customer_rygl rygl,
-                    ty_customer_base base,
-                     ty_product_type protype,
-                    ty_repay_tkmx tkmx,
-                    SYS_USER sysuser  ,
-                    ty_repay_yehz yehz,
-                    ty_kdk_jh jh,
-                    ty_repay_lsz lsz
-                    WHERE 
-                    base.khjl=rygl.dm and
-                      rygl.ddrq=sysuser.external_id
-                    and base.khnm=tkmx.khh
-                    and tkmx.JJH=yehz.JJH
-                    and protype.product_code=tkmx.cpmc
-                    and jh.ywbh=tkmx.ywbh||'HT'
-                    and lsz.jjh=tkmx.jjh
-                    and shlx.ywbh=tkmx.ywbh
-                      <if test=" ldate!=null  and ldate!=''">
-	                and tkmx.jkrq<![CDATA[ <  ]]> to_char( to_date( #{ldate} ,'yyyy/mm/dd'),'yyyymmdd')
-	                 </if>
-	                    <if test=" fdate!=null  and fdate!=''">
-	                and tkmx.jkrq<![CDATA[ >  ]]> to_char( to_date( #{fdate} ,'yyyy/mm/dd'),'yyyymmdd')
-	            </if>
-                     order  by tkmx.jkrq
-	 	    ))
 			select count(*) from 
 	  	(	    select 
-       DeptName.Name, protype.product_name as productName,sysuser.display_name as displayName,sum(jgnsxlx.df) as total,count(jgnsxlx.df) as countSx,sum(jgnsxlx.ffje) as jkje
+       DeptName.Name, protype.product_name as productName,sysuser.display_name as displayName,sum(jgnsxlx.df) as total,count(tkmx.ywbh) as countSx,sum(tkmx.ffje) as jkje
        from
-          jgnsxlx,
+          (
+                    select sum(lsz.df) as df,tkmx.ffje ,tkmx.ywbh as ywbh,basic.id,basic.chinese_name
+                    from   
+                    basic_customer_information basic,
+                    ty_customer_base base,
+                    ty_repay_tkmx tkmx,
+                    SYS_USER sysuser  ,
+                    ty_repay_lsz lsz
+                    where   basic.ty_customer_id=base.id 
+                    and basic.user_id=sysuser.id 
+                    and base.khnm=tkmx.khh
+                    and lsz.jjh=tkmx.jjh
+                    and lsz.zy='批量自动扣利息'
+                    group by tkmx.ywbh ,basic.id,basic.chinese_name,tkmx.ffje) jgnsxlx,
           ( select distinct t.name,sysuser.id from sys_department t,sys_dept_user tt,sys_user sysuser
               where 
                     t.id=tt.dept_id and 
                     sysuser.id=tt.user_id)  DeptName,
-                    ty_customer_rygl rygl,
+                    basic_customer_information basic,
                     ty_customer_base base,
                     ty_product_type protype,
                     ty_repay_tkmx tkmx,
-                    SYS_USER sysuser  ,
-                    ty_repay_yehz yehz
+                    SYS_USER sysuser 
                     WHERE 
-                    base.khjl=rygl.dm and
-                      rygl.ddrq=sysuser.external_id
+                    basic.ty_customer_id=base.id 
+                    and basic.user_id=sysuser.id 
                     and base.khnm=tkmx.khh
                     and jgnsxlx.ywbh=tkmx.ywbh
-                    and tkmx.JJH=yehz.JJH
                     and protype.product_code=tkmx.cpmc
-                    and DeptName.id=sysuser.id  
+                    and DeptName.id=sysuser.id 
 						<if test="product!=null and product!=''">
 						    and protype.product_name like '%'||#{product}||'%'
 						</if> 
@@ -371,6 +303,12 @@
 						<if test="displayName!=null and displayName!=''">
 						    and sysuser.display_name like '%'||#{displayName}||'%'
 						</if>
+						<if test=" ldate!=null  and ldate!=''">
+	               		and tkmx.jkrq<![CDATA[ <  ]]> to_char( to_date( #{ldate} ,'yyyy/mm/dd'),'yyyymmdd')
+	                 </if>
+	                    <if test=" fdate!=null  and fdate!=''">
+	               		 and tkmx.jkrq<![CDATA[ >  ]]> to_char( to_date( #{fdate} ,'yyyy/mm/dd'),'yyyymmdd')
+	            </if>
 						  group by  DeptName.Name,sysuser.display_name, protype.product_name 
                     order by nlssort (protype.product_name ,'nls_sort=schinese_pinyin_m') ) a
 	</select> 
@@ -395,7 +333,7 @@
                     and base.khnm=tkmx.khh
                     and tkmx.JJH=yehz.JJH
                     and protype.product_code=tkmx.cpmc
-                    and substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh 
+                    and jh.ywbh=tkmx.ywbh||'HT'
                     and DeptName.id=sysuser.id
                     group by  DeptName.Name
 	 	</select>

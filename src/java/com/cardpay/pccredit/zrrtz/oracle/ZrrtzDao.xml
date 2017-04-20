@@ -118,7 +118,6 @@
                     yehz.jjh=tkmx.jjh and
                     tkmx.jjh =lsz.jjh and
                     protype.product_code=tkmx.cpmc
-                     and tkmx.ywbh not in (select ywbh from CUSTOMER_PARAMETER)
                    <if test="fdate!=null and ldate!=null and fdate!='' and ldate!=''">
 						    and tkmx.jkrq<![CDATA[ <  ]]> to_char( to_date( #{ldate} ,'yyyy/mm/dd'),'yyyymmdd')
 						    and tkmx.jkrq<![CDATA[ >  ]]> to_char( to_date( #{fdate} ,'yyyy/mm/dd'),'yyyymmdd')
@@ -163,7 +162,6 @@
                     yehz.jjh=tkmx.jjh and
                     tkmx.jjh =lsz.jjh and
                     protype.product_code=tkmx.cpmc
-                     and tkmx.ywbh not in (select ywbh from CUSTOMER_PARAMETER)
                    <if test="fdate!=null and ldate!=null and fdate!='' and ldate!=''">
 						    and tkmx.jkrq<![CDATA[ <  ]]> to_char( to_date( #{ldate} ,'yyyy/mm/dd'),'yyyymmdd')
 						    and tkmx.jkrq<![CDATA[ >  ]]> to_char( to_date( #{fdate} ,'yyyy/mm/dd'),'yyyymmdd')
@@ -212,16 +210,9 @@
                     tkmx.DQRQ as Expiredate,
                     base.Cshy as Classification,
                    base.ZYYW as  Scopeoperation,
-                   base.yydz as Operationaddress,  
-                    '' as Principal,
-                   '' as Assist,
+                   base.XXDZ as Operationaddress,  
                    (select t.name from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = sysuser.id)) as Groupes,
-                   '' as Members,
-                    ''as Patternslend,
-                   '' as Ratepaying,
-                   '' as Giveback ,
-                   base.sj as SJ,
-                   '' as Remark
+                   base.sj as SJ
          from
                     ty_repay_tkmx tkmx,
                     ty_customer_base base,
@@ -238,7 +229,7 @@
                     yehz.jjh=tkmx.jjh and
                     tkmx.jjh =lsz.jjh and
                     protype.product_code=tkmx.cpmc
-                    and tkmx.ywbh not in (select ywbh from CUSTOMER_PARAMETER)
+                   and tkmx.ywbh not in (select ywbh from CUSTOMER_PIGEONHOLE)
 		  <if test="id!=null and id!='' and id!='undefined' and id!='000001'">
 				       and sysuser.id=#{id}
 		 </if> 
@@ -246,7 +237,8 @@
 						    and tkmx.jkrq<![CDATA[ <  ]]> to_char( to_date( #{ldate} ,'yyyy/mm/dd'),'yyyymmdd')
 						    and tkmx.jkrq<![CDATA[ >  ]]> to_char( to_date( #{fdate} ,'yyyy/mm/dd'),'yyyymmdd')
 						</if>
-		  group by   tkmx.ywbh,base.khmc, sysuser.display_name, base.zjhm,protype.product_name,tkmx.ffje,tkmx.jkrq,tkmx.DQRQ,base.Cshy , base.ZYYW, base.yydz ,base.sj,sysuser.id
+		  group by   tkmx.ywbh,base.khmc, sysuser.display_name, base.zjhm,protype.product_name,tkmx.ffje,tkmx.jkrq,tkmx.DQRQ,base.Cshy , 
+		  base.ZYYW, base.yydz ,base.sj,sysuser.id, base.XXDZ
 	</select>
 	
 	

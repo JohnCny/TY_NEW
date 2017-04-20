@@ -240,16 +240,12 @@ public class CustomerZRRTZController extends BaseController{
 		cell = row.createCell((short) 11);
 		cell.setCellValue("经营地址");
 		cell.setCellStyle(style);
+		
 		cell = row.createCell((short) 12);
-		cell.setCellValue("主调");
-		cell.setCellStyle(style);
-		cell = row.createCell((short) 13);
-		cell.setCellValue("辅调");
-		cell.setCellStyle(style);
-		cell = row.createCell((short) 14);
 		cell.setCellValue("组别");
 		cell.setCellStyle(style);
-		cell = row.createCell((short) 15);
+		
+		/*cell = row.createCell((short) 15);
 		cell.setCellValue("审贷会成员");
 		cell.setCellStyle(style);
 		cell = row.createCell((short) 16);
@@ -259,12 +255,12 @@ public class CustomerZRRTZController extends BaseController{
 		cell.setCellValue("是否纳税");
 		cell.setCellStyle(style);
 		cell = row.createCell((short) 18);
-		cell.setCellValue("归还情况");
+		cell.setCellValue("归还情况");*/
 		cell.setCellStyle(style);
-		cell = row.createCell((short) 19);
+		cell = row.createCell((short) 13);
 		cell.setCellValue("联系方式");
 		cell.setCellStyle(style);
-		cell = row.createCell((short) 20);
+		cell = row.createCell((short) 14);
 		cell.setCellValue("联系方式");
 		cell.setCellStyle(style);
 		
@@ -278,22 +274,22 @@ public class CustomerZRRTZController extends BaseController{
 			row.createCell((short) 2).setCellValue(move.getManagername());
 			row.createCell((short) 3).setCellValue(move.getIdcard());
 			row.createCell((short) 4).setCellValue(move.getProductname());
-			row.createCell((short) 5).setCellValue(FormatTool.formatNumber(move.getActual_quote(), 5, 1));
+			row.createCell((short) 5).setCellValue(FormatTool.formatNumber(move.getActual_quote(), 2, 1));
 			row.createCell((short) 6).setCellValue(move.getDeadline());
 			row.createCell((short) 7).setCellValue(move.getProvidedate());
 			row.createCell((short) 8).setCellValue(move.getExpiredate());
 			row.createCell((short) 9).setCellValue(move.getClassification());
 			row.createCell((short) 10).setCellValue(move.getScopeoperation());
 			row.createCell((short) 11).setCellValue(move.getOperationaddress());
-			row.createCell((short) 12).setCellValue(move.getPrincipal());
-			row.createCell((short) 13).setCellValue(move.getAssist());
-			row.createCell((short) 14).setCellValue(move.getGroupes());
-			row.createCell((short) 15).setCellValue(move.getMembers());
+			/*row.createCell((short) 12).setCellValue(move.getPrincipal());
+			row.createCell((short) 13).setCellValue(move.getAssist());*/
+			row.createCell((short) 12).setCellValue(move.getGroupes());
+			/*row.createCell((short) 15).setCellValue(move.getMembers());
 			row.createCell((short) 16).setCellValue(move.getPatternslend());
 			row.createCell((short) 17).setCellValue(move.getRatepaying());
-			row.createCell((short) 18).setCellValue(move.getGiveback());
-			row.createCell((short) 19).setCellValue(move.getSJ());
-			row.createCell((short) 20).setCellValue(move.getRemark());
+			row.createCell((short) 18).setCellValue(move.getGiveback());*/
+			row.createCell((short) 13).setCellValue(move.getSJ());
+			row.createCell((short) 14).setCellValue(move.getRemark());
 			
 		}
 		
