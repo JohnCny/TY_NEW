@@ -89,9 +89,9 @@
       </div>
       <div class="pagebar">
         <div class="controlbtn">
-        <!--  <a id="id_create_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.create.hint')">显示</a> -->
+          <a id="id_create_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.create.hint')">显示各阶段的排名</a> 
          
-         <a id="id_xianshi_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.create.hint')">显示各阶段的排名</a> 
+         <!-- <a id="id_xianshi_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.create.hint')">显示各阶段的排名</a>  -->
           
         </div>
         #parse ("common/pagination.htm")
@@ -109,7 +109,7 @@
 	$(document).ready(function() {
 		var opsObj = new Object();
 		opsObj.formObj = $("#submitForm");
-	    opsObj.createUrl = "${modulePath}/xs.page";
+	    opsObj.createUrl = "${modulePath}/xspm.page";
 		opsObj.browseUrl = "${modulePath}/browse.page";
 		
 		$("#id_xianshi_button").click(function() {
@@ -119,16 +119,10 @@
 		//add
 		if (opsObj.createUrl) {
 	        $("#id_create_button").click(function() {
-	         if ($(".checkbox :checked").length == 1) {
+	            url = opsObj.createUrl 
+	            window.location.href = url;
+	        /*  if ($(".checkbox :checked").length == 1) {
 	        	    $("#id_create_button").unbind();
-	                var rowid = $($(".checkbox :checked")[0]).attr("value");
-	                var url ="";
-	                if(opsObj.createUrl.indexOf("?")>=0){
-	                	url = opsObj.createUrl + "&id=" + rowid;
-	                }else{
-	                	url = opsObj.createUrl + "?id=" + rowid;
-	                }
-	        	 
 	            if (opsObj.formObj) {
 	                // 回调URL
 	                var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
@@ -144,10 +138,9 @@
 	                	}
 	                }
 	            }
-	            window.location.href = url;
 	         } else {
 	                Dialog.message("请选择记录");
-	         } 
+	         } */ 
 	        });
 	    }
 		

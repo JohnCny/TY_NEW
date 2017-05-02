@@ -87,6 +87,9 @@ public class ProductController extends BaseController {
 
 	@Autowired
 	private PccOrganizationService pccOrganizationService;
+	
+	@Autowired
+	private CustomerInforService customerInforService;
 
 	/**
 	 * 浏览页面
@@ -1979,8 +1982,28 @@ public class ProductController extends BaseController {
 		from.setJtdh(request.getParameter("jtdh"));
 		from.setXl(request.getParameter("xl"));
 		from.setXw(request.getParameter("xw"));
+		
+		//不可修改部分
+		from.setKhh(request.getParameter("khh"));
+		from.setKhmc(request.getParameter("khlx"));
+		from.setKhnm(request.getParameter("id"));
+		from.setZjlx(request.getParameter("zjlx"));
+		from.setZjhm(request.getParameter("zjhm"));
+		from.setCsrq(request.getParameter("dqrq"));
+		from.setDqrq(request.getParameter("pqdz"));
+		from.setSfhz(request.getParameter("sfhz"));
+		from.setXydj(request.getParameter("jtdh"));
 		from.setUpdatetime(new Date());
-		int a=InforService.updateCustormerBytyId(from);
+		//基于全量数据下的
+		CIPERSONBASINFOCOPY base = customerInforService.findCIPERSONBASINFOCOPY(request.getParameter("id"));
+		if(base==null){
+			int a = InforService.
+					insertTciPersonBasinfoCopy(from);
+		}else{
+			InforService.updateCipersonBasinfoCopy(from);
+		}
+		//基于增量数据下的
+		//int a=InforService.updateCustormerBytyId(from);
 		c.setId(IDGenerator.generateID());
 		c.setCardid(request.getParameter("cardid"));
 		c.setChinesename(request.getParameter("chinesename"));

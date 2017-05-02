@@ -228,7 +228,7 @@ public interface CustomerInforDao {
 	public int insertCustomerManage(Map<String, Object> map);
 	public void updateCustomerManage(Map<String, Object> map);
 	
-	public int insertCustomerSafe(Map<String, Object> map);
+	//public int insertCustomerSafe(Map<String, Object> map);
 	public void updateCustomerSafe(Map<String, Object> map);
 	
 	public List<CustomerInfor> findCustomerInforByFilterAndProductId(CustomerInforFilter filter);
@@ -325,6 +325,14 @@ public interface CustomerInforDao {
 	public void deletelastsx();
 	public void insertsxOoutputDate(SxOutputData sxOutputData);
 	public List<SxOutputData> findSxListByFilter();
+	public void insertCustomerSafe(@Param("id")String id, @Param("createTime")String createTime,
+			@Param("khnm")String khnm, @Param("bxlx")String bxlx, 
+			@Param("bxmc")String bxmc, @Param("cbgs")String cbgs,
+			@Param("bxnr")String bxnr, @Param("bz")String bz);
+	public int insertTciPersonBasinfoCopy(CustomerFirsthendBase from);
+	
+	public void updateCipersonBasinfoCopy(CustomerFirsthendBase from);
+	
 
 	
 }

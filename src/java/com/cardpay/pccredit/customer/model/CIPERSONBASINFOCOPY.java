@@ -99,6 +99,150 @@ public class CIPERSONBASINFOCOPY extends BusinessModel{
 	private String  busiflag;            
 	private String  create_time;
 	private String islook;
+	
+	private String updatetime;
+	private String xw;
+	private String xl;
+	private String jtdh;
+	private String sj;
+	private String hjdz;
+	private String gtspmc;
+	private String xxdz;
+	private String hyzk;
+	private String mz;
+	private String xb;
+	private String khh;
+	private String khmc;
+	private String khnm;
+	private String zjlx;
+	private String zjhm;
+	private String csrq;
+	private String dqrq;
+	private String sfhz;
+	private String xydj;
+	
+	
+	
+	public String getUpdatetime() {
+		return updatetime;
+	}
+	public void setUpdatetime(String updatetime) {
+		this.updatetime = updatetime;
+	}
+	public String getXw() {
+		return xw;
+	}
+	public void setXw(String xw) {
+		this.xw = xw;
+	}
+	public String getXl() {
+		return xl;
+	}
+	public void setXl(String xl) {
+		this.xl = xl;
+	}
+	public String getJtdh() {
+		return jtdh;
+	}
+	public void setJtdh(String jtdh) {
+		this.jtdh = jtdh;
+	}
+	public String getSj() {
+		return sj;
+	}
+	public void setSj(String sj) {
+		this.sj = sj;
+	}
+	public String getHjdz() {
+		return hjdz;
+	}
+	public void setHjdz(String hjdz) {
+		this.hjdz = hjdz;
+	}
+	public String getGtspmc() {
+		return gtspmc;
+	}
+	public void setGtspmc(String gtspmc) {
+		this.gtspmc = gtspmc;
+	}
+	public String getXxdz() {
+		return xxdz;
+	}
+	public void setXxdz(String xxdz) {
+		this.xxdz = xxdz;
+	}
+	public String getHyzk() {
+		return hyzk;
+	}
+	public void setHyzk(String hyzk) {
+		this.hyzk = hyzk;
+	}
+	public String getMz() {
+		return mz;
+	}
+	public void setMz(String mz) {
+		this.mz = mz;
+	}
+	public String getXb() {
+		return xb;
+	}
+	public void setXb(String xb) {
+		this.xb = xb;
+	}
+	public String getKhh() {
+		return khh;
+	}
+	public void setKhh(String khh) {
+		this.khh = khh;
+	}
+	public String getKhmc() {
+		return khmc;
+	}
+	public void setKhmc(String khmc) {
+		this.khmc = khmc;
+	}
+	public String getKhnm() {
+		return khnm;
+	}
+	public void setKhnm(String khnm) {
+		this.khnm = khnm;
+	}
+	public String getZjlx() {
+		return zjlx;
+	}
+	public void setZjlx(String zjlx) {
+		this.zjlx = zjlx;
+	}
+	public String getZjhm() {
+		return zjhm;
+	}
+	public void setZjhm(String zjhm) {
+		this.zjhm = zjhm;
+	}
+	public String getCsrq() {
+		return csrq;
+	}
+	public void setCsrq(String csrq) {
+		this.csrq = csrq;
+	}
+	public String getDqrq() {
+		return dqrq;
+	}
+	public void setDqrq(String dqrq) {
+		this.dqrq = dqrq;
+	}
+	public String getSfhz() {
+		return sfhz;
+	}
+	public void setSfhz(String sfhz) {
+		this.sfhz = sfhz;
+	}
+	public String getXydj() {
+		return xydj;
+	}
+	public void setXydj(String xydj) {
+		this.xydj = xydj;
+	}
 	public String getIslook() {
 		return islook;
 	}

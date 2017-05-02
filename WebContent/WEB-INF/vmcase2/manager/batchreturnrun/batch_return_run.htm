@@ -81,9 +81,6 @@
 					#if($!run.batchName=="增量数据")
 					<input id="InputTime1" type="text" name="InputTime1" value='' onmouseover="_calendar()" readonly="readonly" maxlength="30"/>
 					#end
-					  #else
-					  	<input id="InputTime0" type="text" name="InputTime0" style="display: none"/>
-					  <input id="InputTime1" type="text" name="InputTime1"style="display: none"/>
 				#end
 			  </td>
               <td nowrap="nowrap">
@@ -123,11 +120,12 @@
 		var InputTime0='';
 		var InputTime1='';
 		InputTime0=$('#InputTime0').val();
-	//	 alert(typeof(InputTime0)+"++"+InputTime0); 
+		// alert(typeof(InputTime0)+"++"+InputTime0); 
 		InputTime01=$('#InputTime1').val();
-	//	alert(typeof(InputTime1)+"--"+InputTime1);
+		//alert(typeof(InputTime1)+"--"+InputTime1);
 	    var url = "${modulePath}/handleAdjustmentLevel.json?InputTime0="+InputTime0+"&InputTime1="+InputTime01;
-		if(submitFlag == 1){
+		//alert(url);
+	    if(submitFlag == 1){
 			alert("请勿重复提交!")
 			return;
 		}
