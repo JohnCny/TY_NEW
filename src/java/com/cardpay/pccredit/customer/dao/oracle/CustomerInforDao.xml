@@ -133,6 +133,17 @@
 		set XB=#{xb},MZ=#{mz},HYZK=#{hyzk},XXDZ=#{xxdz},GTSPMC=#{gtspmc},HJDZ=#{hjdz},SJ=#{sj},JTDH=#{jtdh},xl=#{xl},xw=#{xw},updatetime=#{updatetime}
 		where id=#{id}
 	</update>	
+	
+	<insert id="insertTciPersonBasinfoCopy" parameterType='com.cardpay.pccredit.customer.model.CustomerFirsthendBase'>
+	    insert into  T_CIPERSONBASINFO_COPY (id,XB,MZ,HYZK,XXDZ,GTSPMC,HJDZ,SJ,JTDH,xl,xw,updatetime,khh,khmc,khnm,zjlx,zjhm,csrq,dqrq,sfhz,xydj)
+	     values(#{id},#{xb},#{mz},#{hyzk},#{xxdz},#{gtspmc},#{hjdz},#{sj},#{jtdh},#{xl},#{xw},#{updatetime},#{khh},#{khmc},#{khnm}
+	     ,#{zjlx},#{zjhm},#{csrq},#{dqrq},#{sfhz},#{xydj})
+	</insert>
+	<update id="updateCipersonBasinfoCopy" >
+		update T_CIPERSONBASINFO_COPY
+		set XB=#{xb},MZ=#{mz},HYZK=#{hyzk},XXDZ=#{xxdz},GTSPMC=#{gtspmc},HJDZ=#{hjdz},SJ=#{sj},JTDH=#{jtdh},xl=#{xl},xw=#{xw},updatetime=#{updatetime}
+		where id=#{id}
+	</update>	
 			
 	<select id="findUpdateCustormer"  resultMap="ResultMap1" parameterType="com.cardpay.pccredit.customer.filter.CustomerInforFilter">
 	    	SELECT * FROM
@@ -675,14 +686,14 @@
 		KHNM=#{khnm,jdbcType=VARCHAR}
 	</update>
 
-	<insert id="insertCustomerSafe" parameterType="map">
-		INSERT INTO ty_customer_safe (ID,CREATE_TIME,KHNM,BXLX,BXMC,CBGS,BXNR,BZ)
-		values
-		(#{id,jdbcType=VARCHAR},#{createTime,jdbcType=VARCHAR},#{khnm,jdbcType=VARCHAR},
-		#{bxlx,jdbcType=VARCHAR}, #{bxmc,jdbcType=VARCHAR},
-		#{cbgs,jdbcType=VARCHAR}, #{bxnr,jdbcType=VARCHAR},
-		#{bz,jdbcType=VARCHAR})
-
+	<insert id="insertCustomerSafe" parameterType="String">
+	INSERT INTO ty_customer_safe
+	(ID,CREATE_TIME,KHNM,BXLX,BXMC,CBGS,BXNR,BZ)
+	values
+	(#{id,jdbcType=VARCHAR},#{createTime,jdbcType=VARCHAR},#{khnm,jdbcType=VARCHAR},
+	#{bxlx,jdbcType=VARCHAR}, #{bxmc,jdbcType=VARCHAR},
+	#{cbgs,jdbcType=VARCHAR}, #{bxnr,jdbcType=VARCHAR},
+	#{bz,jdbcType=VARCHAR})
 	</insert>
 
 	<update id="updateCustomerSafe" parameterType="map">

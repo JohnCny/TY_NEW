@@ -4,6 +4,8 @@
 package com.cardpay.pccredit.customeradd.model;
 
 
+import java.util.List;
+
 import com.wicresoft.jrad.base.web.form.BaseForm;
 
 /**
@@ -20,9 +22,17 @@ public class JxglpmForm extends BaseForm{
 	private String id;
 	private int fpm;
 	private int lpm;
-	private int result;
+	private int result; //档次
 	private int pnum;
-
+	private String displayname;
+	
+	
+	public String getDisplayname() {
+		return displayname;
+	}
+	public void setDisplayname(String displayname) {
+		this.displayname = displayname;
+	}
 	public int getResult() {
 		return result;
 	}

@@ -80,7 +80,20 @@ public class ReadWholeAndIncrementService {
 									"t_rbac_user.txt"};
 	
 	//增量
-	private String[] fileTxtIncre = {"kkh_grxx.txt","kkh_grjtcy.txt","kkh_grjtcc.txt","kkh_grscjy.txt","kkh_grxxll.txt","kkh_grgzll.txt","kkh_grrbxx.txt","cxd_dkcpmc.txt","kkh_hmdgl.txt","cxd_rygl.txt","kdk_yehz.txt","kdk_lsz.txt","kdk_tkmx.txt","kdk_jh.txt"};
+	private String[] fileTxtIncre = {/*"kkh_grxx.txt",
+									 "kkh_grjtcy.txt",
+									 "kkh_grjtcc.txt",
+									 "kkh_grscjy.txt",
+									 "kkh_grxxll.txt",
+									 "kkh_grgzll.txt",*/
+									 "kkh_grrbxx.txt"/*,
+									 "cxd_dkcpmc.txt",
+									 "kkh_hmdgl.txt",
+									 "cxd_rygl.txt",
+									 "kdk_yehz.txt",
+									 "kdk_lsz.txt",
+									 "kdk_tkmx.txt",
+									 "kdk_jh.txt"*/};
 	
 	
 	
@@ -1393,7 +1406,8 @@ public class ReadWholeAndIncrementService {
 				if(list.size()>0){
 					customerInforDao.updateCustomerSafe(map);
 				}else{
-					customerInforDao.insertCustomerSafe(map);
+					customerInforDao.insertCustomerSafe((String)map.get("id"),(String)map.get("createTime"),(String)map.get("khnm"),(String)map.get("bxlx"),
+							(String)map.get("bxmc"),(String)map.get("cbgs"),(String)map.get("bxnr"),(String)map.get("bz"));
 				}
 
 				

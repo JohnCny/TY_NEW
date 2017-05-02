@@ -1985,7 +1985,8 @@ public class CustomerInforService {
 				if(list.size()>0){
 					customerInforDao.updateCustomerSafe(map);
 				}else{
-					customerInforDao.insertCustomerSafe(map);
+					customerInforDao.insertCustomerSafe((String)map.get("id"),(String)map.get("createTime"),(String)map.get("khnm"),(String)map.get("bxlx"),
+							(String)map.get("bxmc"),(String)map.get("cbgs"),(String)map.get("bxnr"),(String)map.get("bz"));
 				}
 
 				
@@ -4666,6 +4667,7 @@ public class CustomerInforService {
 		// TODO Auto-generated method stub
 		return  commonDao.queryBySql(CustomerFirsthendFamilyCc.class, "select * from ty_customer_family_cc s where s.khnm='"+khnm+"'", null);
 	}
+	
 	public QueryResult<CustomerInforFilter> findUpdateCustormer(CustomerInforFilter filter){
 		List<CustomerInforFilter> plans = customerInforDao.findUpdateCustormer(filter);
 		for(int a=0;a<plans.size();a++){
@@ -4675,6 +4677,7 @@ public class CustomerInforService {
 		QueryResult<CustomerInforFilter> qr = new QueryResult<CustomerInforFilter>(plans.size(),plans);
 		return qr;
 	}
+	
 	public QueryResult<CustomerInforFilter> findUpdateCustormer1(CustomerInforFilter filter){
 		List<CustomerInforFilter> plans = customerInforDao.findUpdateCustormer1(filter);
 		for(int a=0;a<plans.size();a++){
@@ -4795,6 +4798,15 @@ public class CustomerInforService {
 			map.put(2, days);
 		}
 		return map;
+	}
+	
+	public int insertTciPersonBasinfoCopy(CustomerFirsthendBase from) {
+		// TODO Auto-generated method stub
+		return customerInforDao.insertTciPersonBasinfoCopy(from);
+	}
+	public void updateCipersonBasinfoCopy(CustomerFirsthendBase from) {
+		// TODO Auto-generated method stub
+		customerInforDao.updateCipersonBasinfoCopy(from);
 	}
 	
 }

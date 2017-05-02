@@ -266,37 +266,15 @@
 					SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
-	       <!-- select   distinct tkmx.ywbh,base.khmc as CHINESE_NAME ,base.ZJHM as CARD_ID, protype.product_name as CPMC,tkmx.FFJE,tkmx.JZLL ,tkmx.Jkrq as JKRQ,  sysuser.display_name as KHJL,DeptName.Name as BLJG
-     from
-                     
-                     ( select distinct t.name,sysuser.id from sys_department t,sys_dept_user tt,sys_user sysuser
-                where 
-                      t.id=tt.dept_id and 
-                      sysuser.id=tt.user_id)  DeptName,
-                      basic_customer_information basic,
-                      ty_customer_base base,
-                       ty_product_type protype,
-                      ty_repay_tkmx tkmx,
-                      ty_repay_lsz lsz,
-                      SYS_USER sysuser  ,
-                      ty_kdk_jh jh,
-                      ty_repay_yehz yehz
-                      WHERE  1=1
-                      and base.id= basic.ty_customer_id 
-                      and basic.user_id=sysuser.id 
-                      and base.khnm=tkmx.khh
-                      and tkmx.JJH=yehz.JJH
-                      and protype.product_code=tkmx.cpmc
-                      and lsz.jjh=tkmx.jjh
-                      and jh.ywbh=tkmx.ywbh||'HT'
-                      and DeptName.id=sysuser.id -->
-                select   distinct tym.ywbh,tym.khmc as CHINESE_NAME ,tym.ZJHM as CARD_ID, pro.product_name as CPMC,tym.Reqlmt as FFJE,tym.JZLL ,tym.Loandate as JKRQ,  tym.display_name as KHJL,tym.ywjg as BLJG
-					     from ty_mibusidata tym  ,
-					     ty_repay_tkmx tkmx,
-					     ty_product_type pro
-					     where 1=1 and
-					     tym.ywbh=tkmx.ywbh and
-					     tkmx.cpmc=pro.product_code
+                select distinct tym.ywbh,tym.khmc as CHINESE_NAME ,
+					tym.ZJHM as CARD_ID, pro.product_name as CPMC,tym.Reqlmt as FFJE,tym.JZLL ,
+					tym.Loandate as JKRQ, tym.display_name as KHJL,tym.ywjg as BLJG 
+					from ty_mibusidata tym , ty_repay_tkmx tkmx, ty_product_type pro , sys_department t,sys_dept_user tt
+					where 1=1 and 
+					tym.ywbh=tkmx.ywbh and 
+					tkmx.cpmc=pro.product_code AND 
+					t.id=tt.dept_id and 
+					tym.userid=tt.user_id
                <if test="certiCode != null and certiCode != '' ">
 						 and tym.zjhm=#{certiCode}
 					</if>
@@ -306,7 +284,7 @@
 					</if>
 					
 					<if test="organName != null and organName != '' ">
-					    AND tym.ywjg=#{organName}
+					   and t.name=#{organName}
 					</if>
 					
 					<if test="custManagerName != null and custManagerName != '' ">
@@ -331,10 +309,12 @@
  		 			select distinct  tkmx.ywbh,tym.khmc as cname ,tym.ZJHM as cardtype,pro.product_name as prodName,tym.Reqlmt as money,tym.JZLL as baserate,tym.Loandate as interest, tym.display_name as busimanager,tym.ywjg  as name 
                        from   ty_mibusidata tym  ,
 					     ty_repay_tkmx tkmx,
-					     ty_product_type pro
-					     where 1=1 and
-					     tym.ywbh=tkmx.ywbh and
-					     tkmx.cpmc=pro.product_code
+					     ty_product_type pro, sys_department t,sys_dept_user tt
+						where 1=1 and 
+						tym.ywbh=tkmx.ywbh and 
+						tkmx.cpmc=pro.product_code AND 
+						t.id=tt.dept_id and 
+						tym.userid=tt.user_id
                <if test="certiCode != null and certiCode != '' ">
 						 and tym.zjhm=#{certiCode}
 					</if>
@@ -344,7 +324,7 @@
 					</if>
 					
 					<if test="organName != null and organName != '' ">
-					    AND tym.ywjg=#{organName}
+					       and t.name=#{organName}
 					</if>
 					
 					<if test="custManagerName != null and custManagerName != '' ">
@@ -362,56 +342,16 @@
 		  select  count(ywbh)
                  from
 	                   
-	                   ( <!--  select   distinct tkmx.ywbh,base.khmc as CHINESE_NAME ,base.ZJHM as CARD_ID, protype.product_name as CPMC,tkmx.FFJE,tkmx.JZLL ,tkmx.Jkrq as JKRQ,  sysuser.display_name as KHJL,DeptName.Name as BLJG
-     from
-                     
-                     ( select distinct t.name,sysuser.id from sys_department t,sys_dept_user tt,sys_user sysuser
-                where 
-                      t.id=tt.dept_id and 
-                      sysuser.id=tt.user_id)  DeptName,
-                      basic_customer_information basic,
-                      ty_customer_base base,
-                       ty_product_type protype,
-                      ty_repay_tkmx tkmx,
-                      ty_repay_lsz lsz,
-                      SYS_USER sysuser  ,
-                      ty_kdk_jh jh,
-                      ty_repay_yehz yehz
-                      WHERE  1=1
-                      and base.id= basic.ty_customer_id 
-                      and basic.user_id=sysuser.id 
-                      and base.khnm=tkmx.khh
-                      and tkmx.JJH=yehz.JJH
-                      and protype.product_code=tkmx.cpmc
-                      and lsz.jjh=tkmx.jjh
-                      and jh.ywbh=tkmx.ywbh||'HT'
-                      and DeptName.id=sysuser.id
-               <if test="certiCode != null and certiCode != '' ">
-						 and base.zjhm=#{certiCode}
-					</if>
-								 
-					<if test="customerName != null and customerName != '' ">
-					    and base.khmc=#{customerName}
-					</if>
-					
-					<if test="organName != null and organName != '' ">
-					    AND DeptName.Name=#{organName}
-					</if>
-					
-					<if test="custManagerName != null and custManagerName != '' ">
-						AND sysuser.display_name=#{custManagerName}
-					</if>
-					
-					<if test="status != null and status != '' ">
-						AND app.ACCOUNT_STATUS=#{status}
-					</if>  -->
+	                   ( 
 					 select   distinct tym.ywbh,tym.khmc as CHINESE_NAME ,tym.ZJHM as CARD_ID, pro.product_name as CPMC,tym.Reqlmt as FFJE,tym.JZLL ,tym.Loandate as JKRQ,  tym.display_name as KHJL,tym.ywjg as BLJG
 					     from ty_mibusidata tym  ,
 					     ty_repay_tkmx tkmx,
-					     ty_product_type pro
-					     where 1=1 and
-					     tym.ywbh=tkmx.ywbh and
-					     tkmx.cpmc=pro.product_code
+					     ty_product_type pro, sys_department t,sys_dept_user tt
+						where 1=1 and 
+						tym.ywbh=tkmx.ywbh and 
+						tkmx.cpmc=pro.product_code AND 
+						t.id=tt.dept_id and 
+						tym.userid=tt.user_id
                <if test="certiCode != null and certiCode != '' ">
 						 and tym.zjhm=#{certiCode}
 					</if>
@@ -421,7 +361,7 @@
 					</if>
 					
 					<if test="organName != null and organName != '' ">
-					    AND tym.ywjg=#{organName}
+					    AND t.name=#{organName}
 					</if>
 					
 					<if test="custManagerName != null and custManagerName != '' ">

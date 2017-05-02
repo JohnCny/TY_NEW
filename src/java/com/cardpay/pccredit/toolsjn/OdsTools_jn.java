@@ -36,7 +36,20 @@ public class OdsTools_jn {
 	public Logger log = Logger.getLogger(OdsTools.class);
 	//private static ChannelSftp csftp = null;  
 	public String curRemotePath = "";//本次下载服务器目录
-	private String[] fileName = {"kkh_grxx.zip","kkh_grjtcy.zip","kkh_grjtcc.zip","kkh_grscjy.zip","kkh_grxxll.zip","kkh_grgzll.zip","kkh_grrbxx.zip","kdk_yehz.zip","kdk_lsz.zip","kdk_tkmx.zip","cxd_dkcpmc.zip","kkh_hmdgl.zip","cxd_rygl.zip","kdk_jh.zip"};
+	private String[] fileName = {"kkh_grxx.zip",
+								 "kkh_grjtcy.zip",
+								 "kkh_grjtcc.zip",
+								 "kkh_grscjy.zip",
+								 "kkh_grxxll.zip",
+								 "kkh_grgzll.zip",
+								 "kkh_grrbxx.zip",
+								 "kdk_yehz.zip",
+								 "kdk_lsz.zip",
+								 "kdk_tkmx.zip",
+								 "cxd_dkcpmc.zip",
+								 "kkh_hmdgl.zip",
+								 "cxd_rygl.zip",
+								 "kdk_jh.zip"};
 
 	@Autowired
 	private CustomerInforService customerInforService;

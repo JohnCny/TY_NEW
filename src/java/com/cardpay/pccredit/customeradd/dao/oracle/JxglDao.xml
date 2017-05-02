@@ -31,6 +31,15 @@
 		<result property="zsx" column="zsx" />
 		
 	</resultMap>
+	
+		<resultMap type="com.cardpay.pccredit.customeradd.model.JxglpmForm" id="exspmMap">
+		    <result property="id" column="ID"/>
+		    <result property="fpm" column="FPM"/>
+		     <result property="lpm" column="LPM"/>
+		      <result property="result" column="RESULT"/>
+		       <result property="pnum" column="PNUM"/>
+		        <result property="displayname" column="DISPLAYNAME"/>
+		</resultMap>
 
 <select id="findcustomermanager" resultMap="AccountManagerParameterFormMap">
 		SELECT T.*, s.DISPLAY_NAME
@@ -214,6 +223,14 @@
         
 	</select>
 	
+<select id="findalljxgllist1" resultMap="jxgl">
+    select sum(jkje) as ffje,display_name as displayname,userid   from ty_mibusidata    
+     <if test="customerManagerId!=null and customerManagerId!=''">
+		   and userid=#{customerManagerId}    
+		</if>
+    group by display_name,userid
+</select>
+
 <select id="findAlljxglLists" resultMap="jxgl" parameterType="com.cardpay.pccredit.customer.filter.MaintenanceFilter">
                  select * from (select 
       sysuser.id ,
@@ -294,4 +311,23 @@
 		   and a.ID=#{customerManagerId}    
 		</if>
 	</select>
+	
+	 <insert id="insertxspm" parameterType="com.cardpay.pccredit.customeradd.model.JxglpmForm">
+	    insert into JXGLPMFORM(id,fpm,lpm,result,pnum,displayname) values (#{id},#{fpm},#{lpm},#{result},#{pnum},#{displayname})
+	</insert>
+	
+	<update id="updatexspm" parameterType="com.cardpay.pccredit.customeradd.model.JxglpmForm">
+	    update JXGLPMFORM set pnum=#{pnum},displayname=#{displayname} where id=#{id}
+	    
+	</update> 
+	
+	<delete id="deletexspm">
+	    truncate table jxglpmform
+	</delete>
+	
+	<select id="findJxglpmformOrderbyResult" resultMap="exspmMap">
+	    select * from JXGLPMFORM order by result desc
+	    
+	</select>
+
 </mapper>
