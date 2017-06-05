@@ -66,6 +66,7 @@
 		A .DICT_TYPE =
 		'CMMHKFS-信用还款方式'
 	</dictionary>
+
 	<dictionary name="CMMJXFS" title="结息方式" timeout="1000">
 		SELECT
 		A.TYPE_CODE AS name,
@@ -246,7 +247,6 @@
 		Dict_Type = 'CMMSCCOM-单位性质分值'
 	</dictionary>
 	
-
 	<dictionary name="CUSTOMERMANAGER" title="客户经理" timeout="10000">
 		SELECT
 	A.ID AS NAME,

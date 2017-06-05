@@ -18,7 +18,7 @@
              			<col width="10%" />
               			<col width="40%" />
 						</colgroup>
-            #foreach ($cplist in $cplist)
+            #foreach ($cplist in $wfsr)
             <tr>
 	              <td><label for="name">企业名称:</label></td>
 	              <td><input type="text" value="$!cplist.spmc"  readonly="readonly"/></td>
@@ -34,15 +34,13 @@
 	               <td><label for="name">所属区域:</label></td>
 	              <td><input  type="text" value="$!cplist.bljg" readonly="readonly"/></td>
             </tr>
-            
              <tr>
              	  <td><label for="name">贷款种类:</label></td>
-	              <td><input  type="text" value="$!cplist.dklx" readonly="readonly"/></td>
+	              <td><input  type="text" value="$!cplist.productname" readonly="readonly"/></td>
 	              
 	              <td><label for="name">担保类型:</label></td>
 	              <td><input type="text" value="$!cplist.mainassure"  readonly="readonly"/></td>
             </tr>
-            
             <tr>
 	              <td><label for="name">行业类型:</label></td>
 	              <td><input  type="text" value="$!cplist.industry" readonly="readonly"/></td>
@@ -57,37 +55,168 @@
 				<td><label for="name"> 申请时间:</label></td>
 	            <td><input  type="text" value="$!date.format("yyyy-MM-dd HH:mm:ss",$!cplist.applytime)" readonly="readonly"/></td>
             </tr>        
+            <!--  1。-->
+             <tr>
+	              <td style="background-color:  #135AA4"><label  type="text" ><font color="#ffffff">进件初审</font></label></td>
+            </tr>
             
             <tr>
-             	<td><label for="name">申请金额:</label></td>
-             	<td><input type="text" value="$!cplist.applymoney"  readonly="readonly"/></td>
+             	<td><label for="name">初审审批人</label></td>
+             	<td><input type="text" value="$!cplist.userid4"  readonly="readonly"/></td>
             
-				<td><label for="name">决议时间:</label></td>
-              	<td><input type="text" value="$!date.format("yyyy-MM-dd HH:mm:ss",$!cplist.willtime)" readonly="readonly"/>
+				<td><label for="name">初审审批时间</label></td>
+              	<td><input type="text" value="$!date.format("yyyy-MM-dd HH:mm:ss",$!cplist.startexaminetime)" readonly="readonly"/>
 				</td> 
             </tr>
             
+             <tr>
+             <td><label for="name">初审耗费时间(day):</label></td>
+              	<td><input type="text" value="$!cplist.cssptime"  readonly="readonly"/>
+				</td>
+				<td><label for="name">担保方式:</label></td>
+              	<td><input type="text" value="$!cplist.dbfs" readonly="readonly"/>
+				</td> 
+            </tr>
             <tr>
-				<td><label for="name">决议结果:</label></td>
-	            <td><input class="rinpsty"  type="text" value="#dictVal('approveOperationSpecialStatus' ,$!cplist.auditopinion)" readonly="readonly"/></td>
-	            
-	            <td><label for="name">批准金额:</label></td>
-	            <td><input class="rinpsty"  type="text" value="$!cplist.examineamount" readonly="readonly"/></td>
+             	<td><label for="name">初审审批结果</label></td>
+             	<td><input type="text" value="$!cplist.examineresult"  readonly="readonly"/></td>
+            
+				<td><label for="name">初审额度(元):</label></td>
+				<td><input type="text" value="$!cplist.examineamount"  readonly="readonly"/></td>
+				</td> 
+            </tr>
+            
+            
+            <tr>
+             	<td><label for="name">参与审批客户经理:</label></td>
+             	<td><input type="text" value="$!cplist.userid1"  readonly="readonly"/></td>
+            
+				<td><label for="name">参与审批客户经理:</label></td>
+				<td><input type="text" value="$!cplist.userid2"  readonly="readonly"/></td>
+				</td> 
+            </tr>
+            <tr>
+             	<td><label for="name">辅调客户经理:</label></td>
+             	<td><input type="text" value="$!cplist.userid3"  readonly="readonly"/></td>
+            
+            	<td><label for="name">初审期限(month):</label></td>
+             	<td><input type="text" value="$!cplist.qx"  readonly="readonly"/></td>
+            </tr>
+            <tr>
+             	<td><label for="name">初审利率:</label></td>
+             	<td><input type="text" value="$!cplist.examinelv"  readonly="readonly"/></td>
+            
+            </tr>
+            #end	
+             <tr>
+             	 
+	              <td style="background-color:  #135AA4"><label  type="text" ><font color="#ffffff">审贷决议</font></label></td>
+            </tr>
+              #foreach ($cplist in $splist)
+            <!--  2.-->
+             <tr>
+             	<td><label for="name">审贷决议审批人:</label></td>
+             	<td><input type="text" value="$!cplist.mananger"  readonly="readonly"/></td>
+            
+            	<td><label for="name">决议审批时间:</label></td>
+             	<td><input type="text" value="$!cplist.sptime"  readonly="readonly"/></td>
+            </tr>
+            <tr>
+             	<td><label for="name">决议审批耗费时间(day):</label></td>
+             	<td><input type="text" value="$!cplist.sdjytime"  readonly="readonly"/></td>
+            
+            	<td><label for="name">审批金额:</label></td>
+             	<td><input type="text" value="$!cplist.spje"  readonly="readonly"/></td>
+            </tr>
+            <tr>
+             	<td><label for="name">审批利率：</label></td>
+             	<td><input type="text" value="$!cplist.splv"  readonly="readonly"/></td>
+            
+            	<td><label for="name">审批期限(month):</label></td>
+             	<td><input type="text" value="$!cplist.spqx"  readonly="readonly"/></td>
             </tr>
             
             <tr>
-				<td><label for="name">放款时间:</label></td>
-				<td><input class="rinpsty"  type="text" value="$!cplist.audittime" readonly="readonly"/></td>
-	            <!-- <td><input class="rinpsty"  type="text" value="$!date.format("yyyy-MM-dd HH:mm:ss",$!cplist.audittime)" readonly="readonly"/></td> -->
-	            
-	            <td><label for="name">合同年利率:</label></td>
-				<td><input class="rinpsty"  type="text" value="$!cplist.examine" readonly="readonly"/></td>  
+             	<td><label for="name">状态:</label></td>
+             	 #if($!cplist.status==1)
+                 <td nowrap="nowrap">通过</td>
+                   #end
+                    #if($!cplist.status==2)
+                 <td nowrap="nowrap">拒绝</td>
+                   #end
+                    #if($!cplist.status==0)
+                 <td nowrap="nowrap">未审批</td>
+                   #end
+                      #if($!cplist.status==3)
+                 <td nowrap="nowrap">退回</td>
+                   #end
+             	<!-- <td><input type="text" value="$!cplist.status"  readonly="readonly"/></td> -->
+            
+            	<td><label for="name">意见（备注）:</label></td>
+             	<td><input type="text" value="$!cplist.beizhu"  readonly="readonly"/></td>
+            </tr>
+            <tr>
+             	<td><label for="name">结论原因（退回或者拒绝）</label></td>
+             	<td><input type="text" value="$!cplist.jlyy"  readonly="readonly"/></td>
+            
+            	<!-- <td><label for="name">职级</label></td>
+            	#if($!cplist.zsw==1)
+                 <td nowrap="nowrap">主审</td>
+                 #else
+                   <td nowrap="nowrap">副审</td>
+                   #end -->
+             	<!-- <td><input type="text" value="$!cplist.zsw"  readonly="readonly"/></td> -->
+             	<td style="height:14px;font-size:14px;border:0;color:blue " colspan="" >
             </tr>
             
-            <tr>
-				<td><label for="name">当前状态:</label></td>
-	            <td><input class="rinpsty"  type="text" value="$!cplist.status" readonly="readonly"/></td>
+             #end	
+            <!--  3.-->
+             <tr>
+             	 
+	              <td style="background-color:  #135AA4"><label  type="text" ><font color="#ffffff">最终审贷</font></label></td>
             </tr>
+              #foreach ($cplist in $caslist)
+            <tr>
+             	<td><label for="name">最终审贷主审:</label></td>
+             	<td><input type="text" value="管理员"  readonly="readonly" /></td>
+            
+				<td><label for="name">主审意见:</label></td>
+				<td><input type="text" value="$!cplist.sdwuser1yj"  readonly="readonly"/></td>
+				</td> 
+            </tr>
+            <tr>
+             	<td><label for="name">最终审批时间:</label></td>
+             	<td><input type="text" value="$!cplist.sdtime"   readonly="readonly"/></td>
+            
+				<td><label for="name">最终审批耗费时间(day):</label></td>
+              	<td><input type="text" value="$!cplist.sdjytime" readonly="readonly"/>
+				</td> 
+            </tr>
+            
+              <tr>
+             	<td><label for="name">最终审批金额:</label></td>
+             	<td><input type="text" value="$!cplist.sdje"  readonly="readonly"/></td>
+            
+				<td><label for="name">最终审批期限(month):</label></td>
+              	<td><input type="text" value="$!cplist.sdqx" readonly="readonly"/>
+				</td> 
+            </tr>
+            
+            
+             <tr>
+             	<td><label for="name">最终审批利率:</label></td>
+             	<td><input type="text" value="$!cplist.lv"  readonly="readonly"/></td>
+            
+				<td><label for="name">最终审批拒绝原因:</label></td>
+              	<td><input type="text" value="$!cplist.jjyy" readonly="readonly"/>
+				</td> 
+            </tr>
+            <tr>
+             	<td><label for="name">担保方式:</label></td>
+             	<td><input type="text" value="$!cplist.dbfs"  readonly="readonly"/></td>
+            
+            </tr>
+            
 			#end			
 					</table>
 					

@@ -105,7 +105,7 @@ public class PostLoanService {
 	 * @param filter
 	 * @return
 	 */
-	public QueryResult<RefuseMibusidata> findrefusedMibusidata(
+	public QueryResult<RefuseMibusidata> findreFusedMibusidata(
 			PostLoanFilter filter) {
 		// TODO Auto-generated method stub
 		List<RefuseMibusidata> lists = postLoanDao.findrefusedMibusidata(filter);
@@ -138,7 +138,7 @@ public class PostLoanService {
 	}
 	public List<MibusidataForm> findtzList(PostLoanFilter filter) {
 		// TODO Auto-generated method stub
-		System.out.println(filter);
+		//System.out.println(filter);
 		return postLoanDao.findtzList(filter);
 	}
 	/**
@@ -176,6 +176,18 @@ public class PostLoanService {
 	public TyRepayLshForm queryByLSJJH(String jjh) {
 		// TODO Auto-generated method stub
 		return postLoanDao.queryByLSJJH(jjh);
+	}
+	public List<CreditProcess> findwfsr(String id) {
+		// TODO Auto-generated method stub
+		return postLoanDao.findwfsr(id);
+	}
+	public List<CreditProcess> findsplist(String id) {
+		// TODO Auto-generated method stub
+		return postLoanDao.findsplist(id);
+	}
+	public List<CreditProcess> findcaslist(String id) {
+		// TODO Auto-generated method stub
+		return postLoanDao.findcaslist(id);
 	}
 
 }

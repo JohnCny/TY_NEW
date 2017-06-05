@@ -154,8 +154,8 @@
 </update> 
 
   <insert id="insertCustormerSdwUser1" parameterType="java.lang.Integer" >
-   insert into CUSTOMER_APPLICATION_SDH (id,CAPID,PID,CID,SDWUSER1YJ,SDWJLY,SDTIME,SDJE,SDQX,LV) 
-			values (#{id},#{CAPID},#{PID},#{CID},#{SDWUSER1YJ},#{SDWJLY},#{SDTIME},#{SDJE},#{SDQX},#{LV})
+   insert into CUSTOMER_APPLICATION_SDH (id,CAPID,PID,CID,SDWUSER1,SDWUSER1YJ,SDWJLY,SDTIME,SDJE,SDQX,LV) 
+			values (#{id},#{CAPID},#{PID},#{CID},#{SDWUSER1},#{SDWUSER1YJ},#{SDWJLY},#{SDTIME},#{SDJE},#{SDQX},#{LV})
 </insert>
 
   

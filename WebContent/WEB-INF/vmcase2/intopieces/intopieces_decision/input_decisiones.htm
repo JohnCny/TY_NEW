@@ -382,11 +382,12 @@
 		    	var customerId=$("#customerId").val();
 		    	var productId=$("#productId").val();
 		    	var custManagerId=$("#custManagerId").val();
+		    	var SdwUser1=$("#cyUser1").val(); //==周这瞎写的什么季把   连最终审批人都不写进去
 		    	  $.ajax({
 						url : "${contextPath}/jnpad/CustormerSdwUserPc/insertsdjy.json?customerId="+customerId
 						+"&&productId="+productId+"&&decisionRate="+decisionRate+"&&decisionAmount="+decisionAmount
 						+"&&qx="+qx+"&&id="+id+"&&SDWUSER1YJ="+SDWUSER1YJ+"&&decisionRefusereason="+decisionRefusereason
-						+"&&status="+status+"&&custManagerId="+custManagerId,
+						+"&&status="+status+"&&custManagerId="+custManagerId+"&&SdwUser1="+SdwUser1,
 						dataType : 'json',
 						type : "get",
 						success : function(data) {

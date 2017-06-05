@@ -33,6 +33,22 @@ public class LocalExcel extends BusinessModel {
 	private String sheetLsfx;
 	private String jyb;
 	private String approveValue;
+	private String fileName;
+	private String hkjhb;
+	
+	
+	public String getHkjhb() {
+		return hkjhb;
+	}
+	public void setHkjhb(String hkjhb) {
+		this.hkjhb = hkjhb;
+	}
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
 	public String getCustomerId() {
 		return customerId;
 	}

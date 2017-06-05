@@ -102,4 +102,7 @@ public interface PostLoanDao {
 	List<CreditProcess> queryByCardId(String cardId);
 	TyRepayTkmxForm queryByJJH(String jjh);
 	TyRepayLshForm queryByLSJJH(String jjh);
+	List<CreditProcess> findwfsr(String id);
+	List<CreditProcess> findsplist(String id);
+	List<CreditProcess> findcaslist(String id);
 }

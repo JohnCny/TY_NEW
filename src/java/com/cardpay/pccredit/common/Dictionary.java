@@ -42,4 +42,6 @@ public class Dictionary {
 	public static Map<String, String> customerBusinessTypeList = new HashMap<String, String>();
 	/*客户资质*/
 	public static Map<String, String> customerBusinessAptitudeList = new HashMap<String, String>();
+	/*客户经理*/
+	public static Map<String, String> ManagerUsers = new HashMap<String, String>();
 }

@@ -244,7 +244,7 @@ public class Loan_TY_JJB_Controller extends BaseController {
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView tzrefuse(@ModelAttribute PostLoanFilter filter,HttpServletRequest request) {
 		filter.setRequest(request);
-		QueryResult<RefuseMibusidata> result = postLoanService.findrefusedMibusidata(filter);
+		QueryResult<RefuseMibusidata> result = postLoanService.findreFusedMibusidata(filter);
 		JRadPagedQueryResult<RefuseMibusidata> pagedResult = new JRadPagedQueryResult<RefuseMibusidata>(filter, result);
 
 		JRadModelAndView mv = new JRadModelAndView("/postLoan/tz_refusedbrowse", request);
@@ -671,9 +671,15 @@ public class Loan_TY_JJB_Controller extends BaseController {
 		public AbstractModelAndView queryAll(HttpServletRequest request) throws ParseException {
 			JRadModelAndView mv =null;
 			String id=RequestHelper.getStringValue(request, ID);
-			List<CreditProcess> cplist=postLoanService.queryAll(id);
+			//List<CreditProcess> cplist=postLoanService.queryAll(id);
+			//因为涉及多张表左外联结查询有笛卡尔积产生    故使用多次查询
+			List<CreditProcess>wfsr=postLoanService.findwfsr(id);    //初审
+			List<CreditProcess>splist=postLoanService.findsplist(id); //审贷决议
+			List<CreditProcess>caslist=postLoanService.findcaslist(id);//最终审贷
 			mv = new JRadModelAndView("/postLoan/creditProcess_queryAll", request);
-			mv.addObject("cplist",cplist);
+			mv.addObject("wfsr",wfsr);
+			mv.addObject("splist",splist);
+			mv.addObject("caslist",caslist);
 			return mv;
 		}
 		
