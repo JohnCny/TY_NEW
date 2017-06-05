@@ -215,7 +215,32 @@
 		<result column="CARD_ID" 		property="cardId" />
 		<result column="carId" 		property="zjmh" />
 		
-		
+		<result column="USER_ID_4" 		property="userid4" />
+		<result column="START_EXAMINE_TIME" 		property="startexaminetime" />
+		<result column="cssptime" 		property="cssptime" />
+		<result column="DBFS" 		property="dbfs" />
+		<result column="EXAMINE_RESULT" 		property="examineresult" />
+		<result column="user_id_1" 		property="userid1" />
+		<result column="user_id_2" 		property="userid2" />
+		<result column="user_id_3" 		property="userid3" />
+		<result column="qx" 		property="qx" />
+		<result column="examine_lv" 		property="examinelv" />
+		<result column="sptime" 		property="sptime" />
+		<result column="sdjytime" 		property="sdjytime" />
+		<result column="spje" 		property="spje" />
+		<result column="splv" 		property="splv" />
+		<result column="spqx" 		property="spqx" />
+		<result column="beizhu" 		property="beizhu" />
+		<result column="jlyy" 		property="jlyy" />
+		<result column="zsw" 		property="zsw" />
+		<result column="sdwuser1" 		property="sdwuser1" />
+		<result column="sdtime" 		property="sdtime" />
+		<result column="sdqx" 		property="sdqx" />
+		<result column="sdje" 		property="sdje" />
+		<result column="lv" 		property="lv" />
+		<result column="jjyy" 		property="jjyy" />
+		<result column="sdwuser1yj" 		property="sdwuser1yj" />
+		<result column="productname" 		property="productname" />
  	 </resultMap>
  	 <!-- <resultMap id="BaseResultMap1" type="com.cardpay.pccredit.customer.model.TyRepayLshForm" >
    		<result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR" />
@@ -472,7 +497,7 @@
 					SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
-					 select
+				<!-- 	 select
        distinct 
        tkmx.ywbh,
        b.khmc,
@@ -543,14 +568,15 @@
                shlx.ywbh=tkmx.ywbh and
               shlx.zjhm=b.zjhm and
              shbj.ywbh=tkmx.ywbh and
-              shbj.zjhm=b.Zjhm
+              shbj.zjhm=b.Zjhm -->
+             select * from lshtylist where 1=1
                <if test="busiCode != null and busiCode != '' ">
-					AND trim(tkmx.ywbh)=#{busiCode}
+					AND trim(ywbh)=#{busiCode}
 			</if>
 			<!--  <if test="busiCode != null and busiCode != '' ">
 					AND trim(tkmx.ywbh)=#{busiCode}
 			</if> -->
-                 order by tkmx.jkrq
+                 order by jkrq
 		 <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -559,178 +585,18 @@
 	</select>
 	
 	<select id="selectRarepaylistfoInfoByBusicode" resultMap="lszform" parameterType="com.cardpay.pccredit.postLoan.filter.FcloaninfoFilter">
-
-	    		select a.* from (	 select
-       distinct 
-       tkmx.ywbh,
-       b.khmc,
-       tkmx.jkrq,
-       shbj.df as bj,
-       shlx.df as lx,
-       tkmx.jxfs,
-       shbj.jzrq,
-       sysuser.display_name,
-       yehz.create_time
-       from
-        (select  sum(lsz.df) as df ,
-                      tkmx.ywbh ,
-                      c.zjhm
-              from
-               ty_customer_rygl rygl,
-              TY_REPAY_TKMX tkmx ,
-              TY_REPAY_YEHZ yehz,
-              ty_repay_lsz lsz,
-              ty_customer_base c,
-             ty_product_type protype,
-              sys_user sysuser
-              where  c.khjl=rygl.dm and
-              rygl.ddrq=sysuser.external_id and
-              c.KHNM = tkmx.khh and
-              yehz.JJH = tkmx.JJH and
-              protype.product_code=tkmx.cpmc and
-              lsz.jjh=tkmx.jjh 
-              and lsz.zy='批量自动扣利息'
-           
-              group by   tkmx.ywbh , c.zjhm) shlx,
-      (select  c.khmc,
-              sum(lsz.df) as df ,
-                      tkmx.ywbh ,
-                      c.zjhm,
-                       max(lsz.jzrq) as jzrq
-              from
-               ty_customer_rygl rygl,
-              TY_REPAY_TKMX tkmx ,
-              TY_REPAY_YEHZ yehz,
-              ty_repay_lsz lsz,
-              ty_customer_base c,
-             ty_product_type protype,
-              sys_user sysuser
-              where  c.khjl=rygl.dm and
-              rygl.ddrq=sysuser.external_id and
-              c.KHNM = tkmx.khh and
-              yehz.JJH = tkmx.JJH and
-              protype.product_code=tkmx.cpmc and
-              lsz.jjh=tkmx.jjh 
-            and (lsz.zy='批量自动扣本金'
-            or lsz.zy='贷款柜台提前还款')
-            
-              group by   tkmx.ywbh , c.zjhm ,c.khmc) shbj,
-              ty_repay_tkmx tkmx,
-              ty_customer_base b,
-              ty_customer_rygl rygl,
-              sys_user sysuser,
-             ty_kdk_jh jh,
-              ty_repay_yehz yehz,
-              ty_repay_lsz lsz
-              where b.khjl=rygl.dm and
-              rygl.ddrq=sysuser.external_id and
-              b.khnm=tkmx.khh and
-              jh.ywbh=tkmx.ywbh||'HT' and
-              yehz.jjh=tkmx.jjh and
-              tkmx.jjh =lsz.jjh and
-              
-               shlx.ywbh=tkmx.ywbh and
-              shlx.zjhm=b.zjhm and
-             shbj.ywbh=tkmx.ywbh and
-              shbj.zjhm=b.Zjhm
+	    		select * from lshtylist where 1=1
                <if test="busiCode != null and busiCode != '' ">
-					AND trim(tkmx.ywbh)=#{busiCode}
+					AND trim(ywbh)=#{busiCode}
 			</if>
-			<!--  <if test="busiCode != null and busiCode != '' ">
-					AND trim(tkmx.ywbh)=#{busiCode}
-			</if> -->
-                 order by tkmx.jkrq) a WHERE 1=1 
-					
-	<!-- 	<if test="rapayinterest != null and rapayinterest != '' ">
-		   				AND a.rapayinterest=#{rapayinterest}
-		   				</if>
-		<if test="repayamt != null and repayamt != '' ">
-		   				AND a.repayamt=#{repayamt}
-		   				</if> -->
+                 order by jkrq
 	</select>
 	
 	<select id="findLshJnListCountByFilter" resultType="int" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
-	  	select count(*)  from (
-	  	 select
-       distinct 
-       tkmx.ywbh,
-       b.khmc,
-       tkmx.jkrq,
-       shbj.df as bj,
-       shlx.df as lx,
-       tkmx.jxfs,
-       shbj.jzrq,
-       yehz.create_time
-       from
-        (select  sum(lsz.df) as df ,
-                      tkmx.ywbh ,
-                      c.zjhm
-              from
-               ty_customer_rygl rygl,
-              TY_REPAY_TKMX tkmx ,
-              TY_REPAY_YEHZ yehz,
-              ty_repay_lsz lsz,
-              ty_customer_base c,
-             ty_product_type protype,
-              sys_user sysuser
-              where  c.khjl=rygl.dm and
-              rygl.ddrq=sysuser.external_id and
-              c.KHNM = tkmx.khh and
-              yehz.JJH = tkmx.JJH and
-              protype.product_code=tkmx.cpmc and
-              lsz.jjh=tkmx.jjh 
-              and lsz.zy='批量自动扣利息'
-           
-              group by   tkmx.ywbh , c.zjhm) shlx,
-      (select  c.khmc,
-              sum(lsz.df) as df ,
-                      tkmx.ywbh ,
-                      c.zjhm,
-                       max(lsz.jzrq) as jzrq
-              from
-               ty_customer_rygl rygl,
-              TY_REPAY_TKMX tkmx ,
-              TY_REPAY_YEHZ yehz,
-              ty_repay_lsz lsz,
-              ty_customer_base c,
-             ty_product_type protype,
-              sys_user sysuser
-              where  c.khjl=rygl.dm and
-              rygl.ddrq=sysuser.external_id and
-              c.KHNM = tkmx.khh and
-              yehz.JJH = tkmx.JJH and
-              protype.product_code=tkmx.cpmc and
-              lsz.jjh=tkmx.jjh 
-            and (lsz.zy='批量自动扣本金'
-            or lsz.zy='贷款柜台提前还款')
-            
-              group by   tkmx.ywbh , c.zjhm ,c.khmc) shbj,
-              ty_repay_tkmx tkmx,
-              ty_customer_base b,
-              ty_customer_rygl rygl,
-              sys_user sysuser,
-             ty_kdk_jh jh,
-              ty_repay_yehz yehz,
-              ty_repay_lsz lsz
-              where b.khjl=rygl.dm and
-              rygl.ddrq=sysuser.external_id and
-              b.khnm=tkmx.khh and
-              jh.ywbh=tkmx.ywbh||'HT' and
-              yehz.jjh=tkmx.jjh and
-              tkmx.jjh =lsz.jjh and
-              
-               shlx.ywbh=tkmx.ywbh and
-              shlx.zjhm=b.zjhm and
-             shbj.ywbh=tkmx.ywbh and
-              shbj.zjhm=b.Zjhm
+	  	select count(*)  from lshtylist where 1=1
                <if test="busiCode != null and busiCode != '' ">
-					AND trim(tkmx.ywbh)=#{busiCode}
+					AND trim(ywbh)=#{busiCode}
 			</if>
-			<!--  <if test="busiCode != null and busiCode != '' ">
-					AND trim(tkmx.ywbh)=#{busiCode}
-			</if> -->
-                 order by tkmx.jkrq
-	  	) a where 1=1
 	</select>
 	
 	<select id="findObjectsByBusicode" resultMap="BaseResultMap1">
@@ -739,21 +605,14 @@
 	    
 	</select>
 	
-	
-	
 	<select id="findTzJnListByFilter" resultMap="MibusidateView" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
 					SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
 				select distinct tym.YWBH,tym.ID,tym.KHH,tym.KHMC,tym.ZJHM,tym.SSBM,tym.SJ,tym.SXED,tym.GHJL,tym.LOANDATE, tym.DQRQ,tym.DKQX,
 tym.JZLL,tym.REQLMT,nvl(tym.DELAYINTERESTDAYS,0) as DELAYINTERESTDAYS ,  nvl(tym.DELAYAMTDAYS,0) as DELAYAMTDAYS,
-        tym.DLAYDT,tym.SHBJ,tym.JKJE,tym.KSQXRQ,nvl(sum(lsz.df)-tkmx.ffje,0) as PAYDEBT,DKYE as YE ,tym.BNQX,tym.BWQX,sum(tym.DKYE+tym.BNQX+tym.BWQX) as dlayamtsum,tym.BALAMT ,tym.YXYE,tym.USERID as  userid,tym.DISPLAY_NAME as display_name
-                 from ty_mibusidata tym,
-                 ty_repay_tkmx tkmx,
-                 ty_repay_lsz lsz 
-                 where 1=1  and
-                 tym.ywbh=tkmx.ywbh and
-                 tkmx.jjh=lsz.jjh 
+        tym.DLAYDT,tym.SHBJ,tym.JKJE,DKYE as YE ,tym.BNQX,tym.BWQX,tym.PAYDEBT,sum(tym.DKYE+tym.BNQX+tym.BWQX) as dlayamtsum,tym.BALAMT ,tym.YXYE,tym.USERID as  userid,tym.DISPLAY_NAME as display_name
+                 from ty_mibusidata tym  where 1=1
 			           <if test="userId != null and userId != '' and userId !='000001'">
 			             and tym.USERID  =#{userId}
 				         </if>
@@ -763,8 +622,8 @@ tym.JZLL,tym.REQLMT,nvl(tym.DELAYINTERESTDAYS,0) as DELAYINTERESTDAYS ,  nvl(tym
 						<if test="customerName != null and customerName != '' ">
 							AND tym.KHMC=#{customerName}
 						</if>
-						  group by tym.YWBH,tym.ID,tym.KHH,tym.KHMC,tym.ZJHM,tym.SSBM,tym.SJ,tym.SXED,tym.GHJL,tym.LOANDATE, tym.DQRQ,tym.DKQX,
-tym.JZLL,tym.REQLMT,nvl(tym.DELAYINTERESTDAYS,0)  ,  nvl(tym.DELAYAMTDAYS,0),tkmx.ffje,
+					 group by tym.YWBH,tym.ID,tym.KHH,tym.KHMC,tym.ZJHM,tym.SSBM,tym.SJ,tym.SXED,tym.GHJL,tym.LOANDATE, tym.DQRQ,tym.DKQX,
+tym.JZLL,tym.REQLMT,nvl(tym.DELAYINTERESTDAYS,0)  ,  nvl(tym.DELAYAMTDAYS,0),
         tym.DLAYDT,tym.SHBJ,tym.JKJE,tym.KSQXRQ,tym.PAYDEBT,DKYE ,tym.BNQX,tym.BWQX ,tym.BALAMT ,tym.YXYE,tym.USERID ,tym.DISPLAY_NAME
          order by tym.LOANDATE
 					<!--   select
@@ -832,13 +691,9 @@ tym.JZLL,tym.REQLMT,nvl(tym.DELAYINTERESTDAYS,0)  ,  nvl(tym.DELAYAMTDAYS,0),tkm
 	
 	
 	<select id="findTzJnListCountByFilter" resultType="int" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
-	  	select count(*)  from (
-	  select distinct YWBH,ID,KHH,KHMC,ZJHM,SSBM,SJ,SXED,GHJL,LOANDATE, DQRQ,DKQX,JZLL,REQLMT,DELAYINTERESTDAYS,  DELAYAMTDAYS,
-				DLAYDT,SHBJ,JKJE,KSQXRQ,PAYDEBT,DKYE as YE ,BNQX,BWQX,BALAMT ,YXYE,USERID as  userid,DISPLAY_NAME as display_name
-			           from ty_mibusidata where 1=1 
+	  	select count(distinct ywbh)  from   ty_mibusidata where 1=1 
 			           <if test="userId != null and userId != '' and userId !='000001'">
 			             and USERID  =#{userId}
-			             order by LOANDATE
 				         </if>
 				         <if test="busiCode != null and busiCode != '' ">
 							AND trim(YWBH)=#{busiCode}
@@ -846,7 +701,8 @@ tym.JZLL,tym.REQLMT,nvl(tym.DELAYINTERESTDAYS,0)  ,  nvl(tym.DELAYAMTDAYS,0),tkm
 						<if test="customerName != null and customerName != '' ">
 							AND KHMC=#{customerName}
 						</if>
-	  	) a
+			             order by LOANDATE
+	  
 	 
 	</select>
 	
@@ -919,47 +775,49 @@ tym.JZLL,tym.REQLMT,nvl(tym.DELAYINTERESTDAYS,0)  ,  nvl(tym.DELAYAMTDAYS,0),tkm
 	</select>
 	
 	<select id="findtzList"  resultMap="BaseResultMap3" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
-					  select
-			        distinct
-			          tkmx.YWBH Busicode,
-			          b.id as id ,
-			          b.KHH,
-			          b.KHMC Cname,
-			          b.ZJHM Custidno,
-			          rygl.SSBM,
-			          b.SJ,
-			          b.SXED,
-			          b.GHJL,
-			          tkmx.JKRQ as Loandate, 
-			          tkmx.DQRQ,
-			          tkmx.DKQX,
-			          tkmx.JZLL,
-			          tkmx.FFJE   as Reqlmt,
-			           tkmx.FFJE   as Money,
-			           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end ) as DELAYINTERESTDAYS,  
-			           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end )as DELAYAMTDAYS, 
-			           max(lsz.jzrq) as DLAYDT,
-			          yehz.SHBJ,
-			          yehz.JKJE,
-			          yehz.KSQXRQ,
-			          yehz.SHLX as PAYDEBT,  
-			          yehz.DKYE as Balamt ,
-			          yehz.BNQX,
-			          yehz.BWQX,
-			          yehz.DKYE as BALAMT  ,
-			          yehz.dkye as yxye,
-			          sysuser.id userid,
-			          sysuser.display_name
+					   select
+			              distinct
+			                tkmx.YWBH Busicode,
+			                b.id as id ,
+			                b.KHH,
+			                b.KHMC Cname,
+			                b.ZJHM Custidno,
+			                b.SJ,
+			                b.SXED,
+			                b.GHJL,
+			                tkmx.JKRQ as Loandate, 
+			                tkmx.DQRQ,
+			                tkmx.DKQX,
+			                tkmx.JZLL,
+			                tkmx.FFJE   as Reqlmt,
+			                 tkmx.FFJE   as Money,
+			                 (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end ) as DELAYINTERESTDAYS,  
+			                 (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end )as DELAYAMTDAYS, 
+			                 max(lsz.jzrq) as DLAYDT,
+			                yehz.SHBJ,
+			                yehz.JKJE,
+			                yehz.KSQXRQ,
+			                yehz.SHLX as PAYDEBT,  
+			                yehz.DKYE as Balamt ,
+			                yehz.BNQX,
+			                yehz.BWQX,
+			                yehz.DKYE as BALAMT  ,
+			                yehz.dkye as yxye,
+			                sysuser.id userid,
+			                sysuser.display_name,
+			          (select a.name from sys_organization a where id in (select t.org_id
+			    from sys_department t
+			    where t.id in(select tt.dept_id from sys_dept_user tt where tt.user_id =sysuser.id))) YWJG
 			       from
 			              ty_repay_tkmx tkmx,
 			              ty_customer_base b,
-			              ty_customer_rygl rygl,
+			              basic_customer_information basic,
 			              sys_user sysuser,
-			              ty_kdk_jh jh,
+			             ty_kdk_jh jh,
 			              ty_repay_yehz yehz,
 			              ty_repay_lsz lsz
-			              where b.khjl=rygl.dm and
-			              rygl.ddrq=sysuser.external_id and
+			              where basic.ty_customer_id=b.id and
+			              basic.user_id=sysuser.id and
 			              b.khnm=tkmx.khh and
 			              jh.ywbh=tkmx.ywbh||'HT' and
 			              yehz.jjh=tkmx.jjh and
@@ -973,8 +831,8 @@ tym.JZLL,tym.REQLMT,nvl(tym.DELAYINTERESTDAYS,0)  ,  nvl(tym.DELAYAMTDAYS,0),tkm
 						<if test="customerName != null and customerName != '' ">
 							AND b.khmc=#{customerName}
 						</if>
-			              group by tkmx.YWBH ,b.id ,b.KHH,b.KHMC, b.ZJHM,rygl.SSBM, b.SJ, b.SXED, b.GHJL,tkmx.JKRQ , tkmx.DQRQ, tkmx.DKQX,tkmx.JZLL, tkmx.FFJE  ,
-			                 yehz.SHBJ,yehz.JKJE, yehz.KSQXRQ,yehz.SHLX, yehz.DKYE,yehz.BNQX, yehz.BWQX,yehz.DKYE  , yehz.dkye  , sysuser.display_name, sysuser.id 
+			             group by tkmx.YWBH ,b.id ,b.KHH,b.KHMC, b.ZJHM, b.SJ, b.SXED, b.GHJL,tkmx.JKRQ , tkmx.DQRQ, tkmx.DKQX,tkmx.JZLL, tkmx.FFJE  ,
+                 yehz.SHBJ,yehz.JKJE, yehz.KSQXRQ,yehz.SHLX, yehz.DKYE,yehz.BNQX, yehz.BWQX,yehz.DKYE  , yehz.dkye  , sysuser.display_name, sysuser.id
 			              order by tkmx.jkrq
 		  <!--   <if test="busicode != null and busicode != ''">
 		    and BUSICODE=#{busicode}
@@ -1038,6 +896,19 @@ tym.JZLL,tym.REQLMT,nvl(tym.DELAYINTERESTDAYS,0)  ,  nvl(tym.DELAYAMTDAYS,0),tkm
 					WHERE ROWNUM_ > #{limit}*#{page}
 					]]>
 	</select>
+	
+	<select id="findwfsr" resultMap="CreditProcess" parameterType="String">
+   			select * from findwfsrs where 1=1 and id=#{id}
+	    </select>
+	    
+	    <select id="findsplist" resultMap="CreditProcess" parameterType="String">
+   			select * from findsplists where 1=1 and id=#{id}
+	    </select>
+	    
+	     <select id="findcaslist" resultMap="CreditProcess" parameterType="String">
+   			select * from findcaslist where 1=1 and id=#{id} 
+	    </select>
+	    
 	<!-- 统计行数 -->
 	<select id="querySize" resultType="int" parameterType="com.cardpay.pccredit.postLoan.model.CreditProcess">
 		  select count(*)

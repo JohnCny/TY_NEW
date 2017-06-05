@@ -112,6 +112,8 @@
 	sheet_yfys as sheetYfys,
 	sheet_ysyf as sheetYsyf,
 	sheet_lsfx as sheetLsfx,
+	file_name as fileName,
+	HKJHB as hkjhb,
     zyyw,
     jyb 
     from local_excel

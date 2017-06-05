@@ -190,6 +190,8 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 		String cardId=RequestHelper.getStringValue(request, "cardId");
 		if (StringUtils.isNotEmpty(appId)) {
 			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
+			//mv = new JRadModelAndView("/customer/customerInfor_wh_ty/report_jy?filename="+localExcel.getFileName(), request);
+			mv.addObject("filename", localExcel.getFileName());
 			String tableContent = getFromBASE64(localExcel.getSheetJy()).replaceAll("\n", "<br>").replace("><br><", "><");
 			mv.addObject("tableContent", tableContent);
 			mv.addObject("appId", appId);
@@ -286,6 +288,7 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 		String cardId=RequestHelper.getStringValue(request, "cardId");
 		if (StringUtils.isNotEmpty(appId)) {
 			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
+			mv.addObject("filename", localExcel.getFileName());
 			String tableContent = getFromBASE64(localExcel.getSheetJbzk()).replaceAll("\n", "<br>").replace("><br><", "><");
 			mv.addObject("tableContent", tableContent);
 			mv.addObject("appId", appId);
@@ -652,6 +655,7 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 		String cardId=RequestHelper.getStringValue(request, "cardId");
 		if (StringUtils.isNotEmpty(appId)) {
 			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
+			mv.addObject("filename", localExcel.getFileName());
 			String tableContent = getFromBASE64(localExcel.getSheetXjllb()).replaceAll("\n", "<br>").replace("><br><", "><");
 			mv.addObject("tableContent", tableContent);
 			mv.addObject("appId", appId);
@@ -668,6 +672,34 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 		}
 		return mv;
 	}
+	
+	//显示维护信息--还款计划表
+		@ResponseBody
+		@RequestMapping(value = "report_hkjhb.page")
+		public AbstractModelAndView report_hkjhb(HttpServletRequest request) {
+			JRadModelAndView mv = new JRadModelAndView("/customer/customerInfor_wh_ty/report_xjllb", request);
+			String appId = RequestHelper.getStringValue(request, "appId");
+			String urlType = RequestHelper.getStringValue(request, "urlType");
+			String cardId=RequestHelper.getStringValue(request, "cardId");
+			if (StringUtils.isNotEmpty(appId)) {
+				LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
+				mv.addObject("filename", localExcel.getFileName());
+				String tableContent = getFromBASE64(localExcel.getHkjhb()).replaceAll("\n", "<br>").replace("><br><", "><");
+				mv.addObject("tableContent", tableContent);
+				mv.addObject("appId", appId);
+				mv.addObject("urlType", urlType);
+				mv.addObject("cardId",cardId);
+				//查询权限 非本人只能查看 不能操作
+				IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+				String userId = user.getId();
+				boolean lock = false;
+				if(!customerInforService.findCustomerInforById(localExcel.getCustomerId()).getUserId().equals(userId)){
+					lock = true;
+				}
+				mv.addObject("lock", lock);
+			}
+			return mv;
+		}
 	
 	//修改--现金流量表
 	@ResponseBody
@@ -744,6 +776,7 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 		String cardId=RequestHelper.getStringValue(request, "cardId");
 		if (StringUtils.isNotEmpty(appId)) {
 			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
+			mv.addObject("filename", localExcel.getFileName());
 			String tableContent = getFromBASE64(localExcel.getSheetDhd()).replaceAll("\n", "<br>").replace("><br><", "><");
 			mv.addObject("tableContent", tableContent);
 			mv.addObject("appId", appId);
@@ -790,6 +823,7 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 		String cardId=RequestHelper.getStringValue(request, "cardId");
 		if (StringUtils.isNotEmpty(appId)) {
 			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
+			mv.addObject("filename", localExcel.getFileName());
 			String tableContent = getFromBASE64(localExcel.getSheetGdzc()).replaceAll("\n", "<br>").replace("><br><", "><");
 			mv.addObject("tableContent", tableContent);
 			mv.addObject("appId", appId);
@@ -836,6 +870,7 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 		String cardId=RequestHelper.getStringValue(request, "cardId");
 		if (StringUtils.isNotEmpty(appId)) {
 			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
+			mv.addObject("filename", localExcel.getFileName());
 			String tableContent = getFromBASE64(localExcel.getSheetYfys()).replaceAll("\n", "<br>").replace("><br><", "><");
 			mv.addObject("tableContent", tableContent);
 			mv.addObject("appId", appId);
@@ -882,6 +917,7 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 		String cardId=RequestHelper.getStringValue(request, "cardId");
 		if (StringUtils.isNotEmpty(appId)) {
 			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
+			mv.addObject("filename", localExcel.getFileName());
 			String tableContent = getFromBASE64(localExcel.getSheetYsyf()).replaceAll("\n", "<br>").replace("><br><", "><");
 			mv.addObject("tableContent", tableContent);
 			mv.addObject("appId", appId);

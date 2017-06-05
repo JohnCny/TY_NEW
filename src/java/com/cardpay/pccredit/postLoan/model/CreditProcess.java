@@ -30,6 +30,191 @@ private String examine;//合同年利率
 private String status;//当前状态
 private String id;//客户ID
 private String cardId;//身份证号
+
+private String userid4;
+private String startexaminetime;
+private String cssptime;
+private String dbfs;
+private String examineresult;
+private String userid1;
+private String userid2;
+private String userid3;
+private String qx;
+private String examinelv;
+private String sptime;
+private String sdjytime;
+private String spje;
+private String splv;
+private String spqx;
+private String beizhu;
+private String jlyy;
+private String zsw;
+private String sdwuser1;
+private String sdtime;
+private String sdqx;
+private String sdje;
+private String lv;
+private String jjyy;
+private String sdwuser1yj;
+private String productname;
+
+
+public String getUserid4() {
+	return userid4;
+}
+public void setUserid4(String userid4) {
+	this.userid4 = userid4;
+}
+public String getStartexaminetime() {
+	return startexaminetime;
+}
+public void setStartexaminetime(String startexaminetime) {
+	this.startexaminetime = startexaminetime;
+}
+public String getCssptime() {
+	return cssptime;
+}
+public void setCssptime(String cssptime) {
+	this.cssptime = cssptime;
+}
+public String getDbfs() {
+	return dbfs;
+}
+public void setDbfs(String dbfs) {
+	this.dbfs = dbfs;
+}
+public String getExamineresult() {
+	return examineresult;
+}
+public void setExamineresult(String examineresult) {
+	this.examineresult = examineresult;
+}
+public String getUserid1() {
+	return userid1;
+}
+public void setUserid1(String userid1) {
+	this.userid1 = userid1;
+}
+public String getUserid2() {
+	return userid2;
+}
+public void setUserid2(String userid2) {
+	this.userid2 = userid2;
+}
+public String getUserid3() {
+	return userid3;
+}
+public void setUserid3(String userid3) {
+	this.userid3 = userid3;
+}
+public String getQx() {
+	return qx;
+}
+public void setQx(String qx) {
+	this.qx = qx;
+}
+public String getExaminelv() {
+	return examinelv;
+}
+public void setExaminelv(String examinelv) {
+	this.examinelv = examinelv;
+}
+public String getSptime() {
+	return sptime;
+}
+public void setSptime(String sptime) {
+	this.sptime = sptime;
+}
+public String getSdjytime() {
+	return sdjytime;
+}
+public void setSdjytime(String sdjytime) {
+	this.sdjytime = sdjytime;
+}
+public String getSpje() {
+	return spje;
+}
+public void setSpje(String spje) {
+	this.spje = spje;
+}
+public String getSplv() {
+	return splv;
+}
+public void setSplv(String splv) {
+	this.splv = splv;
+}
+public String getSpqx() {
+	return spqx;
+}
+public void setSpqx(String spqx) {
+	this.spqx = spqx;
+}
+public String getBeizhu() {
+	return beizhu;
+}
+public void setBeizhu(String beizhu) {
+	this.beizhu = beizhu;
+}
+public String getJlyy() {
+	return jlyy;
+}
+public void setJlyy(String jlyy) {
+	this.jlyy = jlyy;
+}
+public String getZsw() {
+	return zsw;
+}
+public void setZsw(String zsw) {
+	this.zsw = zsw;
+}
+public String getSdwuser1() {
+	return sdwuser1;
+}
+public void setSdwuser1(String sdwuser1) {
+	this.sdwuser1 = sdwuser1;
+}
+public String getSdtime() {
+	return sdtime;
+}
+public void setSdtime(String sdtime) {
+	this.sdtime = sdtime;
+}
+public String getSdqx() {
+	return sdqx;
+}
+public void setSdqx(String sdqx) {
+	this.sdqx = sdqx;
+}
+public String getSdje() {
+	return sdje;
+}
+public void setSdje(String sdje) {
+	this.sdje = sdje;
+}
+public String getLv() {
+	return lv;
+}
+public void setLv(String lv) {
+	this.lv = lv;
+}
+public String getJjyy() {
+	return jjyy;
+}
+public void setJjyy(String jjyy) {
+	this.jjyy = jjyy;
+}
+public String getSdwuser1yj() {
+	return sdwuser1yj;
+}
+public void setSdwuser1yj(String sdwuser1yj) {
+	this.sdwuser1yj = sdwuser1yj;
+}
+public String getProductname() {
+	return productname;
+}
+public void setProductname(String productname) {
+	this.productname = productname;
+}
 public String getSpmc() {
 	return spmc;
 }

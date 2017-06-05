@@ -492,7 +492,7 @@
          <!-- <property name="startDelay" value="0"/>
         <property name="repeatInterval" value="60000" /> -->
          <property name="cronExpression">
-            <value>0 11 9 * * ?</value>
+            <value>0 27 15 * * ?</value>
         </property> 
     </bean>
     <!-- 每日加载tymibusidata数据end-->

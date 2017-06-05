@@ -11,39 +11,40 @@
         <div class="forms" id="formsId">
           <table class="rule">
             <colgroup>
-              <col width="10%" />
+              <col width="20%" />
               <col width="30%" />
-              <col width="10%" />
-              <col width="10%" />
+              <col width="20%" />
               <col width="30%" />
             </colgroup>
+			<caption>催收计划</caption>
             <tr>
-              <td>客户经理</td>
+              <td class="titlefc3">客户经理</td>
               <td><select id="customerManagerId" name="customerManagerId"></select></td>
+              <td class="titlefc3"></td><td></td>
             </tr>
             <tr>
-              <td>客户名称:</td>
+              <td class="titlefc3">客户名称:</td>
               <td><select id="customerId" name="customerId" >
               </select>
               </td>
-              <td>&nbsp;</td>
-              <td>产品名称:</td>
+              <td class="titlefc3">产品名称:</td>
               <td><select id="productId" name="productId">
               </select>
               </td>
             </tr>
             <tr>
-              <td>催收目标:</td>
+              <td class="titlefc3">催收目标:</td>
               <td><input type="text" id="implementationObjective" name="implementationObjective" value=""/>
-              <td>&nbsp;</td>
-              <td>催收天数:</td>
+              
+              <td class="titlefc3">催收天数:</td>
               <td><input type="text" id="collectionTime" name="collectionTime" value=""/></td>
             </tr>
             <tr>
-              <td>催收方式:</td>
+              <td class="titlefc3">催收方式:</td>
               <td><select name="collectionMethod" id="collectionMethod" >
               #customerInfo($request.getAttribute("collectionMethodList"),'')
               </select></td>
+              <td class="titlefc3"></td><td></td>
               <!-- <td><input type="text" name="collectionStartTime" hidden="hidden" value="-1" /></td> -->
             </tr>
           </table>

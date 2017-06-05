@@ -70,7 +70,7 @@
               <th nowrap="nowrap">客户证件号码</th>
               <th nowrap="nowrap">所属产品</th>
               <th nowrap="nowrap">贷款金额</th>
-              <th nowrap="nowrap">利率</th>
+              <th nowrap="nowrap">上浮比例</th>
               <th nowrap="nowrap">放款日期</th>
               <th nowrap="nowrap">余额</th>
               <th nowrap="nowrap">已偿还本金</th>
@@ -106,7 +106,7 @@
               <td nowrap="nowrap">$!customer.CPMC</td>
               <td nowrap="nowrap">$!customer.JF</td>
               <!-- $format.formatNumber($!customer.interest, 5, 1) -->
-              <td nowrap="nowrap">$format.formatNumber(2,$customer.JZLL)‰</td>
+              <td nowrap="nowrap">$format.formatNumber(2,$customer.JZLL)%</td>
               <td nowrap="nowrap">$!customer.JZRQ</td>
               <td nowrap="nowrap">$!customer.DKYE</td>
               <td nowrap="nowrap">$!customer.Shbj</td>

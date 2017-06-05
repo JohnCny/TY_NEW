@@ -7,6 +7,7 @@
 	</resultMap>
 	
 	<resultMap id="CardIdResultMap" type="com.cardpay.pccredit.customer.model.BusinessTackling">
+	    <result property="ywbh" column="ywbh" />
 		<result property="cardId" column="card_id" />
 		<result property="customerName" column="chinese_name" />
 		<result property="safeType" column="BXLX" />
@@ -25,31 +26,8 @@
 	
 	
 	<select id="queryByIdCard" resultMap="CardIdResultMap" parameterType="String">
-		<!-- select 
-		base.khmc,base.zjhm,
-		safe.BXLX,safe.BXMC,safe.CBGS,
-		tpt.PRODUCT_NAME,tkmx.htll,tkmx.Ffje,tkmx.sfjq,tkmx.khjl
-		from
-		ty_customer_base base,
-		ty_repay_tkmx tkmx,
-		ty_product_type tpt，
-		TY_CUSTOMER_SAFE safe
-		where 
-		tkmx.cpmc=tpt.product_code
-		and base.khh=tkmx.khh
-		and safe.khnm=base.khnm
-		and base.zjhm=#{idcard} -->
-		<!--  select 
-        base.khmc,base.zjhm,
-        safe.BXLX,safe.BXMC,safe.CBGS,
-        tpt.PRODUCT_NAME,tkmx.htll,tkmx.Ffje,tkmx.sfjq,tkmx.khjl,tkmx.khh,safe.khnm
-        from
-        basic_customer_information basic left join ty_customer_base base on basic.ty_customer_id=base.id
-        left join ty_repay_tkmx tkmx on  base.khnm=tkmx.khh
-        left join ty_product_type  tpt on  tkmx.cpmc=tpt.product_code
-        left join TY_CUSTOMER_SAFE safe on safe.khnm=base.khnm  where base.zjhm=#{idcard} -->
-	
 	 select 
+	  	distinct tkmx.ywbh,
         basic.chinese_name,basic.card_id,
         safe.BXLX,safe.BXMC,safe.CBGS,
         tpt.PRODUCT_NAME,tkmx.jzll htll,tkmx.Ffje,tkmx.sfjq,su.DISPLAY_NAME

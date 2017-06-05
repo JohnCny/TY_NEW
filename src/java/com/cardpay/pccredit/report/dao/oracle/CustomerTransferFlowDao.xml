@@ -267,7 +267,7 @@
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
                 select distinct tym.ywbh,tym.khmc as CHINESE_NAME ,
-					tym.ZJHM as CARD_ID, pro.product_name as CPMC,tym.Reqlmt as FFJE,tym.JZLL ,
+					tym.ZJHM as CARD_ID, pro.product_name as CPMC,tym.Reqlmt as FFJE,tkmx.sfbl as JZLL ,
 					tym.Loandate as JKRQ, tym.display_name as KHJL,tym.ywjg as BLJG 
 					from ty_mibusidata tym , ty_repay_tkmx tkmx, ty_product_type pro , sys_department t,sys_dept_user tt
 					where 1=1 and 
@@ -306,7 +306,7 @@
 	<select id="getYffdktjbbFormlList" resultMap="YffdktjbbFormResultMap"
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
 					<!--  app.ACCOUNT_STATUS  as state,prod.product_name as prodName -->
- 		 			select distinct  tkmx.ywbh,tym.khmc as cname ,tym.ZJHM as cardtype,pro.product_name as prodName,tym.Reqlmt as money,tym.JZLL as baserate,tym.Loandate as interest, tym.display_name as busimanager,tym.ywjg  as name 
+ 		 			select distinct  tkmx.ywbh,tym.khmc as cname ,tym.ZJHM as cardtype,pro.product_name as prodName,tym.Reqlmt as money,tkmx.sfbl as baserate,tym.Loandate as interest, tym.display_name as busimanager,tym.ywjg  as name 
                        from   ty_mibusidata tym  ,
 					     ty_repay_tkmx tkmx,
 					     ty_product_type pro, sys_department t,sys_dept_user tt
@@ -493,7 +493,7 @@
 				FROM (
 					select distinct tkmx.ywbh, c.khmc as CHINESE_NAME,c.zjhm as
 		          CARD_ID,protype.product_name as CPMC,yehz.qxrq as
-		          JZRQ,tkmx.DQRQ,tkmx.ffje as DF,tkmx.JZLL,jh.QS,sysuser.display_name as
+		          JZRQ,tkmx.DQRQ,tkmx.ffje as DF,tkmx.SFBL as JZLL,jh.QS,sysuser.display_name as
 		          KHJL,
 		          (select t.name from sys_department t where t.id in (select tt.dept_id from
 		          sys_dept_user tt
@@ -809,7 +809,7 @@
                        shbj.zjhm=c.zjhm and
                       tkmx.jqrq is not null and
                     tkmx.jqrq <![CDATA[ <=  ]]>tkmx.Dqrq  -->
-                   select distinct c.khmc as cname,c.zjhm as cardtype,protype.product_name as prodName,yehz.qxrq as loandate,tkmx.DQRQ as enddate,tkmx.ffje as money,tkmx.HTLL as baserate,jh.QS as qs, jh.JE as bjzh,jh.YHLX as lxzh,sysuser.display_name as busimanager,
+                   select distinct c.khmc as cname,c.zjhm as cardtype,protype.product_name as prodName,yehz.qxrq as loandate,tkmx.DQRQ as enddate,tkmx.ffje as money,tkmx.SFBL as baserate,jh.QS as qs, jh.JE as bjzh,jh.YHLX as lxzh,sysuser.display_name as busimanager,
              (select t.name from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt
                   where tt.user_id = sysuser.id)) as name
                 from
@@ -940,7 +940,7 @@
               protype.product_code=tkmx.cpmc and
               sysuser.id=b.user_id  -->
               select distinct tkmx.ywbh, c.khmc as CHINESE_NAME,c.zjhm as CARD_ID,tkmx.jkrq, protype.product_name as CPMC,tkmx.ffje
-              as JF,tkmx.JZLL,yehz.qxrq as
+              as JF,tkmx.SFBL as JZLL,yehz.qxrq as
               jzrq,yehz.DKYE,sysuser.display_name as KHJL
               ,(select t.name from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt
               where tt.user_id = sysuser.id)) as YWJG,
@@ -1116,7 +1116,7 @@
 	<select id="getDkyetjbbFormList" resultMap="DkyetjbbFormResultMap" 
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
 				   select distinct tkmx.ywbh, c.khmc as cname,c.zjhm as cardnum,tkmx.CPMC as prodName,tkmx.ffje as money
-              ,tkmx.JZLL as interest,yehz.qxrq as loandate,yehz.DKYE as balamt,yehz.Shbj as bj,yehz.Shlx as lx,sysuser.display_name as busimanager
+              ,tkmx.SFBL as interest,yehz.qxrq as loandate,yehz.DKYE as balamt,yehz.Shbj as bj,yehz.Shlx as lx,sysuser.display_name as busimanager
               ,(select t.name from
               sys_department t where t.id in (select tt.dept_id from sys_dept_user tt
               where tt.user_id = sysuser.id)) as instcode
@@ -1208,7 +1208,7 @@
 					 <!-- select * from yqdktjbb a WHERE 1=1  -->
                select CHINESE_NAME, CARD_ID, TELEPHONE,  CPMC, DF,JZLL, BXHJ,JE,  Shbj,Shlx, KHJL, YWJG from
  ( select
-          b.khmc as CHINESE_NAME,b.zjhm as CARD_ID,b.SJ as TELEPHONE, protype.product_name as CPMC,tkmx.ffje as DF,tkmx.JZLL,bxhj.bx as BXHJ,yehz.dkye as JE,yhbj.yhbj as Shbj,bxhj.bx-yhbj.yhbj as Shlx,sysuser.display_name as KHJL,(select t.name from
+          b.khmc as CHINESE_NAME,b.zjhm as CARD_ID,b.SJ as TELEPHONE, protype.product_name as CPMC,tkmx.ffje as DF,tkmx.SFBL as JZLL,bxhj.bx as BXHJ,yehz.dkye as JE,yhbj.yhbj as Shbj,bxhj.bx-yhbj.yhbj as Shlx,sysuser.display_name as KHJL,(select t.name from
               sys_department t where t.id in (select tt.dept_id 
         from sys_dept_user tt
               where tt.user_id = sysuser.id))
@@ -1269,7 +1269,7 @@
               tkmx.jjh =lsz.jjh and
               bxhj.ywbh=tkmx.ywbh and
               yhbj.ywbh=tkmx.ywbh
-              group by  b.khmc,b.zjhm,b.SJ , protype.product_name ,tkmx.ffje ,tkmx.JZLL,sysuser.display_name ,sysuser.id,tkmx.dqrq,bxhj.bx,yehz.dkye,yhbj.yhbj) a
+              group by  b.khmc,b.zjhm,b.SJ , protype.product_name ,tkmx.ffje ,tkmx.JZLL,sysuser.display_name ,sysuser.id,tkmx.dqrq,bxhj.bx,yehz.dkye,yhbj.yhbj,tkmx.SFBL) a
               where 1=1 and
                (nvl(a.DELAYINTERESTDAYS,0)  >   0 or nvl(a.DELAYAMTDAYS,0)  >   0) 
 					<if test="certiCode != null and certiCode != '' ">
@@ -1296,7 +1296,7 @@
 					 select   cname, cardnum, contactmobiletel, prodName, money, interest, hkze, hkbj, Shbj,Shlx, busimanager, instcode
            from ( 
          select
-          b.khmc as cname,b.zjhm as cardnum,b.SJ as contactmobiletel, protype.product_name as prodName,tkmx.ffje as money,tkmx.JZLL as interest,bxhj.bx as hkze,yehz.dkye as hkbj,yhbj.yhbj as Shbj,bxhj.bx-yhbj.yhbj as Shlx,
+          b.khmc as cname,b.zjhm as cardnum,b.SJ as contactmobiletel, protype.product_name as prodName,tkmx.ffje as money,tkmx.SFBL as interest,bxhj.bx as hkze,yehz.dkye as hkbj,yhbj.yhbj as Shbj,bxhj.bx-yhbj.yhbj as Shlx,
           sysuser.display_name as busimanager,
           (select t.name from sys_department t where t.id in (select tt.dept_id  from sys_dept_user tt where tt.user_id = sysuser.id)) as instcode,
            (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end ) as DELAYINTERESTDAYS,  
@@ -1354,7 +1354,7 @@
               tkmx.jjh =lsz.jjh and
               bxhj.ywbh=tkmx.ywbh and
               yhbj.ywbh=tkmx.ywbh
-              group by  b.khmc,b.zjhm,b.SJ , protype.product_name ,tkmx.ffje ,tkmx.JZLL,sysuser.display_name ,sysuser.id,tkmx.dqrq,bxhj.bx,yehz.dkye,yhbj.yhbj) a
+              group by  b.khmc,b.zjhm,b.SJ , protype.product_name ,tkmx.ffje ,tkmx.JZLL,sysuser.display_name ,sysuser.id,tkmx.dqrq,bxhj.bx,yehz.dkye,yhbj.yhbj,tkmx.SFBL) a
               where 1=1 and
                (nvl(a.DELAYINTERESTDAYS,0)  >   0 or nvl(a.DELAYAMTDAYS,0)  >   0)
 					<if test="certiCode != null and certiCode != '' ">

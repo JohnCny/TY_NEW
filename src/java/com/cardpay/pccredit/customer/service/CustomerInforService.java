@@ -79,6 +79,7 @@ import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.ipad.model.ProductAttribute;
 import com.cardpay.pccredit.manager.service.CustomerApplicationInfoSynchScheduleService;
+import com.cardpay.pccredit.postLoan.model.TyRarepaylistForm;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
 import com.cardpay.pccredit.system.constants.NodeAuditTypeEnum;
 import com.cardpay.pccredit.system.constants.YesNoEnum;
@@ -4700,17 +4701,26 @@ public class CustomerInforService {
 	 */
 	public void addmibusidata() throws IOException{
 		//List<TyMibusidataForm>lists=commonDao.queryBySql(TyMibusidataForm.class, "select * from Mibusidata", null);
+		//添加ty_mibusidata表
 		customerInforDao.deletelastmibusidata();
 		List<TyMibusidataForm>lists=customerInforDao.findmibusidata();
-		customerInforDao.deletelastsx();
-		List<SxOutputData> lists1 = customerInforDao.findSxListByFilter();
 		for (TyMibusidataForm tyMibusidataForm : lists) {
 			customerInforDao.inserTyMIBUSIDATA(tyMibusidataForm);
 		}
+		log.info("addmibusidata success!");
+		//添加TY_JGSX 表
+		customerInforDao.deletelastsx();
+		List<SxOutputData> lists1 = customerInforDao.findSxListByFilter();
 		for (SxOutputData sxOutputData : lists1) {
 			customerInforDao.insertsxOoutputDate(sxOutputData);
 		}
-		log.info("addmibusidata success!");
+		//添加LSHTYLIST表
+		customerInforDao.truncateLshtylist();
+		List<TyRarepaylistForm>lslists=customerInforDao.findLshJnListByFilter();
+		for (TyRarepaylistForm tyRarepaylistForm : lslists) {
+			customerInforDao.insertLshtylist(tyRarepaylistForm);
+		}
+		log.info("addlshtylist success!");
 	}
 	
 	
@@ -4807,6 +4817,10 @@ public class CustomerInforService {
 	public void updateCipersonBasinfoCopy(CustomerFirsthendBase from) {
 		// TODO Auto-generated method stub
 		customerInforDao.updateCipersonBasinfoCopy(from);
+	}
+	public List<Dict> findManagerUsers() {
+		// TODO Auto-generated method stub
+		return customerInforDao.findManagerUsers();
 	}
 	
 }

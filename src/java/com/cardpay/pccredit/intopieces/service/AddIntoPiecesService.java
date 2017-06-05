@@ -132,6 +132,7 @@ public class AddIntoPiecesService {
 				String fileName = map.get("fileName");
 				String url = map.get("url");
 				LocalExcel localExcel = new LocalExcel();
+				localExcel.setFileName(fileName);
 				localExcel.setProductId(productId);
 				localExcel.setCustomerId(customerId);
 				localExcel.setCreatedTime(new Date());
@@ -146,13 +147,14 @@ public class AddIntoPiecesService {
 				JXLReadExcel readExcel = new JXLReadExcel();
 				//本地测试
 				//String sheet[] = readExcel.readExcelToHtml(url, true);
-				//服务器
-				String sheet[] = SFTPUtil.readExcelToHtml(url, true);
+				//服务器  修改标准经营性(新增)调查表     
+				String sheet[] = SFTPUtil.readExcelToHtml(url, true,fileName);
 				/*for(String str : sheet){
 					if(StringUtils.isEmpty(str)){
 						throw new RuntimeException("导入失败，请检查excel文件与模板是否一致！");
 					}
 				}*/
+				
 				localExcel.setSheetXjllb(sheet[9]);
 				localExcel.setSheetYfys(sheet[13]);
 				localExcel.setSheetGdzc(sheet[12]);
@@ -160,6 +162,7 @@ public class AddIntoPiecesService {
 				localExcel.setSheetYsyf(sheet[14]);
 				localExcel.setSheetJy(sheet[17]);
 				localExcel.setSheetJbzk(sheet[18]);
+				localExcel.setHkjhb(sheet[20]);
 				if(sheet[19].contains("元")){
 					localExcel.setApproveValue(sheet[19].substring(0,sheet[19].indexOf("元")));
 				}else{

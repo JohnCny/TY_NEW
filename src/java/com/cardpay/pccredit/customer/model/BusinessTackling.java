@@ -4,6 +4,7 @@ import com.wicresoft.jrad.base.database.model.BusinessModel;
 
 public class BusinessTackling extends BusinessModel {
 	private static final long serialVersionUID = 1L;
+	private String ywbh;
 	private String cardId;//身份证号
 	private String customerName;//客户姓名
 	private String safeType;//保险类型
@@ -15,6 +16,12 @@ public class BusinessTackling extends BusinessModel {
 	private String settle;//是否结清
 	private String manager;//客户经理
 	
+	public String getYwbh() {
+		return ywbh;
+	}
+	public void setYwbh(String ywbh) {
+		this.ywbh = ywbh;
+	}
 	public String getCardId() {
 		return cardId;
 	}

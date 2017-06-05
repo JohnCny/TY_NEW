@@ -283,6 +283,7 @@ public class CustormerSdwUserPcController extends BaseController{
 		CustormerSdwUser.setPID(request.getParameter("productId"));
 		CustormerSdwUser.setCAPID(request.getParameter("id"));
 		CustormerSdwUser.setCID(request.getParameter("customerId"));
+		CustormerSdwUser.setSDWUSER1(request.getParameter("SdwUser1"));
 		int a=SdwUserService.insertCustormerSdwUser1(CustormerSdwUser);
 		if(a>0){
 			if(request.getParameter("status").equals("approved")){
