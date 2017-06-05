@@ -106,6 +106,21 @@ public class CustomerApplicationIntopieceWaitService {
 		return qs;
 
 	}
+	// 查询所有的初审审贷过的
+		public QueryResult<IntoPiecesFilters> findCustomerApplicationIntopieceDecisones(IntoPiecesFilters filter,HttpServletRequest request) {
+			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+			List<IntoPiecesFilters> listCAI =null;
+			int size = 0;
+			if(user.getUserType()!=1){
+				listCAI= customerApplicationIntopieceWaitDao.findCustomerApplicationIntopieceDecisionFormes(filter);
+				size=customerApplicationIntopieceWaitDao.findCustomerApplicationIntopieceDecisionCountFormes(filter);
+			}
+			QueryResult<IntoPiecesFilters> qs = new QueryResult<IntoPiecesFilters>(size, listCAI);
+			return qs;
+
+		}
+	
+	
 	// 根据serialNumber查询CUSTOMER_APPLICATION_PROCESS表
 	public CustomerApplicationIntopieceWaitForm findCustomerApplicationProcessBySerialNumber(String serialNumber) {
 		return customerApplicationIntopieceWaitDao.findCustomerApplicationProcessBySerialNumber(serialNumber);

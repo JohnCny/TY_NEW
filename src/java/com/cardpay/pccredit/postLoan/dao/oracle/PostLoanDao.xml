@@ -215,7 +215,32 @@
 		<result column="CARD_ID" 		property="cardId" />
 		<result column="carId" 		property="zjmh" />
 		
-		
+		<result column="USER_ID_4" 		property="userid4" />
+		<result column="START_EXAMINE_TIME" 		property="startexaminetime" />
+		<result column="cssptime" 		property="cssptime" />
+		<result column="DBFS" 		property="dbfs" />
+		<result column="EXAMINE_RESULT" 		property="examineresult" />
+		<result column="user_id_1" 		property="userid1" />
+		<result column="user_id_2" 		property="userid2" />
+		<result column="user_id_3" 		property="userid3" />
+		<result column="qx" 		property="qx" />
+		<result column="examine_lv" 		property="examinelv" />
+		<result column="sptime" 		property="sptime" />
+		<result column="sdjytime" 		property="sdjytime" />
+		<result column="spje" 		property="spje" />
+		<result column="splv" 		property="splv" />
+		<result column="spqx" 		property="spqx" />
+		<result column="beizhu" 		property="beizhu" />
+		<result column="jlyy" 		property="jlyy" />
+		<result column="zsw" 		property="zsw" />
+		<result column="sdwuser1" 		property="sdwuser1" />
+		<result column="sdtime" 		property="sdtime" />
+		<result column="sdqx" 		property="sdqx" />
+		<result column="sdje" 		property="sdje" />
+		<result column="lv" 		property="lv" />
+		<result column="jjyy" 		property="jjyy" />
+		<result column="sdwuser1yj" 		property="sdwuser1yj" />
+		<result column="productname" 		property="productname" />
  	 </resultMap>
  	 <!-- <resultMap id="BaseResultMap1" type="com.cardpay.pccredit.customer.model.TyRepayLshForm" >
    		<result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR" />
@@ -295,8 +320,8 @@
 			        yehz.DKYE as balamt,
 			        yehz.bnqx+yehz.bwqx as debtinterest,
 			        tkmx.ffje as reqlmt,
-			        jh.ts as delayamtdays,  
-			        jh.ts as delayinterestdays
+			        (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else 0  end ) as DELAYINTERESTDAYS,
+           			(case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else 0  end )as DELAYAMTDAYS
 			          from
            (select  tkmx.ywbh as ywbh,
                       max(to_number(jh.qs)) as qs
@@ -341,7 +366,10 @@
 					  <if test="cardNum != null and cardNum != '' ">
 							AND trim(base.zjhm)=#{cardNum}
 					  </if>
+					    group by tkmx.ywbh, base.khmc,base.zjhm,tkmx.jkrq,
+              tkmx.ffje,yehz.DKYE,yehz.bnqx,yehz.bwqx,tkmx.dqrq
 					  order  by tkmx.jkrq
+					  
 		 <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -363,8 +391,8 @@
               tkmx.dqrq as dqrq,
               yehz.bnqx+yehz.bwqx as debtinterest,
               tkmx.ffje as reqlmt,
-              jh.ts as delayamtdays,  
-              jh.ts as delayinterestdays
+              (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else 0  end ) as DELAYINTERESTDAYS,
+           	(case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else 0  end )as DELAYAMTDAYS
                 from
            (select  tkmx.ywbh as ywbh,
                       max(to_number(jh.qs)) as qs
@@ -410,6 +438,8 @@
 					  <if test="cardNum != null and cardNum != '' ">
 							AND trim(base.zjhm)=#{cardNum}
 					  </if>
+					   group by tkmx.ywbh,base.khh, base.khmc,base.zjhm,tkmx.jkrq,
+              tkmx.ffje,yehz.DKYE,yehz.bnqx,yehz.bwqx,tkmx.dqrq,base.Khlx,base.Zjlx
                     order  by tkmx.jkrq
 	</select>
 	
@@ -467,14 +497,14 @@
 					SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
-					 select
+				<!-- 	 select
        distinct 
        tkmx.ywbh,
        b.khmc,
        tkmx.jkrq,
        shbj.df as bj,
        shlx.df as lx,
-       tkmx.jxfs,
+       tkmx.HKFS as jxfs,
        shbj.jzrq,
        yehz.create_time
        from
@@ -538,14 +568,15 @@
                shlx.ywbh=tkmx.ywbh and
               shlx.zjhm=b.zjhm and
              shbj.ywbh=tkmx.ywbh and
-              shbj.zjhm=b.Zjhm
+              shbj.zjhm=b.Zjhm -->
+             select * from lshtylist where 1=1
                <if test="busiCode != null and busiCode != '' ">
-					AND trim(tkmx.ywbh)=#{busiCode}
+					AND trim(ywbh)=#{busiCode}
 			</if>
 			<!--  <if test="busiCode != null and busiCode != '' ">
 					AND trim(tkmx.ywbh)=#{busiCode}
 			</if> -->
-                 order by tkmx.jkrq
+                 order by jkrq
 		 <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -554,178 +585,18 @@
 	</select>
 	
 	<select id="selectRarepaylistfoInfoByBusicode" resultMap="lszform" parameterType="com.cardpay.pccredit.postLoan.filter.FcloaninfoFilter">
-
-	    		select a.* from (	 select
-       distinct 
-       tkmx.ywbh,
-       b.khmc,
-       tkmx.jkrq,
-       shbj.df as bj,
-       shlx.df as lx,
-       tkmx.jxfs,
-       shbj.jzrq,
-       sysuser.display_name,
-       yehz.create_time
-       from
-        (select  sum(lsz.df) as df ,
-                      tkmx.ywbh ,
-                      c.zjhm
-              from
-               ty_customer_rygl rygl,
-              TY_REPAY_TKMX tkmx ,
-              TY_REPAY_YEHZ yehz,
-              ty_repay_lsz lsz,
-              ty_customer_base c,
-             ty_product_type protype,
-              sys_user sysuser
-              where  c.khjl=rygl.dm and
-              rygl.ddrq=sysuser.external_id and
-              c.KHNM = tkmx.khh and
-              yehz.JJH = tkmx.JJH and
-              protype.product_code=tkmx.cpmc and
-              lsz.jjh=tkmx.jjh 
-              and lsz.zy='批量自动扣利息'
-           
-              group by   tkmx.ywbh , c.zjhm) shlx,
-      (select  c.khmc,
-              sum(lsz.df) as df ,
-                      tkmx.ywbh ,
-                      c.zjhm,
-                       max(lsz.jzrq) as jzrq
-              from
-               ty_customer_rygl rygl,
-              TY_REPAY_TKMX tkmx ,
-              TY_REPAY_YEHZ yehz,
-              ty_repay_lsz lsz,
-              ty_customer_base c,
-             ty_product_type protype,
-              sys_user sysuser
-              where  c.khjl=rygl.dm and
-              rygl.ddrq=sysuser.external_id and
-              c.KHNM = tkmx.khh and
-              yehz.JJH = tkmx.JJH and
-              protype.product_code=tkmx.cpmc and
-              lsz.jjh=tkmx.jjh 
-            and (lsz.zy='批量自动扣本金'
-            or lsz.zy='贷款柜台提前还款')
-            
-              group by   tkmx.ywbh , c.zjhm ,c.khmc) shbj,
-              ty_repay_tkmx tkmx,
-              ty_customer_base b,
-              ty_customer_rygl rygl,
-              sys_user sysuser,
-             ty_kdk_jh jh,
-              ty_repay_yehz yehz,
-              ty_repay_lsz lsz
-              where b.khjl=rygl.dm and
-              rygl.ddrq=sysuser.external_id and
-              b.khnm=tkmx.khh and
-              jh.ywbh=tkmx.ywbh||'HT' and
-              yehz.jjh=tkmx.jjh and
-              tkmx.jjh =lsz.jjh and
-              
-               shlx.ywbh=tkmx.ywbh and
-              shlx.zjhm=b.zjhm and
-             shbj.ywbh=tkmx.ywbh and
-              shbj.zjhm=b.Zjhm
+	    		select * from lshtylist where 1=1
                <if test="busiCode != null and busiCode != '' ">
-					AND trim(tkmx.ywbh)=#{busiCode}
+					AND trim(ywbh)=#{busiCode}
 			</if>
-			<!--  <if test="busiCode != null and busiCode != '' ">
-					AND trim(tkmx.ywbh)=#{busiCode}
-			</if> -->
-                 order by tkmx.jkrq) a WHERE 1=1 
-					
-	<!-- 	<if test="rapayinterest != null and rapayinterest != '' ">
-		   				AND a.rapayinterest=#{rapayinterest}
-		   				</if>
-		<if test="repayamt != null and repayamt != '' ">
-		   				AND a.repayamt=#{repayamt}
-		   				</if> -->
+                 order by jkrq
 	</select>
 	
 	<select id="findLshJnListCountByFilter" resultType="int" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
-	  	select count(*)  from (
-	  	 select
-       distinct 
-       tkmx.ywbh,
-       b.khmc,
-       tkmx.jkrq,
-       shbj.df as bj,
-       shlx.df as lx,
-       tkmx.jxfs,
-       shbj.jzrq,
-       yehz.create_time
-       from
-        (select  sum(lsz.df) as df ,
-                      tkmx.ywbh ,
-                      c.zjhm
-              from
-               ty_customer_rygl rygl,
-              TY_REPAY_TKMX tkmx ,
-              TY_REPAY_YEHZ yehz,
-              ty_repay_lsz lsz,
-              ty_customer_base c,
-             ty_product_type protype,
-              sys_user sysuser
-              where  c.khjl=rygl.dm and
-              rygl.ddrq=sysuser.external_id and
-              c.KHNM = tkmx.khh and
-              yehz.JJH = tkmx.JJH and
-              protype.product_code=tkmx.cpmc and
-              lsz.jjh=tkmx.jjh 
-              and lsz.zy='批量自动扣利息'
-           
-              group by   tkmx.ywbh , c.zjhm) shlx,
-      (select  c.khmc,
-              sum(lsz.df) as df ,
-                      tkmx.ywbh ,
-                      c.zjhm,
-                       max(lsz.jzrq) as jzrq
-              from
-               ty_customer_rygl rygl,
-              TY_REPAY_TKMX tkmx ,
-              TY_REPAY_YEHZ yehz,
-              ty_repay_lsz lsz,
-              ty_customer_base c,
-             ty_product_type protype,
-              sys_user sysuser
-              where  c.khjl=rygl.dm and
-              rygl.ddrq=sysuser.external_id and
-              c.KHNM = tkmx.khh and
-              yehz.JJH = tkmx.JJH and
-              protype.product_code=tkmx.cpmc and
-              lsz.jjh=tkmx.jjh 
-            and (lsz.zy='批量自动扣本金'
-            or lsz.zy='贷款柜台提前还款')
-            
-              group by   tkmx.ywbh , c.zjhm ,c.khmc) shbj,
-              ty_repay_tkmx tkmx,
-              ty_customer_base b,
-              ty_customer_rygl rygl,
-              sys_user sysuser,
-             ty_kdk_jh jh,
-              ty_repay_yehz yehz,
-              ty_repay_lsz lsz
-              where b.khjl=rygl.dm and
-              rygl.ddrq=sysuser.external_id and
-              b.khnm=tkmx.khh and
-              jh.ywbh=tkmx.ywbh||'HT' and
-              yehz.jjh=tkmx.jjh and
-              tkmx.jjh =lsz.jjh and
-              
-               shlx.ywbh=tkmx.ywbh and
-              shlx.zjhm=b.zjhm and
-             shbj.ywbh=tkmx.ywbh and
-              shbj.zjhm=b.Zjhm
+	  	select count(*)  from lshtylist where 1=1
                <if test="busiCode != null and busiCode != '' ">
-					AND trim(tkmx.ywbh)=#{busiCode}
+					AND trim(ywbh)=#{busiCode}
 			</if>
-			<!--  <if test="busiCode != null and busiCode != '' ">
-					AND trim(tkmx.ywbh)=#{busiCode}
-			</if> -->
-                 order by tkmx.jkrq
-	  	) a where 1=1
 	</select>
 	
 	<select id="findObjectsByBusicode" resultMap="BaseResultMap1">
@@ -734,27 +605,27 @@
 	    
 	</select>
 	
-	
-	
 	<select id="findTzJnListByFilter" resultMap="MibusidateView" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
 					SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
-				select distinct YWBH,ID,KHH,KHMC,ZJHM,SSBM,SJ,SXED,GHJL,LOANDATE, DQRQ,DKQX,JZLL,REQLMT,nvl(DELAYINTERESTDAYS,0) as DELAYINTERESTDAYS ,  nvl(DELAYAMTDAYS,0) as DELAYAMTDAYS,
-        DLAYDT,SHBJ,JKJE,KSQXRQ,PAYDEBT,DKYE as YE ,BNQX,BWQX,sum(DKYE+BNQX+BWQX) as dlayamtsum,BALAMT ,YXYE,USERID as  userid,DISPLAY_NAME as display_name
-                 from ty_mibusidata where 1=1 
+				select distinct tym.YWBH,tym.ID,tym.KHH,tym.KHMC,tym.ZJHM,tym.SSBM,tym.SJ,tym.SXED,tym.GHJL,tym.LOANDATE, tym.DQRQ,tym.DKQX,
+tym.JZLL,tym.REQLMT,nvl(tym.DELAYINTERESTDAYS,0) as DELAYINTERESTDAYS ,  nvl(tym.DELAYAMTDAYS,0) as DELAYAMTDAYS,
+        tym.DLAYDT,tym.SHBJ,tym.JKJE,DKYE as YE ,tym.BNQX,tym.BWQX,tym.PAYDEBT,sum(tym.DKYE+tym.BNQX+tym.BWQX) as dlayamtsum,tym.BALAMT ,tym.YXYE,tym.USERID as  userid,tym.DISPLAY_NAME as display_name
+                 from ty_mibusidata tym  where 1=1
 			           <if test="userId != null and userId != '' and userId !='000001'">
-			             and USERID  =#{userId}
+			             and tym.USERID  =#{userId}
 				         </if>
 				         <if test="busiCode != null and busiCode != '' ">
-							AND trim(YWBH)=#{busiCode}
+							AND trim(tym.YWBH)=#{busiCode}
 						</if>
 						<if test="customerName != null and customerName != '' ">
-							AND KHMC=#{customerName}
+							AND tym.KHMC=#{customerName}
 						</if>
-						  group by YWBH,ID,KHH,KHMC,ZJHM,SSBM,SJ,SXED,GHJL,LOANDATE, DQRQ,DKQX,JZLL,REQLMT,nvl(DELAYINTERESTDAYS,0),  nvl(DELAYAMTDAYS,0),
-        DLAYDT,SHBJ,JKJE,KSQXRQ,PAYDEBT,DKYE ,BNQX,BWQX,BALAMT ,YXYE,USERID ,DISPLAY_NAME 
-         order by LOANDATE
+					 group by tym.YWBH,tym.ID,tym.KHH,tym.KHMC,tym.ZJHM,tym.SSBM,tym.SJ,tym.SXED,tym.GHJL,tym.LOANDATE, tym.DQRQ,tym.DKQX,
+tym.JZLL,tym.REQLMT,nvl(tym.DELAYINTERESTDAYS,0)  ,  nvl(tym.DELAYAMTDAYS,0),
+        tym.DLAYDT,tym.SHBJ,tym.JKJE,tym.KSQXRQ,tym.PAYDEBT,DKYE ,tym.BNQX,tym.BWQX ,tym.BALAMT ,tym.YXYE,tym.USERID ,tym.DISPLAY_NAME
+         order by tym.LOANDATE
 					<!--   select
 			        distinct
 			          tkmx.YWBH ,
@@ -820,13 +691,9 @@
 	
 	
 	<select id="findTzJnListCountByFilter" resultType="int" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
-	  	select count(*)  from (
-	  select distinct YWBH,ID,KHH,KHMC,ZJHM,SSBM,SJ,SXED,GHJL,LOANDATE, DQRQ,DKQX,JZLL,REQLMT,DELAYINTERESTDAYS,  DELAYAMTDAYS,
-				DLAYDT,SHBJ,JKJE,KSQXRQ,PAYDEBT,DKYE as YE ,BNQX,BWQX,BALAMT ,YXYE,USERID as  userid,DISPLAY_NAME as display_name
-			           from ty_mibusidata where 1=1 
+	  	select count(distinct ywbh)  from   ty_mibusidata where 1=1 
 			           <if test="userId != null and userId != '' and userId !='000001'">
 			             and USERID  =#{userId}
-			             order by LOANDATE
 				         </if>
 				         <if test="busiCode != null and busiCode != '' ">
 							AND trim(YWBH)=#{busiCode}
@@ -834,7 +701,8 @@
 						<if test="customerName != null and customerName != '' ">
 							AND KHMC=#{customerName}
 						</if>
-	  	) a
+			             order by LOANDATE
+	  
 	 
 	</select>
 	
@@ -907,47 +775,49 @@
 	</select>
 	
 	<select id="findtzList"  resultMap="BaseResultMap3" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
-					  select
-			        distinct
-			          tkmx.YWBH Busicode,
-			          b.id as id ,
-			          b.KHH,
-			          b.KHMC Cname,
-			          b.ZJHM Custidno,
-			          rygl.SSBM,
-			          b.SJ,
-			          b.SXED,
-			          b.GHJL,
-			          tkmx.JKRQ as Loandate, 
-			          tkmx.DQRQ,
-			          tkmx.DKQX,
-			          tkmx.JZLL,
-			          tkmx.FFJE   as Reqlmt,
-			           tkmx.FFJE   as Money,
-			           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end ) as DELAYINTERESTDAYS,  
-			           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end )as DELAYAMTDAYS, 
-			           max(lsz.jzrq) as DLAYDT,
-			          yehz.SHBJ,
-			          yehz.JKJE,
-			          yehz.KSQXRQ,
-			          yehz.SHLX as PAYDEBT,  
-			          yehz.DKYE as Balamt ,
-			          yehz.BNQX,
-			          yehz.BWQX,
-			          yehz.DKYE as BALAMT  ,
-			          yehz.dkye as yxye,
-			          sysuser.id userid,
-			          sysuser.display_name
+					   select
+			              distinct
+			                tkmx.YWBH Busicode,
+			                b.id as id ,
+			                b.KHH,
+			                b.KHMC Cname,
+			                b.ZJHM Custidno,
+			                b.SJ,
+			                b.SXED,
+			                b.GHJL,
+			                tkmx.JKRQ as Loandate, 
+			                tkmx.DQRQ,
+			                tkmx.DKQX,
+			                tkmx.JZLL,
+			                tkmx.FFJE   as Reqlmt,
+			                 tkmx.FFJE   as Money,
+			                 (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end ) as DELAYINTERESTDAYS,  
+			                 (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end )as DELAYAMTDAYS, 
+			                 max(lsz.jzrq) as DLAYDT,
+			                yehz.SHBJ,
+			                yehz.JKJE,
+			                yehz.KSQXRQ,
+			                yehz.SHLX as PAYDEBT,  
+			                yehz.DKYE as Balamt ,
+			                yehz.BNQX,
+			                yehz.BWQX,
+			                yehz.DKYE as BALAMT  ,
+			                yehz.dkye as yxye,
+			                sysuser.id userid,
+			                sysuser.display_name,
+			          (select a.name from sys_organization a where id in (select t.org_id
+			    from sys_department t
+			    where t.id in(select tt.dept_id from sys_dept_user tt where tt.user_id =sysuser.id))) YWJG
 			       from
 			              ty_repay_tkmx tkmx,
 			              ty_customer_base b,
-			              ty_customer_rygl rygl,
+			              basic_customer_information basic,
 			              sys_user sysuser,
-			              ty_kdk_jh jh,
+			             ty_kdk_jh jh,
 			              ty_repay_yehz yehz,
 			              ty_repay_lsz lsz
-			              where b.khjl=rygl.dm and
-			              rygl.ddrq=sysuser.external_id and
+			              where basic.ty_customer_id=b.id and
+			              basic.user_id=sysuser.id and
 			              b.khnm=tkmx.khh and
 			              jh.ywbh=tkmx.ywbh||'HT' and
 			              yehz.jjh=tkmx.jjh and
@@ -961,8 +831,8 @@
 						<if test="customerName != null and customerName != '' ">
 							AND b.khmc=#{customerName}
 						</if>
-			              group by tkmx.YWBH ,b.id ,b.KHH,b.KHMC, b.ZJHM,rygl.SSBM, b.SJ, b.SXED, b.GHJL,tkmx.JKRQ , tkmx.DQRQ, tkmx.DKQX,tkmx.JZLL, tkmx.FFJE  ,
-			                 yehz.SHBJ,yehz.JKJE, yehz.KSQXRQ,yehz.SHLX, yehz.DKYE,yehz.BNQX, yehz.BWQX,yehz.DKYE  , yehz.dkye  , sysuser.display_name, sysuser.id 
+			             group by tkmx.YWBH ,b.id ,b.KHH,b.KHMC, b.ZJHM, b.SJ, b.SXED, b.GHJL,tkmx.JKRQ , tkmx.DQRQ, tkmx.DKQX,tkmx.JZLL, tkmx.FFJE  ,
+                 yehz.SHBJ,yehz.JKJE, yehz.KSQXRQ,yehz.SHLX, yehz.DKYE,yehz.BNQX, yehz.BWQX,yehz.DKYE  , yehz.dkye  , sysuser.display_name, sysuser.id
 			              order by tkmx.jkrq
 		  <!--   <if test="busicode != null and busicode != ''">
 		    and BUSICODE=#{busicode}
@@ -985,20 +855,23 @@
             cai.created_time,
             cai.apply_quota,
             (case 
-	         when cai.status ='audit'and sdh.time is null and sdh.sdtime is null then
+	        when cai.status ='audit'and tlog.examine_amount is null and sdh.sdtime is null then
 	          '已申请'
-	         when cai.status ='refuse' then
+	         when cai.status ='refuse' and cai.id not in (select capid from CUSTOMER_APPLICATION_SDH) then
 	          '被拒绝'
-	         when cai.status ='returnedToFirst' then
+	         when cai.status ='returnedToFirst' and cai.id not in (select capid from CUSTOMER_APPLICATION_SDH) then
 	          '退回至客户经理'
 	         when cai.status ='end' then
 	          '放款成功'
-	         when cai.id  in (select capid from CUSTOMER_APPLICATION_SDH) 
-	           and cai.status ='audit' and sdh.time is not null and sdh.sdtime is null then
-	          '进件初审'
-	         when cai.status ='approved' then
-	          '审贷决议' 
-	         when cai.id not in (select capid from CUSTOMER_APPLICATION_SDH) then
+	         when cai.id  in (select application_id from T_APP_MANAGER_AUDIT_LOG) 
+             and cai.status ='audit' and sdh.sdtime is null and cai.id not in (select capid from customer_sp) then
+             '进件初审'
+	         when cai.id not in (select capid from CUSTOMER_APPLICATION_SDH) 
+           	 and  cai.id in (select capid from customer_sp) then
+             '审贷决议'
+             when cai.id in (select capid from CUSTOMER_APPLICATION_SDH) then
+             '审批结束' 
+             else
 	          ''  end) as status,
              cai.id
               from customer_application_info cai  
@@ -1023,6 +896,19 @@
 					WHERE ROWNUM_ > #{limit}*#{page}
 					]]>
 	</select>
+	
+	<select id="findwfsr" resultMap="CreditProcess" parameterType="String">
+   			select * from findwfsrs where 1=1 and id=#{id}
+	    </select>
+	    
+	    <select id="findsplist" resultMap="CreditProcess" parameterType="String">
+   			select * from findsplists where 1=1 and id=#{id}
+	    </select>
+	    
+	     <select id="findcaslist" resultMap="CreditProcess" parameterType="String">
+   			select * from findcaslist where 1=1 and id=#{id} 
+	    </select>
+	    
 	<!-- 统计行数 -->
 	<select id="querySize" resultType="int" parameterType="com.cardpay.pccredit.postLoan.model.CreditProcess">
 		  select count(*)
@@ -1045,38 +931,7 @@
 	
 	<!-- 显示详情 -->
 	<select id="queryAll" resultMap="CreditProcess" parameterType="String">
-		   <!--    select
-            bai.spmc,
-            bai.chinese_name,
-            (select t.name from sys_department t where t.id in 
-             (select tt.dept_id from sys_dept_user tt where tt.user_id = su.id)) as teamname,
-            (select org.name from sys_organization org where id in(select t.org_id from sys_department t where t.id in 
-             (select tt.dept_id from sys_dept_user tt where tt.user_id = su.id)))as bljg ,
-             ''as dklx,
-            (SELECT  A.TYPE_NAME  FROM DICT A ,PRODUCT_ATTRIBUTE p 
-             WHERE A .DICT_TYPE = 'CMMSCLNM-贷款担保方式' and A.TYPE_CODE=p.assure_means and p.id=cai.product_id) as assure_means,
-             '' as hyfl,
-             su.display_name,
-            cai.created_time,
-            cai.apply_quota,
-             t.start_examine_time,
-              t.examine_result,
-             t.examine_amount,
-             cai.jkrq,
-             aa.examine_lv,
-             cai.status
-            from customer_application_info cai  
-				  	  left join customer_application_process aa on cai.id=aa.application_id
-			          left join basic_customer_information bai on cai.customer_id=bai.id
-		              left join sys_user su on su.id=bai.user_id
-		              left join ty_customer_base base on bai.ty_customer_id=base.id
-		              left join PRODUCT_ATTRIBUTE p on p.id=cai.product_id
-		              left join  wf_process_record pr on pr.id = aa.serial_number
-		              left join wf_status_queue_record t on t.current_process = pr.id 
-		              left join wf_status_info s on t.current_status = s.id 
-              where 1=1 and cai.id=#{id} -->
-              
-              select  bai.spmc, bai.chinese_name,
+		     select  bai.spmc, bai.chinese_name,
              (select t.name from sys_department t where t.id in 
              (select tt.dept_id from sys_dept_user tt where tt.user_id = su.id)) as teamname,
              (select org.name from sys_organization org where id in(select t.org_id from sys_department t where t.id in 
@@ -1089,56 +944,59 @@
              cai.created_time,
              cai.apply_quota,
              (case
-             when cai.id  in (select capid from CUSTOMER_APPLICATION_SDH) 
-             and sdh.time is not null and sdh.sdtime is null then
-             sdh.time
-             when cai.status ='approved' then
+             when cai.id  in (select application_id from T_APP_MANAGER_AUDIT_LOG) 
+            and sdh.sdtime is null then
+             t.start_examine_time
+             when cai.status ='approved' or cai.status ='end' then
              sdh.sdtime
              when cai.status ='refuse' or cai.status ='returnedToFirst' then
              cai.modified_time
              end) as start_examine_time ,
-	         (case 
-	         when cai.status ='refuse' then
-	         '审核拒绝'
-	         when cai.status ='returnedToFirst' then
-	         '审核退回'
-	         when cai.id  in (select capid from CUSTOMER_APPLICATION_SDH) 
-	         and sdh.time is not null and sdh.sdtime is null then 
-	         '初审通过'
-	         when cai.status ='approved' then
-	         '决议通过'
-	         else '' end) as examine_result，
-	         (case 
-	         when cai.id  in (select capid from CUSTOMER_APPLICATION_SDH) 
-	         and sdh.time is not null and sdh.sdtime is null then 
-	         tlog.examine_amount
-	         when cai.status ='approved' then
-	         sdh.sdje
-	         else  '' end) as examine_amount,cai.jkrq,
+           (case 
+           when cai.status ='refuse' then
+           '审核拒绝'
+           when cai.status ='returnedToFirst' then
+           '审核退回'
+           when cai.id  in (select application_id from T_APP_MANAGER_AUDIT_LOG) 
+            and sdh.sdtime is null then
+           '初审通过'
+           when cai.status ='approved' or cai.status ='end' then
+           '决议通过'
+           else '' end) as examine_result，
+           (case 
+           when cai.id  in (select application_id from T_APP_MANAGER_AUDIT_LOG) 
+            and sdh.sdtime is null then
+           tlog.examine_amount
+           when cai.status ='approved' or cai.status ='end' then
+           sdh.sdje
+           else  '' end) as examine_amount,to_date(cai.jkrq,'yyyy-mm-dd') as jkrq,
              (case 
-	         when cai.id  in (select capid from CUSTOMER_APPLICATION_SDH) 
-	         and sdh.time is not null and sdh.sdtime is null then 
-	         tlog.examine_lv
-	         when cai.status ='approved' then
-	         sdh.lv else '' end) as examine_lv,
+           when cai.id  in (select application_id from T_APP_MANAGER_AUDIT_LOG) 
+            and sdh.sdtime is null then
+           tlog.examine_lv
+           when cai.status ='approved' or cai.status ='end' then
+           sdh.lv else '' end) as examine_lv,
              (case 
-	         when cai.status ='audit'and sdh.time is null and sdh.sdtime is null then
-	          '已申请'
-	         when cai.status ='refuse' then
-	          '被拒绝'
-	         when cai.status ='returnedToFirst' then
-	          '退回至客户经理'
-	         when cai.status ='end' then
-	          '放款成功'
-	         when cai.id  in (select capid from CUSTOMER_APPLICATION_SDH) 
-	           and cai.status ='audit' and sdh.time is not null and sdh.sdtime is null then
-	          '进件初审'
-	         when cai.status ='approved' then
-	          '审贷决议' 
-	         when cai.id not in (select capid from CUSTOMER_APPLICATION_SDH) then
-	          ''  end) as status
+           when cai.status ='audit' and tlog.examine_amount is null and sdh.sdtime is null then
+            '已申请'
+           when cai.status ='refuse' and cai.id not in (select capid from CUSTOMER_APPLICATION_SDH) then
+            '被拒绝'
+           when cai.status ='returnedToFirst' and cai.id not in (select capid from CUSTOMER_APPLICATION_SDH) then
+            '退回至客户经理'
+           when cai.status ='end' then
+            '放款成功'
+           when cai.id  in (select application_id from T_APP_MANAGER_AUDIT_LOG) and cai.status ='audit'
+            and sdh.sdtime is null and cai.id not in (select capid from customer_sp) then
+            '进件初审'
+           when cai.id not in (select capid from CUSTOMER_APPLICATION_SDH) 
+           and  cai.id in (select capid from customer_sp) then
+            '审贷决议'
+           when cai.id in (select capid from CUSTOMER_APPLICATION_SDH) then
+            '审批结束' 
+            else
+            ''  end) as status
              from customer_application_info cai  
-              	  left join customer_application_process aa on cai.id=aa.application_id
+                  left join customer_application_process aa on cai.id=aa.application_id
                   left join basic_customer_information bai on cai.customer_id=bai.id
                   left join sys_user su on su.id=bai.user_id
                   left join ty_customer_base base on bai.ty_customer_id=base.id
@@ -1154,82 +1012,81 @@
 	
 	<!-- 导出-->
 	<select id="creditProcessExportQueryAll" resultMap="CreditProcess" parameterType="com.cardpay.pccredit.postLoan.model.CreditProcess">
-		       select
-            bai.spmc,
-            bai.chinese_name,
-            (select t.name from sys_department t where t.id in 
+		       select  bai.spmc, bai.chinese_name,
+             (select t.name from sys_department t where t.id in 
              (select tt.dept_id from sys_dept_user tt where tt.user_id = su.id)) as teamname,
-            (select org.name from sys_organization org where id in(select t.org_id from sys_department t where t.id in 
+             (select org.name from sys_organization org where id in(select t.org_id from sys_department t where t.id in 
              (select tt.dept_id from sys_dept_user tt where tt.user_id = su.id)))as bljg ,
              ''as dklx,
-            (SELECT  A.TYPE_NAME  FROM DICT A ,PRODUCT_ATTRIBUTE p 
+             (SELECT  A.TYPE_NAME  FROM DICT A ,PRODUCT_ATTRIBUTE p 
              WHERE A .DICT_TYPE = 'CMMSCLNM-贷款担保方式' and A.TYPE_CODE=p.assure_means and p.id=cai.product_id) as assure_means,
              '' as hyfl,
              su.display_name,
-            cai.created_time,
-            cai.apply_quota,
+             cai.created_time,
+             cai.apply_quota,
              (case
-             when cai.id  in (select capid from CUSTOMER_APPLICATION_SDH) 
-             and sdh.time is not null and sdh.sdtime is null then
-             sdh.time
-             when cai.status ='approved' then
+             when cai.id  in (select application_id from T_APP_MANAGER_AUDIT_LOG) 
+            and sdh.sdtime is null then
+             t.start_examine_time
+             when cai.status ='approved' or cai.status ='end' then
              sdh.sdtime
              when cai.status ='refuse' or cai.status ='returnedToFirst' then
              cai.modified_time
              end) as start_examine_time ,
+           (case 
+           when cai.status ='refuse' then
+           '审核拒绝'
+           when cai.status ='returnedToFirst' then
+           '审核退回'
+           when cai.id  in (select application_id from T_APP_MANAGER_AUDIT_LOG) 
+            and sdh.sdtime is null then
+           '初审通过'
+           when cai.status ='approved' or cai.status ='end' then
+           '决议通过'
+           else '' end) as examine_result，
+           (case 
+           when cai.id  in (select application_id from T_APP_MANAGER_AUDIT_LOG) 
+            and sdh.sdtime is null then
+           tlog.examine_amount
+           when cai.status ='approved' or cai.status ='end' then
+           sdh.sdje
+           else  '' end) as examine_amount,to_date(cai.jkrq,'yyyy-mm-dd') as jkrq,
              (case 
-	         when cai.status ='refuse' then
-	         '审核拒绝'
-	         when cai.status ='returnedToFirst' then
-	         '审核退回'
-	         when cai.id  in (select capid from CUSTOMER_APPLICATION_SDH) 
-	         and sdh.time is not null and sdh.sdtime is null then 
-	         '初审通过'
-	         when cai.status ='approved' then
-	         '决议通过'
-	         else '' end) as examine_result，
-	         (case 
-	         when cai.id  in (select capid from CUSTOMER_APPLICATION_SDH) 
-	         and sdh.time is not null and sdh.sdtime is null then 
-	         tlog.examine_amount
-	         when cai.status ='approved' then
-	         sdh.sdje
-	         else  '' end) as examine_amount,
-             trunc(to_timestamp(cai.jkrq, 'yyyy-mm-dd hh24:mi:ss.ff')) as jkrq,
-            (case 
-	         when cai.id  in (select capid from CUSTOMER_APPLICATION_SDH) 
-	         and sdh.time is not null and sdh.sdtime is null then 
-	         tlog.examine_lv
-	         when cai.status ='approved' then
-	         sdh.lv else '' end) as examine_lv,
+           when cai.id  in (select application_id from T_APP_MANAGER_AUDIT_LOG) 
+            and sdh.sdtime is null then
+           tlog.examine_lv
+           when cai.status ='approved' or cai.status ='end' then
+           sdh.lv else '' end) as examine_lv,
              (case 
-	         when cai.status ='audit'and sdh.time is null and sdh.sdtime is null then
-	          '已申请'
-	         when cai.status ='refuse' then
-	          '被拒绝'
-	         when cai.status ='returnedToFirst' then
-	          '退回至客户经理'
-	         when cai.status ='end' then
-	          '放款成功'
-	         when cai.id  in (select capid from CUSTOMER_APPLICATION_SDH) 
-	           and cai.status ='audit' and sdh.time is not null and sdh.sdtime is null then
-	          '进件初审'
-	         when cai.status ='approved' then
-	          '审贷决议' 
-	         when cai.id not in (select capid from CUSTOMER_APPLICATION_SDH) then
-	          ''  end) as status,
-             bai.CARD_ID
-          from customer_application_info cai  
-				  	  left join customer_application_process aa on cai.id=aa.application_id
-			          left join basic_customer_information bai on cai.customer_id=bai.id
-		              left join sys_user su on su.id=bai.user_id
-		              left join ty_customer_base base on bai.ty_customer_id=base.id
-		              left join PRODUCT_ATTRIBUTE p on p.id=cai.product_id
-		              left join  wf_process_record pr on pr.id = aa.serial_number
-		              left join wf_status_queue_record t on t.current_process = pr.id 
-		              left join wf_status_info s on t.current_status = s.id 
-		              left join T_APP_MANAGER_AUDIT_LOG tlog on tlog.application_id =cai.id
-                      left join CUSTOMER_APPLICATION_SDH sdh on sdh.capid=cai.id
+           when cai.status ='audit'and tlog.examine_amount is null and sdh.sdtime is null then
+            '已申请'
+           when cai.status ='refuse' and  cai.id not in (select capid from CUSTOMER_APPLICATION_SDH) then
+            '被拒绝'
+           when cai.status ='returnedToFirst' and cai.id not in (select capid from CUSTOMER_APPLICATION_SDH) then
+            '退回至客户经理'
+           when cai.status ='end' then
+            '放款成功'
+           when cai.id  in (select application_id from T_APP_MANAGER_AUDIT_LOG) and cai.status ='audit'
+           and sdh.sdtime is null and cai.id not in (select capid from customer_sp)then
+            '进件初审'
+           when cai.id not in (select capid from CUSTOMER_APPLICATION_SDH) 
+           and  cai.id in (select capid from customer_sp) then
+            '审贷决议'
+           when cai.id in (select capid from CUSTOMER_APPLICATION_SDH) then
+            '审批结束' 
+            else
+            ''  end) as status, bai.CARD_ID
+             from customer_application_info cai  
+                  left join customer_application_process aa on cai.id=aa.application_id
+                  left join basic_customer_information bai on cai.customer_id=bai.id
+                  left join sys_user su on su.id=bai.user_id
+                  left join ty_customer_base base on bai.ty_customer_id=base.id
+                  left join PRODUCT_ATTRIBUTE p on p.id=cai.product_id
+                  left join  wf_process_record pr on pr.id = aa.serial_number
+                  left join wf_status_queue_record t on t.current_process = pr.id 
+                  left join wf_status_info s on t.current_status = s.id 
+                  left join T_APP_MANAGER_AUDIT_LOG tlog on tlog.application_id =cai.id
+                  left join CUSTOMER_APPLICATION_SDH sdh on sdh.capid=cai.id
 	</select>
 	
 	<!-- 根据身份证号查询是否转贷 -->

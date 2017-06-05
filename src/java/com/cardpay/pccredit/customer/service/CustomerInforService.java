@@ -33,6 +33,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cardpay.pccredit.Sx.model.SxOutputData;
 import com.cardpay.pccredit.common.Dictionary;
 import com.cardpay.pccredit.common.UploadFileTool;
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
@@ -78,6 +79,7 @@ import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.ipad.model.ProductAttribute;
 import com.cardpay.pccredit.manager.service.CustomerApplicationInfoSynchScheduleService;
+import com.cardpay.pccredit.postLoan.model.TyRarepaylistForm;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
 import com.cardpay.pccredit.system.constants.NodeAuditTypeEnum;
 import com.cardpay.pccredit.system.constants.YesNoEnum;
@@ -1568,7 +1570,7 @@ public class CustomerInforService {
 	 * @return
 	 * @throws Exception 
 	 */
-	public void saveRyglDataFile(String fileName,String date) {
+	public  void saveRyglDataFile(String fileName,String date) {
 		try {
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
 			// 解析数据文件配置
@@ -1640,7 +1642,7 @@ public class CustomerInforService {
 	 * @return
 	 * @throws Exception 
 	 */
-	public void saveBaseDataFile(String fileName,String date) {
+	public  void saveBaseDataFile(String fileName,String date) {
 		try {
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
 			// 解析数据文件配置
@@ -1783,7 +1785,7 @@ public class CustomerInforService {
 	 * @return
 	 * @throws Exception 
 	 */
-	public void saveCyDataFile(String fileName,String date) {
+	public  void saveCyDataFile(String fileName,String date) {
 		try {
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
 			// 解析数据文件配置
@@ -1820,7 +1822,7 @@ public class CustomerInforService {
 	 * @return
 	 * @throws Exception 
 	 */
-	public void saveCcDataFile(String fileName,String date) {
+	public  void saveCcDataFile(String fileName,String date) {
 		try {
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
 			// 解析数据文件配置
@@ -1857,7 +1859,7 @@ public class CustomerInforService {
 	 * @return
 	 * @throws Exception 
 	 */
-	public void saveStudyDataFile(String fileName,String date) {
+	public  void saveStudyDataFile(String fileName,String date) {
 		try {
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
 			// 解析数据文件配置
@@ -1894,7 +1896,7 @@ public class CustomerInforService {
 	 * @return
 	 * @throws Exception 
 	 */
-	public void saveWorkDataFile(String fileName,String date) {
+	public  void saveWorkDataFile(String fileName,String date) {
 		try {
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
 			// 解析数据文件配置
@@ -1931,7 +1933,7 @@ public class CustomerInforService {
 	 * @return
 	 * @throws Exception 
 	 */
-	public void saveManageDataFile(String fileName,String date) {
+	public  void saveManageDataFile(String fileName,String date) {
 		try {
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
 			// 解析数据文件配置
@@ -1968,7 +1970,7 @@ public class CustomerInforService {
 	 * @return
 	 * @throws Exception 
 	 */
-	public void saveSafeDataFile(String fileName,String date) {
+	public  void saveSafeDataFile(String fileName,String date) {
 		try {
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
 			// 解析数据文件配置
@@ -1984,7 +1986,8 @@ public class CustomerInforService {
 				if(list.size()>0){
 					customerInforDao.updateCustomerSafe(map);
 				}else{
-					customerInforDao.insertCustomerSafe(map);
+					customerInforDao.insertCustomerSafe((String)map.get("id"),(String)map.get("createTime"),(String)map.get("khnm"),(String)map.get("bxlx"),
+							(String)map.get("bxmc"),(String)map.get("cbgs"),(String)map.get("bxnr"),(String)map.get("bz"));
 				}
 
 				
@@ -2589,12 +2592,12 @@ public class CustomerInforService {
 							spFile.add(fileN+".txt");
 						}
 					}
-					
-					if(fileN.startsWith("kdk_lsz")){
+					//太原流水表从20170411开始使用增量数据
+					/*if(fileN.startsWith("kdk_lsz")){
 						//删除流水号历史数据
 						String sql = " truncate   table   ty_repay_lsz";
 						commonDao.queryBySql(sql, null);
-					}
+					}*/
 					if(fileN.startsWith("kdk_yehz")){
 						//删除余额汇总历史数据
 						String sql = " truncate   table   ty_repay_yehz";
@@ -4665,6 +4668,7 @@ public class CustomerInforService {
 		// TODO Auto-generated method stub
 		return  commonDao.queryBySql(CustomerFirsthendFamilyCc.class, "select * from ty_customer_family_cc s where s.khnm='"+khnm+"'", null);
 	}
+	
 	public QueryResult<CustomerInforFilter> findUpdateCustormer(CustomerInforFilter filter){
 		List<CustomerInforFilter> plans = customerInforDao.findUpdateCustormer(filter);
 		for(int a=0;a<plans.size();a++){
@@ -4674,6 +4678,7 @@ public class CustomerInforService {
 		QueryResult<CustomerInforFilter> qr = new QueryResult<CustomerInforFilter>(plans.size(),plans);
 		return qr;
 	}
+	
 	public QueryResult<CustomerInforFilter> findUpdateCustormer1(CustomerInforFilter filter){
 		List<CustomerInforFilter> plans = customerInforDao.findUpdateCustormer1(filter);
 		for(int a=0;a<plans.size();a++){
@@ -4696,11 +4701,26 @@ public class CustomerInforService {
 	 */
 	public void addmibusidata() throws IOException{
 		//List<TyMibusidataForm>lists=commonDao.queryBySql(TyMibusidataForm.class, "select * from Mibusidata", null);
+		//添加ty_mibusidata表
+		customerInforDao.deletelastmibusidata();
 		List<TyMibusidataForm>lists=customerInforDao.findmibusidata();
 		for (TyMibusidataForm tyMibusidataForm : lists) {
 			customerInforDao.inserTyMIBUSIDATA(tyMibusidataForm);
 		}
-		log.info("success!");
+		log.info("addmibusidata success!");
+		//添加TY_JGSX 表
+		customerInforDao.deletelastsx();
+		List<SxOutputData> lists1 = customerInforDao.findSxListByFilter();
+		for (SxOutputData sxOutputData : lists1) {
+			customerInforDao.insertsxOoutputDate(sxOutputData);
+		}
+		//添加LSHTYLIST表
+		customerInforDao.truncateLshtylist();
+		List<TyRarepaylistForm>lslists=customerInforDao.findLshJnListByFilter();
+		for (TyRarepaylistForm tyRarepaylistForm : lslists) {
+			customerInforDao.insertLshtylist(tyRarepaylistForm);
+		}
+		log.info("addlshtylist success!");
 	}
 	
 	
@@ -4712,6 +4732,95 @@ public class CustomerInforService {
 	}
 	public int findCustormerUpdateCount(@Param("cardid") String cardid){
 		return customerInforDao.findCustormerUpdateCount(cardid);
+	}
+	
+//====
+	public static void dailyTestClearLog() throws IOException {
+		// 读取文件,插入数据到表里
+		//String log_path = "/home/log/";
+		String log_path = "/usr/local/jboss-as-7.1.1.Final/standalone/log/";
+		File file = new File(log_path);
+		File[] tempList = file.listFiles();
+		 System.out.println("该目录下对象个数"+tempList.length);
+		for (int i = 0; i < tempList.length; i++) {
+			String[] str = tempList[i].getName().split("\\.");
+			
+			if (str.length != 2) {// jradbaseweb.log
+				String dateString = str[2];
+				System.out.println(tempList[i].getName() + "--" + dateString);
+				if(!str[0].isEmpty()){ //隐藏文件乎略不删
+					if (CheckIsTrue(dateString)) {
+						//删除该文件
+						String path = log_path + "server.log." + dateString;
+						System.out.println("要删除的文件是："+path);
+						File f = new File(path);
+						System.out.println(f.exists());
+						f.delete();
+					}
+				}
+			}
+		}
+	}
+
+	private static Boolean CheckIsTrue(String dateString) {
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		String dateNow = format.format(new Date());
+		Map<Integer, Integer> map = getMonthAndDaysBetweenDate(dateString,
+				dateNow);
+		int days = map.get(2).intValue();//月数
+		System.out.println("相差的天数：" + days);
+		if (days >= 7) {//  相差7天
+			return true;
+		}
+		return false;
+	}
+
+	public static Map<Integer, Integer> getMonthAndDaysBetweenDate(
+			String date1, String date2) {
+		Map<Integer, Integer> map = new HashMap();
+		SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
+		Date d1 = null;
+		try {
+			d1 = sd.parse(date1);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		Date d2 = null;
+		try {
+			d2 = sd.parse(date2);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		int months = 0;// 相差月份
+		int days = 0;
+		int y1 = d1.getYear();
+		int y2 = d2.getYear();
+		int dm1 = d1.getMonth();// 起始日期月份
+		int dm2 = d2.getMonth();// 结束日期月份
+		int dd1 = d1.getDate(); //起始日期天
+		int dd2 = d2.getDate(); // 结束日期天
+		long a=d1.getTime();
+		long a1=d2.getTime();
+		if (d1.getTime() < d2.getTime()) {
+			days=(int)((d2.getTime()-d1.getTime())/86400000);
+			//	days = d2.getDate() - d1.getDate() ;
+			map.put(1, months);
+			map.put(2, days);
+		}
+		return map;
+	}
+	
+	public int insertTciPersonBasinfoCopy(CustomerFirsthendBase from) {
+		// TODO Auto-generated method stub
+		return customerInforDao.insertTciPersonBasinfoCopy(from);
+	}
+	public void updateCipersonBasinfoCopy(CustomerFirsthendBase from) {
+		// TODO Auto-generated method stub
+		customerInforDao.updateCipersonBasinfoCopy(from);
+	}
+	public List<Dict> findManagerUsers() {
+		// TODO Auto-generated method stub
+		return customerInforDao.findManagerUsers();
 	}
 	
 }

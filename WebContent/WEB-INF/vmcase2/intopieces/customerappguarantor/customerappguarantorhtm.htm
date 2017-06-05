@@ -12,43 +12,51 @@
          <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
           <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 90%">
             <colgroup>
-              <col width="10%" />
               <col width="30%" />
+              <col>
+              <col>
+              <col>
+              <!-- <col width="30%" />
               <col width="10%" />
-              <col width="30%" />
+              <col width="30%" /> -->
             </colgroup>
               <tr>
               <td class="titlec" colspan="4" style="text-align: center;">添加担保人信息</td></tr>
             <tr>
-              <td class="titlefc3"><label for="chineseName">保证人/抵押人/质押人姓名:</label></td>
+              <td class="titlefc3" style="text-align: center"><label for="chineseName" >保证人/抵押人/质押人姓名:</label></td>
               <td><input class="rinpsty"  type="text" id="guarantorMortgagorPledge" name="guarantorMortgagorPledge" value="" /></td>
             </tr>
             <tr>
-             	<td class="titlefc3"><label for="cardId">性别:</label></td>
-                <td><input class="rinpsty"  type="text" name="sex" id="sex"  value="" /></td>
+             	<td class="titlefc3" style="text-align: center"><label for="cardId">性别:</label></td>
+             	<!-- <input class="rinpsty"  type="text" name="sex" id="sex"  value="" /> -->
+                <td >
+                	 <select  name="sex"  id="sex" class="rinpsty" >
+	                  	#dict("Gender",'')
+	                  </select>
+                </td>
             </tr>
             <tr>
-             	<td class="titlefc3"><label for="cardId">与申请人关系:</label></td>
-                <td><input class="rinpsty"  type="text" name="relationshipWithApplicant" id="relationshipWithApplicant"  value="" /></td>
+             	<td class="titlefc3" style="text-align: center"><label for="cardId">与申请人关系:</label></td>
+               <td><input class="rinpsty"  type="text" name="relationshipWithApplicant" id="relationshipWithApplicant"  value="" /></td> 
             </tr>
             <tr>
-             	<td class="titlefc3"><label for="cardId">单位名称:</label></td>
+             	<td class="titlefc3" style="text-align: center"><label for="cardId">单位名称:</label></td>
                 <td><input class="rinpsty"  type="text" name="unitName" id="unitName"  value="" /></td>
             </tr>
              <tr>
-             	<td class="titlefc3"><label for="cardId">部门:</label></td>
+             	<td class="titlefc3" style="text-align: center"><label for="cardId">部门:</label></td>
                 <td><input class="rinpsty"  type="text" name="department" id="department"  value="" /></td>
             </tr>
             <tr>
-             	<td class="titlefc3"><label for="cardId">联系电话:</label></td>
+             	<td class="titlefc3" style="text-align: center"><label for="cardId">联系电话:</label></td>
                 <td><input class="rinpsty"  type="text" name="contactPhone" id="contactPhone"  value="" /></td>
             </tr>
             <tr>
-             	<td class="titlefc3"><label for="cardId">手机:</label></td>
+             	<td class="titlefc3" style="text-align: center"><label for="cardId">手机:</label></td>
                 <td><input class="rinpsty"  type="text" name="cellPhone" id="cellPhone"  value="" /></td>
             </tr>
             <tr>
-             	<td class="titlefc3"><label for="cardId">证件号码:</label></td>
+             	<td class="titlefc3" style="text-align: center"><label for="cardId">证件号码:</label></td>
              	<td><input class="rinpsty"  type="text" name="documentNumber" id="documentNumber"  value="" /></td>
             </tr>
           </table>

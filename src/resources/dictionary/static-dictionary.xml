@@ -86,9 +86,11 @@
 		<item name="1" title="客户经理" />
 		<item name="2" title="部门主管" />
 		<item name="3" title="机构主管" />
+		<item name="7" title="副机构主管" />
 		<item name="4" title="微贷团队" />
 		<item name="5" title="风险岗" />
 		<item name="6" title="后台" />
+		<item name="7" title="副机构主管" />
 	</dictionary>
 	<dictionary name="MarketingEndResult" title="营销计划最终结果">
 		<item name="marketing" title="营销中" />
@@ -420,6 +422,7 @@
 	<dictionary name="status" title="批处理状态">
 		<item name="000" title="初始" />
 		<item name="001" title="失败" />
+		<item name="002" title="特殊" />
 		<item name="100" title="成功" />
 	</dictionary>
 	
@@ -431,6 +434,7 @@
 	
 	<dictionary name="CARDTYPE" title="证件类型">
 		<item name="CST0000000000A" title="身份证" />
+		<item name="0" title="身份证" />
 		<item name="1" title="军官证" />
 		<item name="2" title="护照" />
 		<item name="3" title="香港身份证" />

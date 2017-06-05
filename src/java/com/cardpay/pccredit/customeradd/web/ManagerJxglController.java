@@ -1,6 +1,7 @@
 package com.cardpay.pccredit.customeradd.web;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -91,57 +92,163 @@ public class ManagerJxglController extends BaseController{
 				return mv;
 			}
 		}
-		
-		//当月绩效排名功能  
-				int  ffjew = 0;
-				int pnum=0;
-				//用于循环结束判断
-				int pnum1=0;
-				//lists是档次  lists1是人数
-				List<JxglpmForm>lists=new ArrayList<JxglpmForm>();
-				
-				List<JxglForm>ffje=result.getItems();
-				for (int i=0;i<ffje.size();i++) {
-					JxglpmForm e=new JxglpmForm();
-					e.setId(Integer.toString(i));
-					ffjew=Integer.parseInt(ffje.get(i).getFfje().trim());
-					e.setFpm(ffjew);
-					e.setLpm(ffjew+1000);
-					//取模用来区分是什么档次      80 
-					int results=ffjew/1000;
-					e.setResult(results);
-					if(i!=0){
-						for(int ii=0;ii<lists.size();ii++){
-							if(lists.get(ii).getResult()==results){
-								pnum=lists.get(ii).getPnum();
-								e.setId(lists.get(ii).getId());
-								e.setPnum(pnum+1);
-								lists.remove(ii);
-								lists.add(e);
-								System.out.println(lists);
-								System.out.println(e);
-								pnum1=pnum+1;
-								break;
-							}else{
-								pnum1=0;
-								pnum=0;
-								continue;
-							}
-						}
-							if(pnum1==pnum){
-								e.setPnum(pnum+1);
-								lists.add(e);
-							}
-						}else{
-						e.setPnum(pnum+1);
-						lists.add(e);
-					}
-				}
 		JRadPagedQueryResult<JxglForm> pagedResult = new JRadPagedQueryResult<JxglForm>(filter, result);
 		mv.addObject(PAGED_RESULT, pagedResult);
 		mv.addObject("forms", forms);
-		mv.addObject("lists", lists);
 		return mv;
 	}
-
+	
+	/**
+	 *察看绩效排名
+	 * @param request
+	 * @return
+	 */
+	/*@ResponseBody
+	@RequestMapping(value = "xspm.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView browse(@ModelAttribute MaintenanceFilter filter,HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/customeradd/xspm", request);
+		//当月绩效排名功能  
+		int  ffjew = 0;
+		int pnum=0;
+		//用于循环结束判断
+		int pnum1=0;
+		//lists是档次  lists1是人数
+		List<JxglpmForm>lists=new ArrayList<JxglpmForm>();
+		
+		List<JxglForm>ffje=service.findalljxgllists(filter);
+		for (int i=0;i<ffje.size();i++) {
+			JxglpmForm e=new JxglpmForm();
+			e.setId(Integer.toString(i));
+			String money=ffje.get(i).getFfje();
+			String displayname=ffje.get(i).getDisplayname();
+			if(ffje.get(i).getFfje()==null){ //如果是后台等人员则处理空为零
+				money="0";
+			}
+			ffjew=Integer.parseInt(money.trim());
+		    List<String>name=new ArrayList<String>(); //因为一个档次可能有很多人 故用list存储名字
+		    name.add(displayname);
+		    e.setDisplayname(name);
+			e.setFpm(ffjew);
+			e.setLpm(ffjew+10000);
+			//取模用来区分是什么档次      80 
+			int results=ffjew/10000;
+			e.setResult(results);
+			if(i!=0){
+				for(int ii=0;ii<lists.size();ii++){
+					if(lists.get(ii).getResult()==results){ //验证这个档次是否已经存在
+						pnum=lists.get(ii).getPnum();
+						e.setId(lists.get(ii).getId());
+						e.setPnum(pnum+1);
+						lists.remove(ii);
+						lists.add(e);
+						System.out.println(lists);
+						System.out.println(e);
+						pnum1=pnum+1;
+						break;
+					}else{
+						pnum1=0;
+						pnum=0;
+						continue;
+					}
+				}
+					if(pnum1==pnum){
+						e.setPnum(pnum+1);
+						lists.add(e);
+					}
+				}else{
+				e.setPnum(pnum+1);
+				lists.add(e);
+			}
+		}
+		mv.addObject("lists", lists);
+		return mv;
+		
+	}*/
+	
+	
+	
+	
+	/**
+	 *察看绩效排名
+	 * @param request
+	 * @return
+	 * 更换档次 206  208
+	 * 更换排名根据   195
+	 */
+	@ResponseBody
+	@RequestMapping(value = "xspm.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView browse(@ModelAttribute MaintenanceFilter filter,HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/customeradd/xspm", request);
+		service.deletexspm();
+		//当月绩效排名功能  
+		int  ffjew = 0;
+		int pnum=0;
+		//用于循环结束判断
+		int pnum1=0;
+		//lists是档次  lists1是人数
+		List<JxglpmForm>lists=new ArrayList<JxglpmForm>();
+		
+		List<JxglForm>ffje=service.findalljxgllist1(filter);
+		//List<JxglForm>ffje=service.findalljxgllists(filter);
+		for (int i=0;i<ffje.size();i++) {
+			JxglpmForm e=new JxglpmForm();
+			e.setId(Integer.toString(i));
+			String money=ffje.get(i).getFfje();
+			String displayname=ffje.get(i).getDisplayname();
+			if(ffje.get(i).getFfje()==null){ //如果是后台等人员则处理空为零
+				money="0";
+			}
+			ffjew=Integer.parseInt(money.trim());
+		    e.setDisplayname(displayname);
+			e.setFpm(ffjew);
+			e.setLpm(ffjew+10000);        
+			//取模用来区分是什么档次      80 
+			int results=ffjew/10000;
+			e.setResult(results);
+			if(i!=0){
+				for(int ii=0;ii<lists.size();ii++){
+					if(lists.get(ii).getResult()==results){ //验证这个档次是否已经存在
+						pnum=lists.get(ii).getPnum();
+						e.setId(lists.get(ii).getId());
+						 //当验证成功这个档次存在，名字将在list中得到更新此时要把已经转化成String类型转换回list类型
+						//然后再转换回String类型 存储到list中
+						
+						String linshiname=lists.get(ii).getDisplayname();
+						linshiname=StringUtils.strip(linshiname,"[]");
+						//因为一个档次可能有很多人 故用list存储名字
+						List<String>name=new ArrayList<String>();
+						name.add(linshiname);
+						name.add(e.getDisplayname()); //这里e.getdisplayname是在循环外面赋值的
+						e.setDisplayname(name.toString());
+						e.setPnum(pnum+1);
+						lists.remove(ii);
+						service.updatexspm(e);
+						lists.add(e);
+						pnum1=pnum+1;
+						break;
+					}else{
+						pnum1=0;
+						pnum=0;
+						continue;
+					}
+				}
+					if(pnum1==pnum){
+						e.setPnum(pnum+1);
+						service.insertxspm(e);
+						lists.add(e);
+					}
+				}else{
+				e.setPnum(pnum+1);
+				service.insertxspm(e);
+				lists.add(e);
+			}
+		}
+		List<JxglpmForm>findjxglpmform=service.findJxglpmformOrderbyResult();
+		mv.addObject("lists", findjxglpmform);
+		return mv;
+		
+	}
+	
 }

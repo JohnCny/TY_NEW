@@ -95,6 +95,8 @@
 		<result property="busimanager" column="busimanager" />
 		<result property="instcode" column="instcode" />
 		<result property="rowIndex" column="row_index" />
+		<result property="Shbj" column="Shbj" />
+		<result property="Shlx" column="Shlx" />
 	</resultMap>
 	
 	<resultMap id="YqhkdktjbbFormResultMap" type="com.cardpay.pccredit.report.model.YqhkdktjbbForm">
@@ -264,71 +266,35 @@
 					SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
-					<!-- select distinct tkmx.ywbh, b.CHINESE_NAME ,b.CARD_ID, prod.product_name as CPMC,tkmx.FFJE,tkmx.HTLL ,yehz.QXRQ, app.ACCOUNT_STATUS, sysuser.display_name as KHJL,department.NAME as BLJG 
-                        from TY_REPAY_TKMX  tkmx, 
-                        basic_customer_information  b,
-                        ty_customer_base           c,
-                        ty_repay_yehz yehz,
-                        sys_user sysuser,
-                        product_attribute prod,
-                        customer_application_info app,
-                        SYS_DEPT_USER deptuser,
-                        SYS_DEPARTMENT department
-                        WHERE 
-                        b.ty_customer_id = c.id and
-                        c.khnm = tkmx.khh  and
-                        yehz.JJH = tkmx.JJH and
-                        sysuser.id = b.user_id and
-                        app.product_id = prod.id and
-                        app.customer_id = b.id  and
-                        sysuser.id=deptuser.USER_ID and
-                        deptuser.DEPT_ID=department.id  -->
-             
-	      select   distinct tkmx.ywbh,base.khmc as CHINESE_NAME ,base.ZJHM as CARD_ID, protype.product_name as CPMC,tkmx.FFJE,tkmx.HTLL ,yehz.QXRQ,  sysuser.display_name as KHJL,DeptName.Name as BLJG,tkmx.jkrq
-	   from
-	                   
-	                   ( select distinct t.name,sysuser.id from sys_department t,sys_dept_user tt,sys_user sysuser
-	              where 
-	                    t.id=tt.dept_id and 
-	                    sysuser.id=tt.user_id)  DeptName,
-	                    ty_customer_rygl rygl,
-	                    ty_customer_base base,
-	                     ty_product_type protype,
-	                    ty_repay_tkmx tkmx,
-	                    ty_repay_lsz lsz,
-	                    SYS_USER sysuser  ,
-	                    ty_kdk_jh jh,
-	                    ty_repay_yehz yehz
-	                    WHERE 
-	                    base.khjl=rygl.dm 
-	                    and rygl.ddrq=sysuser.external_id
-	                    and base.khnm=tkmx.khh
-	                    and tkmx.JJH=yehz.JJH
-	                    and protype.product_code=tkmx.cpmc
-	                    and lsz.jjh=tkmx.jjh
-	                    and jh.ywbh=tkmx.ywbh||'HT'
-	                    and DeptName.id=sysuser.id
-                    
+                select distinct tym.ywbh,tym.khmc as CHINESE_NAME ,
+					tym.ZJHM as CARD_ID, pro.product_name as CPMC,tym.Reqlmt as FFJE,tkmx.sfbl as JZLL ,
+					tym.Loandate as JKRQ, tym.display_name as KHJL,tym.ywjg as BLJG 
+					from ty_mibusidata tym , ty_repay_tkmx tkmx, ty_product_type pro , sys_department t,sys_dept_user tt
+					where 1=1 and 
+					tym.ywbh=tkmx.ywbh and 
+					tkmx.cpmc=pro.product_code AND 
+					t.id=tt.dept_id and 
+					tym.userid=tt.user_id
                <if test="certiCode != null and certiCode != '' ">
-						 and base.zjhm=#{certiCode}
+						 and tym.zjhm=#{certiCode}
 					</if>
 								 
 					<if test="customerName != null and customerName != '' ">
-					    and base.khmc=#{customerName}
+					    and tym.khmc=#{customerName}
 					</if>
 					
 					<if test="organName != null and organName != '' ">
-					    AND DeptName.Name=#{organName}
+					   and t.name=#{organName}
 					</if>
 					
 					<if test="custManagerName != null and custManagerName != '' ">
-						AND sysuser.display_name=#{custManagerName}
+						AND tym.display_name=#{custManagerName}
 					</if>
 					
 					<if test="status != null and status != '' ">
 						AND app.ACCOUNT_STATUS=#{status}
 					</if> 
-					 order by tkmx.jkrq desc
+					 order by tym.Loandate  desc
 		 <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -340,98 +306,72 @@
 	<select id="getYffdktjbbFormlList" resultMap="YffdktjbbFormResultMap"
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
 					<!--  app.ACCOUNT_STATUS  as state,prod.product_name as prodName -->
- 		 			select distinct  base.khmc as cname ,base.zjhm as cardtype,protype.product_name as prodName,tkmx.FFJE as money,tkmx.HTLL as baserate,yehz.QXRQ as interest, sysuser.display_name as busimanager,DeptName.Name  as name 
-		                   from
-	                   
-	                   ( select distinct t.name,sysuser.id from sys_department t,sys_dept_user tt,sys_user sysuser
-	              where 
-	                    t.id=tt.dept_id and 
-	                    sysuser.id=tt.user_id)  DeptName,
-	                    ty_customer_rygl rygl,
-	                    ty_customer_base base,
-	                     ty_product_type protype,
-	                    ty_repay_tkmx tkmx,
-	                    ty_repay_lsz lsz,
-	                    SYS_USER sysuser  ,
-	                    ty_kdk_jh jh,
-	                    ty_repay_yehz yehz
-	                    WHERE 
-	                    base.khjl=rygl.dm 
-	                    and rygl.ddrq=sysuser.external_id
-	                    and base.khnm=tkmx.khh
-	                    and tkmx.JJH=yehz.JJH
-	                    and protype.product_code=tkmx.cpmc
-	                    and lsz.jjh=tkmx.jjh
-	                    and jh.ywbh=tkmx.ywbh||'HT'
-	                    and DeptName.id=sysuser.id
-                    
+ 		 			select distinct  tkmx.ywbh,tym.khmc as cname ,tym.ZJHM as cardtype,pro.product_name as prodName,tym.Reqlmt as money,tkmx.sfbl as baserate,tym.Loandate as interest, tym.display_name as busimanager,tym.ywjg  as name 
+                       from   ty_mibusidata tym  ,
+					     ty_repay_tkmx tkmx,
+					     ty_product_type pro, sys_department t,sys_dept_user tt
+						where 1=1 and 
+						tym.ywbh=tkmx.ywbh and 
+						tkmx.cpmc=pro.product_code AND 
+						t.id=tt.dept_id and 
+						tym.userid=tt.user_id
                <if test="certiCode != null and certiCode != '' ">
-						 and base.zjhm=#{certiCode}
+						 and tym.zjhm=#{certiCode}
 					</if>
 								 
 					<if test="customerName != null and customerName != '' ">
-					    and base.khmc=#{customerName}
+					    and tym.khmc=#{customerName}
 					</if>
 					
 					<if test="organName != null and organName != '' ">
-					    AND DeptName.Name=#{organName}
+					       and t.name=#{organName}
 					</if>
 					
 					<if test="custManagerName != null and custManagerName != '' ">
-						AND sysuser.display_name=#{custManagerName}
+						AND tym.display_name=#{custManagerName}
 					</if>
 					
 					<if test="status != null and status != '' ">
 						AND app.ACCOUNT_STATUS=#{status}
 					</if> 
+					 order by tym.Loandate  desc
  	</select>
 	
 	<select id="findYffdktjbbFormCountList" resultType="int" 
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
-		  select  count(distinct tkmx.ywbh)
+		  select  count(ywbh)
                  from
 	                   
-	                   ( select distinct t.name,sysuser.id from sys_department t,sys_dept_user tt,sys_user sysuser
-	              where 
-	                    t.id=tt.dept_id and 
-	                    sysuser.id=tt.user_id)  DeptName,
-	                    ty_customer_rygl rygl,
-	                    ty_customer_base base,
-	                     ty_product_type protype,
-	                    ty_repay_tkmx tkmx,
-	                    ty_repay_lsz lsz,
-	                    SYS_USER sysuser  ,
-	                    ty_kdk_jh jh,
-	                    ty_repay_yehz yehz
-	                    WHERE 
-	                    base.khjl=rygl.dm 
-	                    and rygl.ddrq=sysuser.external_id
-	                    and base.khnm=tkmx.khh
-	                    and tkmx.JJH=yehz.JJH
-	                    and protype.product_code=tkmx.cpmc
-	                    and lsz.jjh=tkmx.jjh
-	                    and jh.ywbh=tkmx.ywbh||'HT'
-	                    and DeptName.id=sysuser.id
-                    
+	                   ( 
+					 select   distinct tym.ywbh,tym.khmc as CHINESE_NAME ,tym.ZJHM as CARD_ID, pro.product_name as CPMC,tym.Reqlmt as FFJE,tym.JZLL ,tym.Loandate as JKRQ,  tym.display_name as KHJL,tym.ywjg as BLJG
+					     from ty_mibusidata tym  ,
+					     ty_repay_tkmx tkmx,
+					     ty_product_type pro, sys_department t,sys_dept_user tt
+						where 1=1 and 
+						tym.ywbh=tkmx.ywbh and 
+						tkmx.cpmc=pro.product_code AND 
+						t.id=tt.dept_id and 
+						tym.userid=tt.user_id
                <if test="certiCode != null and certiCode != '' ">
-						 and base.zjhm=#{certiCode}
+						 and tym.zjhm=#{certiCode}
 					</if>
 								 
 					<if test="customerName != null and customerName != '' ">
-					    and base.khmc=#{customerName}
+					    and tym.khmc=#{customerName}
 					</if>
 					
 					<if test="organName != null and organName != '' ">
-					    AND DeptName.Name=#{organName}
+					    AND t.name=#{organName}
 					</if>
 					
 					<if test="custManagerName != null and custManagerName != '' ">
-						AND sysuser.display_name=#{custManagerName}
+						AND tym.display_name=#{custManagerName}
 					</if>
 					
 					<if test="status != null and status != '' ">
 						AND app.ACCOUNT_STATUS=#{status}
 					</if> 
+					 order by tym.Loandate  desc)
 	</select>
 	
 	<!-- 被拒绝贷款统计 -->
@@ -447,7 +387,7 @@
                   prod.product_name as CPMC,
                   to_char(app.created_time,'yyyy-MM-dd') as JKRQ,
                   app.apply_quota as APPLY_QUOTA ,
-                  to_char(pro.audit_time,'yyyy-MM-dd') as AUDIT_TIME,
+                  to_char(app.Modified_Time,'yyyy-MM-dd') as AUDIT_TIME,
                   pro.refusal_reason as REFUSAL_REASON,
                   sysuser.display_name as DISPLAY_NAME,
                   (select t.name from
@@ -551,192 +491,116 @@
 					SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
-				<!-- 	
-               select distinct b.CHINESE_NAME,b.CARD_ID,protype.product_name as CPMC,yehz.qxrq as JZRQ,tkmx.DQRQ,tkmx.ffje as DF,tkmx.HTLL,jh.QS,sysuser.display_name as KHJL,
-           (select t.name from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt
-                  where tt.user_id = sysuser.id))as YWJG,
-                   shlx.df as YHLX,shbj.df as JE
-                  from
-                    ( select b.card_id  as cardid,
-                  max(to_number(jh.qs)) as qs
-                  from BASIC_CUSTOMER_INFORMATION  b,
-                    TY_REPAY_TKMX tkmx ,
-                    TY_REPAY_YEHZ yehz,
-                    ty_product_type protype,
-                    ty_customer_base c,
-                    TY_KDK_JH  jh, 
-                    sys_user sysuser
-                  where  b.ty_customer_id = c.id and
-                       c.KHNM = tkmx.khh  and
-                        protype.product_code=tkmx.cpmc and
-                       yehz.JJH = tkmx.JJH  and  
-                       substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh and
-                      sysuser.id = b.user_id
-                      group by  b.card_id )  maxqs,
-              (select sum(lsz.df) as df ,
-                      tkmx.ywbh ,
-                      b.card_id
-              from
-               BASIC_CUSTOMER_INFORMATION b,
-              TY_REPAY_TKMX tkmx ,
-              TY_REPAY_YEHZ yehz,
-              ty_repay_lsz lsz,
-              ty_customer_base c,
-             ty_product_type protype,
-              sys_user sysuser
-              where b.ty_customer_id = c.id and
-              c.KHNM = tkmx.khh and
-              yehz.JJH = tkmx.JJH and
-              protype.product_code=tkmx.cpmc and
-              sysuser.id=b.user_id and
-              lsz.jjh=tkmx.jjh 
-              and lsz.zy='批量自动扣利息'
-              group by   tkmx.ywbh , b.card_id ) shlx,   
-              
-              (select sum(lsz.df) as df ,
-                      tkmx.ywbh ,
-                      b.card_id
-              from
-              BASIC_CUSTOMER_INFORMATION b,
-              TY_REPAY_TKMX tkmx ,
-              TY_REPAY_YEHZ yehz,
-              ty_repay_lsz lsz,
-              ty_customer_base c,
-             ty_product_type protype,
-              sys_user sysuser
-              where b.ty_customer_id = c.id and
-              c.KHNM = tkmx.khh and
-              yehz.JJH = tkmx.JJH and
-              protype.product_code=tkmx.cpmc and
-              sysuser.id=b.user_id and
-              lsz.jjh=tkmx.jjh 
-              and (lsz.zy='批量自动扣本金'
-             or lsz.zy='贷款柜台提前还款')
-              group by   tkmx.ywbh , b.card_id) shbj,
-                   BASIC_CUSTOMER_INFORMATION  b,
-                    TY_REPAY_TKMX tkmx ,
-                    TY_REPAY_YEHZ yehz,
-                    ty_product_type protype,
-                    ty_customer_base c,
-                    TY_KDK_JH  jh, 
-                    sys_user sysuser
-                  where
-                    b.ty_customer_id = c.id and
-                       c.KHNM = tkmx.khh  and
-                        protype.product_code=tkmx.cpmc and
-                       yehz.JJH = tkmx.JJH  and  
-                       substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh and
-                      sysuser.id = b.user_id   and
-                        maxqs.cardid=b.card_id and
-                      maxqs.qs=jh.qs and
-                       shlx.ywbh=tkmx.ywbh and
-                       shlx.card_id=b.card_id and
-                       shbj.ywbh=tkmx.ywbh and
-                       shbj.card_id=b.card_id and 
-                      tkmx.jqrq is not null and
-                      tkmx.jqrq <![CDATA[ <=  ]]>tkmx.Dqrq -->
-                       select distinct c.khmc as CHINESE_NAME,c.zjhm as CARD_ID,protype.product_name as CPMC,yehz.qxrq as JZRQ,tkmx.DQRQ,tkmx.ffje as DF,tkmx.HTLL,jh.QS,sysuser.display_name as KHJL,
-           (select t.name from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt
-                  where tt.user_id = sysuser.id))as YWJG,
-                   shlx.df as YHLX,shbj.df as JE
-                  from
-                    ( select c.zjhm  as cardid,
-                  max(to_number(jh.qs)) as qs
-                  from ty_customer_rygl rygl,
-                    TY_REPAY_TKMX tkmx ,
-                    TY_REPAY_YEHZ yehz,
-                    ty_product_type protype,
-                    ty_customer_base c,
-                    TY_KDK_JH  jh, 
-                    sys_user sysuser
-                  where   c.khjl=rygl.dm  and
-                       rygl.ddrq=sysuser.external_id and
-                       c.KHNM = tkmx.khh  and
-                        protype.product_code=tkmx.cpmc and
-                       yehz.JJH = tkmx.JJH  and  
-                      jh.ywbh=tkmx.ywbh||'HT' 
-                      group by  c.zjhm )  maxqs,
-              (select sum(lsz.df) as df ,
-                      tkmx.ywbh ,
-                      c.zjhm
-              from
-              ty_customer_rygl rygl,
-              TY_REPAY_TKMX tkmx ,
-              TY_REPAY_YEHZ yehz,
-              ty_repay_lsz lsz,
-              ty_customer_base c,
-             ty_product_type protype,
-              sys_user sysuser
-              where c.khjl=rygl.dm  and
-              rygl.ddrq=sysuser.external_id and
-              c.KHNM = tkmx.khh and
-              yehz.JJH = tkmx.JJH and
-              protype.product_code=tkmx.cpmc and
-              lsz.jjh=tkmx.jjh 
-              and lsz.zy='批量自动扣利息'
-              
-              group by   tkmx.ywbh , c.zjhm ) shlx,   
-              
-              (select sum(lsz.df) as df ,
-                      tkmx.ywbh ,
-                      c.zjhm
-              from
-              ty_customer_rygl rygl,
-              TY_REPAY_TKMX tkmx ,
-              TY_REPAY_YEHZ yehz,
-              ty_repay_lsz lsz,
-              ty_customer_base c,
-             ty_product_type protype,
-              sys_user sysuser
-              where c.khjl=rygl.dm  and
-              rygl.ddrq=sysuser.external_id and
-              c.KHNM = tkmx.khh and
-              yehz.JJH = tkmx.JJH and
-              protype.product_code=tkmx.cpmc and
-              lsz.jjh=tkmx.jjh 
-              
-              and (lsz.zy='批量自动扣本金'
-             or lsz.zy='贷款柜台提前还款')
-              group by   tkmx.ywbh , c.zjhm) shbj,
-                   ty_customer_rygl rygl,
-                    TY_REPAY_TKMX tkmx ,
-                    TY_REPAY_YEHZ yehz,
-                    ty_product_type protype,
-                    ty_customer_base c,
-                    TY_KDK_JH  jh, 
-                    sys_user sysuser
-                  where
-                    c.khjl=rygl.dm  and
-                    rygl.ddrq=sysuser.external_id and
-                       c.KHNM = tkmx.khh  and
-                        protype.product_code=tkmx.cpmc and
-                       yehz.JJH = tkmx.JJH  and  
-                       jh.ywbh=tkmx.ywbh||'HT' and
-                        maxqs.cardid=c.zjhm and
-                      maxqs.qs=jh.qs and
-                       shlx.ywbh=tkmx.ywbh and
-                       shlx.zjhm=c.zjhm and
-                       shbj.ywbh=tkmx.ywbh and
-                       shbj.zjhm=c.zjhm and
-                      tkmx.jqrq is not null and
-                    tkmx.jqrq <![CDATA[ <=  ]]>tkmx.Dqrq 
+					select distinct tkmx.ywbh, c.khmc as CHINESE_NAME,c.zjhm as
+		          CARD_ID,protype.product_name as CPMC,yehz.qxrq as
+		          JZRQ,tkmx.DQRQ,tkmx.ffje as DF,tkmx.SFBL as JZLL,jh.QS,sysuser.display_name as
+		          KHJL,
+		          (select t.name from sys_department t where t.id in (select tt.dept_id from
+		          sys_dept_user tt
+		          where tt.user_id = sysuser.id))as YWJG,
+		          shlx.df as YHLX,shbj.df as JE
+		          from
+		          ( select c.zjhm as cardid,
+		          max(to_number(jh.qs)) as qs,
+		          max(to_number(lsz.jzrq)) as maxjzrq
+		          from basic_customer_information basic,
+		          TY_REPAY_TKMX tkmx ,
+		          TY_REPAY_YEHZ yehz,
+		          ty_product_type protype,
+		          ty_customer_base c,
+		          TY_KDK_JH jh,
+		          ty_repay_lsz lsz,
+		          sys_user sysuser
+		          where c.id=basic.ty_customer_id and
+		          basic.user_id=sysuser.id and
+		          c.KHNM = tkmx.khh and
+		          protype.product_code=tkmx.cpmc and
+		          tkmx.jjh=lsz.jjh and
+		          yehz.JJH = tkmx.JJH and
+		          jh.ywbh=tkmx.ywbh||'HT'
+		          group by c.zjhm ) maxqs,
+		          (select sum(lsz.df) as df ,
+		          tkmx.ywbh ,
+		          c.zjhm
+		          from
+		          basic_customer_information basic,
+		          TY_REPAY_TKMX tkmx ,
+		          TY_REPAY_YEHZ yehz,
+		          ty_repay_lsz lsz,
+		          ty_customer_base c,
+		          ty_product_type protype,
+		          sys_user sysuser
+		          where basic.ty_customer_id =c.id and
+		          basic.user_id=sysuser.id and
+		          c.KHNM = tkmx.khh and
+		          yehz.JJH = tkmx.JJH and
+		          protype.product_code=tkmx.cpmc and
+		          lsz.jjh=tkmx.jjh
+		          and lsz.zy='批量自动扣利息'
+		        
+		          group by tkmx.ywbh , c.zjhm ) shlx,
+		        
+		          (select sum(lsz.df) as df ,
+		          tkmx.ywbh ,
+		          c.zjhm
+		          from
+		          basic_customer_information basic,
+		          TY_REPAY_TKMX tkmx ,
+		          TY_REPAY_YEHZ yehz,
+		          ty_repay_lsz lsz,
+		          ty_customer_base c,
+		          ty_product_type protype,
+		          sys_user sysuser
+		          where c.id=basic.ty_customer_id and
+		          basic.user_id=sysuser.id and
+		          c.KHNM = tkmx.khh and
+		          yehz.JJH = tkmx.JJH and
+		          protype.product_code=tkmx.cpmc and
+		          lsz.jjh=tkmx.jjh
+		        
+		          and (lsz.zy='批量自动扣本金'
+		          or lsz.zy='贷款柜台提前还款')
+		          group by tkmx.ywbh , c.zjhm) shbj,
+		          basic_customer_information basic,
+		          TY_REPAY_TKMX tkmx ,
+		          TY_REPAY_YEHZ yehz,
+		          ty_product_type protype,
+		          ty_customer_base c,
+		          TY_KDK_JH jh,
+		          sys_user sysuser
+		          where
+		          c.id=basic.ty_customer_id and
+		          basic.user_id=sysuser.id and
+		          c.KHNM = tkmx.khh and
+		          protype.product_code=tkmx.cpmc and
+		          yehz.JJH = tkmx.JJH and
+		          jh.ywbh=tkmx.ywbh||'HT' and
+		          maxqs.cardid=c.zjhm and
+		          maxqs.qs=jh.qs and
+		          shlx.ywbh=tkmx.ywbh and
+		          shlx.zjhm=c.zjhm and
+		          shbj.ywbh=tkmx.ywbh and
+		          shbj.zjhm=c.zjhm and
+					maxqs.maxjzrq  <![CDATA[ <=  ]]>tkmx.Dqrq
 					<if test="certiCode != null and certiCode != '' ">
-			AND c.zjhm=#{certiCode}
-		</if>
-					 
-		<if test="customerName != null and customerName != '' ">
-		    AND  c.khmc=#{customerName}
-		</if>
-		
-		<if test="organName != null and organName != '' ">
-		 	AND (select t.name from
-                  sys_department t where t.id in (select tt.dept_id from sys_dept_user tt
-                  where tt.user_id = sysuser.id))=#{organName}
-		</if>
-		
-		<if test="custManagerName != null and custManagerName != '' ">
-			AND sysuser.display_name =#{custManagerName}
-		</if>
+						AND c.zjhm=#{certiCode}
+					</if>
+				
+					<if test="customerName != null and customerName != '' ">
+						AND c.khmc=#{customerName}
+					</if>
+				
+					<if test="organName != null and organName != '' ">
+						AND (select t.name from
+						sys_department t where t.id in
+						(select tt.dept_id from sys_dept_user tt
+						where tt.user_id =
+						sysuser.id))=#{organName}
+					</if>
+				
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND sysuser.display_name =#{custManagerName}
+					</if>
 		 <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -746,89 +610,99 @@
 	
 	<select id="findDqzzdktjbbFormCountList" resultType="int" 
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
-		   select count(distinct tkmx.ywbh)
+		   select count(*)
       from
-                    ( select c.zjhm  as cardid,
-                  max(to_number(jh.qs)) as qs
-                  from ty_customer_rygl rygl,
-                    TY_REPAY_TKMX tkmx ,
-                    TY_REPAY_YEHZ yehz,
-                    ty_product_type protype,
-                    ty_customer_base c,
-                    TY_KDK_JH  jh, 
-                    sys_user sysuser
-                  where   c.khjl=rygl.dm  and
-                       rygl.ddrq=sysuser.external_id and
-                       c.KHNM = tkmx.khh  and
-                        protype.product_code=tkmx.cpmc and
-                       yehz.JJH = tkmx.JJH  and  
-                      jh.ywbh=tkmx.ywbh||'HT' 
-                      group by  c.zjhm )  maxqs,
-              (select sum(lsz.df) as df ,
-                      tkmx.ywbh ,
-                      c.zjhm
-              from
-              ty_customer_rygl rygl,
-              TY_REPAY_TKMX tkmx ,
-              TY_REPAY_YEHZ yehz,
-              ty_repay_lsz lsz,
-              ty_customer_base c,
-             ty_product_type protype,
-              sys_user sysuser
-              where c.khjl=rygl.dm  and
-              rygl.ddrq=sysuser.external_id and
-              c.KHNM = tkmx.khh and
-              yehz.JJH = tkmx.JJH and
-              protype.product_code=tkmx.cpmc and
-              lsz.jjh=tkmx.jjh 
-              and lsz.zy='批量自动扣利息'
-              
-              group by   tkmx.ywbh , c.zjhm ) shlx,   
-              
-              (select sum(lsz.df) as df ,
-                      tkmx.ywbh ,
-                      c.zjhm
-              from
-              ty_customer_rygl rygl,
-              TY_REPAY_TKMX tkmx ,
-              TY_REPAY_YEHZ yehz,
-              ty_repay_lsz lsz,
-              ty_customer_base c,
-             ty_product_type protype,
-              sys_user sysuser
-              where c.khjl=rygl.dm  and
-              rygl.ddrq=sysuser.external_id and
-              c.KHNM = tkmx.khh and
-              yehz.JJH = tkmx.JJH and
-              protype.product_code=tkmx.cpmc and
-              lsz.jjh=tkmx.jjh 
-              
-              and (lsz.zy='批量自动扣本金'
-             or lsz.zy='贷款柜台提前还款')
-              group by   tkmx.ywbh , c.zjhm) shbj,
-                   ty_customer_rygl rygl,
-                    TY_REPAY_TKMX tkmx ,
-                    TY_REPAY_YEHZ yehz,
-                    ty_product_type protype,
-                    ty_customer_base c,
-                    TY_KDK_JH  jh, 
-                    sys_user sysuser
-                  where
-                    c.khjl=rygl.dm  and
-                    rygl.ddrq=sysuser.external_id and
-                       c.KHNM = tkmx.khh  and
-                        protype.product_code=tkmx.cpmc and
-                       yehz.JJH = tkmx.JJH  and  
-                      -- substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh and
-                       jh.ywbh=tkmx.ywbh||'HT' and
-                        maxqs.cardid=c.zjhm and
-                      maxqs.qs=jh.qs and
-                       shlx.ywbh=tkmx.ywbh and
-                       shlx.zjhm=c.zjhm and
-                       shbj.ywbh=tkmx.ywbh and
-                       shbj.zjhm=c.zjhm and
-                      tkmx.jqrq is not null and
-                    tkmx.jqrq <![CDATA[ <=  ]]>tkmx.Dqrq 
+                    ( select distinct tkmx.ywbh, c.khmc as CHINESE_NAME,c.zjhm as
+		          CARD_ID,protype.product_name as CPMC,yehz.qxrq as
+		          JZRQ,tkmx.DQRQ,tkmx.ffje as DF,tkmx.JZLL,jh.QS,sysuser.display_name as
+		          KHJL,
+		          (select t.name from sys_department t where t.id in (select tt.dept_id from
+		          sys_dept_user tt
+		          where tt.user_id = sysuser.id))as YWJG,
+		          shlx.df as YHLX,shbj.df as JE
+		          from
+		          ( select c.zjhm as cardid,
+		          max(to_number(jh.qs)) as qs,
+		          max(to_number(lsz.jzrq)) as maxjzrq
+		          from basic_customer_information basic,
+		          TY_REPAY_TKMX tkmx ,
+		          TY_REPAY_YEHZ yehz,
+		          ty_product_type protype,
+		          ty_customer_base c,
+		          TY_KDK_JH jh,
+		          ty_repay_lsz lsz,
+		          sys_user sysuser
+		          where c.id=basic.ty_customer_id and
+		          basic.user_id=sysuser.id and
+		          c.KHNM = tkmx.khh and
+		          protype.product_code=tkmx.cpmc and
+		          tkmx.jjh=lsz.jjh and
+		          yehz.JJH = tkmx.JJH and
+		          jh.ywbh=tkmx.ywbh||'HT'
+		          group by c.zjhm ) maxqs,
+		          (select sum(lsz.df) as df ,
+		          tkmx.ywbh ,
+		          c.zjhm
+		          from
+		          basic_customer_information basic,
+		          TY_REPAY_TKMX tkmx ,
+		          TY_REPAY_YEHZ yehz,
+		          ty_repay_lsz lsz,
+		          ty_customer_base c,
+		          ty_product_type protype,
+		          sys_user sysuser
+		          where basic.ty_customer_id =c.id and
+		          basic.user_id=sysuser.id and
+		          c.KHNM = tkmx.khh and
+		          yehz.JJH = tkmx.JJH and
+		          protype.product_code=tkmx.cpmc and
+		          lsz.jjh=tkmx.jjh
+		          and lsz.zy='批量自动扣利息'
+		        
+		          group by tkmx.ywbh , c.zjhm ) shlx,
+		        
+		          (select sum(lsz.df) as df ,
+		          tkmx.ywbh ,
+		          c.zjhm
+		          from
+		          basic_customer_information basic,
+		          TY_REPAY_TKMX tkmx ,
+		          TY_REPAY_YEHZ yehz,
+		          ty_repay_lsz lsz,
+		          ty_customer_base c,
+		          ty_product_type protype,
+		          sys_user sysuser
+		          where c.id=basic.ty_customer_id and
+		          basic.user_id=sysuser.id and
+		          c.KHNM = tkmx.khh and
+		          yehz.JJH = tkmx.JJH and
+		          protype.product_code=tkmx.cpmc and
+		          lsz.jjh=tkmx.jjh
+		        
+		          and (lsz.zy='批量自动扣本金'
+		          or lsz.zy='贷款柜台提前还款')
+		          group by tkmx.ywbh , c.zjhm) shbj,
+		          basic_customer_information basic,
+		          TY_REPAY_TKMX tkmx ,
+		          TY_REPAY_YEHZ yehz,
+		          ty_product_type protype,
+		          ty_customer_base c,
+		          TY_KDK_JH jh,
+		          sys_user sysuser
+		          where
+		          c.id=basic.ty_customer_id and
+		          basic.user_id=sysuser.id and
+		          c.KHNM = tkmx.khh and
+		          protype.product_code=tkmx.cpmc and
+		          yehz.JJH = tkmx.JJH and
+		          jh.ywbh=tkmx.ywbh||'HT' and
+		          maxqs.cardid=c.zjhm and
+		          maxqs.qs=jh.qs and
+		          shlx.ywbh=tkmx.ywbh and
+		          shlx.zjhm=c.zjhm and
+		          shbj.ywbh=tkmx.ywbh and
+		          shbj.zjhm=c.zjhm and
+					maxqs.maxjzrq  <![CDATA[ <=  ]]>tkmx.Dqrq
 					<if test="certiCode != null and certiCode != '' ">
 			AND c.zjhm=#{certiCode}
 		</if>
@@ -845,16 +719,16 @@
 		
 		<if test="custManagerName != null and custManagerName != '' ">
 			AND sysuser.display_name =#{custManagerName}
-		</if>
+		</if>)
 	</select>
 	
 	
 	<select id="getDqzzdktjbbFormList" resultMap="DqzzdktjbbFormResultMap" 
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
-					 select distinct c.khmc as cname,c.zjhm as cardtype,tkmx.CPMC as prodName,yehz.qxrq as loandate,tkmx.DQRQ as enddate,tkmx.ffje as money,tkmx.HTLL as baserate,jh.QS as qs, jh.JE as bjzh,jh.YHLX as lxzh,sysuser.display_name as busimanager,
+				<!--	 select distinct c.khmc as cname,c.zjhm as cardtype,protype.product_name as prodName,yehz.qxrq as loandate,tkmx.DQRQ as enddate,tkmx.ffje as money,tkmx.HTLL as baserate,jh.QS as qs, jh.JE as bjzh,jh.YHLX as lxzh,sysuser.display_name as busimanager,
 					   (select t.name from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt
                   where tt.user_id = sysuser.id)) as name
-                from
+                 from
                     ( select c.zjhm  as cardid,
                   max(to_number(jh.qs)) as qs
                   from ty_customer_rygl rygl,
@@ -926,7 +800,6 @@
                        c.KHNM = tkmx.khh  and
                         protype.product_code=tkmx.cpmc and
                        yehz.JJH = tkmx.JJH  and  
-                      -- substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh and
                        jh.ywbh=tkmx.ywbh||'HT' and
                         maxqs.cardid=c.zjhm and
                       maxqs.qs=jh.qs and
@@ -935,7 +808,93 @@
                        shbj.ywbh=tkmx.ywbh and
                        shbj.zjhm=c.zjhm and
                       tkmx.jqrq is not null and
-                    tkmx.jqrq <![CDATA[ <=  ]]>tkmx.Dqrq 
+                    tkmx.jqrq <![CDATA[ <=  ]]>tkmx.Dqrq  -->
+                   select distinct c.khmc as cname,c.zjhm as cardtype,protype.product_name as prodName,yehz.qxrq as loandate,tkmx.DQRQ as enddate,tkmx.ffje as money,tkmx.SFBL as baserate,jh.QS as qs, jh.JE as bjzh,jh.YHLX as lxzh,sysuser.display_name as busimanager,
+             (select t.name from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt
+                  where tt.user_id = sysuser.id)) as name
+                from
+              ( select c.zjhm as cardid,
+              max(to_number(jh.qs)) as qs,
+              max(to_number(lsz.jzrq)) as maxjzrq
+              from basic_customer_information basic,
+              TY_REPAY_TKMX tkmx ,
+              TY_REPAY_YEHZ yehz,
+              ty_product_type protype,
+              ty_customer_base c,
+              TY_KDK_JH jh,
+              ty_repay_lsz lsz,
+              sys_user sysuser
+              where c.id=basic.ty_customer_id and
+              basic.user_id=sysuser.id and
+              c.KHNM = tkmx.khh and
+              protype.product_code=tkmx.cpmc and
+              tkmx.jjh=lsz.jjh and
+              yehz.JJH = tkmx.JJH and
+              jh.ywbh=tkmx.ywbh||'HT'
+              group by c.zjhm ) maxqs,
+              (select sum(lsz.df) as df ,
+              tkmx.ywbh ,
+              c.zjhm
+              from
+              basic_customer_information basic,
+              TY_REPAY_TKMX tkmx ,
+              TY_REPAY_YEHZ yehz,
+              ty_repay_lsz lsz,
+              ty_customer_base c,
+              ty_product_type protype,
+              sys_user sysuser
+              where basic.ty_customer_id =c.id and
+              basic.user_id=sysuser.id and
+              c.KHNM = tkmx.khh and
+              yehz.JJH = tkmx.JJH and
+              protype.product_code=tkmx.cpmc and
+              lsz.jjh=tkmx.jjh
+              and lsz.zy='批量自动扣利息'
+            
+              group by tkmx.ywbh , c.zjhm ) shlx,
+            
+              (select sum(lsz.df) as df ,
+              tkmx.ywbh ,
+              c.zjhm
+              from
+              basic_customer_information basic,
+              TY_REPAY_TKMX tkmx ,
+              TY_REPAY_YEHZ yehz,
+              ty_repay_lsz lsz,
+              ty_customer_base c,
+              ty_product_type protype,
+              sys_user sysuser
+              where c.id=basic.ty_customer_id and
+              basic.user_id=sysuser.id and
+              c.KHNM = tkmx.khh and
+              yehz.JJH = tkmx.JJH and
+              protype.product_code=tkmx.cpmc and
+              lsz.jjh=tkmx.jjh
+            
+              and (lsz.zy='批量自动扣本金'
+              or lsz.zy='贷款柜台提前还款')
+              group by tkmx.ywbh , c.zjhm) shbj,
+              basic_customer_information basic,
+              TY_REPAY_TKMX tkmx ,
+              TY_REPAY_YEHZ yehz,
+              ty_product_type protype,
+              ty_customer_base c,
+              TY_KDK_JH jh,
+              sys_user sysuser
+              where
+              c.id=basic.ty_customer_id and
+              basic.user_id=sysuser.id and
+              c.KHNM = tkmx.khh and
+              protype.product_code=tkmx.cpmc and
+              yehz.JJH = tkmx.JJH and
+              jh.ywbh=tkmx.ywbh||'HT' and
+              maxqs.cardid=c.zjhm and
+              maxqs.qs=jh.qs and
+              shlx.ywbh=tkmx.ywbh and
+              shlx.zjhm=c.zjhm and
+              shbj.ywbh=tkmx.ywbh and
+              shbj.zjhm=c.zjhm and
+          maxqs.maxjzrq  <![CDATA[ <=  ]]>tkmx.Dqrq
 					<if test="certiCode != null and certiCode != '' ">
 			AND c.zjhm=#{certiCode}
 		</if>
@@ -981,7 +940,7 @@
               protype.product_code=tkmx.cpmc and
               sysuser.id=b.user_id  -->
               select distinct tkmx.ywbh, c.khmc as CHINESE_NAME,c.zjhm as CARD_ID,tkmx.jkrq, protype.product_name as CPMC,tkmx.ffje
-              as JF,tkmx.HTLL,yehz.qxrq as
+              as JF,tkmx.SFBL as JZLL,yehz.qxrq as
               jzrq,yehz.DKYE,sysuser.display_name as KHJL
               ,(select t.name from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt
               where tt.user_id = sysuser.id)) as YWJG,
@@ -991,15 +950,15 @@
                       tkmx.ywbh ,
                       c.zjhm
               from
-               ty_customer_rygl rygl,
+               basic_customer_information basic,
               TY_REPAY_TKMX tkmx ,
               TY_REPAY_YEHZ yehz,
               ty_repay_lsz lsz,
               ty_customer_base c,
              ty_product_type protype,
               sys_user sysuser
-              where  c.khjl=rygl.dm and
-              rygl.ddrq=sysuser.external_id and
+              where  c.id=basic.ty_customer_id and
+              basic.user_id=sysuser.id and
               c.KHNM = tkmx.khh and
               yehz.JJH = tkmx.JJH and
               protype.product_code=tkmx.cpmc and
@@ -1012,15 +971,15 @@
                       tkmx.ywbh ,
                       c.zjhm
               from
-               ty_customer_rygl rygl,
+              basic_customer_information basic,
               TY_REPAY_TKMX tkmx ,
               TY_REPAY_YEHZ yehz,
               ty_repay_lsz lsz,
               ty_customer_base c,
              ty_product_type protype,
               sys_user sysuser
-              where  c.khjl=rygl.dm and
-              rygl.ddrq=sysuser.external_id and
+              where  c.id =basic.ty_customer_id and
+              basic.user_id=sysuser.id and
               c.KHNM = tkmx.khh and
               yehz.JJH = tkmx.JJH and
               protype.product_code=tkmx.cpmc and
@@ -1029,7 +988,7 @@
             or lsz.zy='贷款柜台提前还款')
             
               group by   tkmx.ywbh , c.zjhm ,c.khmc) shbj,
-               ty_customer_rygl rygl,
+              basic_customer_information basic,
               TY_REPAY_TKMX tkmx ,
               TY_REPAY_YEHZ yehz,
               ty_repay_lsz lsz,
@@ -1037,8 +996,8 @@
              ty_product_type protype,
               sys_user sysuser,
               ty_kdk_jh jh
-              where  c.khjl=rygl.dm and
-              rygl.ddrq=sysuser.external_id and
+              where  c.id=basic.ty_customer_id and
+              basic.user_id=sysuser.id and
               c.KHNM = tkmx.khh and
               yehz.JJH = tkmx.JJH and
               protype.product_code=tkmx.cpmc and
@@ -1079,15 +1038,15 @@
                       tkmx.ywbh ,
                       c.zjhm
               from
-               ty_customer_rygl rygl,
+               basic_customer_information basic,
               TY_REPAY_TKMX tkmx ,
               TY_REPAY_YEHZ yehz,
               ty_repay_lsz lsz,
               ty_customer_base c,
              ty_product_type protype,
               sys_user sysuser
-              where  c.khjl=rygl.dm and
-              rygl.ddrq=sysuser.external_id and
+              where  c.id=basic.ty_customer_id and
+              basic.user_id=sysuser.id and
               c.KHNM = tkmx.khh and
               yehz.JJH = tkmx.JJH and
               protype.product_code=tkmx.cpmc and
@@ -1100,15 +1059,15 @@
                       tkmx.ywbh ,
                       c.zjhm
               from
-               ty_customer_rygl rygl,
+              basic_customer_information basic,
               TY_REPAY_TKMX tkmx ,
               TY_REPAY_YEHZ yehz,
               ty_repay_lsz lsz,
               ty_customer_base c,
              ty_product_type protype,
               sys_user sysuser
-              where  c.khjl=rygl.dm and
-              rygl.ddrq=sysuser.external_id and
+              where  c.id =basic.ty_customer_id and
+              basic.user_id=sysuser.id and
               c.KHNM = tkmx.khh and
               yehz.JJH = tkmx.JJH and
               protype.product_code=tkmx.cpmc and
@@ -1117,7 +1076,7 @@
             or lsz.zy='贷款柜台提前还款')
             
               group by   tkmx.ywbh , c.zjhm ,c.khmc) shbj,
-               ty_customer_rygl rygl,
+              basic_customer_information basic,
               TY_REPAY_TKMX tkmx ,
               TY_REPAY_YEHZ yehz,
               ty_repay_lsz lsz,
@@ -1125,8 +1084,8 @@
              ty_product_type protype,
               sys_user sysuser,
               ty_kdk_jh jh
-              where  c.khjl=rygl.dm and
-              rygl.ddrq=sysuser.external_id and
+              where  c.id=basic.ty_customer_id and
+              basic.user_id=sysuser.id and
               c.KHNM = tkmx.khh and
               yehz.JJH = tkmx.JJH and
               protype.product_code=tkmx.cpmc and
@@ -1156,25 +1115,25 @@
 	
 	<select id="getDkyetjbbFormList" resultMap="DkyetjbbFormResultMap" 
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
-					 select distinct tkmx.ywbh, c.khmc as cname,c.zjhm as cardnum,tkmx.CPMC as prodName,tkmx.ffje as money
-		          ,tkmx.HTLL as interest,yehz.qxrq as loandate,yehz.DKYE as balamt,yehz.Shbj as bj,yehz.Shlx as lx,sysuser.display_name as busimanager
-		          ,(select t.name from
-		          sys_department t where t.id in (select tt.dept_id from sys_dept_user tt
-		          where tt.user_id = sysuser.id)) as instcode
-				 from
+				   select distinct tkmx.ywbh, c.khmc as cname,c.zjhm as cardnum,tkmx.CPMC as prodName,tkmx.ffje as money
+              ,tkmx.SFBL as interest,yehz.qxrq as loandate,yehz.DKYE as balamt,yehz.Shbj as bj,yehz.Shlx as lx,sysuser.display_name as busimanager
+              ,(select t.name from
+              sys_department t where t.id in (select tt.dept_id from sys_dept_user tt
+              where tt.user_id = sysuser.id)) as instcode
+         from
               (select  sum(lsz.df) as df ,
                       tkmx.ywbh ,
                       c.zjhm
               from
-               ty_customer_rygl rygl,
+              basic_customer_information basic,
               TY_REPAY_TKMX tkmx ,
               TY_REPAY_YEHZ yehz,
               ty_repay_lsz lsz,
               ty_customer_base c,
              ty_product_type protype,
               sys_user sysuser
-              where  c.khjl=rygl.dm and
-              rygl.ddrq=sysuser.external_id and
+              where  basic.ty_customer_id=c.id and
+              basic.user_id=sysuser.id and
               c.KHNM = tkmx.khh and
               yehz.JJH = tkmx.JJH and
               protype.product_code=tkmx.cpmc and
@@ -1187,15 +1146,15 @@
                       tkmx.ywbh ,
                       c.zjhm
               from
-               ty_customer_rygl rygl,
+              basic_customer_information basic,
               TY_REPAY_TKMX tkmx ,
               TY_REPAY_YEHZ yehz,
               ty_repay_lsz lsz,
               ty_customer_base c,
              ty_product_type protype,
               sys_user sysuser
-              where  c.khjl=rygl.dm and
-              rygl.ddrq=sysuser.external_id and
+              where c.id=basic.ty_customer_id and
+              basic.user_id=sysuser.id and
               c.KHNM = tkmx.khh and
               yehz.JJH = tkmx.JJH and
               protype.product_code=tkmx.cpmc and
@@ -1204,7 +1163,7 @@
             or lsz.zy='贷款柜台提前还款')
             
               group by   tkmx.ywbh , c.zjhm ,c.khmc) shbj,
-               ty_customer_rygl rygl,
+              basic_customer_information basic,
               TY_REPAY_TKMX tkmx ,
               TY_REPAY_YEHZ yehz,
               ty_repay_lsz lsz,
@@ -1212,8 +1171,8 @@
              ty_product_type protype,
               sys_user sysuser,
               ty_kdk_jh jh
-              where  c.khjl=rygl.dm and
-              rygl.ddrq=sysuser.external_id and
+              where  c.id=basic.ty_customer_id and
+              basic.user_id=sysuser.id and
               c.KHNM = tkmx.khh and
               yehz.JJH = tkmx.JJH and
               protype.product_code=tkmx.cpmc and
@@ -1247,50 +1206,9 @@
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
 					 <!-- select * from yqdktjbb a WHERE 1=1  -->
-					 <!-- 逾期贷款如果不是按照还款计划计算则使用注释代码 -->
-					 <!--  select
-                base.khmc as CHINESE_NAME,base.zjhm as CARD_ID,base.sj as TELEPHONE, protype.product_name as CPMC,tkmx.ffje as DF, tkmx.JZLL,
-                bx.bxhj as BXHJ,yehz.dkye as JE,
-                jh.YHLX,
-                sysuser.display_name as KHJL,(select t.name from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt  where tt.user_id = sysuser.id)) as YWJG 
-              from
-              (select tkmx.ywbh,base.khmc,max(lsz.jzrq) as zdjzrq,sum(lsz.df) as bxhj from 
-		        ty_repay_tkmx tkmx,
-		        ty_customer_base base,
-		        ty_customer_rygl rygl,
-		        sys_user sysuser,
-		        ty_repay_lsz lsz
-		        where base.khjl=rygl.dm and
-		        rygl.ddrq=sysuser.external_id and
-		        base.khnm=tkmx.khh and
-		        tkmx.jjh =lsz.jjh and
-		        sysuser.display_name='刘毛毛'
-		        group by tkmx.ywbh,base.khmc)  bx,
-		         ty_repay_tkmx tkmx,
-		        ty_customer_base base,
-		        ty_customer_rygl rygl,
-		        sys_user sysuser,
-		        ty_kdk_jh jh,
-		        ty_product_type protype,
-		        ty_repay_yehz yehz,
-		        ty_repay_lsz lsz
-		        where base.khjl=rygl.dm and
-		        rygl.ddrq=sysuser.external_id and
-		        base.khnm=tkmx.khh and
-		        jh.ywbh=tkmx.ywbh||'HT'and
-		        tkmx.jjh =lsz.jjh and
-		        yehz.jjh=tkmx.jjh and
-		        protype.product_code=tkmx.cpmc and
-		        bx.ywbh=tkmx.ywbh and
-		        bx.zdjzrq>tkmx.dqrq and
-		        sysuser.display_name='刘毛毛'
-		        group by tkmx.ywbh,base.khmc,base.zjhm,base.sj, protype.product_name,tkmx.ffje, tkmx.JZLL,
-                bx.bxhj,yehz.dkye,
-                sysuser.display_name , sysuser.id -->
-					  
-   select CHINESE_NAME, CARD_ID, TELEPHONE,  CPMC, DF,JZLL, BXHJ, JE, KHJL, YWJG from
+               select CHINESE_NAME, CARD_ID, TELEPHONE,  CPMC, DF,JZLL, BXHJ,JE,  Shbj,Shlx, KHJL, YWJG from
  ( select
-          b.khmc as CHINESE_NAME,b.zjhm as CARD_ID,b.SJ as TELEPHONE, protype.product_name as CPMC,tkmx.ffje as DF,tkmx.JZLL,bxhj.bx as BXHJ,yehz.dkye as JE,sysuser.display_name as KHJL,(select t.name from
+          b.khmc as CHINESE_NAME,b.zjhm as CARD_ID,b.SJ as TELEPHONE, protype.product_name as CPMC,tkmx.ffje as DF,tkmx.SFBL as JZLL,bxhj.bx as BXHJ,yehz.dkye as JE,yhbj.yhbj as Shbj,bxhj.bx-yhbj.yhbj as Shlx,sysuser.display_name as KHJL,(select t.name from
               sys_department t where t.id in (select tt.dept_id 
         from sys_dept_user tt
               where tt.user_id = sysuser.id))
@@ -1305,34 +1223,55 @@
               ty_repay_tkmx tkmx,
               ty_product_type protype,
               ty_customer_base b,
-              ty_customer_rygl rygl,
+              basic_customer_information basic,
               sys_user sysuser,
               ty_repay_yehz yehz,
               ty_repay_lsz lsz
-              where b.khjl=rygl.dm and
-              rygl.ddrq=sysuser.external_id and
+              where b.id= basic.ty_customer_id and
+              basic.user_id=sysuser.id and
               protype.product_code=tkmx.cpmc and
               b.khnm=tkmx.khh and
               yehz.jjh=tkmx.jjh and
               tkmx.jjh =lsz.jjh 
               group by tkmx.ywbh)bxhj,
+               (   select 
+              tkmx.ywbh,
+              sum(lsz.df) as yhbj from  
               ty_repay_tkmx tkmx,
               ty_product_type protype,
               ty_customer_base b,
-              ty_customer_rygl rygl,
+              basic_customer_information basic,
               sys_user sysuser,
               ty_repay_yehz yehz,
               ty_repay_lsz lsz
-              where b.khjl=rygl.dm and
-              rygl.ddrq=sysuser.external_id and
+              where b.id=basic.ty_customer_id and
+              basic.user_id=sysuser.id and
+              protype.product_code=tkmx.cpmc and
+              b.khnm=tkmx.khh and
+              yehz.jjh=tkmx.jjh and
+              tkmx.jjh =lsz.jjh  and
+              (lsz.zy='批量自动扣本金'
+            or lsz.zy='贷款柜台提前还款'
+            or lsz.zy='批量贷款自动扣本金' )
+              group by tkmx.ywbh)yhbj,
+              ty_repay_tkmx tkmx,
+              ty_product_type protype,
+              ty_customer_base b,
+              basic_customer_information basic,
+              sys_user sysuser,
+              ty_repay_yehz yehz,
+              ty_repay_lsz lsz
+              where b.id =basic.ty_customer_id and
+              basic.user_id=sysuser.id and
               protype.product_code=tkmx.cpmc and
               b.khnm=tkmx.khh and
               yehz.jjh=tkmx.jjh and
               tkmx.jjh =lsz.jjh and
-              bxhj.ywbh=tkmx.ywbh
-              group by  b.khmc,b.zjhm,b.SJ , protype.product_name ,tkmx.ffje ,tkmx.JZLL,sysuser.display_name ,sysuser.id,tkmx.dqrq,bxhj.bx,yehz.dkye) a
+              bxhj.ywbh=tkmx.ywbh and
+              yhbj.ywbh=tkmx.ywbh
+              group by  b.khmc,b.zjhm,b.SJ , protype.product_name ,tkmx.ffje ,tkmx.JZLL,sysuser.display_name ,sysuser.id,tkmx.dqrq,bxhj.bx,yehz.dkye,yhbj.yhbj,tkmx.SFBL) a
               where 1=1 and
-               (nvl(a.DELAYINTERESTDAYS,0)  >   0 or nvl(a.DELAYAMTDAYS,0)  >   0)
+               (nvl(a.DELAYINTERESTDAYS,0)  >   0 or nvl(a.DELAYAMTDAYS,0)  >   0) 
 					<if test="certiCode != null and certiCode != '' ">
 						AND a.CARD_ID=#{certiCode}
 					</if>
@@ -1354,17 +1293,14 @@
 	
 	<select id="getYqdktjbbFormList" resultMap="YqdktjbbFormResultMap" 
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
-					 select   cname, cardnum, contactmobiletel, prodName, money, interest, hkze, hkbj,  busimanager, instcode
-           from
-                   ( select
-          b.khmc as cname,b.zjhm as cardnum,b.SJ as contactmobiletel, protype.product_name as prodName,tkmx.ffje as money,tkmx.JZLL as interest,bxhj.bx as hkze,yehz.dkye as hkbj ,sysuser.display_name as busimanager,(select t.name from
-              sys_department t where t.id in (select tt.dept_id 
-        from sys_dept_user tt
-              where tt.user_id = sysuser.id))
-                as instcode,
+					 select   cname, cardnum, contactmobiletel, prodName, money, interest, hkze, hkbj, Shbj,Shlx, busimanager, instcode
+           from ( 
+         select
+          b.khmc as cname,b.zjhm as cardnum,b.SJ as contactmobiletel, protype.product_name as prodName,tkmx.ffje as money,tkmx.SFBL as interest,bxhj.bx as hkze,yehz.dkye as hkbj,yhbj.yhbj as Shbj,bxhj.bx-yhbj.yhbj as Shlx,
+          sysuser.display_name as busimanager,
+          (select t.name from sys_department t where t.id in (select tt.dept_id  from sys_dept_user tt where tt.user_id = sysuser.id)) as instcode,
            (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end ) as DELAYINTERESTDAYS,  
            (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end )as DELAYAMTDAYS
-         
        from
            (   select 
               tkmx.ywbh,
@@ -1372,32 +1308,53 @@
               ty_repay_tkmx tkmx,
               ty_product_type protype,
               ty_customer_base b,
-              ty_customer_rygl rygl,
+              basic_customer_information basic,
               sys_user sysuser,
               ty_repay_yehz yehz,
               ty_repay_lsz lsz
-              where b.khjl=rygl.dm and
-              rygl.ddrq=sysuser.external_id and
+              where b.id =basic.ty_customer_id and
+              basic.user_id=sysuser.id and
               protype.product_code=tkmx.cpmc and
               b.khnm=tkmx.khh and
               yehz.jjh=tkmx.jjh and
               tkmx.jjh =lsz.jjh 
               group by tkmx.ywbh)bxhj,
+               (   select 
+              tkmx.ywbh,
+              sum(lsz.df) as yhbj from  
               ty_repay_tkmx tkmx,
               ty_product_type protype,
               ty_customer_base b,
-              ty_customer_rygl rygl,
+              basic_customer_information basic,
               sys_user sysuser,
               ty_repay_yehz yehz,
               ty_repay_lsz lsz
-              where b.khjl=rygl.dm and
-              rygl.ddrq=sysuser.external_id and
+              where b.id=basic.ty_customer_id and
+              basic.user_id=sysuser.id and
+              protype.product_code=tkmx.cpmc and
+              b.khnm=tkmx.khh and
+              yehz.jjh=tkmx.jjh and
+              tkmx.jjh =lsz.jjh  and
+              (lsz.zy='批量自动扣本金'
+            or lsz.zy='贷款柜台提前还款'
+            or lsz.zy='批量贷款自动扣本金' )
+              group by tkmx.ywbh)yhbj,
+              ty_repay_tkmx tkmx,
+              ty_product_type protype,
+              ty_customer_base b,
+              basic_customer_information basic,
+              sys_user sysuser,
+              ty_repay_yehz yehz,
+              ty_repay_lsz lsz
+              where basic.ty_customer_id=b.id and
+              basic.user_id=sysuser.id and
               protype.product_code=tkmx.cpmc and
               b.khnm=tkmx.khh and
               yehz.jjh=tkmx.jjh and
               tkmx.jjh =lsz.jjh and
-              bxhj.ywbh=tkmx.ywbh
-              group by  b.khmc,b.zjhm,b.SJ , protype.product_name ,tkmx.ffje ,tkmx.JZLL,sysuser.display_name ,sysuser.id,tkmx.dqrq,bxhj.bx,yehz.dkye) a
+              bxhj.ywbh=tkmx.ywbh and
+              yhbj.ywbh=tkmx.ywbh
+              group by  b.khmc,b.zjhm,b.SJ , protype.product_name ,tkmx.ffje ,tkmx.JZLL,sysuser.display_name ,sysuser.id,tkmx.dqrq,bxhj.bx,yehz.dkye,yhbj.yhbj,tkmx.SFBL) a
               where 1=1 and
                (nvl(a.DELAYINTERESTDAYS,0)  >   0 or nvl(a.DELAYAMTDAYS,0)  >   0)
 					<if test="certiCode != null and certiCode != '' ">
@@ -1418,9 +1375,9 @@
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
 		 <!-- select count(*) from yqdktjbb a WHERE 1=1  -->
 		 select count(*)
-		 from (select CHINESE_NAME, CARD_ID, TELEPHONE,  CPMC, DF,JZLL, BXHJ, JE, KHJL, YWJG from
+		 from ( select CHINESE_NAME, CARD_ID, TELEPHONE,  CPMC, DF,JZLL, BXHJ,JE,  Shbj,Shlx, KHJL, YWJG from
  ( select
-          b.khmc as CHINESE_NAME,b.zjhm as CARD_ID,b.SJ as TELEPHONE, protype.product_name as CPMC,tkmx.ffje as DF,tkmx.JZLL,bxhj.bx as BXHJ,yehz.dkye as JE,sysuser.display_name as KHJL,(select t.name from
+          b.khmc as CHINESE_NAME,b.zjhm as CARD_ID,b.SJ as TELEPHONE, protype.product_name as CPMC,tkmx.ffje as DF,tkmx.JZLL,bxhj.bx as BXHJ,yehz.dkye as JE,yhbj.yhbj as Shbj,bxhj.bx-yhbj.yhbj as Shlx,sysuser.display_name as KHJL,(select t.name from
               sys_department t where t.id in (select tt.dept_id 
         from sys_dept_user tt
               where tt.user_id = sysuser.id))
@@ -1435,34 +1392,55 @@
               ty_repay_tkmx tkmx,
               ty_product_type protype,
               ty_customer_base b,
-              ty_customer_rygl rygl,
+              basic_customer_information basic,
               sys_user sysuser,
               ty_repay_yehz yehz,
               ty_repay_lsz lsz
-              where b.khjl=rygl.dm and
-              rygl.ddrq=sysuser.external_id and
+              where b.id= basic.ty_customer_id and
+              basic.user_id=sysuser.id and
               protype.product_code=tkmx.cpmc and
               b.khnm=tkmx.khh and
               yehz.jjh=tkmx.jjh and
               tkmx.jjh =lsz.jjh 
               group by tkmx.ywbh)bxhj,
+               (   select 
+              tkmx.ywbh,
+              sum(lsz.df) as yhbj from  
               ty_repay_tkmx tkmx,
               ty_product_type protype,
               ty_customer_base b,
-              ty_customer_rygl rygl,
+              basic_customer_information basic,
               sys_user sysuser,
               ty_repay_yehz yehz,
               ty_repay_lsz lsz
-              where b.khjl=rygl.dm and
-              rygl.ddrq=sysuser.external_id and
+              where b.id=basic.ty_customer_id and
+              basic.user_id=sysuser.id and
+              protype.product_code=tkmx.cpmc and
+              b.khnm=tkmx.khh and
+              yehz.jjh=tkmx.jjh and
+              tkmx.jjh =lsz.jjh  and
+              (lsz.zy='批量自动扣本金'
+            or lsz.zy='贷款柜台提前还款'
+            or lsz.zy='批量贷款自动扣本金' )
+              group by tkmx.ywbh)yhbj,
+              ty_repay_tkmx tkmx,
+              ty_product_type protype,
+              ty_customer_base b,
+              basic_customer_information basic,
+              sys_user sysuser,
+              ty_repay_yehz yehz,
+              ty_repay_lsz lsz
+              where b.id =basic.ty_customer_id and
+              basic.user_id=sysuser.id and
               protype.product_code=tkmx.cpmc and
               b.khnm=tkmx.khh and
               yehz.jjh=tkmx.jjh and
               tkmx.jjh =lsz.jjh and
-              bxhj.ywbh=tkmx.ywbh
-              group by  b.khmc,b.zjhm,b.SJ , protype.product_name ,tkmx.ffje ,tkmx.JZLL,sysuser.display_name ,sysuser.id,tkmx.dqrq,bxhj.bx,yehz.dkye) a
+              bxhj.ywbh=tkmx.ywbh and
+              yhbj.ywbh=tkmx.ywbh
+              group by  b.khmc,b.zjhm,b.SJ , protype.product_name ,tkmx.ffje ,tkmx.JZLL,sysuser.display_name ,sysuser.id,tkmx.dqrq,bxhj.bx,yehz.dkye,yhbj.yhbj) a
               where 1=1 and
-               (nvl(a.DELAYINTERESTDAYS,0)  >   0 or nvl(a.DELAYAMTDAYS,0)  >   0)
+               (nvl(a.DELAYINTERESTDAYS,0)  >   0 or nvl(a.DELAYAMTDAYS,0)  >   0) 
 					<if test="certiCode != null and certiCode != '' ">
 						AND a.CARD_ID=#{certiCode}
 					</if>
@@ -1497,80 +1475,34 @@
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
 					<!--  select * from yqhkdktjbb a WHERE 1=1 -->
-			<!-- 	select distinct tkmx.ywbh, b.CHINESE_NAME,b.CARD_ID,tkmx.CPMC,tkmx.ffje as DF,
-                           (case when(to_date(tkmx.dqrq,'yyyy-MM-dd')-trunc(sysdate,'dd')) > 0 then (to_date(tkmx.dqrq,'yyyy-MM-dd')-trunc(sysdate,'dd')) else null  end )  as hkr, 
-                          jh.JE,
-                          jh.YHLX,
-                          sysuser.display_name as KHJL,
-                          (select org.name from sys_organization org where id in(select t.org_id from
-              sys_department t where t.id in (select tt.dept_id 
-          from sys_dept_user tt
-              where tt.user_id = sysuser.id)))  as YWJG,jh.qs
-                        from 
-                          ( select  b.card_id  as cardid,
-                      max(to_number(jh.qs)) as qs
-                            from 
-                             BASIC_CUSTOMER_INFORMATION  b,
-                            TY_REPAY_TKMX tkmx ,
-                            TY_REPAY_YEHZ yehz,
-                            ty_customer_base c,
-                            TY_KDK_JH  jh,
-                             sys_user sysuser,
-                        SYS_DEPT_USER deptuser,
-                        SYS_DEPARTMENT department
-                            where  b.ty_customer_id = c.id and
-                                 c.KHNM = tkmx.khh  and
-                                 yehz.JJH = tkmx.JJH and
-                                 b.user_id=sysuser.id and
-                                 sysuser.id=deptuser.USER_ID and
-                                  deptuser.DEPT_ID=department.id  and
-                              substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh 
-                              group by  b.card_id )  maxqs,
-                         BASIC_CUSTOMER_INFORMATION  b,
-                        TY_REPAY_TKMX tkmx ,
-                        TY_REPAY_YEHZ yehz,
-                        ty_customer_base c,
-                        TY_KDK_JH  jh,
-                         sys_user sysuser,
-                    SYS_DEPT_USER deptuser,
-                    SYS_DEPARTMENT department
-                        where  b.ty_customer_id = c.id and
-                             c.KHNM = tkmx.khh  and
-                             yehz.JJH = tkmx.JJH and
-                             b.user_id=sysuser.id and
-                             sysuser.id=deptuser.USER_ID and
-                              deptuser.DEPT_ID=department.id  and
-                          substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh and
-                          maxqs.cardid=b.card_id and
-                          maxqs.qs=jh.qs -->
-                          select distinct ywbh, CHINESE_NAME,CARD_ID,CPMC,DF,  hkr, JE,KHJL, YWJG
- from
-(select distinct tkmx.ywbh, b.khmc as CHINESE_NAME,b.zjhm as CARD_ID,tkmx.CPMC,tkmx.ffje as DF,
-                           (case when(to_date(tkmx.dqrq,'yyyy-MM-dd')-trunc(sysdate,'dd')) > 0 then (to_date(tkmx.dqrq,'yyyy-MM-dd')-trunc(sysdate,'dd')) else null  end )  as hkr, yehz.dkye as JE,
-                          sysuser.display_name as KHJL,
-                         (select t.name from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = sysuser.id))  as YWJG,
-                          (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end ) as DELAYINTERESTDAYS,  
-           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end )as DELAYAMTDAYS
-					 from 
-                      ty_repay_tkmx tkmx,
-                      ty_product_type protype,
-                      ty_customer_base b,
-                      ty_customer_rygl rygl,
-                      sys_user sysuser,
-                      ty_repay_yehz yehz,
-                      ty_kdk_jh jh,
-                      ty_repay_lsz lsz
-                      where b.khjl=rygl.dm and
-                      rygl.ddrq=sysuser.external_id and
-                      protype.product_code=tkmx.cpmc and
-                      b.khnm=tkmx.khh and
-                      yehz.jjh=tkmx.jjh and
-                      tkmx.jjh =lsz.jjh  and
-                      jh.ywbh=tkmx.ywbh||'HT'
-                      group by   tkmx.ywbh, b.khmc,b.zjhm,tkmx.CPMC,tkmx.ffje ,sysuser.display_name ,tkmx.dqrq,yehz.dkye,sysuser.id
-                      ) a
-                      where 1=1  
-                       and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ <= ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ <=  ]]>0)
+					select ywbh,chinese_name,card_id,CPMC,DF,hkr,JE,yhlx,KHJL,YWJG from 
+			(select tk.ywbh,b.chinese_name,b.card_id,tpt.product_name as CPMC, 
+			       tk.ffje as DF,
+			       (case when(SUBSTR(lsz.jzrq, 7, 9)- SUBSTR(to_char(trunc(sysdate,'dd'),'yyyymmdd'), 7, 9)) > 0
+			        then (SUBSTR(lsz.jzrq, 7, 9)- SUBSTR(to_char(trunc(sysdate,'dd'),'yyyymmdd'), 7, 9)) else 0  end )  as hkr, 
+			         jh.je as JE,jh.yhlx,
+			          a.display_name as KHJL,
+			           (select t.name from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = a.id))  as YWJG , 
+			           row_number() over (partition by b.chinese_name order by lsz.jzrq desc) cn 
+			           from TY_REPAY_LSZ lsz,ty_repay_tkmx tk ,
+			           ty_repay_yehz yehz,
+			           ty_customer_base base,
+			           BASIC_CUSTOMER_INFORMATION b, 
+			           SYS_USER a ,
+			           ty_kdk_jh jh,
+			           ty_product_type tpt
+			           where zy = '批量自动扣本金' and 
+			           tk.sfjq= '0.0' 
+			           and tk.jjh =lsz.jjh 
+			           and yehz.jjh=tk.jjh 
+			           and base.khnm=tk.khh 
+			           and base.id=b.ty_customer_id 
+			           and a.id=b.user_id 
+			           and jh.ywbh=tk.ywbh||'HT'
+			           and tpt.product_code=tk.cpmc
+			            and  to_date(tk.dqrq,'yy-mm-dd')>trunc(sysdate) 
+			          <!--  and a.id ='8a855a3c5a5ff169015a60012091003a' -->
+			           ) where cn=1
 					<if test="certiCode != null and certiCode != '' ">
 						AND CARD_ID=#{certiCode}
 					</if>
@@ -1591,35 +1523,34 @@
 	<select id="findYqhkdktjbbFormCountList" resultType="int" 
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
 		 select count(*)
-		   from 
-                          (     select distinct ywbh, CHINESE_NAME,CARD_ID,CPMC,DF,  hkr, JE,KHJL, YWJG
- from
-(select distinct tkmx.ywbh, b.khmc as CHINESE_NAME,b.zjhm as CARD_ID,tkmx.CPMC,tkmx.ffje as DF,
-                           (case when(to_date(tkmx.dqrq,'yyyy-MM-dd')-trunc(sysdate,'dd')) > 0 then (to_date(tkmx.dqrq,'yyyy-MM-dd')-trunc(sysdate,'dd')) else null  end )  as hkr, yehz.dkye as JE,
-                          sysuser.display_name as KHJL,
-                         (select t.name from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = sysuser.id))  as YWJG,
-                          (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end ) as DELAYINTERESTDAYS,  
-           (case when(to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) > 0 then (to_date(max(lsz.jzrq),'yyyy-mm-dd')-to_date(tkmx.dqrq,'yyyy-mm-dd')) else null  end )as DELAYAMTDAYS
-					 from 
-                      ty_repay_tkmx tkmx,
-                      ty_product_type protype,
-                      ty_customer_base b,
-                      ty_customer_rygl rygl,
-                      sys_user sysuser,
-                      ty_repay_yehz yehz,
-                      ty_kdk_jh jh,
-                      ty_repay_lsz lsz
-                      where b.khjl=rygl.dm and
-                      rygl.ddrq=sysuser.external_id and
-                      protype.product_code=tkmx.cpmc and
-                      b.khnm=tkmx.khh and
-                      yehz.jjh=tkmx.jjh and
-                      tkmx.jjh =lsz.jjh  and
-                      jh.ywbh=tkmx.ywbh||'HT'
-                      group by   tkmx.ywbh, b.khmc,b.zjhm,tkmx.CPMC,tkmx.ffje ,sysuser.display_name ,tkmx.dqrq,yehz.dkye,sysuser.id
-                      ) a
-                      where 1=1  
-                       and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ <= ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ <=  ]]>0)
+		   from  (   select ywbh,chinese_name,card_id,CPMC,DF,hkr,JE,yhlx,KHJL,YWJG from 
+			(select tk.ywbh,b.chinese_name,b.card_id,tpt.product_name as CPMC, 
+			       tk.ffje as DF,
+			       (case when(SUBSTR(lsz.jzrq, 7, 9)- SUBSTR(to_char(trunc(sysdate,'dd'),'yyyymmdd'), 7, 9)) > 0
+			        then (SUBSTR(lsz.jzrq, 7, 9)- SUBSTR(to_char(trunc(sysdate,'dd'),'yyyymmdd'), 7, 9)) else 0  end )  as hkr, 
+			         jh.je as JE,jh.yhlx,
+			          a.display_name as KHJL,
+			           (select t.name from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = a.id))  as YWJG , 
+			           row_number() over (partition by b.chinese_name order by lsz.jzrq desc) cn 
+			           from TY_REPAY_LSZ lsz,ty_repay_tkmx tk ,
+			           ty_repay_yehz yehz,
+			           ty_customer_base base,
+			           BASIC_CUSTOMER_INFORMATION b, 
+			           SYS_USER a ,
+			           ty_kdk_jh jh,
+			           ty_product_type tpt
+			           where zy = '批量自动扣本金' and 
+			           tk.sfjq= '0.0' 
+			           and tk.jjh =lsz.jjh 
+			           and yehz.jjh=tk.jjh 
+			           and base.khnm=tk.khh 
+			           and base.id=b.ty_customer_id 
+			           and a.id=b.user_id 
+			           and jh.ywbh=tk.ywbh||'HT'
+			           and tpt.product_code=tk.cpmc
+			            and  to_date(tk.dqrq,'yy-mm-dd')>trunc(sysdate) 
+			          <!--  and a.id ='8a855a3c5a5ff169015a60012091003a' -->
+			           ) where cn=1
 					<if test="certiCode != null and certiCode != '' ">
 						AND CARD_ID=#{certiCode}
 					</if>
@@ -1632,38 +1563,45 @@
 					</if>)
 	</select>
 	
-	<select id="getYqhkdktjbbFormList" resultMap="YqhkdktjbbFormResultMap" 
+	<select id="getYqhkdktjbbFormList" resultMap="tkmxFormResultMap" 
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
-					 select distinct ywbh,CHINESE_NAME as cname, CARD_ID as getCardnum,CPMC as ProdName, DF as Money, hkr as Hkr,  JE as Hkbj, KHJL as Busimanager,YWJG as Instcode
-                        from 
-                          ( select distinct tkmx.ywbh, b.khmc as CHINESE_NAME,b.zjhm as CARD_ID,tkmx.CPMC,tkmx.ffje as DF,
-                           (case when(to_date(tkmx.dqrq,'yyyy-MM-dd')-trunc(sysdate,'dd')) > 0 then (to_date(tkmx.dqrq,'yyyy-MM-dd')-trunc(sysdate,'dd')) else null  end )  as hkr, yehz.dkye as JE,
-                          sysuser.display_name as KHJL,
-                         (select t.name from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = sysuser.id))  as YWJG
-                        from 
-                      ty_repay_tkmx tkmx,
-                      ty_product_type protype,
-                      ty_customer_base b,
-                      ty_customer_rygl rygl,
-                      sys_user sysuser,
-                      ty_repay_yehz yehz,
-                      ty_kdk_jh jh,
-                      ty_repay_lsz lsz
-                      where b.khjl=rygl.dm and
-                      rygl.ddrq=sysuser.external_id and
-                      protype.product_code=tkmx.cpmc and
-                      b.khnm=tkmx.khh and
-                      yehz.jjh=tkmx.jjh and
-                      tkmx.jjh =lsz.jjh  and
-                      jh.ywbh=tkmx.ywbh||'HT')
+					 select ywbh,chinese_name,card_id,CPMC,DF,hkr,JE,yhlx,KHJL,YWJG from 
+			(select tk.ywbh,b.chinese_name,b.card_id,tpt.product_name as CPMC, 
+			       tk.ffje as DF,
+			       (case when(SUBSTR(lsz.jzrq, 7, 9)- SUBSTR(to_char(trunc(sysdate,'dd'),'yyyymmdd'), 7, 9)) > 0
+			        then (SUBSTR(lsz.jzrq, 7, 9)- SUBSTR(to_char(trunc(sysdate,'dd'),'yyyymmdd'), 7, 9)) else 0  end )  as hkr, 
+			         jh.je as JE,jh.yhlx,
+			          a.display_name as KHJL,
+			           (select t.name from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = a.id))  as YWJG , 
+			           row_number() over (partition by b.chinese_name order by lsz.jzrq desc) cn 
+			           from TY_REPAY_LSZ lsz,ty_repay_tkmx tk ,
+			           ty_repay_yehz yehz,
+			           ty_customer_base base,
+			           BASIC_CUSTOMER_INFORMATION b, 
+			           SYS_USER a ,
+			           ty_kdk_jh jh,
+			           ty_product_type tpt
+			           where zy = '批量自动扣本金' and 
+			           tk.sfjq= '0.0' 
+			           and tk.jjh =lsz.jjh 
+			           and yehz.jjh=tk.jjh 
+			           and base.khnm=tk.khh 
+			           and base.id=b.ty_customer_id 
+			           and a.id=b.user_id 
+			           and jh.ywbh=tk.ywbh||'HT'
+			           and tpt.product_code=tk.cpmc
+			            and  to_date(tk.dqrq,'yy-mm-dd')>trunc(sysdate) 
+			          <!--  and a.id ='8a855a3c5a5ff169015a60012091003a' -->
+			           ) where cn=1
 					<if test="certiCode != null and certiCode != '' ">
-						AND getCardnum=#{certiCode}
+						AND CARD_ID=#{certiCode}
 					</if>
 					<if test="organName != null and organName != '' ">
-					    AND  Instcode =#{organName}
+					    AND  YWJG=#{organName}
 					</if>
+					
 					<if test="custManagerName != null and custManagerName != '' ">
-						AND Busimanager=#{custManagerName}
+						AND KHJL=#{custManagerName}
 					</if>
 	</select>
 	
@@ -1781,89 +1719,16 @@
 	 
 	 <select id="getAccLoanCollect" resultMap="CollectResultMap"
 			parameterType="com.cardpay.pccredit.report.filter.AccLoanCollectFilter">
-		<!-- 	 select rownum rowIndex,
-        '' as increaseLoancount,
-        '' as loanCustomerSum,
-        '' as increaseCusSum,
-        '' as centreLoansSun,
-        '' as loanBalanceSum,
-        '' as increaseLoanCredit,
-        '' as increaseBalanceTheMonth,
-        '' as overdueBalanceTheMon,
-        '' as overdueBalance,
-        '' as increseOverdueCusTheMon,
-        '' as resvIntAccum,
-        '' as overdueCusM0,
-        '' as overdueCusM1,
-        '' as overdueCusM2,
-        '' as overdueCusM3,
-        '' as overdueCusM4,
-        '' as contAmt,
-        '' as contBalace,
-        '' as alloverdue
-   from dual  -->
 	      with mibusidata as (
 	     SELECT *
 		  FROM (
-                 <!--     select
+         select
         distinct
           tkmx.YWBH ,
           b.id as id ,
           b.KHH,
           b.KHMC,
           b.ZJHM,
-          rygl.SSBM,
-          b.SJ,
-          b.SXED,
-          b.GHJL,
-          tkmx.JKRQ as LOANDATE, 
-          tkmx.DQRQ,
-          tkmx.DKQX,
-          tkmx.JZLL,
-          tkmx.FFJE   as REQLMT,  
-         jh.ts as DELAYINTERESTDAYS, 
-           jh.ts as DELAYAMTDAYS,   
-           jh.qs as qs,    
-            rq.a+jh.ts as DLAYDT, 
-          yehz.SHBJ,
-          yehz.JKJE,
-          yehz.KSQXRQ,
-          yehz.SHLX,   
-          yehz.DKYE,
-          yehz.BNQX,
-          yehz.BWQX,
-          yehz.DKYE as BALAMT  ,
-          yehz.jkje-yehz.dkye as yxye ,
-          sysuser.display_name
-        from
-         (select trunc(to_date(rq,'yyyy-mm-dd')) a from ty_kdk_jh) rq,
-                      TY_REPAY_TKMX tkmx,
-                      TY_CUSTOMER_BASE  b,
-                      ty_customer_rygl rygl,
-                      TY_REPAY_YEHZ yehz,
-                      ty_kdk_jh jh,
-                      basic_customer_information basic,
-                      sys_user sysuser
-                      where 1=1 and
-                      b.khnm=tkmx.khh and
-                      b.khjl=rygl.dm and
-                      yehz.JJH = tkmx.JJH and
-                              substr(jh.ywbh,1,length(jh.ywbh)-2)=tkmx.ywbh and
-                              b.id=basic.ty_customer_id and
-                              basic.user_id=sysuser.id and
-                               rq.a=to_date(jh.rq,'yyyy-mm-dd') 
-                               <if test="userId != null and userId != '' ">
-						             and sysuser.id  =#{userId}
-						         </if>
-                               -->
-          select
-        distinct
-          tkmx.YWBH ,
-          b.id as id ,
-          b.KHH,
-          b.KHMC,
-          b.ZJHM,
-          rygl.SSBM,
           b.SJ,
           b.SXED,
           b.GHJL,
@@ -1889,13 +1754,13 @@
        from
               ty_repay_tkmx tkmx,
               ty_customer_base b,
-              ty_customer_rygl rygl,
+              basic_customer_information basic,
               sys_user sysuser,
              ty_kdk_jh jh,
               ty_repay_yehz yehz,
               ty_repay_lsz lsz
-              where b.khjl=rygl.dm and
-              rygl.ddrq=sysuser.external_id and
+              where basic.ty_customer_id=b.id and
+              basic.user_id=sysuser.id and
               b.khnm=tkmx.khh and
               jh.ywbh=tkmx.ywbh||'HT' and
               yehz.jjh=tkmx.jjh and
@@ -1903,7 +1768,7 @@
              <if test="userId != null and userId != '' ">
 			             and sysuser.id  =#{userId}
 			         </if>
-              group by tkmx.YWBH ,b.id ,b.KHH,b.KHMC, b.ZJHM,rygl.SSBM, b.SJ, b.SXED, b.GHJL,tkmx.JKRQ , tkmx.DQRQ, tkmx.DKQX,tkmx.JZLL, tkmx.FFJE  ,
+              group by tkmx.YWBH ,b.id ,b.KHH,b.KHMC, b.ZJHM, b.SJ, b.SXED, b.GHJL,tkmx.JKRQ , tkmx.DQRQ, tkmx.DKQX,tkmx.JZLL, tkmx.FFJE  ,
                  yehz.SHBJ,yehz.JKJE, yehz.KSQXRQ,yehz.SHLX, yehz.DKYE,yehz.BNQX, yehz.BWQX,yehz.DKYE  , yehz.dkye  , sysuser.display_name, sysuser.id 
               order by tkmx.jkrq
 	    ))

@@ -45,7 +45,9 @@
             <tr>
               <td class="titlefc3"><label for="zjlx">证件类型:</label></td>
               #if($!customerInfor.zjlx=="0")
-             <td><input class="rinpsty"  type="text" id="zjlx" name="zjlx" value="身份证" readonly/></td> 
+             <td><input class="rinpsty"  type="hidden" id="zjlx1" name="zjlx1" value="$!customerInfor.zjlx" readonly/>
+             	 <input class="rinpsty"  type="text" id="zjlx" name="zjlx" value="身份证" readonly/>
+             </td> 
               #end
             <!--   <td><select id="CARDTYPE" name="CARDTYPE" class="rinpsty"> 
               		#dict("CARDTYPE", $!customerInfor.zjlx)
@@ -212,6 +214,18 @@
 		$("input[type='checkbox']").attr("disabled",true);
 		$("select").attr("disabled",true); */
 		$("#id_create_button").click(function() {
+			/* 不可修改的 */
+			var khh=$("#khh").val();//客户初始id
+			var khlx=$("#khlx").val(); //客户名称
+			var id=$("#id").val(); //客户内码
+			var zjlx=$("#zjlx1").val(); //身份证类型
+			var zjhm=$("#zjhm").val(); //身份证号码
+			var dqrq=$("#dqrq").val(); //出生日期
+			var pqdz=$("#pqdz").val(); //有效期限
+			var sfhz=$("#sfhz").val(); //是否户主
+			var jtdh=$("#jtdh").val();  //评级结果
+			
+			/* 可修改的 */
 			var xb=$("#SEX").val();
 			var mz=$("#mz").val();
 			var hyzk=$("#hyzk").val();
@@ -236,15 +250,15 @@
 			var chinesename=$("#chinesename").val();
 			 var url="${contextPath}/product/productinformation/updateBaseCustomer.json?id="+id+"&xb="+xb+"&mz="+mz+"&hyzk="+hyzk+"&xxdz="+xxdz+"&gtspmc="+gtspmc+"&hjdz="+hjdz+
 			"&sj="+sj+"&jtdh="+jtdh+"&xw="+xw+"&xl="+xl+"&hyzk1="+hyzk1+"&xxdz1="+xxdz1+"&gtspmc1="+gtspmc1+"&hjdz1="+hjdz1+
-			"&sj1="+sj1+"&jtdh1="+jtdh1+"&xw1="+xw1+"&xl1="+xl1+"&cardid="+cardid+"&chinesename="+chinesename;
-			
+			"&sj1="+sj1+"&jtdh1="+jtdh1+"&xw1="+xw1+"&xl1="+xl1+"&cardid="+cardid+"&chinesename="+chinesename
+			+"&khh="+khh+"&khlx="+khlx+"&id="+id+"&zjlx="+zjlx+"&zjhm="+zjhm+"&dqrq="+dqrq+"&pqdz="+pqdz+"&sfhz="+sfhz+"&jtdh="+jtdh;
 		  	$.ajax({
 					url : url,
 					type : "get",
 					success : function(data) {
 					if(data.message=="操作成功"){
 						 Dialog.message(data.message);
-						window.location.href="/PCCredit/customer/firsthend/showCustomerInfoJn.page?id="+id;
+						window.location.href="${contextPath}/customer/firsthend/showCustomerInfoJn.page?id="+id;
 					}else{
 						 Dialog.message("操作失败");
 					}

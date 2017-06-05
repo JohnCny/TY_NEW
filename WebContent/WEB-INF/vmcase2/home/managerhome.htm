@@ -120,7 +120,10 @@ $(document).ready(function() {
       min: 0,
       title: {
          text: 'Num'         
-      }      
+      },
+      labels:{
+    	  enabled:false
+      }
    };
    var tooltip = {
       headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
@@ -178,7 +181,11 @@ $(document).ready(function() {
       min: 0,
       title: {
          text: 'Num'         
-      }      
+      },
+      labels:{
+    	  enabled:false
+      }
+   	 /*  plotLines:[{value:0,width:1,color:'#808080'}] */
    };
    var tooltip = {
       headerFormat: '<span style="font-size:10px">{point.key}</span><table>',

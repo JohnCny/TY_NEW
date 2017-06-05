@@ -45,7 +45,7 @@
               <td><label for="name">产品名称:</label></td>
               <td><input type="text"   value="$!btlist.productName" readonly="readonly"/></td>
               <td><label for="name">利率:</label></td>
-              <td><input type="text"  value="$!btlist.interest" readonly="readonly"/></td>
+              <td><input type="text"  value="$format.formatNumber(2,$!btlist.interest)‰" readonly="readonly"/></td>
             </tr>
             
             <tr>

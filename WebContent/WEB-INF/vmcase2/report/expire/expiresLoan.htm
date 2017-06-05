@@ -42,7 +42,7 @@
         <div id="topDiv" class="inquiry_list inquiry_top">
           <table>
             <colgroup>
-              <col width="5%" />
+            <!--   <col width="5%" /> -->
 			  <col width="8%" />
               <col width="8%" />
               <col width="8%" />
@@ -57,14 +57,14 @@
               <col width="7%" />
             </colgroup>
             <tr class="title">
-              <th nowrap="nowrap"></th>
+          <!--     <th nowrap="nowrap"></th> -->
               <th nowrap="nowrap">客户名称</th>
               <th nowrap="nowrap">客户证件号码</th>
               <th nowrap="nowrap">所属产品</th>
               <th nowrap="nowrap">放款日期</th>
               <th nowrap="nowrap">到期日期</th>
               <th nowrap="nowrap">贷款金额</th>
-              <th nowrap="nowrap">利率</th>
+              <th nowrap="nowrap">上浮比例</th>
               <th nowrap="nowrap">期数</th>
               <th nowrap="nowrap">本金总额</th>
               <th nowrap="nowrap">利息总额</th>
@@ -76,7 +76,7 @@
         <div id="downDiv" class="inquiry_list inquiry_down">
           <table>
             <colgroup>
-              <col width="5%" />
+            <!--   <col width="5%" /> -->
 			  <col width="8%" />
               <col width="8%" />
               <col width="8%" />
@@ -92,7 +92,7 @@
             </colgroup>
             #foreach ($customer in $result.items)
             <tr>
-              <td class="checkbox"><input type="radio" name="checkbox" value="$!customer.appId/$!customer.customerManagerId"/>
+          <!--     <td class="checkbox"><input type="radio" name="checkbox" value="$!customer.appId/$!customer.customerManagerId"/> -->
               <td nowrap="nowrap">$!customer.CHINESE_NAME</td>
               <td nowrap="nowrap">$!customer.CARD_ID</td>
               <td nowrap="nowrap">$!customer.CPMC</td>
@@ -100,7 +100,7 @@
               <td nowrap="nowrap">$!customer.DQRQ</td>
               <td nowrap="nowrap">$!customer.DF</td>
              <!--  $format.formatNumber($!customer.baserate, 5, 1) -->
-              <td nowrap="nowrap">$!customer.HTLL</td>
+              <td nowrap="nowrap">$format.formatNumber(2,$!customer.JZLL)%</td>
               <td nowrap="nowrap">$!customer.QS</td>
               <td nowrap="nowrap">$!customer.JE</td>
               <td nowrap="nowrap">$!customer.YHLX</td>
@@ -127,7 +127,7 @@
 	$(document).ready(function() {
 		var opsObj = new Object();
 		opsObj.formObj = $("#submitForm");
-		opsObj.browseUrl = "${modulePath}/browse.page";
+		opsObj.browseUrl = "${modulePath}/queryExpireLoan.page";
 		opsObj.exportUrl = "${modulePath}/exportAll.page";
 		prepareOperations(opsObj);
 	});

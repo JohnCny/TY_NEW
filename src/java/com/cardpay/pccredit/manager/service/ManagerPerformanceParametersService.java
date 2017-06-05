@@ -16,6 +16,8 @@ import com.cardpay.pccredit.manager.model.MangerMonthAssessment;
 import com.cardpay.pccredit.manager.model.TPerformanceParameters;
 import com.cardpay.pccredit.manager.model.TyPerformanceCenter;
 import com.cardpay.pccredit.manager.model.TyPerformanceParameters;
+import com.cardpay.pccredit.manager.model.TyTPerformanceParameters;
+import com.cardpay.pccredit.system.model.Dict;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
@@ -114,7 +116,7 @@ public class ManagerPerformanceParametersService {
 	}
 	
 	//=====================================济南绩效=======================================//
-	public List<TPerformanceParameters> getTManagerPerformanceParamers(){
+	public List<TyTPerformanceParameters> getTManagerPerformanceParamers(){
 		return managerPerformanceParamersComdao.getTManagerPerformanceParamers();
 	}
 	
@@ -122,7 +124,7 @@ public class ManagerPerformanceParametersService {
 	/**
 	 * 客户经理绩效参数配置
 	 * @param request
-	 */
+	 *//*
 	public void updateTManagerPerformanceParamers(HttpServletRequest request) {
 		//获取参数
 		String[] ids= request.getParameterValues("id");
@@ -156,5 +158,60 @@ public class ManagerPerformanceParametersService {
 			parameters.setL(Ls[i]);
 			commonDao.insertObject(parameters);		
 		}
+	}*/
+	
+	/**
+	 * 客户经理绩效参数配置(注释部分数据存在数据字典中，绩效使用可视客户经理具体情况自行判断)
+	 * @param request
+	 */
+	public void updateTManagerPerformanceParamers(HttpServletRequest request) {
+		//获取参数
+		String[] ids= request.getParameterValues("id");
+		String[] As= request.getParameterValues("A");
+		String[] Bs= request.getParameterValues("B");
+		String[] Cs= request.getParameterValues("C");
+		String[] Ds= request.getParameterValues("D");
+		String[] Es= request.getParameterValues("E");
+		String[] Fs= request.getParameterValues("F");
+		String[] Gs= request.getParameterValues("G");
+		String[] Hs= request.getParameterValues("H");
+		String[] Is= request.getParameterValues("I");
+		String[] Js= request.getParameterValues("J");
+		String[] Ks= request.getParameterValues("K");
+		
+		//删除历史记录
+		managerPerformanceParamersComdao.deleteTList();
+		
+		for(int i=0;i<ids.length;i++){
+			TyTPerformanceParameters parameters = new TyTPerformanceParameters();
+			parameters.setA(As[i]);
+			parameters.setB(Bs[i]);
+			parameters.setC(Cs[i]);
+			parameters.setD(Ds[i]);
+			parameters.setE(Es[i]);
+			parameters.setF(Fs[i]);
+			parameters.setG(Gs[i]);
+			parameters.setH(Hs[i]);
+			parameters.setI(Is[i]);
+			parameters.setJ(Js[i]);
+			parameters.setK(Ks[i]);
+			commonDao.insertObject(parameters);		
+		}
+		
+	}
+
+	public List<Dict> findPostAllowancedict() {
+		// TODO Auto-generated method stub
+		return managerPerformanceParamersComdao.findPostAllowancedict();
+	}
+
+	public List<Dict> findTaskSuccessdict() {
+		// TODO Auto-generated method stub
+		return managerPerformanceParamersComdao.findTaskSuccessdict();
+	}
+
+	public List<Dict> findToleratedict() {
+		// TODO Auto-generated method stub
+		return managerPerformanceParamersComdao.findToleratedict();
 	}
 }

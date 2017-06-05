@@ -44,49 +44,14 @@ public class TyMibusidataForm extends BusinessModel {
 	private String DISPLAY_NAME;
 	private String YWJG;
 	
-	public TyMibusidataForm(){}
-	public TyMibusidataForm(String yWBH, String iD, String kHH, String kHMC,
-			String zJHM, String sSBM, String sJ, String sXED, String gHJL,
-			String lOANDATE, String dQRQ, String dKQX, String jZLL,
-			String rEQLMT, String dELAYINTERESTDAYS, String dELAYAMTDAYS,
-			String dLAYDT, String sHBJ, String jKJE, String kSQXRQ,
-			String pAYDEBT, String dKYE, String bNQX, String bWQX,
-			String bALAMT, String yXYE, String wJFL3, String wJFL4,
-			String wJFL5, String oPERDATETIME, String uSERID,
-			String dISPLAY_NAME, String yWJG) {
-		YWBH = yWBH;
-		ID = iD;
-		KHH = kHH;
-		KHMC = kHMC;
-		ZJHM = zJHM;
-		SSBM = sSBM;
-		SJ = sJ;
-		SXED = sXED;
-		GHJL = gHJL;
-		LOANDATE = lOANDATE;
-		DQRQ = dQRQ;
-		DKQX = dKQX;
-		JZLL = jZLL;
-		REQLMT = rEQLMT;
-		DELAYINTERESTDAYS = dELAYINTERESTDAYS;
-		DELAYAMTDAYS = dELAYAMTDAYS;
-		DLAYDT = dLAYDT;
-		SHBJ = sHBJ;
-		JKJE = jKJE;
-		KSQXRQ = kSQXRQ;
-		PAYDEBT = pAYDEBT;
-		DKYE = dKYE;
-		BNQX = bNQX;
-		BWQX = bWQX;
-		BALAMT = bALAMT;
-		YXYE = yXYE;
-		WJFL3 = wJFL3;
-		WJFL4 = wJFL4;
-		WJFL5 = wJFL5;
-		OPERDATETIME = oPERDATETIME;
-		USERID = uSERID;
-		DISPLAY_NAME = dISPLAY_NAME;
-		YWJG = yWJG;
+	private String reqlmtsum;//贷款总额
+	
+	
+	public String getReqlmtsum() {
+		return reqlmtsum;
+	}
+	public void setReqlmtsum(String reqlmtsum) {
+		this.reqlmtsum = reqlmtsum;
 	}
 	public String getYWBH() {
 		return YWBH;

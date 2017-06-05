@@ -1,5 +1,6 @@
 package com.cardpay.pccredit.jnpad.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -101,4 +102,50 @@ public class JnpadCustormerSdwUserService {
 	public CustormerSdwUser selectSpJy(@Param(value = "id")String id){
 		return SdwUserDao.selectSpJy(id);
 	}
+	//PC
+		public AppManagerAuditLog selectCSJLAPC(@Param(value = "appId")String appId,@Param(value = "uId")String uId){
+			return SdwUserDao.selectCSJLAPC(appId,uId);
+		}
+		public JnpadCsSdModel findCsSds(@Param(value ="appId")String appId,@Param(value ="uId")String uId){
+			return SdwUserDao.findCsSds(appId,uId);
+		}
+		public JnpadCsSdModel findCsSdRefuses(@Param(value = "appId")String appId){
+			return SdwUserDao.findCsSdRefuses(appId);
+		}
+		public JnpadCsSdModel findCsSdBlacks(@Param(value = "appId")String appId){
+			return SdwUserDao.findCsSdBlacks(appId);
+		}
+		//退回时修改节点状态
+		public void updateHistory(@Param(value = "userId")String userId,@Param(value = "times")Date times, @Param(value = "applicationId")String applicationId) {
+			// TODO Auto-generated method stub
+			SdwUserDao.updateHistory(userId,times,applicationId);
+		}
+		//拒绝时修改节点状态
+		public void updateHistorys(@Param(value = "userId")String userId,@Param(value = "times")Date times, @Param(value = "applicationId")String applicationId) {
+			// TODO Auto-generated method stub
+			SdwUserDao.updateHistorys(userId,times,applicationId);
+		}
+		//通过时的状态
+			public void updateCSZTs(@Param(value = "userId")String userId, @Param(value = "times")Date times, @Param(value = "money")String money, @Param(value = "applicationId")String applicationId) {
+				// TODO Auto-generated method stub
+				SdwUserDao.updateCSZTs(userId,times,money,applicationId);
+			}
+		//初审通过时的状态
+			public void updateCSZT(@Param(value = "userId")String userId, @Param(value = "times")Date times, @Param(value = "money")String money, @Param(value = "applicationId")String applicationId) {
+				// TODO Auto-generated method stub
+				SdwUserDao.updateCSZT(userId,times,money,applicationId);
+			}
+
+			public List<JnpadCsSdModel> findCsSdId(String appId) {
+				// TODO Auto-generated method stub
+				return SdwUserDao.findCsSdId(appId);
+			}
+
+			public JnpadCsSdModel findBySdwId(@Param(value = "sdwId")String sdwId,@Param(value = "appId")String appId) {
+				// TODO Auto-generated method stub
+				return SdwUserDao.findBySdwId(sdwId,appId);
+			}
+			public JnpadCsSdModel findZzCsSds(@Param(value ="appId")String appId){
+				return SdwUserDao.findZzCsSds(appId);
+			}
 }

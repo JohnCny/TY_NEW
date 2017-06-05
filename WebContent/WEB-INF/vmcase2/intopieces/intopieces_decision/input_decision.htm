@@ -83,7 +83,7 @@
             <tr>
               <td  class="titlefc3"><label for="status">审贷结论:</label></td>
               <td><select id="status" name="status" onChange="changeDecisionRefusereason();">
-                  	#dict("intopieces_decision",$!customerApplicationInfo.status)
+                  	#dict("intopieces_decision",$!sdwinfo.status)
                   </select> 
                   </td>
                <td  class="titlefc3"><label for="prodId">产品名称:</label></td>
@@ -101,7 +101,7 @@
               <td><input type="text" class="rinpsty" name="decisionRate" id="decisionRate" value="$!sdwinfo.SDLV" /></td>
             </tr>
             <tr>
-              <td class="titlefc3">审贷委一:</td>
+              <td class="titlefc3">审贷委:</td>
               <td>
                   <input type="text" class="rinpsty" name="cyUser1" id="cyUser1" value="$!result.name1" disabled="disabled"/>
               </td>
@@ -111,7 +111,7 @@
               <textarea name="SDWUSER1YJ" id="SDWUSER1YJ" >$!sdwinfo.SDWUSER1YJ</textarea>
               </td>
             </tr>
-            <tr>
+            <!--  <tr>
               <td class="titlefc3">审贷委二:</td>
               <td>
                   <input type="text" class="rinpsty" name="cyUser2" id="cyUser2" value="$!result.name2" disabled="disabled"/>
@@ -132,7 +132,7 @@
               <td>
               <textarea name="SDWUSER3YJ" id="SDWUSER3YJ" >$!sdwinfo.SDWUSER3YJ</textarea>
               </td>
-            </tr>
+            </tr> -->
             <tr>
               <td class="titlefc3"><label for="decisionTerm">期限:</label></td>
               <td>
@@ -149,17 +149,17 @@
             <tr style="display :none">
               <td  class="titlefc3"><label id ="reason" for=reason>原因:</label></td>
                #if($!customerApplicationInfo.status=='returnedToFirst')
-              <td><textarea name="decisionRefusereason" id="decisionRefusereason">$!htyj.FALLBACK_REASON</textarea></td>
+              <td><textarea name="decisionRefusereason" id="decisionRefusereason">$!sdwinfo.jlyys</textarea></td>
               #else
-              <td><textarea name="decisionRefusereason" id="decisionRefusereason">$!jjyj.refusalreaso</textarea></td>
+              <td><textarea name="decisionRefusereason" id="decisionRefusereason">$!sdwinfo.jlyys</textarea></td>
               #end
             </tr>
           </table>
         </div>
       </form>
-      <div class="submit">
+     <!--  <div class="submit">
       	<a id="id_image_button" class="btn_g" href="javascript:void(0);" title=导入审贷会纪要">导入审贷会纪要</a>
-      </div>
+      </div> -->
       <div class="submit">
       #if($!customerApplicationInfo.status=='audit')
         <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
@@ -177,12 +177,12 @@
 	
 	
 	$(document).ready(function() {		
-		var info = "$!customerApplicationInfo.status";
+		var info = "$!sdwinfo.status";
 		//已提交的显示只读
 		if( info == "refuse"){
 			$("tr:eq(9)").hide();
-			$("tr:eq(13)").hide();
-			$("tr:eq(14)").show();
+			$("tr:eq(11)").hide();
+			$("tr:eq(12)").show();
 			if($("textarea[name=decision_refusereason]").val() == ""){
 				 $("textarea[name='decision_refusereason']").after("<label class='error myerror' generated='true' >拒绝原因不能为空</label>");   
 			}
@@ -190,8 +190,8 @@
 		
 		if( info == "returnedToFirst"){
 			$("tr:eq(9)").hide();
-			$("tr:eq(13)").hide();
-			$("tr:eq(14)").show();
+			$("tr:eq(11)").hide();
+			$("tr:eq(12)").show();
 		}
 		
 			if(info =='returnedToFirst'){
@@ -200,7 +200,7 @@
 		      $("#reason").text("拒绝原因");	
 			} 
 	
-		 if(info!='audit'){
+		 if(info!='0'){
 			$("input[type='text']").attr("disabled",true);
 			$("input[type='radio']").attr("disabled",true);
 			$("input[type='checkbox']").attr("disabled",true);
@@ -268,18 +268,18 @@
 		    	var id=$("#id").val();
 		    	var decisionAmount=$("#decisionAmount").val();
 		    	var qx=$("#qx").val();
-		    	var SDWUSER1YJ=$("#SDWUSER1YJ").val();
+		    	var SDWUSER1YJ=$("#SDWUSER1YJ").val();/* 
 		    	var SDWUSER2YJ=$("#SDWUSER2YJ").val();
-		    	var SDWUSER3YJ=$("#SDWUSER3YJ").val();
+		    	var SDWUSER3YJ=$("#SDWUSER3YJ").val(); */
 		    	var decisionRate=$("#decisionRate").val();
 		    	var decisionRefusereason=$("#decisionRefusereason").val();
 		    	var customerId=$("#customerId").val();
 		    	var productId=$("#productId").val();
 		    	  $.ajax({
-						url : "${contextPath}/jnpad/CustormerSdwUserPc/insertsdjy.json?customerId="+customerId
+						url : "${contextPath}/jnpad/CustormerSdwUserPc/insertsdjycs.json?customerId="+customerId
 						+"&&productId="+productId+"&&decisionRate="+decisionRate+"&&decisionAmount="+decisionAmount
-						+"&&qx="+qx+"&&id="+id+"&&SDWUSER1YJ="+SDWUSER1YJ+"&&SDWUSER2YJ="+SDWUSER2YJ
-						+"&&SDWUSER3YJ="+SDWUSER3YJ+"&&decisionRefusereason="+decisionRefusereason+"&&status="+status,
+						+"&&qx="+qx+"&&id="+id+"&&SDWUSER1YJ="+SDWUSER1YJ/* +"&&SDWUSER2YJ="+SDWUSER2YJ
+						+"&&SDWUSER3YJ="+SDWUSER3YJ */+"&&decisionRefusereason="+decisionRefusereason+"&&status="+status,
 						
 						dataType : 'json',
 						type : "get",
@@ -303,7 +303,8 @@
 			var status = $("select[name=status]").val();
 			if( status == "approved"){
 				$("tr:eq(9)").show();
-				$("tr:eq(14)").hide();
+				$("tr:eq(11)").show();
+				$("tr:eq(12)").hide();
 				if($("input[name=decision_amount]").val() == ""){
 					 $("input[name='decision_amount']").after("<label class='error myerror' generated='true' >金额不能为空</label>");   
 				}
@@ -314,8 +315,8 @@
 			
 			if( status == "refuse"){
 				$("tr:eq(9)").hide();
-				$("tr:eq(13)").hide();
-				$("tr:eq(14)").show();
+				$("tr:eq(11)").hide();
+				$("tr:eq(12)").show();
 				if($("textarea[name=decision_refusereason]").val() == ""){
 					 $("textarea[name='decision_refusereason']").after("<label class='error myerror' generated='true' >拒绝原因不能为空</label>");   
 				}
@@ -323,8 +324,8 @@
 			
 			if( status == "returnedToFirst"){
 				$("tr:eq(9)").hide();
-				$("tr:eq(13)").hide();
-				$("tr:eq(14)").show();
+				$("tr:eq(11)").hide();
+				$("tr:eq(12)").show();
 				
 			}
 			

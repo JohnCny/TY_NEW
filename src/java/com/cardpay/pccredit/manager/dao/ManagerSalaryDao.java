@@ -5,11 +5,13 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.cardpay.pccredit.customer.model.TyMibusidataForm;
 import com.cardpay.pccredit.manager.filter.ManagerSalaryFilter;
 import com.cardpay.pccredit.manager.model.ManagerSalary;
 import com.cardpay.pccredit.manager.model.ManagerSalaryForm;
 import com.cardpay.pccredit.manager.model.SalaryParameter;
 import com.cardpay.pccredit.manager.model.TJxParameters;
+import com.cardpay.pccredit.manager.web.ManagerBelongMapForms;
 import com.wicresoft.util.annotation.Mapper;
 
 /**
@@ -122,5 +124,41 @@ public interface ManagerSalaryDao {
 									  		 @Param("year")String year,
 									  		 @Param("month")String month);
 	public void insertjx(TJxParameters jxParameters);
-
+	
+	//太原绩效
+		/**
+		 *根据managerId查询客户经理手下放款的情况
+		 * @param month 
+		 * @param year 
+		 */
+		public List<TyMibusidataForm> findffjebyManagerId(@Param("managerId") String  managerId,
+													  		 @Param("year")String year,
+													  		 @Param("month")String month);
+		
+		public void updateTJxParameters(@Param("zhmonthLoanNum")String zhmonthLoanNum,@Param("managerId") String managerId);
+		
+		public String findrwjebyManagerId(@Param("managerId") String  managerId,
+												  		 @Param("year")String year,
+												  		 @Param("month")String month);
+		
+		public void deletejxparametersbyuserid(@Param("userId")String userId);
+		
+		public int insertjxs(TJxParameters jxParameters);
+		
+		public String findblsum(@Param("managerId")String managerId, @Param("organName")String organName);
+		
+		public String findDkyesum(@Param("managerId")String managerId, @Param("organName")String organName);
+		
+		public List<ManagerBelongMapForms> findchildrenbymanagerid(@Param("managerId")String managerId);
+		
+		public int findchildrenbyparentid(@Param("childId")String childId);
+		public void deleteSalarybyuserid(@Param("managerId")String managerId);
+		public List<ManagerSalaryForm> findManagerSalaryForms(@Param("id")String id);
+		
+		public int findmanagernum(@Param("organName")String organName);
+		
+		public int findrwjebyorganName(@Param("organName")String organName,@Param("year") String year,
+				@Param("month")String month);
+		
+		
 }

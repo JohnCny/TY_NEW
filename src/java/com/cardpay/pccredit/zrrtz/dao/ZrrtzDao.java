@@ -26,4 +26,6 @@ public interface ZrrtzDao {
 	List<IncomingData> findIntoPiecesLists(ZrrtzFilter filter);
 
 	int findIntoPiecesCountLists(ZrrtzFilter filter);
+
+	List<IncomingData> findIntoPiecesListes(ZrrtzFilter filter);
 }

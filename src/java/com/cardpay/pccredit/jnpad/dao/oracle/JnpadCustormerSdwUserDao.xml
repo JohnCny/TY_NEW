@@ -122,13 +122,12 @@
 		<result property="name3" column="name3" />
 		<result property="created_time" column="created_time" />
 		<result property="name4" column="name4" />
+		<result property="status" column="status" />
+		<result property="jlyys" column="jlyy" />
+		<result property="spuserid" column="spuserid" />
+		<result property="names" column="names" />
 	</resultMap>
 	
-		
-		
-
-
-
 
 
 <delete id="deleteCustormerSdwUser" parameterType="java.lang.Integer" >
@@ -155,8 +154,8 @@
 </update> 
 
   <insert id="insertCustormerSdwUser1" parameterType="java.lang.Integer" >
-   insert into CUSTOMER_APPLICATION_SDH (id,CAPID,PID,CID,SDWUSER1YJ,SDWJLY,SDTIME,SDJE,SDQX,lv) 
-			values (#{id},#{CAPID},#{PID},#{CID},#{SDWUSER1YJ},#{SDWJLY},#{SDTIME},#{SDJE},#{SDQX},#{lv})
+   insert into CUSTOMER_APPLICATION_SDH (id,CAPID,PID,CID,SDWUSER1,SDWUSER1YJ,SDWJLY,SDTIME,SDJE,SDQX,LV) 
+			values (#{id},#{CAPID},#{PID},#{CID},#{SDWUSER1},#{SDWUSER1YJ},#{SDWJLY},#{SDTIME},#{SDJE},#{SDQX},#{LV})
 </insert>
 
   
@@ -439,76 +438,38 @@ and t.CAPID=#{id})g
 	</select>
 	
 <select id="selectCSJLAPC" resultMap="selectAUDITLOG">
-	select examine_amount as examineAmount,examine_lv as examineLv,qx as qx,a.displayName1 as userId_1,b.displayName2 as userId_2,c.displayName3 as userId_3,d.displayName4 as userId_4 
-	,e.displayName5 as name1,f.displayName6 as name2,g.displayName7 as name3
-	from 
-	T_APP_MANAGER_AUDIT_LOG,
-	(select s.display_name as displayName1
-	from T_APP_MANAGER_AUDIT_LOG t,sys_user s 
-	where t.user_id_1=s.id
-	and t.application_id=#{appId})a,
-	(select s.display_name as displayName2
-	from T_APP_MANAGER_AUDIT_LOG t,sys_user s 
-	where t.user_id_2=s.id
-	and t.application_id=#{appId})b,
-	(select s.display_name as displayName3
-	from T_APP_MANAGER_AUDIT_LOG t,sys_user s 
-	where t.user_id_3=s.id
-	and t.application_id=#{appId})c,
-	(select s.display_name as displayName4
-	from T_APP_MANAGER_AUDIT_LOG t,sys_user s 
-	where t.user_id_4=s.id
-	and t.application_id=#{appId})d,
-	(select s.display_name as displayName5
-	from CUSTOMER_APPLICATION_SDH t,sys_user s 
-	where t.SDWUSER1=s.id
-	and t.CAPID=#{appId})e,
-	(select s.display_name as displayName6
-	from CUSTOMER_APPLICATION_SDH t,sys_user s 
-	where t.SDWUSER2=s.id
-	and t.CAPID=#{appId})f,
-	(select s.display_name as displayName7
-	from CUSTOMER_APPLICATION_SDH t,sys_user s 
-	where t.SDWUSER3=s.id
-	and t.CAPID=#{appId})g
-	where application_id=#{appId}
+
+	
+	select t.examine_amount as examineAmount,t.examine_lv as examineLv,
+	t.qx as qx,a.displayName1 as userId_1,b.displayName2 as userId_2,c.displayName3 as userId_3,
+	d.displayName4 as userId_4 ,s.id as did ,c.id as cid,p.id as pid,b.id as id,p.PROD_CREDIT_RANGE as PRODCREDITRANGE,
+	b.CHINESE_NAME as displayName,p.product_name as pname,b.card_id as cardId,c.APPLY_QUOTA as applyQuota,dd.displayname as name1
+	from T_APP_MANAGER_AUDIT_LOG t,BASIC_CUSTOMER_INFORMATION b,sys_user s,
+	CUSTOMER_APPLICATION_INFO c,product_attribute p,
+ 	(select s.display_name as displayName1 from T_APP_MANAGER_AUDIT_LOG t,sys_user s where t.user_id_1=s.id and t.application_id=#{appId} )a,
+  	(select s.display_name as displayName2 from T_APP_MANAGER_AUDIT_LOG t,sys_user s where t.user_id_2=s.id and t.application_id=#{appId} )b,
+   	(select s.display_name as displayName3 from T_APP_MANAGER_AUDIT_LOG t,sys_user s where t.user_id_3=s.id and t.application_id=#{appId} )c,
+    (select s.display_name as displayName4 from T_APP_MANAGER_AUDIT_LOG t,sys_user s where t.user_id_4=s.id and t.application_id=#{appId} )d,
+   (select s.display_name as displayName from T_APP_MANAGER_AUDIT_LOG t,sys_user s where s.id=#{uId} and t.application_id=#{appId} )dd
+    where t.application_id=#{appId} and c.CUSTOMER_ID=b.id and c.id=t.application_id and b.user_id=s.id   
+    and b.id=c.customer_id and
+    c.product_id=p.id and
+    c.id=t.application_id
 	</select>
 	
 	<!-- 成功的 -->
 	<select id="findCsSds" resultMap="selectResultMap">
-	select h.sdwuser1yj as SDWUSER1YJ,h.sdwuser2yj as SDWUSER2YJ,h.sdwuser3yj as SDWUSER3YJ,h.sdje as SDJE,h.sdqx as SDQX ,h.sdtime SDTIME ,h.lv as SDLV,t.created_time as created_time,t.examine_amount as examineAmount,t.examine_lv as examineLv,t.qx as qx,a.displayName1 as name1,b.displayName2 as name2,c.displayName3 as name3,d.displayName4 as name4 
-	,e.displayName5 as SDWUSER1,f.displayName6 as SDWUSER2,g.displayName7 as SDWUSER3
-	from CUSTOMER_APPLICATION_SDH h,T_APP_MANAGER_AUDIT_LOG t,
-	(select s.display_name as displayName1
-	from T_APP_MANAGER_AUDIT_LOG t,sys_user s 
-	where t.user_id_1=s.id
-	and t.application_id=#{appId})a,
-	(select s.display_name as displayName2
-	from T_APP_MANAGER_AUDIT_LOG t,sys_user s 
-	where t.user_id_2=s.id
-	and t.application_id=#{appId})b,
-	(select s.display_name as displayName3
-	from T_APP_MANAGER_AUDIT_LOG t,sys_user s 
-	where t.user_id_3=s.id
-	and t.application_id=#{appId})c,
-	(select s.display_name as displayName4
-	from T_APP_MANAGER_AUDIT_LOG t,sys_user s 
-	where t.user_id_4=s.id
-	and t.application_id=#{appId})d,
-	(select s.display_name as displayName5
-	from CUSTOMER_APPLICATION_SDH t,sys_user s 
-	where t.SDWUSER1=s.id
-	and t.CAPID=#{appId})e,
-	(select s.display_name as displayName6
-	from CUSTOMER_APPLICATION_SDH t,sys_user s 
-	where t.SDWUSER2=s.id
-	and t.CAPID=#{appId})f,
-	(select s.display_name as displayName7
-	from CUSTOMER_APPLICATION_SDH t,sys_user s 
-	where t.SDWUSER3=s.id
-	and t.CAPID=#{appId})g
-	where h.capid=#{appId}
-	and t.application_id=#{appId}
+	select h.beizhu as SDWUSER1YJ,h.spje as SDJE,h.spqx as SDQX ,h.splv as SDLV,u.display_name as names,
+	(case 
+	when h.status ='0' then '0'
+	when h.status ='1' then 'approved'
+	when h.status ='2' then 'refuse'
+	  when h.status ='3' then 'returnedToFirst'
+	end
+	) as status,
+	h.JLYY as jlyy
+  from CUSTOMER_SP h,sys_user u
+  where  1=1 and h.capid=#{appId} and h.spuserid=#{uId} and h.spuserid=u.id 
 	</select>
 <select id="findCsSdRefuses" resultMap="selectResultMap">
 select p.refusal_reason as refusalreaso, h.sdwuser1yj as SDWUSER1YJ,h.sdwuser2yj as SDWUSER2YJ,h.sdwuser3yj as SDWUSER3YJ,h.sdje as SDJE,h.sdqx as SDQX ,h.sdtime SDTIME ,h.lv as SDLV,t.created_time as created_time,t.examine_amount as examineAmount,t.examine_lv as examineLv,t.qx as qx
@@ -527,9 +488,15 @@ where c.id=#{appId}
 <delete id="deletePCCustormerSdwUser" parameterType="java.lang.Integer" >
    delete from CUSTOMER_APPLICATION_SDH where CAPID=#{applicationId}
 </delete>
+
 <delete id="deletePCCsJl" parameterType="java.lang.Integer" >
    delete from T_APP_MANAGER_AUDIT_LOG where APPLICATION_ID=#{applicationId}
 </delete>
+
+<delete id="deleteByApplicationId" parameterType="java.lang.Integer" >
+   delete from customer_sp where CAPID=#{applicationId}
+</delete>
+
 <update id="updateHistory" parameterType="java.lang.Integer">
  update  WF_STATUS_QUEUE_RECORD set EXAMINE_USER=#{userId},EXAMINE_RESULT='RETURNAPPROVE',START_EXAMINE_TIME=#{times}
    where CURRENT_PROCESS in
@@ -573,4 +540,31 @@ where c.id=#{appId}
         and c.id=a.current_process
         and cai.id=#{applicationId})
 </update>
+<!-- 初审审贷委的ID -->
+	<select id="findCsSdId" resultMap="selectResultMap">
+	select h.spuserid from CUSTOMER_SP h where h.capid=#{appId}
+	</select>
+	
+	<select id="findBySdwId" resultMap="selectResultMap">
+	select h.beizhu as SDWUSER1YJ,h.spje as SDJE,h.spqx as SDQX ,h.splv as SDLV,u.display_name as names,
+	(case 
+	when h.status ='0' then '0'
+	when h.status ='1' then 'approved'
+	when h.status ='2' then 'refuse'
+	  when h.status ='3' then 'returnedToFirst'
+	end
+	) as status,
+	h.JLYY as jlyy
+    from CUSTOMER_SP h,sys_user u
+	where  1=1 and h.capid=#{appId} and h.spuserid=#{sdwId} and h.spuserid=u.id 
+	</select>
+	
+	
+	<!--最终审贷委 -->
+	<select id="findZzCsSds" resultMap="selectResultMap">
+	select sdh.SDWUSER1YJ as SDWUSER1YJ,sdh.sdje as SDJE,sdh.sdqx as SDQX ,
+	sdh.lv as SDLV,u.display_name as names,sdh.SDWUSER2YJ as jlyy
+  	from CUSTOMER_APPLICATION_SDH sdh,sys_user u
+  	where  1=1 and sdh.sdwjly=u.id  and sdh.capid=#{appId}
+	</select>
 </mapper> 

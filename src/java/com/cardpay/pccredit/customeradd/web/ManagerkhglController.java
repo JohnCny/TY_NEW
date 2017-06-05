@@ -14,15 +14,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.dao.MaintenanceDao;
 import com.cardpay.pccredit.customer.filter.MaintenanceFilter;
+import com.cardpay.pccredit.customer.filter.ModelFilter;
 import com.cardpay.pccredit.customer.model.CustomerFirsthendBase;
 import com.cardpay.pccredit.customer.service.MaintenanceService;
 import com.cardpay.pccredit.customeradd.model.CIPERSONBASINFO;
 import com.cardpay.pccredit.customeradd.model.MaintenanceForm;
 import com.cardpay.pccredit.customeradd.service.KuglService;
 import com.cardpay.pccredit.jnpad.model.CustomerInfo;
+import com.cardpay.pccredit.manager.model.FourMonthModel;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
+import com.cardpay.pccredit.manager.web.ManagerSalaryForm;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
@@ -84,7 +88,7 @@ public class ManagerkhglController extends BaseController{
 		}else{
 			//如果页面穿过来没有信息则显示所有客户经理手下信息
 			if(forms.size()>0){
-				filter.setCustomerManagerIds(forms);
+				//filter.setCustomerManagerIds(forms);
 				result = service.findMaintenancePlansList(filter);
 			}else{
 				//直接返回页面

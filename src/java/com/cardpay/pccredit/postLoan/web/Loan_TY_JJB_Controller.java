@@ -244,7 +244,7 @@ public class Loan_TY_JJB_Controller extends BaseController {
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView tzrefuse(@ModelAttribute PostLoanFilter filter,HttpServletRequest request) {
 		filter.setRequest(request);
-		QueryResult<RefuseMibusidata> result = postLoanService.findrefusedMibusidata(filter);
+		QueryResult<RefuseMibusidata> result = postLoanService.findreFusedMibusidata(filter);
 		JRadPagedQueryResult<RefuseMibusidata> pagedResult = new JRadPagedQueryResult<RefuseMibusidata>(filter, result);
 
 		JRadModelAndView mv = new JRadModelAndView("/postLoan/tz_refusedbrowse", request);
@@ -671,9 +671,15 @@ public class Loan_TY_JJB_Controller extends BaseController {
 		public AbstractModelAndView queryAll(HttpServletRequest request) throws ParseException {
 			JRadModelAndView mv =null;
 			String id=RequestHelper.getStringValue(request, ID);
-			List<CreditProcess> cplist=postLoanService.queryAll(id);
+			//List<CreditProcess> cplist=postLoanService.queryAll(id);
+			//因为涉及多张表左外联结查询有笛卡尔积产生    故使用多次查询
+			List<CreditProcess>wfsr=postLoanService.findwfsr(id);    //初审
+			List<CreditProcess>splist=postLoanService.findsplist(id); //审贷决议
+			List<CreditProcess>caslist=postLoanService.findcaslist(id);//最终审贷
 			mv = new JRadModelAndView("/postLoan/creditProcess_queryAll", request);
-			mv.addObject("cplist",cplist);
+			mv.addObject("wfsr",wfsr);
+			mv.addObject("splist",splist);
+			mv.addObject("caslist",caslist);
 			return mv;
 		}
 		
@@ -897,15 +903,23 @@ public class Loan_TY_JJB_Controller extends BaseController {
 					Date audittime=sdf.parse(move.getAudittime());
 					Date applytime=move.getApplytime();
 					int days=sumdays(audittime,applytime);
+					if(days!=-1){
 					int alldays=sumalldays(audittime, applytime);
 					int day=alldays-days;
 					row.createCell((short) 27).setCellValue(day);//周末及假日调整
+					}else{
+						row.createCell((short) 27).setCellValue("");//周末及假日调整
+					}
 				}
 				if(move.getAudittime()!=null&&move.getApplytime()!=null){
 					Date audittime=sdf.parse(move.getAudittime());
 					Date applytime=move.getApplytime();
 					int days=sumdays(audittime,applytime);
+					if(days!=-1){
 					row.createCell((short) 28).setCellValue(days);//办理时间总计
+					}else{
+						row.createCell((short) 28).setCellValue("");//办理时间总计
+					}
 				}
 				if(move.getStatus()!=null){
 					row.createCell((short) 29).setCellValue(move.getStatus());//当前状态
@@ -946,7 +960,10 @@ public class Loan_TY_JJB_Controller extends BaseController {
 			Date endDate = sdf.parse("2016-12-31");*/
 			Date begDate =applytime;
 			Date endDate =audittime;
-			if (begDate.after(endDate))throw new Exception("日期范围非法");
+			/*if (begDate.after(endDate))throw new Exception("日期范围非法");*/
+			if (begDate.after(endDate)){
+				return -1;
+			}else{
 			// 总天数
 			int days = (int) ((endDate.getTime() - begDate.getTime()) / (24 * 60 * 60 * 1000)) + 1;
 			// 总周数，
@@ -978,6 +995,7 @@ public class Loan_TY_JJB_Controller extends BaseController {
 					}
 					System.out.println(sdf.format(begDate)+"到"+sdf.format(endDate)+"中间有"+rs+"个工作日");
 					return rs;
+			}
 					}
 		 //计算两个日期之间的总天数
 		 static int sumalldays(Date audittime, Date applytime) throws Exception {

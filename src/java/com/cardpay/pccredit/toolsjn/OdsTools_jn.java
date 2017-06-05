@@ -36,7 +36,20 @@ public class OdsTools_jn {
 	public Logger log = Logger.getLogger(OdsTools.class);
 	//private static ChannelSftp csftp = null;  
 	public String curRemotePath = "";//本次下载服务器目录
-	private String[] fileName = {"kkh_grxx.zip","kkh_grjtcy.zip","kkh_grjtcc.zip","kkh_grscjy.zip","kkh_grxxll.zip","kkh_grgzll.zip","kkh_grrbxx.zip","kdk_yehz.zip","kdk_lsz.zip","kdk_tkmx.zip","cxd_dkcpmc.zip","kkh_hmdgl.zip","cxd_rygl.zip","kdk_jh.zip"};
+	private String[] fileName = {"kkh_grxx.zip",
+								 "kkh_grjtcy.zip",
+								 "kkh_grjtcc.zip",
+								 "kkh_grscjy.zip",
+								 "kkh_grxxll.zip",
+								 "kkh_grgzll.zip",
+								 "kkh_grrbxx.zip",
+								 "kdk_yehz.zip",
+								 "kdk_lsz.zip",
+								 "kdk_tkmx.zip",
+								 "cxd_dkcpmc.zip",
+								 "kkh_hmdgl.zip",
+								 "cxd_rygl.zip",
+								 "kdk_jh.zip"};
 
 	@Autowired
 	private CustomerInforService customerInforService;
@@ -177,20 +190,22 @@ public class OdsTools_jn {
 	
 //===================================================手动===========================================================//
 	
-	public void downloadFilesbyDate(String dateString){
+	public void downloadFilesbyDate(String dateString, String status){
 		log.error("下载文件：");
 		FtpUtils sftp = new FtpUtils();
 		try {
 			sftp.connect();
 			curRemotePath = FtpUtils.bank_ftp_path;//上级目录
-			//获取今日日期 yyyyMMdd格式
+			//获取今日日期 yyyyMMdd格式File.separator
 			curRemotePath = curRemotePath+File.separator+dateString;
 			//获取文件列表
 			ArrayList<String> files = sftp.getList(curRemotePath);
 			//处理ftp文件
 			processFtpFileByDate(sftp, files,dateString);
 			//update task
-			dailyReportScheduleService.updBtachtask("100","downLoad",dateString);
+			if(!"002".equals(status)){
+				dailyReportScheduleService.updBtachtask("100","downLoad",dateString);
+			}
 			
 		} catch (JSchException e) {
 			e.printStackTrace();
@@ -237,7 +252,7 @@ public class OdsTools_jn {
 			}
 		}
 		log.error(dateString+"******************开始解压********************");  
-		String gzFile = FtpUtils.bank_ftp_down_path+dateString;
+		/*String gzFile = FtpUtils.bank_ftp_down_path+dateString;
 		for(int i=0;i<fileName.length;i++){
 			String url1 = gzFile+File.separator+fileName[i];
 			File fileUrl = new File(url1);
@@ -252,6 +267,41 @@ public class OdsTools_jn {
 				//删除压缩包 存在解压未完成 删包的condition
 				//fileUrl.delete();
 				csftp.disconnect();
+			}
+		}*/
+		String gzFile = FtpUtils.bank_ftp_down_path+File.separator+dateString;
+		for(int i=0;i<fileName.length;i++){
+			String url1 = gzFile+File.separator+fileName[i];
+			File fileUrl = new File(url1);
+			if(fileUrl.exists()){
+				ZipFile zip = new ZipFile(url1);  
+				for(Enumeration entries = zip.getEntries();entries.hasMoreElements();){
+					ZipEntry entry = (ZipEntry)entries.nextElement();  
+					String zipEntryName = entry.getName();  
+					InputStream in = zip.getInputStream(entry);  
+					String outPath = (gzFile+File.separator+zipEntryName).replaceAll("\\*", "/");
+					//判断路径是否存在,不存在则创建文件路径  
+					File file = new File(outPath.substring(0, outPath.lastIndexOf('/')));  
+					if(!file.exists()){  
+						file.mkdirs();  
+					}  
+					//判断文件全路径是否为文件夹,如果是上面已经上传,不需要解压  
+					if(new File(outPath).isDirectory()){  
+						continue;  
+					}  
+					
+					OutputStream out = new FileOutputStream(outPath);  
+					byte[] buf1 = new byte[1024];  
+					int len;  
+					while((len=in.read(buf1))>0){
+						out.write(buf1,0,len);  
+					}  
+					in.close();  
+					out.close();         
+					zip.close();
+				}
+				//删除压缩包
+				fileUrl.delete();
 			}
 		}
 		log.error(dateString+"******************解压完毕********************");  

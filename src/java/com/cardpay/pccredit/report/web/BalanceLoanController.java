@@ -137,12 +137,12 @@ public class BalanceLoanController extends BaseController{
 		for(int i = 0; i < list.size(); i++){
 			DkyetjbbForm move = list.get(i);
 			row = sheet.createRow((int) i+1);
-			row.createCell((short) 0).setCellValue(move.getRowIndex());
+			row.createCell((short) 0).setCellValue((int) i+1);
 			row.createCell((short) 1).setCellValue(move.getCname());
 			row.createCell((short) 2).setCellValue(move.getCardnum());
 			row.createCell((short) 3).setCellValue(move.getProdName());
 			row.createCell((short) 4).setCellValue(move.getMoney());
-			row.createCell((short) 5).setCellValue(FormatTool.formatNumber(move.getInterest(), 5, 1));
+			row.createCell((short) 5).setCellValue(FormatTool.formatNumber(move.getInterest(), 5, 1)+"% ");
 			row.createCell((short) 6).setCellValue(move.getLoandate());
 			row.createCell((short) 7).setCellValue(move.getBalamt());
 			row.createCell((short) 8).setCellValue(move.getBj());

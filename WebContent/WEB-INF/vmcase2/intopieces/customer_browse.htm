@@ -145,10 +145,10 @@
 								customer=false
 							}
 						}}});
-				if(customer==false){
+				/* if(customer==false){
 					window.top.Dialog.message("尚有贷款未结清");
 					return;
-					}
+					} */
                 var url = "${contextPath}/intopieces/addIntopieces/reportImport.page?customerId="+rowid[0]+"&productId="+productId;
                 window.location.href = url;
             } else {

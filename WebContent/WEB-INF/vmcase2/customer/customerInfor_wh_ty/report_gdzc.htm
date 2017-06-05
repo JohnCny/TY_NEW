@@ -48,7 +48,13 @@
 <!-- 			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_fz.page?appId=${appId}&urlType=${urlType}&cardId=${cardId}">资产负债</a></li>
 			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_bzlrb.page?appId=${appId}&urlType=${urlType}&cardId=${cardId}">标准利润</a></li> -->
 			<!-- <li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_zyyw.page?appId=${appId}&urlType=${urlType}">主营业务明细</a></li> -->
+			#if ($!filename=="标准经营性(新增)调查表1.8.1.xlsx")
 			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_xjllb.page?appId=${appId}&urlType=${urlType}&cardId=${cardId}">现金流</a></li>
+			#end
+			#if ($!filename=="标准经营性(转贷)调查表1.3.xlsx")
+			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_hkjhb.page?appId=${appId}&urlType=${urlType}&cardId=${cardId}">还款计划表</a></li>
+			#end
+		<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_dhd.page?appId=${appId}&urlType=${urlType}">点货单</a></li> 
 		<!-- 	<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_jc.page?appId=${appId}&urlType=${urlType}&cardId=${cardId}">交叉</a></li> -->
 			<!-- <li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_dhd.page?appId=${appId}&urlType=${urlType}">点货单</a></li> -->
 			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_gdzc.page?appId=${appId}&urlType=${urlType}&cardId=${cardId}">固资</a></li>

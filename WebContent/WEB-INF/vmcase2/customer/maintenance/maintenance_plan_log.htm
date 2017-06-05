@@ -113,7 +113,7 @@
 		 $("#id_create_button").click(function() {
 				if ($(".checkbox :checked").length == 1) {
 					var rowid = $("input[name='checkbox']:checked").val();
-					 var url="/PCCredit/product/productinformation/findCustormerUpdate.json?cardid="+rowid;
+					 var url="${contextPath}/product/productinformation/findCustormerUpdate.json?cardid="+rowid;
 					window.location.href = url;
 				}else{
 					topWin.Dialog.message("请选择记录！");

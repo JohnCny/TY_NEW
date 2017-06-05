@@ -316,7 +316,9 @@ public class MainController {
 				StringBuffer userIds = new StringBuffer();
 				userIds.append("(");
 				for(AccountManagerParameterForm form : forms){
+					if(form.getUserId().equals(user.getId())){
 					userIds.append("'").append(form.getUserId()).append("'").append(",");
+					}
 				}
 				userIds = userIds.deleteCharAt(userIds.length() - 1);
 				userIds.append(")");

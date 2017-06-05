@@ -133,30 +133,6 @@ public class IntoPiecesControl extends BaseController {
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView browse(@ModelAttribute IntoPiecesFilter filter,
 			HttpServletRequest request) {
-	/*	filter.setRequest(request);
-		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
-		String userId = user.getId();
-		//查询客户经理
-		List<AccountManagerParameterForm> forms = maintenanceService.findSubListManagerByManagerId(user);
-		if(forms != null && forms.size() > 0){
-			StringBuffer userIds = new StringBuffer();
-			userIds.append("(");
-			for(AccountManagerParameterForm form : forms){
-				userIds.append("'").append(form.getUserId()).append("'").append(",");
-			}
-			userIds = userIds.deleteCharAt(userIds.length() - 1);
-			userIds.append(")");
-			filter.setCustManagerIds(userIds.toString());
-		}else{
-			filter.setUserId(userId);
-		}
-		
-		QueryResult<IntoPieces> result = intoPiecesService.findintoPiecesByFilter(filter);
-		JRadPagedQueryResult<IntoPieces> pagedResult = new JRadPagedQueryResult<IntoPieces>(filter, result);
-
-		JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_browse", request);
-		mv.addObject(PAGED_RESULT, pagedResult);*/
-		
 		filter.setRequest(request);
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 		String startAmt = request.getParameter("startAmt");

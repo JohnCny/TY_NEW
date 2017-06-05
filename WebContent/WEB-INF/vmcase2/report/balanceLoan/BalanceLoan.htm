@@ -50,7 +50,7 @@
         <div id="topDiv" class="inquiry_list inquiry_top">
           <table>
             <colgroup>
-              <col width="5%" />
+            <!--   <col width="5%" /> -->
 			  <col width="8%" />
               <col width="8%" />
               <col width="8%" />
@@ -65,12 +65,12 @@
               <col width="7%" />
             </colgroup>
             <tr class="title">
-              <th nowrap="nowrap"></th>
+             <!--  <th nowrap="nowrap"></th> -->
               <th nowrap="nowrap">客户名称</th>
               <th nowrap="nowrap">客户证件号码</th>
               <th nowrap="nowrap">所属产品</th>
               <th nowrap="nowrap">贷款金额</th>
-              <th nowrap="nowrap">利率</th>
+              <th nowrap="nowrap">上浮比例</th>
               <th nowrap="nowrap">放款日期</th>
               <th nowrap="nowrap">余额</th>
               <th nowrap="nowrap">已偿还本金</th>
@@ -84,7 +84,7 @@
         <div id="downDiv" class="inquiry_list inquiry_down">
           <table>
             <colgroup>
-              <col width="5%" />
+             <!--  <col width="5%" /> -->
 			  <col width="8%" />
               <col width="8%" />
               <col width="8%" />
@@ -100,13 +100,13 @@
             </colgroup>
             #foreach ($customer in $result.items)
             <tr>
-              <td class="checkbox"><input type="radio" name="checkbox" value="$!customer.appId/$!customer.customerManagerId"/>
+           <!--    <td class="checkbox"><input type="radio" name="checkbox" value="$!customer.appId/$!customer.customerManagerId"/> -->
               <td nowrap="nowrap">$!customer.CHINESE_NAME</td>
               <td nowrap="nowrap">$!customer.CARD_ID</td>
               <td nowrap="nowrap">$!customer.CPMC</td>
               <td nowrap="nowrap">$!customer.JF</td>
               <!-- $format.formatNumber($!customer.interest, 5, 1) -->
-              <td nowrap="nowrap">$!customer.HTLL</td>
+              <td nowrap="nowrap">$format.formatNumber(2,$customer.JZLL)%</td>
               <td nowrap="nowrap">$!customer.JZRQ</td>
               <td nowrap="nowrap">$!customer.DKYE</td>
               <td nowrap="nowrap">$!customer.Shbj</td>

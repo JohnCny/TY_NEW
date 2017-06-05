@@ -25,6 +25,7 @@ public class DictionaryListener {
 		List<FlatTreeNode> flattreeNode = pccorganizationService.queryCurrentSubTreeList(PrivilegeConstants.INIT_ID);
 		HashMap<String,List<Dict>> dicts = customerInforService.findDict();
 		List<Dict> collectionMethods = customerInforService.findCollectionMethod();
+		//List<Dict> ManagerUsers=customerInforService.findManagerUsers();
 		List<Dict> industryTypes = customerInforService.findIndustryType();
 		List<Dict> positios = customerInforService.findPositio();
 		List<Dict> titles = customerInforService.findTitle();
@@ -65,6 +66,9 @@ public class DictionaryListener {
 		for(Dict dict : collectionMethods){
 			Dictionary.collectionMethodList.put(dict.getTypeCode(), dict.getTypeName());
 		}
+		/*for(Dict dict :ManagerUsers){
+			Dictionary.ManagerUsers.put(dict.getTypeCode(), dict.getTypeName());
+		}*/
 		for(Dict dict : industryTypes){
 			Dictionary.industryTypeList.put(dict.getTypeCode(), dict.getTypeName());
 		}

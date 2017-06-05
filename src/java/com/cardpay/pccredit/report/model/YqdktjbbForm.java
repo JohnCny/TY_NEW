@@ -21,9 +21,31 @@ public class YqdktjbbForm extends BaseForm {
 	   private String yhlx;				//应还利息
 	   private String busimanager;      //所属客户经理
 	   private String instcode;         //所属机构
+	   private String Shbj;
+	   private String Shlx;
 	 
 	
 	   private String rowIndex;//序号
+
+
+	public String getShbj() {
+		return Shbj;
+	}
+
+
+	public void setShbj(String shbj) {
+		Shbj = shbj;
+	}
+
+
+	public String getShlx() {
+		return Shlx;
+	}
+
+
+	public void setShlx(String shlx) {
+		Shlx = shlx;
+	}
 
 
 	public String getCname() {
