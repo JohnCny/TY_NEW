@@ -59,7 +59,7 @@ import sun.misc.BASE64Encoder;
 
 public class JNPAD_SFTPUtil {
 //	private static String host = "61.34.0.32";//生产
-	private static String host = "61.98.0.31";//测试
+	private static String host = "10.0.3.6";//测试
     private static String username="root";  
     private static String password="JNnsyh0825";  
     private static int port = 22;  

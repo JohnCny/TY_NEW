@@ -48,11 +48,12 @@ public class JXLReadExcel {
      * 程序入口方法
      * @param filePath 文件的路径
      * @param isWithStyle 是否需要表格样式 包含 字体 颜色 边框 对齐方式
+     * @param fileName 
      * @return <table>...</table> 字符串
      */
-    public String[] readExcelToHtml(String filePath, boolean isWithStyle){
+    public String[] readExcelToHtml(String filePath, boolean isWithStyle, String fileName){
         
-    	String sheet[] = new String[20];
+    	String sheet[] = new String[21];
         InputStream is = null;
         String approveValue="";
 //        String htmlExcel = null;
@@ -260,16 +261,36 @@ public class JXLReadExcel {
 					if (wb instanceof XSSFWorkbook) {
                         XSSFWorkbook xWb = (XSSFWorkbook) wb;
                         Sheet st = wb.getSheetAt(0);
-                        Row row = st.getRow(36);
-                        Cell cell = row.getCell(3);
+                      //此处修改金额坐标位置
+                        String ThefileName="标准经营性(新增)调查表1.8.1.xlsx";
+                        Cell cell;
+                        if(fileName.equals(ThefileName)){
+                        	
+                        	Row row = st.getRow(40);
+                        	cell = row.getCell(3);
+                        }else{
+                        	Row row = st.getRow(32);
+                        	cell = row.getCell(3);
+                        }
+                      /*  Row row = st.getRow(36);
+                        Cell cell = row.getCell(3);*/
                        
                         approveValue = getCellValue(cell);
                         map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_jy,ImportParameter.editAble_jy,false);
                     }else if(wb instanceof HSSFWorkbook){
                         HSSFWorkbook hWb = (HSSFWorkbook) wb;
                         Sheet st = wb.getSheetAt(0);
-                        Row row = st.getRow(36);
-                        Cell cell = row.getCell(3);
+                      //此处修改金额坐标位置
+                        String ThefileName="标准经营性(新增)调查表1.8.1.xlsx";
+                        Cell cell;
+                        if(fileName.equals(ThefileName)){
+                        	
+                        	Row row = st.getRow(40);
+                        	cell = row.getCell(3);
+                        }else{
+                        	Row row = st.getRow(32);
+                        	cell = row.getCell(3);
+                        }
                         approveValue = getCellValue(cell);
                         map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_jy,ImportParameter.editAble_jy,false);
                     }
@@ -287,6 +308,19 @@ public class JXLReadExcel {
                 	String content_base64 = getBASE64(map.get("computerData").toString());
 					sheet[18] = content_base64;
 				}
+            	//==============
+				else if(wb.getSheetAt(i).getSheetName().indexOf("还款计划表")>=0){
+					if (wb instanceof XSSFWorkbook) {
+                        XSSFWorkbook xWb = (XSSFWorkbook) wb;
+                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_hkjhb,ImportParameter.RowAndCol_hkjhb,false);
+                    }else if(wb instanceof HSSFWorkbook){
+                        HSSFWorkbook hWb = (HSSFWorkbook) wb;
+                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_hkjhb,ImportParameter.RowAndCol_hkjhb,false);
+                    }
+                	String content_base64 = getBASE64(map.get("computerData").toString());
+					sheet[20] = content_base64;
+				}
+            	//================
             	sheet[19] = approveValue;
             }
             

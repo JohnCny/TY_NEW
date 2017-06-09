@@ -3,6 +3,7 @@ package com.cardpay.pccredit.common;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -12,9 +13,11 @@ import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -43,9 +46,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
 import com.cardpay.pccredit.intopieces.constant.Constant;
+import com.cardpay.pccredit.intopieces.web.LocalImageForm;
 import com.cardpay.pccredit.manager.service.DailyReportScheduleService;
 import com.cardpay.pccredit.tools.ImportParameter;
 import com.jcraft.jsch.Channel;
@@ -53,7 +58,9 @@ import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
-import com.sun.image.codec.jpeg.*;
+import com.sun.image.codec.jpeg.JPEGCodec;
+import com.sun.image.codec.jpeg.JPEGImageDecoder;
+import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
 import com.wicresoft.util.spring.Beans;
 
@@ -163,7 +170,7 @@ public class SFTPUtil {
     /** 
      * upload all the files to the server 
      */  
-    public  static Map<String, String> uploadJn(MultipartFile oldFile,String customerId) {
+    public synchronized  static Map<String, String> uploadJn(MultipartFile oldFile,String customerId) {
     	String newFileName = null;
 		String fileName = null;
     	Map<String, String> map = new HashMap<String, String>();
@@ -184,7 +191,7 @@ public class SFTPUtil {
 				File tempFile = new File(path + File.separator + oldFile.getOriginalFilename());
 				if (tempFile.exists()) {
 					newFileName = IDGenerator.generateID() + "."+ oldFile.getOriginalFilename().split("\\.")[1];
-				} else {
+				} else {		  
 					newFileName = oldFile.getOriginalFilename();
 				}
 	    	   CommonsMultipartFile cf= (CommonsMultipartFile)oldFile;
@@ -195,7 +202,7 @@ public class SFTPUtil {
 	    	   disconnect();  
 	           
 	    	   map.put("fileName", fileName);
-	   		   map.put("url", path +File.separator+ newFileName);
+	   		   map.put("url", path +'/'+ newFileName);
 	   		   
         	}
         } catch (FileNotFoundException e) {  
@@ -468,15 +475,25 @@ public class SFTPUtil {
      * @return <table>...</table> 字符串
      */
     public static String[] readExcelToHtml(String filePath, boolean isWithStyle, String fileName){
-        
+    	//服务器
     	String sheet[] = new String[21];
+        BufferedInputStream is = null;
+        String approveValue="";
+        Map<String, String> map = new HashMap<String, String>();
+        try {
+        	SFTPUtil.connect();
+        	System.out.println(filePath.substring(0, 54));
+        	sftp.cd(filePath.substring(0, 54));//filePath.split("\\\\")[0]
+        	//filePath.substring(51, filePath.length())
+        	is = new BufferedInputStream(sftp.get(filePath.substring(55, filePath.length())));
+        //本地测试
+    	/*String sheet[] = new String[21];
         InputStream is = null;
         String approveValue="";
-//        String htmlExcel = null;
         Map<String, String> map = new HashMap<String, String>();
         try {
             File sourcefile = new File(filePath);
-            is = new FileInputStream(sourcefile);
+            is = new FileInputStream(sourcefile);*/
             Workbook wb = WorkbookFactory.create(is);
             for(int i=0;i<wb.getNumberOfSheets();i++)
             {
@@ -1149,4 +1166,71 @@ public class SFTPUtil {
         return column;
     }
     
+    /**
+     * base64转换服务器图片
+     * @param result
+     * @return
+     * @throws IOException
+     * @throws SftpException 
+     */
+    public static List<LocalImageForm> TestImageBinary(List<LocalImageForm> result) throws IOException, SftpException {    
+        BASE64Encoder encoder = new BASE64Encoder();    
+        BASE64Decoder decoder = new BASE64Decoder();
+        List<LocalImageForm> list=new ArrayList<LocalImageForm>();
+      connect();
+        	  for(int i=0;i<result.size();i++){
+        			sftp.cd(result.get(i).getUri().substring(0, 50));
+        			  BufferedImage bi;    
+        		      bi = ImageIO.read(sftp.get(result.get(i).getUri().substring(51, result.get(i).getUri().length())));
+        			  ByteArrayOutputStream baos = new ByteArrayOutputStream();    
+        	            ImageIO.write(bi, "jpg", baos);    
+        	            byte[] bytes = baos.toByteArray();
+        			/*byte[] data = null;
+        	        // 读取图片字节数组
+        	        try {
+        	        	BufferedInputStream in = new BufferedInputStream(sftp.get(result.get(i).getUri().substring(51, result.get(i).getUri().length())));
+        	            data = new byte[in.available()];
+        	            in.read(data);
+        	            in.close();
+        	        } catch (IOException e) {
+        	            e.printStackTrace();
+        	        }*/
+        	            LocalImageForm ImageMore=new LocalImageForm();
+        	            ImageMore.setUri(encoder.encodeBuffer(bytes).trim());
+        		    list.add(i, ImageMore);
+        	            if(i==result.size()-1){
+        	            	disconnect();
+        	            }
+        	
+        }
+    	return list;
+        
+    }
+
+
+    /**
+     * base64转换本地图片
+     * @param result
+     * @return
+     * @throws IOException
+     * @throws SftpException 
+     */
+    public static List<LocalImageForm> TestImageBinary1(List<LocalImageForm> result) throws IOException, SftpException {    
+        BASE64Encoder encoder = new BASE64Encoder();    
+        BASE64Decoder decoder = new BASE64Decoder();
+        List<LocalImageForm> list=new ArrayList<LocalImageForm>();
+        	  for(int i=0;i<result.size();i++){
+        		  byte[] data = null;
+        			  String url="D:"+result.get(i).getUri();
+        		      InputStream in = new FileInputStream(url);
+        	            data = new byte[in.available()];
+        	            in.read(data);
+        	            in.close();
+        	            LocalImageForm ImageMore=new LocalImageForm();
+        	            ImageMore.setUri(encoder.encode(data));
+        		    list.add(i, ImageMore);
+        }
+    	return list;
+        
+    }
 }
