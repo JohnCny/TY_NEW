@@ -121,6 +121,7 @@ public class JnIpadUserLoginController {
 	@ResponseBody
 	@RequestMapping(value = "/ipad/user/JnLogin.json")
 	public String login(@ModelAttribute NODEAUDIT NODEAUDIT,HttpServletRequest request) {
+		System.out.println("pad开始登陆");
 		qyjl=0;
 		JnUserLoginIpad user = null;
 		Map<String,Object> map = new LinkedHashMap<String,Object>();

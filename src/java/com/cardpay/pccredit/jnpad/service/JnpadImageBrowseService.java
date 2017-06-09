@@ -3,6 +3,7 @@ package com.cardpay.pccredit.jnpad.service;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
@@ -20,6 +21,7 @@ import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentDetail;
 import com.cardpay.pccredit.intopieces.web.LocalImageForm;
 import com.cardpay.pccredit.jnpad.dao.JnpadImageBrowseDao;
 import com.cardpay.pccredit.jnpad.model.JNPAD_SFTPUtil;
+import com.jcraft.jsch.SftpException;
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageDecoder;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
@@ -42,7 +44,20 @@ public class JnpadImageBrowseService {
 	}
 	public List<LocalImageForm> findLocalImageByType(String customerId,
 			 String productId, String phone_type){
-		return jnpadImageBrowseDao.findLocalImageByType(customerId,productId,phone_type);
+		//return jnpadImageBrowseDao.findLocalImageByType(customerId,productId,phone_type);
+		List<LocalImageForm> result= jnpadImageBrowseDao.findLocalImageByType(customerId,productId,phone_type);
+		List<LocalImageForm> list=null;
+			try {
+				//服务器
+				//list=SFTPUtil.TestImageBinary1(result);
+				//本地
+				list=SFTPUtil.TestImageBinary(result);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (SftpException e) {
+				e.printStackTrace();
+			}
+		return list;
 	}
 	
 
