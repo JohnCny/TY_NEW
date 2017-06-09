@@ -127,8 +127,9 @@ public class AddIntoPiecesService {
 				// TODO Auto-generated method stub
 				//本地测试
 				//Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
-				//指定服务器上传 SFTPUtil.uploadJn(file, customerId);
-				Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+				//指定服务器上传 
+				Map<String, String> map=SFTPUtil.uploadJn(file, customerId);
+				//Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
 				String fileName = map.get("fileName");
 				String url = map.get("url");
 				LocalExcel localExcel = new LocalExcel();
@@ -204,7 +205,7 @@ public class AddIntoPiecesService {
 			//读取excel内容
 			JXLReadExcel readExcel = new JXLReadExcel();
 			//本地测试
-			String sheet[] = readExcel.readExcelToHtml(url, true);
+			String sheet[] = readExcel.readExcelToHtml(url, true,fileName);
 			//服务器
 			//String sheet[] = SFTPUtil.readExcelToHtml(url, true);
 			for(String str : sheet){

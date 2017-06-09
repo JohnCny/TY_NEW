@@ -127,9 +127,9 @@ public class JnpadAddIntoPiecesService {
 	public void importExcel(MultipartFile file,String productId, String customerId,String fileName_1) {
 		// TODO Auto-generated method stub
 		//本地测试
-		Map<String, String> map = JNPAD_UploadFileTool.uploadYxzlFileBySpring(file,customerId,fileName_1);
+		//Map<String, String> map = JNPAD_UploadFileTool.uploadYxzlFileBySpring(file,customerId,fileName_1);
 		//指定服务器上传
-//		Map<String, String> map = JNPAD_SFTPUtil.uploadJn(file, customerId,fileName_1);
+		Map<String, String> map = JNPAD_SFTPUtil.uploadJn(file, customerId,fileName_1);
 		String fileName = map.get("fileName");
 		String url = map.get("url");
 		LocalExcel localExcel = new LocalExcel();
@@ -146,9 +146,9 @@ public class JnpadAddIntoPiecesService {
 		//读取excel内容
 		JXLReadExcel readExcel = new JXLReadExcel();
 		//本地测试
-		String sheet[] = readExcel.readExcelToHtml(url, true);
+//		String sheet[] = readExcel.readExcelToHtml(url, true,fileName);
 		//服务器
-//		String sheet[] = SFTPUtil.readExcelToHtml(url, true);
+		String sheet[] = SFTPUtil.readExcelToHtml(url, true,fileName);
 	/*	for(String str : sheet){
 			if(StringUtils.isEmpty(str)){
 				throw new RuntimeException("导入失败，请检查excel文件与模板是否一致！");
@@ -186,6 +186,7 @@ public class JnpadAddIntoPiecesService {
 		localExcel.setSheetYsyf(sheet[14]);
 		localExcel.setSheetJy(sheet[17]);
 		localExcel.setSheetJbzk(sheet[18]);
+		localExcel.setHkjhb(sheet[20]);
 		if(sheet[19].contains("元")){
 			localExcel.setApproveValue(sheet[19].substring(0,sheet[19].indexOf("元")));
 		}else{
@@ -227,7 +228,7 @@ public class JnpadAddIntoPiecesService {
 		//读取excel内容
 		JXLReadExcel readExcel = new JXLReadExcel();
 		//本地测试
-		String sheet[] = readExcel.readExcelToHtml(url, true);
+		String sheet[] = readExcel.readExcelToHtml(url, true,fileName);
 		//服务器
 //		String sheet[] = SFTPUtil.readExcelToHtml(url, true);
 		for(String str : sheet){
@@ -285,9 +286,9 @@ public class JnpadAddIntoPiecesService {
 		
 		
 		//本地测试
-		Map<String, String> map = JNPAD_UploadFileTool.uploadYxzlFileBySpring(file,customerId,fileName_1);
+//		Map<String, String> map = JNPAD_UploadFileTool.uploadYxzlFileBySpring(file,customerId,fileName_1);
 		//指定服务器上传
-//		Map<String, String> map = JNPAD_SFTPUtil.uploadJn(file, customerId,fileName_1);
+		Map<String, String> map = JNPAD_SFTPUtil.uploadJn(file, customerId,fileName_1);
 		String fileName = map.get("fileName");
 		String url = map.get("url");
 		LocalImage localImage = new LocalImage();
