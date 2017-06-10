@@ -155,15 +155,15 @@ public class CustomerInforInsertController extends BaseController{
 				CustomerInfor customerinfor = customerinfoForm.createModel(CustomerInfor.class);
 				String name=request.getParameter("chineseName");
 				String sp=request.getParameter("spmc");
-				try {
-					String chineseName=new String(name.getBytes("iso-8859-1"),"utf-8");
-					String spmc=new String(sp.getBytes("iso-8859-1"),"utf-8");
-					customerinfor.setChineseName(chineseName);
-					customerinfor.setSpmc(spmc);
-				} catch (UnsupportedEncodingException e1) {
+				/*try {*/
+					//String chineseName=new String(name.getBytes("iso-8859-1"),"utf-8");
+					//String spmc=new String(sp.getBytes("iso-8859-1"),"utf-8");
+					customerinfor.setChineseName(name);
+					customerinfor.setSpmc(sp);
+				/*} catch (UnsupportedEncodingException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				}
+				}*/
 				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 				customerinfor.setCreatedBy(user.getId());
 				customerinfor.setUserId(user.getId());

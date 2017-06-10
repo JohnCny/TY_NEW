@@ -9,7 +9,15 @@ public class AddIntoPiecesFilter extends BusinessFilter{
     private String excelId;
     private String imageId;
     private String applicationId;
+    private String liucheng;
     
+    
+	public String getLiucheng() {
+		return liucheng;
+	}
+	public void setLiucheng(String liucheng) {
+		this.liucheng = liucheng;
+	}
 	public String getCustomerId() {
 		return customerId;
 	}

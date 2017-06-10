@@ -43,7 +43,7 @@
 		</menu>
 		<menu id="080000" name="riskcontrol" title="综合风控管理" operations=""> 
 			<menu id="080001" name="riskcustomermanager" title="风险客户管理" url="/riskcontrol/riskcustomermanager/managerbrowse.page" img="" operations="reported|browse"/>
-			<menu id="080002" name="riskcustomercollection" title="客户催收计划列表" url="/riskcontrol/riskcustomercollection/browse.page" img="" operations="create|change|display|browse"/>
+			<!-- <menu id="080002" name="riskcustomercollection" title="客户催收计划列表" url="/riskcontrol/riskcustomercollection/browse.page" img="" operations="create|change|display|browse"/> -->
 			<menu id="080004" name="hmdinput" title="黑名单导入" url="/report/inputhmdcomtroller/hmdbrowse.page" img="" operations="reported|browse"/>
 		</menu>
 		
@@ -81,6 +81,7 @@
 			<menu id="100050" name="balanceLoan"  title="贷款余额统计报表 "     url="/balance/loan/queryBalanceLoan.page" img="" operations="browse"/>
 			<menu id="100060" name="overLoan"     title="逾期贷款统计报表 "     url="/overdue/loan/queryOverdueLoan.page" img="" operations="browse"/>
 			<menu id="100070" name="expectLoan"   title="预期还款贷款统计报表 "   url="/expect/loan/queryExpectLoan.page" img="" operations="browse"/>
+			<menu id="100070" name="expectLoan"   title="荣耀卡统计报表 "   url="/Ryk/loan/ryktj.page" img="" operations="browse"/>
 			<!-- <menu id="100080" name="creditFlow"   title="信贷流程统计报表 "      url="/credit/flow/queryCreditFlow.page" img="" operations="browse"/> -->
 			<menu id="100090" name="afterLoancollectAll" title="贷款汇总查询"  url="/report/afterLoancollect/browseAll.page" img="" operations="browse"/>
 		</menu>
@@ -102,7 +103,7 @@
 			<menu id="103080" name="login" title="登录日志" url="/system/loginlog/browse.page" img="" operations="display|browse|export" />
 			<menu id="103090" name="dict" title="数据字典" url="/system/dict/browse.page" img="" operations="create|delete|browse|change" />
 			<menu id="103100" name="parameter" title="系统参数配置" url="/system/parameter/browse.page" img="" operations="change|browse" />
-			<menu id="103110" name="group" title="用户组管理" url="/system/group/browse.page" img="" operations="display|browse|export" />
+			<!-- <menu id="103110" name="group" title="用户组管理" url="/system/group/browse.page" img="" operations="display|browse|export" /> -->
 			<menu id="103120" name="charge" title="负责人管理" url="/system/charge/browse.page" img="" operations="create|change|delete|display|browse" />
 		</menu>
 		

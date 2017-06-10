@@ -10,7 +10,14 @@ public class AddIntoPiecesForm extends BaseModel{
     private String productId;
     private String excelId;
     private String imageId;
+    private String liucheng;
     
+	public String getLiucheng() {
+		return liucheng;
+	}
+	public void setLiucheng(String liucheng) {
+		this.liucheng = liucheng;
+	}
 	public String getCustomerId() {
 		return customerId;
 	}

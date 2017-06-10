@@ -171,6 +171,42 @@
 	    <result property="dy" column="dy" />
 	 </resultMap>
 	 
+   <resultMap id="MibusidateView" type="com.cardpay.pccredit.postLoan.model.MibusidateView" >
+	<result column="YWBH" property="YWBH" jdbcType="VARCHAR" />
+	<result column="id" property="id" jdbcType="VARCHAR" />
+	<result column="KHH" property="KHH" jdbcType="VARCHAR" />
+	<result column="KHMC" property="KHMC" jdbcType="VARCHAR" />
+	<result column="ZJHM" property="ZJHM" jdbcType="VARCHAR" />
+	<result column="SSBM" property="SSBM" jdbcType="VARCHAR" />
+	<result column="SJ" property="SJ" jdbcType="VARCHAR" />
+	<result column="SXED" property="SXED" jdbcType="VARCHAR" />
+	<result column="GHJL" property="GHJL" jdbcType="VARCHAR" />
+	<result column="LOANDATE" property="LOANDATE" jdbcType="VARCHAR" />
+	<result column="DQRQ" property="DQRQ" jdbcType="VARCHAR" />
+	<result column="DKQX" property="DKQX" jdbcType="VARCHAR" />
+	<result column="JZLL" property="JZLL" jdbcType="VARCHAR" />
+	<result column="REQLMT" property="REQLMT" jdbcType="VARCHAR" />
+	<result column="DELAYINTERESTDAYS" property="DELAYINTERESTDAYS" jdbcType="VARCHAR" />
+	<result column="DELAYAMTDAYS" property="DELAYAMTDAYS" jdbcType="VARCHAR" />
+	<result column="qs" property="qs" jdbcType="VARCHAR" />
+	<result column="DLAYDT" property="DLAYDT" jdbcType="VARCHAR" />
+	<result column="DF" property="DF" jdbcType="VARCHAR" />
+	<result column="YE" property="YE" jdbcType="VARCHAR" />
+	<result column="SHBJ" property="SHBJ" jdbcType="VARCHAR" />
+	<result column="JKJE" property="JKJE" jdbcType="VARCHAR" />
+	<result column="KSQXRQ" property="KSQXRQ" jdbcType="VARCHAR" />
+	<result column="SHLX" property="SHLX" jdbcType="VARCHAR" />
+	<result column="DKYE" property="DKYE" jdbcType="VARCHAR" />
+	<result column="BNQX" property="BNQX" jdbcType="VARCHAR" />
+	<result column="BWQX" property="BWQX" jdbcType="VARCHAR" />
+	<result column="BALAMT" property="BALAMT" jdbcType="VARCHAR" />
+	<result column="yxye" property="yxye" jdbcType="VARCHAR" /> 
+	<result column="HKFS" property="HKFS" jdbcType="VARCHAR" />  
+	<result column="je" property="je" jdbcType="VARCHAR" />  
+	<result column="CREATE_TIME" property="CREATE_TIME" jdbcType="VARCHAR" /> 
+	<result column="dlayamtsum" property="dlayamtsum" jdbcType="VARCHAR" /> 
+ 	 </resultMap>
+	 
    <resultMap id="tkmxFormResultMap" type="com.cardpay.pccredit.report.model.TkmxLszBasic">
 	    <result property="CHINESE_NAME" column="CHINESE_NAME" />
 	    <result property="CARD_ID" column="CARD_ID" />
@@ -1977,55 +2013,55 @@
            <if test="userId != null and userId != '' ">
               and a.userid =#{userId}
            </if> ) as overdueCusM4
-          <!--  ,
-           
-       ( select sum(a.SHLX)
-          from mibusidata a, basic_customer_information b
-         where a.id = b.ty_customer_id
-         and a.LOANDATE <![CDATA[ <=  ]]> #{endDate}
-         and a.LOANDATE <![CDATA[ >=  ]]> #{startDate}
-         <if test="userId != null and userId != '' ">
-             and b.USER_ID =#{userId}
-         </if> ) as resvIntAccum  -->
-        <!--  ,
-         
-        ( select nvl(sum(a.DKYE),0) from 
-           mibusidata a,
-           basic_customer_information b
-         where a.id = b.ty_customer_id
-               and a.MAINASSURE ='C100'
-               and a.LOANDATE <![CDATA[ <=  ]]>to_date( #{endDate} ,'yyyy/mm/dd')
-         	   and a.LOANDATE <![CDATA[ >=  ]]>  to_date(  #{startDate} ,'yyyy/mm/dd')
-         <if test="userId != null and userId != '' ">
-             and b.USER_ID =#{userId}
-         </if>) as xy
-        ,
-         
-         (select nvl(sum(a.DKYE),0) from 
-           mibusidata a,
-           basic_customer_information b
-         where a.id = b.ty_customer_id
-               and a.MAINASSURE ='C101'
-               and a.LOANDATE <![CDATA[ <=  ]]>to_date( #{endDate} ,'yyyy/mm/dd')
-         	   and a.LOANDATE <![CDATA[ >=  ]]>to_date(  #{startDate} ,'yyyy/mm/dd')
-           <if test="userId != null and userId != '' ">
-             and b.USER_ID =#{userId}
-           </if>) as bz
-            ,
-         
-         (select nvl(sum(a.DKYE),0) from 
-           mibusidata a,
-           basic_customer_information b
-         where a.id = b.ty_customer_id
-               and a.MAINASSURE ='C102'
-               and a.LOANDATE <![CDATA[ <=  ]]> to_date( #{endDate} ,'yyyy/mm/dd')
-         	   and a.LOANDATE <![CDATA[ >=  ]]> to_date(  #{startDate} ,'yyyy/mm/dd')
-           <if test="userId != null and userId != '' ">
-             and b.USER_ID =#{userId}
-           </if>) as dy -->
-
-  from dual
-   
-
+  		from dual
  	 </select>
+	 	 
+	<!--  荣耀卡统计报表 -->
+	 	<select id="findrykapplicationinfobyuserid" resultMap="MibusidateView" 
+			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
+              select * from ty_mibusidata tym,ty_repay_tkmx tkmx ,ty_customer_base base ,
+         basic_customer_information basic ,  sys_user sysuser,customer_application_info info
+       where 1=1 and tym.ywbh=tkmx.ywbh and tkmx.khh=base.khnm and
+       base.id=basic.ty_customer_id and basic.user_id=sysuser.id and 
+       basic.id=info.customer_id and   info.liucheng='1'
+		           <if test="id != null and id != '' ">
+		            and sysuser.id=#{id}
+		           </if>
+              		<if test="certiCode != null and certiCode != '' ">
+						AND basic.card_id=#{certiCode}
+					</if>
+					<if test="customerName != null and customerName != '' ">
+					    AND basic.chineseName=#{customerName}
+					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.name=#{organName}
+					</if>
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND sysuser.display_name=#{custManagerName}
+					</if>
+	 	</select>
+	 	
+	 	<select id="findrykapplicationinfobyuseridsize" resultType="int" 
+			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
+			 select count( distinct tym.ywbh) from ty_mibusidata tym,ty_repay_tkmx tkmx ,ty_customer_base base ,
+         basic_customer_information basic ,  sys_user sysuser,customer_application_info info
+       where 1=1 and tym.ywbh=tkmx.ywbh and tkmx.khh=base.khnm and
+       base.id=basic.ty_customer_id and basic.user_id=sysuser.id and 
+       basic.id=info.customer_id and   info.liucheng='1'
+       <if test="id != null and id != '' ">
+		     and sysuser.id=#{id}
+		</if>
+       <if test="certiCode != null and certiCode != '' ">
+     		AND basic.card_id=#{certiCode}
+		</if>
+		<if test="customerName != null and customerName != '' ">
+		    AND basic.chineseName=#{customerName}
+		</if>
+		<if test="organName != null and organName != '' ">
+		    AND a.name=#{organName}
+		</if>
+		<if test="custManagerName != null and custManagerName != '' ">
+			AND sysuser.display_name=#{custManagerName}
+		</if>
+		</select>
 </mapper>

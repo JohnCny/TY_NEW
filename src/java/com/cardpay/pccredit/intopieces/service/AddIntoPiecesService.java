@@ -299,6 +299,7 @@ public class AddIntoPiecesService {
 		app.setCreatedTime(new Date());
 		app.setStatus(Constant.APPROVE_INTOPICES);
 		app.setId(IDGenerator.generateID());
+		app.setLiucheng(addIntoPiecesForm.getLiucheng());
 		
 		//将调查表和影像件 关联到该app
 		LocalExcel localExcel = localExcelDao.findById(addIntoPiecesForm.getExcelId());

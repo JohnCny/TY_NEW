@@ -2,6 +2,8 @@ package com.cardpay.pccredit.report.dao;
 
 import java.util.List;
 
+import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
+import com.cardpay.pccredit.postLoan.model.MibusidateView;
 import com.cardpay.pccredit.report.filter.AccLoanCollectFilter;
 import com.cardpay.pccredit.report.filter.CustomerMoveFilter;
 import com.cardpay.pccredit.report.filter.ReportFilter;
@@ -55,4 +57,6 @@ public interface CustomerTransferFlowDao {
 	
 	public List<AccLoanCollectInfo> getAccLoanCollect(AccLoanCollectFilter filter);
 	String finddqrq();
+	List<MibusidateView> findrykapplicationinfobyuserid(ReportFilter filter);
+	int findrykapplicationinfobyuseridsize(ReportFilter filter);
 }

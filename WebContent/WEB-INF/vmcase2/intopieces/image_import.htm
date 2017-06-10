@@ -118,8 +118,8 @@ $(document).ready(function() {
 			topWin.Dialog.message("请先上传影像资料！");
 			return;
 		}
-		
-		var url = "${contextPath}/intopieces/addIntopieces/addIntopieces.json?excelId=$!result.filter.excelId&customerId=$!result.filter.customerId&productId=$!result.filter.productId";
+		alert($!result.filter.liucheng);
+		var url = "${contextPath}/intopieces/addIntopieces/addIntopieces.json?excelId=$!result.filter.excelId&customerId=$!result.filter.customerId&productId=$!result.filter.productId&liucheng=$!result.filter.liucheng";
 		Dialog.confirm("确定要提交进件吗？", "提示",
         function(){ 
 		    submitFlag = 1;
