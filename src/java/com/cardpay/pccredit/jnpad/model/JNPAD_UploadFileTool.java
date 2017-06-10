@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +27,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import com.cardpay.pccredit.common.CreateThumbnail;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.product.model.AddressAccessories;
+import com.cardpay.pccredit.toolsjn.ImaUtils;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
 
 public class JNPAD_UploadFileTool {
@@ -155,7 +157,7 @@ public class JNPAD_UploadFileTool {
 	}
 
 	/* 上传影像资料专用 */
-	public static Map<String, String> uploadYxzlFileBySpring(MultipartFile file,String customerId,String fileName_1) {
+	public synchronized static Map<String, String> uploadYxzlFileBySpring(MultipartFile file,String customerId,String fileName_1) {
 		String newFileName = null;
 		String fileName = null;
 		Map<String, String> map = new HashMap<String, String>();
@@ -167,7 +169,6 @@ public class JNPAD_UploadFileTool {
 		try {
 			// 取得上传文件
 			if (file != null && !file.isEmpty()) {
-				System.out.println("file"+file);
 //				fileName = file.getOriginalFilename();
 				fileName = fileName_1;
 				File tempFile = new File(path
@@ -180,6 +181,10 @@ public class JNPAD_UploadFileTool {
 				}
 				File localFile = new File(path + newFileName);
 				file.transferTo(localFile);
+				System.out.println("开始压缩：" + new Date().toLocaleString()); 
+				ImaUtils.imgCom(path + newFileName);  
+				ImaUtils.resizeFix(1200, 600);  
+			        System.out.println("压缩完毕：" + new Date().toLocaleString());  
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

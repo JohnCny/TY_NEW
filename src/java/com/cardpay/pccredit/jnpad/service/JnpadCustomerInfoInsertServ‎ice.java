@@ -123,8 +123,11 @@ public class JnpadCustomerInfoInsertServ‎ice {
 			params.put("status", status);
 			sql.append("and t.status= #{status}");
 			}
-		if(StringUtils.trimToNull(cardId)!=null||StringUtils.trimToNull(chineseName)!=null){
-			if(StringUtils.trimToNull(cardId)!=null&&StringUtils.trimToNull(chineseName)!=null){
+		if(StringUtils.trimToNull(chineseName)!=null){
+			params.put("chineseName", chineseName);
+			sql.append("and b.chinese_name= #{chineseName}");
+		/*if(StringUtils.trimToNull(cardId)!=null||StringUtils.trimToNull(chineseName)!=null){*/
+			/*if(StringUtils.trimToNull(cardId)!=null&&StringUtils.trimToNull(chineseName)!=null){
 			    //sql.append(" and (b.card_id like '%"+cardId+"%' or b.chinese_name like '%"+chineseName+"%' )");
 			    sql.append(" and b.card_id like '%"+cardId+"%' and b.chinese_name like '%"+chineseName+"%' ");
 			}else if(StringUtils.trimToNull(cardId)!=null&&StringUtils.trimToNull(chineseName)==null){
@@ -133,7 +136,7 @@ public class JnpadCustomerInfoInsertServ‎ice {
 			}else if(StringUtils.trimToNull(cardId)==null&&StringUtils.trimToNull(chineseName)!=null){
 				params.put("chineseName", chineseName);
 				sql.append(" and b.chinese_name like '%'||#{chineseName}||'%' ");
-			}
+			}*/
 		}
 		
 		sql.append(" order by t.id asc");

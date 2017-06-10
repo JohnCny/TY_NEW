@@ -226,7 +226,6 @@
 		     select amp.user_id as id
      FROM  manager_belong_map mbm
     ,account_manager_parameter amp
-
      , sys_user su,
      ( select id from account_manager_parameter where user_id=#{ID}) cc
 

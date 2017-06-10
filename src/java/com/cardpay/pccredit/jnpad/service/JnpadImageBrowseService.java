@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +21,10 @@ import com.cardpay.pccredit.intopieces.model.LocalImage;
 import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentDetail;
 import com.cardpay.pccredit.intopieces.web.LocalImageForm;
 import com.cardpay.pccredit.jnpad.dao.JnpadImageBrowseDao;
+import com.cardpay.pccredit.jnpad.model.FwqUtils;
 import com.cardpay.pccredit.jnpad.model.JNPAD_SFTPUtil;
+import com.cardpay.pccredit.jnpad.model.JNPAD_UploadFileTool;
+import com.jcraft.jsch.SftpException;
 import com.jcraft.jsch.SftpException;
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageDecoder;
@@ -42,21 +46,26 @@ public class JnpadImageBrowseService {
 		// TODO Auto-generated method stub
 		return jnpadImageBrowseDao.findLocalImage(customerId,productId);
 	}
+	
+	public List<LocalImageForm> findLocalImageByType1(String customerId,
+			 String productId, String phone_type) throws IOException, SftpException{
+		return jnpadImageBrowseDao.findLocalImageByType(customerId,productId,phone_type);
+		
+	
+	}
 	public List<LocalImageForm> findLocalImageByType(String customerId,
-			 String productId, String phone_type){
-		//return jnpadImageBrowseDao.findLocalImageByType(customerId,productId,phone_type);
+			 String productId, String phone_type) throws IOException, SftpException{
 		List<LocalImageForm> result= jnpadImageBrowseDao.findLocalImageByType(customerId,productId,phone_type);
 		List<LocalImageForm> list=null;
-			try {
-				//服务器
-				//list=SFTPUtil.TestImageBinary1(result);
-				//本地
-				list=SFTPUtil.TestImageBinary(result);
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (SftpException e) {
-				e.printStackTrace();
-			}
+		Map<String, String> map=null;
+		if(FwqUtils.typeCode==0){
+			//本地
+			list=SFTPUtil.TestImageBinary1(result);
+		}else{
+			//服务器
+			list=JNPAD_SFTPUtil.TestImageBinary(result);
+		}
+	
 		return list;
 	}
 	
@@ -66,11 +75,13 @@ public class JnpadImageBrowseService {
 	public void downLoadYxzlJn(HttpServletResponse response,String id) throws Exception{
 		LocalImage v = commonDao.findObjectById(LocalImage.class, id);
 		if(v!=null){
-			//本地
-			this.downLoadFile(response,v);
-			//服务器
-//			SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
-//			JNPAD_SFTPUtil.downloadjn(response,v.getUri(), v.getAttachment());
+			if(FwqUtils.typeCode==0){
+				//本地
+				this.downLoadFile(response,v);
+			}else{
+				//服务器
+				JNPAD_SFTPUtil.downloadjn(response,v.getUri(), v.getAttachment());
+			}
 		}
 	}
 	

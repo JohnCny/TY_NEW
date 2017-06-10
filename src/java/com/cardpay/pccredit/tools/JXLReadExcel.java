@@ -31,6 +31,8 @@ import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.cardpay.pccredit.common.SFTPUtil;
+
 import sun.misc.BASE64Encoder;
 /**
  * @功能描述 POI 读取 Excel 转 HTML 支持 03xls 和 07xlsx 版本  包含样式
@@ -52,7 +54,6 @@ public class JXLReadExcel {
      * @return <table>...</table> 字符串
      */
     public String[] readExcelToHtml(String filePath, boolean isWithStyle, String fileName){
-        
     	String sheet[] = new String[21];
         InputStream is = null;
         String approveValue="";
@@ -262,7 +263,7 @@ public class JXLReadExcel {
                         XSSFWorkbook xWb = (XSSFWorkbook) wb;
                         Sheet st = wb.getSheetAt(0);
                       //此处修改金额坐标位置
-                        String ThefileName="标准经营性(新增)调查表1.8.1.xlsx";
+                        String ThefileName="1.8.1.xlsx";
                         Cell cell;
                         if(fileName.equals(ThefileName)){
                         	
@@ -281,7 +282,7 @@ public class JXLReadExcel {
                         HSSFWorkbook hWb = (HSSFWorkbook) wb;
                         Sheet st = wb.getSheetAt(0);
                       //此处修改金额坐标位置
-                        String ThefileName="标准经营性(新增)调查表1.8.1.xlsx";
+                        String ThefileName="1.8.1.xlsx";
                         Cell cell;
                         if(fileName.equals(ThefileName)){
                         	

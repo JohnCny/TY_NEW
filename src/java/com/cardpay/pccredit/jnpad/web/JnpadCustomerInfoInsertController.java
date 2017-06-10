@@ -164,9 +164,13 @@ public class JnpadCustomerInfoInsertController extends BaseController {
 //		filter.setRequest(request);
 		String userId = request.getParameter("userId");
 		String userType = request.getParameter("userType");
+		String name = request.getParameter("name");
 		Integer s =new Integer(userType);
 		List<IntoPieces> list=new ArrayList();
 		QueryResult<IntoPieces> result=null;
+		if(name!=null && name!=""){
+			filter.setChineseName(name);
+		}
 		//客户经理
 		if(s==1){
 			filter.setUserId(userId);
