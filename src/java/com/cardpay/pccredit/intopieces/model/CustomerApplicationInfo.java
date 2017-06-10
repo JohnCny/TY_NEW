@@ -57,8 +57,19 @@ public class CustomerApplicationInfo  extends BusinessModel {
     private String decisionRate;//审议结论-利率
     private String decisionTerm;//审议结论-期限
     private String decisionRefusereason;//审议结论-拒绝原因
+    private String liucheng; //记录是否荣耀卡
     
-    public String getCustomerId() {
+    
+    
+    public String getLiucheng() {
+		return liucheng;
+	}
+
+	public void setLiucheng(String liucheng) {
+		this.liucheng = liucheng;
+	}
+
+	public String getCustomerId() {
         return customerId;
     }
 

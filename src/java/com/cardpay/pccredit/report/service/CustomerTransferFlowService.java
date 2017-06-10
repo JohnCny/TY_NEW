@@ -10,7 +10,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.manager.model.AccountManagerParameter;
+import com.cardpay.pccredit.postLoan.model.MibusidateView;
 import com.cardpay.pccredit.report.dao.CustomerTransferFlowDao;
 import com.cardpay.pccredit.report.filter.AccLoanCollectFilter;
 import com.cardpay.pccredit.report.filter.CustomerMoveFilter;
@@ -168,5 +170,13 @@ public class CustomerTransferFlowService {
 		List<AccountManagerParameter> list = commonDao.queryBySql(AccountManagerParameter.class, sql, params);
 		return list;
 	}
+
+	public QueryResult<MibusidateView> findrykapplicationinfobyuserid(ReportFilter filter) {
+		List<MibusidateView> list = customerTransferFlowDao.findrykapplicationinfobyuserid(filter);
+		int size = customerTransferFlowDao.findrykapplicationinfobyuseridsize(filter);
+		QueryResult<MibusidateView> result = new QueryResult<MibusidateView>(size,list);
+		return result;
+	}
+
 	
 }

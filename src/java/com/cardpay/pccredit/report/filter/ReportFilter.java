@@ -3,11 +3,20 @@ package com.cardpay.pccredit.report.filter;
 import com.wicresoft.jrad.base.web.filter.BaseQueryFilter;
 
 public class ReportFilter extends BaseQueryFilter {
+	private String id;
 	private String certiCode;//客户证件号码
 	private String customerName;//客户 暂不用
 	private String organName;//所属机构
 	private String custManagerName;
 	private String status;
+	
+	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	public String getCertiCode() {
 		return certiCode;
 	}
