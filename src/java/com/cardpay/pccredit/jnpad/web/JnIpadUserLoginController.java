@@ -209,6 +209,9 @@ public class JnIpadUserLoginController {
 					userIds = userIds.deleteCharAt(userIds.length() - 1);
 					userIds.append(")");
 					String str = maintenanceService.getActiveList(userIds.toString());
+					if(str=="" ||str==null){
+						str="无";
+					}
 					map.put("repay", str);
 				}
 			}

@@ -3,6 +3,7 @@ package com.cardpay.pccredit.jnpad.service;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
@@ -57,6 +58,7 @@ import com.cardpay.pccredit.intopieces.web.AddIntoPiecesForm;
 import com.cardpay.pccredit.intopieces.web.LocalExcelForm;
 import com.cardpay.pccredit.intopieces.web.LocalImageForm;
 import com.cardpay.pccredit.jnpad.dao.JnpadImageBrowseDao;
+import com.cardpay.pccredit.jnpad.model.FwqUtils;
 import com.cardpay.pccredit.jnpad.model.JNPAD_SFTPUtil;
 import com.cardpay.pccredit.jnpad.model.JNPAD_UploadFileTool;
 import com.cardpay.pccredit.manager.model.BatchTask;
@@ -126,10 +128,14 @@ public class JnpadAddIntoPiecesService {
 	//导入调查报告
 	public void importExcel(MultipartFile file,String productId, String customerId,String fileName_1) {
 		// TODO Auto-generated method stub
-		//本地测试
-		//Map<String, String> map = JNPAD_UploadFileTool.uploadYxzlFileBySpring(file,customerId,fileName_1);
-		//指定服务器上传
-		Map<String, String> map = JNPAD_SFTPUtil.uploadJn(file, customerId,fileName_1);
+		Map<String, String> map =null;
+		if(FwqUtils.typeCode==0){
+			//本地
+			 map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+		}else{
+			//指定服务器上传
+			 map = SFTPUtil.uploadJn(file, customerId);
+		}
 		String fileName = map.get("fileName");
 		String url = map.get("url");
 		LocalExcel localExcel = new LocalExcel();
@@ -145,10 +151,14 @@ public class JnpadAddIntoPiecesService {
 		
 		//读取excel内容
 		JXLReadExcel readExcel = new JXLReadExcel();
-		//本地测试
-//		String sheet[] = readExcel.readExcelToHtml(url, true,fileName);
-		//服务器
-		String sheet[] = SFTPUtil.readExcelToHtml(url, true,fileName);
+		String sheet[] =null;
+		if(FwqUtils.typeCode==0){
+			//本地测试
+			 sheet = readExcel.readExcelToHtml(url, true,fileName);
+		}else{
+			//服务器
+		  sheet =SFTPUtil.readExcelToHtml(url, true,fileName);
+		}
 	/*	for(String str : sheet){
 			if(StringUtils.isEmpty(str)){
 				throw new RuntimeException("导入失败，请检查excel文件与模板是否一致！");
@@ -196,17 +206,20 @@ public class JnpadAddIntoPiecesService {
 		String sql = "delete from local_excel where customer_id='"+customerId+"' and product_id='"+productId+"'";
 		commonDao.queryBySql(LocalExcel.class, sql, null);
 		//添加模板
-		
-		commonDao.insertObject(localExcel);
+		customerInforDao.insertExcal(localExcel);
+		//commonDao.insertObject(localExcel);
 	}
 	
 	//补充调查模板先删除原有的调查模板信息再新增
 	public void importExcelSupple(MultipartFile file,String productId, String customerId,String appId) {
-		// TODO Auto-generated method stub
-		//本地
-		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
-		//指定服务器上传
-//		Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
+		Map<String, String> map =null;
+		if(FwqUtils.typeCode==0){
+			//本地
+			 map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+		}else{
+			//指定服务器上传
+			 map = SFTPUtil.uploadJn(file, customerId);
+		}
 		String fileName = map.get("fileName");
 		String url = map.get("url");
 		//删除
@@ -224,13 +237,16 @@ public class JnpadAddIntoPiecesService {
 		if (StringUtils.trimToNull(fileName) != null) {
 			localExcel.setAttachment(fileName);
 		}
-		
 		//读取excel内容
 		JXLReadExcel readExcel = new JXLReadExcel();
-		//本地测试
-		String sheet[] = readExcel.readExcelToHtml(url, true,fileName);
-		//服务器
-//		String sheet[] = SFTPUtil.readExcelToHtml(url, true);
+		String sheet[] =null;
+		if(FwqUtils.typeCode==0){
+			//本地测试
+			 sheet = readExcel.readExcelToHtml(url, true,fileName);
+		}else{
+			//服务器
+		  sheet = SFTPUtil.readExcelToHtml(url, true,fileName);
+		}
 		for(String str : sheet){
 			if(StringUtils.isEmpty(str)){
 				throw new RuntimeException("导入失败，请检查excel文件与模板是否一致！");
@@ -282,13 +298,17 @@ public class JnpadAddIntoPiecesService {
 	}
 	
 	public void importImage(MultipartFile file, String productId,
-			String customerId,String applicationId ,String fileName_1,String phone_type) {
+			String customerId,String applicationId ,String fileName_1,String phone_type) throws IOException {
+		Map<String, String> map=null;
+		if(FwqUtils.typeCode==0){
+			//本地测试
+			 map = JNPAD_UploadFileTool.uploadYxzlFileBySpring(file,customerId,fileName_1);
+		}else{
+			//指定服务器上传
+			 map = JNPAD_SFTPUtil.uploadJn(file, customerId,fileName_1);
+		}
 		
 		
-		//本地测试
-//		Map<String, String> map = JNPAD_UploadFileTool.uploadYxzlFileBySpring(file,customerId,fileName_1);
-		//指定服务器上传
-		Map<String, String> map = JNPAD_SFTPUtil.uploadJn(file, customerId,fileName_1);
 		String fileName = map.get("fileName");
 		String url = map.get("url");
 		LocalImage localImage = new LocalImage();

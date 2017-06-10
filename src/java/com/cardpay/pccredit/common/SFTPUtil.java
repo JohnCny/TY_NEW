@@ -51,6 +51,8 @@ import sun.misc.BASE64Encoder;
 
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.web.LocalImageForm;
+import com.cardpay.pccredit.jnpad.model.JNPAD_SFTPUtil;
+import com.cardpay.pccredit.intopieces.web.LocalImageForm;
 import com.cardpay.pccredit.manager.service.DailyReportScheduleService;
 import com.cardpay.pccredit.tools.ImportParameter;
 import com.jcraft.jsch.Channel;
@@ -70,7 +72,7 @@ import com.wicresoft.util.spring.Beans;
  */
 public class SFTPUtil {
 	
-	private static String host = "10.0.3.6";//生产
+	private static String host = "10.0.3.2";//生产
 //	private static String host = "61.98.0.31";//测试
     private static String username="root";  
     private static String password="tynx123";  
@@ -695,7 +697,7 @@ public class SFTPUtil {
                         XSSFWorkbook xWb = (XSSFWorkbook) wb;
                         Sheet st = wb.getSheetAt(0);
                         //此处修改金额坐标位置
-                        String ThefileName="标准经营性(新增)调查表1.8.1.xlsx";
+                        String ThefileName="1.8.1.xlsx";
                         Cell cell;
                         if(fileName.equals(ThefileName)){
                         	
@@ -710,7 +712,7 @@ public class SFTPUtil {
                     }else if(wb instanceof HSSFWorkbook){
                         HSSFWorkbook hWb = (HSSFWorkbook) wb;
                         Sheet st = wb.getSheetAt(0);
-                        String ThefileName="标准经营性(新增)调查表1.8.1";
+                        String ThefileName="1.8.1.xlsx";
                         Cell cell;
                         if(fileName.equals(ThefileName)){
                         	
@@ -1165,7 +1167,7 @@ public class SFTPUtil {
         } while (index > 0);
         return column;
     }
-    
+
     /**
      * base64转换服务器图片
      * @param result
@@ -1221,7 +1223,7 @@ public class SFTPUtil {
         List<LocalImageForm> list=new ArrayList<LocalImageForm>();
         	  for(int i=0;i<result.size();i++){
         		  byte[] data = null;
-        			  String url="D:"+result.get(i).getUri();
+        			  String url=result.get(i).getUri();
         		      InputStream in = new FileInputStream(url);
         	            data = new byte[in.available()];
         	            in.read(data);

@@ -35,11 +35,16 @@ public class JnCkdcmbController {
 		Map<Object,Object> map =new LinkedHashMap<Object, Object>();
 		String customerId = request.getParameter("customerId");
 		String productId = request.getParameter("productId");
-	
+		String tableContentxjlb =null;
 			LocalExcel localExcel = LocalExcelService.findByApplication(customerId,productId);
 			String tableContentyfysb = getFromBASE64(localExcel.getSheetYfys()).replaceAll("\n", "<br>").replace("><br><", "><");
-			String tableContentysyfb = getFromBASE64(localExcel.getSheetYsyf()).replaceAll("\n", "<br>").replace("><br><", "><");	
-			String tableContentxjlb = getFromBASE64(localExcel.getSheetXjllb()).replaceAll("\n", "<br>").replace("><br><", "><");
+			String tableContentysyfb = getFromBASE64(localExcel.getSheetYsyf()).replaceAll("\n", "<br>").replace("><br><", "><");
+			if(localExcel.getSheetXjllb()=="" || localExcel.getSheetXjllb()==null){
+				 tableContentxjlb = getFromBASE64(localExcel.getHkjhb()).replaceAll("\n", "<br>").replace("><br><", "><");
+				 
+			}else{
+				 tableContentxjlb = getFromBASE64(localExcel.getSheetXjllb()).replaceAll("\n", "<br>").replace("><br><", "><");
+			}
 			String tableContentxgzb = getFromBASE64(localExcel.getSheetGdzc()).replaceAll("\n", "<br>").replace("><br><", "><");
 			String tableContentjyb=getFromBASE64(localExcel.getSheetJy()).replaceAll("\n", "<br>").replace("><br><", "><");
 			String tableContentjbzkb=getFromBASE64(localExcel.getSheetJbzk()).replaceAll("\n", "<br>").replace("><br><", "><");

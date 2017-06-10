@@ -352,8 +352,10 @@ public class JnpadCustormerSdwUserController {
 		map.put("result",result1);
 		
 		CustormerSdwUser result3=SdwUserService.selectSpJy(id);
-		CustomerSpUser name=UserService.selectUser(result3.getSDWJLY());
-		result3.setSDWUSER1(name.getName1());
+		if(result3!=null){
+			CustomerSpUser name=UserService.selectUser(result3.getSDWJLY());
+			result3.setSDWUSER1(name.getName1());	
+		}
 		map.put("result3",result3);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
@@ -440,7 +442,7 @@ public class JnpadCustormerSdwUserController {
 	@ResponseBody
 	@RequestMapping(value = "/ipad/customerIntopiece/selectSpUser.json", method = { RequestMethod.GET })
 	public String selectSpUser( HttpServletRequest request) {
-		List c=new ArrayList();
+		List<String> c=new ArrayList<String>();
 		List<AppManagerAuditLog> d=new ArrayList<AppManagerAuditLog>();
 		List<CustomerSpUser> result1=null;
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -449,14 +451,16 @@ public class JnpadCustormerSdwUserController {
 				 result1=UserService.findspUser2(result.get(a).getCapid());
 					if(result1.size()!=0){
 						if(!result1.get(0).getStatus().equals("0") && !result1.get(1).getStatus().equals("0") && !result1.get(2).getStatus().equals("0")){
-							c.add(result1.get(0).getCapid());
+							c.add(result.get(a).getCapid());
 						}
 					}
 				}
-				for(int b=0;b<c.size();b++){
-					AppManagerAuditLog result2=SdwUserService.selectCSJLA(c.get(b).toString());
-					if(result2!=null){
-						d.add(b, result2);
+				if(c.size()>0){
+					for(int b=0;b<c.size();b++){
+						AppManagerAuditLog result2=SdwUserService.selectCSJLA(c.get(b));
+						if(result2!=null){
+							d.add(b, result2);
+						}
 					}
 				}
 		
