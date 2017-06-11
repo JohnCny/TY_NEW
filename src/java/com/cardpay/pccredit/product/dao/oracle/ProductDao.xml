@@ -272,7 +272,8 @@
 	    	SELECT * from product_attribute t
 			WHERE 1=1
 			<if test="productName != null and productName != '' ">
-				AND PRODUCT_NAME=#{productName}
+				<!-- AND PRODUCT_NAME=#{productName} -->
+			    AND PRODUCT_NAME like '%'||#{productName}||'%'
 			</if>
 			And t.prod_limit_time >= sysdate
 		    <if test="status != null and status != '' ">

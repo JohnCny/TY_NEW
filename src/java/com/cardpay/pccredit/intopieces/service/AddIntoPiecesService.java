@@ -150,11 +150,11 @@ public class AddIntoPiecesService {
 				String sheet[] = readExcel.readExcelToHtml(url, true,fileName);
 				//服务器  修改标准经营性(新增)调查表     
 				//String sheet[] = SFTPUtil.readExcelToHtml(url, true,fileName);
-				/*for(String str : sheet){
-					if(StringUtils.isEmpty(str)){
+				/*for(String str : sheet){*/
+					if(StringUtils.isEmpty(sheet[19])){
 						throw new RuntimeException("导入失败，请检查excel文件与模板是否一致！");
 					}
-				}*/
+					/*	}*/
 				
 				localExcel.setSheetXjllb(sheet[9]);
 				localExcel.setSheetYfys(sheet[13]);

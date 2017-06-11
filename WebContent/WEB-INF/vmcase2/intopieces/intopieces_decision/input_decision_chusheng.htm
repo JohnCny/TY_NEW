@@ -186,7 +186,22 @@
 			$(".myerror").remove();
 			var status = $("select[name=status]").val();
 			
+			var user_Ids1=$("#user_Id1").val();
+			var user_Ids2=$("#user_Id2").val();
+	    	var user_Ids3=$("#user_Id3").val();
+	    	var cyUsers1=$("#cyUser1").val();
+	    	var cyUsers2=$("#cyUser2").val();
+	    	
 			if( status == "APPROVE"){
+				/* $("#id_save_button").after(user_Ids1+'===='+user_Ids2+'===='+user_Ids3); */
+	    	if(user_Ids1=='0'||user_Ids2=='0'||user_Ids3=='0'){
+	    		 $("#id_save_button").after("<label class='error myerror' generated='true' >审贷委不能为空</label>");  
+				 return;
+	    	}
+	    	if(user_Ids1==user_Ids2||user_Ids1==user_Ids3||user_Ids2==user_Ids3){
+	    		 $("#id_save_button").after("<label class='error myerror' generated='true' >审贷委不能重复</label>");  
+				 return;
+	    	}
 				if($("#decisionAmount").val() == ""){
 					 $("#decisionAmount").after("<label class='error myerror' generated='true' >金额不能为空</label>");  
 					 return;

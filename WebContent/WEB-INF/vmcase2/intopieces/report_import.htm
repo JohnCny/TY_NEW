@@ -69,8 +69,8 @@
       <div class="pagebar">
         <div class="controlbtn">
         	<a id="id_pre_button" class="btn_g" href="javascript:history.back();" title="上一步">上一步</a>
-        	<a id="id_next_button" class="btn_g" href="javascript:void(0);" title="下一步">导入标微调查报告</a>
-        	<a id="id_nextRy_button" class="btn_g" href="javascript:void(0);" title="导入荣耀卡调查报告">导入荣耀卡调查报告</a> 
+        	<a id="id_next_button" class="btn_g" href="javascript:void(0);" title="下一步">下一步</a>
+        	<!-- <a id="id_nextRy_button" class="btn_g" href="javascript:void(0);" title="导入荣耀卡调查报告">导入荣耀卡调查报告</a>  -->
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
@@ -98,7 +98,7 @@
             }
         });
 		
-		$("#id_nextRy_button").click(function() {
+		/* $("#id_nextRy_button").click(function() {
             if ($(".checkbox :checked").length == 1) {
             	liucheng=1;
                 var rowid = $($(".checkbox :checked")[0]).attr("value");
@@ -108,7 +108,7 @@
             } else {
                 Dialog.message("请选择一行");
             }
-        });
+        }); */
 	});
 </script>
    <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>

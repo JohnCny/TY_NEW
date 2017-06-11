@@ -871,7 +871,8 @@ insert into LOCAL_EXCEL(ID,CUSTOMER_ID,PRODUCT_ID,ATTACHMENT,URI,APPLICATION_ID,
 		  where 1=1
 		   			and  u.id = t1.user_id
 				<if test="chineseName != null and chineseName != '' ">
-					AND T1.chinese_name=#{chineseName}
+					<!-- AND T1.chinese_name=#{chineseName} -->
+					AND T1.chinese_name like '%'||#{chineseName}||'%'
 				</if>
 				<if test="cardType != null and cardType != '' ">
 					AND T1.card_type=#{cardType}

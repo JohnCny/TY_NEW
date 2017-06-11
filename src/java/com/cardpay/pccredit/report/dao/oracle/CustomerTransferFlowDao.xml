@@ -2019,11 +2019,11 @@
 	<!--  荣耀卡统计报表 -->
 	 	<select id="findrykapplicationinfobyuserid" resultMap="MibusidateView" 
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
-              select * from ty_mibusidata tym,ty_repay_tkmx tkmx ,ty_customer_base base ,
+              select * from ty_mibusidata tym,ty_repay_tkmx tkmx ,ty_customer_base base ,product_attribute pro,
          basic_customer_information basic ,  sys_user sysuser,customer_application_info info
        where 1=1 and tym.ywbh=tkmx.ywbh and tkmx.khh=base.khnm and
        base.id=basic.ty_customer_id and basic.user_id=sysuser.id and 
-       basic.id=info.customer_id and   info.liucheng='1'
+       basic.id=info.customer_id and  pro.id=info.product_id and pro.product_name='荣耀卡'
 		           <if test="id != null and id != '' ">
 		            and sysuser.id=#{id}
 		           </if>
@@ -2043,11 +2043,11 @@
 	 	
 	 	<select id="findrykapplicationinfobyuseridsize" resultType="int" 
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
-			 select count( distinct tym.ywbh) from ty_mibusidata tym,ty_repay_tkmx tkmx ,ty_customer_base base ,
+ 			select count( distinct tym.ywbh) from ty_mibusidata tym,ty_repay_tkmx tkmx ,ty_customer_base base ,product_attribute pro,
          basic_customer_information basic ,  sys_user sysuser,customer_application_info info
        where 1=1 and tym.ywbh=tkmx.ywbh and tkmx.khh=base.khnm and
        base.id=basic.ty_customer_id and basic.user_id=sysuser.id and 
-       basic.id=info.customer_id and   info.liucheng='1'
+       basic.id=info.customer_id and  pro.id=info.product_id and pro.product_name='荣耀卡'
        <if test="id != null and id != '' ">
 		     and sysuser.id=#{id}
 		</if>
