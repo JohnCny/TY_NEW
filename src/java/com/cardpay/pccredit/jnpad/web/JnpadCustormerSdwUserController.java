@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cardpay.pccredit.intopieces.model.AppManagerAuditLog;
+import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
+import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.web.AddIntoPiecesForm;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
@@ -29,6 +31,7 @@ import com.cardpay.pccredit.jnpad.model.JnpadCsSdModel;
 import com.cardpay.pccredit.jnpad.service.JnpadCustormerSdwUserService;
 import com.cardpay.pccredit.jnpad.service.JnpadSpUserService;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
+import com.cardpay.workflow.service.ProcessService;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
 
 import net.sf.json.JSONObject;
@@ -36,7 +39,9 @@ import net.sf.json.JsonConfig;
 
 @Controller
 public class JnpadCustormerSdwUserController {
-	
+
+	@Autowired
+	private ProcessService processService;
 	@Autowired
 	private JnpadCustormerSdwUserService SdwUserService;
 	@Autowired
@@ -123,6 +128,19 @@ public class JnpadCustormerSdwUserController {
 					map.put("message", "提交失败");
 				}
 			}
+			String auditType = request.getParameter("auditType");
+			String productId = request.getParameter("productId");
+
+
+			CustomerApplicationInfo customerApplicationInfo = new CustomerApplicationInfo();
+			CustomerApplicationProcess customerApplicationProcess = new CustomerApplicationProcess();
+			String loginId = request.getParameter("userId");
+			String serialNumber = request.getParameter("serialNumber");
+			String examineAmount = request.getParameter("decisionAmount");
+			String applicationStatus = "通过";
+			
+			String applicationId = request.getParameter("id");
+			UserService.examine(applicationId,serialNumber, loginId, applicationStatus, examineAmount,productId,auditType);
 			/*CustormerSdwUser.setSDWUSER1(request.getParameter("user_Id1"));
 			CustormerSdwUser.setSDWUSER2(request.getParameter("user_Id2"));
 			CustormerSdwUser.setSDWUSER3(request.getParameter("user_Id3"));

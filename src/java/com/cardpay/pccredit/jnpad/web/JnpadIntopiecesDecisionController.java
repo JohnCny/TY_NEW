@@ -139,8 +139,13 @@ public class JnpadIntopiecesDecisionController extends BaseController{
 		String  s="";
 	        while(it.hasNext()){  
 	        	ManagerInfoForm mana = it.next();
-	        	s =s+"<option value = '"+mana.getID()+"'>"+mana.getEXTERNAL_ID()+mana.getDISPLAY_NAME()
-	        	+"</option>";
+	        	if(mana.getEXTERNAL_ID()!=null ){
+	        		s =s+"<option value = '"+mana.getID()+"'>"+mana.getEXTERNAL_ID()+mana.getDISPLAY_NAME()
+		        	+"</option>";
+	        	}else{
+	        		s =s+"<option value = '"+mana.getID()+"'>"+mana.getDISPLAY_NAME()
+		        	+"</option>";
+	        	}
 	        	
 	        }
 	       map.put("manager", s);

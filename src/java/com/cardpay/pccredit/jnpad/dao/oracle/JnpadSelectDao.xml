@@ -28,4 +28,5 @@ order by loandate desc) cc
 <select id="findJqUser" resultMap="selectXD">
 select dkye as dkye from mibusidata where zjhm=#{cardId}
 </select>
+
 </mapper> 
