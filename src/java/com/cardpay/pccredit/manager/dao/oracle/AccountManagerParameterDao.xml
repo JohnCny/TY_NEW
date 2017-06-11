@@ -376,7 +376,7 @@
 	</select>
 	
 	<update id="updateObject" parameterType="com.cardpay.pccredit.manager.model.AccountManagerParameter">
-	    update account_manager_parameter set FOOD_SUBSIDY=#{foodSubsidy},TRAVEL_ALLOWANCE=#{travelAllowance},PHONE_ALLOWANCE=#{phoneAllowance},
+	    update account_manager_parameter set FOOD_SUBSIDY=#{foodSubsidy},TRAVEL_ALLOWANCE=#{travelAllowance},PHONE_ALLOWANCE=#{phoneAllowance},LEVEL_INFORMATION=#{levelInformation},
 	    AGE_ALLOWANCE=#{ageAllowance},EDUCATION_ALLOWANCE=#{educationAllowance},base_pay=#{basePay}, id=#{id}, manager_type=#{managerType}, modified_time=#{modifiedTime}, user_id=#{userId} where ID= #{id}
 	</update>
 </mapper>

@@ -241,6 +241,7 @@
 		<result column="jjyy" 		property="jjyy" />
 		<result column="sdwuser1yj" 		property="sdwuser1yj" />
 		<result column="productname" 		property="productname" />
+		<result column="fallback" 		property="fallback" />
  	 </resultMap>
  	 <!-- <resultMap id="BaseResultMap1" type="com.cardpay.pccredit.customer.model.TyRepayLshForm" >
    		<result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR" />
