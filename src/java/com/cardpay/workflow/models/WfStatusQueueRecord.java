@@ -43,6 +43,7 @@ public class WfStatusQueueRecord extends BaseModel {
 	private String currentStatus;
 
 	private String examineAmount;
+	private String id;
 
 	private String examineResult;
 
@@ -61,6 +62,14 @@ public class WfStatusQueueRecord extends BaseModel {
 	 */
 	public String getBeforeStatus() {
 		return this.beforeStatus;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	/**

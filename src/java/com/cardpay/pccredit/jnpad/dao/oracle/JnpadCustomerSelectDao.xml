@@ -171,10 +171,9 @@
       
       
       
-      
       where 1 = 1
         AND user_id=#{userId}
-      
+       and T1.id not in (select CUSTOMER_ID from CUSTOMER_APPLICATION_INFO where STATUS='audit')
              and not exists 
              (
             

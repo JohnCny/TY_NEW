@@ -3,17 +3,24 @@ package com.cardpay.pccredit.jnpad.model;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.awt.Image;
+import java.awt.image.*;  
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URLDecoder;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -28,6 +35,7 @@ import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.hwpf.model.types.StdfPost2000AbstractType;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
@@ -44,24 +52,29 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.cardpay.pccredit.common.SFTPUtil;
 import com.cardpay.pccredit.intopieces.constant.Constant;
+import com.cardpay.pccredit.intopieces.web.LocalImageForm;
 import com.cardpay.pccredit.tools.ImportParameter;
+import com.cardpay.pccredit.toolsjn.FtpUtils;
+import com.cardpay.pccredit.toolsjn.ImaUtils;
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
+import com.jcraft.jsch.SftpATTRS;
 import com.jcraft.jsch.SftpException;
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageDecoder;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
 
+import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
 public class JNPAD_SFTPUtil {
-//	private static String host = "61.34.0.32";//生产
+//	private static String host = "61.340..32";//生产
 	private static String host = "10.0.3.6";//测试
     private static String username="root";  
-    private static String password="JNnsyh0825";  
+    private static String password="tynx123";  
     private static int port = 22;  
     private static ChannelSftp sftp = null;  
     private static String directory = "/usr/pccreditFile/";  
@@ -157,9 +170,89 @@ public class JNPAD_SFTPUtil {
     
     /** 
      * upload all the files to the server 
+     * @throws IOException 
      */  
-    public  static Map<String, String> uploadJn(MultipartFile oldFile,String customerId,String fileName_1) {
+    public synchronized static Map<String, String> uploadJn(MultipartFile oldFile,String customerId,String fileName_1) throws IOException {
     	String newFileName = null;
+		String fileName = null;
+		Map<String, String> map = new HashMap<String, String>();
+		String path = Constant.FILE_PATH + customerId + File.separator;
+		File tempDir = new File(path);
+		if (!tempDir.isDirectory()) {
+			tempDir.mkdirs();
+		}
+		try {
+			// 取得上传文件
+			if (oldFile != null && !oldFile.isEmpty()) {
+//				fileName = file.getOriginalFilename();
+				fileName = fileName_1;
+				File tempFile = new File(path
+						+ fileName_1);
+				if (tempFile.exists()) {
+					newFileName = IDGenerator.generateID() + "."
+							+ fileName_1.split("\\.")[1];
+				} else {
+					newFileName = fileName_1;
+				}
+				File localFile = new File(path + newFileName);
+				oldFile.transferTo(localFile);
+				System.out.println("开始压缩：" + new Date().toLocaleString()); 
+				ImaUtils.imgCom(path + newFileName);  
+				ImaUtils.resizeFix(1200, 600);  
+			        System.out.println("压缩完毕：" + new Date().toLocaleString());  
+			    	connect();
+			    	sftp.cd(Constant.FILE_PATH);
+			    	if(!isDirExist(customerId)){
+			    		 sftp.mkdir(customerId);
+			    	}
+						 sftp.cd(Constant.FILE_PATH + customerId);
+						 FileInputStream in = null;
+						   File file = new File(path + newFileName);
+				            in = new FileInputStream(file);
+				            sftp.put(in,newFileName);
+				            //删除本地文件夹及文件
+				          /*  File file1 = new File(Constant.FILE_PATH + customerId);
+				            String[] ImageList=file1.list();
+				            File temp=null;
+				            for(int i=ImageList.length;i>=0;i--){
+				            	if(newFileName.endsWith(file1.separator)){
+				            		temp=new File(Constant.FILE_PATH + customerId+ImageList[i]);
+				            	}else{
+				            		temp=new File(Constant.FILE_PATH + customerId+file1.separator+ImageList[i]);
+				            	}
+				            	if(temp.isFile()){
+				            		temp.delete();
+				            	}if else(){
+				            		
+				            	}
+				            }*/
+				            
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		map.put("fileName", fileName);
+		map.put("url", path + newFileName);
+		return map;
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    /*	String newFileName = null;
 		String fileName = null;
     	Map<String, String> map = new HashMap<String, String>();
         try {  
@@ -188,6 +281,33 @@ public class JNPAD_SFTPUtil {
 	           File file = fi.getStoreLocation();
 	    	   sftp.put(new FileInputStream(file), newFileName);
 	    	   System.out.println("上传成功！");
+	    		System.out.println("开始压缩：" + new Date().toLocaleString());
+	    		 File file2 = new File(sftp.cd(path));// 读入文件  
+	    		 Image img = ImageIO.read(file);      // 构造Image对象  
+	 	        int width = img.getWidth(null);    // 得到源图宽  
+	 	       int height = img.getHeight(null);  //
+	 	      if (width / height > 1200/ 600) {  
+	 	    	 int h = (int) (height * 1200 / width);  
+	 	    	  BufferedImage image = new BufferedImage(1200, h,BufferedImage.TYPE_INT_RGB );   
+	 		        image.getGraphics().drawImage(img, 0, 0, 1200, h, null); // 绘制缩小后的图  
+	 		        File destFile = new File(path +File.separator+ newFileName);  
+	 		        FileOutputStream out = new FileOutputStream(destFile); // 输出到文件流  
+	 		        // 可以正常实现bmp、png、gif转jpg  
+	 		        JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);  
+	 		        encoder.encode(image); // JPEG编码  
+	 		        out.close();  
+		        } else {  
+		        	 int w = (int) (width * 600 / height);  
+		        	  BufferedImage image = new BufferedImage(w, 600,BufferedImage.TYPE_INT_RGB );   
+		  	        image.getGraphics().drawImage(img, 0, 0, w, 600, null); // 绘制缩小后的图  
+		  	        File destFile = new File(path +File.separator+ newFileName);  
+		  	        FileOutputStream out = new FileOutputStream(destFile); // 输出到文件流  
+		  	        // 可以正常实现bmp、png、gif转jpg  
+		  	        JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);  
+		  	        encoder.encode(image); // JPEG编码  
+		  	        out.close();  
+		        }  
+			        System.out.println("压缩完毕：" + new Date().toLocaleString());  
 	    	   disconnect();  
 	           
 	    	   map.put("fileName", fileName);
@@ -202,7 +322,7 @@ public class JNPAD_SFTPUtil {
             e.printStackTrace();  
         }  
           return map;
-    	/*//连接sftp
+    	//连接sftp
    	 	connect();  
     	String newFileName = null;
 		String fileName = null;
@@ -233,7 +353,50 @@ public class JNPAD_SFTPUtil {
 		map.put("url", path + newFileName);
 		return map;*/
     }
-    
+    /**
+	 * 下载文件
+	 * @param directory	            下载目录
+	 * @param downloadFile  下载的文件
+	 * @param saveFile 		存在本地的路径
+	 */
+	public static boolean download(String directory, String downloadFile,
+			String saveFile) {
+		try {
+			if (sftp == null) {
+			 //如果没连接上sftp则连接
+				connect(); 
+			}
+			sftp.cd(directory);
+			sftp.get(downloadFile, saveFile);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	/**
+     * 判断目录是否存在
+     * @param directory
+     * @return
+     */
+    public static boolean isDirExist(String directory)
+    {
+        boolean isDirExistFlag = false;
+        try
+        {
+            SftpATTRS sftpATTRS = sftp.lstat(directory);
+            isDirExistFlag = true;
+            return sftpATTRS.isDir();
+        }
+        catch (Exception e)
+        {
+            if (e.getMessage().toLowerCase().equals("no such file"))
+            {
+                isDirExistFlag = false;
+            }
+        }
+        return isDirExistFlag;
+    }
     /**
      * 批量上传图片 济南
      */
@@ -392,14 +555,14 @@ public class JNPAD_SFTPUtil {
 			int bytesRead;
 			response.setHeader("Content-Disposition", "attachment; filename="+ java.net.URLEncoder.encode(fileName, "UTF-8"));
 			connect();
-			sftp.cd(filePath.substring(0, 50));
+			sftp.cd(filePath.substring(0, 54));
 			
 			String GIF = "image/gif;charset=GB2312";// 设定输出的类型
 			String JPG = "image/jpeg;charset=GB2312";
 			String BMP = "image/bmp";
 		    String PNG = "image/png";
 		    
-			String imagePath = filePath.substring(50, filePath.length());
+			String imagePath = filePath.substring(55, filePath.length());
 			OutputStream output = response.getOutputStream();// 得到输出流
 			if (imagePath.toLowerCase().endsWith(".jpg"))// 使用编码处理文件流的情况：
 			{
@@ -407,7 +570,7 @@ public class JNPAD_SFTPUtil {
 				// 得到图片的真实路径
 
 				// 得到图片的文件流
-				BufferedInputStream imageIn = new BufferedInputStream(sftp.get(filePath.substring(51, filePath.length())));
+				BufferedInputStream imageIn = new BufferedInputStream(sftp.get(filePath.substring(55, filePath.length())));
 				// 得到输入的编码器，将文件流进行jpg格式编码
 				JPEGImageDecoder decoder = JPEGCodec.createJPEGDecoder(imageIn);
 				// 得到编码后的图片对象
@@ -1085,6 +1248,49 @@ public class JNPAD_SFTPUtil {
         } while (index > 0);
         return column;
     }
- 
+    /**
+     * base64转换服务器图片
+     * @param result
+     * @return
+     * @throws IOException
+     * @throws SftpException 
+     */
+    public static List<LocalImageForm> TestImageBinary(List<LocalImageForm> result) throws IOException, SftpException {    
+        BASE64Encoder encoder = new BASE64Encoder();    
+        BASE64Decoder decoder = new BASE64Decoder();
+        List<LocalImageForm> list=new ArrayList<LocalImageForm>();
+      connect();
+        	  for(int i=0;i<result.size();i++){
+        		  System.out.println(result.get(i).getUri().substring(0, 54));
+        			sftp.cd(result.get(i).getUri().substring(0, 54));
+        			  BufferedImage bi;
+        		      bi = ImageIO.read(sftp.get(result.get(i).getUri().substring(55, result.get(i).getUri().length())));
+        			  ByteArrayOutputStream baos = new ByteArrayOutputStream();    
+        	            ImageIO.write(bi, "jpg", baos);    
+        	            byte[] bytes = baos.toByteArray();
+        			/*byte[] data = null;
+        	        // 读取图片字节数组
+        	        try {
+        	        
+        	       
+        	        	BufferedInputStream in = new BufferedInputStream(sftp.get(result.get(i).getUri().substring(51, result.get(i).getUri().length())));
+        	            data = new byte[in.available()];
+        	            in.read(data);
+        	            in.close();
+        	        } catch (IOException e) {
+        	            e.printStackTrace();
+        	        }*/
+        	            LocalImageForm ImageMore=new LocalImageForm();
+        	            ImageMore.setUri(encoder.encodeBuffer(bytes).trim());
+        		    list.add(i, ImageMore);
+        	            if(i==result.size()-1){
+        	            	disconnect();
+        	            }
+        	
+        }
+    	return list;
+        
+    }
+
 	
 }

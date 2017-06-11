@@ -72,7 +72,7 @@ import com.wicresoft.util.spring.Beans;
  */
 public class SFTPUtil {
 	
-	private static String host = "10.0.3.2";//生产
+	private static String host = "10.0.3.6";//生产
 //	private static String host = "61.98.0.31";//测试
     private static String username="root";  
     private static String password="tynx123";  

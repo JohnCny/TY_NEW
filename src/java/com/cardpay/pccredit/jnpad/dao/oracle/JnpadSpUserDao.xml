@@ -59,4 +59,7 @@ and cc.status='audit'
 select display_name as name1 from sys_user
 where id=#{id}
 </select>
+<update id="updateObject" >
+update WF_STATUS_QUEUE_RECORD SET EXAMINE_RESULT=#{examineResult} where ID= #{id}
+</update>
 </mapper> 
