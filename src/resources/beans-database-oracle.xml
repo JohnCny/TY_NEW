@@ -29,9 +29,9 @@
   		  <property name="jdbcUrl" value="jdbc:oracle:thin:@10.0.3.4:1521/tynxnew" />  
  		 <property name="user" value="pccredit_ty" />
 		<property name="password" value="pccredit_ty" /> 
-		<!--  <property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521/oracle" /> 
-		 <property name="user" value="ZBALLTWO" />
-		<property name="password" value="ZBALLTWO" />  --> 
+	<!-- 	  <property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521/oracle" /> 
+		 <property name="user" value="liyu" />
+		<property name="password" value="liyu" />   -->
 		
 		<property name="minPoolSize" value="2" />
 		<property name="maxPoolSize" value="10" />

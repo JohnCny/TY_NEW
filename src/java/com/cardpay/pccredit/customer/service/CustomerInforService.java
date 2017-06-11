@@ -2501,7 +2501,6 @@ public class CustomerInforService {
 									
 									if(fn.startsWith("cxd_rygl")){
 										log.info("*****************人员管理参数表********************");  
-										System.out.println(1111);
 										//+File.separator
 										saveRyglDataFile(gzFile+File.separator+fn,dateString);
 										System.gc();

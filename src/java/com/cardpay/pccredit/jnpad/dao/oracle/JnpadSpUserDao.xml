@@ -32,9 +32,20 @@
 <select id="findspUser" resultMap="CustomerSpUser">
 select distinct(capid) as capid from CUSTOMER_SP where status!='0'
 </select>
-
 <select id="findspUser1" resultMap="CustomerSpUser">
 select distinct(capid) as capid from CUSTOMER_SP where status!='0'
+</select>
+
+<select id="selectUser1" resultMap="CustomerSpUser">
+select spuserid as spuserid from CUSTOMER_SP
+where capid=#{id}
+</select>
+<select id="findspUser3" resultMap="CustomerSpUser">
+select c.spuserid as spuserid, c.pid as pid ,c.cid as cid, c.beizhu as beizhu,c.sptime as sptime,c.jlyy as jlyys,c.time as time,c.spje as spje,c.splv as splv,c.status as status,c.spqx as spqx from CUSTOMER_SP c,
+(select status as status,id as id from CUSTOMER_APPLICATION_INFO where id=#{capid})cc 
+where c.capid=#{capid}
+and c.capid=cc.id
+
 </select>
 <select id="findspUser2" resultMap="CustomerSpUser">
 select c.spuserid as spuserid, c.pid as pid ,c.cid as cid, c.beizhu as beizhu,c.sptime as sptime,c.jlyy as jlyys,c.time as time,c.spje as spje,c.splv as splv,c.status as status,c.spqx as spqx from CUSTOMER_SP c,

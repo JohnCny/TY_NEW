@@ -35,8 +35,14 @@ public class LocalExcel extends BusinessModel {
 	private String approveValue;
 	private String fileName;
 	private String hkjhb;
+	private String sheetDdtjy;
 	
-	
+	public String getSheetDdtjy() {
+		return sheetDdtjy;
+	}
+	public void setSheetDdtjy(String sheetDdtjy) {
+		this.sheetDdtjy = sheetDdtjy;
+	}
 	public String getHkjhb() {
 		return hkjhb;
 	}

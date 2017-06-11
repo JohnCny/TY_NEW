@@ -148,6 +148,10 @@
    update  CUSTOMER_APPLICATION_INFO set FINAL_APPROVAL=#{final_approval},STATUS=#{status},MODIFIED_TIME=#{creatime}
    where id=#{id}
 </update>   
+<select id="selectSpJy" resultMap="selectCustormerSdwUser">
+   select h.sdwuser1yj as SDWUSER1YJ,h.sdwuser2yj as SDWUSER2YJ,h.lv as LV,h.sdwjly as SDWJLY,h.sdtime as SDTIME,h.sdqx as SDQX,h.sdje as SDJE,c.status as  SDWUSER3YJ from CUSTOMER_APPLICATION_INFO c,CUSTOMER_APPLICATION_SDH h where 
+  c.id=h.capid and c.id=#{id}
+</select>
   <update id="updateCustormerSdwUser" parameterType="java.lang.Integer" >
    update  CUSTOMER_APPLICATION_SDH set SDWUSER1YJ=#{SDWUSER1YJ},SDWUSER2YJ=#{SDWUSER2YJ},SDWUSER3YJ=#{SDWUSER3YJ},SDWJLY=#{SDWJLY},SDTIME=#{SDTIME},SDJE=#{SDJE},SDQX=#{SDQX},lv=#{LV}
    where CAPID=#{CAPID}
@@ -196,15 +200,13 @@ c.product_id=p.id and
 </select>
 
 <select id="selectSDH1" resultMap="IntoPieces">
-select c.id as id,s.display_name as displayName,p.product_name as productName,b.card_id as cardId
-,c.APPLY_QUOTA as applyQuota,c.CREATED_TIME as creatime,b.chinese_name as chineseName
- from CUSTOMER_APPLICATION_INFO c,CUSTOMER_APPLICATION_SDH t,sys_user s,product_attribute p,BASIC_CUSTOMER_INFORMATION b
-where c.id=t.capid
-and s.id=b.user_id and
-b.id=c.customer_id and
-c.product_id=p.id and
- (t.sdwuser1=#{userId} or t.sdwuser2=#{userId} or t.sdwuser3=#{userId})
- and t.SDTIME is  null
+select c.id as id,s.display_name as displayName,
+p.product_name as productName,b.card_id as cardId ,
+c.APPLY_QUOTA as applyQuota,c.CREATED_TIME as creatime,
+b.chinese_name as chineseName from CUSTOMER_APPLICATION_INFO c,
+CUSTOMER_SP t,sys_user s,product_attribute p,BASIC_CUSTOMER_INFORMATION b 
+where c.id=t.capid and s.id=b.user_id and b.id=c.customer_id and c.product_id=p.id 
+and (t.spuserid=#{userId} or t.spuserid=#{userId} or t.spuserid=#{userId}) and t.sptime is null 
 </select>
 
 

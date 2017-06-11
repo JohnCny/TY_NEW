@@ -126,9 +126,9 @@ public class AddIntoPiecesService {
 			public void importExcel(MultipartFile file,String productId, String customerId) {
 				// TODO Auto-generated method stub
 				//本地测试
-				//Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+				Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
 				//指定服务器上传 
-				Map<String, String> map=SFTPUtil.uploadJn(file, customerId);
+				//Map<String, String> map=SFTPUtil.uploadJn(file, customerId);
 				//Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
 				String fileName = map.get("fileName");
 				String url = map.get("url");
@@ -147,9 +147,9 @@ public class AddIntoPiecesService {
 				//读取excel内容
 				JXLReadExcel readExcel = new JXLReadExcel();
 				//本地测试
-				//String sheet[] = readExcel.readExcelToHtml(url, true);
+				String sheet[] = readExcel.readExcelToHtml(url, true,fileName);
 				//服务器  修改标准经营性(新增)调查表     
-				String sheet[] = SFTPUtil.readExcelToHtml(url, true,fileName);
+				//String sheet[] = SFTPUtil.readExcelToHtml(url, true,fileName);
 				/*for(String str : sheet){
 					if(StringUtils.isEmpty(str)){
 						throw new RuntimeException("导入失败，请检查excel文件与模板是否一致！");
