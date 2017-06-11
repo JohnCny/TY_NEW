@@ -211,14 +211,18 @@ and (t.spuserid=#{userId} or t.spuserid=#{userId} or t.spuserid=#{userId}) and t
 
 
 <select id="selectSDH1Count" resultType="int">
-select count(*)
+<!-- select count(*)
  from CUSTOMER_APPLICATION_INFO c,CUSTOMER_APPLICATION_SDH t,sys_user s,product_attribute p,BASIC_CUSTOMER_INFORMATION b
 where c.id=t.capid
 and s.id=b.user_id and
 b.id=c.customer_id and
 c.product_id=p.id and
  (t.sdwuser1=#{userId} or t.sdwuser2=#{userId} or t.sdwuser3=#{userId})
- and t.SDTIME is  null
+ and t.SDTIME is  null -->
+ select  count(*) from CUSTOMER_APPLICATION_INFO c,
+CUSTOMER_SP t,sys_user s,product_attribute p,BASIC_CUSTOMER_INFORMATION b 
+where c.id=t.capid and s.id=b.user_id and b.id=c.customer_id and c.product_id=p.id 
+and (t.spuserid=#{userId} or t.spuserid=#{userId} or t.spuserid=#{userId}) and t.sptime is null 
 </select>
 
 <select id="sdwcy" resultMap="IntoPieces">

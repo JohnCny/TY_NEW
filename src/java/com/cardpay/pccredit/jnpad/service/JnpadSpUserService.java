@@ -1,5 +1,6 @@
 package com.cardpay.pccredit.jnpad.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -9,9 +10,14 @@ import org.springframework.stereotype.Service;
 import com.cardpay.pccredit.jnpad.dao.JnpadSpUserDao;
 import com.cardpay.pccredit.jnpad.model.CustomerSpUser;
 import com.cardpay.pccredit.system.service.NodeAuditService;
+import com.cardpay.workflow.models.WfProcessRecord;
+import com.cardpay.workflow.models.WfStatusQueueRecord;
+import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 
 @Service
 public class JnpadSpUserService {
+	@Autowired
+	private CommonDao commonDao;
 	@Autowired
 	private JnpadSpUserDao UserDao;
 	
@@ -35,5 +41,17 @@ public class JnpadSpUserService {
 	}
 	public List<CustomerSpUser>selectUser1(@Param("id") String id){
 		return UserDao.selectUser1(id);
+	}
+	public void examine(String appId,String wfProcessRecordID,String exUserID,String exResult,String exAmount,String productId,String auditType){
+		//进入下一流转之前 先更新当前流转
+		WfProcessRecord wfProcessRecord = commonDao.findObjectById(WfProcessRecord.class, wfProcessRecordID);
+		WfStatusQueueRecord wfStatusQueueRecord = commonDao.findObjectById(WfStatusQueueRecord.class,wfProcessRecord.getWfStatusQueueRecord());
+		wfStatusQueueRecord.setExamineUser(exUserID);
+		wfStatusQueueRecord.setExamineResult(exResult);
+		wfStatusQueueRecord.setExamineAmount(exAmount);
+		wfStatusQueueRecord.setStartExamineTime(new Date());
+		wfStatusQueueRecord.setId(wfProcessRecord.getWfStatusQueueRecord());
+		commonDao.updateObject(wfStatusQueueRecord);
+		//UserDao.updateObject(wfStatusQueueRecord);
 	}
 }

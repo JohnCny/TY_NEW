@@ -296,6 +296,7 @@ insert into LOCAL_EXCEL(ID,CUSTOMER_ID,PRODUCT_ID,ATTACHMENT,URI,APPLICATION_ID,
 			 from  basic_customer_information b
            where  b.user_id=#{userId} 
            and b.id not in (select customer_id from customer_application_info where product_id=#{productId} )
+           and b.id not in (select customer_id from customer_application_info where  STATUS='audit' )
 	</select>
 	
 		<select id="findCustomerInforByFilterAndProductId2" resultType="com.cardpay.pccredit.customer.model.CustomerInfor">
@@ -766,6 +767,7 @@ insert into LOCAL_EXCEL(ID,CUSTOMER_ID,PRODUCT_ID,ATTACHMENT,URI,APPLICATION_ID,
 		resultType="int">
 		select count(0) from BASIC_CUSTOMER_INFORMATION T1 where 1 = 1
 		AND user_id=#{userId}
+		  and T1.id not in (select customer_id from customer_application_info where  STATUS='audit' )
 		<if test="chineseName != null and chineseName != '' ">
 			AND chinese_name=#{chineseName}
 		</if>

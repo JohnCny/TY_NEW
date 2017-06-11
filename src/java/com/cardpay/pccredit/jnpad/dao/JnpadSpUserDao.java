@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.cardpay.pccredit.jnpad.model.CustomerSpUser;
+import com.cardpay.workflow.models.WfStatusQueueRecord;
 import com.wicresoft.util.annotation.Mapper;
 
 @Mapper
@@ -16,4 +17,5 @@ public interface JnpadSpUserDao {
 	List<CustomerSpUser>findspUser3(@Param("capid") String capid);
 	CustomerSpUser selectUser(@Param("id") String id);
 	List<CustomerSpUser>selectUser1(@Param("id") String id);
+	void updateObject(WfStatusQueueRecord WfStatusQueueRecord);
 }
