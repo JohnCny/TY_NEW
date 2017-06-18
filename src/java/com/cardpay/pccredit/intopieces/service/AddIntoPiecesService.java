@@ -267,9 +267,9 @@ public class AddIntoPiecesService {
 	public void importImage(MultipartFile file, String productId,
 			String customerId,String applicationId) {
 		//本地测试
-		//Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
 		//指定服务器上传
-		Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
+		//Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
 		String fileName = map.get("fileName");
 		String url = map.get("url");
 		LocalImage localImage = new LocalImage();

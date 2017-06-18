@@ -34,7 +34,26 @@ public class JnpadImageBrowseController {
 	private JnpadImageBrowseService jnpadImageBrowseService ;
 	
 	
-	
+	/**
+	 * stfp分类查询照片
+	 * @param request
+	 * @return
+	 * @throws SftpException 
+	 * @throws IOException 
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/JnpadImageBrowse/StfpfindLocalImageByType.json", method = { RequestMethod.GET })
+	public String StfpfindLocalImageByType(HttpServletRequest request) throws IOException, SftpException {
+		List<LocalImageForm> imagerList = jnpadImageBrowseService.findLocalImageByType1(request.getParameter("customerId"),request.getParameter("productId")
+				,request.getParameter("phone_type"));
+		Map<String,Object> map = new LinkedHashMap<String,Object>();
+		map.put("imagerList",imagerList);
+		map.put("size",imagerList.size());
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+	}
 	@ResponseBody
 	@RequestMapping(value = "/ipad/JnpadImageBrowse/uploadYx.json", method = { RequestMethod.GET })
 	public String display_server(HttpServletRequest request) {
@@ -72,7 +91,7 @@ public class JnpadImageBrowseController {
 	
 	
 	/**
-	 * 分类查询照片
+	 * base64分类查询照片
 	 * @param request
 	 * @return
 	 * @throws SftpException 

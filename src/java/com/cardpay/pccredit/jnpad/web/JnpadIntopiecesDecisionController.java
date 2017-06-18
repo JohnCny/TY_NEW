@@ -53,7 +53,7 @@ public class JnpadIntopiecesDecisionController extends BaseController{
 	@RequestMapping(value = "/ipad/intopieces/csBrowse.json", method = { RequestMethod.GET })
 	public String csBrowse(@ModelAttribute IntoPiecesFilter filter,HttpServletRequest request) {
 		
-		
+		filter.setChineseName(request.getParameter("name"));
 		filter.setNextNodeName(request.getParameter("nextNodeName"));
 		filter.setUserId(request.getParameter("userId"));
 		QueryResult<CustomerApplicationIntopieceWaitForm> result = jnpadIntopiecesDecisionService.findCustomerApplicationIntopieceDecison(filter);
