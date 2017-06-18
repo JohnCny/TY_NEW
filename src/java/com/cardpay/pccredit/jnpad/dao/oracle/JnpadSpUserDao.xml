@@ -28,9 +28,21 @@
 			where capid=#{capid} and spuserid=#{spuserid}
 </update>
 
-
+<update id="deleteSpUser" >
+		update  CUSTOMER_SP set beizhu='',sptime='',jlyy='',spje='',splv='',status='0',spqx=''
+			where capid=#{capid} 
+			
+			</update>
+			
 <select id="findspUser" resultMap="CustomerSpUser">
 select distinct(capid) as capid from CUSTOMER_SP where status!='0'
+</select>
+
+<select id="findUserResult" resultMap="CustomerSpUser">
+select capid as capid  from CUSTOMER_SP where  spuserid=#{spuserid}  and sptime is  null
+</select>
+<select id="findUserResult1" resultMap="CustomerSpUser">
+select status as status  from CUSTOMER_SP where  capid=#{capid} 
 </select>
 <select id="findspUser1" resultMap="CustomerSpUser">
 select distinct(capid) as capid from CUSTOMER_SP where status!='0'
@@ -53,6 +65,14 @@ select c.spuserid as spuserid, c.pid as pid ,c.cid as cid, c.beizhu as beizhu,c.
 where c.capid=#{capid}
 and c.capid=cc.id
 and cc.status='audit'
+</select>
+
+<select id="findSpHjy" resultMap="CustomerSpUser">
+select c.spuserid as spuserid, c.pid as pid ,c.cid as cid, c.beizhu as beizhu,c.sptime as sptime,c.jlyy as jlyys,c.time as time,c.spje as spje,c.splv as splv,c.status as status,c.spqx as spqx from CUSTOMER_SP c
+where c.sptime is not null
+and c.capid=#{capid}
+AND c.spuserid!=#{userid}
+
 </select>
 
 <select id="selectUser" resultMap="CustomerSpUser">

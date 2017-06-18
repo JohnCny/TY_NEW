@@ -179,15 +179,7 @@
 </select>
 
 <select id="selectSDH" resultMap="IntoPieces">
-<!-- select c.ID as id,c.CUSTOMER_ID as customerId,c.PRODUCT_ID as productId,s.display_name as displayName,p.product_name as productName,b.card_id as cardId
-,c.APPLY_QUOTA as applyQuota,c.CREATED_TIME as creatime,b.chinese_name as chineseName,PROD_CREDIT_RANGE as PRODCREDITRANGE
- from CUSTOMER_APPLICATION_INFO c,CUSTOMER_APPLICATION_SDH t,sys_user s,product_attribute p,BASIC_CUSTOMER_INFORMATION b
-where c.id=t.capid
-and s.id=b.user_id and
-b.id=c.customer_id and
-c.product_id=p.id and
- (t.sdwuser1=#{userId} or t.sdwuser2=#{userId} or t.sdwuser3=#{userId})
- and t.SDTIME is  null -->
+<!-- 
  select c.ID as id,c.CUSTOMER_ID as customerId,c.PRODUCT_ID as productId,s.display_name as displayName,p.product_name as productName,b.card_id as cardId
 ,c.APPLY_QUOTA as applyQuota,c.CREATED_TIME as creatime,b.chinese_name as chineseName,PROD_CREDIT_RANGE as PRODCREDITRANGE
  from CUSTOMER_APPLICATION_INFO c,CUSTOMER_SP t,sys_user s,product_attribute p,BASIC_CUSTOMER_INFORMATION b
@@ -196,7 +188,18 @@ and s.id=b.user_id and
 b.id=c.customer_id and
 c.product_id=p.id and
  t.spuserid=#{userId}
- and t.status ='0'
+ and t.status ='0' -->
+ 
+ 
+ select c.ID as id,c.CUSTOMER_ID as customerId,c.PRODUCT_ID as productId,s.display_name as displayName,p.product_name as productName,b.card_id as cardId
+,c.APPLY_QUOTA as applyQuota,c.CREATED_TIME as creatime,b.chinese_name as chineseName,PROD_CREDIT_RANGE as PRODCREDITRANGE
+ from CUSTOMER_APPLICATION_INFO c,CUSTOMER_SP t,sys_user s,product_attribute p,BASIC_CUSTOMER_INFORMATION b
+where c.id=t.capid
+and s.id=b.user_id and
+b.id=c.customer_id and
+c.product_id=p.id and
+ t.spuserid=#{userId} and
+ t.capid=#{capid}
 </select>
 
 <select id="selectSDH1" resultMap="IntoPieces">
@@ -284,22 +287,57 @@ c.id=t.application_id and
 b.user_id=s.id -->
 
 
-select t.examine_amount as examineAmount,t.examine_lv as examineLv,
+<!-- select t.examine_amount as examineAmount,t.examine_lv as examineLv,
 t.qx as qx,a.displayName1 as userId_1,b.displayName2 as userId_2,c.displayName3 as userId_3
 ,d.displayName4 as userId_4 
 ,s.id as did ,c.id as cid,p.id as pid,b.id as id,p.PROD_CREDIT_RANGE as PRODCREDITRANGE
 ,b.CHINESE_NAME as displayName,p.product_name as pname,b.card_id as cardId,c.APPLY_QUOTA as applyQuota,dd.displayname as name1
 from T_APP_MANAGER_AUDIT_LOG t,BASIC_CUSTOMER_INFORMATION b,sys_user s,
 CUSTOMER_APPLICATION_INFO c,product_attribute p,
- (select s.display_name as displayName1 from T_APP_MANAGER_AUDIT_LOG t,sys_user s where t.user_id_1=s.id and t.application_id=#{id})a,
-  (select s.display_name as displayName2 from T_APP_MANAGER_AUDIT_LOG t,sys_user s where t.user_id_2=s.id and t.application_id=#{id})b,
-   (select s.display_name as displayName3 from T_APP_MANAGER_AUDIT_LOG t,sys_user s where t.user_id_3=s.id and t.application_id=#{id})c,
-    (select s.display_name as displayName4 from T_APP_MANAGER_AUDIT_LOG t,sys_user s where t.user_id_4=s.id and t.application_id=#{id})d,
-     (select s.display_name as displayname from BASIC_CUSTOMER_INFORMATION b,sys_user s,CUSTOMER_APPLICATION_INFO c where b.id=c.customer_id and b.user_id=s.id and c.id=#{id})dd
+ (select nvl(s.display_name,'初审时无选择') as displayName1 from T_APP_MANAGER_AUDIT_LOG t,sys_user s where t.user_id_1=s.id and t.application_id=#{id})a,
+  (select nvl(s.display_name,'初审时无选择') as displayName2 from T_APP_MANAGER_AUDIT_LOG t,sys_user s where t.user_id_2=s.id and t.application_id=#{id})b,
+   (select nvl(s.display_name,'初审时无选择') as displayName3 from T_APP_MANAGER_AUDIT_LOG t,sys_user s where t.user_id_3=s.id and t.application_id=#{id})c,
+    (select nvl(s.display_name,'初审时无选择') as displayName4 from T_APP_MANAGER_AUDIT_LOG t,sys_user s where t.user_id_4=s.id and t.application_id=#{id})d,
+     (select nvl(s.display_name,'初审时无选择') as displayname from BASIC_CUSTOMER_INFORMATION b,sys_user s,CUSTOMER_APPLICATION_INFO c where b.id=c.customer_id and b.user_id=s.id and c.id=#{id})dd
        where t.application_id=#{id} and c.CUSTOMER_ID=b.id and c.id=t.application_id and b.user_id=s.id   
        and b.id=c.customer_id and
 		c.product_id=p.id and
-		c.id=t.application_id
+		c.id=t.application_id -->
+		
+		
+		
+		 select aa.examineAmount as examineAmount,aa.examineLv as examineLv,
+aa.qx as qx,a.displayName1 as userId_1,b.displayName2 as userId_2,c.displayName3 as userId_3
+,d.displayName4 as userId_4 
+,aa.did as did ,aa.cid as cid,aa.pid as pid,aa.id as id,aa.PRODCREDITRANGE as PRODCREDITRANGE
+,aa.displayName as displayName,aa.pname as pname,aa.cardId as cardId,aa.applyQuota as applyQuota,dd.displayname as name1
+
+
+    
+    from (
+    select t.examine_amount as examineAmount,t.examine_lv as examineLv,
+t.qx as qx,
+s.id as did ,c.id as cid,p.id as pid,b.id as id,p.PROD_CREDIT_RANGE as PRODCREDITRANGE
+,b.CHINESE_NAME as displayName,p.product_name as pname,b.card_id as cardId,c.APPLY_QUOTA as applyQuota
+     from T_APP_MANAGER_AUDIT_LOG t ,BASIC_CUSTOMER_INFORMATION b,sys_user s,CUSTOMER_APPLICATION_INFO c,product_attribute p 
+    where t.application_id=#{id}
+    and t.application_id=c.id
+
+    and b.id=c.customer_id
+        and s.id=b.user_id
+        and c.product_id=p.id)aa  left join (select nvl(s.display_name,'初审时无选择') as displayName1, t.application_id as id from T_APP_MANAGER_AUDIT_LOG t,sys_user s where t.user_id_1=s.id and t.application_id=#{id})a on
+        aa.cid=a.id
+         left join (select nvl(s.display_name,'初审时无选择') as displayName2, t.application_id as id from T_APP_MANAGER_AUDIT_LOG t,sys_user s where t.user_id_2=s.id and t.application_id=#{id})b on
+        aa.cid=b.id
+        
+            left join (select nvl(s.display_name,'初审时无选择') as displayName3, t.application_id as id from T_APP_MANAGER_AUDIT_LOG t,sys_user s where t.user_id_3=s.id and t.application_id=#{id})c on
+        aa.cid=c.id
+        
+           left join (select nvl(s.display_name,'初审时无选择') as displayName4, t.application_id as id from T_APP_MANAGER_AUDIT_LOG t,sys_user s where t.user_id_4=s.id and t.application_id=#{id})d on
+        aa.cid=d.id
+        
+          left join   (select nvl(s.display_name,'初审时无选择') as displayname, cc.id as id from BASIC_CUSTOMER_INFORMATION bb,sys_user s,CUSTOMER_APPLICATION_INFO cc where bb.id=cc.customer_id and bb.user_id=s.id and cc.id=#{id})dd
+          on      aa.cid=dd.id
 </select>
 
 
