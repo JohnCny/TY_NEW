@@ -46,6 +46,12 @@
 			where BATCH_ID=#{batchId}
 	</select>
 	
+    <select id="findproid" resultType="String">
+			select  pro.id  from customer_application_info info ,product_attribute pro 
+			where 1=1 and pro.id=info.product_id and info.id=#{appId}
+        
+	</select>
+	
      <select id="findDhApplnDetailCount" resultType="int">
 			select count(*) from dh_appln_attachment_detail 
 			where BATCH_ID=#{batchId}
@@ -314,6 +320,10 @@
 		</if>
 		)
 	</select>
+	<select id="findbatchlsbyid" resultMap="ResultMapAttachmentBatch">
+		 select * 
+		 from qz_appln_attachment_batch   where id=#{batch_id}
+	</select>
 	
 	<select id="findDhAttachmentBatchByAppId" resultMap="ResultMapDhAttachmentBatch">
 		 select * 
@@ -396,7 +406,10 @@
 		</if>
 	</select>
 	
-	
+	<insert id="insertlocalimage"  parameterType="String">
+		insert into LOCAL_IMAGE(ID,CUSTOMER_ID,PRODUCT_ID,APPLICATION_ID,ATTACHMENT,URI,CREATED_BY,CREATED_TIME,PHONE_TYPE)
+		values(sys_guid(),#{custId},#{proid},#{appId},#{newFileName},#{url},'','',#{batch_id})
+	</insert>
 	
   
 </mapper>

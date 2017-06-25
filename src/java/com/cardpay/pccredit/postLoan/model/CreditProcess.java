@@ -57,8 +57,15 @@ private String lv;
 private String jjyy;
 private String sdwuser1yj;
 private String productname;
+private String fallback;
 
 
+public String getFallback() {
+	return fallback;
+}
+public void setFallback(String fallback) {
+	this.fallback = fallback;
+}
 public String getUserid4() {
 	return userid4;
 }

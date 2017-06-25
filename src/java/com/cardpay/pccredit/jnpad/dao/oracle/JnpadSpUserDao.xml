@@ -82,4 +82,8 @@ where id=#{id}
 <update id="updateObject" >
 update WF_STATUS_QUEUE_RECORD SET EXAMINE_RESULT=#{examineResult} where ID= #{id}
 </update>
+
+<select id="findsplistsbycapid" resultMap="CustomerSpUser">
+	select * from CUSTOMER_SP sp where sp.capid=#{capid}
+</select>
 </mapper> 

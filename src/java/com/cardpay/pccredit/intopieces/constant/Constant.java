@@ -30,7 +30,7 @@ public class Constant {
 	//public static String FILE_PATH = "/home/sealy/TFile/";
 	
 	/* 影像资料补扫上传路径 /usr/pccreditFilebs/    /root/Pictures/*/
-	public static String FILE_PATH_BS = "/tynxxwd/pccreditFilebs/";
+	public static String FILE_PATH_BS = "/tynxxwd/pccreditFile/";
 	//public static String FILE_PATH_BS = "D://tp//";
 	
 	/* 保存进件*/
@@ -128,16 +128,16 @@ public class Constant {
 		put(8192,"担保人及配偶婚姻状况说明");
 		put(16384,"担保人收入证明");
 		put(1073741824,"其他");*/
-		put(1,"照片1");
-		put(2,"照片2");
-		put(4,"照片");
-		put(8,"照片3");
-		put(16,"照片4");
-		put(32,"照片5");
-		put(64,"照片");
-		put(128,"照片");
-		put(256,"照片");
-		put(512,"照片");
+		put(1,"照片1经营场所");
+		put(2,"照片2经营权属");
+		put(4,"照片3经营单据逻辑检查");
+		put(8,"照片4经营单据资产负债");
+		put(16,"照片5经营单据损益");
+		put(32,"照片6其他收入");
+		put(64,"照片7身份证明");
+		put(128,"照片8个人资产");
+		put(256,"照片9家访");
+		put(512,"照片10担保");
 		put(1024,"照片");
 		put(2048,"照片");
 		put(4096,"照片");

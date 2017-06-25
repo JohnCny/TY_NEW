@@ -211,16 +211,6 @@
 		$("#id_save_button").click(function() {
 			$(".myerror").remove();
 			
-			/* if($("#decisionAmount").val() == ""){
-				 $("#decisionAmount").after("<label class='error myerror' generated='true' >金额不能为空</label>");  
-				 return;
-			}
-			if($("#decisionAmount").val() == ""){
-				 $("#decisionAmount").after("<label class='error myerror' generated='true' >金额不能为空</label>");  
-				 return;
-			} */
-			
-			
 			var status = $("select[name=status]").val();
 			if( status == "approved"){
 				if($("#decisionAmount").val() == ""){
@@ -285,7 +275,7 @@
 						type : "get",
 						success : function(data) {
 						if (data.success) {
-							topWin.Dialog.message("保存成功!");
+							topWin.Dialog.message(data.message);
 		 	            	window.location.href="${contextPath}/intopieces/intopiecesdecision/browse.page";
 						 }else{
 								window.top.Dialog.message("系统出现异常,请联系管理员"); 

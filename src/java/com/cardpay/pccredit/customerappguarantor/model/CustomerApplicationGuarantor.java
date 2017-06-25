@@ -34,31 +34,25 @@ public class CustomerApplicationGuarantor extends BusinessModel {
     private String cellPhone;
 
     private String documentNumber;
+    private String pattern;
     
     public CustomerApplicationGuarantor(){}
 
-    public CustomerApplicationGuarantor(String id, String chinesename,
-			String applyquota, String mainApplicationFormId,
-			String mainApplicationFormCode, String guarantorMortgagorPledge,
-			String sex, String relationshipWithApplicant, String unitName,
-			String department, String contactPhone, String cellPhone,
-			String documentNumber) {
-		this.id = id;
-		this.chinesename = chinesename;
-		this.applyquota = applyquota;
-		this.mainApplicationFormId = mainApplicationFormId;
-		this.mainApplicationFormCode = mainApplicationFormCode;
-		this.guarantorMortgagorPledge = guarantorMortgagorPledge;
-		this.sex = sex;
-		this.relationshipWithApplicant = relationshipWithApplicant;
-		this.unitName = unitName;
-		this.department = department;
-		this.contactPhone = contactPhone;
-		this.cellPhone = cellPhone;
-		this.documentNumber = documentNumber;
+ 
+
+    public String getPattern() {
+		return pattern;
 	}
 
-    public String getChinesename() {
+
+
+	public void setPattern(String pattern) {
+		this.pattern = pattern;
+	}
+
+
+
+	public String getChinesename() {
 		return chinesename;
 	}
 

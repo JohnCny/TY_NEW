@@ -320,7 +320,6 @@ public class AddIntoPiecesControl extends BaseController {
 				//显示当前为当前客户担保的担保信息 (根据当前的进件表id)
 				JRadModelAndView mv = new JRadModelAndView("/intopieces/customerappguarantor/customerappguarantorhtm",request);
 				String infoid= Applicationid.getApplicationId();
-			//	String infoid="8a855a4759b9f24c0159ba7619360002";
 			 if(infoid!=null&& infoid!=""){
 				 List<CustomerApplicationGuarantor>lists=service.findguarantor(infoid);
 			 	//显示担保连上的信息   Applicationid.getCustomerId();   根据传过来的customerid

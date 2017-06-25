@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -92,6 +93,7 @@ public class AddIntoPiecesService {
 	@Autowired
 	private LocalExcelDao localExcelDao;
 	
+	
 	@Autowired
 	private LocalImageDao localImageDao;
 	
@@ -126,9 +128,9 @@ public class AddIntoPiecesService {
 			public void importExcel(MultipartFile file,String productId, String customerId) {
 				// TODO Auto-generated method stub
 				//本地测试
-				Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+				//Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
 				//指定服务器上传 
-				//Map<String, String> map=SFTPUtil.uploadJn(file, customerId);
+				Map<String, String> map=SFTPUtil.uploadJn(file, customerId);
 				//Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
 				String fileName = map.get("fileName");
 				String url = map.get("url");
@@ -147,9 +149,9 @@ public class AddIntoPiecesService {
 				//读取excel内容
 				JXLReadExcel readExcel = new JXLReadExcel();
 				//本地测试
-				String sheet[] = readExcel.readExcelToHtml(url, true,fileName);
+				//String sheet[] = readExcel.readExcelToHtml(url, true,fileName);
 				//服务器  修改标准经营性(新增)调查表     
-				//String sheet[] = SFTPUtil.readExcelToHtml(url, true,fileName);
+				String sheet[] = SFTPUtil.readExcelToHtml(url, true,fileName);
 				/*for(String str : sheet){*/
 					if(StringUtils.isEmpty(sheet[19])){
 						throw new RuntimeException("导入失败，请检查excel文件与模板是否一致！");
@@ -803,7 +805,7 @@ public class AddIntoPiecesService {
 		return localImageDao.findDhAttachmentBatchByAppId(applicationId);
 	}
 	
-	public void addBatchInfo(String appId,String custId){
+	/*public void addBatchInfo(String appId,String custId){
 		QzApplnAttachmentList att = this.findAttachmentListByAppId(appId);
 		if(att != null){
 			for(int i=0 ; i<=30 ; i++){
@@ -815,6 +817,26 @@ public class AddIntoPiecesService {
 							batch.setName(Constant.ATT_BATCH_1.get((int)Math.pow(2, i)));
 							batch.setType((int)Math.pow(2, i)+"");
 							commonDao.insertObject(batch);
+						}
+					}
+			   //}
+			}
+		}
+	}*/
+	
+	//原版的在上面
+	public void addBatchInfo(String appId,String custId){
+		QzApplnAttachmentList att = this.findAttachmentListByAppId(appId);
+		if(att != null){
+			for(int i=0 ; i<=30 ; i++){
+				//if(att.getBussType().equals("1")){
+					if(att.getChkValue() != null && !att.getChkValue().equals("")){
+						if((Integer.parseInt(att.getChkValue()))>(int)Math.pow(2, i)){
+								QzApplnAttachmentBatch batch = new QzApplnAttachmentBatch();
+								batch.setAttId(att.getId());
+								batch.setName(Constant.ATT_BATCH_1.get((int)Math.pow(2, i)));
+								batch.setType((int)Math.pow(2, i)+"");
+								commonDao.insertObject(batch);
 						}
 					}
 			   //}
@@ -859,11 +881,12 @@ public class AddIntoPiecesService {
 		return  commonDao.queryBySql(CustomerInfor.class, sql, null).get(0);
 	}
 	//浏览文件并缓存到服务器目录
-	public void browse_folder(MultipartFile file,String batch_id) throws Exception {
+	public void browse_folder(MultipartFile file,String batch_id, String appId, String custId) throws Exception {
 		//本地
 		//Map<String, String> map  = UploadFileTool.uploadYxzlFileBySpring_qz(file,batch_id);
 		//服务器
 		Map<String, String> map = SFTPUtil.uploadYxzlFileBySpring_qz(file,batch_id);
+		//Map<String, String> map = SFTPUtil.uploadJn2(file,batch_id);
 		String newFileName = map.get("newFileName");
 		String url = map.get("url");
 		QzApplnAttachmentDetail detail = new QzApplnAttachmentDetail();
@@ -873,6 +896,43 @@ public class AddIntoPiecesService {
 		detail.setPicSize(file.getSize() + "");
 		detail.setUrl(url);
 		commonDao.insertObject(detail);
+		
+		//同步到pad  --pad上传到服务器上只是把图片传上去真正起到分类作用的是LOCAL_IMAGE表
+		
+		QzApplnAttachmentBatch batch_ls=localImageDao.findbatchlsbyid(batch_id);
+		if("照片1经营场所".equals(batch_ls.getName())){
+			batch_id="1";   //经营场所
+		}
+		if("照片2经营权属".equals(batch_ls.getName())){
+			batch_id="2";   //经营权属
+		}
+		if("照片3经营单据逻辑检查".equals(batch_ls.getName())){
+			batch_id="3";
+		}
+		if("照片4经营单据资产负债".equals(batch_ls.getName())){
+			batch_id="4";
+		}
+		if("照片5经营单据损益".equals(batch_ls.getName())){
+			batch_id="5";
+		}
+		if("照片6其他收入".equals(batch_ls.getName())){
+			batch_id="6";
+		}
+		if("照片7身份证明".equals(batch_ls.getName())){
+			batch_id="7";
+		}
+		if("照片8个人资产".equals(batch_ls.getName())){
+			batch_id="8";
+		}
+		if("照片9家访".equals(batch_ls.getName())){
+			batch_id="9";
+		}
+		if("照片10担保".equals(batch_ls.getName())){
+			batch_id="10";
+		}
+		String proid=localImageDao.findproid(appId,custId);
+		newFileName=file.getOriginalFilename();
+		localImageDao.insertlocalimage(appId,custId,batch_id,newFileName,url,proid,UUID.randomUUID().toString());
 	}
 	
 	
@@ -1043,6 +1103,5 @@ public class AddIntoPiecesService {
 		
 		request.getSession().setAttribute(batchId, null);
 	}
-	
 	
 }

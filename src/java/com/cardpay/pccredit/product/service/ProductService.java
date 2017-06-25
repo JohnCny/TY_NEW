@@ -142,11 +142,11 @@ public class ProductService {
 		filter.setStatus("Published");
 		List<ProductAttribute> productAttribute = productDao.findProductsByFilter(filter);
 		int size = productDao.findProductsCountByFilter(filter);
-		for(int i=0;i<productAttribute.size();i++){
+		/*for(int i=0;i<productAttribute.size();i++){
 			if(productAttribute.get(i).getProductName().equals("融耀卡")){
 				productAttribute.remove(i);
 			}
-		}
+		}*/
 		QueryResult<ProductAttribute> qs = new QueryResult<ProductAttribute>(size, productAttribute);
 		return qs;
 	}
