@@ -67,4 +67,9 @@ public class JnpadSpUserService {
 	public List<CustomerSpUser>findUserResult1(@Param("capid") String capid){
 		return UserDao.findUserResult1(capid);
 	}
+	public List<com.cardpay.pccredit.jnpad.model.CustomerSpUser> findsplistsbycapid(
+			String capid) {
+		// TODO Auto-generated method stub
+		return UserDao.findsplistsbycapid(capid);
+	}
 }

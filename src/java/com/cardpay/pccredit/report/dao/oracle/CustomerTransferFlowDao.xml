@@ -2023,7 +2023,7 @@
          basic_customer_information basic ,  sys_user sysuser,customer_application_info info
        where 1=1 and tym.ywbh=tkmx.ywbh and tkmx.khh=base.khnm and
        base.id=basic.ty_customer_id and basic.user_id=sysuser.id and 
-       basic.id=info.customer_id and  pro.id=info.product_id and pro.product_name='荣耀卡'
+       basic.id=info.customer_id and  pro.id=info.product_id and pro.product_name='融耀卡'
 		           <if test="id != null and id != '' ">
 		            and sysuser.id=#{id}
 		           </if>
@@ -2047,7 +2047,7 @@
          basic_customer_information basic ,  sys_user sysuser,customer_application_info info
        where 1=1 and tym.ywbh=tkmx.ywbh and tkmx.khh=base.khnm and
        base.id=basic.ty_customer_id and basic.user_id=sysuser.id and 
-       basic.id=info.customer_id and  pro.id=info.product_id and pro.product_name='荣耀卡'
+       basic.id=info.customer_id and  pro.id=info.product_id and pro.product_name='融耀卡'
        <if test="id != null and id != '' ">
 		     and sysuser.id=#{id}
 		</if>

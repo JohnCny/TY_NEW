@@ -84,9 +84,15 @@ public class TyRepayTkmxForm{
 	private String state;
 	private String khlx;
 	private String zjlx;
+	private String fallback;
 	
 	
-	
+	public String getFallback() {
+		return fallback;
+	}
+	public void setFallback(String fallback) {
+		this.fallback = fallback;
+	}
 	public String getZjlx() {
 		return zjlx;
 	}

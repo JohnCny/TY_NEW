@@ -55,10 +55,12 @@ import com.cardpay.pccredit.jnpad.model.JNPAD_SFTPUtil;
 import com.cardpay.pccredit.intopieces.web.LocalImageForm;
 import com.cardpay.pccredit.manager.service.DailyReportScheduleService;
 import com.cardpay.pccredit.tools.ImportParameter;
+import com.cardpay.pccredit.toolsjn.ImaUtils;
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
+import com.jcraft.jsch.SftpATTRS;
 import com.jcraft.jsch.SftpException;
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageDecoder;
@@ -172,7 +174,7 @@ public class SFTPUtil {
     /** 
      * upload all the files to the server 
      */  
-    public synchronized  static Map<String, String> uploadJn(MultipartFile oldFile,String customerId) {
+   public synchronized  static Map<String, String> uploadJn(MultipartFile oldFile,String customerId) {
     	String newFileName = null;
 		String fileName = null;
     	Map<String, String> map = new HashMap<String, String>();
@@ -215,8 +217,10 @@ public class SFTPUtil {
             e.printStackTrace();  
         }  
           return map;
-    	/*//连接sftp
-   	 	connect();  
+    }
+    
+    //阳泉用压缩
+    public  synchronized  static Map<String, String> uploadJn1(MultipartFile file,String customerId) {
     	String newFileName = null;
 		String fileName = null;
 		Map<String, String> map = new HashMap<String, String>();
@@ -227,24 +231,126 @@ public class SFTPUtil {
 		}
 		try {
 			// 取得上传文件
-			if (oldFile != null && !oldFile.isEmpty()) {
-				fileName = oldFile.getOriginalFilename();
-				File tempFile = new File(path+ oldFile.getOriginalFilename());
+			if (file != null && !file.isEmpty()) {
+				fileName = file.getOriginalFilename();
+				File tempFile = new File(path+ file.getOriginalFilename());
 				if (tempFile.exists()) {
-					newFileName = IDGenerator.generateID() + "."+ oldFile.getOriginalFilename().split("\\.")[1];
+					newFileName = IDGenerator.generateID() + "."+ file.getOriginalFilename().split("\\.")[1];
 				} else {
-					newFileName = oldFile.getOriginalFilename();
+					newFileName = file.getOriginalFilename();
 				}
 				File localFile = new File(path + newFileName);
-				oldFile.transferTo(localFile);
+				System.out.println(localFile.exists());
+				file.transferTo(localFile);
+				System.out.println("开始压缩：" + new Date().toLocaleString()); 
+				ImaUtils.imgCom(path + newFileName);  
+				ImaUtils.resizeFix(1200, 600);  
+			        System.out.println("压缩完毕：" + new Date().toLocaleString());  
+			    	connect();
+			    	sftp.cd(Constant.FILE_PATH);
+			    	if(!isDirExist(customerId)){
+			    		 sftp.mkdir(customerId);
+			    	}
+					sftp.cd(Constant.FILE_PATH + customerId);
+					FileInputStream in = null;
+					File file1 = new File(path + newFileName);
+				    in = new FileInputStream(file1);
+				   sftp.put(in,newFileName);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		disconnect();  
 		map.put("fileName", fileName);
 		map.put("url", path + newFileName);
-		return map;*/
+		return map;
+    }
+    
+    //
+    public  synchronized  static Map<String, String> uploadJn2(MultipartFile file,String batch_id) {
+    	String newFileName = null;
+		String fileName = null;
+		Map<String, String> map = new HashMap<String, String>();
+		String path = Constant.FILE_PATH_BS + batch_id;
+		try {
+		if (file != null && !file.isEmpty()) {
+        	//连接sftp
+        	connect();
+        	try {
+    			sftp.cd(path);
+			} catch (Exception e) {
+				System.out.println(Constant.FILE_PATH_BS);
+				sftp.cd(Constant.FILE_PATH_BS);
+				sftp.mkdir(batch_id);  
+				sftp.cd(path);
+			}
+    			
+    	    fileName = file.getOriginalFilename();
+			File tempFile = new File(path + File.separator + file.getOriginalFilename());
+				if (tempFile.exists()) {
+					newFileName = IDGenerator.generateID() + "."+ file.getOriginalFilename().split("\\.")[1];
+				} else {
+					newFileName = file.getOriginalFilename();
+				}
+				 CommonsMultipartFile cf= (CommonsMultipartFile)file;
+		    	 DiskFileItem fi = (DiskFileItem)cf.getFileItem(); 
+		         File newfile = fi.getStoreLocation();
+		         sftp.put(new FileInputStream(newfile), newFileName);
+		         System.out.println("上传成功！");
+		         String url=path + File.separator + newFileName;
+		         File localFile = new File(url);
+		         System.out.println(url);
+		       /*  if(localFile.getParent()!=null&&new File(localFile.getParent()).exists()){
+		        	 new File(localFile.getParent()).mkdirs();
+		         }
+		         localFile.createNewFile();*/
+		         System.out.println(localFile.exists());
+		         file.transferTo(localFile);
+				System.out.println("开始压缩：" + new Date().toLocaleString()); 
+				ImaUtils.imgCom(path + File.separator + newFileName);  
+				ImaUtils.resizeFix(1200, 600);  
+			        System.out.println("压缩完毕：" + new Date().toLocaleString());  
+			    	connect();
+			    	sftp.cd(Constant.FILE_PATH_BS);
+			    	if(!isDirExist(batch_id)){
+			    		 sftp.mkdir(batch_id);
+			    	}
+					sftp.cd(Constant.FILE_PATH_BS + batch_id);
+					FileInputStream in = null;
+					System.out.println(path + File.separator+ newFileName);
+					File file1 = new File(path + File.separator+ newFileName);
+				    in = new FileInputStream(file1);
+				   sftp.put(in,newFileName);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		map.put("fileName", fileName);
+		map.put("url", path+ File.separator + newFileName);
+		return map;
+    }
+    
+    /**
+     * 判断目录是否存在
+     * @param directory
+     * @return
+     */
+    public static boolean isDirExist(String directory)
+    {
+        boolean isDirExistFlag = false;
+        try
+        {
+            SftpATTRS sftpATTRS = sftp.lstat(directory);
+            isDirExistFlag = true;
+            return sftpATTRS.isDir();
+        }
+        catch (Exception e)
+        {
+            if (e.getMessage().toLowerCase().equals("no such file"))
+            {
+                isDirExistFlag = false;
+            }
+        }
+        return isDirExistFlag;
     }
     
     /**
@@ -252,30 +358,6 @@ public class SFTPUtil {
      */
     
     public static Map<String, String>  uploadYxzlFileBySpring_qz(MultipartFile file,String batch_id) throws Exception {
-	/*	Map<String, String> map = new HashMap<String, String>();
-		String newFileName = null;
-		String fileName = null;
-		String serverPath = Constant.FILE_PATH + batch_id + File.separator;
-		File tempDir = new File(serverPath);
-		if (!tempDir.isDirectory()) {
-			tempDir.mkdirs();
-		}
-		// 取得上传文件
-		if (file != null && !file.isEmpty()) {
-			fileName = file.getOriginalFilename();
-			File tempFile = new File(serverPath + fileName);
-			if (tempFile.exists()) {
-				newFileName = IDGenerator.generateID() + "." + fileName.split("\\.")[1];
-			} else {
-				newFileName = fileName;
-			}
-			File localFile = new File(serverPath + newFileName);
-			file.transferTo(localFile);
-		}
-		
-		map.put("fileName", newFileName);
-		map.put("url", serverPath + newFileName);
-		return map;*/
     	
     	String newFileName = null;
 		String fileName = null;
@@ -378,10 +460,10 @@ public class SFTPUtil {
 			connect();
 //			System.out.println("download1:"+filePath.substring(0, 50));
 //			System.out.println("download2:"+sftp.get(filePath.substring(50, filePath.length())));
-			//System.out.println(filePath.substring(0, 50));
-			sftp.cd(filePath.substring(0, 56));
-			//System.out.println(filePath.substring(51, filePath.length()));
-			BufferedInputStream bis = new BufferedInputStream(sftp.get(filePath.substring(57, filePath.length())));//filePath.split("\\\\")[4]
+//			System.out.println(filePath.substring(0, 54));
+			sftp.cd(filePath.substring(0, 54));
+//			System.out.println(filePath.substring(55, filePath.length()));
+			BufferedInputStream bis = new BufferedInputStream(sftp.get(filePath.substring(55, filePath.length())));//filePath.split("\\\\")[4]
 			BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream());
 			while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
 				bos.write(buff, 0, bytesRead);
@@ -406,15 +488,15 @@ public class SFTPUtil {
 			int bytesRead;
 			response.setHeader("Content-Disposition", "attachment; filename="+ java.net.URLEncoder.encode(fileName, "UTF-8"));
 			connect();
-			System.out.println(filePath.substring(0, 56));
-			sftp.cd(filePath.substring(0, 56));
+			System.out.println(filePath.substring(0, 54));
+			sftp.cd(filePath.substring(0, 54));
 			
 			String GIF = "image/gif;charset=GB2312";// 设定输出的类型
 			String JPG = "image/jpeg;charset=GB2312";
 			String BMP = "image/bmp";
 		    String PNG = "image/png";
 		    
-			String imagePath = filePath.substring(57, filePath.length());
+			String imagePath = filePath.substring(55, filePath.length());
 			System.out.println(filePath);
 			System.out.println(imagePath);
 			OutputStream output = response.getOutputStream();// 得到输出流
@@ -425,7 +507,7 @@ public class SFTPUtil {
 
 				// 得到图片的文件流
 				
-				BufferedInputStream imageIn = new BufferedInputStream(sftp.get(filePath.substring(57, filePath.length())));
+				BufferedInputStream imageIn = new BufferedInputStream(sftp.get(filePath.substring(55, filePath.length())));
 				//File f=new File(filePath);
 				//InputStream imageIn = new FileInputStream(f);
 				// 得到输入的编码器，将文件流进行jpg格式编码
@@ -698,13 +780,18 @@ public class SFTPUtil {
                         Sheet st = wb.getSheetAt(0);
                         //此处修改金额坐标位置
                         String ThefileName="1.8.1.xlsx";
-                        Cell cell;
-                        if(fileName.equals(ThefileName)){
+                        Cell cell = null;
+                        if(fileName.equals(ThefileName)||"1.8.1.xls".equals(ThefileName)){
                         	
                         	Row row = st.getRow(40);
                         	cell = row.getCell(3);
-                        }else{
+                        }
+                        if("1.3.xlsx".equals(fileName)||"1.3.xls".equals(fileName)){
                         	Row row = st.getRow(32);
+                        	cell = row.getCell(3);
+                        }
+                        if("0.xlsx".equals(fileName)||"0.xls".equals(fileName)){
+                        	Row row = st.getRow(16);
                         	cell = row.getCell(3);
                         }
                         approveValue = getCellValue(cell);
@@ -713,13 +800,18 @@ public class SFTPUtil {
                         HSSFWorkbook hWb = (HSSFWorkbook) wb;
                         Sheet st = wb.getSheetAt(0);
                         String ThefileName="1.8.1.xlsx";
-                        Cell cell;
-                        if(fileName.equals(ThefileName)){
+                        Cell cell = null;
+                        if(fileName.equals(ThefileName)||"1.8.1.xls".equals(fileName)){
                         	
                         	Row row = st.getRow(40);
                         	cell = row.getCell(3);
-                        }else{
+                        }
+                        if("1.3.xlsx".equals(fileName)||"1.3.xls".equals(fileName)){
                         	Row row = st.getRow(32);
+                        	cell = row.getCell(3);
+                        }
+                        if("0.xlsx".equals(fileName)||"0.xls".equals(fileName)){
+                        	Row row = st.getRow(16);
                         	cell = row.getCell(3);
                         }
                         approveValue = getCellValue(cell);
@@ -750,6 +842,33 @@ public class SFTPUtil {
                     }
                 	String content_base64 = getBASE64(map.get("computerData").toString());
 					sheet[20] = content_base64;
+				}
+            	//================
+				else if(wb.getSheetAt(i).getSheetName().indexOf("消费调查分析表")>=0){
+					if (wb instanceof XSSFWorkbook) {
+                        XSSFWorkbook xWb = (XSSFWorkbook) wb;
+                        Sheet st = wb.getSheetAt(0);
+                        //此处修改金额坐标位置
+                        Cell cell = null;
+                        if("0.xlsx".equals(fileName)||"0.xls".equals(fileName)){
+                        	Row row = st.getRow(16);
+                        	cell = row.getCell(3);
+                        }
+                        approveValue = getCellValue(cell);
+                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_jy,ImportParameter.editAble_jy,false);
+                    }else if(wb instanceof HSSFWorkbook){
+                        HSSFWorkbook hWb = (HSSFWorkbook) wb;
+                        Sheet st = wb.getSheetAt(0);
+                        Cell cell=null;
+                        if("0.xlsx".equals(fileName)||"0.xls".equals(fileName)){
+                        	Row row = st.getRow(16);
+                        	cell = row.getCell(3);
+                        }
+                        approveValue = getCellValue(cell);
+                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_jy,ImportParameter.editAble_jy,false);
+                    }
+                	String content_base64 = getBASE64(map.get("computerData").toString());
+					sheet[17] = content_base64;
 				}
             	//================
             	sheet[19] = approveValue;

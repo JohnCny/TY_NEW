@@ -67,5 +67,10 @@ public interface LocalImageDao {
 	
 	public List<DhApplnAttachmentDetail> findDhApplnDetailPage(@Param("page") int currentPage,@Param("limit") int limit,@Param("appId") String appId);
 	public int findDhApplnDetailPageCount(@Param("appId") String appId);
+	public String findproid(@Param("appId")String appId, @Param("custId")String custId);
+	//public void insertlocalimage(@Param("appId")String appId, @Param("custId")String custId, @Param("batch_id")String batch_id, @Param("newFileName")String newFileName, @Param("url")String url, @Param("proid") String proid);
+	public void insertlocalimage(@Param("appId")String appId, @Param("custId")String custId, @Param("batch_id")String batch_id, @Param("newFileName")String newFileName, @Param("url")String url, @Param("proid") String proid, @Param("id")String id);
+	public QzApplnAttachmentBatch findbatchlsbyid(String batch_id);
+
 	
 }

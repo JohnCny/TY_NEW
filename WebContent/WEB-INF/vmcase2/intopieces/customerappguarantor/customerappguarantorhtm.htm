@@ -22,19 +22,31 @@
             </colgroup>
               <tr>
               <td class="titlec" colspan="4" style="text-align: center;">添加担保人信息</td></tr>
-            <tr>
+              <!-- 担保方式 -->
+               <tr>
+             	<td class="titlefc3" style="text-align: center"><label for="cardId">担保方式:</label></td>
+                <td >
+                	 <select  name="pattern"  id="pattern" class="rinpsty" >
+	                  	<option value="个人担保">个人担保</option>
+	                  	<option value="公司担保">公司担保</option>
+	                  </select>
+                </td>
+            </tr>
+            <tr  id="show2"  >
               <td class="titlefc3" style="text-align: center"><label for="chineseName" >保证人/抵押人/质押人姓名:</label></td>
               <td><input class="rinpsty"  type="text" id="guarantorMortgagorPledge" name="guarantorMortgagorPledge" value="" /></td>
             </tr>
-            <tr>
-             	<td class="titlefc3" style="text-align: center"><label for="cardId">性别:</label></td>
-             	<!-- <input class="rinpsty"  type="text" name="sex" id="sex"  value="" /> -->
-                <td >
+            
+            <tr  id="show1" >
+             	<td   class="titlefc3" style="text-align: center"><label for="cardId">性别:</label></td>
+                <td  >
                 	 <select  name="sex"  id="sex" class="rinpsty" >
 	                  	#dict("Gender",'')
 	                  </select>
                 </td>
             </tr>
+            
+            
             <tr>
              	<td class="titlefc3" style="text-align: center"><label for="cardId">与申请人关系:</label></td>
                <td><input class="rinpsty"  type="text" name="relationshipWithApplicant" id="relationshipWithApplicant"  value="" /></td> 
@@ -124,43 +136,64 @@
 	window.top.currentWindow.setLayout(layout);
 	
 	$(document).ready(function() {	
+		$("#pattern").change(function() {
+			var pattern=$("#pattern").val();
+			if(pattern=="公司担保"){
+				//alert(222);
+				document.getElementById("show2").style.display = "none";
+				document.getElementById("show1").style.display = "none";
+			}
+			if(pattern=="个人担保"){
+				//alert(222);
+				document.getElementById("show2").style.display = "";
+				document.getElementById("show1").style.display = "";
+			}
+		})
 	      $("#id_save_button").click(function() {
-				
 				 $("#cardIde").remove();	
 					var leng = 0;
 			    	 leng = $("#documentNumber").length;
 			    	 var documentNumbervalue=$("#documentNumber").val();
 			    	 var gmldvalue=$("#guarantorMortgagorPledge").val();
-		    	if(documentNumbervalue!=null&& documentNumbervalue!="" && gmldvalue!=null&& gmldvalue!=""){
-		    		var idReg = /(^\d{15}$)|(^\d{17}([0-9]|[X]|[x])$)/;
-					
-				     if(idReg.test(documentNumbervalue)){
-				    	 $("#cardIde").remove();	
-				    	 if ($($formName).valid()) {
-				   				var formjson = $($formName).serialize();
-				   	   	        var url = $($formName).attr("action");
-				   				$.ajax({
-				   					url : url,
-				   					type : "POST",
-				   					data : formjson,
-				   					success : function(data) {
-				   						if (data.success) {
-				   							topWin.Dialog.message("保存成功!");
-				   		   	            	window.location.reload() ;
-				   						}else{
-				   							topWin.Dialog.message(data.message);
-				   					    }
-				   					}
-				   				});
-				   			}
-				        }else{
-					       $("input[name='documentNumber']").after("<label class='error' id='cardIde' generated='true' ><br>请输入正确的身份证号(15/18位)</label>");   
-				     }
-		    	}else{
-		    		topWin.Dialog.message("姓名与身份证不能为空");
-		    		return;
-		    	}
+			    	 var pattern=$("#pattern").val();
+			    	 if(pattern=="公司担保"){
+			    		 save(documentNumbervalue,gmldvalue);
+			    	 }
+			    	 if(pattern=="个人担保"){
+			    		 if(documentNumbervalue!=null&& documentNumbervalue!="" && gmldvalue!=null&& gmldvalue!=""){
+					    		save(documentNumbervalue,gmldvalue);
+					    	}else{
+					    		topWin.Dialog.message("姓名与身份证不能为空");
+					    		return;
+					    	}
+			    	 }
 		      }); 
+		
+		var save=function(documentNumbervalue,gmldvalue){
+			var idReg = /(^\d{15}$)|(^\d{17}([0-9]|[X]|[x])$)/;
+			//alert(save);
+		     if(idReg.test(documentNumbervalue)){
+		    	 if ($($formName).valid()) {
+		   				var formjson = $($formName).serialize();
+		   	   	        var url = $($formName).attr("action");
+		   				$.ajax({
+		   					url : url,
+		   					type : "POST",
+		   					data : formjson,
+		   					success : function(data) {
+		   						if (data.success) {
+		   							topWin.Dialog.message("保存成功!");
+		   		   	            	window.location.reload() ;
+		   						}else{
+		   							topWin.Dialog.message(data.message);
+		   					    }
+		   					}
+		   				});
+		   			}
+		        }else{
+			       $("input[name='documentNumber']").after("<label class='error' id='cardIde' generated='true' ><br>请输入正确的身份证号(15/18位)</label>");   
+		     }
+		}
 
 		
 		$("#id_find_button").click(function() {

@@ -1560,7 +1560,8 @@ public class IntoPiecesControl extends BaseController {
 				QzApplnAttachmentList attlist = new QzApplnAttachmentList();
 				attlist.setApplicationId(appId);
 				attlist.setCustomerId(custId);
-				attlist.setChkValue("59");
+				attlist.setChkValue("520");
+				//attlist.setChkValue("59");
 				commonDao.insertObject(attlist);
 			}
 			//查找sunds_ocx信息
@@ -1597,8 +1598,12 @@ public class IntoPiecesControl extends BaseController {
 		@RequestMapping(value = "browse_folder.json")
 		public void browse_folder_json(@RequestParam(value = "file", required = false) MultipartFile file,HttpServletRequest request,HttpServletResponse response) throws Exception{
 			String batch_id = RequestHelper.getStringValue(request, "batch_id");
+			String appId = RequestHelper.getStringValue(request, "appId");
+			String custId = RequestHelper.getStringValue(request, "custId");
 			//更新batch
-			addIntoPiecesService.browse_folder(file,batch_id);
+			addIntoPiecesService.browse_folder(file,batch_id,appId,custId);
+			
+			
 			response.getWriter().write("true");
 		}
 		

@@ -24,6 +24,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 
+
+
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.model.CustomerFirsthendBaseLocal;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
@@ -48,8 +50,10 @@ import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitS
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.intopieces.web.AddIntoPiecesForm;
 import com.cardpay.pccredit.intopieces.web.LocalImageForm;
+import com.cardpay.pccredit.jnpad.model.CustomerSpUser;
 import com.cardpay.pccredit.jnpad.model.JnpadCsSdModel;
 import com.cardpay.pccredit.jnpad.service.JnpadCustormerSdwUserService;
+import com.cardpay.pccredit.jnpad.service.JnpadSpUserService;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
 import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.service.ProductService;
@@ -100,6 +104,9 @@ public class IntopiecesDecisionController extends BaseController {
 	
 	@Autowired
 	private CustomerApplicationIntopieceWaitService customerApplicationIntopieceWaitService;
+	
+	@Autowired
+	private JnpadSpUserService UserService;
 	
 	//审贷决议
 	@ResponseBody
