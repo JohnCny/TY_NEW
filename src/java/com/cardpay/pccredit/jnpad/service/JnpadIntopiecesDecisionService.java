@@ -75,7 +75,7 @@ public class JnpadIntopiecesDecisionService {
 	}
 	//提交结论
 
-	public void updateCustomerApplicationProcessBySerialNumber(HttpServletRequest request) {
+	public void updateCustomerApplicationProcessBySerialNumber(HttpServletRequest request) {/*
 
 
 		String cyUser1 = request.getParameter("cyUser1");
@@ -101,9 +101,9 @@ public class JnpadIntopiecesDecisionService {
 		String applicationId = request.getParameter("id");
 		String customerId = request.getParameter("customerId");
 
-		/*if(StringUtils.isNotEmpty(examineAmount)){
+		if(StringUtils.isNotEmpty(examineAmount)){
 			examineAmount = (Double.parseDouble(examineAmount) * 100) + "";
-		}*/
+		}
 
 		//applicationStatus 必须是ApproveOperationTypeEnum中的通过，退回，拒绝三个类型
 		String examineResutl = processService.examine(applicationId,serialNumber, loginId, applicationStatus, examineAmount,productId,auditType);
@@ -216,6 +216,152 @@ public class JnpadIntopiecesDecisionService {
 			}
 		}
 
+
+
+	*/
+
+
+
+
+		String cyUser1 = request.getParameter("cyUser1");
+		String cyUser2 = request.getParameter("cyUser2");
+		String fdUser = request.getParameter("fdUser");
+		String hkfs = request.getParameter("hkfs");
+		String beiZhu = request.getParameter("beiZhu");
+		String sdUser = request.getParameter("sdUser");
+		String decisionTerm = request.getParameter("decisionTerm");
+		String auditType = request.getParameter("auditType");
+		String lv = request.getParameter("decisionRate");
+		String productId = request.getParameter("productId");
+
+		String prodId = request.getParameter("proodId");
+		String custManagerId = request.getParameter("custManagerId");
+
+		CustomerApplicationInfo customerApplicationInfo = new CustomerApplicationInfo();
+		CustomerApplicationProcess customerApplicationProcess = new CustomerApplicationProcess();
+		String loginId = request.getParameter("userId");
+		String serialNumber = request.getParameter("serialNumber");
+		String examineAmount = request.getParameter("decisionAmount");
+		String applicationStatus = request.getParameter("status");
+		String applicationId = request.getParameter("id");
+		String customerId = request.getParameter("customerId");
+
+		/*if(StringUtils.isNotEmpty(examineAmount)){
+			examineAmount = (Double.parseDouble(examineAmount) * 100) + "";
+		}*/
+
+		//applicationStatus 必须是ApproveOperationTypeEnum中的通过，退回，拒绝三个类型
+		String examineResutl = processService.examine(applicationId,serialNumber, loginId, applicationStatus, examineAmount,productId,auditType);
+		//更新单据状态
+		if (examineResutl.equals(ApproveOperationTypeEnum.REJECTAPPROVE.toString()) ||
+				examineResutl.equals(ApproveOperationTypeEnum.RETURNAPPROVE.toString()) ||
+				examineResutl.equals(ApproveOperationTypeEnum.NORMALEND.toString())) {
+
+			if(examineResutl.equals(ApproveOperationTypeEnum.REJECTAPPROVE.toString())){
+				customerApplicationInfo.setStatus(Constant.REFUSE_INTOPICES);
+			}
+
+			if(examineResutl.equals(ApproveOperationTypeEnum.RETURNAPPROVE.toString())){
+				//customerApplicationInfo.setStatus("nopass");
+				//退回时 删除提交申请备份的信息
+				//CustomerApplicationInfo returnApp = commonDao.findObjectById(CustomerApplicationInfo.class, applicationId);
+				//customerInforService.deleteCloneSubmitAppByReturn(returnApp.getCustomerId(), applicationId);
+			}
+
+			if(examineResutl.equals(ApproveOperationTypeEnum.NORMALEND.toString())){
+				customerApplicationInfo.setFinalApproval(examineAmount);
+				customerApplicationInfo.setStatus(Constant.APPROVED_INTOPICES);
+			}
+
+			customerApplicationInfo.setId(applicationId);
+			customerApplicationInfo.setModifiedBy(loginId);
+			customerApplicationInfo.setModifiedTime(new Date());
+			commonDao.updateObject(customerApplicationInfo);
+			customerApplicationProcess.setNextNodeId(null);
+		} else {
+			customerApplicationInfo.setStatus(Constant.APPROVE_INTOPICES);
+			customerApplicationInfo.setId(applicationId);
+			customerApplicationInfo.setModifiedBy(loginId);
+			customerApplicationInfo.setModifiedTime(new Date());
+			commonDao.updateObject(customerApplicationInfo);
+			customerApplicationProcess.setNextNodeId(examineResutl);
+		}
+
+
+		if (StringUtils.isNotEmpty(applicationStatus) && applicationStatus.equals(ApplicationStatusEnum.RETURNAPPROVE)) {
+			String fallbackReason = request.getParameter("decisionRefusereason");
+			customerApplicationProcess.setFallbackReason(fallbackReason);
+		}else if (StringUtils.isNotEmpty(applicationStatus) && applicationStatus.equals(ApplicationStatusEnum.REJECTAPPROVE)) {
+			String refusalReason = request.getParameter("decisionRefusereason");
+			customerApplicationProcess.setRefusalReason(refusalReason);
+			//添加风险名单
+			RiskCustomerFilter filter = new RiskCustomerFilter();
+			filter.setCustomerId(customerId);
+			List<RiskCustomer> oldRisk = commonDao.findObjectsByFilter(RiskCustomer.class, filter).getItems();
+			if(oldRisk.size()<1){
+				//拒绝原因
+				String refuseReason = request.getParameter("decisionRefusereason");
+				RiskCustomer riskCustomer = new RiskCustomer();
+				riskCustomer.setId(IDGenerator.generateID());
+				riskCustomer.setCustomerId(customerId);
+				riskCustomer.setRefuseReason(refuseReason);
+				riskCustomer.setCreatedTime(new Date());
+				riskCustomer.setReportedIdManager(loginId);
+				riskCustomer.setCreatedBy(loginId);
+				riskCustomer.setRiskCreateType(RiskCreateTypeEnum.manual.toString());
+				riskCustomer.setProductId(productId);
+				riskCustomer.setCustManagerId(custManagerId);
+				commonDao.insertObject(riskCustomer);
+			}
+		}
+		customerApplicationProcess.setProcessOpStatus(applicationStatus);
+		customerApplicationProcess.setSerialNumber(serialNumber);
+		customerApplicationProcess.setExamineAmount(examineAmount);
+		customerApplicationProcess.setAuditUser(loginId);
+		customerApplicationProcess.setCreatedTime(new Date());
+		customerApplicationProcess.setExamineLv(lv);
+		customerApplicationIntopieceWaitDao.updateCustomerApplicationProcessBySerialNumber(customerApplicationProcess);
+
+
+		if(applicationStatus.equals("APPROVE")&&!StringUtils.isEmpty(auditType)){
+			//产品种类修改
+			if(!StringUtils.isEmpty(prodId)){
+				updateAppliactionProd(customerApplicationInfo,prodId);
+				//修改local_excel 
+				updateLocalExcel(prodId,applicationId);
+				//修改 local_image
+				updateLocalImage(prodId,applicationId);
+			}
+			//select 
+			int count = customerInforDao.findAppAuditLog(applicationId,auditType);
+			if(count == 0){
+				AppManagerAuditLog log = new AppManagerAuditLog();
+				log.setId(IDGenerator.generateID());
+				log.setApplicationId(applicationId);
+				log.setAuditType(auditType);//1-初审 2-审贷
+				log.setUserId_1(cyUser1);
+				log.setUserId_2(cyUser2);
+				log.setUserId_3(fdUser);
+				log.setExamineAmount(examineAmount);
+				log.setExamineLv(lv);
+				log.setUserId_4(sdUser);
+				log.setQx(decisionTerm);
+				log.setHkfs(hkfs);
+				log.setBeiZhu(beiZhu);
+				commonDao.insertObject(log);
+			}else{
+				//update
+				customerInforDao.updateAppAuditLog(applicationId,
+						auditType,
+						cyUser1,
+						cyUser2,
+						fdUser,examineAmount,lv,decisionTerm,sdUser,hkfs,beiZhu);
+			}
+		}
+
+
+
+	
 
 
 	}

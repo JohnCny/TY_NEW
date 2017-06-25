@@ -33,8 +33,8 @@ public class JnpadCustormerSdwUserService {
 		return SdwUserDao.selectaId(cid,pid);
 	}
 	
-	public List<IntoPieces> selectSDH(@Param(value = "userId")String userId){
-		return SdwUserDao.selectSDH(userId);
+	public IntoPieces selectSDH(@Param(value = "userId")String userId,@Param(value = "capid")String capid){
+		return SdwUserDao.selectSDH(userId,capid);
 	}
 	
 	public AppManagerAuditLog selectCSJLA(@Param(value = "id")String id){

@@ -20,7 +20,7 @@ public interface JnpadCustormerSdwUserDao {
 	//查询进件ID
 	AppManagerAuditLog selectaId(@Param(value = "cid")String cid,@Param(value = "pid")String pid);
 	//查询当前客户经理审贷信息
-	List<IntoPieces> selectSDH(@Param(value = "userId")String userId);
+	IntoPieces selectSDH(@Param(value = "userId")String userId,@Param(value = "capid")String capid);
 	//查询当前客户经理审贷通知
 		List<IntoPieces> selectSDH1(@Param(value = "userId")String userId);
 		//审贷委成员

@@ -54,4 +54,17 @@ public class JnpadSpUserService {
 		commonDao.updateObject(wfStatusQueueRecord);
 		//UserDao.updateObject(wfStatusQueueRecord);
 	}
+	public void  deleteSpUser(@Param("capid") String capid){
+		UserDao.deleteSpUser(capid);
+	}
+	public List<CustomerSpUser>findSpHjy(@Param("capid") String capid,@Param("userid") String userid){
+		return UserDao.findSpHjy(capid,userid);
+	}
+	public List<CustomerSpUser>findUserResult(@Param("capid") String capid){
+		return UserDao.findUserResult(capid);
+	}
+	
+	public List<CustomerSpUser>findUserResult1(@Param("capid") String capid){
+		return UserDao.findUserResult1(capid);
+	}
 }

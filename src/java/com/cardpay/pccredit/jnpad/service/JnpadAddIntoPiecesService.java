@@ -305,7 +305,7 @@ public class JnpadAddIntoPiecesService {
 			 map = JNPAD_UploadFileTool.uploadYxzlFileBySpring(file,customerId,fileName_1);
 		}else{
 			//指定服务器上传
-			 map = JNPAD_SFTPUtil.uploadJn(file, customerId,fileName_1);
+			 map = SFTPUtil.uploadJn(file, customerId);
 		}
 		
 		
