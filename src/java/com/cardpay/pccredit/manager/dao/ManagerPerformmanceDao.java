@@ -53,4 +53,6 @@ public interface ManagerPerformmanceDao {
 	int queryWill(@Param(value="userId") String userId);
 	//统计当天的通过数
 	int queryPass(@Param(value="userId") String userId);
+	//查询所有客户经理
+	List<ManagerPerformmanceForm>selectAllManager();
 }

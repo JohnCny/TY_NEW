@@ -7,8 +7,8 @@ public class ManagerPerformmanceForm {
 
 	private String name;
 	private String managerName;
-	private int manager_id;
-	private int manager_id_s;
+	private String manager_id;
+	private String manager_id_s;
 	private int visitcount;
 	private int visitcount_s;
 	private int applycount;
@@ -35,8 +35,21 @@ public class ManagerPerformmanceForm {
 	private int givemoneycount_s;
 	private Date crateday;
 	private Date crateday_s;
+	private String team;
+	private String ordteam;
 	
-	
+	public String getTeam() {
+		return team;
+	}
+	public void setTeam(String team) {
+		this.team = team;
+	}
+	public String getOrdteam() {
+		return ordteam;
+	}
+	public void setOrdteam(String ordteam) {
+		this.ordteam = ordteam;
+	}
 	public String getName() {
 		return name;
 	}
@@ -49,16 +62,17 @@ public class ManagerPerformmanceForm {
 	public void setManagerName(String managerName) {
 		this.managerName = managerName;
 	}
-	public int getManager_id() {
+	
+	public String getManager_id() {
 		return manager_id;
 	}
-	public void setManager_id(int manager_id) {
+	public void setManager_id(String manager_id) {
 		this.manager_id = manager_id;
 	}
-	public int getManager_id_s() {
+	public String getManager_id_s() {
 		return manager_id_s;
 	}
-	public void setManager_id_s(int manager_id_s) {
+	public void setManager_id_s(String manager_id_s) {
 		this.manager_id_s = manager_id_s;
 	}
 	public int getVisitcount() {
