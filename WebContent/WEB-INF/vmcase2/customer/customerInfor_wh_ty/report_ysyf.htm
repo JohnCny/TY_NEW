@@ -42,31 +42,36 @@
       </div>
         <div class="tabplace">
             <ul class="com-tab" >
-            <li class="tab activeTab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_jy.page?appId=${appId}&urlType=${urlType}&cardId=${cardId}">调查表</a></li>
-			<!-- <li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_jjbs.page?appId=${appId}&urlType=${urlType}">进件标识</a></li> -->
-			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_jbzk.page?appId=${appId}&urlType=${urlType}&cardId=${cardId}">月份损益表</a></li>
-<!-- 			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_fz.page?appId=${appId}&urlType=${urlType}&cardId=${cardId}">资产负债</a></li>
-			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_bzlrb.page?appId=${appId}&urlType=${urlType}&cardId=${cardId}">标准利润</a></li> -->
-			<!-- <li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_zyyw.page?appId=${appId}&urlType=${urlType}">主营业务明细</a></li> -->
-			#if ($!filename=="标准经营性(新增)调查表1.8.1.xlsx")
+           <li class="tab activeTab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_jy.page?appId=${appId}&urlType=${urlType}&cardId=${cardId}">调查表</a></li>
+			#if ($!filename=="1.8.1.xlsx"||$!filename=="1.8.1.xls")
 			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_xjllb.page?appId=${appId}&urlType=${urlType}&cardId=${cardId}">现金流</a></li>
 			#end
-			#if ($!filename=="标准经营性(转贷)调查表1.3.xlsx")
-			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_ysyf.page?appId=${appId}&urlType=${urlType}&cardId=${cardId}">还款计划表</a></li>
+			#if ($!filename=="1.3.xlsx"||$!filename=="1.3.xls"||$!filename=="0.xlsx"||$!filename=="0.xls")
+			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_hkjhb.page?appId=${appId}&urlType=${urlType}&cardId=${cardId}">还款计划表</a></li>
 			#end
-<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_dhd.page?appId=${appId}&urlType=${urlType}">点货单</a></li> 
-		<!-- 	<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_jc.page?appId=${appId}&urlType=${urlType}&cardId=${cardId}">交叉</a></li> -->
-			<!-- <li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_dhd.page?appId=${appId}&urlType=${urlType}">点货单</a></li> -->
+			#if ($!filename=="0.xlsx"||$!filename=="0.xls")
+			 <li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_zyxzcb.page?appId=${appId}&urlType=${urlType}&cardId=${cardId}">自用性资产</a></li> 
+			 <li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_tzxzcb.page?appId=${appId}&urlType=${urlType}&cardId=${cardId}">投资性资产</a></li> 
+			 <li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_fzjsb.page?appId=${appId}&urlType=${urlType}&cardId=${cardId}">负债解释</a></li>
+			#else
+			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_jbzk.page?appId=${appId}&urlType=${urlType}&cardId=${cardId}">月份损益表</a></li>
+			 <li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_dhd.page?appId=${appId}&urlType=${urlType}">点货单</a></li> 
 			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_gdzc.page?appId=${appId}&urlType=${urlType}&cardId=${cardId}">固资</a></li>
 			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_yfys.page?appId=${appId}&urlType=${urlType}&cardId=${cardId}">应付预收</a></li>
 			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_ysyf.page?appId=${appId}&urlType=${urlType}&cardId=${cardId}">应收预付</a></li>
+			#end
+			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_business.page?appId=${appId}&urlType=${urlType}&cardId=${cardId}">业务核查</a></li>
+			<!-- <li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_jjbs.page?appId=${appId}&urlType=${urlType}">进件标识</a></li> -->
+<!-- 			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_fz.page?appId=${appId}&urlType=${urlType}&cardId=${cardId}">资产负债</a></li>
+			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_bzlrb.page?appId=${appId}&urlType=${urlType}&cardId=${cardId}">标准利润</a></li> -->
+			<!-- <li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_zyyw.page?appId=${appId}&urlType=${urlType}">主营业务明细</a></li> -->
+		<!-- 	<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_jc.page?appId=${appId}&urlType=${urlType}&cardId=${cardId}">交叉</a></li> -->
 			<!-- <li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_lsfx.page?appId=${appId}&urlType=${urlType}">流水</a></li>
 			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_lrjb.page?appId=${appId}&urlType=${urlType}">利润简表</a></li>
 			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_jyzt.page?appId=${appId}&urlType=${urlType}">经营状态</a></li>
 			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_sczt.page?appId=${appId}&urlType=${urlType}">生存状态</a></li>
 			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_ddpz.page?appId=${appId}&urlType=${urlType}">道德品质</a></li> -->
 <!-- 			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_jyb.page?appId=${appId}&urlType=${urlType}&cardId=${cardId}">决议表</a></li> -->
-			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_business.page?appId=${appId}&urlType=${urlType}&cardId=${cardId}">业务核查</a></li>
 			
          </ul>
          </div>

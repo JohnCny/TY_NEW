@@ -10,7 +10,10 @@ public class ImportParameter {
 	public static String RowAndCol_ysyf[] = {"24","J"};
 	public static String RowAndCol_jyb[] = {"35","S"};
 	public static String RowAndCol_syb[] = {"35","S"};
-	public static String RowAndCol_hkjhb[]={"18","E"};
+	public static String RowAndCol_hkjhb[]={"54","E"};
+	public static String RowAndCol_zyxzcb[]={"7","J"};
+	public static String RowAndCol_tzxzcb[]={"6","J"};
+	public static String RowAndCol_fzjsb[]={"9","G"};
 	
 	
 	

@@ -560,7 +560,7 @@ public class SFTPUtil {
      */
     public static String[] readExcelToHtml(String filePath, boolean isWithStyle, String fileName){
     	//服务器
-    	String sheet[] = new String[21];
+    	String sheet[] = new String[24];
         BufferedInputStream is = null;
         String approveValue="";
         Map<String, String> map = new HashMap<String, String>();
@@ -870,8 +870,44 @@ public class SFTPUtil {
                 	String content_base64 = getBASE64(map.get("computerData").toString());
 					sheet[17] = content_base64;
 				}
+            	//==============
+				else if(wb.getSheetAt(i).getSheetName().indexOf("自用性资产")>=0){
+					if (wb instanceof XSSFWorkbook) {
+                        XSSFWorkbook xWb = (XSSFWorkbook) wb;
+                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_zyxzcb,ImportParameter.RowAndCol_zyxzcb,false);
+                    }else if(wb instanceof HSSFWorkbook){
+                        HSSFWorkbook hWb = (HSSFWorkbook) wb;
+                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_zyxzcb,ImportParameter.RowAndCol_zyxzcb,false);
+                    }
+                	String content_base64 = getBASE64(map.get("computerData").toString());
+					sheet[21] = content_base64;
+				}
             	//================
+				else if(wb.getSheetAt(i).getSheetName().indexOf("投资性资产")>=0){
+					if (wb instanceof XSSFWorkbook) {
+                        XSSFWorkbook xWb = (XSSFWorkbook) wb;
+                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_tzxzcb,ImportParameter.RowAndCol_tzxzcb,false);
+                    }else if(wb instanceof HSSFWorkbook){
+                        HSSFWorkbook hWb = (HSSFWorkbook) wb;
+                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_tzxzcb,ImportParameter.RowAndCol_tzxzcb,false);
+                    }
+                	String content_base64 = getBASE64(map.get("computerData").toString());
+					sheet[22] = content_base64;
+				}
+            	//================
+				else if(wb.getSheetAt(i).getSheetName().indexOf("负债解释")>=0){
+					if (wb instanceof XSSFWorkbook) {
+                        XSSFWorkbook xWb = (XSSFWorkbook) wb;
+                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_fzjsb,ImportParameter.RowAndCol_fzjsb,false);
+                    }else if(wb instanceof HSSFWorkbook){
+                        HSSFWorkbook hWb = (HSSFWorkbook) wb;
+                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_fzjsb,ImportParameter.RowAndCol_fzjsb,false);
+                    }
+                	String content_base64 = getBASE64(map.get("computerData").toString());
+					sheet[23] = content_base64;
+				}
             	sheet[19] = approveValue;
+            	
             }
             
         } catch (Exception e) {

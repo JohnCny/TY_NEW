@@ -139,6 +139,7 @@ public class CustormerSdwUserPcController extends BaseController{
 		System.out.println(CustomerSpUser.getStatus());
 		int a=UserService.addSpUser1(CustomerSpUser);
 		if(a>0){
+			returnMap.put("message", "提交成功");
 			String capid=request.getParameter("id");
 			//判断如果三个sp中都有相关金额则说明三个审贷委都已经审批完成
 			List<CustomerSpUser>splists=UserService.findsplistsbycapid(capid);
@@ -321,8 +322,6 @@ public class CustormerSdwUserPcController extends BaseController{
 					}
 				}*/
 			}
-			returnMap.put("message", "提交成功");	
-			//
 			}
 			
 		return returnMap;
