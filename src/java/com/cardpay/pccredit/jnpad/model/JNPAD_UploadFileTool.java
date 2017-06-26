@@ -181,10 +181,10 @@ public class JNPAD_UploadFileTool {
 				}
 				File localFile = new File(path + newFileName);
 				file.transferTo(localFile);
-				System.out.println("开始压缩：" + new Date().toLocaleString()); 
+				/*System.out.println("开始压缩：" + new Date().toLocaleString()); 
 				ImaUtils.imgCom(path + newFileName);  
 				ImaUtils.resizeFix(1200, 600);  
-			        System.out.println("压缩完毕：" + new Date().toLocaleString());  
+			        System.out.println("压缩完毕：" + new Date().toLocaleString());  */
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

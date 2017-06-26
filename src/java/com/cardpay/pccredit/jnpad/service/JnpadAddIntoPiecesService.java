@@ -437,6 +437,17 @@ public class JnpadAddIntoPiecesService {
 	public void downLoadYxzlById(HttpServletResponse response,String id) throws Exception{
 		LocalImage v = commonDao.findObjectById(LocalImage.class, id);
 		if(v!=null){
+			if(FwqUtils.typeCode==0){
+				UploadFileTool.downLoadFile(response, v.getUri(), v.getAttachment());
+				String url = v.getUri();
+				if(url.contains("pccreditFile")){
+					UploadFileTool.downLoadFile(response, v.getUri(), v.getAttachment());
+				}else{
+					SFTPUtil.download(response, v.getUri(), v.getAttachment());
+				}
+			}else{
+				SFTPUtil.download(response, v.getUri(), v.getAttachment());
+			}
 			//本地测试
 			/*UploadFileTool.downLoadFile(response, v.getUri(), v.getAttachment());
 			String url = v.getUri();
@@ -446,15 +457,19 @@ public class JnpadAddIntoPiecesService {
 				SFTPUtil.download(response, v.getUri(), v.getAttachment());
 			}*/
 			//服务器
-			SFTPUtil.download(response, v.getUri(), v.getAttachment());
+			/*SFTPUtil.download(response, v.getUri(), v.getAttachment());*/
 		}
 	}
 	
 	public void downLoadYxzlJn(HttpServletResponse response,String id) throws Exception{
 		QzApplnAttachmentDetail v = commonDao.findObjectById(QzApplnAttachmentDetail.class, id);
 		if(v!=null){
-			//本地
-			this.downLoadFile(response,v);
+			if(FwqUtils.typeCode==0){
+				//本地
+				this.downLoadFile(response,v);
+			}else{
+				SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			}
 			//服务器
 //			SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
 		}
@@ -463,8 +478,13 @@ public class JnpadAddIntoPiecesService {
 	public void downLoadDh(HttpServletResponse response,String id) throws Exception{
 		DhApplnAttachmentDetail v = commonDao.findObjectById(DhApplnAttachmentDetail.class, id);
 		if(v!=null){
-			//本地
-			this.downLoadFileDh(response,v);
+			if(FwqUtils.typeCode==0){
+				//本地
+				this.downLoadFileDh(response,v);
+			}else{
+				SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			}
+		
 			//服务器
 //			SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
 		}
@@ -558,6 +578,7 @@ public class JnpadAddIntoPiecesService {
 	public void downLoadYxzlJns(HttpServletResponse response,String id) throws Exception{
 		QzApplnAttachmentDetail v = commonDao.findObjectById(QzApplnAttachmentDetail.class, id);
 		if(v!=null){
+			
 			//本地测试
 			UploadFileTool.downLoadFile(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
 			//服务器
@@ -568,8 +589,12 @@ public class JnpadAddIntoPiecesService {
 	public void downLoadYxzlDh(HttpServletResponse response,String id) throws Exception{
 		DhApplnAttachmentDetail v = commonDao.findObjectById(DhApplnAttachmentDetail.class, id);
 		if(v!=null){
-			//本地测试
-			UploadFileTool.downLoadFile(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			if(FwqUtils.typeCode==0){
+				//本地测试
+				UploadFileTool.downLoadFile(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			}else{
+				SFTPUtil.downloadDh(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			}
 			//服务器
 //			SFTPUtil.downloadDh(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
 		}
