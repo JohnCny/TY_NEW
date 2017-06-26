@@ -114,6 +114,9 @@
 	sheet_lsfx as sheetLsfx,
 	file_name as fileName,
 	HKJHB as hkjhb,
+	ZYXZCB as zyxzcb,
+	TZXZCB as tzxzcb,
+	FZJSB as fzjsb,
     zyyw,
     jyb 
     from local_excel

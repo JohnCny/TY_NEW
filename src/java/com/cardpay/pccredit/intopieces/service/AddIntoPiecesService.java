@@ -174,9 +174,14 @@ public class AddIntoPiecesService {
 				localExcel.setSheetGdzc(sheet[12]);
 				localExcel.setSheetDhd(sheet[11]);
 				localExcel.setSheetYsyf(sheet[14]);
-				localExcel.setSheetJy(sheet[17]);
+				localExcel.setSheetJy(sheet[17]);    //调查表  
 				localExcel.setSheetJbzk(sheet[18]);
 				localExcel.setHkjhb(sheet[20]);
+				//消费贷
+				localExcel.setZyxzcb(sheet[21]);
+				localExcel.setTzxzcb(sheet[22]);
+				localExcel.setFzjsb(sheet[23]);
+				
 				if(sheet[19].contains("元")){
 					localExcel.setApproveValue(sheet[19].substring(0,sheet[19].indexOf("元")));
 				}else{

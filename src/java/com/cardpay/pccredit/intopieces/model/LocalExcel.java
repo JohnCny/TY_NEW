@@ -37,6 +37,31 @@ public class LocalExcel extends BusinessModel {
 	private String hkjhb;
 	private String sheetDdtjy;
 	
+	//消费贷款
+	private String zyxzcb;
+	private String tzxzcb;
+	private String fzjsb;
+	
+	
+	
+	public String getZyxzcb() {
+		return zyxzcb;
+	}
+	public void setZyxzcb(String zyxzcb) {
+		this.zyxzcb = zyxzcb;
+	}
+	public String getTzxzcb() {
+		return tzxzcb;
+	}
+	public void setTzxzcb(String tzxzcb) {
+		this.tzxzcb = tzxzcb;
+	}
+	public String getFzjsb() {
+		return fzjsb;
+	}
+	public void setFzjsb(String fzjsb) {
+		this.fzjsb = fzjsb;
+	}
 	public String getSheetDdtjy() {
 		return sheetDdtjy;
 	}

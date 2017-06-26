@@ -174,6 +174,8 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 						}
 					}
 					mv.addObject("btlist",btlist);
+					LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
+					mv.addObject("filename", localExcel.getFileName());
 					mv.addObject("appId", appId);
 					mv.addObject("urlType", urlType);
 					mv.addObject("cardId", idcard);
@@ -1247,6 +1249,89 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
     	return null; 
     	} 
 	} 
+	
+	//消费贷调查表
+	@ResponseBody
+	@RequestMapping(value = "report_zyxzcb.page")
+	public AbstractModelAndView report_zyxzcb(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/customer/customerInfor_wh_ty/report_jy", request);
+		String appId = RequestHelper.getStringValue(request, "appId");
+		String urlType = RequestHelper.getStringValue(request, "urlType");
+		String cardId=RequestHelper.getStringValue(request, "cardId");
+		if (StringUtils.isNotEmpty(appId)) {
+			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
+			mv.addObject("filename", localExcel.getFileName());
+			String tableContent = getFromBASE64(localExcel.getZyxzcb()).replaceAll("\n", "<br>").replace("><br><", "><");
+			mv.addObject("tableContent", tableContent);
+			mv.addObject("appId", appId);
+			mv.addObject("urlType", urlType);
+			mv.addObject("cardId",cardId);
+			//查询权限 非本人只能查看 不能操作
+			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+			String userId = user.getId();
+			boolean lock = false;
+			if(!customerInforService.findCustomerInforById(localExcel.getCustomerId()).getUserId().equals(userId)){
+				lock = true;
+			}
+			mv.addObject("lock", lock);
+		}
+		return mv;
+	}
+	
+	//消费贷调查表
+	@ResponseBody
+	@RequestMapping(value = "report_tzxzcb.page")
+	public AbstractModelAndView report_tzxzcb(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/customer/customerInfor_wh_ty/report_jy", request);
+		String appId = RequestHelper.getStringValue(request, "appId");
+		String urlType = RequestHelper.getStringValue(request, "urlType");
+		String cardId=RequestHelper.getStringValue(request, "cardId");
+		if (StringUtils.isNotEmpty(appId)) {
+			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
+			mv.addObject("filename", localExcel.getFileName());
+			String tableContent = getFromBASE64(localExcel.getTzxzcb()).replaceAll("\n", "<br>").replace("><br><", "><");
+			mv.addObject("tableContent", tableContent);
+			mv.addObject("appId", appId);
+			mv.addObject("urlType", urlType);
+			mv.addObject("cardId",cardId);
+			//查询权限 非本人只能查看 不能操作
+			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+			String userId = user.getId();
+			boolean lock = false;
+			if(!customerInforService.findCustomerInforById(localExcel.getCustomerId()).getUserId().equals(userId)){
+				lock = true;
+			}
+			mv.addObject("lock", lock);
+		}
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "report_fzjsb.page")
+	public AbstractModelAndView report_fzjsb(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/customer/customerInfor_wh_ty/report_jy", request);
+		String appId = RequestHelper.getStringValue(request, "appId");
+		String urlType = RequestHelper.getStringValue(request, "urlType");
+		String cardId=RequestHelper.getStringValue(request, "cardId");
+		if (StringUtils.isNotEmpty(appId)) {
+			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
+			mv.addObject("filename", localExcel.getFileName());
+			String tableContent = getFromBASE64(localExcel.getFzjsb()).replaceAll("\n", "<br>").replace("><br><", "><");
+			mv.addObject("tableContent", tableContent);
+			mv.addObject("appId", appId);
+			mv.addObject("urlType", urlType);
+			mv.addObject("cardId",cardId);
+			//查询权限 非本人只能查看 不能操作
+			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+			String userId = user.getId();
+			boolean lock = false;
+			if(!customerInforService.findCustomerInforById(localExcel.getCustomerId()).getUserId().equals(userId)){
+				lock = true;
+			}
+			mv.addObject("lock", lock);
+		}
+		return mv;
+	}
 }
 
 	
