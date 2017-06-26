@@ -426,6 +426,28 @@
             <value>0 46 14 * * ?</value>
         </property> 
     </bean>
+      <!-- 11.客户经理贷款信息更新-->
+    <bean id="readNewMonthly" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="customerInforService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>inserNewMonthlyStatistics</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="readNewMonthlyStatisticsTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="readNewMonthly"/>
+        </property>
+        <!-- cron表达式 -->
+        <property name="cronExpression">
+            <value>0 10 20 ? * *</value>
+        </property>
+    </bean>
+    <!-- 客户经理贷款信息更新  end -->
     
          <!--每月初统计客户经理绩效参数-->
     <bean id="updateCustomerSalaryJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -549,7 +571,6 @@
     <bean id="scheduler" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <list>
-                
                   <ref bean="addBaseTigger"/>
                  <ref bean="addRepayTigger"/>
                  <ref bean="updateCustomerAppInfoStatusTigger"/> 
@@ -558,6 +579,7 @@
 				<!-- <ref bean="addManagerAssessmentScoreTigger"/>-->
 				 <!-- 每日执行客户经理统计信息信息 start -->
 				<ref bean="addStatisticalTableTigger"/> 
+				<ref bean="readNewMonthlyStatisticsTigger"/> 
          		<ref bean="dailyReportScheduleTigger"/>
          		<ref bean="dailyaddtymibusidataTigger"/>   <!-- 添加mibusidata任务-->
         		<ref bean="dailyTestClearLogTigger"/>    <!-- 每日删除过期的日志 节省服务器空间-->

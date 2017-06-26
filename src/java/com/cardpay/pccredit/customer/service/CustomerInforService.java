@@ -78,6 +78,10 @@ import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.ipad.model.ProductAttribute;
+import com.cardpay.pccredit.jnpad.dao.MonthlyStatisticsDao;
+import com.cardpay.pccredit.jnpad.model.MonthlyStatisticsModel;
+import com.cardpay.pccredit.manager.dao.ManagerPerformmanceDao;
+import com.cardpay.pccredit.manager.form.ManagerPerformmanceForm;
 import com.cardpay.pccredit.manager.service.CustomerApplicationInfoSynchScheduleService;
 import com.cardpay.pccredit.postLoan.model.TyRarepaylistForm;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
@@ -4821,5 +4825,108 @@ public class CustomerInforService {
 		// TODO Auto-generated method stub
 		return customerInforDao.findManagerUsers();
 	}
+	@Autowired
+	private MonthlyStatisticsDao StatisticsDao;  
+	@Autowired
+	ManagerPerformmanceDao managerPerformmanceDao;
+	/**
+	 * 定时跑批所有客户经理的预计贷款统计
+	 */
+	public void inserNewMonthlyStatistics(){
+		log.info("******************清除月季贷款信息********************");
+		StatisticsDao.deleteAll();
+		log.info("******************开始查询新客户经理的基本信息********************");
+		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+	        Date date = new Date();
+	       Integer formatDate = Integer.parseInt(sdf.format(date));
+		List<MonthlyStatisticsModel>result=StatisticsDao.selectAllUserId(formatDate);
+		log.info("******************开始查询并添加新客户经理的月季贷款信息********************");  
+		for(int i=0;i<result.size();i++){
+			MonthlyStatisticsModel model=new MonthlyStatisticsModel();
+			model.setUserId(result.get(i).getUserId());
+			model.setId(IDGenerator.generateID());
+			model.setTeam(result.get(i).getTeam());
+			model.setOrgteam(result.get(i).getOrgteam());
+			model.setCustomeryeah(formatDate);
+			model.setCustomerApril(0);
+			model.setCustomerAugust(0);
+			model.setCustomerDecember(0);
+			model.setCustomerFebruary(0);
+			model.setCustomerJanuary(0);
+			model.setCustomerJuly(0);
+			model.setCustomerJune(0);
+			model.setCustomerMarch(0);
+			model.setCustomerMay(0);
+			model.setCustomerNovember(0);
+			model.setCustomerOctober(0);
+			model.setCustomerSeptember(0);
+			StatisticsDao.insertMonthlyStatistics(model);
+			/**
+			 * 添加去年的贷款信息，只限2016年，客户经理全部录入完成后此方法删除
+			 */
+			MonthlyStatisticsModel model1=new MonthlyStatisticsModel();
+			model1.setUserId(result.get(i).getUserId());
+			model1.setId(IDGenerator.generateID());
+			model1.setTeam(result.get(i).getTeam());
+			model1.setOrgteam(result.get(i).getOrgteam());
+			model1.setCustomeryeah(formatDate-1);
+			model1.setCustomerApril(0);
+			model1.setCustomerAugust(0);
+			model1.setCustomerDecember(0);
+			model1.setCustomerFebruary(0);
+			model1.setCustomerJanuary(0);
+			model1.setCustomerJuly(0);
+			model1.setCustomerJune(0);
+			model1.setCustomerMarch(0);
+			model1.setCustomerMay(0);
+			model1.setCustomerNovember(0);
+			model1.setCustomerOctober(0);
+			model1.setCustomerSeptember(0);
+			StatisticsDao.insertMonthlyStatistics(model1);
+		}
+		log.info("******************开始查询所有客户经理********************");  
+		List<ManagerPerformmanceForm>result1=managerPerformmanceDao.selectAllManager();
+		log.info("******************开始查询并更新所有客户经理的月季贷款信息********************");  
+		for(int a=0;a<result1.size();a++){
+			List<MonthlyStatisticsModel> MonthlyStatistics=StatisticsDao.selectotalAmountByUserId(result1.get(a).getManager_id());
+			for(int i=0;i<MonthlyStatistics.size();i++){
+				MonthlyStatisticsModel Model=new MonthlyStatisticsModel();
+				Model.setCustomeryeah(Integer.parseInt(MonthlyStatistics.get(i).getLoandate().substring(0, 4)));
+				if(MonthlyStatistics.get(i).getLoandate().substring(4, 6).equals("01")){
+					Model.setCustomerJanuary(MonthlyStatistics.get(i).getTotalAmount());
+				}if(MonthlyStatistics.get(i).getLoandate().substring(4, 6).equals("02")){
+					Model.setCustomerFebruary(MonthlyStatistics.get(i).getTotalAmount());
+				}if(MonthlyStatistics.get(i).getLoandate().substring(4, 6).equals("03")){
+					Model.setCustomerMarch(MonthlyStatistics.get(i).getTotalAmount());
+				}if(MonthlyStatistics.get(i).getLoandate().substring(4, 6).equals("04")){
+					Model.setCustomerApril(MonthlyStatistics.get(i).getTotalAmount());
+				}if(MonthlyStatistics.get(i).getLoandate().substring(4, 6).equals("05")){
+					Model.setCustomerMay(MonthlyStatistics.get(i).getTotalAmount());
+				}if(MonthlyStatistics.get(i).getLoandate().substring(4, 6).equals("06")){
+					Model.setCustomerJune(MonthlyStatistics.get(i).getTotalAmount());
+				}if(MonthlyStatistics.get(i).getLoandate().substring(4, 6).equals("07")){
+					Model.setCustomerJuly(MonthlyStatistics.get(i).getTotalAmount());
+				}if(MonthlyStatistics.get(i).getLoandate().substring(4, 6).equals("08")){
+					Model.setCustomerAugust(MonthlyStatistics.get(i).getTotalAmount());
+				}if(MonthlyStatistics.get(i).getLoandate().substring(4, 6).equals("09")){
+					Model.setCustomerSeptember(MonthlyStatistics.get(i).getTotalAmount());
+				}if(MonthlyStatistics.get(i).getLoandate().substring(4, 6).equals("10")){
+					Model.setCustomerOctober(MonthlyStatistics.get(i).getTotalAmount());
+				}if(MonthlyStatistics.get(i).getLoandate().substring(4, 6).equals("11")){
+					Model.setCustomerNovember(MonthlyStatistics.get(i).getTotalAmount());
+				}if(MonthlyStatistics.get(i).getLoandate().substring(4, 6).equals("12")){
+					Model.setCustomerDecember(MonthlyStatistics.get(i).getTotalAmount());
+				}
+				Model.setTotalAmount(MonthlyStatistics.get(i).getTotalAmount());
+				Model.setUserId(result1.get(a).getManager_id());
+				Model.setTeam(result1.get(a).getTeam());
+				Model.setOrgteam(result1.get(a).getOrdteam());
+				StatisticsDao.updateMonthlyStatistics(Model);
+			}
+			
+		}
+		log.info("******************结束********************");  
+	}
+	
 	
 }

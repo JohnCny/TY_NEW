@@ -82,6 +82,9 @@
 		<result property="signcount" column="signcount" />
 		<result property="givemoneycount" column="givemoneycount" />
 		<result property="crateday" column="crateday" />
+		
+			<result property="team" column="team" />
+		<result property="ordteam" column="ordteam" />
 	</resultMap>
 	<select id="findMumberByDeptId" resultMap="ResultMap">
 		select o.name as oname ,d.name,t.* from sys_user t
@@ -103,7 +106,14 @@
 		and trunc(CRATEDAY)=trunc(sysdate)
 
 	</select>
-
+<!-- 查询所有客户经理团队以及区域 -->
+<select id="selectAllManager" resultMap="resultsum">
+   select o.name as ordteam,s.id as manager_id ,t.name as team from sys_organization o,sys_department t,sys_dept_user d,sys_user s
+where o.id=t.org_id
+and t.id=d.dept_id
+and d.user_id=s.id
+group by o.name,s.id,t.name
+</select>
 	<update id="updateManagerPerformmanceSum">
 		update manager_performmance_sum m set
 		m.visitcount_s = m.visitcount_s+#{visitcount_s},

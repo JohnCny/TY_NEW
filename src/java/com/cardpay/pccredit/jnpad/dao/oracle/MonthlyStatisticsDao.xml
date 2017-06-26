@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.jnpad.dao.MonthlyStatisticsDao">
+	<resultMap id="MonthlyStatisticsModel"
+		type="com.cardpay.pccredit.jnpad.model.MonthlyStatisticsModel">
+		<result property="id" column="ID" />
+		<result property="customeryeah" column="customeryeah" />
+		<result property="customerJanuary" column="PURPOSE_LOAN" />
+		<result property="customerFebruary" column="customerFebruary" />
+		<result property="customerMarch" column="customerMarch" />
+		<result property="customerApril" column="customerApril" />
+		<result property="customerMay" column="customerMay" />
+		<result property="customerJune" column="customerJune" />
+		<result property="customerJuly" column="customerJuly" />
+		<result property="customerAugust" column="customerAugust" />
+		<result property="customerSeptember" column="customerSeptember" />
+		<result property="customerOctober" column="customerOctober" />
+		<result property="customerNovember" column="customerNovember" />
+		<result property="customerDecember" column="customerDecember" />
+		<result property="totalAmount" column="totalAmount" />
+		<result property="userId" column="userId" />
+		<result property="orgteam" column="orgteam" />
+		<result property="name" column="name" />
+			<result property="loandate" column="loandate" />
+		<result property="team" column="team" />
+	</resultMap>
+<insert id="insertMonthlyStatistics">
+    insert into monthlystatistics (id,customeryeah,customerJanuary,customerFebruary,customerMarch,customerApril,customerMay,customerJune,customerJuly,customerAugust,customerSeptember,customerOctober,customerNovember,customerDecember,totalAmount,userId,team,orgteam) values
+    (#{id},#{customeryeah},#{customerJanuary},#{customerFebruary},#{customerMarch},#{customerApril},#{customerMay},#{customerJune},#{customerJuly},#{customerAugust},#{customerSeptember},#{customerOctober},#{customerNovember},#{customerDecember},#{totalAmount},#{userId},#{team},#{orgteam})
+</insert>
+<update id="updateMonthlyStatistics">
+     update monthlystatistics set
+    customerJanuary=customerJanuary+#{customerJanuary},
+    customerFebruary=customerFebruary+#{customerFebruary},
+    customerMarch=customerMarch+#{customerMarch},
+    customerApril=customerApril+#{customerApril},
+    customerMay=customerMay+#{customerMay},
+    customerJune=customerJune+#{customerJune},
+    customerJuly=customerJuly+#{customerJuly},
+    customerAugust=customerAugust+#{customerAugust},
+    customerSeptember=customerSeptember+#{customerSeptember},
+    customerOctober=customerOctober+#{customerOctober},
+     customerNovember=customerNovember+#{customerNovember},
+      customerDecember=customerDecember+#{customerDecember},
+       totalAmount=totalAmount+#{totalAmount},
+       team=#{team},
+       orgteam=#{orgteam}
+       where 
+        userId=#{userId}
+        and customeryeah=#{customeryeah}
+       
+</update>
+<delete id="deleteAll">
+        truncate   table MONTHLYSTATISTICS
+</delete>
+<select id="selectAllUserId" resultMap="MonthlyStatisticsModel">
+     select o.name as orgteam,s.id as userId ,t.name as team from sys_organization o,sys_department t,sys_dept_user d,sys_user s
+where o.id=t.org_id
+and t.id=d.dept_id
+and d.user_id=s.id
+and s.id  not in (select userId from monthlystatistics where customeryeah=#{customeryeah})
+group by o.name,s.id,t.name
+</select>
+<select id="selectotalAmountByUserId" resultMap="MonthlyStatisticsModel">
+    select REQLMT as totalAmount,LOANDATE as loandate from mibusidata where userid=#{userId}
+</select>
+<select id="selectYear" resultMap="MonthlyStatisticsModel">
+    select customeryeah,team,orgteam from MONTHLYSTATISTICS  where userid=#{userId}
+	group by  customeryeah,team,orgteam
+</select>
+
+<select id="selectUser" resultMap="MonthlyStatisticsModel">
+    select * from MONTHLYSTATISTICS t where userid=#{userId} and customeryeah=#{customeryeah} 
+</select>
+<select id="selecTotalAmount" resultType="double">
+    select sum(totalAmount) from MONTHLYSTATISTICS t where userid=#{userId}
+</select>
+
+<!-- 确认是否为小组长-->
+		<select id="findxzz" resultMap="MonthlyStatisticsModel">
+		     select amp.user_id as userId,su.display_name as name
+     FROM  manager_belong_map mbm
+    ,account_manager_parameter amp
+     , sys_user su,
+     ( select id from account_manager_parameter where user_id=#{userId}) cc
+   
+
+     WHERE   mbm.parent_id =cc.id
+     and amp.id = mbm.child_id
+     and su.id = amp.user_id
+	</select>
+	
+	<select id="selectTeamYear" resultMap="MonthlyStatisticsModel">
+	    select 
+    nvl( sum(customerJanuary)/10000,0) as customerJanuary,
+    nvl(sum(customerFebruary)/10000,0) as customerFebruary, 
+    nvl(sum(customerMarch) /10000,0) customerMarch, 
+    nvl(sum(customerApril)/10000,0) as customerApril, 
+    nvl(sum(customerMay)/10000,0) as customerMay, 
+    nvl(sum(customerJune)/10000,0) as customerJune, 
+    nvl(sum(customerJuly)/10000,0) as customerJuly, 
+    nvl(sum(customerAugust)/10000,0) as customerAugust, 
+    nvl(sum(customerSeptember)/10000,0) as customerSeptember, 
+    nvl(sum(customerOctober)/10000,0) as customerOctober, 
+    nvl(sum(customerNovember)/10000,0) as customerNovember, 
+    nvl(sum(customerDecember)/10000,0) as customerDecember, 
+    nvl(sum(totalAmount)/10000,0) as totalAmount from MONTHLYSTATISTICS t where 1=1
+    <if test="team != null and team != '' ">
+        and team=#{team}
+    </if>
+    <if test="orgteam != null and orgteam != '' ">
+        and orgteam=#{orgteam}
+    </if>
+    <if test="customeryeah != null and customeryeah != '' ">
+        and customeryeah=#{customeryeah}
+    </if>
+</select>
+
+<select id="selectAllteam" resultMap="MonthlyStatisticsModel">
+    select distinct orgteam,team from MONTHLYSTATISTICS order by team,orgteam   
+</select>
+<select id="selectAllYear" resultMap="MonthlyStatisticsModel">
+  select distinct customeryeah from MONTHLYSTATISTICS    
+</select>
+
+<select id="selectUserOnTeam" resultMap="MonthlyStatisticsModel">
+     select t.name as team from sys_organization o,sys_department t,sys_dept_user d,sys_user s
+where o.id=t.org_id
+and t.id=d.dept_id
+and d.user_id=s.id
+and s.id=#{userId}
+group by o.name,s.id,t.name
+</select>
+</mapper> 
