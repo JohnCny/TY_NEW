@@ -69,6 +69,10 @@ group by o.name,s.id,t.name
 	group by  customeryeah,team,orgteam
 </select>
 
+<select id="selectYear1" resultMap="MonthlyStatisticsModel">
+    select customeryeah  from MONTHLYSTATISTICS where orgteam=#{orgteam}
+	group by  customeryeah
+</select>
 <select id="selectUser" resultMap="MonthlyStatisticsModel">
     select * from MONTHLYSTATISTICS t where userid=#{userId} and customeryeah=#{customeryeah} 
 </select>
@@ -92,6 +96,7 @@ group by o.name,s.id,t.name
 	
 	<select id="selectTeamYear" resultMap="MonthlyStatisticsModel">
 	    select 
+	    
     nvl( sum(customerJanuary)/10000,0) as customerJanuary,
     nvl(sum(customerFebruary)/10000,0) as customerFebruary, 
     nvl(sum(customerMarch) /10000,0) customerMarch, 
@@ -118,6 +123,13 @@ group by o.name,s.id,t.name
 
 <select id="selectAllteam" resultMap="MonthlyStatisticsModel">
     select distinct orgteam,team from MONTHLYSTATISTICS order by team,orgteam   
+</select>
+
+<select id="selectAllteam1" resultMap="MonthlyStatisticsModel">
+    select distinct orgteam from MONTHLYSTATISTICS order by orgteam   
+</select>
+<select id="selectAllteam2" resultMap="MonthlyStatisticsModel">
+    select distinct team from MONTHLYSTATISTICS order by team
 </select>
 <select id="selectAllYear" resultMap="MonthlyStatisticsModel">
   select distinct customeryeah from MONTHLYSTATISTICS    

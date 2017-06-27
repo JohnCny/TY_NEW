@@ -31,10 +31,19 @@ public class MonthlyStatisticsService {
 	public List<MonthlyStatisticsModel>selectAllteam(){
 		return commonDao.selectAllteam();
 	}
+	public List<MonthlyStatisticsModel>selectAllteam1(){
+		return commonDao.selectAllteam1();
+	}
+	public List<MonthlyStatisticsModel>selectAllteam2(){
+		return commonDao.selectAllteam2();
+	}
 	public List<MonthlyStatisticsModel>selectAllYear(){
 		return commonDao.selectAllYear();
 	}
 	public MonthlyStatisticsModel selectUserOnTeam(@Param("userId") String userId){
 		return commonDao.selectUserOnTeam(userId);
+	}
+	public List<MonthlyStatisticsModel>selectYear1(@Param("orgteam") String orgteam){
+		return commonDao.selectYear1(orgteam);
 	}
 }
