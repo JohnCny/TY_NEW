@@ -19,6 +19,8 @@ public interface MonthlyStatisticsDao {
 	List<MonthlyStatisticsModel>selectotalAmountByUserId(@Param("userId") String userId);
 	//查询年份以及团队
 	List<MonthlyStatisticsModel>selectYear(@Param("userId") String userId);
+	//查询年份以及团队
+		List<MonthlyStatisticsModel>selectYear1(@Param("orgteam") String orgteam);
 	//查询当前客户经理的月季贷款信息
 	List<MonthlyStatisticsModel>selectUser(@Param("userId") String userId,@Param("customeryeah") Integer customeryeah);
 	//查询当前客户经理的总用信额度
@@ -31,6 +33,10 @@ public interface MonthlyStatisticsDao {
 	
 	//查询所有的区域以及团队
 	List<MonthlyStatisticsModel>selectAllteam();
+	//查询所有的区域
+		List<MonthlyStatisticsModel>selectAllteam1();
+		//查询所有的团队
+		List<MonthlyStatisticsModel>selectAllteam2();
 	//查询所有有贷款的年份
 	List<MonthlyStatisticsModel>selectAllYear();
 	
