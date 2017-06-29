@@ -115,13 +115,20 @@
 		insert into CUSTORMERINFOUPDATE(id,cardid,chinesename,zdname,originalvalue,modifiedvalue,updatetime)
 		values(#{id},#{cardid},#{chinesename},#{zdname},#{originalvalue},#{modifiedvalue},#{updatetime})
 	</insert>
-	<insert id="insertExcal">
+<!-- 	<insert id="insertExcal">
 insert into LOCAL_EXCEL(ID,CUSTOMER_ID,PRODUCT_ID,ATTACHMENT,URI,APPLICATION_ID,CREATED_TIME,SHEET_JY
 ,SHEET_XJLLB
 ,SHEET_YSYF,SHEET_YFYS,SHEET_GDZC,SHEET_DHD,SHEET_JBZK,HKJHB,APPROVE_VALUE) values
 (#{id},#{customerId},#{productId},#{attachment},#{uri},#{applicationId},#{createdTime},#{sheetJy},
 #{sheetXjllb},#{sheetYsyf},#{sheetYfys},#{sheetGdzc},#{sheetDhd},#{sheetJbzk},#{hkjhb},#{approveValue})
-	</insert>
+	</insert> -->
+	 	<insert id="insertExcal">
+ insert into LOCAL_EXCEL(ID,CUSTOMER_ID,PRODUCT_ID,ATTACHMENT,URI,APPLICATION_ID,CREATED_TIME,SHEET_JY
+ ,SHEET_XJLLB
+,SHEET_YSYF,SHEET_YFYS,SHEET_GDZC,SHEET_DHD,SHEET_JBZK,HKJHB,APPROVE_VALUE,ZYXZCB,TZXZCB,FZJSB) values
+ (#{id},#{customerId},#{productId},#{attachment},#{uri},#{applicationId},#{createdTime},#{sheetJy},
+#{sheetXjllb},#{sheetYsyf},#{sheetYfys},#{sheetGdzc},#{sheetDhd},#{sheetJbzk},#{hkjhb},#{approveValue},#{zyxzcb},#{tzxzcb},#{fzjsb})
+ 	</insert>
 	<select id="findCustormerUpdate"  resultMap="ResultMap4" parameterType="com.cardpay.pccredit.customer.model.CUSTORMERINFOUPDATE">
 	    <!-- 	SELECT * FROM
 		(SELECT ROW_.*,ROWNUM ROWNUM_

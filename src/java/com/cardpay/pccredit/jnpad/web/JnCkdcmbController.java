@@ -28,27 +28,77 @@ public class JnCkdcmbController {
 	@Autowired
 	private JnIpadLocalExcelService LocalExcelService;
 	
-	
-	@ResponseBody
+   	@ResponseBody
 	@RequestMapping(value = "/ipad/user/ckdcmb.json")
 	public String browerModel(HttpServletRequest request) {
 		Map<Object,Object> map =new LinkedHashMap<Object, Object>();
 		String customerId = request.getParameter("customerId");
 		String productId = request.getParameter("productId");
+		String tableContentyfysb=null;
 		String tableContentxjlb =null;
+		
+		
+		
+		
+		String tableContentxgzb =null;
+		
+		String tableContentjyb =null;
+		
+		String tableContentjbzkb =null;
+		
+		String tableContentdhd =null;
+		String tableContentysyfb=null;
+		String Zyxzcb =null;
+		String Tzxzcb =null;
+		String Fzjsb =null;
 			LocalExcel localExcel = LocalExcelService.findByApplication(customerId,productId);
-			String tableContentyfysb = getFromBASE64(localExcel.getSheetYfys()).replaceAll("\n", "<br>").replace("><br><", "><");
-			String tableContentysyfb = getFromBASE64(localExcel.getSheetYsyf()).replaceAll("\n", "<br>").replace("><br><", "><");
+			if(localExcel.getSheetYfys()!="" && localExcel.getSheetYfys()!=null){
+				tableContentyfysb = getFromBASE64(localExcel.getSheetYfys()).replaceAll("\n", "<br>").replace("><br><", "><");
+			}
+			if(localExcel.getSheetYsyf()!="" && localExcel.getSheetYsyf()!=null){
+				tableContentysyfb = getFromBASE64(localExcel.getSheetYsyf()).replaceAll("\n", "<br>").replace("><br><", "><");
+			}
 			if(localExcel.getSheetXjllb()=="" || localExcel.getSheetXjllb()==null){
 				 tableContentxjlb = getFromBASE64(localExcel.getHkjhb()).replaceAll("\n", "<br>").replace("><br><", "><");
 				 
 			}else{
 				 tableContentxjlb = getFromBASE64(localExcel.getSheetXjllb()).replaceAll("\n", "<br>").replace("><br><", "><");
 			}
-			String tableContentxgzb = getFromBASE64(localExcel.getSheetGdzc()).replaceAll("\n", "<br>").replace("><br><", "><");
-			String tableContentjyb=getFromBASE64(localExcel.getSheetJy()).replaceAll("\n", "<br>").replace("><br><", "><");
-			String tableContentjbzkb=getFromBASE64(localExcel.getSheetJbzk()).replaceAll("\n", "<br>").replace("><br><", "><");
-			String tableContentdhd=getFromBASE64(localExcel.getSheetDhd()).replaceAll("\n", "<br>").replace("><br><", "><");
+			if(localExcel.getSheetGdzc()!="" && localExcel.getSheetGdzc()!=null){
+				tableContentxgzb = getFromBASE64(localExcel.getSheetGdzc()).replaceAll("\n", "<br>").replace("><br><", "><");
+			}
+			if(localExcel.getSheetJy()!="" && localExcel.getSheetJy()!=null){
+				tableContentjyb = getFromBASE64(localExcel.getSheetJy()).replaceAll("\n", "<br>").replace("><br><", "><");
+			}
+			
+			if(localExcel.getSheetJbzk()!="" && localExcel.getSheetJbzk()!=null){
+				tableContentjbzkb = getFromBASE64(localExcel.getSheetJbzk()).replaceAll("\n", "<br>").replace("><br><", "><");
+			}
+			
+			if(localExcel.getSheetDhd()!="" && localExcel.getSheetDhd()!=null){
+				tableContentdhd = getFromBASE64(localExcel.getSheetDhd()).replaceAll("\n", "<br>").replace("><br><", "><");
+			}
+			
+			
+			if(localExcel.getZyxzcb()!="" && localExcel.getZyxzcb()!=null){
+				Zyxzcb = getFromBASE64(localExcel.getZyxzcb()).replaceAll("\n", "<br>").replace("><br><", "><");
+			}
+			
+			if(localExcel.getTzxzcb()!="" && localExcel.getTzxzcb()!=null){
+				Tzxzcb = getFromBASE64(localExcel.getTzxzcb()).replaceAll("\n", "<br>").replace("><br><", "><");
+			}
+			
+			if(localExcel.getFzjsb()!="" && localExcel.getFzjsb()!=null){
+				Fzjsb = getFromBASE64(localExcel.getFzjsb()).replaceAll("\n", "<br>").replace("><br><", "><");
+			}
+			
+			
+			
+			map.put("Fzjsb", Fzjsb);
+			map.put("Tzxzcb", Tzxzcb);
+			map.put("Zyxzcb", Zyxzcb);
+			
+			
 			map.put("tableContentxjlb", tableContentxjlb);
 			map.put("tableContentxgzb", tableContentxgzb);
 			map.put("tableContentyfysb", tableContentyfysb);
@@ -56,6 +106,11 @@ public class JnCkdcmbController {
 			map.put("tableContentjyb", tableContentjyb);
 			map.put("tableContentjbzkb", tableContentjbzkb);
 			map.put("tableContentdhd", tableContentdhd);
+			if(tableContentyfysb==null){
+				map.put("result", "0");	
+			}else{
+				map.put("result", "1");	
+			}
 			
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());

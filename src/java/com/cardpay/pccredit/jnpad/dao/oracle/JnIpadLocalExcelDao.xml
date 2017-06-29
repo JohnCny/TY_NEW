@@ -35,7 +35,7 @@
     <result column="SHEET_LSFX" property="sheetLsfx" jdbcType="VARCHAR" />
     <result column="APPROVE_VALUE" property="approveValue" jdbcType="VARCHAR" />
   </resultMap>
-  <select id="findByApplication" resultType="com.cardpay.pccredit.intopieces.model.LocalExcel">
+<select id="findByApplication" resultType="com.cardpay.pccredit.intopieces.model.LocalExcel">
     select
     id,
     application_id as applicationId, 
@@ -58,6 +58,9 @@
 	sheet_ysyf as sheetYsyf,
 	sheet_lsfx as sheetLsfx,
 	HKJHB as hkjhb,
+		zyxzcb as zyxzcb,
+	tzxzcb as tzxzcb,
+	fzjsb as fzjsb,
     zyyw,
     jyb 
     from local_excel

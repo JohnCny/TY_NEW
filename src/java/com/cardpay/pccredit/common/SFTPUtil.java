@@ -74,10 +74,10 @@ import com.wicresoft.util.spring.Beans;
  */
 public class SFTPUtil {
 	
-	private static String host = "10.0.3.6";//生产
+	private static String host = "10.96.1.11";//生产
 //	private static String host = "61.98.0.31";//测试
     private static String username="root";  
-    private static String password="tynx123";  
+    private static String password="qkjr123";  
     private static int port = 22;  
     private static ChannelSftp sftp = null;  
     private static String directory = "/usr/pccreditFile/";  
@@ -551,7 +551,7 @@ public class SFTPUtil {
      }*/
 	
 
-    /**
+	 /**
      * 程序入口方法
      * @param filePath 文件的路径
      * @param isWithStyle 是否需要表格样式 包含 字体 颜色 边框 对齐方式
