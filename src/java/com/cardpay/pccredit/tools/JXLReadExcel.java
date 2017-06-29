@@ -1,5 +1,6 @@
 package com.cardpay.pccredit.tools;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -54,10 +55,21 @@ public class JXLReadExcel {
      * @return <table>...</table> 字符串
      */
     public String[] readExcelToHtml(String filePath, boolean isWithStyle, String fileName){
-    	String sheet[] = new String[21];
+    	//服务器
+    /*	String sheet[] = new String[24];
+        BufferedInputStream is = null;
+        String approveValue="";
+        Map<String, String> map = new HashMap<String, String>();
+        try {
+        	SFTPUtil.connect();
+        	System.out.println(filePath.substring(0, 54));
+        	sftp.cd(filePath.substring(0, 54));//filePath.split("\\\\")[0]
+        	//filePath.substring(51, filePath.length())
+        	is = new BufferedInputStream(sftp.get(filePath.substring(55, filePath.length())));*/
+        //本地测试
+    	String sheet[] = new String[24];
         InputStream is = null;
         String approveValue="";
-//        String htmlExcel = null;
         Map<String, String> map = new HashMap<String, String>();
         try {
             File sourcefile = new File(filePath);
@@ -262,34 +274,40 @@ public class JXLReadExcel {
 					if (wb instanceof XSSFWorkbook) {
                         XSSFWorkbook xWb = (XSSFWorkbook) wb;
                         Sheet st = wb.getSheetAt(0);
-                      //此处修改金额坐标位置
+                        //此处修改金额坐标位置
                         String ThefileName="1.8.1.xlsx";
-                        Cell cell;
-                        if(fileName.equals(ThefileName)){
+                        Cell cell = null;
+                        if(fileName.equals(ThefileName)||"1.8.1.xls".equals(ThefileName)){
                         	
                         	Row row = st.getRow(40);
                         	cell = row.getCell(3);
-                        }else{
+                        }
+                        if("1.3.xlsx".equals(fileName)||"1.3.xls".equals(fileName)){
                         	Row row = st.getRow(32);
                         	cell = row.getCell(3);
                         }
-                      /*  Row row = st.getRow(36);
-                        Cell cell = row.getCell(3);*/
-                       
+                        if("0.xlsx".equals(fileName)||"0.xls".equals(fileName)){
+                        	Row row = st.getRow(16);
+                        	cell = row.getCell(3);
+                        }
                         approveValue = getCellValue(cell);
                         map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_jy,ImportParameter.editAble_jy,false);
                     }else if(wb instanceof HSSFWorkbook){
                         HSSFWorkbook hWb = (HSSFWorkbook) wb;
                         Sheet st = wb.getSheetAt(0);
-                      //此处修改金额坐标位置
                         String ThefileName="1.8.1.xlsx";
-                        Cell cell;
-                        if(fileName.equals(ThefileName)){
+                        Cell cell = null;
+                        if(fileName.equals(ThefileName)||"1.8.1.xls".equals(fileName)){
                         	
                         	Row row = st.getRow(40);
                         	cell = row.getCell(3);
-                        }else{
+                        }
+                        if("1.3.xlsx".equals(fileName)||"1.3.xls".equals(fileName)){
                         	Row row = st.getRow(32);
+                        	cell = row.getCell(3);
+                        }
+                        if("0.xlsx".equals(fileName)||"0.xls".equals(fileName)){
+                        	Row row = st.getRow(16);
                         	cell = row.getCell(3);
                         }
                         approveValue = getCellValue(cell);
@@ -322,7 +340,70 @@ public class JXLReadExcel {
 					sheet[20] = content_base64;
 				}
             	//================
+				else if(wb.getSheetAt(i).getSheetName().indexOf("消费调查分析表")>=0){
+					if (wb instanceof XSSFWorkbook) {
+                        XSSFWorkbook xWb = (XSSFWorkbook) wb;
+                        Sheet st = wb.getSheetAt(0);
+                        //此处修改金额坐标位置
+                        Cell cell = null;
+                        if("0.xlsx".equals(fileName)||"0.xls".equals(fileName)){
+                        	Row row = st.getRow(16);
+                        	cell = row.getCell(3);
+                        }
+                        approveValue = getCellValue(cell);
+                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_jy,ImportParameter.editAble_jy,false);
+                    }else if(wb instanceof HSSFWorkbook){
+                        HSSFWorkbook hWb = (HSSFWorkbook) wb;
+                        Sheet st = wb.getSheetAt(0);
+                        Cell cell=null;
+                        if("0.xlsx".equals(fileName)||"0.xls".equals(fileName)){
+                        	Row row = st.getRow(16);
+                        	cell = row.getCell(3);
+                        }
+                        approveValue = getCellValue(cell);
+                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_jy,ImportParameter.editAble_jy,false);
+                    }
+                	String content_base64 = getBASE64(map.get("computerData").toString());
+					sheet[17] = content_base64;
+				}
+            	//==============
+				else if(wb.getSheetAt(i).getSheetName().indexOf("自用性资产")>=0){
+					if (wb instanceof XSSFWorkbook) {
+                        XSSFWorkbook xWb = (XSSFWorkbook) wb;
+                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_zyxzcb,ImportParameter.RowAndCol_zyxzcb,false);
+                    }else if(wb instanceof HSSFWorkbook){
+                        HSSFWorkbook hWb = (HSSFWorkbook) wb;
+                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_zyxzcb,ImportParameter.RowAndCol_zyxzcb,false);
+                    }
+                	String content_base64 = getBASE64(map.get("computerData").toString());
+					sheet[21] = content_base64;
+				}
+            	//================
+				else if(wb.getSheetAt(i).getSheetName().indexOf("投资性资产")>=0){
+					if (wb instanceof XSSFWorkbook) {
+                        XSSFWorkbook xWb = (XSSFWorkbook) wb;
+                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_tzxzcb,ImportParameter.RowAndCol_tzxzcb,false);
+                    }else if(wb instanceof HSSFWorkbook){
+                        HSSFWorkbook hWb = (HSSFWorkbook) wb;
+                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_tzxzcb,ImportParameter.RowAndCol_tzxzcb,false);
+                    }
+                	String content_base64 = getBASE64(map.get("computerData").toString());
+					sheet[22] = content_base64;
+				}
+            	//================
+				else if(wb.getSheetAt(i).getSheetName().indexOf("负债解释")>=0){
+					if (wb instanceof XSSFWorkbook) {
+                        XSSFWorkbook xWb = (XSSFWorkbook) wb;
+                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_fzjsb,ImportParameter.RowAndCol_fzjsb,false);
+                    }else if(wb instanceof HSSFWorkbook){
+                        HSSFWorkbook hWb = (HSSFWorkbook) wb;
+                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_fzjsb,ImportParameter.RowAndCol_fzjsb,false);
+                    }
+                	String content_base64 = getBASE64(map.get("computerData").toString());
+					sheet[23] = content_base64;
+				}
             	sheet[19] = approveValue;
+            	
             }
             
         } catch (Exception e) {
@@ -336,7 +417,6 @@ public class JXLReadExcel {
         }
         return sheet;
     }
-    
     
     
     public Map<String, String> getExcelInfo(Workbook wb,int index,boolean isWithStyle,String[] rowAndcol,String[] editAble,boolean averageWidth) throws Exception{

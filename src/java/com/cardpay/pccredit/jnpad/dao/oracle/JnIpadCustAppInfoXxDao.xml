@@ -381,7 +381,7 @@ where #{userId}  in cc.USERID
 		
 	</update>
 	<select id="findCustomerBack" resultMap="ResultMap">
-	select  c.id as id,c.customer_id as customerId,b.chinese_name as chineseName
+	select distinct  c.id as id,c.customer_id as customerId,b.chinese_name as chineseName
 	,p.id as productId,p.product_name as productName,b.card_id as cardId,c.apply_quota as applyQuota
 	,c.status as status,t.FALLBACK_REASON as fallBackReason,s.display_name as displayName
 from
@@ -397,7 +397,7 @@ or c.status='returnedToFirst')
 	
 	
 	<select id="findCustomerResulf" resultMap="ResultMap">
-	select  c.id as id,c.customer_id as customerId,b.chinese_name as chineseName
+	select distinct  c.id as id,c.customer_id as customerId,b.chinese_name as chineseName
 	,p.id as productId,p.product_name as productName,b.card_id as cardId,c.apply_quota as applyQuota
 	,c.status as status,t.REFUSAL_REASON as REFUSAL_REASON,s.display_name as displayName,c.created_time as creatime
 from
