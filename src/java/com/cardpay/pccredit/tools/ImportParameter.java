@@ -14,31 +14,50 @@ public class ImportParameter {
 	public static String RowAndCol_zyxzcb[]={"7","J"};
 	public static String RowAndCol_tzxzcb[]={"6","J"};
 	public static String RowAndCol_fzjsb[]={"9","G"};
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	public static String RowAndCol_jbzk[] = {"35","S"};
 	public static String RowAndCol_jyzk[] = {"24","J"};
 	public static String RowAndCol_sczt[] = {"33","E"};
 	public static String RowAndCol_jjbs[] = {"12","B"};
 	public static String RowAndCol_ddpz[] = {"15","C"};
-	
 	public static String RowAndCol_zf[] = {"37","R"};
 	public static String RowAndCol_lrjb[] = {"35","H"};
 	public static String RowAndCol_bzlrb[] = {"29","Q"};
 	public static String RowAndCol_zyyw[] = {"36","R"};
 	public static String RowAndCol_jc[] = {"67","L"};
-	
 	public static String RowAndCol_lsfx[] = {"32","S"};
+	
+	
+	//人员评估
+	public static String tjhpb[] = {"44","G"};
+	
+	public static String editAble_tjhpb[] = {
+			"3C","3F",	
+			"1G","2G",	
+			"3G","4G",	
+			"5G","6G",	
+			"7G","8G",	
+			"9G","10G",	
+	};
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	//可编辑的单元格
 	public static String editAble_syb[] = {

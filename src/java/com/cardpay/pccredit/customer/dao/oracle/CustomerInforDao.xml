@@ -15,6 +15,35 @@
 		<result property="createtime" column="createtime" />
 		<result property="createtime1" column="createtime1" />
 		<result property="updatetime" column="updatetime" />
+		
+			<result property="orgteam" column="orgteam" />
+		<result property="oid" column="oid" />
+		<result property="teamname" column="teamname" />
+		
+		
+		
+	</resultMap>
+		<resultMap id="PgUser"
+		type="com.cardpay.pccredit.customer.model.PgUser">
+		<result property="id" column="id" />
+		<result property="userid" column="userid" />
+		<result property="tj" column="tj" />
+		<result property="jc" column="jc" />
+		<result property="zcx" column="zcx" />
+		<result property="zcs" column="zcs" />
+		<result property="time" column="time" />
+			<result property="name" column="name" />
+		<result property="url" column="url" />
+		<result property="tj2" column="tj2" />
+		<result property="tj3" column="tj3" />
+		<result property="tj4" column="tj4" />
+		<result property="tj5" column="tj5" />
+		<result property="tj6" column="tj6" />
+		<result property="tj7" column="tj7" />
+		<result property="tj8" column="tj8" />
+		<result property="tj9" column="tj9" />
+		<result property="tj10" column="tj10" />
+	<result property="teamname" column="teamname" />
 	</resultMap>
 	
 	<resultMap id="lszform" type="com.cardpay.pccredit.postLoan.model.TyRarepaylistForm" >
@@ -109,7 +138,31 @@
 		<result property="modifiedvalue" column="modifiedvalue" />
 		<result property="updatetime" column="updatetime" />
 	</resultMap>
+		<insert id="insertPguser">
+		insert into pguser(id,userid,tj,jc,zcx,zcs,time,name,url,tj4,tj2,tj3,tj5,tj6,tj7,tj8,tj9,tj10)
+		values(#{id},#{userid},#{tj},#{jc},#{zcx},#{zcs},#{time},#{name},#{url},#{tj4},#{tj2},#{tj3},#{tj5},#{tj6},#{tj7},#{tj8},#{tj9},#{tj10})
+	</insert>
 	
+		<select id="selectPgUser" resultMap="PgUser">
+		    select * from pguser p,sys_user s  where s.id=p.userid and userid=#{id} 
+		     <if test="name != null and name != '' ">
+			AND s.display_name like #{name}
+		</if>
+		  and p.time=(select max(time) from pguser where userid=#{id} )
+	</select>
+				<select id="selectTeamOrg" resultMap="ResultMap">
+         select s.display_name as chineseName,o.name as orgteam,o.id as oid,sdt.name as teamname,s.id as userId
+         from sys_user s,sys_dept_user sd,sys_department sdt,SYS_ORGANIZATION o
+         where s.id=sd.user_id
+         and sd.dept_id=sdt.id
+         and sdt.org_id=o.id
+         <if test="userId != null and userId != '' ">
+			AND s.id = #{userId}
+		</if>
+		  <if test="id != null and id != '' ">
+			AND o.id = #{id}
+		</if>
+	</select>
 	
 	<insert id="insertCustormerUpdate">
 		insert into CUSTORMERINFOUPDATE(id,cardid,chinesename,zdname,originalvalue,modifiedvalue,updatetime)
@@ -125,9 +178,9 @@ insert into LOCAL_EXCEL(ID,CUSTOMER_ID,PRODUCT_ID,ATTACHMENT,URI,APPLICATION_ID,
 	 	<insert id="insertExcal">
  insert into LOCAL_EXCEL(ID,CUSTOMER_ID,PRODUCT_ID,ATTACHMENT,URI,APPLICATION_ID,CREATED_TIME,SHEET_JY
  ,SHEET_XJLLB
-,SHEET_YSYF,SHEET_YFYS,SHEET_GDZC,SHEET_DHD,SHEET_JBZK,HKJHB,APPROVE_VALUE,ZYXZCB,TZXZCB,FZJSB) values
+,SHEET_YSYF,SHEET_YFYS,SHEET_GDZC,SHEET_DHD,SHEET_JBZK,HKJHB,APPROVE_VALUE,ZYXZCB,TZXZCB,FZJSB,FILE_NAME) values
  (#{id},#{customerId},#{productId},#{attachment},#{uri},#{applicationId},#{createdTime},#{sheetJy},
-#{sheetXjllb},#{sheetYsyf},#{sheetYfys},#{sheetGdzc},#{sheetDhd},#{sheetJbzk},#{hkjhb},#{approveValue},#{zyxzcb},#{tzxzcb},#{fzjsb})
+#{sheetXjllb},#{sheetYsyf},#{sheetYfys},#{sheetGdzc},#{sheetDhd},#{sheetJbzk},#{hkjhb},#{approveValue},#{zyxzcb},#{tzxzcb},#{fzjsb},#{fileName})
  	</insert>
 	<select id="findCustormerUpdate"  resultMap="ResultMap4" parameterType="com.cardpay.pccredit.customer.model.CUSTORMERINFOUPDATE">
 	    <!-- 	SELECT * FROM

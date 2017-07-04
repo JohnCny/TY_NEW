@@ -44,6 +44,27 @@ public class CustomerInfor extends BusinessModel{
 	private Date createtime;
 	private Date updatetime;
 	private String createtime1;
+	private String orgteam;
+	private String oid;
+	private String teamname;
+	public String getOrgteam() {
+		return orgteam;
+	}
+	public void setOrgteam(String orgteam) {
+		this.orgteam = orgteam;
+	}
+	public String getOid() {
+		return oid;
+	}
+	public void setOid(String oid) {
+		this.oid = oid;
+	}
+	public String getTeamname() {
+		return teamname;
+	}
+	public void setTeamname(String teamname) {
+		this.teamname = teamname;
+	}
 	public String getCreatetime1() {
 		return createtime1;
 	}

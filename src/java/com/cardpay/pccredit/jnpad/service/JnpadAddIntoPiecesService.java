@@ -28,6 +28,7 @@ import com.cardpay.pccredit.common.UploadFileTool;
 import com.cardpay.pccredit.customer.constant.WfProcessInfoType;
 import com.cardpay.pccredit.customer.dao.CustomerInforDao;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
+import com.cardpay.pccredit.customer.model.PgUser;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.dao.LocalExcelDao;
@@ -139,6 +140,7 @@ public class JnpadAddIntoPiecesService {
 		String fileName = map.get("fileName");
 		String url = map.get("url");
 		LocalExcel localExcel = new LocalExcel();
+		localExcel.setFileName(fileName);
 		localExcel.setProductId(productId);
 		localExcel.setCustomerId(customerId);
 		localExcel.setCreatedTime(new Date());
@@ -213,6 +215,71 @@ public class JnpadAddIntoPiecesService {
 		customerInforDao.insertExcal(localExcel);
 		//commonDao.insertObject(localExcel);
 	}
+	
+	//导入人员评估
+		public void importExcel1(MultipartFile file, String customerId,String fileName_1) {
+			// TODO Auto-generated method stub
+			Map<String, String> map =null;
+			if(FwqUtils.typeCode==0){
+				//本地
+				 map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+			}else{
+				//指定服务器上传
+				 map = SFTPUtil.uploadJn(file, customerId);
+			}
+			String fileName = map.get("fileName");
+			String url = map.get("url");
+			PgUser localExcel = new PgUser();
+			localExcel.setId(IDGenerator.generateID());
+			localExcel.setName(fileName);
+			localExcel.setUserid(customerId);
+			localExcel.setTime(new Date());
+			if (StringUtils.trimToNull(url) != null) {
+				localExcel.setUrl(url);
+			}
+		
+			
+			//读取excel内容
+			JXLReadExcel readExcel = new JXLReadExcel();
+			String sheet[] =null;
+			if(FwqUtils.typeCode==0){
+				//本地测试
+				 sheet = readExcel.readExcelToHtml(url, true,fileName);
+			}else{
+				//服务器
+			  sheet =SFTPUtil.readExcelToHtml1(url, true,fileName);
+			}
+			localExcel.setTj(sheet[0]);
+			localExcel.setJc(sheet[1]);
+			localExcel.setZcx(sheet[2]);
+			localExcel.setZcs(sheet[3]);
+			localExcel.setTj2(sheet[4]);
+			localExcel.setTj3(sheet[5]);
+			localExcel.setTj4(sheet[6]);
+			localExcel.setTj5(sheet[7]);
+			localExcel.setTj6(sheet[8]);
+			localExcel.setTj7(sheet[9]);
+			localExcel.setTj8(sheet[10]);
+			localExcel.setTj9(sheet[11]);
+			localExcel.setTj10(sheet[12]);
+			customerInforDao.insertPguser(localExcel);
+	
+		}
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	//补充调查模板先删除原有的调查模板信息再新增
 	public void importExcelSupple(MultipartFile file,String productId, String customerId,String appId) {
@@ -311,7 +378,7 @@ public class JnpadAddIntoPiecesService {
 			//指定服务器上传
 			 map = SFTPUtil.uploadJn(file, customerId);
 		}
-		
+	
 		
 		String fileName = map.get("fileName");
 		String url = map.get("url");

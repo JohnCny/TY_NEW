@@ -55,21 +55,8 @@ public class JXLReadExcel {
      * @return <table>...</table> 字符串
      */
     public String[] readExcelToHtml(String filePath, boolean isWithStyle, String fileName){
-    	//服务器
-    /*	String sheet[] = new String[24];
-        BufferedInputStream is = null;
-        String approveValue="";
-        Map<String, String> map = new HashMap<String, String>();
-        try {
-        	SFTPUtil.connect();
-        	System.out.println(filePath.substring(0, 54));
-        	sftp.cd(filePath.substring(0, 54));//filePath.split("\\\\")[0]
-        	//filePath.substring(51, filePath.length())
-        	is = new BufferedInputStream(sftp.get(filePath.substring(55, filePath.length())));*/
-        //本地测试
-    	String sheet[] = new String[24];
+    	String sheet[] = new String[13];
         InputStream is = null;
-        String approveValue="";
         Map<String, String> map = new HashMap<String, String>();
         try {
             File sourcefile = new File(filePath);
@@ -77,333 +64,154 @@ public class JXLReadExcel {
             Workbook wb = WorkbookFactory.create(is);
             for(int i=0;i<wb.getNumberOfSheets();i++)
             {
-            	System.out.println(wb.getSheetAt(i).getSheetName());
-            	System.out.println(wb.getSheetAt(i).getSheetName().indexOf("建议"));
-            	if(wb.getSheetAt(i).getSheetName().indexOf("建议")>=0){
+            	
+            	if(wb.getSheetAt(i).getSheetName().indexOf("同级互评表1")>=0){
             		if (wb instanceof XSSFWorkbook) {
                         XSSFWorkbook xWb = (XSSFWorkbook) wb;
-                        //取申请金额（第三行第四列）
-                        Sheet st = wb.getSheetAt(0);
-                        Row row = st.getRow(2);
-                        Cell cell = row.getCell(4);
-                        approveValue = getCellValue(cell);
-                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_jy,ImportParameter.editAble_jy,false);
+                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.tjhpb,ImportParameter.editAble_tjhpb,false);
                     }else if(wb instanceof HSSFWorkbook){
                         HSSFWorkbook hWb = (HSSFWorkbook) wb;
-                      //取申请金额（第三行第四列）
-                        Sheet st = wb.getSheetAt(0);
-                        Row row = st.getRow(2);
-                        Cell cell = row.getCell(4);
-                        approveValue = getCellValue(cell);
-                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_jy,ImportParameter.editAble_jy,false);
+                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.tjhpb,ImportParameter.editAble_tjhpb,false);
                     }
                 	String content_base64 = getBASE64(map.get("computerData").toString());
             		sheet[0] = content_base64;
             	}
-            	if(wb.getSheetAt(i).getSheetName().indexOf("基本状况")>=0){
+            	
+            	if(wb.getSheetAt(i).getSheetName().indexOf("基层员工上级评估")>=0){
             		if (wb instanceof XSSFWorkbook) {
                         XSSFWorkbook xWb = (XSSFWorkbook) wb;
-                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_jbzk,ImportParameter.editAble_jbzk,false);
+                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.tjhpb,ImportParameter.editAble_tjhpb,false);
                     }else if(wb instanceof HSSFWorkbook){
                         HSSFWorkbook hWb = (HSSFWorkbook) wb;
-                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_jbzk,ImportParameter.editAble_jbzk,false);
+                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.tjhpb,ImportParameter.editAble_tjhpb,false);
                     }
                 	String content_base64 = getBASE64(map.get("computerData").toString());
             		sheet[1] = content_base64;
             	}
             	
-            	if(wb.getSheetAt(i).getSheetName().indexOf("经营状态")>=0){
+            	if(wb.getSheetAt(i).getSheetName().indexOf("中层员工下级评估")>=0){
             		if (wb instanceof XSSFWorkbook) {
                         XSSFWorkbook xWb = (XSSFWorkbook) wb;
-                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_jyzk,ImportParameter.editAble_jyzk,false);
+                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.tjhpb,ImportParameter.editAble_tjhpb,false);
                     }else if(wb instanceof HSSFWorkbook){
                         HSSFWorkbook hWb = (HSSFWorkbook) wb;
-                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_jyzk,ImportParameter.editAble_jyzk,false);
+                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.tjhpb,ImportParameter.editAble_tjhpb,false);
                     }
                 	String content_base64 = getBASE64(map.get("computerData").toString());
             		sheet[2] = content_base64;
             	}
             	
-            	if(wb.getSheetAt(i).getSheetName().indexOf("生存状态")>=0){
+            	if(wb.getSheetAt(i).getSheetName().indexOf("中层员工上级评估")>=0){
             		if (wb instanceof XSSFWorkbook) {
                         XSSFWorkbook xWb = (XSSFWorkbook) wb;
-                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_sczt,ImportParameter.editAble_sczt,false);
+                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.tjhpb,ImportParameter.editAble_tjhpb,true);
                     }else if(wb instanceof HSSFWorkbook){
                         HSSFWorkbook hWb = (HSSFWorkbook) wb;
-                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_sczt,ImportParameter.editAble_sczt,false);
+                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.tjhpb,ImportParameter.editAble_tjhpb,true);
                     }
                 	String content_base64 = getBASE64(map.get("computerData").toString());
             		sheet[3] = content_base64;
             	}
-            	
-            	if(wb.getSheetAt(i).getSheetName().indexOf("道德品质")>=0){
+            	if(wb.getSheetAt(i).getSheetName().indexOf("同级互评表2")>=0){
             		if (wb instanceof XSSFWorkbook) {
                         XSSFWorkbook xWb = (XSSFWorkbook) wb;
-                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_ddpz,ImportParameter.editAble_ddpz,false);
+                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.tjhpb,ImportParameter.editAble_tjhpb,false);
                     }else if(wb instanceof HSSFWorkbook){
                         HSSFWorkbook hWb = (HSSFWorkbook) wb;
-                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_ddpz,ImportParameter.editAble_ddpz,false);
+                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.tjhpb,ImportParameter.editAble_tjhpb,false);
                     }
                 	String content_base64 = getBASE64(map.get("computerData").toString());
             		sheet[4] = content_base64;
             	}
             	
-            	if(wb.getSheetAt(i).getSheetName().indexOf("资产负债")>=0){
+            	if(wb.getSheetAt(i).getSheetName().indexOf("同级互评表3")>=0){
             		if (wb instanceof XSSFWorkbook) {
                         XSSFWorkbook xWb = (XSSFWorkbook) wb;
-                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_zf,ImportParameter.editAble_fz,true);
+                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.tjhpb,ImportParameter.editAble_tjhpb,false);
                     }else if(wb instanceof HSSFWorkbook){
                         HSSFWorkbook hWb = (HSSFWorkbook) wb;
-                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_zf,ImportParameter.editAble_fz,true);
+                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.tjhpb,ImportParameter.editAble_tjhpb,false);
                     }
                 	String content_base64 = getBASE64(map.get("computerData").toString());
             		sheet[5] = content_base64;
             	}
-            	else if(wb.getSheetAt(i).getSheetName().indexOf("利润简表")>=0){
+            	if(wb.getSheetAt(i).getSheetName().indexOf("同级互评表4")>=0){
             		if (wb instanceof XSSFWorkbook) {
                         XSSFWorkbook xWb = (XSSFWorkbook) wb;
-                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_lrjb,ImportParameter.editAble_lrjb,false);
+                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.tjhpb,ImportParameter.editAble_tjhpb,false);
                     }else if(wb instanceof HSSFWorkbook){
                         HSSFWorkbook hWb = (HSSFWorkbook) wb;
-                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_lrjb,ImportParameter.editAble_lrjb,false);
+                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.tjhpb,ImportParameter.editAble_tjhpb,false);
                     }
                 	String content_base64 = getBASE64(map.get("computerData").toString());
             		sheet[6] = content_base64;
             	}
-				else if(wb.getSheetAt(i).getSheetName().indexOf("标准利润表")>=0){
-					if (wb instanceof XSSFWorkbook) {
+            	if(wb.getSheetAt(i).getSheetName().indexOf("同级互评表5")>=0){
+            		if (wb instanceof XSSFWorkbook) {
                         XSSFWorkbook xWb = (XSSFWorkbook) wb;
-                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_bzlrb,ImportParameter.editAble_bzlrb,false);
+                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.tjhpb,ImportParameter.editAble_tjhpb,false);
                     }else if(wb instanceof HSSFWorkbook){
                         HSSFWorkbook hWb = (HSSFWorkbook) wb;
-                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_bzlrb,ImportParameter.editAble_bzlrb,false);
+                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.tjhpb,ImportParameter.editAble_tjhpb,false);
                     }
                 	String content_base64 = getBASE64(map.get("computerData").toString());
-					sheet[7] = content_base64;
+            		sheet[7] = content_base64;
             	}
-				else if(wb.getSheetAt(i).getSheetName().indexOf("主营业务明细表")>=0){
-					if (wb instanceof XSSFWorkbook) {
+            	if(wb.getSheetAt(i).getSheetName().indexOf("同级互评表6")>=0){
+            		if (wb instanceof XSSFWorkbook) {
                         XSSFWorkbook xWb = (XSSFWorkbook) wb;
-                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_zyyw,ImportParameter.editAble_zyyw,false);
+                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.tjhpb,ImportParameter.editAble_tjhpb,false);
                     }else if(wb instanceof HSSFWorkbook){
                         HSSFWorkbook hWb = (HSSFWorkbook) wb;
-                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_zyyw,ImportParameter.editAble_zyyw,false);
+                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.tjhpb,ImportParameter.editAble_tjhpb,false);
                     }
                 	String content_base64 = getBASE64(map.get("computerData").toString());
-					sheet[8] = content_base64;
+            		sheet[8] = content_base64;
             	}
-				else if(wb.getSheetAt(i).getSheetName().indexOf("现金流量表")>=0){
-					if (wb instanceof XSSFWorkbook) {
+            	if(wb.getSheetAt(i).getSheetName().indexOf("同级互评表7")>=0){
+            		if (wb instanceof XSSFWorkbook) {
                         XSSFWorkbook xWb = (XSSFWorkbook) wb;
-                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_xjllb,ImportParameter.editAble_xjllb,false);
+                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.tjhpb,ImportParameter.editAble_tjhpb,false);
                     }else if(wb instanceof HSSFWorkbook){
                         HSSFWorkbook hWb = (HSSFWorkbook) wb;
-                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_xjllb,ImportParameter.editAble_xjllb,false);
+                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.tjhpb,ImportParameter.editAble_tjhpb,false);
                     }
                 	String content_base64 = getBASE64(map.get("computerData").toString());
-					sheet[9] = content_base64;
-				}
-				else if(wb.getSheetAt(i).getSheetName().indexOf("交叉检验")>=0){
-					if (wb instanceof XSSFWorkbook) {
+            		sheet[9] = content_base64;
+            	}
+            	if(wb.getSheetAt(i).getSheetName().indexOf("同级互评表8")>=0){
+            		if (wb instanceof XSSFWorkbook) {
                         XSSFWorkbook xWb = (XSSFWorkbook) wb;
-                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_jc,ImportParameter.editAble_jc,true);
+                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.tjhpb,ImportParameter.editAble_tjhpb,false);
                     }else if(wb instanceof HSSFWorkbook){
                         HSSFWorkbook hWb = (HSSFWorkbook) wb;
-                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_jc,ImportParameter.editAble_jc,true);
+                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.tjhpb,ImportParameter.editAble_tjhpb,false);
                     }
                 	String content_base64 = getBASE64(map.get("computerData").toString());
-					sheet[10] = content_base64;
-				}
-            	
-				else if(wb.getSheetAt(i).getSheetName().indexOf("点货单")>=0){
-					if (wb instanceof XSSFWorkbook) {
+            		sheet[10] = content_base64;
+            	}
+            	if(wb.getSheetAt(i).getSheetName().indexOf("同级互评表9")>=0){
+            		if (wb instanceof XSSFWorkbook) {
                         XSSFWorkbook xWb = (XSSFWorkbook) wb;
-                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_dhd,ImportParameter.editAble_dhd,false);
+                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.tjhpb,ImportParameter.editAble_tjhpb,false);
                     }else if(wb instanceof HSSFWorkbook){
                         HSSFWorkbook hWb = (HSSFWorkbook) wb;
-                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_dhd,ImportParameter.editAble_dhd,false);
+                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.tjhpb,ImportParameter.editAble_tjhpb,false);
                     }
                 	String content_base64 = getBASE64(map.get("computerData").toString());
-					sheet[11] = content_base64;
-				}
-				else if(wb.getSheetAt(i).getSheetName().indexOf("固定资产")>=0){
-					if (wb instanceof XSSFWorkbook) {
+            		sheet[11] = content_base64;
+            	}
+            	if(wb.getSheetAt(i).getSheetName().indexOf("同级互评表10")>=0){
+            		if (wb instanceof XSSFWorkbook) {
                         XSSFWorkbook xWb = (XSSFWorkbook) wb;
-                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_gdzc,ImportParameter.editAble_gdzc,false);
+                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.tjhpb,ImportParameter.editAble_tjhpb,false);
                     }else if(wb instanceof HSSFWorkbook){
                         HSSFWorkbook hWb = (HSSFWorkbook) wb;
-                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_gdzc,ImportParameter.editAble_gdzc,false);
+                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.tjhpb,ImportParameter.editAble_tjhpb,false);
                     }
                 	String content_base64 = getBASE64(map.get("computerData").toString());
-					sheet[12] = content_base64;
-				}
-				else if(wb.getSheetAt(i).getSheetName().indexOf("应付预收")>=0){
-					if (wb instanceof XSSFWorkbook) {
-                        XSSFWorkbook xWb = (XSSFWorkbook) wb;
-                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_yfys,ImportParameter.editAble_yfys,false);
-                    }else if(wb instanceof HSSFWorkbook){
-                        HSSFWorkbook hWb = (HSSFWorkbook) wb;
-                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_yfys,ImportParameter.editAble_yfys,false);
-                    }
-                	String content_base64 = getBASE64(map.get("computerData").toString());
-					sheet[13] = content_base64;
-				}
-				else if(wb.getSheetAt(i).getSheetName().indexOf("应收预付")>=0){
-					if (wb instanceof XSSFWorkbook) {
-                        XSSFWorkbook xWb = (XSSFWorkbook) wb;
-                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_ysyf,ImportParameter.editAble_ysyf,false);
-                    }else if(wb instanceof HSSFWorkbook){
-                        HSSFWorkbook hWb = (HSSFWorkbook) wb;
-                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_ysyf,ImportParameter.editAble_ysyf,false);
-                    }
-                	String content_base64 = getBASE64(map.get("computerData").toString());
-					sheet[14] = content_base64;
-				}
-				else if(wb.getSheetAt(i).getSheetName().indexOf("流水分析")>=0){
-					if (wb instanceof XSSFWorkbook) {
-                        XSSFWorkbook xWb = (XSSFWorkbook) wb;
-                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_lsfx,ImportParameter.editAble_lsfx,false);
-                    }else if(wb instanceof HSSFWorkbook){
-                        HSSFWorkbook hWb = (HSSFWorkbook) wb;
-                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_lsfx,ImportParameter.editAble_lsfx,false);
-                    }
-                	String content_base64 = getBASE64(map.get("computerData").toString());
-					sheet[15] = content_base64;
-				}
-				else if(wb.getSheetAt(i).getSheetName().indexOf("调查表")>=0){
-					if (wb instanceof XSSFWorkbook) {
-                        XSSFWorkbook xWb = (XSSFWorkbook) wb;
-                        Sheet st = wb.getSheetAt(0);
-                        //此处修改金额坐标位置
-                        String ThefileName="1.8.1.xlsx";
-                        Cell cell = null;
-                        if(fileName.equals(ThefileName)||"1.8.1.xls".equals(ThefileName)){
-                        	
-                        	Row row = st.getRow(40);
-                        	cell = row.getCell(3);
-                        }
-                        if("1.3.xlsx".equals(fileName)||"1.3.xls".equals(fileName)){
-                        	Row row = st.getRow(32);
-                        	cell = row.getCell(3);
-                        }
-                        if("0.xlsx".equals(fileName)||"0.xls".equals(fileName)){
-                        	Row row = st.getRow(16);
-                        	cell = row.getCell(3);
-                        }
-                        approveValue = getCellValue(cell);
-                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_jy,ImportParameter.editAble_jy,false);
-                    }else if(wb instanceof HSSFWorkbook){
-                        HSSFWorkbook hWb = (HSSFWorkbook) wb;
-                        Sheet st = wb.getSheetAt(0);
-                        String ThefileName="1.8.1.xlsx";
-                        Cell cell = null;
-                        if(fileName.equals(ThefileName)||"1.8.1.xls".equals(fileName)){
-                        	
-                        	Row row = st.getRow(40);
-                        	cell = row.getCell(3);
-                        }
-                        if("1.3.xlsx".equals(fileName)||"1.3.xls".equals(fileName)){
-                        	Row row = st.getRow(32);
-                        	cell = row.getCell(3);
-                        }
-                        if("0.xlsx".equals(fileName)||"0.xls".equals(fileName)){
-                        	Row row = st.getRow(16);
-                        	cell = row.getCell(3);
-                        }
-                        approveValue = getCellValue(cell);
-                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_jy,ImportParameter.editAble_jy,false);
-                    }
-                	String content_base64 = getBASE64(map.get("computerData").toString());
-					sheet[17] = content_base64;
-				}
-				else if(wb.getSheetAt(i).getSheetName().indexOf("月份损益表")>=0){
-					if (wb instanceof XSSFWorkbook) {
-                        XSSFWorkbook xWb = (XSSFWorkbook) wb;
-                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_syb,ImportParameter.editAble_syb,false);
-                    }else if(wb instanceof HSSFWorkbook){
-                        HSSFWorkbook hWb = (HSSFWorkbook) wb;
-                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_syb,ImportParameter.editAble_syb,false);
-                    }
-                	String content_base64 = getBASE64(map.get("computerData").toString());
-					sheet[18] = content_base64;
-				}
-            	//==============
-				else if(wb.getSheetAt(i).getSheetName().indexOf("还款计划表")>=0){
-					if (wb instanceof XSSFWorkbook) {
-                        XSSFWorkbook xWb = (XSSFWorkbook) wb;
-                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_hkjhb,ImportParameter.RowAndCol_hkjhb,false);
-                    }else if(wb instanceof HSSFWorkbook){
-                        HSSFWorkbook hWb = (HSSFWorkbook) wb;
-                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_hkjhb,ImportParameter.RowAndCol_hkjhb,false);
-                    }
-                	String content_base64 = getBASE64(map.get("computerData").toString());
-					sheet[20] = content_base64;
-				}
-            	//================
-				else if(wb.getSheetAt(i).getSheetName().indexOf("消费调查分析表")>=0){
-					if (wb instanceof XSSFWorkbook) {
-                        XSSFWorkbook xWb = (XSSFWorkbook) wb;
-                        Sheet st = wb.getSheetAt(0);
-                        //此处修改金额坐标位置
-                        Cell cell = null;
-                        if("0.xlsx".equals(fileName)||"0.xls".equals(fileName)){
-                        	Row row = st.getRow(16);
-                        	cell = row.getCell(3);
-                        }
-                        approveValue = getCellValue(cell);
-                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_jy,ImportParameter.editAble_jy,false);
-                    }else if(wb instanceof HSSFWorkbook){
-                        HSSFWorkbook hWb = (HSSFWorkbook) wb;
-                        Sheet st = wb.getSheetAt(0);
-                        Cell cell=null;
-                        if("0.xlsx".equals(fileName)||"0.xls".equals(fileName)){
-                        	Row row = st.getRow(16);
-                        	cell = row.getCell(3);
-                        }
-                        approveValue = getCellValue(cell);
-                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_jy,ImportParameter.editAble_jy,false);
-                    }
-                	String content_base64 = getBASE64(map.get("computerData").toString());
-					sheet[17] = content_base64;
-				}
-            	//==============
-				else if(wb.getSheetAt(i).getSheetName().indexOf("自用性资产")>=0){
-					if (wb instanceof XSSFWorkbook) {
-                        XSSFWorkbook xWb = (XSSFWorkbook) wb;
-                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_zyxzcb,ImportParameter.RowAndCol_zyxzcb,false);
-                    }else if(wb instanceof HSSFWorkbook){
-                        HSSFWorkbook hWb = (HSSFWorkbook) wb;
-                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_zyxzcb,ImportParameter.RowAndCol_zyxzcb,false);
-                    }
-                	String content_base64 = getBASE64(map.get("computerData").toString());
-					sheet[21] = content_base64;
-				}
-            	//================
-				else if(wb.getSheetAt(i).getSheetName().indexOf("投资性资产")>=0){
-					if (wb instanceof XSSFWorkbook) {
-                        XSSFWorkbook xWb = (XSSFWorkbook) wb;
-                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_tzxzcb,ImportParameter.RowAndCol_tzxzcb,false);
-                    }else if(wb instanceof HSSFWorkbook){
-                        HSSFWorkbook hWb = (HSSFWorkbook) wb;
-                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_tzxzcb,ImportParameter.RowAndCol_tzxzcb,false);
-                    }
-                	String content_base64 = getBASE64(map.get("computerData").toString());
-					sheet[22] = content_base64;
-				}
-            	//================
-				else if(wb.getSheetAt(i).getSheetName().indexOf("负债解释")>=0){
-					if (wb instanceof XSSFWorkbook) {
-                        XSSFWorkbook xWb = (XSSFWorkbook) wb;
-                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_fzjsb,ImportParameter.RowAndCol_fzjsb,false);
-                    }else if(wb instanceof HSSFWorkbook){
-                        HSSFWorkbook hWb = (HSSFWorkbook) wb;
-                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_fzjsb,ImportParameter.RowAndCol_fzjsb,false);
-                    }
-                	String content_base64 = getBASE64(map.get("computerData").toString());
-					sheet[23] = content_base64;
-				}
-            	sheet[19] = approveValue;
-            	
+            		sheet[12] = content_base64;
+            	}
             }
             
         } catch (Exception e) {

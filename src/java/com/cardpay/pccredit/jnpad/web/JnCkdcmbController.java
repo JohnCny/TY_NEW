@@ -1,7 +1,9 @@
 package com.cardpay.pccredit.jnpad.web;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cardpay.pccredit.customer.model.CustomerInfor;
+import com.cardpay.pccredit.customer.model.PgUser;
 import com.cardpay.pccredit.intopieces.model.LocalExcel;
 import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
@@ -36,16 +40,9 @@ public class JnCkdcmbController {
 		String productId = request.getParameter("productId");
 		String tableContentyfysb=null;
 		String tableContentxjlb =null;
-		
-		
-		
-		
 		String tableContentxgzb =null;
-		
 		String tableContentjyb =null;
-		
 		String tableContentjbzkb =null;
-		
 		String tableContentdhd =null;
 		String tableContentysyfb=null;
 		String Zyxzcb =null;
@@ -119,6 +116,143 @@ public class JnCkdcmbController {
 	}
 	
 	
+   	
+   	
+   	
+   	
+   	/**
+   	 * 查询单个客户经理提交的表格
+   	 * @param request
+   	 * @return
+   	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/user/cktjhpb.json")
+	public String cktjhpb(HttpServletRequest request) {
+		Map<Object,Object> map =new LinkedHashMap<Object, Object>();
+		String id = request.getParameter("userId");
+		String tablejcb=null;
+		String tablezxb=null;
+		String tablezsb=null;
+		String tabletjb =null;
+		String tabletjb1 =null;
+		String tabletjb2 =null;
+		String tabletjb3 =null;
+		String tabletjb4 =null;
+		String tabletjb5 =null;
+		String tabletjb6 =null;
+		String tabletjb7 =null;
+		String tabletjb8 =null;
+		String tabletjb9 =null;
+		List<PgUser> PgUser = LocalExcelService.selectPgUser(id,"");
+		if(PgUser.get(0).getJc()!="" && PgUser.get(0).getJc()!=null){
+			tablejcb=getFromBASE64(PgUser.get(0).getJc()).replaceAll("\n", "<br>").replace("><br><", "><");
+		}
+		if(PgUser.get(0).getZcs()!="" && PgUser.get(0).getZcs()!=null){
+			tablezsb=getFromBASE64(PgUser.get(0).getZcs()).replaceAll("\n", "<br>").replace("><br><", "><");
+		}
+		if(PgUser.get(0).getZcx()!="" && PgUser.get(0).getZcx()!=null){
+			tablezxb=getFromBASE64(PgUser.get(0).getZcx()).replaceAll("\n", "<br>").replace("><br><", "><");
+		}
+		if(PgUser.get(0).getTj()!="" && PgUser.get(0).getTj()!=null){
+			tabletjb=getFromBASE64(PgUser.get(0).getTj()).replaceAll("\n", "<br>").replace("><br><", "><");
+		}	
+		
+		if(PgUser.get(0).getTj2()!="" && PgUser.get(0).getTj2()!=null){
+			tabletjb1=getFromBASE64(PgUser.get(0).getTj2()).replaceAll("\n", "<br>").replace("><br><", "><");
+		}	
+		if(PgUser.get(0).getTj3()!="" && PgUser.get(0).getTj3()!=null){
+			tabletjb2=getFromBASE64(PgUser.get(0).getTj3()).replaceAll("\n", "<br>").replace("><br><", "><");
+		}	
+		if(PgUser.get(0).getTj4()!="" && PgUser.get(0).getTj4()!=null){
+			tabletjb3=getFromBASE64(PgUser.get(0).getTj4()).replaceAll("\n", "<br>").replace("><br><", "><");
+		}	
+		
+		if(PgUser.get(0).getTj5()!="" && PgUser.get(0).getTj5()!=null){
+			tabletjb4=getFromBASE64(PgUser.get(0).getTj5()).replaceAll("\n", "<br>").replace("><br><", "><");
+		}	
+		if(PgUser.get(0).getTj6()!="" && PgUser.get(0).getTj6()!=null){
+			tabletjb5=getFromBASE64(PgUser.get(0).getTj6()).replaceAll("\n", "<br>").replace("><br><", "><");
+		}	
+		if(PgUser.get(0).getTj7()!="" && PgUser.get(0).getTj7()!=null){
+			tabletjb6=getFromBASE64(PgUser.get(0).getTj7()).replaceAll("\n", "<br>").replace("><br><", "><");
+		}	
+		if(PgUser.get(0).getTj8()!="" && PgUser.get(0).getTj8()!=null){
+			tabletjb7=getFromBASE64(PgUser.get(0).getTj8()).replaceAll("\n", "<br>").replace("><br><", "><");
+		}
+		if(PgUser.get(0).getTj9()!="" && PgUser.get(0).getTj9()!=null){
+			tabletjb8=getFromBASE64(PgUser.get(0).getTj9()).replaceAll("\n", "<br>").replace("><br><", "><");
+		}	
+		if(PgUser.get(0).getTj10()!="" && PgUser.get(0).getTj10()!=null){
+			tabletjb9=getFromBASE64(PgUser.get(0).getTj10()).replaceAll("\n", "<br>").replace("><br><", "><");
+		}	
+			map.put("tablejcb", tablejcb);
+			map.put("tablezxb", tablezxb);
+			map.put("tablezsb", tablezsb);
+			map.put("tabletjb", tabletjb);
+			map.put("tabletjb1", tabletjb1);
+			map.put("tabletjb2", tabletjb2);
+			map.put("tabletjb3", tabletjb3);
+			map.put("tabletjb4", tabletjb4);
+			map.put("tabletjb5", tabletjb5);
+			map.put("tabletjb6", tabletjb6);
+			map.put("tabletjb7", tabletjb7);
+			map.put("tabletjb8", tabletjb8);
+			map.put("tabletjb9", tabletjb9);
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+	}
+	
+   	
+   	/**
+   	 * 区域经理查看
+   	 * @param request
+   	 * @return
+   	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/user/qyjlck.json")
+	public String qyjlck(HttpServletRequest request) {
+		String userId=request.getParameter("userId");
+		String name="";
+		if(request.getParameter("name")!=null && request.getParameter("name")!=""){
+			name="%"+request.getParameter("name")+"%";
+		}
+		String id="";
+		String userId1="";
+		String pid="";
+		List<PgUser> PgUser=new ArrayList<PgUser>();
+		List<CustomerInfor>result=LocalExcelService.selectTeamOrg(id, userId);
+		pid=result.get(0).getOid();
+		List<CustomerInfor>result1=LocalExcelService.selectTeamOrg(pid, userId1);
+		Integer a=0;
+		for(int i=result1.size()-1;i>=0;i--){
+			if(i!=result1.size()-1){
+				a+=1;
+			}
+			List<PgUser> result2 = LocalExcelService.selectPgUser(result1.get(i).getUserId(),name);
+			if(result2.size()>0){
+				result2.get(0).setName(result1.get(i).getChineseName());
+				result2.get(0).setTeamname(result1.get(i).getTeamname());
+				PgUser.add(a, result2.get(0));
+			}else{
+				result1.remove(i);
+			}
+		}
+		Map<Object,Object> map =new LinkedHashMap<Object, Object>();
+		map.put("PgUser", PgUser);
+		map.put("size", PgUser.size());
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+	}
+   	
+   	
+   	
+   	
+   	
+   	
 	//base64解码
 	public static String getFromBASE64(String s) { 
     	if (s == null) return null; 

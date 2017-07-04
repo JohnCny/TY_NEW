@@ -14,6 +14,7 @@ import com.cardpay.pccredit.customer.model.CustomerFirsthendBase;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.model.CustomerInforWeb;
 import com.cardpay.pccredit.customer.model.MaintenanceLog;
+import com.cardpay.pccredit.customer.model.PgUser;
 import com.cardpay.pccredit.customer.model.TyMibusidataForm;
 import com.cardpay.pccredit.customer.model.TyRepayLsz;
 import com.cardpay.pccredit.customer.model.TyRepayYehz;
@@ -339,6 +340,8 @@ public interface CustomerInforDao {
 	public List<TyRarepaylistForm> findLshJnListByFilter();
 	public void insertLshtylist(TyRarepaylistForm tyRarepaylistForm);
 	public void insertExcal(LocalExcel LocalExcel);
-
+	public void insertPguser(PgUser PgUser);
+	List<PgUser>selectPgUser(@Param("id")String id,@Param("name")String name);
+	List<CustomerInfor>selectTeamOrg(@Param("id")String id,@Param("userId")String userId);
 	
 }
