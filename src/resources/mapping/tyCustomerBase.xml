@@ -110,7 +110,7 @@
 
 	<result column="POGZDW" jdbcType="VARCHAR" index="35" />
 
-	<result column="GHJL" jdbcType="VARCHAR" index="35" />
+	<result column="GHJL" jdbcType="VARCHAR" index="76" />
 
 	<result column="ZBJG" jdbcType="VARCHAR" index="28" />
 

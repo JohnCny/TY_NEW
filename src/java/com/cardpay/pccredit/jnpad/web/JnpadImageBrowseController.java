@@ -160,7 +160,6 @@ public class JnpadImageBrowseController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/ipad/JnpadImageBrowse/downLoadYxzlJn.json",method = { RequestMethod.GET })
-	@JRadOperation(JRadOperation.EXPORT)
 	public AbstractModelAndView downLoadYxzlJn(HttpServletRequest request,HttpServletResponse response){
 		try {
 			String s =request.getParameter("id");

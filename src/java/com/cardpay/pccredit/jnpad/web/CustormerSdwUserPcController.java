@@ -283,15 +283,15 @@ public class CustormerSdwUserPcController extends BaseController{
 				//退回有所不同  确认有退回情况后自己存一个 三个审贷委必须都重新审贷所以包括自己也得算在其中
 				//修改sp，info表
 				//删除三个人的审贷结论
-				CustomerSpUser.setBeizhu("");
+				/*CustomerSpUser.setBeizhu("");
 				CustomerSpUser.setSptime(null);
 				CustomerSpUser.setJlyys("");
 				CustomerSpUser.setSpje("");
 				CustomerSpUser.setSplv("");
 				CustomerSpUser.setStatus("0");
 				CustomerSpUser.setSpqx("");
-				/*CustomerSpUser.setCapid(appId);
-				CustomerSpUser.setSpuserid(uId);*/  
+				CustomerSpUser.setCapid(appId);
+				CustomerSpUser.setSpuserid(uId);  
 				for (String sysuserid2 : sysuserid) {
 					CustomerSpUser.setSpuserid(sysuserid2);
 					UserService.addSpUser1(CustomerSpUser);
@@ -302,8 +302,23 @@ public class CustormerSdwUserPcController extends BaseController{
 				IntoPieces.setId(request.getParameter("id"));
 				IntoPieces.setCreatime(new Date());
 				SdwUserService.updateCustormerInfoSdwUser(IntoPieces);
-				returnMap.put("message", "有退回情况发生，删除三个人的审贷结论重新审批!");
-				/*IntoPieces.setStatus("returnedToFirst");
+				returnMap.put("message", "有退回情况发生，删除三个人的审贷结论重新审批!");*/
+				CustomerSpUser.setBeizhu("已退回至客户经理处，请到查看进件处点击该客户补充资料并重新递交！");
+				CustomerSpUser.setSptime(null);
+				CustomerSpUser.setJlyys("已退回至客户经理处，请到查看进件处点击该客户补充资料并重新递交！");
+				CustomerSpUser.setSpje("");
+				CustomerSpUser.setSplv("");
+				CustomerSpUser.setStatus("0");
+				CustomerSpUser.setSpqx("");
+				/*CustomerSpUser.setCapid(appId);
+				CustomerSpUser.setSpuserid(uId);  */
+				for (String sysuserid2 : sysuserid) {
+					if(!userId.equals(sysuserid2)){
+						CustomerSpUser.setSpuserid(sysuserid2);
+						UserService.addSpUser1(CustomerSpUser);
+					}
+				}
+				IntoPieces.setStatus("returnedToFirst");
 				IntoPieces.setId(request.getParameter("id"));
 				IntoPieces.setFallBackReason(request.getParameter("decisionRefusereason"));
 				IntoPieces.setUserId(userId);
@@ -320,7 +335,7 @@ public class CustormerSdwUserPcController extends BaseController{
 					}else{
 						returnMap.put("message", "提交失败");
 					}
-				}*/
+				}
 			}
 			}
 			

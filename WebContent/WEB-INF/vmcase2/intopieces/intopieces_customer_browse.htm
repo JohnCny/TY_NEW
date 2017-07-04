@@ -204,7 +204,7 @@
 		if ($(".checkbox :checked").length == 1) {
 			var rowid = $("input[name='checkbox']:checked").val();
 			var status = rowid.split("@")[6]
-			if(status == 'returnedToFirst'){
+			if(status == 'returnedToFirst'||status == 'nopass_replenish'){
 				$("#id_bc_button").show();
 				$("#id_return_button").show();
 			}else{
@@ -336,10 +336,13 @@
 		$("#id_bc_button").click(function() {
 			if ($(".checkbox :checked").length == 1) {
 				var rowid = $("input[name='checkbox']:checked").val();
-				if(rowid.split("@")[6] != 'returnedToFirst'){
+				/* if(rowid.split("@")[6] != 'returnedToFirst'){
 					alert("审核状态非退回至客户经理!");
 					return;
-				}
+				} */
+				if(rowid.split("@")[6] != 'returnedToFirst'
+						||rowid.split("@")[6] != 'nopass_replenish'){
+				
 				var url ="${contextPath}/intopieces/intopiecesquery/reportImport.page?customerId="+rowid.split("@")[1]+"&productId="+rowid.split("@")[7]+"&applicationId="+rowid.split("@")[0];
 				if (opsObj.formObj) {
 	                // 回调URL
@@ -357,8 +360,12 @@
 	                }
 	            }
 				window.location.href=url;
-			}
-			else{
+				}else{
+					alert("审核状态非退回至客户经理!");
+					return;
+				}
+				
+			}else{
 				Dialog.message("请选择一行!");
 			}
 	    });
@@ -368,28 +375,34 @@
 				var url = "${modulePath}/applyInfo.json";
 				if ($(".checkbox :checked").length == 1) {
 					var rowid = $("input[name='checkbox']:checked").val();
-					 if(rowid.split("@")[6]!='returnedToFirst'){
+					/*  if(rowid.split("@")[6]!='returnedToFirst'){
 						 Dialog.message("审核状态非退回至客户经理!");
 						return; 
+					 } */
+					 if(rowid.split("@")[6] != 'returnedToFirst'
+							||rowid.split("@")[6] != 'nopass_replenish'){
+						Dialog.confirm("确定要处理吗？", "提示",
+				     		function() {
+				     			$.ajax({
+				      				url : url,
+				      				type : "get",
+				      				data : "id=" + rowid.split("@")[0],//要发送的数据
+				      				success : function(data) {
+				      					if (data.success) {
+				      						topWin.Dialog.message("处理成功！");
+				      						window.location.reload(true);
+				      					}
+				      					else{
+				      						topWin.Dialog.message(data.message);
+				      				    }
+				      					submitFlag = 0;
+				      				}
+				      			});
+					 	});
+					 }else{
+						 Dialog.message("审核状态非退回至客户经理!");
+							return; 
 					 }
-					Dialog.confirm("确定要处理吗？", "提示",
-			     		function() {
-			     			$.ajax({
-			      				url : url,
-			      				type : "get",
-			      				data : "id=" + rowid.split("@")[0],//要发送的数据
-			      				success : function(data) {
-			      					if (data.success) {
-			      						topWin.Dialog.message("处理成功！");
-			      						window.location.reload(true);
-			      					}
-			      					else{
-			      						topWin.Dialog.message(data.message);
-			      				    }
-			      					submitFlag = 0;
-			      				}
-			      			});
-				 	});
 				} else {
 	                Dialog.message("请选择一行!");
 	            } 

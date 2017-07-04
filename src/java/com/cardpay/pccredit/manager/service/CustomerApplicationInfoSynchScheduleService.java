@@ -112,8 +112,10 @@ public class CustomerApplicationInfoSynchScheduleService {
 		List<CustomerApplicationInfo> intoPiecesEndList = intoService.findCustomerApplicationInfoEnd();
 		for(CustomerApplicationInfo intoPieces:intoPiecesEndList){
 			//更新进件申请表
-			intoPieces.setStatus(Constant.REPAYEND);//还款结束
-			commonDao.updateObject(intoPieces);
+			if(intoPieces.getDf().equals(intoPieces.getJf())){  //贷方总还款和借方本金加利息金额相同 则说明已经还完
+				intoPieces.setStatus(Constant.REPAYEND);//还款结束
+				commonDao.updateObject(intoPieces);
+			}
 		}
 		logger.info(dateString+"进件状态更新结束（还款结束）**********");
 	}

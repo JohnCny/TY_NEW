@@ -72,9 +72,9 @@ import sun.misc.BASE64Encoder;
 
 public class JNPAD_SFTPUtil {
 //	private static String host = "61.340..32";//生产
-	private static String host = "10.96.1.11";//测试
+	private static String host = "10.0.3.6";//测试
     private static String username="root";  
-    private static String password="qkjr123";  
+    private static String password="tynx123";   
     private static int port = 22;  
     private static ChannelSftp sftp = null;  
     private static String directory = "/usr/pccreditFile/";  

@@ -59,9 +59,28 @@ public class CustomerApplicationInfo  extends BusinessModel {
     private String decisionRefusereason;//审议结论-拒绝原因
     private String liucheng; //记录是否荣耀卡
     
+    private String df; //贷方总还款
+    private String jf;  //借方本金加利息
     
     
-    public String getLiucheng() {
+    
+    public String getDf() {
+		return df;
+	}
+
+	public void setDf(String df) {
+		this.df = df;
+	}
+
+	public String getJf() {
+		return jf;
+	}
+
+	public void setJf(String jf) {
+		this.jf = jf;
+	}
+
+	public String getLiucheng() {
 		return liucheng;
 	}
 

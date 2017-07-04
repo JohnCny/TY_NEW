@@ -381,13 +381,13 @@ public class JXLReadExcel {
         			result = sdf.format(date);  
         		} else {  
         			double value = cell.getNumericCellValue();  
-        			CellStyle style = cell.getCellStyle();  
-        			DecimalFormat format = new DecimalFormat();  
-        			String temp = style.getDataFormatString();  
+        			//CellStyle style = cell.getCellStyle();  
+        			DecimalFormat format = new DecimalFormat("#.###");  
+        			//String temp = style.getDataFormatString();  
         			// 单元格设置成常规  
-        			if (temp.equals("General")) {  
-        				format.applyPattern("#");  
-        			}  
+        			/*if (temp.equals("General")) {  
+        				format.applyPattern("#.###");  
+        			}*/  
         			result = format.format(value);  
         		}  
         		break;  
