@@ -142,6 +142,43 @@ public class JnpadAddIntoPiecesController {
 			}
 			return null;
 		}
+		
+		//导入调查报告
+				@ResponseBody
+				@RequestMapping(value = "/ipad/addIntopieces/reportImport1.json")
+				public Map<String, Object> reportImport1(@RequestParam(value = "file", required = false) MultipartFile file,HttpServletRequest request,HttpServletResponse response) throws Exception {        
+					response.setContentType("text/html;charset=utf-8");
+					Map<String, Object> map = new HashMap<String, Object>();
+					try {
+						if(file==null||file.isEmpty()){
+							map.put(JRadConstants.SUCCESS, false);
+							map.put(JRadConstants.MESSAGE, CustomerInforConstant.IMPORTEMPTY);
+							JSONObject obj = JSONObject.fromObject(map);
+							response.getWriter().print(obj.toString());
+						}
+						String fileName =request.getParameter("fileName");
+						String customerId = request.getParameter("customerId");
+						jnpadaddIntoPiecesService.importExcel1(file,customerId,fileName);
+						map.put(JRadConstants.SUCCESS, true);
+						map.put(JRadConstants.MESSAGE, CustomerInforConstant.IMPORTSUCCESS);
+						JSONObject obj = JSONObject.fromObject(map);
+						response.getWriter().print(obj.toString());
+					} catch (Exception e) {
+						e.printStackTrace();
+						map.put(JRadConstants.SUCCESS, false);
+						map.put(JRadConstants.MESSAGE, "上传失败:"+e.getMessage());
+						JSONObject obj = JSONObject.fromObject(map);
+						response.getWriter().print(obj.toString());
+					}
+					return null;
+				}
+		
+		
+		
+		
+		
+		
+		
 		/**
 		 * 查看所有客户经理信息
 		 * @param filter
