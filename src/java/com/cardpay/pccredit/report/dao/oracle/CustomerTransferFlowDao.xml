@@ -1511,7 +1511,7 @@
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
 					<!--  select * from yqhkdktjbb a WHERE 1=1 -->
-					select ywbh,chinese_name,card_id,CPMC,DF,hkr,JE,yhlx,KHJL,YWJG from 
+					<!-- select ywbh,chinese_name,card_id,CPMC,DF,hkr,JE,yhlx,KHJL,YWJG from 
 			(select tk.ywbh,b.chinese_name,b.card_id,tpt.product_name as CPMC, 
 			       tk.ffje as DF,
 			       (case when(SUBSTR(lsz.jzrq, 7, 9)- SUBSTR(to_char(trunc(sysdate,'dd'),'yyyymmdd'), 7, 9)) > 0
@@ -1537,8 +1537,36 @@
 			           and jh.ywbh=tk.ywbh||'HT'
 			           and tpt.product_code=tk.cpmc
 			            and  to_date(tk.dqrq,'yy-mm-dd')>trunc(sysdate) 
-			          <!--  and a.id ='8a855a3c5a5ff169015a60012091003a' -->
-			           ) where cn=1
+			           and a.id ='8a855a3c5a5ff169015a60012091003a'
+			           ) where cn=1 -->
+			           select ywbh,chinese_name,card_id,CPMC,DF,hkr,JE,yhlx,KHJL,qs,YWJG from 
+      (select tk.ywbh,b.chinese_name,b.card_id,tpt.product_name as CPMC, 
+             tk.ffje as DF,
+             (case when(SUBSTR(jh.rq, 7, 9)- SUBSTR(to_char(trunc(sysdate,'dd'),'yyyymmdd'), 7, 9)) > 0
+              then (SUBSTR(jh.rq, 7, 9)- SUBSTR(to_char(trunc(sysdate,'dd'),'yyyymmdd'), 7, 9)) else 0  end )  as hkr, 
+               jh.je as JE,jh.yhlx,jh.qs,
+                a.display_name as KHJL,
+                 (select t.name from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = a.id))  as YWJG , 
+                 row_number() over (partition by b.chinese_name order by jh.rq desc) cn 
+                 from ty_repay_tkmx tk ,
+                 ty_repay_yehz yehz,
+                 ty_customer_base base,
+                 BASIC_CUSTOMER_INFORMATION b, 
+                 SYS_USER a ,
+                 ty_kdk_jh jh,
+                 ty_product_type tpt
+                where tk.sfjq= '0.0' 
+                 and yehz.jjh=tk.jjh 
+                 and base.khnm=tk.khh 
+                 and base.id=b.ty_customer_id 
+                 and a.id=b.user_id 
+                 and jh.ywbh=tk.ywbh||'HT'
+                 and tpt.product_code=tk.cpmc
+                  and  to_date(tk.dqrq,'yy-mm-dd')>trunc(sysdate) 
+                <!--  and a.id ='8a855a3c5a5ff169015a60012091003a'
+                 and b.chinese_name='樊谈火' -->
+                 order by to_number(jh.qs)
+                 ) where cn=1 
 					<if test="certiCode != null and certiCode != '' ">
 						AND CARD_ID=#{certiCode}
 					</if>
@@ -1559,34 +1587,34 @@
 	<select id="findYqhkdktjbbFormCountList" resultType="int" 
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
 		 select count(*)
-		   from  (   select ywbh,chinese_name,card_id,CPMC,DF,hkr,JE,yhlx,KHJL,YWJG from 
-			(select tk.ywbh,b.chinese_name,b.card_id,tpt.product_name as CPMC, 
-			       tk.ffje as DF,
-			       (case when(SUBSTR(lsz.jzrq, 7, 9)- SUBSTR(to_char(trunc(sysdate,'dd'),'yyyymmdd'), 7, 9)) > 0
-			        then (SUBSTR(lsz.jzrq, 7, 9)- SUBSTR(to_char(trunc(sysdate,'dd'),'yyyymmdd'), 7, 9)) else 0  end )  as hkr, 
-			         jh.je as JE,jh.yhlx,
-			          a.display_name as KHJL,
-			           (select t.name from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = a.id))  as YWJG , 
-			           row_number() over (partition by b.chinese_name order by lsz.jzrq desc) cn 
-			           from TY_REPAY_LSZ lsz,ty_repay_tkmx tk ,
-			           ty_repay_yehz yehz,
-			           ty_customer_base base,
-			           BASIC_CUSTOMER_INFORMATION b, 
-			           SYS_USER a ,
-			           ty_kdk_jh jh,
-			           ty_product_type tpt
-			           where zy = '批量自动扣本金' and 
-			           tk.sfjq= '0.0' 
-			           and tk.jjh =lsz.jjh 
-			           and yehz.jjh=tk.jjh 
-			           and base.khnm=tk.khh 
-			           and base.id=b.ty_customer_id 
-			           and a.id=b.user_id 
-			           and jh.ywbh=tk.ywbh||'HT'
-			           and tpt.product_code=tk.cpmc
-			            and  to_date(tk.dqrq,'yy-mm-dd')>trunc(sysdate) 
-			          <!--  and a.id ='8a855a3c5a5ff169015a60012091003a' -->
-			           ) where cn=1
+		   from  (   select ywbh,chinese_name,card_id,CPMC,DF,hkr,JE,yhlx,KHJL,qs,YWJG from 
+      (select tk.ywbh,b.chinese_name,b.card_id,tpt.product_name as CPMC, 
+             tk.ffje as DF,
+             (case when(SUBSTR(jh.rq, 7, 9)- SUBSTR(to_char(trunc(sysdate,'dd'),'yyyymmdd'), 7, 9)) > 0
+              then (SUBSTR(jh.rq, 7, 9)- SUBSTR(to_char(trunc(sysdate,'dd'),'yyyymmdd'), 7, 9)) else 0  end )  as hkr, 
+               jh.je as JE,jh.yhlx,jh.qs,
+                a.display_name as KHJL,
+                 (select t.name from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = a.id))  as YWJG , 
+                 row_number() over (partition by b.chinese_name order by jh.rq desc) cn 
+                 from ty_repay_tkmx tk ,
+                 ty_repay_yehz yehz,
+                 ty_customer_base base,
+                 BASIC_CUSTOMER_INFORMATION b, 
+                 SYS_USER a ,
+                 ty_kdk_jh jh,
+                 ty_product_type tpt
+                where tk.sfjq= '0.0' 
+                 and yehz.jjh=tk.jjh 
+                 and base.khnm=tk.khh 
+                 and base.id=b.ty_customer_id 
+                 and a.id=b.user_id 
+                 and jh.ywbh=tk.ywbh||'HT'
+                 and tpt.product_code=tk.cpmc
+                  and  to_date(tk.dqrq,'yy-mm-dd')>trunc(sysdate) 
+                 <!-- and a.id ='8a855a3c5a5ff169015a60012091003a'
+                 and b.chinese_name='樊谈火' -->
+                 order by to_number(jh.qs)
+                 ) where cn=1 
 					<if test="certiCode != null and certiCode != '' ">
 						AND CARD_ID=#{certiCode}
 					</if>

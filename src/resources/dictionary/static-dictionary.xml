@@ -186,14 +186,16 @@
 		<item name="UNAPPROVE" title="未审核" />
 		<item name="APPROVE" title="审核通过" />
 		<item name="RETURNAPPROVE" title="审核退回" />
+		<item name="nopass_replenish" title="审核退回" />
 		<item name="REJECTAPPROVE" title="审核拒绝" />
 		<item name="save" title="未申请" />
 		<item name="audit" title="已申请" />
 		<item name="nopass" title="申请未通过" />
-		<item name="refuse" title="被拒接" />
+		<item name="refuse" title="被拒绝" />
 		<item name="approved" title="审批结束" />
 		<item name="succeed" title="申请成功" />
 		<item name="end" title="放款成功" />
+		<item name="repayEnd" title="还款结束" />
 	</dictionary>
 	<dictionary name="QuotaAdjustType" title="调额类型">
 		<item name="up" title="升额" />

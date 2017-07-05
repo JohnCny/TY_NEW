@@ -139,7 +139,7 @@ public class CustomerInforService {
 	private JdbcTemplate jdbcTemplate;  
 	//客户原始信息
     //todo:文件换成济南的
-	private String[] fileTxt = {"kkh_grxx.txt","kkh_grjtcy.txt","kkh_grjtcc.txt","kkh_grscjy.txt","kkh_grxxll.txt","kkh_grgzll.txt","kkh_grrbxx.txt","cxd_dkcpmc.txt","kkh_hmdgl.txt","cxd_rygl.txt"};
+	private String[] fileTxt = {"kkh_grxx.txt"/*,"kkh_grjtcy.txt","kkh_grjtcc.txt","kkh_grscjy.txt","kkh_grxxll.txt","kkh_grgzll.txt","kkh_grrbxx.txt","cxd_dkcpmc.txt","kkh_hmdgl.txt","cxd_rygl.txt"*/};
 	//流水账、余额汇总表、借据表
     //todo:文件换成济南的
 	private String[] fileTxtRepay ={"kdk_yehz.txt","kdk_lsz.txt","kdk_tkmx.txt","kdk_jh.txt"};
@@ -1668,8 +1668,8 @@ public class CustomerInforService {
 					String card_id = map.get("zjhm").toString();
 					String name = map.get("khmc").toString();
 					String id = map.get("id").toString();
-					//客户经理标识
-					String khjl = map.get("khjl").toString();
+					//客户经理标识    因为客户经理标示可能是放款专员 所以该客户应该放在ghjl名下
+					String khjl = map.get("ghjl").toString();
 					//先通过标识获取柜员号
 					List<CustomerFirsthendRygl> rygl = commonDao.queryBySql(CustomerFirsthendRygl.class, "select * from ty_customer_rygl where dm='"+khjl.trim()+"'", null);
 					String gyh1 = "";
@@ -1715,8 +1715,8 @@ public class CustomerInforService {
 					String card_id = map.get("zjhm").toString();
 					String name = map.get("khmc").toString();
 					String id = map.get("id").toString();
-					//客户经理标识
-					String khjl = map.get("khjl").toString();
+					//客户经理标识  因为客户经理标示可能是放款专员 所以该客户应该放在ghjl名下
+					String khjl = map.get("ghjl").toString();
 					//先通过标识获取柜员号
 					List<CustomerFirsthendRygl> rygl = commonDao.queryBySql(CustomerFirsthendRygl.class, "select * from ty_customer_rygl where dm='"+khjl.trim()+"'", null);
 					String gyh1 = "";

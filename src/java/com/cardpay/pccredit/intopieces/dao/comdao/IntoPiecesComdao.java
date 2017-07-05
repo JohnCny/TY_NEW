@@ -578,8 +578,7 @@ public class IntoPiecesComdao {
 				 "          and a.product_id = e.id         				"+
 				 "        and e.product_type_code=f.product_code			"+
 				 "			and f.product_code=d.cpmc 					"+
-				 "          and a.status ='approved'                 	"+ 
-				 "          and d.sfzf !='1.0'";
+				 "          and a.status ='approved'                 	";
 		
 		
 		List<IntoPieces> list = commonDao.queryBySql(IntoPieces.class,sql,null);
@@ -777,10 +776,20 @@ public class IntoPiecesComdao {
 	 * @return
 	 */
 		public List<CustomerApplicationInfo> findCustomerApplicationInfoEnd() {			
-			String sql ="select a.*   from customer_application_info  a,  ty_repay_tkmx  d   "+
+			/*String sql ="select a.*   from customer_application_info  a,  ty_repay_tkmx  d   "+
 				    "           where a.jjh =d.jjh            "+                            
-				    "            and a.status ='end'        "+             
-				    "            and d.sfzf ='1.0' ";
+				    "            and a.status ='end'        ";*/
+			
+		String sql="select distinct tkmx.ywbh,sum(lsz.df) as df ,sum(lsz.jf) as jf ,base.khmc,tkmx.jkrq                                                                                             "+
+				"	from customer_application_info info, ty_customer_base base,ty_repay_tkmx tkmx , ty_repay_lsz lsz,basic_customer_information basic ,sys_user  sysuser                            "+
+				"	where basic.id=info.customer_id and                                                                                                                                             "+
+				"	      basic.user_id=sysuser.id and                                                                                                                                              "+
+				"	      basic.ty_customer_id=base.id and                                                                                                                                          "+
+				"	      base.khnm=tkmx.khh and                                                                                                                                                    "+
+				"	      tkmx.jjh=lsz.jjh and                                                                                                                                                      "+
+				"	      info.status='end'                                                                                                                                                         "+
+				"	      group by tkmx.ywbh,base.khmc,tkmx.jkrq                                                                                                                                    "+
+				"	      order by tkmx.jkrq																																						";
 			List<CustomerApplicationInfo> list = commonDao.queryBySql(CustomerApplicationInfo.class,sql,null);
 			return list;
 		}
