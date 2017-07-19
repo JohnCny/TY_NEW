@@ -43,7 +43,7 @@ public class IntoPiecesComdao {
 	@Autowired
 	private CommonDao commonDao;
 
-	/* 查询进价信息 */
+	/* 查询进价信息 
 	public QueryResult<IntoPieces> findintoPiecesByFilter(
 			IntoPiecesFilter filter) {
 		HashMap<String, Object> params = new HashMap<String, Object>();
@@ -60,6 +60,81 @@ public class IntoPiecesComdao {
 				+ "where t.customer_id=b.id  and t.product_id=p.id and usr.id = b.user_id) where 1=1 ");
 		if(StringUtils.trimToNull(userId)!=null){
 			sql.append("and user_id = #{userId}");
+		}
+		
+		if(StringUtils.trimToNull(filter.getStartAmt())!=null){
+			params.put("startAmt", filter.getStartAmt());
+			sql.append("and APPLY_QUOTA >= #{startAmt}");
+		}
+		
+		if(StringUtils.trimToNull(filter.getEndAmt())!=null){
+			params.put("endAmt", filter.getEndAmt());
+			sql.append("and APPLY_QUOTA <= #{endAmt}");
+		}
+		
+		String custManagerIds = filter.getCustManagerIds();
+		if(StringUtils.trimToNull(custManagerIds)!=null){
+			sql.append("and user_id in ");
+			sql.append(custManagerIds);
+		}
+		
+		if(StringUtils.trimToNull(filter.getCustManagerId())!=null&&!"0".equals(filter.getCustManagerId())){
+			params.put("custManagerId", filter.getCustManagerId());
+			sql.append("and user_id = #{custManagerId}");
+		}
+		
+		if(StringUtils.trimToNull(filter.getOrganName())!=null){
+			params.put("organName", filter.getOrganName());
+			sql.append("and organcode = #{organName}");
+		}
+		
+		if(StringUtils.trimToNull(productName)!=null){
+			params.put("productName", productName);
+			 sql.append(" and product_name like '%'||#{productName}||'%' ");
+			}
+		
+		if(StringUtils.trimToNull(id)!=null){
+			params.put("id", id);
+			sql.append(" and id like '%'||#{id}||'%' ");
+			}
+		if(StringUtils.trimToNull(status)!=null){
+			params.put("status", status);
+			sql.append("and status= #{status}");
+			}
+		if(StringUtils.trimToNull(cardId)!=null||StringUtils.trimToNull(chineseName)!=null){
+			if(StringUtils.trimToNull(cardId)!=null&&StringUtils.trimToNull(chineseName)!=null){
+			    //sql.append(" and (b.card_id like '%"+cardId+"%' or b.chinese_name like '%"+chineseName+"%' )");
+			    sql.append(" and card_id like '%"+cardId+"%' and chinese_name like '%"+chineseName+"%' ");
+			}else if(StringUtils.trimToNull(cardId)!=null&&StringUtils.trimToNull(chineseName)==null){
+				params.put("cardId", cardId);
+				sql.append(" and card_id like '%'||#{cardId}||'%' ");
+			}else if(StringUtils.trimToNull(cardId)==null&&StringUtils.trimToNull(chineseName)!=null){
+				params.put("chineseName", chineseName);
+				sql.append(" and chinese_name like '%'||#{chineseName}||'%' ");
+			}
+		}
+		
+		sql.append(" order by id asc");
+		return commonDao.queryBySqlInPagination(IntoPieces.class, sql.toString(), params,
+				filter.getStart(), filter.getLimit());
+	}*/
+	
+	public QueryResult<IntoPieces> findintoPiecesByFilter(
+			IntoPiecesFilter filter) {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		String id = filter.getId();
+		String chineseName  = filter.getChineseName();
+		String productName = filter.getProductName();
+		String userId = filter.getUserId();
+		String cardId = filter.getCardId();
+		String status = filter.getStatus();
+		params.put("userId", userId);
+		StringBuffer sql = new StringBuffer("select * from (select t.id,t.customer_id,b.ty_customer_id,b.chinese_name,t.product_id,p.product_name,b.card_id,t.apply_quota,t.final_approval,t.status,t.CREATED_TIME,t.ACTUAL_QUOTE as reqlmt,usr.display_name, b.user_id,"
+				+ "(select org.name from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id)))as organcode "
+				+ "from customer_application_info t,basic_customer_information b,product_attribute p,sys_user usr "
+				+ "where t.customer_id=b.id  and t.product_id=p.id and usr.id = b.user_id) where 1=1 and product_name!='融耀卡'");
+		if(StringUtils.trimToNull(userId)!=null){
+			sql.append(" and user_id = #{userId}");
 		}
 		
 		if(StringUtils.trimToNull(filter.getStartAmt())!=null){

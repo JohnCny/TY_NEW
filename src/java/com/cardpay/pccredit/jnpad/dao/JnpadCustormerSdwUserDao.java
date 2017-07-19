@@ -82,5 +82,7 @@ public interface JnpadCustormerSdwUserDao {
 			List<JnpadCsSdModel> findCsSdId(String appId);
 			JnpadCsSdModel findBySdwId(@Param(value = "sdwId")String sdwId,@Param(value = "appId")String appId);
 			JnpadCsSdModel findZzCsSds(@Param(value = "appId")String appId);
+			void updateCSZT(String userId, Date times, String money,
+					String applicationId, String struts);
 			
 }			

@@ -238,7 +238,24 @@
 	      <result property="Shlx" column="Shlx" />
 	 </resultMap>
   
-
+		<resultMap id="rycustomerapplicationinfomap" type="com.cardpay.pccredit.intopieces.model.IntoPieces" >
+		    <id column="ID" property="id"  />
+		    <result column="customer_id" property="customerId" jdbcType="DECIMAL" />
+		     <result column="ty_customer_id" property="tyCustomerId"  />
+		    <result column="chinese_name" property="chineseName"  />
+		    <result column="product_id" property="productId"  />
+		    <result column="product_name" property="productName"  />
+		    <result column="card_id" property="cardId"  />
+		    <result column="apply_quota" property="applyQuota"  />
+		    <result column="final_approval" property="finalApproval"  />
+		    <result column="status" property="status"  />
+		    <result column="CREATED_TIME" property="creatime"  />
+		    <result column="ACTUAL_QUOTE" property="actualQuote"  />
+		    <result column="display_name" property="displayName"  />
+	        <result column="user_id" property="userId"  />
+		    <result column="organcode" property="displayName"  />
+		    <result column="organcode" property="organName"  />
+		  </resultMap>
   
 
 	<select id="findCustomerTransferList" resultMap="ResultMap" 
@@ -2092,4 +2109,93 @@
 			AND sysuser.display_name=#{custManagerName}
 		</if>
 		</select>
+		
+		<select id="findintoPiecesByFilters"  resultMap="rycustomerapplicationinfomap" parameterType="com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter">
+		select t.id,t.customer_id,b.ty_customer_id,b.chinese_name,t.product_id,p.product_name,b.card_id,
+	t.apply_quota,t.final_approval,t.status,t.CREATED_TIME,t.ACTUAL_QUOTE as reqlmt,usr.display_name, b.user_id,
+	(select org.name from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id)))as organcode
+	from customer_application_info t,basic_customer_information b,product_attribute p,sys_user usr
+	where t.customer_id=b.id  and t.product_id=p.id and usr.id = b.user_id
+		
+	 <if test=" userId!= null" >
+	 	and user_id = #{userId}
+	 </if>
+	 <if test=" startAmt!= null" >
+	 	and APPLY_QUOTA >= #{startAmt}
+	 </if>
+	 <if test=" endAmt!= null" >
+	 	and and APPLY_QUOTA <![CDATA[ <=  ]]> #{endAmt}
+	 </if>
+	 <if test=" custManagerId!= null" >
+	 	and user_id = #{custManagerId}
+	 </if>
+	 <if test=" organName!= null" >
+	 	and organcode = #{organName}
+	 </if>
+	  <if test=" productName!= null" >
+	 	 and product_name like '%'||#{productName}||'%' 
+	 </if>
+	 <if test=" id!= null" >
+	 	 and id like '%'||#{id}||'%' 
+	 </if>
+	 <if test="status!= null" >
+	 	and status= #{status}
+	 </if>
+	 <if test="cardId!= null or chineseName!=null" >
+		 <if test="cardId!= null and chineseName!=null" >
+		 	and card_id like '%"+cardId+"%' and chinese_name like '%"+chineseName+"%' 
+		 </if>
+		 <if test="cardId!= null and chineseName==null" >
+		  and card_id like '%'||#{cardId}||'%' 
+		 </if>
+		  <if test="cardId== null and chineseName!=null" >
+		  and chinese_name like '%'||#{chineseName}||'%' 
+		 </if>
+	 	
+	 </if>
+	 
+	 
+	</select>
+	
+	<select id="findintoPiecesByFilterCount"  resultType="int" parameterType="com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter">
+		select count(t.id)
+		from customer_application_info t,basic_customer_information b,product_attribute p,sys_user usr
+	where t.customer_id=b.id  and t.product_id=p.id and usr.id = b.user_id
+	 <if test=" userId!= null" >
+	 	and user_id = #{userId}
+	 </if>
+	  <if test=" startAmt!= null" >
+	 	and APPLY_QUOTA >= #{startAmt}
+	 </if>
+	 <if test=" endAmt!= null" >
+	 	and and APPLY_QUOTA <![CDATA[ <=  ]]> #{endAmt}
+	 </if>
+	 <if test=" custManagerId!= null" >
+	 	and user_id = #{custManagerId}
+	 </if>
+	 <if test=" organName!= null" >
+	 	and organcode = #{organName}
+	 </if>
+	  <if test=" productName!= null" >
+	 	 and product_name like '%'||#{productName}||'%' 
+	 </if>
+	 <if test=" id!= null" >
+	 	 and id like '%'||#{id}||'%' 
+	 </if>
+	 <if test="status!= null" >
+	 	and status= #{status}
+	 </if>
+	 <if test="cardId!= null or chineseName!=null" >
+		 <if test="cardId!= null and chineseName!=null" >
+		 	and card_id like '%"+cardId+"%' and chinese_name like '%"+chineseName+"%' 
+		 </if>
+		 <if test="cardId!= null and chineseName==null" >
+		  and card_id like '%'||#{cardId}||'%' 
+		 </if>
+		  <if test="cardId== null and chineseName!=null" >
+		  and chinese_name like '%'||#{chineseName}||'%' 
+		 </if>
+	 	
+	 </if>
+	</select>
 </mapper>

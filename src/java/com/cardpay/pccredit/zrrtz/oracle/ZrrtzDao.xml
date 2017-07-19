@@ -7,7 +7,7 @@
 		<result property="product_name" column="product_name" />
 		<result property="apply_quota" column="apply_quota" />
 		<result property="id" column="id"/>
-		<result property="userId" column="id"/>
+		<result property="userId" column="userId"/>
 	</resultMap>
 	
 	<resultMap id="IntoPiecesResultMap" type="com.cardpay.pccredit.intopieces.model.IntoPieces">
@@ -31,7 +31,7 @@
 		<result property="product_name" column="PRODUCT_NAME"/>
 		<result property="actual_quote" column="ACTUAL_QUOTE"/>
 		<result property="id" column="id"/>
-		<result property="userId" column="id"/>
+		<result property="userId" column="userId"/>
 	</resultMap>
 	
 	<resultMap id="aLLResultMaps" type="com.cardpay.pccredit.zrrtz.model.OutcomingData">
@@ -277,7 +277,7 @@
 		  SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
-			  select
+			  <!-- select
 			        distinct
 			        sysuser.id as id,
 			        tkmx.ywbh ,
@@ -305,47 +305,42 @@
 			              and tkmx.ywbh not in (select ywbh from CUSTOMER_PIGEONHOLE)
 						<if test="userId!=null and userId!='' ">
 						     and sysuser.id=#{userId}
+						</if> -->
+						select * from (select a.id ,a.ywbh,a.display_name,a.chinese_name,a.card_id , a.product_name,a.actual_quote ,a.basicid ,a.userId,info.id as infoid from 
+		       (select  mm.id ,mm.ywbh,mm.display_name  ,mm.khmc as chinese_name,  mm.zjhm as card_id, tpt.product_name as product_name,    mm.REQLMT as actual_quote,basic.id as basicid,sysuser.id as userId
+		        from ty_mibusidata mm ,ty_product_type tpt,ty_repay_tkmx tkmx ,basic_customer_information basic,ty_customer_base base ,sys_user sysuser where 1=1 and
+		        mm.YWBH=tkmx.ywbh and tkmx.cpmc=tpt.product_code and tkmx.khh=base.khnm and base.id=basic.ty_customer_id and basic.user_id=sysuser.id) a
+		         left join customer_application_info info 
+		        on a.basicid=info.customer_id ) where 1=1 
+		        <if test="userId!=null and userId!='' ">
+						     and userId=#{userId}
 						</if>
-				 
+				<if test="status!=null and status!='1' ">
+						    and infoid is not null 
+						</if>
+						  and ywbh not in (select ywbh from CUSTOMER_PIGEONHOLE)
+						<!-- and infoid is not null -->
                    <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
 					WHERE ROWNUM_ > #{limit}*#{page}
 					]]>
-
 	</select>
 	
 	<select id="findIntoPiecesCountLists" resultType="int" parameterType="com.cardpay.pccredit.zrrtz.model.IncomingData">
 		  select count(*)
-		          from (select
-			        distinct
-			       sysuser.id as id,
-			        tkmx.ywbh ,
-			        sysuser.display_name as display_name,
-			        b.khmc as chinese_name,
-			        b.zjhm as card_id,
-			        protype.product_name,
-			        tkmx.ffje as actual_quote
-			       from
-			              ty_repay_tkmx tkmx,
-			              ty_customer_base b,
-			              ty_customer_rygl rygl,
-			             ty_product_type protype,
-			              sys_user sysuser,
-			             ty_kdk_jh jh,
-			              ty_repay_yehz yehz,
-			              ty_repay_lsz lsz
-			              where b.khjl=rygl.dm and
-			              rygl.ddrq=sysuser.external_id and
-			              b.khnm=tkmx.khh and
-			              jh.ywbh=tkmx.ywbh||'HT' and
-			              yehz.jjh=tkmx.jjh and
-			              tkmx.jjh =lsz.jjh and
-			              protype.product_code=tkmx.cpmc
-			              and tkmx.ywbh not in (select ywbh from CUSTOMER_PIGEONHOLE)
-						<if test="userId!=null and userId!='' ">
-						     and sysuser.id=#{userId}
+		          from (select * from (select a.id ,a.ywbh,a.display_name,a.chinese_name,a.card_id , a.product_name,a.actual_quote ,a.basicid ,a.userId,info.id as infoid from 
+		       (select  mm.id ,mm.ywbh,mm.display_name  ,mm.khmc as chinese_name,  mm.zjhm as card_id, tpt.product_name as product_name,    mm.REQLMT as actual_quote,basic.id as basicid,sysuser.id as userId
+		        from ty_mibusidata mm ,ty_product_type tpt,ty_repay_tkmx tkmx ,basic_customer_information basic,ty_customer_base base ,sys_user sysuser where 1=1 and
+		        mm.YWBH=tkmx.ywbh and tkmx.cpmc=tpt.product_code and tkmx.khh=base.khnm and base.id=basic.ty_customer_id and basic.user_id=sysuser.id) a
+		         left join customer_application_info info 
+		        on a.basicid=info.customer_id ) where 1=1 
+		        <if test="userId!=null and userId!='' ">
+						     and userId=#{userId}
 						</if>
-                  )
+						<if test="status!=null and status!='1' ">
+						    and infoid is not null 
+						</if>
+						  and ywbh not in (select ywbh from CUSTOMER_PIGEONHOLE)   )
 	</select>
 </mapper>

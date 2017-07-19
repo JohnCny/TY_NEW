@@ -63,6 +63,7 @@ import com.cardpay.pccredit.customer.model.MaintenanceLog;
 import com.cardpay.pccredit.customer.model.TyMibusidataForm;
 import com.cardpay.pccredit.customer.model.TyProductType;
 import com.cardpay.pccredit.customer.model.TyRepayLsz;
+import com.cardpay.pccredit.customer.model.TyRepayTkmx;
 import com.cardpay.pccredit.customer.model.TyRepayYehzVo;
 import com.cardpay.pccredit.datapri.service.DataAccessSqlService;
 import com.cardpay.pccredit.intopieces.constant.Constant;
@@ -139,10 +140,10 @@ public class CustomerInforService {
 	private JdbcTemplate jdbcTemplate;  
 	//客户原始信息
     //todo:文件换成济南的
-	private String[] fileTxt = {"kkh_grxx.txt"/*,"kkh_grjtcy.txt","kkh_grjtcc.txt","kkh_grscjy.txt","kkh_grxxll.txt","kkh_grgzll.txt","kkh_grrbxx.txt","cxd_dkcpmc.txt","kkh_hmdgl.txt","cxd_rygl.txt"*/};
+	private String[] fileTxt = {"kkh_grxx.txt","kkh_grjtcy.txt","kkh_grjtcc.txt","kkh_grscjy.txt","kkh_grxxll.txt","kkh_grgzll.txt","kkh_grrbxx.txt","cxd_dkcpmc.txt","kkh_hmdgl.txt","cxd_rygl.txt"};
 	//流水账、余额汇总表、借据表
     //todo:文件换成济南的
-	private String[] fileTxtRepay ={"kdk_yehz.txt","kdk_lsz.txt","kdk_tkmx.txt","kdk_jh.txt"};
+	private String[] fileTxtRepay ={"kdk_tkmx.txt","kdk_yehz.txt","kdk_lsz.txt","kdk_jh.txt"};
 	/**
 	 * 得到该客户经理下的客户数量
 	 * @param userId
@@ -1669,7 +1670,12 @@ public class CustomerInforService {
 					String name = map.get("khmc").toString();
 					String id = map.get("id").toString();
 					//客户经理标识    因为客户经理标示可能是放款专员 所以该客户应该放在ghjl名下
-					String khjl = map.get("ghjl").toString();
+					/*String khjl = map.get("ghjl").toString();*/
+					//因为下发数据里面kkh_grxx无论是ghjl字段还是客户经理字段均能产生不定程度上的问题
+					//所以采用kkh_tkmx的khjl字段 
+					String sql1 = "select Khjl from ty_repay_tkmx tkmx where tkmx.khh='"+map.get("khnm").toString()+"'";
+					List<TyRepayTkmx> list1 = commonDao.queryBySql(TyRepayTkmx.class, sql1, null);
+					String khjl = list1.get(0).getKhjl().toString();
 					//先通过标识获取柜员号
 					List<CustomerFirsthendRygl> rygl = commonDao.queryBySql(CustomerFirsthendRygl.class, "select * from ty_customer_rygl where dm='"+khjl.trim()+"'", null);
 					String gyh1 = "";
@@ -1716,7 +1722,12 @@ public class CustomerInforService {
 					String name = map.get("khmc").toString();
 					String id = map.get("id").toString();
 					//客户经理标识  因为客户经理标示可能是放款专员 所以该客户应该放在ghjl名下
-					String khjl = map.get("ghjl").toString();
+					//String khjl = map.get("ghjl").toString();
+					//因为下发数据里面kkh_grxx无论是ghjl字段还是客户经理字段均能产生不定程度上的问题
+					//所以采用kkh_tkmx的khjl字段 
+					String sql1 = "select Khjl from ty_repay_tkmx tkmx where tkmx.khh='"+map.get("khnm").toString()+"'";
+					List<TyRepayTkmx> list1 = commonDao.queryBySql(TyRepayTkmx.class, sql1, null);
+					String khjl = list1.get(0).getKhjl().toString();
 					//先通过标识获取柜员号
 					List<CustomerFirsthendRygl> rygl = commonDao.queryBySql(CustomerFirsthendRygl.class, "select * from ty_customer_rygl where dm='"+khjl.trim()+"'", null);
 					String gyh1 = "";
@@ -2605,21 +2616,25 @@ public class CustomerInforService {
 						//删除余额汇总历史数据
 						String sql = " truncate   table   ty_repay_yehz";
 						commonDao.queryBySql(sql, null);
+						System.out.println(sql);
 					}
 					if(fileN.startsWith("kdk_tkmx")){
 						//删除借据表历史数据
 						String sql = " truncate   table   ty_repay_tkmx";
 						commonDao.queryBySql(sql, null);
+						System.out.println(sql);
 					}
 					if(fileN.startsWith("cxd_jggl")){
 						//删除行内机构表历史数据
 						String sql = " truncate   table   ty_org";
 						commonDao.queryBySql(sql, null);
+						System.out.println(sql);
 					}
 					if(fileN.startsWith("kdk_jh")){
 						//删除还款计划历史数据
 						String sql = " truncate   table   ty_kdk_jh";
 						commonDao.queryBySql(sql, null);
+						System.out.println(sql);
 					}
 					for(String fn : spFile){
 						try{

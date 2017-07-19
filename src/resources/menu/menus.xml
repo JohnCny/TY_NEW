@@ -2,6 +2,7 @@
 <menus>
 	 <menu id="000000" name="" title="所有资源" url="" img="" operations="" >
 		<menu id="010000" name="home" title="系统首页" url="/home.page" img="images/icon_4.png" operations=""/>
+		
 		<menu id="030000" name="intopieces" title="进件管理" url="" img="images/icon_sys.gif" operations="">
 <!-- 		browseProduct.page -->
 		    <menu id="030001" name="intopiecesquery" title="进件查询" url="/intopieces/intopiecesquery/browse.page" img="" operations="create|addbatch|change|display|import|approveloguser|approvelog|browse"/>
@@ -14,6 +15,15 @@
 			<menu id="030008" name="intopiecesdecisionhz" title="行长审批" url="/intopieces/intopiecesdecision/hzBrowse.page" img="" operations="create|change|display|browse"/> -->
 		</menu>
 		
+		<menu id="104000" name="ryintopieces" title="融耀卡流程" url="" img="images/icon_sys.gif" operations="">
+			  <menu id="104001" name="ryintopiecesquery" title="融耀卡进件查询" url="/rongyaoka/ryIntoPiecesControl/browse.page" img="" operations="create|addbatch|change|display|import|approveloguser|approvelog|browse"/>
+		    <menu id="104002" name="ryaddIntopieces" title="营销调查进件新增" url="/rongyaoka/ryAddIntoPiecesControl/browseProduct.page" img="" operations="create|change|display|browse"/>
+		    <menu id="104003" name="ryintopiecesps " title="受理岗初审" url="/rongyaoka/ryIntopiecesDecisionController/csBrowse.page" img="" operations="create|change|display|browse"/>
+			<menu id="104004" name="ryintopiecesdecision " title="报审岗复审" url="/rongyaoka/ryIntopiecesDecisionController/bsBrowse.page" img="" operations="create|change|display|browse"/>
+			<menu id="104005" name="ryintopiecesdecisions " title="审批岗终审" url="/rongyaoka/ryIntopiecesDecisionController/browse.page" img="" operations="create|change|display|browse"/>
+		</menu>  
+		
+		
 		<menu id="040000" name="customer" title="客户管理" operations="">
 			<menu id="040001" name="basiccustomerinfor" title="客户原始信息管理" url="/customer/firsthend/browse.page" img="" operations="create|browse"/>
 			<!-- /customer/basiccustomerinforCreate/insert.page -->  
@@ -23,7 +33,7 @@
 			<menu id="040005" name="customermaintenancelog" title="客户维护信息日志列表" url="/customer/maintenance/log.page" img="" operations="display|browse|change"/>
 			<menu id="040006" name="basiccustomerinforMove" title="客户移交申请" url="/customer/basiccustomerinforMove/browse.page" img="" operations="create|browse"/>
 			<menu id="040007" name="basiccustomerinforMoveExamine" title="客户移交审批" url="/customer/basiccustomerinforMove/examineBrowse.page" img="" operations="create|browse"/>
-			<menu id="040026" name="customer_ZRRTZ" title="自然人台账" url="/customer/customer_ZRRTZ/zrrtz.json" img="" operations="create|browse"/>
+			<menu id="040026" name="customer_ZRRTZ" title="自然人台账" url="/customer/customer_ZRRTZ/zrrtz.page" img="" operations="create|browse"/>
 		</menu>
 		
 		<menu id="060000" name="product" title="产品管理" url="" img="images/icon_sys.gif" operations="">
@@ -56,9 +66,9 @@
 			<menu id="091005" name="postLoan5" title="信贷流程跟踪信息" url="/postLoan/post/creditProcess.page" img="" operations="create|change|display|browse"/>
 		</menu>
 		
-		<menu id="104000" name="shouxi" title="收息统计" url="" img="images/icon_sys.gif" operations="">
-		    <menu id="102005" name="postLoan1" title="机构收息统计" url="/Sx/post/SxBrowse.page" img="" operations="create|change|display|browse"/>
-			<menu id="102006" name="postLoan2" title="机构内收息统计" url="/Sx/post/JgnSxBrowse.page" img="" operations="create|change|display|browse"/>
+		<menu id="105000" name="shouxi" title="收息统计" url="" img="images/icon_sys.gif" operations="">
+		    <menu id="105001" name="postLoan1" title="机构收息统计" url="/Sx/post/SxBrowse.page" img="" operations="create|change|display|browse"/>
+			<menu id="105002" name="postLoan2" title="机构内收息统计" url="/Sx/post/JgnSxBrowse.page" img="" operations="create|change|display|browse"/>
 		</menu>
 		
 		<menu id="092000" name="performanceManagement" title="绩效管理" url="" img="images/icon_sys.gif" operations="">

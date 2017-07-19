@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.cardpay.pccredit.customer.web.CustomerInforForm;
+import com.cardpay.pccredit.intopieces.filter.AddIntoPiecesFilter;
 import com.cardpay.pccredit.product.filter.ProductFilter;
 import com.cardpay.pccredit.product.model.FilterDict;
 import com.cardpay.pccredit.product.model.ProductAttribute;
@@ -74,4 +75,6 @@ public interface ProductDao {
 
 	//是否有未结清的贷款
 		public int findsfjq(String id);
+
+		void deletecustomerpigeonhole(AddIntoPiecesFilter filter);
 }

@@ -18,6 +18,7 @@ public class CustomerFirsthendBase extends BusinessModel{
 	private String khh;//客户号
 	private String rh;//是否入户
 	private String khlx;//客户类型
+	private String khjl;
 	private String zjlx;//证件类型
 	private String zjhm;//证件号码
 	private String qfjg;  //签发机构
@@ -74,6 +75,13 @@ public class CustomerFirsthendBase extends BusinessModel{
 	private String zhxgsj;//最后修改时间
 	private String createTime;
 	private Date updatetime;
+	
+	public String getKhjl() {
+		return khjl;
+	}
+	public void setKhjl(String khjl) {
+		this.khjl = khjl;
+	}
 	public Date getUpdatetime() {
 		return updatetime;
 	}

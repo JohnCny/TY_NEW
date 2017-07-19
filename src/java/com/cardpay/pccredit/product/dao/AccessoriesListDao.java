@@ -35,6 +35,8 @@ public interface AccessoriesListDao {
 	public List<AppManagerAuditLog> findAppManagerAuditById(@Param("appId") String appId);
 
 	public List<IncomingData> delay(@Param("id")String id);
+
+	public int delaylists(@Param("id")String id);
 	
 
 }
