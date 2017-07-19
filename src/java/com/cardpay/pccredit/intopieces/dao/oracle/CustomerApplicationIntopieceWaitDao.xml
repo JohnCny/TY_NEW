@@ -345,12 +345,17 @@
           where c.id=t.capid
           and s.id=b.user_id and b.id=c.customer_id and c.product_id=p.id 
           and (t.SPUSERID=#{userId}) 
+         <!--  and p.product_name!='融耀卡' -->
 		 <if test="cardId!=null and cardId!=''">
 			and b.card_id=#{cardId}
 		</if>
 		<if test="chineseName!=null ">
 			<![CDATA[ and b.chinese_name like '%'||#{chineseName}||'%' ]]>
 		</if>
+		<if test="productName != null and productName != '' ">
+				<!-- AND PRODUCT_NAME=#{productName} -->
+			    AND p.PRODUCT_NAME like '%'||#{productName}||'%'
+			</if>
 		<![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -385,12 +390,17 @@
           where c.id=t.capid
           and s.id=b.user_id and b.id=c.customer_id and c.product_id=p.id 
           and (t.SPUSERID=#{userId}) 
+            <!-- and p.product_name!='融耀卡' -->
 		 <if test="cardId!=null and cardId!=''">
 			and b.card_id=#{cardId}
 		</if>
 		<if test="chineseName!=null ">
 			<![CDATA[ and b.chinese_name like '%'||#{chineseName}||'%' ]]>
 		</if>
+			<if test="productName != null and productName != '' ">
+				<!-- AND PRODUCT_NAME=#{productName} -->
+			    AND p.PRODUCT_NAME like '%'||#{productName}||'%'
+			</if>
 		
 		)
 	</select>

@@ -1,4 +1,4 @@
-package com.cardpay.pccredit.jnpad.web;
+package com.cardpay.pccredit.rongyaoka.web;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,9 +44,9 @@ import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 @Controller 
-@RequestMapping("/jnpad/CustormerSdwUserPc/*")
-@JRadModule("jnpad.CustormerSdwUserPc")
-public class CustormerSdwUserPcController extends BaseController{
+@RequestMapping("/rongyaoka/ryCustormerSdwUserPcController/*")
+@JRadModule("rongyaoka.ryCustormerSdwUserPcController")
+public class ryCustormerSdwUserPcController extends BaseController{
 	@Autowired
 	private JnpadCustormerSdwUserService SdwUserService;
 	@Autowired
@@ -54,14 +54,49 @@ public class CustormerSdwUserPcController extends BaseController{
 	@Autowired
 	private ryIntoPiecesService ryipseservice;
 	/**
-	 * PC初审成功添加
+	 * PC受理岗初审成功添加
 	 * @param CustormerSdwUser
 	 * @param request
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "insertCSPC.json", method = { RequestMethod.GET })
-	public JRadReturnMap insertCSPC(@ModelAttribute CustomerSpUser CustomerSpUser,@ModelAttribute AppManagerAuditLog AppManagerAuditLog,@ModelAttribute CustormerSdwUser CustormerSdwUser,HttpServletRequest request) {
+	@RequestMapping(value = "ryinsertCSPC.json", method = { RequestMethod.GET })
+	public JRadReturnMap ryinsertCSPC(@ModelAttribute CustomerSpUser CustomerSpUser,@ModelAttribute AppManagerAuditLog AppManagerAuditLog,@ModelAttribute CustormerSdwUser CustormerSdwUser,HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		List<CustomerSpUser> list=new ArrayList<CustomerSpUser>();
+		String cid=request.getParameter("customerId");
+		String pid=request.getParameter("productId");
+		AppManagerAuditLog result=SdwUserService.selectaId(cid,pid);
+		AppManagerAuditLog.setId(IDGenerator.generateID());
+		AppManagerAuditLog.setApplicationId(result.getApplicationId());
+		AppManagerAuditLog.setAuditType("1");
+		AppManagerAuditLog.setUserId_4(user.getId());
+		//导入审批记录（审批客户经理、辅调客户经理记录）T_APP_MANAGER_AUDIT_LOG
+		SdwUserService.insertCsJl(AppManagerAuditLog);
+		//初审通过状态
+		String applicationId=result.getApplicationId();
+		String userId=user.getId();
+		Date times=new Date();
+		String money=request.getParameter("decisionAmount");
+		//导入初审使用表WF_STATUS_QUEUE_RECORD 
+		SdwUserService.updateCSZT(userId,times,money,applicationId);
+		//改变CUSTOMER_APPLICATION_PROCESS 的NEXT_NODE_ID字段
+		String nodeName="受理岗初审";
+		ryipseservice.updatecapnextnodeid(nodeName,applicationId);
+		return returnMap;
+	}
+	
+	
+	/**
+	 * PC
+	 * @param CustormerSdwUser
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "ryinsertcustomersp.json", method = { RequestMethod.GET })
+	public JRadReturnMap ryinsertcustomersp(@ModelAttribute CustomerSpUser CustomerSpUser,@ModelAttribute AppManagerAuditLog AppManagerAuditLog,@ModelAttribute CustormerSdwUser CustormerSdwUser,HttpServletRequest request) {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 		List<CustomerSpUser> list=new ArrayList<CustomerSpUser>();
@@ -78,13 +113,15 @@ public class CustormerSdwUserPcController extends BaseController{
 		AppManagerAuditLog.setUserId_2(request.getParameter("cyUser2"));
 		AppManagerAuditLog.setUserId_3(request.getParameter("fdUser"));
 		AppManagerAuditLog.setUserId_4(user.getId());
-		SdwUserService.insertCsJl(AppManagerAuditLog);
+		//SdwUserService.insertCsJl(AppManagerAuditLog);
+		ryipseservice.updateCsjl(AppManagerAuditLog);
 		//初审通过状态
 		String applicationId=result.getApplicationId();
 		String userId=user.getId();
 		Date times=new Date();
 		String money=request.getParameter("decisionAmount");
-		SdwUserService.updateCSZT(userId,times,money,applicationId);
+//		SdwUserService.updateCSZT(userId,times,money,applicationId);
+		ryipseservice.updateCSZT(userId,times,money,applicationId);
 			CustomerSpUser.setId(IDGenerator.generateID());
 			CustomerSpUser.setCid(cid);
 			CustomerSpUser.setPid(pid);
@@ -98,14 +135,13 @@ public class CustormerSdwUserPcController extends BaseController{
 			c1.setSpuserid(request.getParameter("user_Id2"));
 			list.add(1, c1);
 			CustomerSpUser c2=new CustomerSpUser();
-			c2.setSpuserid(request.getParameter("user_Id3"));
-			list.add(2, c2);
+			/*c2.setSpuserid(request.getParameter("user_Id3"));
+			list.add(2, c2);*/
 			for(int sd=0;sd<list.size();sd++){
 				CustomerSpUser.setSpuserid(list.get(sd).getSpuserid());
 				UserService.addSpUser(CustomerSpUser);
 			}
-			//初审成功修改节点
-			String nodeName="进件初审";
+			String nodeName="报审岗复审";
 			ryipseservice.updatecapnextnodeid(nodeName,applicationId);
 		return returnMap;
 	
@@ -149,29 +185,25 @@ public class CustormerSdwUserPcController extends BaseController{
 			String capid=request.getParameter("id");
 			//判断如果三个sp中都有相关金额则说明三个审贷委都已经审批完成
 			List<CustomerSpUser>splists=UserService.findsplistsbycapid(capid);
-			String[]spje=new String[3];
-			String[]sysuserid=new String[3];
+			String[]spje=new String[2];
+			String[]sysuserid=new String[2];
 			for (int i = 0; i < splists.size(); i++) {
 				spje[i]=splists.get(i).getSpje();
 				sysuserid[i]=splists.get(i).getSpuserid();
 			}
 			if(spje[0]!=null&&spje[0]!=""
-					&&spje[1]!=null&&spje[1]!=""
-						&&spje[2]!=null&&spje[2]!=""){ 
+					&&spje[1]!=null&&spje[1]!=""){ 
 				
 				String sp1=splists.get(0).getStatus();
 				String sp2=splists.get(1).getStatus();
-				String sp3=splists.get(2).getStatus();
 				if("1".equals(sp1)&&
-						"1".equals(sp2)&&"1".equals(sp3)){ 
+						"1".equals(sp2)){ 
 					sp1=splists.get(0).getSpje();
 					sp2=splists.get(1).getSpje();
-					sp3=splists.get(2).getSpje();
- 					if(sp1.equals(sp2)&&sp1.equals(sp3)){    //金额相同
+ 					if(sp1.equals(sp2)){    //金额相同
  						sp1=splists.get(0).getSplv();
  						sp2=splists.get(1).getSplv();
- 						sp3=splists.get(2).getSplv();
- 						if(sp1.equals(sp2)&&sp1.equals(sp3)){   //利率相同
+ 						if(sp1.equals(sp2)){   //利率相同
  							IntoPieces.setFinal_approval(request.getParameter("decisionAmount"));
  							IntoPieces.setStatus("approved");
  							IntoPieces.setId(request.getParameter("id"));
@@ -207,7 +239,7 @@ public class CustormerSdwUserPcController extends BaseController{
  							IntoPieces.setId(request.getParameter("id"));
  							IntoPieces.setCreatime(new Date());
  							SdwUserService.updateCustormerInfoSdwUser(IntoPieces);
- 							returnMap.put("message", "利率不同,删除三个人的审贷结论重新审批!");
+ 							returnMap.put("message", "利率不同,删除二人的审贷结论重新审批!");
  						}
  					}else{
  						//金额不同删除三个人的审贷结论
@@ -279,9 +311,9 @@ public class CustormerSdwUserPcController extends BaseController{
 						Date times=new Date();
 						SdwUserService.updateHistorys(userId,times,applicationId);
 						if(e>0){
-							returnMap.put("message", "拒绝成功");
+							returnMap.put("message", "提交成功");
 						}else{
-							returnMap.put("message", "拒绝失败");
+							returnMap.put("message", "提交失败");
 						}
 					}
 				}
@@ -337,9 +369,9 @@ public class CustormerSdwUserPcController extends BaseController{
 				if(e>0){
 					int f=SdwUserService.updateCustormerProSdwUser(IntoPieces);
 					if(f>0){
-						returnMap.put("message", "退回成功");	
+						returnMap.put("message", "提交成功");	
 					}else{
-						returnMap.put("message", "退回失败");
+						returnMap.put("message", "提交失败");
 					}
 				}
 			}

@@ -1,10 +1,6 @@
-package com.cardpay.pccredit.intopieces.web;
+package com.cardpay.pccredit.rongyaoka.web;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -12,15 +8,11 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import org.apache.commons.lang.StringUtils;
 import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cardpay.pccredit.Sx.service.SxService;
-import com.cardpay.pccredit.common.UploadFileTool;
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
@@ -59,31 +50,23 @@ import com.cardpay.pccredit.intopieces.model.Dzjbzk;
 import com.cardpay.pccredit.intopieces.model.Dzjy;
 import com.cardpay.pccredit.intopieces.model.Dzjyzt;
 import com.cardpay.pccredit.intopieces.model.DzjyztForm;
-import com.cardpay.pccredit.intopieces.model.IntoPieces;
-import com.cardpay.pccredit.intopieces.model.LocalExcel;
-import com.cardpay.pccredit.intopieces.model.MakeCard;
 import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
+import com.cardpay.pccredit.intopieces.web.AddIntoPiecesForm;
+import com.cardpay.pccredit.intopieces.web.LocalExcelForm;
+import com.cardpay.pccredit.intopieces.web.LocalImageForm;
 import com.cardpay.pccredit.product.filter.ProductFilter;
-import com.cardpay.pccredit.product.model.AddressAccessories;
-import com.cardpay.pccredit.product.model.AppendixDict;
 import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.service.ProductService;
-import com.cardpay.pccredit.product.web.ProductAttributeForm;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
+import com.cardpay.pccredit.rongyaoka.service.ryIntoPiecesService;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.constant.JRadConstants;
-import com.wicresoft.jrad.base.database.id.IDGenerator;
-import com.wicresoft.jrad.base.database.model.BusinessModel;
 import com.wicresoft.jrad.base.database.model.QueryResult;
-import com.wicresoft.jrad.base.i18n.I18nHelper;
-import com.wicresoft.jrad.base.web.DataBindHelper;
 import com.wicresoft.jrad.base.web.JRadModelAndView;
 import com.wicresoft.jrad.base.web.controller.BaseController;
-import com.wicresoft.jrad.base.web.filter.BaseQueryFilter;
-import com.wicresoft.jrad.base.web.message.Messages;
 import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
 import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
@@ -95,9 +78,9 @@ import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 import com.wicresoft.util.web.RequestHelper;
 
 @Controller
-@RequestMapping("/intopieces/addIntopieces/*")
-@JRadModule("intopieces.addIntopieces")
-public class AddIntoPiecesControl extends BaseController {
+@RequestMapping("/rongyaoka/ryAddIntoPiecesControl/*")
+@JRadModule("rongyaoka.ryAddIntoPiecesControl")
+public class ryAddIntoPiecesControl extends BaseController {
 
 	@Autowired
 	private IntoPiecesService intoPiecesService;
@@ -122,6 +105,8 @@ public class AddIntoPiecesControl extends BaseController {
 	
 	@Autowired
 	private guarantorservice services;
+	@Autowired
+	private ryIntoPiecesService rypsvice;
 	
 	//选择产品
 	@ResponseBody
@@ -132,7 +117,7 @@ public class AddIntoPiecesControl extends BaseController {
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 		int customer=productService.findsfjq(user.getId());
 		//设type为0的是标微 1的 是融耀卡
-		filter.setType("0");
+		filter.setType("1");
 		QueryResult<ProductAttribute> result = productService.findProductsByFilter(filter);
 		JRadPagedQueryResult<ProductAttribute> pagedResult = new JRadPagedQueryResult<ProductAttribute>(filter, result);
 
@@ -187,18 +172,16 @@ public class AddIntoPiecesControl extends BaseController {
 		return mv;
 	}
 	
+	/*  融耀卡和标微进件方法相同固使用同一种方法
 	//导入调查报告
 	@ResponseBody
 	@RequestMapping(value = "reportImport.page", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView reportImport(@ModelAttribute AddIntoPiecesFilter filter,HttpServletRequest request) {
 		filter.setRequest(request);
-		//客户选择完毕 根据客户id删除查询是否是续贷  是的话删除以前的归档信息  CUSTOMER_PIGEONHOLE
-		productService.deletecustomerpigeonhole(filter);
-		
 		QueryResult<LocalExcelForm> result = addIntoPiecesService.findLocalExcelByProductAndCustomer1(filter);
 		JRadPagedQueryResult<LocalExcelForm> pagedResult = new JRadPagedQueryResult<LocalExcelForm>(filter, result);
-		JRadModelAndView mv = new JRadModelAndView("/intopieces/report_import",request);
+		JRadModelAndView mv = new JRadModelAndView("/ryintopieces/ryreport_import",request);
 		mv.addObject(PAGED_RESULT, pagedResult);
 		
 		return mv;
@@ -218,7 +201,8 @@ public class AddIntoPiecesControl extends BaseController {
 			}
 			String productId = request.getParameter("productId");
 			String customerId = request.getParameter("customerId");
-			addIntoPiecesService.importExcel(file,productId,customerId);
+			//addIntoPiecesService.importExcel(file,productId,customerId);
+			rypsvice.importExcel(file,productId,customerId);
 			map.put(JRadConstants.SUCCESS, true);
 			map.put(JRadConstants.MESSAGE, CustomerInforConstant.IMPORTSUCCESS);
 			JSONObject obj = JSONObject.fromObject(map);
@@ -310,7 +294,7 @@ public class AddIntoPiecesControl extends BaseController {
 			return WebRequestHelper.processException(e);
 		}
 		return returnMap;
-	}
+	}*/
 	
 	
 	@Autowired

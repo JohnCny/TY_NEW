@@ -26,11 +26,9 @@
 	<bean id="masterDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
 		<property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
 		
- 	 <property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521/orcl"/> 
- 		 <property name="user" value="maoya" />
-		<property name="password" value="maoya" />
-		
-		
+ 		<property name="jdbcUrl" value="jdbc:oracle:thin:@10.0.3.4:1521/tynxnew" />  
+ 		 <property name="user" value="pccredit_ty" />
+		<property name="password" value="pccredit_ty" /> 
 		
 		<property name="minPoolSize" value="2" />
 		<property name="maxPoolSize" value="10" />

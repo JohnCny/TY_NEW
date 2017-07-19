@@ -270,7 +270,7 @@
 		(SELECT ROW_.*,ROWNUM ROWNUM_
 		FROM (
 	    	SELECT * from product_attribute t
-			WHERE 1=1
+			WHERE 1=1 
 			<if test="productName != null and productName != '' ">
 				<!-- AND PRODUCT_NAME=#{productName} -->
 			    AND PRODUCT_NAME like '%'||#{productName}||'%'
@@ -278,6 +278,12 @@
 			And t.prod_limit_time >= sysdate
 		    <if test="status != null and status != '' ">
 				And t.status = #{status}
+			</if>
+			<if test="type!=1">
+				 and t.product_name!='融耀卡'
+			</if>
+			<if test="type !=0 ">
+				 and t.product_name='融耀卡'
 			</if>
 			
 		 <![CDATA[		
@@ -293,7 +299,7 @@
 		FROM
 		(
 		SELECT * from product_attribute t
-		WHERE 1=1
+		WHERE 1=1 
 		<if test="productName != null and productName != '' ">
 			AND PRODUCT_NAME=#{productName}
 		</if>
@@ -301,6 +307,12 @@
 		<if test="status != null and status != '' ">
 		    And t.status = #{status}
 		</if>
+		<if test="type!=1">
+				 and t.product_name!='融耀卡'
+			</if>
+			<if test="type !=0 ">
+				 and t.product_name='融耀卡'
+			</if>
 		)
 	</select>
 	
@@ -335,5 +347,16 @@
 		and basic.id=#{id}
 	</select>
 	
+	<delete id="deletecustomerpigeonhole">
+		  delete from CUSTOMER_PIGEONHOLE cp where 1=1 and cp.ywbh in (
+		    select tkmx.ywbh from basic_customer_information basic , customer_application_info info , ty_customer_base base ,
+		ty_repay_tkmx tkmx ,ty_mibusidata tym 
+		where 1=1 and
+		basic.id=info.customer_id and base.id=basic.ty_customer_id and tkmx.khh=base.khnm and tkmx.ywbh=tym.ywbh
+		<if test="customerId != null and customerId != '' ">
+		 and basic.id= #{customerId}
+	    </if>
+	    )
+	</delete>
 
 </mapper>
