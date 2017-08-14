@@ -75,4 +75,9 @@ public class CustomerParameterService {
 		}
 }
 
+	public List<IncomingData> findywbhbyuserId(String userId) {
+		// TODO Auto-generated method stub
+		return cpDao.findywbhbyuserId(userId);
+	}
+
 }

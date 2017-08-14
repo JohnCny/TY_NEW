@@ -163,11 +163,11 @@ public class AddIntoPiecesService {
 				//String sheet[] = readExcel.readExcelToHtml(url, true,fileName);
 				//服务器  修改标准经营性(新增)调查表     
 				//String sheet[] = SFTPUtil.readExcelToHtml(url, true,fileName);
-				/*for(String str : sheet){*/
-				/*	if(StringUtils.isEmpty(sheet[19])){
-						throw new RuntimeException("导入失败，请检查excel文件与模板是否一致！");
-					}*/
-					/*	}*/
+			    for(String str : sheet){
+					if(StringUtils.isEmpty(sheet[19])){
+						throw new RuntimeException("导入失败，请检查excel文件与模板是否一致或者申请金额填写！");
+					}
+						}
 				
 				localExcel.setSheetXjllb(sheet[9]);
 				localExcel.setSheetYfys(sheet[13]);
@@ -212,6 +212,7 @@ public class AddIntoPiecesService {
 			localImageDao.deleteByProductIdAndCustomerId(productId,customerId);
 			
 			LocalExcel localExcel = new LocalExcel();
+			localExcel.setFileName(fileName);
 			localExcel.setProductId(productId);
 			localExcel.setCustomerId(customerId);
 			localExcel.setCreatedTime(new Date());
@@ -227,12 +228,12 @@ public class AddIntoPiecesService {
 			//读取excel内容
 			JXLReadExcel readExcel = new JXLReadExcel();
 			//本地测试
-			String sheet[] = readExcel.readExcelToHtml(url, true,fileName);
+			//String sheet[] = readExcel.readExcelToHtml(url, true,fileName);
 			//服务器
-			//String sheet[] = SFTPUtil.readExcelToHtml(url, true);
+			String sheet[] = SFTPUtil.readExcelToHtml(url, true,fileName);
 			for(String str : sheet){
-				if(StringUtils.isEmpty(str)){
-					throw new RuntimeException("导入失败，请检查excel文件与模板是否一致！");
+				if(StringUtils.isEmpty(sheet[19])){
+					throw new RuntimeException("导入失败，请检查excel文件与模板是否一致或者填写完整！");
 				}
 			}
 			localExcel.setSheetXjllb(sheet[9]);
@@ -242,6 +243,11 @@ public class AddIntoPiecesService {
 			localExcel.setSheetYsyf(sheet[14]);
 			localExcel.setSheetJy(sheet[17]);
 			localExcel.setSheetJbzk(sheet[18]);
+			localExcel.setHkjhb(sheet[20]);
+			//消费贷
+			localExcel.setZyxzcb(sheet[21]);
+			localExcel.setTzxzcb(sheet[22]);
+			localExcel.setFzjsb(sheet[23]);
 			if(sheet[19].contains("元")){
 				localExcel.setApproveValue(sheet[19].substring(0,sheet[19].indexOf("元")));
 			}else{

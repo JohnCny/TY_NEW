@@ -2,6 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.cardpay.pccredit.customer.dao.ICustomerParameterDao">
 	
+	
+	<resultMap type="com.cardpay.pccredit.zrrtz.model.IncomingData" id="shiliMap">
+	    <result property="chinese_name" column="CHINESE_NAME"/>
+		<result property="card_id" column="CARD_ID"/>
+		<result property="product_name" column="PRODUCT_NAME"/>
+		<result property="actual_quote" column="ACTUAL_QUOTE"/>
+		<result property="id" column="id"/>
+		<result property="userId" column="userId"/>
+	</resultMap>
 	<resultMap id="cardInfomationMap"
 		type="com.cardpay.pccredit.customer.web.CardInfomationFrom">
 		<result property="customerParameterId" column="ID" />
@@ -98,7 +107,7 @@
 	</resultMap>
 	<!--查询所有的客户经理  -->
 	<select id="queryAllManager" resultMap="userResultMap">
-	    select * from SYS_USER where USER_TYPE=1
+	    select * from SYS_USER  where USER_TYPE=1 order by nlssort(display_name,'nls_sort=schinese_pinyin_m')
 	</select>
 	
 	
@@ -160,5 +169,19 @@
 	    <insert id="addCustomerPigeonhole" parameterType="com.cardpay.pccredit.zrrtz.model.Pigeonhole">
 	   insert into CUSTOMER_PIGEONHOLE(ywbh,user_id,PIGEONHOLE)  values (#{ywbh},#{userId},#{pigeonhole})
 	</insert>
+	
+	<select id="findywbhbyuserId" resultMap="shiliMap" >
+		<!--  select tym.ywbh from ty_mibusidata tym where 1=1    
+		 and tym.userid=#{userId} -->
+		 select * from (select a.id ,a.ywbh,a.display_name,a.chinese_name,a.card_id , a.product_name,a.actual_quote ,a.basicid ,a.userId,info.id as infoid from 
+		       (select  mm.id ,mm.ywbh,mm.display_name  ,mm.khmc as chinese_name,  mm.zjhm as card_id, tpt.product_name as product_name,    mm.REQLMT as actual_quote,basic.id as basicid,sysuser.id as userId
+		        from ty_mibusidata mm ,ty_product_type tpt,ty_repay_tkmx tkmx ,basic_customer_information basic,ty_customer_base base ,sys_user sysuser where 1=1 and
+		        mm.YWBH=tkmx.ywbh and tkmx.cpmc=tpt.product_code and tkmx.khh=base.khnm and base.id=basic.ty_customer_id and basic.user_id=sysuser.id) a
+		         left join customer_application_info info 
+		        on a.basicid=info.customer_id ) where 1=1 
+		         and userId=#{userId}
+				and infoid is not null 
+				and ywbh not in (select ywbh from CUSTOMER_PIGEONHOLE)
+	</select>
 	    
 </mapper>

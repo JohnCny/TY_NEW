@@ -92,6 +92,7 @@
 	</select>
 
 	<select id="delay" resultMap="SHILIMap"  parameterType="java.lang.String">
+	<!-- 个蠢比 怪不得没有进件还有那么多的逾期归档 你tm用下发数据  -->
 	select  distinct 
               sysuser.id,
               tkmx.ywbh ,
@@ -122,5 +123,26 @@
                     <![CDATA[ 
   					and to_date(tkmx.jkrq,'yy-mm-dd')<trunc(SYSDATE-6)
 					]]>       
+	</select>
+	
+	<select  id="delaylists" parameterType="String" resultType="int">
+	<!-- 	select count(info.id) from customer_application_info info,basic_customer_information basic,sys_user sysuser 
+	 where 1=1 and basic.id = info.customer_id and basic.user_id=sysuser.id 
+	 and sysuser.id=#{id} 
+	  <![CDATA[ 
+	 and info.created_time <trunc(SYSDATE-1)	]]>
+	  and ywbh not in (select ywbh from CUSTOMER_PIGEONHOLE)    -->
+	   select count(*)
+		          from (select * from (select a.id ,a.ywbh,a.display_name,a.chinese_name,a.card_id , a.product_name,a.actual_quote ,a.basicid ,a.userId,info.id as infoid from 
+		       (select  mm.id ,mm.ywbh,mm.display_name  ,mm.khmc as chinese_name,  mm.zjhm as card_id, tpt.product_name as product_name,    mm.REQLMT as actual_quote,basic.id as basicid,sysuser.id as userId
+		        from ty_mibusidata mm ,ty_product_type tpt,ty_repay_tkmx tkmx ,basic_customer_information basic,ty_customer_base base ,sys_user sysuser where 1=1 and
+		        mm.YWBH=tkmx.ywbh and tkmx.cpmc=tpt.product_code and tkmx.khh=base.khnm and base.id=basic.ty_customer_id and basic.user_id=sysuser.id) a
+		         left join customer_application_info info 
+		        on a.basicid=info.customer_id ) where 1=1 
+		        <if test="id!=null and id!='' ">
+						     and userId=#{id}
+						</if>
+						    and infoid is not null 
+						  and ywbh not in (select ywbh from CUSTOMER_PIGEONHOLE)   )   
 	</select>
 </mapper>

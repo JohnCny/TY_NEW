@@ -3,13 +3,14 @@
   <div class="content_main">
     <div class="contentinner">
       <div class="place">
-        <div class="title">自然人台账</div>
+        <div class="title">后台自然人台账归档</div>
       </div>
       <div class="inquiry">
         <div class="search_tag">#i18n("label.browse.filter")</div>
         <div class="search">
-          <form id="submitForm" action="${modulePath}/zrrtz.page" method="GET">
+          <form id="submitForm" action="${modulePath}/gdcx.page" method="GET">
             <ul>
+              #if($!usertypes!=6) 
               <li>
 					<table><tr><td><label for="entryTime">开始时间:</label></td>
 					<td><input class="rinpsty" type="text" id="fdate" name="fdate" value=""  onmouseover="_calendar()" readonly="readonly"/></td>
@@ -17,8 +18,7 @@
 					<td><label for="entryTime">结束时间:</label></td>
 					<td><input class="rinpsty" type="text" id="ldate" name="ldate" value=""  onmouseover="_calendar()" readonly="readonly"/></span></td></tr></table>
               </li>
-            <!--  #if($!type!=6) -->
-              <!--  #else
+             #else
                <li>
            		<span> 客户经理:&nbsp;&nbsp;&nbsp;&nbsp;
            						<select id="type" name="userId">
@@ -29,7 +29,7 @@
                 	</select>
 			    </span>
               </li>
-               #end -->
+               #end 
               
               <li class="search_button">
                 <input id="id_browse1_button" type="submit" value="#i18n('button.browse')" class="search_button_inquiry"
@@ -86,7 +86,8 @@
       <div class="pagebar">
         <div class="controlbtn">
          #if($!usertypes==6)
-           <a id="pigeonhole"  class="btn_g" >纸质归档</a>
+           <a id="pigeonholes"  class="btn_g" >归档</a>
+           <a id="pigeonholes1"  class="btn_g" >一键归档</a>
            #else
          <a id="addNew" class="btn_gr" href="javascript:void(0);" title="#i18n('button.display.hint')">数据填补</a>
          <a id="export" class="btn_g" href="javascript:void(0);" title="#i18n('button.export.hint')">excle导出</a>
@@ -152,31 +153,56 @@
                 Dialog.message("请选择一行");
             }
         });
-		$("#pigeonhole").click(function() {
-              //	var id= $($(".checkbox :checked")[0]).attr("value");
-            	//var userId=$($(".checkbox :checked")[0]).attr("value");
-            	/* var value = $("input[name='checkbox']:checked").val();
+		$("#pigeonholes").click(function() {
+            if ($(".checkbox :checked").length == 1) {
+              	//var id= $($(".checkbox :checked")[0]).attr("value");
+              	var value = $("input[name='checkbox']:checked").val();
+              	var id=value.split("@")[0];
 				var userId = value.split("@")[1];
-              	alert(userId); */
-              	//?id="+id+"&&userId="+userId 
-              	/* alert(111);
+				var sfyj='0'; //假设是一键归档按钮为1
                 $.ajax({
-					url : "${contextPath}/customer/customer_ZRRTZ/gdcx.page",
+					url : "${contextPath}/customer/customer_ZRRTZ/addCustomerPigeonhole.json?id="+id+"&&userId="+userId+"&&sfyj="+sfyj  ,
 					dataType : 'json',
 					type : "get",
 					success : function(data) {
 					if (data.success) {
-						alert(2);
 						alert(data.mes);
+					var url = "${modulePath}/gdcx.page" ;
+				    window.location.href = url;	
 					 }else{
 							window.top.Dialog.message("系统出现异常,请联系管理员"); 
 				    	}
 					}
-		    }); */
-			 var url = "${contextPath}/customer/customer_ZRRTZ/gdcx.page";
-             
-             window.location.href = url;
-           
+		    });
+            } else {
+                Dialog.message("请选择一行");
+            }
+		}); 
+		
+		$("#pigeonholes1").click(function() {
+            if ($(".checkbox :checked").length == 1) {
+              	//var id= $($(".checkbox :checked")[0]).attr("value");
+              	var value = $("input[name='checkbox']:checked").val();
+              	var id=value.split("@")[0];
+				var userId = value.split("@")[1];
+				var sfyj='1'; //假设是一键归档按钮为1
+                $.ajax({
+					url : "${contextPath}/customer/customer_ZRRTZ/addCustomerPigeonhole.json?userId="+userId+"&&sfyj="+sfyj ,
+					dataType : 'json',
+					type : "get",
+					success : function(data) {
+					if (data.success) {
+						alert(data.mes);
+					var url = "${modulePath}/gdcx.page" ;
+				    window.location.href = url;	
+					 }else{
+							window.top.Dialog.message("系统出现异常,请联系管理员"); 
+				    	}
+					}
+		    });
+            } else {
+                Dialog.message("请选择一行");
+            }
 		}); 
 	});
 </script>

@@ -148,4 +148,5 @@ public class JnpadCustormerSdwUserService {
 			public JnpadCsSdModel findZzCsSds(@Param(value ="appId")String appId){
 				return SdwUserDao.findZzCsSds(appId);
 			}
+
 }

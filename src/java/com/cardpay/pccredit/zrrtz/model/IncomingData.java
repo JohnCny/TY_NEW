@@ -14,7 +14,26 @@ public class IncomingData extends BusinessFilter{
 	private String ldate;
     private	String ywbh;
     private String userId;
+    private String basicid;
+    private String infoid;
+    
 	
+	public String getBasicid() {
+		return basicid;
+	}
+
+	public void setBasicid(String basicid) {
+		this.basicid = basicid;
+	}
+
+	public String getInfoid() {
+		return infoid;
+	}
+
+	public void setInfoid(String infoid) {
+		this.infoid = infoid;
+	}
+
 	public String getUserId() {
 		return userId;
 	}

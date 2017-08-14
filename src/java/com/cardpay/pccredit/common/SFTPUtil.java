@@ -74,10 +74,9 @@ import com.wicresoft.util.spring.Beans;
  */
 public class SFTPUtil {
 	
-	private static String host = "10.96.1.11";//生产
-//	private static String host = "61.98.0.31";//测试
+	private static String host = "10.0.3.6";//测试
     private static String username="root";  
-    private static String password="qkjr123";  
+    private static String password="tynx123";   
     private static int port = 22;  
     private static ChannelSftp sftp = null;  
     private static String directory = "/usr/pccreditFile/";  
@@ -1123,7 +1122,7 @@ public class SFTPUtil {
     	   Cell cell = null;    //兼容
     	   
     	   Map<String, String> resultMap = new HashMap<String, String>();
-    	   for (int rowNum = sheet.getFirstRowNum(); rowNum <= lastRowNum; rowNum++) {
+    	   for (int rowNum = sheet.getFirstRowNum(); rowNum <= lastRowNum; rowNum++) {//rownum55
     		   row = sheet.getRow(rowNum);
     		   if (row == null) {
     			   sb.append("<tr><td > &nbsp;</td></tr>");
@@ -1134,14 +1133,14 @@ public class SFTPUtil {
     		   if(lastColNum > columnToIndex(maxCol)){
     			   lastColNum = columnToIndex(maxCol);
     		   }
-    		   for (int colNum = 0; colNum < lastColNum; colNum++) {
+    		   for (int colNum = 0; colNum < lastColNum; colNum++) {//colnum 11
     			   cell = row.getCell(colNum);
     			   if (cell == null) {    //特殊情况 空白的单元格会返回null
     				   sb.append("<td>&nbsp;</td>");
     				   continue;
     			   }
     			   cell.setCellType(Cell.CELL_TYPE_STRING);
-					String	stringValue = getCellValue(cell);
+					String	stringValue = getCellValue(cell);  //
 					System.out.println(stringValue);
     			   if (map[0].containsKey(rowNum + "," + colNum)) {
     				   String pointString = map[0].get(rowNum + "," + colNum);
@@ -1260,13 +1259,13 @@ public class SFTPUtil {
         			result = sdf.format(date);  
         		} else {  
         			double value = cell.getNumericCellValue();  
-        			CellStyle style = cell.getCellStyle();  
-        			DecimalFormat format = new DecimalFormat();  
-        			String temp = style.getDataFormatString();  
+        			//CellStyle style = cell.getCellStyle();  
+        			DecimalFormat format = new DecimalFormat("#.###");  
+        			//String temp = style.getDataFormatString();  
         			// 单元格设置成常规  
-        			if (temp.equals("General")) {  
-        				format.applyPattern("#");  
-        			}  
+        			/*if (temp.equals("General")) {  
+        				format.applyPattern("#.###");  
+        			}*/  
         			result = format.format(value);  
         		}  
         		break;  

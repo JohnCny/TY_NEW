@@ -9,7 +9,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,7 +36,9 @@ import com.cardpay.pccredit.customer.service.CustomerLoanService;
 import com.cardpay.pccredit.customer.service.CustomerParameterService;
 import com.cardpay.pccredit.customer.service.MaintenanceService;
 import com.cardpay.pccredit.customer.web.CustomerLoanForm;
+import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
+import com.cardpay.pccredit.intopieces.web.CustomerApplicationIntopieceWaitForm;
 import com.cardpay.pccredit.ipad.model.UserIpad;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
 import com.cardpay.pccredit.product.web.ProductAttributeForm;
@@ -126,7 +130,7 @@ public class CustomerZRRTZController extends BaseController{
 	
 	//查询
 	@ResponseBody
-	@RequestMapping(value = "zrrtz.json", method = { RequestMethod.GET })
+	@RequestMapping(value = "zrrtz.page", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView zrrtz(@ModelAttribute  ZrrtzFilter filter, HttpServletRequest request) {
 		filter.setRequest(request);
@@ -145,20 +149,36 @@ public class CustomerZRRTZController extends BaseController{
 		mv.addObject(PAGED_RESULT, pagedResult);
 		return mv;
 		 }else{
-				if(""!=filter.getUserId()&&null!=filter.getUserId()){
+				/*if(""!=filter.getUserId()&&null!=filter.getUserId()){
 					filter.setUserId(filter.getUserId());
-				}
+				}*/
 				QueryResult<IncomingData> result = service.findintoPiecesByFilters(filter);
 				JRadPagedQueryResult<IncomingData> pagedResult = new JRadPagedQueryResult<IncomingData>(filter, result);
 				JRadModelAndView mv = new JRadModelAndView("/customer/customerZRRTZ/zrrtz_browse", request);
-				List<UserIpad> managers=cpService.queryAllManager();
-				mv.addObject("managers", managers);
 				mv.addObject(PAGED_RESULT, pagedResult);
-				mv.addObject("type", 6);//后台
+				mv.addObject("usertypes", 6);//后台
 				return mv; 
 		 }
 	}
 	
+	//归档查询
+		@ResponseBody
+		@RequestMapping(value = "gdcx.page", method = { RequestMethod.GET })
+		@JRadOperation(JRadOperation.BROWSE)
+		public AbstractModelAndView gdcx(@ModelAttribute  ZrrtzFilter filter, HttpServletRequest request) {
+			filter.setRequest(request);
+			//假设状态为1的为只看有进件并跑批成功的
+			String status="1";
+			filter.setStatus(status);
+			QueryResult<IncomingData> result = service.findintoPiecesByFilters(filter);
+			JRadPagedQueryResult<IncomingData> pagedResult = new JRadPagedQueryResult<IncomingData>(filter, result);
+			JRadModelAndView mv = new JRadModelAndView("/customer/customerZRRTZ/gdcx", request);
+			List<UserIpad> managers=cpService.queryAllManager();
+			mv.addObject("managers", managers);
+			mv.addObject(PAGED_RESULT, pagedResult);
+			mv.addObject("usertypes", 6);//后台
+			return mv; 
+		}
 	
 	/**
 	 * 导出
@@ -309,7 +329,7 @@ public class CustomerZRRTZController extends BaseController{
 	/**
 	 * 
 	 * 描述 ：自然人台账，实现客户经理对客户资料的补填
-	 * @author 周文杰
+	 * @author 
 	 * 2016-8-15 09:40:15
 	 */
 	//添加前的查询
@@ -371,10 +391,22 @@ public class CustomerZRRTZController extends BaseController{
 	 			JRadReturnMap returnMap = new JRadReturnMap();
 	 			String ywbh = request.getParameter("id");
 				String userId =request.getParameter("userId");
-				pig.setYwbh(ywbh);
-				pig.setUserId(userId);
-				pig.setPigeonhole("0");
-				cpService.addCustomerPigeonhole(pig);
+				String sfyj=request.getParameter("sfyj");
+				if(sfyj.equals("1")){
+					List<IncomingData>lists=cpService.findywbhbyuserId(userId);
+					for (IncomingData incomingData : lists) {
+						ywbh=incomingData.getYwbh();
+						pig.setYwbh(ywbh);
+						pig.setUserId(userId);
+						pig.setPigeonhole("0");
+						cpService.addCustomerPigeonhole(pig);
+					}
+				}else{
+					pig.setYwbh(ywbh);
+					pig.setUserId(userId);
+					pig.setPigeonhole("0");
+					cpService.addCustomerPigeonhole(pig);
+				}
 				returnMap.put("mes", "归档成功");
 				return returnMap;
 	 }

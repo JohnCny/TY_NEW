@@ -372,7 +372,7 @@
          <!-- <property name="startDelay" value="0"/>
         <property name="repeatInterval" value="60000" /> -->
          <property name="cronExpression">
-            <value>0 08 18 * * ?</value>
+            <value>0 10 09 * * ?</value>
         </property> 
     </bean>
        <!--贷款信息 start -->
@@ -396,7 +396,7 @@
             <value>0 30 16 * * ?</value>
         </property> -->
         <property name="cronExpression">
-            <value>0 06 18 * * ?</value>
+            <value>0 50 08 * * ?</value>
         </property> 
     </bean>
      <!--同步系统中的进件的status 每两个小时跑一次-->
@@ -423,7 +423,7 @@
             <value>0 39 22 * * ?</value>
         </property>  -->
         <property name="cronExpression">
-            <value>0 46 14 * * ?</value>
+            <value>0 58 16 * * ?</value>
         </property> 
     </bean>
       <!-- 11.客户经理贷款信息更新-->
@@ -444,7 +444,7 @@
         </property>
         <!-- cron表达式 -->
         <property name="cronExpression">
-            <value>0 10 20 ? * *</value>
+            <value>0 10 16 ? * *</value>
         </property>
     </bean>
     <!-- 客户经理贷款信息更新  end -->
@@ -490,7 +490,7 @@
        <!--  cron表达式 -->
         <property name="cronExpression">
             <!-- 0 10 18 ? * *  -->
-            <value>0 03 18 * * ?</value><!-- 下午3点 -->
+            <value>0 46 08 * * ?</value><!-- 下午3点 -->
         </property>
     </bean>
 	<!-- 每日下载和解压数据 end -->
@@ -537,7 +537,7 @@
         </property>
       <!--   cron表达式 每月1号1点执行 0 0 1 1 * ? -->
           <property name="cronExpression">
-            <value>0 29 11 * * ?</value>
+            <value>0 52 15 * * ?</value>
         </property> 
     	</bean>
     		<!-- 跑批纸质档案归档end -->

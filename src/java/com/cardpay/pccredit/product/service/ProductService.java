@@ -15,6 +15,7 @@ import com.cardpay.pccredit.customer.model.CIPERSONBASINFOCOPY;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.model.TyCustomerRecord;
 import com.cardpay.pccredit.customer.model.TyProductType;
+import com.cardpay.pccredit.intopieces.filter.AddIntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.model.AppManagerAuditLog;
 import com.cardpay.pccredit.intopieces.model.AppManagerAuditLogForm;
 import com.cardpay.pccredit.product.constant.ProductStatusEnum;
@@ -536,9 +537,10 @@ public class ProductService {
 	
 	public Boolean delay(String id) {
 		//如果没有记录就返回true
-		//有记录就返回flase
-		List<IncomingData> list = accessoriesListDao.delay(id);
-		if(list.size()>0){
+		//有记录就返回false
+		//List<IncomingData> list = accessoriesListDao.delay(id);
+		int delaylists=accessoriesListDao.delaylists(id);
+		if(delaylists>0){
 			return false;
 		}
 		return true;
@@ -547,6 +549,11 @@ public class ProductService {
 	public int findsfjq(String id) {
 		// TODO Auto-generated method stub
 		return productDao.findsfjq(id);
+	}
+
+	public void deletecustomerpigeonhole(AddIntoPiecesFilter filter) {
+		// TODO Auto-generated method stub
+		productDao.deletecustomerpigeonhole(filter);
 	}
 	
 /*	public Boolean findsfjqs(String id) {
