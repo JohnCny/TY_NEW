@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cardpay.pccredit.common.IdCardValidate;
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
+import com.cardpay.pccredit.customer.service.MaintenanceService;
 import com.cardpay.pccredit.datapri.constant.DataPriConstants;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
@@ -26,8 +27,12 @@ import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.jnpad.model.CustomerInfo;
 import com.cardpay.pccredit.jnpad.model.CustomerInfoForm;
+import com.cardpay.pccredit.jnpad.model.JBUser;
+import com.cardpay.pccredit.jnpad.model.JnUserLoginIpad;
+import com.cardpay.pccredit.jnpad.service.JnIpadJBUserService;
 import com.cardpay.pccredit.jnpad.service.JnpadCustomerInfoInsertServ‎ice;
 import com.cardpay.pccredit.jnpad.service.JnpadCustomerSelectService;
+import com.cardpay.pccredit.manager.web.ManagerBelongMapForm;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
 import com.cardpay.pccredit.system.model.SystemUser;
 import com.wicresoft.jrad.base.auth.IUser;
@@ -53,7 +58,10 @@ import net.sf.json.JsonConfig;
  */
 @Controller
 public class JnpadCustomerInfoInsertController extends BaseController {
-	
+	@Autowired
+	private JnIpadJBUserService JnIpadJBUser;
+	@Autowired
+	private MaintenanceService maintenanceService;
 	@Autowired
 	private JnpadCustomerInfoInsertServ‎ice JnpadCustomerInfoInsertServ‎ice;
 	@Autowired
@@ -62,7 +70,9 @@ public class JnpadCustomerInfoInsertController extends BaseController {
 	private IntoPiecesService intoPiecesService;
 	@Autowired
 	private com.cardpay.pccredit.jnpad.service.JnIpadCustAppInfoXxService JnIpadCustAppInfoXxService;
-	
+	@Autowired
+	private com.cardpay.pccredit.manager.service.ManagerBelongMapService ManagerBelongMapService;
+	private Integer qyjl=0;
 	@ResponseBody
 	@RequestMapping(value="/ipad/product/customerInsert.json" ,method = { RequestMethod.GET })
 	public String customerInsert(@ModelAttribute CustomerInfoForm customerinfoForm ,HttpServletRequest request){
@@ -160,6 +170,7 @@ public class JnpadCustomerInfoInsertController extends BaseController {
 	@RequestMapping(value = "/ipad/customerIntopiece/browse.json", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
 	public String browse( HttpServletRequest request) {
+		qyjl=0;
 		IntoPiecesFilter filter=new IntoPiecesFilter();
 //		filter.setRequest(request);
 		String userId = request.getParameter("userId");
@@ -171,9 +182,21 @@ public class JnpadCustomerInfoInsertController extends BaseController {
 		if(name!=null && name!=""){
 			filter.setChineseName(name);
 		}
-		//客户经理
-		if(s==1){
-			filter.setUserId(userId);
+		if(s!=0){
+			//查询是否为客户经理或者小组长/区域经理
+			List<JBUser> list1=cxke(userId);
+			if(qyjl==3){
+				filter.setUserId(userId);
+			}else if(qyjl==2 || qyjl==1){
+				  StringBuffer belongChildIds = new StringBuffer();
+					belongChildIds.append("(");
+					for(int i=0;i<list1.size();i++){
+						belongChildIds.append("'").append(list1.get(i).getUserId()).append("'").append(",");
+					}
+					belongChildIds = belongChildIds.deleteCharAt(belongChildIds.length() - 1);
+					belongChildIds.append(")");
+					filter.setCustManagerIds(belongChildIds.toString());
+			}	
 		}
 		result = JnpadCustomerInfoInsertServ‎ice.findintoPiecesByFilter(filter);
 		JsonConfig jsonConfig = new JsonConfig();
@@ -312,5 +335,54 @@ public class JnpadCustomerInfoInsertController extends BaseController {
 		return json.toString();
 	}
 	
-
+	public List cxke(String userId) {
+		Integer b=0;
+		Integer c1=0;
+		String parentId="100000";
+		List<JBUser> list=new ArrayList<JBUser>();
+		List list1=new ArrayList();
+		if(userId!=null){
+			//确认当前客户经理是否为区域经理
+			List<ManagerBelongMapForm> result1=ManagerBelongMapService.findAllqyjl(parentId);
+			for(int a=0;a<result1.size();a++){
+				if(result1.get(a).getId().equals(userId)){
+					b=1;
+				}
+			}
+			if(b==1){
+				qyjl=1;
+				List<JBUser> depart=JnIpadJBUser.selectDepartUser(userId);
+				for(int i=0;i<depart.size();i++){
+					List<JBUser> findxzcy=JnIpadJBUser.selectUserByDid(depart.get(i).getId());
+					for(int a=0;a<findxzcy.size();a++){
+						list.add(findxzcy.get(a));	
+					}
+				
+			}}else{
+				//确认当前客户经理是否为小组长
+				for(int i=0;i<result1.size();i++){
+					List<ManagerBelongMapForm> result2=ManagerBelongMapService.findxzz(result1.get(i).getId());
+					for(int c=0;c<result2.size();c++){
+						list1.add(result2.get(c).getId());
+					}
+				}
+				for(int d=0;d<list1.size();d++){
+					if(list1.get(d).equals(userId)){
+						c1=1;
+					}
+				}
+				if(c1>0){
+					qyjl=2;
+				}else{
+					qyjl=3;
+				}
+				List<JBUser> findxzcy=JnIpadJBUser.selectUserByDid1(userId);
+				for(int a=0;a<findxzcy.size();a++){
+					list.add(findxzcy.get(a));	
+				}
+			}
+			return list;
+		}
+		return list;
+	}
 }

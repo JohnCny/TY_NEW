@@ -23,6 +23,6 @@ public interface JnpadImageBrowseDao {
 	
 	//查询模板主键ID
 	public LocalImageForm findLocalId(@Param("customerId") String customerId,@Param("productId") String productId);
-	
+	List<LocalImageForm> selectBcIma(@Param("customerId") String id,@Param("productId") String productId,@Param("phone_type") String phone_type );
 	
 }

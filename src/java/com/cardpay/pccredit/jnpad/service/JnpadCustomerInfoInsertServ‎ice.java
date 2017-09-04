@@ -89,7 +89,7 @@ public class JnpadCustomerInfoInsertServ‎ice {
 		String cardId = filter.getCardId();
 		String status = filter.getStatus();
 		params.put("userId", userId);
-		StringBuffer sql = new StringBuffer("select t.id,t.customer_id,b.ty_customer_id,b.chinese_name,t.product_id,p.product_name,b.card_id,t.apply_quota,t.final_approval,t.status,t.CREATED_TIME,t.ACTUAL_QUOTE as reqlmt  from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id  and t.product_id=p.id  ");
+		StringBuffer sql = new StringBuffer("select s.display_name ,t.id,t.customer_id,b.ty_customer_id,b.chinese_name,t.product_id,p.product_name,b.card_id,t.apply_quota,t.final_approval,t.status,t.CREATED_TIME,t.ACTUAL_QUOTE as reqlmt  from customer_application_info t,sys_user s,basic_customer_information b,product_attribute p where t.customer_id=b.id  and t.product_id=p.id and s.id= b.user_id ");
 		if(StringUtils.trimToNull(userId)!=null){
 			sql.append("and b.user_id = #{userId}");
 		}
@@ -125,7 +125,7 @@ public class JnpadCustomerInfoInsertServ‎ice {
 			}
 		if(StringUtils.trimToNull(chineseName)!=null){
 			params.put("chineseName", chineseName);
-			sql.append("and b.chinese_name= #{chineseName}");
+			sql.append("and b.chinese_name like '%'||#{chineseName}||'%' ");
 		/*if(StringUtils.trimToNull(cardId)!=null||StringUtils.trimToNull(chineseName)!=null){*/
 			/*if(StringUtils.trimToNull(cardId)!=null&&StringUtils.trimToNull(chineseName)!=null){
 			    //sql.append(" and (b.card_id like '%"+cardId+"%' or b.chinese_name like '%"+chineseName+"%' )");
@@ -139,7 +139,7 @@ public class JnpadCustomerInfoInsertServ‎ice {
 			}*/
 		}
 		
-		sql.append(" order by t.id asc");
+		sql.append(" order by t.CREATED_TIME desc");
 		return commonDao.queryBySqlInPagination(IntoPieces.class, sql.toString(), params,
 				filter.getStart(),sum);
 	}

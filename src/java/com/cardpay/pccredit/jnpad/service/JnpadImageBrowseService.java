@@ -138,7 +138,9 @@ public class JnpadImageBrowseService {
 		
 		jnpadImageBrowseDao.deleteImage(imageId);
 	}
-	
+	public List<LocalImageForm> selectBcIma( String id, String productId, String phone_type ){
+		return jnpadImageBrowseDao.selectBcIma(id, productId, phone_type);
+	}
 	
 	
 	

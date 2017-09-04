@@ -40,6 +40,7 @@ select distinct(capid) as capid from CUSTOMER_SP where status!='0'
 
 <select id="findUserResult" resultMap="CustomerSpUser">
 select capid as capid  from CUSTOMER_SP where  spuserid=#{spuserid}  and sptime is  null
+and PID not in (select id from PRODUCT_ATTRIBUTE where PRODUCT_NAME ='融耀卡')
 </select>
 <select id="findUserResult1" resultMap="CustomerSpUser">
 select status as status  from CUSTOMER_SP where  capid=#{capid} 

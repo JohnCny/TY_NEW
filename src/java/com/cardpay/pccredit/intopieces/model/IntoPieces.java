@@ -61,8 +61,14 @@ public class IntoPieces  extends BusinessModel {
     private String name1;
     private String name2;
     private String name3;
-    
- public String getName1() {
+    private Integer count;
+ public Integer getCount() {
+		return count;
+	}
+	public void setCount(Integer count) {
+		this.count = count;
+	}
+public String getName1() {
 		return name1;
 	}
 	public void setName1(String name1) {

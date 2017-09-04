@@ -152,7 +152,7 @@
 					 </if>
 					 
 					 <if test="customerName != null and customerName != '' ">
-						AND b.CHINESE_NAME=#{customerName}
+						AND b.CHINESE_NAME like #{customerName}
 					 </if>
 					  
 					  <if test="customerId != null and customerId != '' ">

@@ -3,9 +3,9 @@
 <mapper namespace="com.cardpay.pccredit.jnpad.dao.MonthlyStatisticsDao">
 	<resultMap id="MonthlyStatisticsModel"
 		type="com.cardpay.pccredit.jnpad.model.MonthlyStatisticsModel">
-		<result property="id" column="ID" />
+		<result property="id" column="id" />
 		<result property="customeryeah" column="customeryeah" />
-		<result property="customerJanuary" column="PURPOSE_LOAN" />
+		<result property="customerJanuary" column="customerJanuary" />
 		<result property="customerFebruary" column="customerFebruary" />
 		<result property="customerMarch" column="customerMarch" />
 		<result property="customerApril" column="customerApril" />
@@ -77,7 +77,7 @@ group by o.name,s.id,t.name
     select * from MONTHLYSTATISTICS t where userid=#{userId} and customeryeah=#{customeryeah} 
 </select>
 <select id="selecTotalAmount" resultType="double">
-    select sum(totalAmount) from MONTHLYSTATISTICS t where userid=#{userId}
+    select nvl(sum(totalAmount),0) from MONTHLYSTATISTICS t where userid=#{userId}
 </select>
 
 <!-- 确认是否为小组长-->

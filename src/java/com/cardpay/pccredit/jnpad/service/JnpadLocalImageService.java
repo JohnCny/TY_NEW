@@ -20,6 +20,7 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.LocalExcel;
 import com.cardpay.pccredit.intopieces.model.LocalImage;
 import com.cardpay.pccredit.intopieces.web.AddIntoPiecesForm;
+import com.cardpay.pccredit.jnpad.dao.JnIpadLocalExcelDao;
 import com.cardpay.pccredit.system.constants.NodeAuditTypeEnum;
 import com.cardpay.pccredit.system.constants.YesNoEnum;
 import com.cardpay.pccredit.system.model.NodeAudit;
@@ -33,6 +34,8 @@ import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
 @Service
 public class JnpadLocalImageService {
+	@Autowired
+	private JnIpadLocalExcelDao LocalExcelDao;
 	@Autowired
 	private CommonDao commonDao;
 	@Autowired
@@ -77,14 +80,14 @@ public class JnpadLocalImageService {
 		app.setStatus(Constant.APPROVE_INTOPICES);
 		app.setId(IDGenerator.generateID());
 		
-		/*//将调查表和影像件 关联到该app
-		LocalExcel localExcel = localExcelDao.findById(addIntoPiecesForm.getExcelId());
-		localExcel.setApplicationId(app.getId());*/
+		//将调查表和影像件 关联到该app
+		LocalExcel localExcel = LocalExcelDao.findByApplication(addIntoPiecesForm.getCustomerId(),addIntoPiecesForm.getProductId());
+		LocalExcelDao.updateLo(app.getId(),localExcel.getId());
 		//保存申请额度
 		app.setApplyQuota("此产品无申请金额");
 		//保存进件表
 		commonDao.insertObject(app);
-		//commonDao.updateObject(localExcel);	
+	/*	commonDao.updateObject(localExcel);	*/
 		List<LocalImage> ls = localImageDao.findAllByProductAndCustomer(addIntoPiecesForm.getProductId(),addIntoPiecesForm.getCustomerId());
 		for(LocalImage obj : ls){
 			obj.setApplicationId(app.getId());

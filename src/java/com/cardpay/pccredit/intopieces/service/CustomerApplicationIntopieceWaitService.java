@@ -98,6 +98,11 @@ public class CustomerApplicationIntopieceWaitService {
 		return qs;
 
 	}
+	public List<IntoPiecesFilters> findCustomerApplicationIntopieceDecisons1(IntoPiecesFilters filter) {
+		
+		return  customerApplicationIntopieceWaitDao.findCustomerApplicationIntopieceDecisionForms1(filter);
+
+	}
 	// 查询所有的进件通过审核的
 	public QueryResult<IntoPiecesFilters> findCustomerApplicationIntopieceDecisons(IntoPiecesFilters filter) {
 		List<IntoPiecesFilters> listCAI = customerApplicationIntopieceWaitDao.findCustomerApplicationIntopieceDecisionForms(filter);
@@ -421,6 +426,10 @@ public class CustomerApplicationIntopieceWaitService {
 		params.put("applicationId", applicationId);
 		String sql = "update LOCAL_IMAGE set PRODUCT_ID=#{prodId} where APPLICATION_ID=#{applicationId}";
 		commonDao.queryBySql(sql, params);
+	}
+	public List<CustomerApplicationIntopieceWaitForm>  selectSpName(@Param("id")String id,@Param("userId")String userId){
+		return customerApplicationIntopieceWaitDao.selectSpName(id, userId);
+		
 	}
 
 }

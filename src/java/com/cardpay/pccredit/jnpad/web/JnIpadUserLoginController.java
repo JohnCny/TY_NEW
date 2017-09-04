@@ -127,28 +127,6 @@ public class JnIpadUserLoginController {
 		Map<String,Object> map = new LinkedHashMap<String,Object>();
 		String login = RequestHelper.getStringValue(request, "login");
 		String passwd = RequestHelper.getStringValue(request, "password");
-	/*	HttpSession session=request.getSession();
-		String time= (String) session.getAttribute("loginTime");
-		JnUserLoginIpad user = null;
-		//上次登录时间
-		if(time==null){
-			Date loginTime =new Date();
-			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			String time1=sdf.format(loginTime);
-			session.setAttribute("loginTime", time1);
-			session.setMaxInactiveInterval(1440*60);
-			String noTime="无";
-			map.put("noTime", noTime);
-		}else{
-			Date loginTime1 =new Date();
-			SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			String time2=sdf1.format(loginTime1);
-			session.setAttribute("loginTime", time2);
-			session.setMaxInactiveInterval(1440*60);
-			String noTime="有";
-			map.put("noTime", noTime);
-			map.put("time", time);
-		}*/
 		
 		Result result = null;
 		JnUserLoginResult loginResult = null;
@@ -197,7 +175,7 @@ public class JnIpadUserLoginController {
 			}else if(qyjl==3){
 				map.put("zw", "客户经理");	
 			}
-		if(user!=null){
+/*		if(user!=null){
 			if(CommonConstant.USER_TYPE.USER_TYPE_1 == user.getUserType()){
 				List<AccountManagerParameterForm> forms = maintenanceService.findSubListManagerByManagerId1(user.getId(),user.getUserType());
 				if(forms != null && forms.size() > 0){
@@ -215,7 +193,7 @@ public class JnIpadUserLoginController {
 					map.put("repay", str);
 				}
 			}
-		}
+		}*/
 		/*	NotifyMsgListVo vo=jjzkCount(user.getId());
 			map.put("vo", vo);*/
 		}

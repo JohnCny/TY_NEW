@@ -60,7 +60,9 @@ public class JnpadIntopiecesDecisionService {
 	@Autowired
 	private JnpadCustormerSdwUserService SdwUserService;
 	
-
+	public List<CustomerApplicationIntopieceWaitForm> findCustomerApplicationIntopieceDecison1(IntoPiecesFilter filter) {
+		return jnpadIntopiecesDecisionDao.findCustomerApplicationIntopieceDecisionForm(filter);
+	}
 	//查询当前客户经理进件初审信息
 	public QueryResult<CustomerApplicationIntopieceWaitForm> findCustomerApplicationIntopieceDecison(IntoPiecesFilter filter) {
 		List list=new ArrayList();

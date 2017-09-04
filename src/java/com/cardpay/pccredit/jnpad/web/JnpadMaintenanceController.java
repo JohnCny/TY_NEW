@@ -1,5 +1,6 @@
 package com.cardpay.pccredit.jnpad.web;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -27,8 +28,11 @@ import com.cardpay.pccredit.datapri.constant.DataPriConstants;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.jnpad.filter.JnpadMaintenanceFilter;
 import com.cardpay.pccredit.jnpad.model.CustomerInfo;
+import com.cardpay.pccredit.jnpad.model.JBUser;
+import com.cardpay.pccredit.jnpad.service.JnIpadJBUserService;
 import com.cardpay.pccredit.jnpad.service.JnpadMaintenanceService;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
+import com.cardpay.pccredit.manager.web.ManagerBelongMapForm;
 import com.cardpay.pccredit.riskControl.constant.RiskCustomerCollectionEnum;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadOperation;
@@ -54,8 +58,12 @@ import net.sf.json.JsonConfig;
 @Controller
 public class JnpadMaintenanceController extends BaseController{
 	@Autowired
+	private JnIpadJBUserService JnIpadJBUser;
+	@Autowired
 	private JnpadMaintenanceService jnpadMaintenanceService;
-	
+	@Autowired
+	private com.cardpay.pccredit.manager.service.ManagerBelongMapService ManagerBelongMapService;
+	private Integer qyjl=0;
 	/**
 	 * 获取维护计划列表
 	 */
@@ -70,6 +78,7 @@ public class JnpadMaintenanceController extends BaseController{
 		String customerManagerId = filter.getCustomerManagerId();
 		List<MaintenanceForm> result = null;
 		if(customerManagerId!=null && !customerManagerId.equals("")){
+			filter.setCustomerName("%"+request.getParameter("whname")+"%");
 			result = jnpadMaintenanceService.findMaintenancePlans1(filter);
 		}else{
 			if(forms.size()>0){
@@ -84,6 +93,22 @@ public class JnpadMaintenanceController extends BaseController{
 
 			}
 		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		Map<String,Object> query = new LinkedHashMap<String,Object>();
 		query.put("result", result);
 		query.put("size", result.size());
@@ -126,24 +151,55 @@ public class JnpadMaintenanceController extends BaseController{
 	
 	@ResponseBody
 	@RequestMapping(value = "/ipad/product/getMaintenance.json", method = { RequestMethod.GET })
-	public String getMaintenance( @ModelAttribute CustomerInforFilter filter,HttpServletRequest request) {
-		String id =RequestHelper.getStringValue(request, "userId");
-		int userType = RequestHelper.getIntValue(request, "userType");
-		//查询下属客户经理
+	public String getMaintenance( HttpServletRequest request) {
+		String id =request.getParameter("userId");
+		int userType = Integer.parseInt(request.getParameter("userType"));
+	 CustomerInforFilter filter=new CustomerInforFilter();
+		qyjl=0;
+	/*	//查询下属客户经理
 		List<AccountManagerParameterForm> forms = jnpadMaintenanceService.selectSubListManagerByManagerId(id,userType);
 		
 		if(forms.size()>0){
 			filter.setCustomerManagerIds(forms);		
 		}else{
 			filter.setCustomerManagerIds(null);		
-		}
+		}*/
 
-		QueryResult<MaintenanceLog> result = jnpadMaintenanceService.findCustomerByFilter(filter);
-//		JRadPagedQueryResult<MaintenanceLog> pagedResult = new JRadPagedQueryResult<MaintenanceLog>(filter, result);
-//		JRadModelAndView mv = new JRadModelAndView("/customer/maintenance/maintenance_plan_log", request);
-//		mv.addObject(PAGED_RESULT, pagedResult);
-//		mv.addObject("forms", forms);
 		
+		if(userType!=0){
+			//查询是否为客户经理或者小组长/区域经理
+			List<JBUser> list1=cxke(id);
+			if(qyjl==3){
+				filter.setUserId(id);
+			}else if(qyjl==2 || qyjl==1){
+				  StringBuffer belongChildIds = new StringBuffer();
+					belongChildIds.append("(");
+					for(int i=0;i<list1.size();i++){
+						belongChildIds.append("'").append(list1.get(i).getUserId()).append("'").append(",");
+					}
+					belongChildIds = belongChildIds.deleteCharAt(belongChildIds.length() - 1);
+					belongChildIds.append(")");
+					filter.setCustManagerId(belongChildIds.toString());
+			}	
+		}
+		
+		filter.setChineseName("%"+request.getParameter("whname")+"%");
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		QueryResult<MaintenanceLog> result = jnpadMaintenanceService.findCustomerByFilter(filter);
+
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(result, jsonConfig);
@@ -338,5 +394,56 @@ public class JnpadMaintenanceController extends BaseController{
 				jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 				JSONObject json = JSONObject.fromObject(returnMap, jsonConfig);
 				return json.toString();
+		}
+		
+		public List cxke(String userId) {
+			Integer b=0;
+			Integer c1=0;
+			String parentId="100000";
+			List<JBUser> list=new ArrayList<JBUser>();
+			List list1=new ArrayList();
+			if(userId!=null){
+				//确认当前客户经理是否为区域经理
+				List<ManagerBelongMapForm> result1=ManagerBelongMapService.findAllqyjl(parentId);
+				for(int a=0;a<result1.size();a++){
+					if(result1.get(a).getId().equals(userId)){
+						b=1;
+					}
+				}
+				if(b==1){
+					qyjl=1;
+					List<JBUser> depart=JnIpadJBUser.selectDepartUser(userId);
+					for(int i=0;i<depart.size();i++){
+						List<JBUser> findxzcy=JnIpadJBUser.selectUserByDid(depart.get(i).getId());
+						for(int a=0;a<findxzcy.size();a++){
+							list.add(findxzcy.get(a));	
+						}
+					
+				}}else{
+					//确认当前客户经理是否为小组长
+					for(int i=0;i<result1.size();i++){
+						List<ManagerBelongMapForm> result2=ManagerBelongMapService.findxzz(result1.get(i).getId());
+						for(int c=0;c<result2.size();c++){
+							list1.add(result2.get(c).getId());
+						}
+					}
+					for(int d=0;d<list1.size();d++){
+						if(list1.get(d).equals(userId)){
+							c1=1;
+						}
+					}
+					if(c1>0){
+						qyjl=2;
+					}else{
+						qyjl=3;
+					}
+					List<JBUser> findxzcy=JnIpadJBUser.selectUserByDid1(userId);
+					for(int a=0;a<findxzcy.size();a++){
+						list.add(findxzcy.get(a));	
+					}
+				}
+				return list;
+			}
+			return list;
 		}
 }
