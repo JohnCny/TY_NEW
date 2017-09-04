@@ -318,7 +318,50 @@
 		</if>
 		)
 	</select>
-	
+	<select id="findCustomerApplicationIntopieceDecisionForms1" resultMap="IntoPiecesFilters">
+	    SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+		<!--  select 
+		          c.ID as id,c.CUSTOMER_ID as customerId,c.PRODUCT_ID as productId,
+		          s.display_name as displayName,p.product_name as productName,b.card_id as cardId,
+		          c.APPLY_QUOTA as applyQuota,c.CREATED_TIME as creatime,b.chinese_name as chineseName,
+				  PROD_CREDIT_RANGE as PRODCREDITRANGE
+				  from 
+				  CUSTOMER_APPLICATION_INFO c,CUSTOMER_APPLICATION_SDH t,sys_user s,
+				  product_attribute p,BASIC_CUSTOMER_INFORMATION b
+				  where c.id=t.capid
+				  and s.id=b.user_id and b.id=c.customer_id and c.product_id=p.id 
+				  and (t.sdwuser1=#{userId} or t.sdwuser2=#{userId} or t.sdwuser3=#{userId})  -->
+				  select 
+              c.ID as id,c.CUSTOMER_ID as customerId,c.PRODUCT_ID as productId,
+              s.display_name as displayName,p.product_name as productName,b.card_id as cardId,
+              c.APPLY_QUOTA as applyQuota,c.CREATED_TIME as creatime,b.chinese_name as chineseName,
+          PROD_CREDIT_RANGE as PRODCREDITRANGE
+          from 
+          CUSTOMER_APPLICATION_INFO c,CUSTOMER_SP t,sys_user s,
+          product_attribute p,BASIC_CUSTOMER_INFORMATION b
+          where c.id=t.capid
+          and s.id=b.user_id and b.id=c.customer_id and c.product_id=p.id 
+          and t.status='0'
+          and (t.SPUSERID=#{userId}) 
+         <!--  and p.product_name!='融耀卡' -->
+		 <if test="cardId!=null and cardId!=''">
+			and b.card_id=#{cardId}
+		</if>
+		<if test="chineseName!=null ">
+			<![CDATA[ and b.chinese_name like '%'||#{chineseName}||'%' ]]>
+		</if>
+		<if test="productName != null and productName != '' ">
+				<!-- AND PRODUCT_NAME=#{productName} -->
+			    AND p.PRODUCT_NAME like '%'||#{productName}||'%'
+			</if>
+		<![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
 	<select id="findCustomerApplicationIntopieceDecisionForms" resultMap="IntoPiecesFilters">
 	    SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
@@ -484,4 +527,10 @@
 		WHERE T.APPLICATION_ID = #{appId}
 	</select>
 	
+     
+     
+       <select id="selectSpName" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select s.display_name as delayAuditUser from CUSTOMER_SP c,sys_user s  where c.capid=#{id} and c.spuserid !=#{userId}
+		and c.spuserid=s.id
+	</select>
 </mapper>

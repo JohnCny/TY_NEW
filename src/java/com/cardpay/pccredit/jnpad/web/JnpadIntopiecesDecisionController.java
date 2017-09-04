@@ -21,14 +21,21 @@ import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.model.AppManagerAuditLog;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcessForm;
+import com.cardpay.pccredit.intopieces.model.IntoPieces;
+import com.cardpay.pccredit.intopieces.model.IntoPiecesFilters;
+import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.intopieces.web.CustomerApplicationIntopieceWaitForm;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
+import com.cardpay.pccredit.jnpad.model.CustomerSpUser;
 import com.cardpay.pccredit.jnpad.model.ManagerInfoForm;
 import com.cardpay.pccredit.jnpad.model.ProductAttributes;
+import com.cardpay.pccredit.jnpad.service.JnpadCustormerSdwUserService;
 import com.cardpay.pccredit.jnpad.service.JnpadIntopiecesDecisionService;
+import com.cardpay.pccredit.jnpad.service.JnpadSpUserService;
 import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.service.ProductService;
+import com.cardpay.pccredit.rongyaoka.service.ryIntoPiecesService;
 import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.jrad.base.web.controller.BaseController;
@@ -40,14 +47,20 @@ import net.sf.json.JsonConfig;
 
 @Controller
 public class JnpadIntopiecesDecisionController extends BaseController{
-	
+	@Autowired
+	private JnpadCustormerSdwUserService SdwUserService;
 	@Autowired
 	private JnpadIntopiecesDecisionService jnpadIntopiecesDecisionService;
 	@Autowired
 	private IntoPiecesService intoPiecesService;
 	@Autowired
 	private ProductService productService;
-	
+	@Autowired
+	private ryIntoPiecesService rpservice;
+	@Autowired
+	private JnpadSpUserService UserService;
+	@Autowired
+	private CustomerApplicationIntopieceWaitService customerApplicationIntopieceWaitService;
 	//审核信息查询
 	@ResponseBody
 	@RequestMapping(value = "/ipad/intopieces/csBrowse.json", method = { RequestMethod.GET })
@@ -374,4 +387,118 @@ public class JnpadIntopiecesDecisionController extends BaseController{
 		return json.toString();
 		
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/ipad/intopieces/SDHTZ.json", method = { RequestMethod.GET })
+	public String SDHTZ(@ModelAttribute IntoPiecesFilters filter1,@ModelAttribute IntoPiecesFilter filter,HttpServletRequest request) {
+		filter.setNextNodeName(request.getParameter("进件初审"));
+		filter.setUserId(request.getParameter("userId"));
+		Map<String, Object> map = new LinkedHashMap<String, Object>();
+		List<IntoPieces> list=new ArrayList<IntoPieces>();
+		//进件初审
+
+		List<CustomerApplicationIntopieceWaitForm> result = jnpadIntopiecesDecisionService.findCustomerApplicationIntopieceDecison1(filter);
+		for(int i=0;i<result.size();i++){
+			IntoPieces IntoPieces=new IntoPieces();
+			IntoPieces.setChineseName(result.get(i).getChineseName());
+			IntoPieces.setCardId(result.get(i).getCardId());
+			IntoPieces.setProductName(result.get(i).getProductName());
+			IntoPieces.setApplyQuota(result.get(i).getApplyQuota());
+			IntoPieces.setDisplayName(result.get(i).getDelayAuditUser());
+			IntoPieces.setName1(request.getParameter("name"));
+			IntoPieces.setName2("普通进件初审");
+			list.add(i, IntoPieces);
+		}
+		
+		//审贷决议
+		List<IntoPieces> result1=SdwUserService.selectSDH1(request.getParameter("userId"));
+		if(result1!=null){
+		
+				for(int a=0;a<result1.size();a++){
+					List<CustomerSpUser> re1=UserService.selectUser1(result1.get(a).getId());
+					if(re1.size()>2){
+						CustomerSpUser name=UserService.selectUser(re1.get(0).getSpuserid());
+						result1.get(a).setName1(name.getName1());
+						CustomerSpUser name1=UserService.selectUser(re1.get(1).getSpuserid());
+						result1.get(a).setName2(name1.getName1());
+						CustomerSpUser name2=UserService.selectUser(re1.get(2).getSpuserid());
+						result1.get(a).setName3(name2.getName1());
+					}else{
+						CustomerSpUser name=UserService.selectUser(re1.get(0).getSpuserid());
+						result1.get(a).setName1(name.getName1());
+						CustomerSpUser name1=UserService.selectUser(re1.get(1).getSpuserid());
+						result1.get(a).setName2(name1.getName1());
+					}
+						
+				}
+	
+			
+			
+			
+		for(int i=0;i<result1.size();i++){
+			result1.get(i).setName1(result1.get(i).getName1()+","+result1.get(i).getName2()+","+result1.get(i).getName3());
+			result1.get(i).setName2("普通进件审贷决议");
+			list.add(list.size(), result1.get(i));
+		}}
+		
+		//荣耀卡初审
+		filter.setNextNodeName("受理岗初审");
+		List<CustomerApplicationIntopieceWaitForm> result2 = jnpadIntopiecesDecisionService.findCustomerApplicationIntopieceDecison1(filter);
+		for(int i=0;i<result2.size();i++){
+			IntoPieces IntoPieces=new IntoPieces();
+			IntoPieces.setChineseName(result2.get(i).getChineseName());
+			IntoPieces.setCardId(result2.get(i).getCardId());
+			IntoPieces.setProductName(result2.get(i).getProductName());
+			IntoPieces.setApplyQuota(result2.get(i).getApplyQuota());
+			IntoPieces.setDisplayName(result2.get(i).getDelayAuditUser());
+			IntoPieces.setName1(request.getParameter("name"));
+			IntoPieces.setName2("受理岗初审");
+			list.add(list.size(), IntoPieces);
+		}
+		//荣耀卡复审
+		List<CustomerApplicationIntopieceWaitForm> result3=rpservice.findfsCustomer(request.getParameter("userId"), null, null, "报审岗复审");	
+		for(int i=0;i<result3.size();i++){
+			IntoPieces IntoPieces=new IntoPieces();
+			IntoPieces.setChineseName(result3.get(i).getChineseName());
+			IntoPieces.setCardId(result3.get(i).getCardId());
+			IntoPieces.setProductName(result3.get(i).getProductName());
+			IntoPieces.setApplyQuota(result3.get(i).getApplyQuota());
+			IntoPieces.setDisplayName(result3.get(i).getDelayAuditUser());
+			IntoPieces.setName1(request.getParameter("name"));
+			IntoPieces.setName2("报审岗复审");
+			list.add(list.size(), IntoPieces);
+		}
+		//荣耀卡终审
+		filter1.setProductName("融耀卡");
+		filter1.setUserId(request.getParameter("userId"));
+		 List<IntoPiecesFilters> result4=customerApplicationIntopieceWaitService.findCustomerApplicationIntopieceDecisons1(filter1);
+			for(int i=0;i<result4.size();i++){
+				List<CustomerApplicationIntopieceWaitForm> spname=customerApplicationIntopieceWaitService.selectSpName(result4.get(i).getId(),request.getParameter("userId"));
+				IntoPieces IntoPieces=new IntoPieces();
+				IntoPieces.setChineseName(result4.get(i).getChineseName());
+				IntoPieces.setCardId(result4.get(i).getCardId());
+				IntoPieces.setProductName(result4.get(i).getProductName());
+				IntoPieces.setApplyQuota(result4.get(i).getApplyQuota());
+				IntoPieces.setDisplayName(result4.get(i).getDisplayName());
+				IntoPieces.setName1(request.getParameter("name")+","+spname.get(0).getDelayAuditUser());
+				IntoPieces.setName2("融耀卡终审");
+				list.add(list.size(), IntoPieces);
+			}
+		 
+		 
+		 
+		 
+		 map.put("result", list);
+		map.put("size", list.size());
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+		
+	}
+	
+	
+	
+	
 }

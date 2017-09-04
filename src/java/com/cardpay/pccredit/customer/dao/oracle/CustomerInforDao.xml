@@ -357,6 +357,7 @@ insert into LOCAL_EXCEL(ID,CUSTOMER_ID,PRODUCT_ID,ATTACHMENT,URI,APPLICATION_ID,
            where  b.user_id=#{userId} 
            and b.id not in (select customer_id from customer_application_info where product_id=#{productId} )
            and b.id not in (select customer_id from customer_application_info where  STATUS='audit' )
+           and b.id not in (select customer_id from RISK_LIST where reported_id_manager=#{userId})
 	</select>
 	
 		<select id="findCustomerInforByFilterAndProductId2" resultType="com.cardpay.pccredit.customer.model.CustomerInfor">
@@ -369,6 +370,8 @@ insert into LOCAL_EXCEL(ID,CUSTOMER_ID,PRODUCT_ID,ATTACHMENT,URI,APPLICATION_ID,
            where  b.user_id=#{userId} 
            and b.id not in (select customer_id from customer_application_info where product_id=#{productId} )
            and b.chinese_name like #{chineseName} 
+             and b.id not in (select customer_id from customer_application_info where  STATUS='audit' )
+           and b.id not in (select customer_id from RISK_LIST where reported_id_manager=#{userId})
 	</select>
 	<select id="findCollectionMethod" resultType="com.cardpay.pccredit.system.model.Dict">
 		select Type_code as TypeCode,Type_name as TypeName
@@ -866,7 +869,7 @@ insert into LOCAL_EXCEL(ID,CUSTOMER_ID,PRODUCT_ID,ATTACHMENT,URI,APPLICATION_ID,
 		</if>
 
 		<if test="chineseName != null and chineseName != '' ">
-			AND a.CHINESE_NAME=#{chineseName}
+			AND a.CHINESE_NAME like #{chineseName}
 		</if>
 
 		
@@ -879,9 +882,12 @@ insert into LOCAL_EXCEL(ID,CUSTOMER_ID,PRODUCT_ID,ATTACHMENT,URI,APPLICATION_ID,
 				open="(" separator="," close=")">
 				#{item.userId}
 			</foreach>
-			<if test="userId != null and userId != '' ">
+		</if>
+							<if test="userId != null and userId != '' ">
 			AND a.user_id = #{userId}
 		</if>
+		<if test="custManagerId != null and custManagerId != '' ">
+			AND a.user_id in ${custManagerId}
 		</if>
 	</select>
 
@@ -897,7 +903,7 @@ insert into LOCAL_EXCEL(ID,CUSTOMER_ID,PRODUCT_ID,ATTACHMENT,URI,APPLICATION_ID,
 		</if>
 
 		<if test="chineseName != null and chineseName != '' ">
-			AND a.CHINESE_NAME=#{chineseName}
+			AND a.CHINESE_NAME like #{chineseName}
 		</if>
 
 		
@@ -910,9 +916,13 @@ insert into LOCAL_EXCEL(ID,CUSTOMER_ID,PRODUCT_ID,ATTACHMENT,URI,APPLICATION_ID,
 				open="(" separator="," close=")">
 				#{item.userId}
 			</foreach>
-			<if test="userId != null and userId != '' ">
+	
+		</if>
+				<if test="userId != null and userId != '' ">
 			AND a.user_id = #{userId}
 		</if>
+		<if test="custManagerId != null and custManagerId != '' ">
+			AND a.user_id in ${custManagerId}
 		</if>
 	</select>
 	

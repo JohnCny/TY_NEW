@@ -154,7 +154,11 @@ public class ryIntoPiecesService {
 		return qs;
 	}*/
 
-
+public List<CustomerApplicationIntopieceWaitForm>  findfsCustomer(String userId, String cardId, String chineseName,
+			String nextNodeName){
+				return rpcdao.findCustomerApplicationIntopieceDecisionForm(userId,cardId,chineseName,nextNodeName);
+	
+}
 	public QueryResult<CustomerApplicationIntopieceWaitForm> findCustomerApplicationIntopieceDecison(
 			String userId, String cardId, String chineseName,
 			String nextNodeName) {

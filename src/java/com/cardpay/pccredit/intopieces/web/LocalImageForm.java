@@ -16,7 +16,14 @@ public class LocalImageForm extends BaseModel{
 	private String attachment;
 	private String uri;
 	private String createdTime;
+	private String phone_type;
 	
+	public String getPhone_type() {
+		return phone_type;
+	}
+	public void setPhone_type(String phone_type) {
+		this.phone_type = phone_type;
+	}
 	public String getCustomerId() {
 		return customerId;
 	}

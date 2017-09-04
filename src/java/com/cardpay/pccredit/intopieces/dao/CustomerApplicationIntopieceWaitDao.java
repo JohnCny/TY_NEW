@@ -2,6 +2,8 @@ package com.cardpay.pccredit.intopieces.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
@@ -53,7 +55,7 @@ public interface CustomerApplicationIntopieceWaitDao {
 	
 	public List<CustomerApplicationIntopieceWaitForm> findCustomerApplicationIntopieceDecisionForm(IntoPiecesFilter filter);
 	public int findCustomerApplicationIntopieceDecisionCountForm(IntoPiecesFilter filter);
-	
+	public List<IntoPiecesFilters> findCustomerApplicationIntopieceDecisionForms1(IntoPiecesFilters filter);
 	public List<IntoPiecesFilters> findCustomerApplicationIntopieceDecisionForms(IntoPiecesFilters filter);
 	public int findCustomerApplicationIntopieceDecisionCountForms(IntoPiecesFilters filter);
 	
@@ -61,4 +63,5 @@ public interface CustomerApplicationIntopieceWaitDao {
 	public int findCustomerApplicationIntopieceDecisionCountFormes(IntoPiecesFilters filter);
 	
 	public CustomerApplicationProcess findByAppId(String appId);
+	public List<CustomerApplicationIntopieceWaitForm> selectSpName(@Param("id")String id,@Param("userId")String userId);
 }

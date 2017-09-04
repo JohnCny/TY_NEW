@@ -244,10 +244,10 @@ public class JnpadAddIntoPiecesService {
 			String sheet[] =null;
 			if(FwqUtils.typeCode==0){
 				//本地测试
-				 sheet = readExcel.readExcelToHtml(url, true,fileName);
+				 sheet = readExcel.readExcelToHtml1(url, true,fileName);
 			}else{
 				//服务器
-			  sheet =SFTPUtil.readExcelToHtml1(url, true,fileName);
+			  sheet =SFTPUtil.readExcelToHtml(url, true,fileName);
 			}
 			localExcel.setTj(sheet[0]);
 			localExcel.setJc(sheet[1]);

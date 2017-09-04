@@ -23,7 +23,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.customer.model.CIPERSONBASINFOCOPY;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
+import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
+import com.cardpay.pccredit.intopieces.model.IntoPiecesFilters;
+import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
+import com.cardpay.pccredit.intopieces.web.CustomerApplicationIntopieceWaitForm;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.jnpad.filter.CustomerApprovedFilter;
 import com.cardpay.pccredit.jnpad.filter.NotificationMessageFilter;
@@ -37,6 +41,7 @@ import com.cardpay.pccredit.jnpad.model.RetrainingVo;
 import com.cardpay.pccredit.jnpad.service.JnIpadCustAppInfoXxService;
 import com.cardpay.pccredit.jnpad.service.JnipadNodeService;
 import com.cardpay.pccredit.jnpad.service.JnpadCustormerSdwUserService;
+import com.cardpay.pccredit.jnpad.service.JnpadIntopiecesDecisionService;
 import com.cardpay.pccredit.jnpad.service.JnpadZongBaoCustomerInsertService;
 import com.cardpay.pccredit.manager.filter.RetrainingFilter;
 import com.cardpay.pccredit.manager.model.AccountManagerRetraining;
@@ -49,6 +54,7 @@ import com.cardpay.pccredit.riskControl.filter.RiskCustomerFilter;
 import com.cardpay.pccredit.riskControl.model.CUSTOMERBLACKLIST;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
 import com.cardpay.pccredit.riskControl.service.CustormerBlackListService;
+import com.cardpay.pccredit.rongyaoka.service.ryIntoPiecesService;
 import com.cardpay.pccredit.system.model.SystemUser;
 
 /**
@@ -62,6 +68,12 @@ import com.cardpay.pccredit.system.model.SystemUser;
  */
 @Controller
 public class JnIpadCustAppInfoXxController {
+	@Autowired
+	private CustomerApplicationIntopieceWaitService customerApplicationIntopieceWaitService;
+	@Autowired
+	private ryIntoPiecesService rpservice;
+	@Autowired
+	private JnpadIntopiecesDecisionService jnpadIntopiecesDecisionService;
 	private List list1=new ArrayList();
 	@Autowired
 	private JnpadCustormerSdwUserService SdwUserService;
@@ -321,7 +333,7 @@ public class JnIpadCustAppInfoXxController {
 		JSONObject json = JSONObject.fromObject(result, jsonConfig);
 		return json.toString();
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(value = "/ipad/custAppInfo/notifiyMessageNum.json", method = { RequestMethod.GET })
 	public String notifiyMessageNum(@ModelAttribute NODEAUDIT NODEAUDIT,@ModelAttribute CUSTOMERBLACKLIST cl,HttpServletRequest request) {
@@ -409,9 +421,21 @@ public class JnIpadCustAppInfoXxController {
 						yscount+=1;
 					}
 				}
-		int a=SdwUserService.selectSDH1Count(userId);
+		//int a=SdwUserService.selectSDH1Count(userId);
+				IntoPiecesFilter filter1=new IntoPiecesFilter();
+				filter1.setNextNodeName(request.getParameter("进件初审"));
+				filter1.setUserId(request.getParameter("userId"));
+				List<CustomerApplicationIntopieceWaitForm> re1 = jnpadIntopiecesDecisionService.findCustomerApplicationIntopieceDecison1(filter1);
+				List<IntoPieces> re2=SdwUserService.selectSDH1(userId);
+				filter1.setNextNodeName("受理岗初审");
+				List<CustomerApplicationIntopieceWaitForm> re3 = jnpadIntopiecesDecisionService.findCustomerApplicationIntopieceDecison1(filter1);
+				List<CustomerApplicationIntopieceWaitForm> re4=rpservice.findfsCustomer(request.getParameter("userId"), null, null, "报审岗复审");	
+				IntoPiecesFilters filter2=new IntoPiecesFilters();
+				filter2.setProductName("融耀卡");
+				filter2.setUserId(userId);
+				 List<IntoPiecesFilters> re5=customerApplicationIntopieceWaitService.findCustomerApplicationIntopieceDecisons1(filter2);
 		NotifyMsgListVo vo  = new NotifyMsgListVo();
-		vo.setShendaihui(a);
+		vo.setShendaihui(re1.size()+re2.size()+re3.size()+re4.size()+re5.size());
 		vo.setQita(count);
 		vo.setRefuseCount(JrefuseCount);
 		vo.setReturnCount(JblackCount);

@@ -43,6 +43,24 @@ public class CustomerInforFilter extends BaseQueryFilter{
 	private Date updatetime;
 	private String createtime1;
 	private String createtime2;
+	
+	
+	
+	private String custManagerIds;
+	private String custManagerId;
+	
+	public String getCustManagerId() {
+		return custManagerId;
+	}
+	public void setCustManagerId(String custManagerId) {
+		this.custManagerId = custManagerId;
+	}
+	public String getCustManagerIds() {
+		return custManagerIds;
+	}
+	public void setCustManagerIds(String custManagerIds) {
+		this.custManagerIds = custManagerIds;
+	}
 	public String getCreatetime2() {
 		return createtime2;
 	}

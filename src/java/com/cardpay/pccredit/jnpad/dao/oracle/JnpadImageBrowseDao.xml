@@ -51,7 +51,12 @@
 <insert id="addImageByPType"  parameterType="java.lang.Integer" >
 			insert into local_image (id,customer_id,product_id,application_id,attachment,uri,created_time,phone_type) values (#{id},#{customerId},#{productId},#{applicationId},#{attachment},#{uri},#{createdTime},#{phone_type})
 </insert>
-
+<select id="selectBcIma" resultMap="BaseResultMap">
+    select * from local_image where CUSTOMER_ID =#{customerId}
+	AND PRODUCT_ID=#{productId}
+	AND PHONE_TYPE=#{phone_type} 
+	order by phone_type,created_time desc
+</select>
 
 <select id="findLocalId" resultMap="BaseResultMap">
    select ID as ID from LOCAL_EXCEL 

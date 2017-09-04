@@ -67,4 +67,7 @@
     where customer_id=#{customerId}
     and product_id=#{productId}
   </select>
+  <update id="updateLo">
+      update local_excel set application_id=#{applicationId} where id=#{id}
+  </update>
 </mapper>
