@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
+import oracle.sql.DATE;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -71,6 +72,7 @@ public class ryCustormerSdwUserPcController extends BaseController{
 		AppManagerAuditLog.setId(IDGenerator.generateID());
 		AppManagerAuditLog.setApplicationId(result.getApplicationId());
 		AppManagerAuditLog.setAuditType("1");
+		AppManagerAuditLog.setTime(new DATE());
 		AppManagerAuditLog.setUserId_4(user.getId());
 		//导入审批记录（审批客户经理、辅调客户经理记录）T_APP_MANAGER_AUDIT_LOG
 		SdwUserService.insertCsJl(AppManagerAuditLog);
@@ -150,13 +152,191 @@ public class ryCustormerSdwUserPcController extends BaseController{
 	
 	/**
 	 * 当前审贷委审批
+	 * @param CustomerSpUser
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="insertsdjycs.json", method = { RequestMethod.GET })
+	public  JRadReturnMap insertsdjycs(@ModelAttribute CustomerSpUser CustomerSpUser,HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		IntoPieces IntoPieces=new IntoPieces();
+		String userId=user.getId();
+		CustomerSpUser.setId(IDGenerator.generateID());
+		CustomerSpUser.setSpje(request.getParameter("decisionAmount"));
+		CustomerSpUser.setSptime(new Date());
+		CustomerSpUser.setSpqx(request.getParameter("qx"));
+		CustomerSpUser.setSpuserid(userId);
+		CustomerSpUser.setBeizhu(request.getParameter("SDWUSER1YJ"));
+		CustomerSpUser.setSplv(request.getParameter("decisionRate"));
+		CustomerSpUser.setCapid(request.getParameter("id"));
+		CustomerSpUser.setJlyys(request.getParameter("decisionRefusereason"));
+		if(request.getParameter("status").equals("approved")){
+			CustomerSpUser.setStatus("1");
+		}else if(request.getParameter("status").equals("refuse")){
+			CustomerSpUser.setStatus("2");
+		}else if(request.getParameter("status").equals("returnedToFirst")){
+			CustomerSpUser.setStatus("3");
+		}
+		
+		//如果当前审贷委提出意见为拒绝
+		if(CustomerSpUser.getStatus().equals("2")){
+			int a=UserService.addSpUser1(CustomerSpUser);
+			UserService.updateSpBh("2", request.getParameter("id"));
+			IntoPieces.setStatus("refuse");
+			IntoPieces.setCreatime(new Date());
+			IntoPieces.setId(request.getParameter("id"));
+			IntoPieces.setUserId(request.getParameter(userId));
+			IntoPieces.setREFUSAL_REASON(request.getParameter("decisionRefusereason"));
+			int c=SdwUserService.updateCustormerInfoSdwUser(IntoPieces);
+			if(c>0){
+				int d=SdwUserService.updateCustormerProSdwUser(IntoPieces);
+				if(d>0){
+					RiskCustomer RiskCustomer=new RiskCustomer();
+					RiskCustomer.setCustomerId(request.getParameter("customerId"));
+					RiskCustomer.setProductId(request.getParameter("productId"));
+					RiskCustomer.setRiskCreateType("manual");
+					RiskCustomer.setRefuseReason(request.getParameter("decisionRefusereason"));
+					RiskCustomer.setCREATED_TIME(new Date());
+					RiskCustomer.setCustManagerId(request.getParameter("custManagerId"));
+					RiskCustomer.setId(IDGenerator.generateID());
+					int e=SdwUserService.insertRiskSdwUser(RiskCustomer);
+					if(e>0){
+						returnMap.put("message", "提交成功,进件已被拒绝");
+					}else{
+						returnMap.put("message", "提交失败");
+					}
+				}else{
+					returnMap.put("message", "提交失败");
+				}
+			}else{
+				returnMap.put("message", "提交失败");
+			}
+		}else if(CustomerSpUser.getStatus().equals("3")){
+			int a=UserService.addSpUser1(CustomerSpUser);
+			UserService.updateSpBh("3", request.getParameter("id"));
+			IntoPieces.setStatus("returnedToFirst");
+			IntoPieces.setId(request.getParameter("id"));
+			IntoPieces.setFallBackReason(request.getParameter("decisionRefusereason"));
+			IntoPieces.setUserId(userId);
+			IntoPieces.setCreatime(new Date());
+			int c=SdwUserService.updateCustormerInfoSdwUser(IntoPieces);
+			if(c>0){
+				int d=SdwUserService.updateCustormerProSdwUser(IntoPieces);
+				if(d>0){
+					returnMap.put("message", "提交成功,进件已被退回");
+				}else{
+					returnMap.put("message", "提交失败");
+				}
+			}
+		}else if(CustomerSpUser.getStatus().equals("1")){
+			//查询当前审贷委是否为第一个审贷的人
+			List<CustomerSpUser> splists=UserService.findsplistsbycapid(request.getParameter("id"),userId);
+			//如果不是，比较利息，金额，期限
+			if(splists.size()>0){
+				int a=UserService.addSpUser1(CustomerSpUser);
+			//如果都相同，进件直接通过
+				 if(splists.get(0).getSpje().equals(request.getParameter("decisionAmount")) && 
+						 splists.get(0).getSplv().equals(request.getParameter("decisionRate")) &&
+						 splists.get(0).getSpqx().equals(request.getParameter("qx"))){
+						IntoPieces.setFinal_approval(request.getParameter("decisionAmount"));
+						IntoPieces.setStatus("approved");
+						IntoPieces.setId(request.getParameter("id"));
+						IntoPieces.setCreatime(new Date());
+						int b=SdwUserService.updateCustormerInfoSdwUser(IntoPieces);
+						if(b>0){
+							SdwUserService.updateCSZTs(userId,new Date(),request.getParameter("decisionAmount"),request.getParameter("id"));  //修改进件初审节点
+							returnMap.put("message", "提交成功,进件已经通过");
+						}else{
+							returnMap.put("message", "提交失败");
+						}
+				 }else{
+					 //如果不同删除前面审贷委的审贷
+					 CustomerSpUser spuser=new CustomerSpUser();
+					 spuser.setCapid(request.getParameter("id"));
+					 spuser.setSpuserid(splists.get(0).getSpuserid());
+					 spuser.setBeizhu("");
+					 spuser.setSptime(null);
+					 spuser.setJlyys("");
+					 spuser.setSpje("");
+					 spuser.setSplv("");
+					 spuser.setStatus("0");
+					 spuser.setSpqx("");
+					 UserService.addSpUser1(spuser);
+					 returnMap.put("message", "你的审批与前审贷委不同，需要重新审批");
+				 }
+			}else{
+				int a=UserService.addSpUser1(CustomerSpUser);
+				if(a>0){
+					returnMap.put("message", "提交成功,等待下个审贷委审批");
+				}else{
+					returnMap.put("message", "提交失败");
+				}
+			}
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		return returnMap;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * 当前审贷委审批
 	 * @param RiskCustomer
 	 * @param CustormerSdwUser
 	 * @param IntoPieces
 	 * @param request
 	 * @return
 	 */
-	@ResponseBody
+	/*@ResponseBody
 	@RequestMapping(value="insertsdjycs.json", method = { RequestMethod.GET })
 	public  JRadReturnMap insertsdjyPCcs(@ModelAttribute CustomerSpUser CustomerSpUser,HttpServletRequest request) {
 		JRadReturnMap returnMap = new JRadReturnMap();
@@ -228,8 +408,8 @@ public class ryCustormerSdwUserPcController extends BaseController{
  							CustomerSpUser.setSplv("");
  							CustomerSpUser.setStatus("0");
  							CustomerSpUser.setSpqx("");
- 							/*CustomerSpUser.setCapid(appId);
- 							CustomerSpUser.setSpuserid(uId);*/
+ 							CustomerSpUser.setCapid(appId);
+ 							CustomerSpUser.setSpuserid(uId);
  							for (String sysuserid2 : sysuserid) {
  								CustomerSpUser.setSpuserid(sysuserid2);
  								UserService.addSpUser1(CustomerSpUser);
@@ -250,8 +430,8 @@ public class ryCustormerSdwUserPcController extends BaseController{
 							CustomerSpUser.setSplv("");
 							CustomerSpUser.setStatus("0");
 							CustomerSpUser.setSpqx("");
-							/*CustomerSpUser.setCapid(appId);
-							CustomerSpUser.setSpuserid(uId);*/  
+							CustomerSpUser.setCapid(appId);
+							CustomerSpUser.setSpuserid(uId);  
 							for (String sysuserid2 : sysuserid) {
 								CustomerSpUser.setSpuserid(sysuserid2);
 								UserService.addSpUser1(CustomerSpUser);
@@ -282,7 +462,7 @@ public class ryCustormerSdwUserPcController extends BaseController{
 				CustomerSpUser.setSplv("");
 				CustomerSpUser.setStatus("2");
 				CustomerSpUser.setSpqx("");
-				/*CustomerSpUser.setSpuserid(uId);*/
+				CustomerSpUser.setSpuserid(uId);
 				for (String sysuserid1 : sysuserid) {
 					if(!userId.equals(sysuserid1)){
 						CustomerSpUser.setSpuserid(sysuserid1);
@@ -321,7 +501,7 @@ public class ryCustormerSdwUserPcController extends BaseController{
 				//退回有所不同  确认有退回情况后自己存一个 三个审贷委必须都重新审贷所以包括自己也得算在其中
 				//修改sp，info表
 				//删除三个人的审贷结论
-				/*CustomerSpUser.setBeizhu("");
+				CustomerSpUser.setBeizhu("");
 				CustomerSpUser.setSptime(null);
 				CustomerSpUser.setJlyys("");
 				CustomerSpUser.setSpje("");
@@ -340,7 +520,7 @@ public class ryCustormerSdwUserPcController extends BaseController{
 				IntoPieces.setId(request.getParameter("id"));
 				IntoPieces.setCreatime(new Date());
 				SdwUserService.updateCustormerInfoSdwUser(IntoPieces);
-				returnMap.put("message", "有退回情况发生，删除三个人的审贷结论重新审批!");*/
+				returnMap.put("message", "有退回情况发生，删除三个人的审贷结论重新审批!");
 				CustomerSpUser.setBeizhu("已退回至客户经理处，请到查看进件处点击该客户补充资料并重新递交！");
 				CustomerSpUser.setSptime(null);
 				CustomerSpUser.setJlyys("已退回至客户经理处，请到查看进件处点击该客户补充资料并重新递交！");
@@ -348,8 +528,8 @@ public class ryCustormerSdwUserPcController extends BaseController{
 				CustomerSpUser.setSplv("");
 				CustomerSpUser.setStatus("0");
 				CustomerSpUser.setSpqx("");
-				/*CustomerSpUser.setCapid(appId);
-				CustomerSpUser.setSpuserid(uId);  */
+				CustomerSpUser.setCapid(appId);
+				CustomerSpUser.setSpuserid(uId);  
 				for (String sysuserid2 : sysuserid) {
 					if(!userId.equals(sysuserid2)){
 						CustomerSpUser.setSpuserid(sysuserid2);
@@ -378,7 +558,7 @@ public class ryCustormerSdwUserPcController extends BaseController{
 			}
 			
 		return returnMap;
-}
+}*/
 			
 /**
 	 * 当前审贷委审批

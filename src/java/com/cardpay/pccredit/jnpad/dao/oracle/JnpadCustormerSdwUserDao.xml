@@ -169,15 +169,18 @@
 </insert>
 
 <insert id="insertCsJl" parameterType="java.lang.Integer" >
-   insert into T_APP_MANAGER_AUDIT_LOG (id,APPLICATION_ID,AUDIT_TYPE,USER_ID_1,USER_ID_2,USER_ID_3,EXAMINE_AMOUNT,EXAMINE_LV,qx,USER_ID_4) 
-			values (#{id},#{applicationId},#{auditType},#{userId_1},#{userId_2},#{userId_3},#{examineAmount},#{examineLv},#{qx},#{userId_4})
+   insert into T_APP_MANAGER_AUDIT_LOG (id,APPLICATION_ID,AUDIT_TYPE,USER_ID_1,USER_ID_2,USER_ID_3,EXAMINE_AMOUNT,EXAMINE_LV,qx,USER_ID_4,CREATED_TIME) 
+			values (#{id},#{applicationId},#{auditType},#{userId_1},#{userId_2},#{userId_3},#{examineAmount},#{examineLv},#{qx},#{userId_4},#{time})
 </insert>
 
 <select id="selectaId" resultMap="selectAUDITLOG">
   select id as applicationId from CUSTOMER_APPLICATION_INFO where 
   CUSTOMER_ID=#{cid} and PRODUCT_ID=#{pid}
 </select>
-
+<select id="selectAppId" resultMap="selectAUDITLOG">
+  select * from CUSTOMER_APPLICATION_INFO where 
+  APPLICATION_ID=#{id}
+</select>
 <select id="selectSDH" resultMap="IntoPieces">
 <!-- 
  select c.ID as id,c.CUSTOMER_ID as customerId,c.PRODUCT_ID as productId,s.display_name as displayName,p.product_name as productName,b.card_id as cardId
@@ -611,4 +614,10 @@ where c.id=#{appId}
   	from CUSTOMER_APPLICATION_SDH sdh,sys_user u
   	where  1=1 and sdh.sdwjly=u.id  and sdh.capid=#{appId}
 	</select>
+	
+	
+	
+	
+	
+	
 </mapper> 

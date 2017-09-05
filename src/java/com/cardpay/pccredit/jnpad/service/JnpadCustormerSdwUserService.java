@@ -24,7 +24,9 @@ public class JnpadCustormerSdwUserService {
 	public int insertCustormerSdwUser(CustormerSdwUser sdwuser){
 		return SdwUserDao.insertCustormerSdwUser(sdwuser);
 	}
-	
+	public AppManagerAuditLog selectAppId(@Param(value = "id")String id){
+		return SdwUserDao.selectAppId(id);
+	}
 	public int insertCsJl(AppManagerAuditLog sdwuser){
 		return SdwUserDao.insertCsJl(sdwuser);
 	}

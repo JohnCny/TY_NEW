@@ -148,7 +148,7 @@ public class CustormerSdwUserPcController extends BaseController{
 			returnMap.put("message", "提交成功");
 			String capid=request.getParameter("id");
 			//判断如果三个sp中都有相关金额则说明三个审贷委都已经审批完成
-			List<CustomerSpUser>splists=UserService.findsplistsbycapid(capid);
+			List<CustomerSpUser>splists=UserService.findsplistsbycapid1(capid);
 			String[]spje=new String[3];
 			String[]sysuserid=new String[3];
 			for (int i = 0; i < splists.size(); i++) {

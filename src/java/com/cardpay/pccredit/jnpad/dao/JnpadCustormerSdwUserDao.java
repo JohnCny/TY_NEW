@@ -17,6 +17,7 @@ public interface JnpadCustormerSdwUserDao {
 	int insertCustormerSdwUser(CustormerSdwUser sdwuser);
 	//添加初审信息
 	int insertCsJl(AppManagerAuditLog sdwuser);
+	AppManagerAuditLog selectAppId(@Param(value = "id")String id);
 	//查询进件ID
 	AppManagerAuditLog selectaId(@Param(value = "cid")String cid,@Param(value = "pid")String pid);
 	//查询当前客户经理审贷信息
