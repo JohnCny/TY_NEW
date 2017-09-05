@@ -27,6 +27,9 @@ public class JnpadSpUserService {
 	public int addSpUser1(CustomerSpUser CustomerSpUser){
 		return UserDao.addSpUser1(CustomerSpUser);
 	}
+	public void updateSpBh(@Param("status") String status,@Param("capid") String capid){
+		UserDao.updateSpBh(status, capid);
+	}
 	public List<CustomerSpUser>findspUser(){
 		return UserDao.findspUser();
 	}
@@ -68,8 +71,13 @@ public class JnpadSpUserService {
 		return UserDao.findUserResult1(capid);
 	}
 	public List<com.cardpay.pccredit.jnpad.model.CustomerSpUser> findsplistsbycapid(
+			String capid,String userId) {
+		// TODO Auto-generated method stub
+		return UserDao.findsplistsbycapid(capid,userId);
+	}
+	public List<com.cardpay.pccredit.jnpad.model.CustomerSpUser> findsplistsbycapid1(
 			String capid) {
 		// TODO Auto-generated method stub
-		return UserDao.findsplistsbycapid(capid);
+		return UserDao.findsplistsbycapid1(capid);
 	}
 }

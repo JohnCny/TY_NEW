@@ -225,11 +225,6 @@ public class ryIntopiecesDecisionController extends BaseController {
 		CustomerInfor  customerInfor  = intoPiecesService.findCustomerManager(customerApplicationInfo.getCustomerId());
 		AppManagerAuditLog result=SdwUserService.selectCSJLAPC(appId,uId);
 		JnpadCsSdModel sdwinfo=SdwUserService.findCsSds(appId,uId);
-		/*//拒绝
-		JnpadCsSdModel jjyj=SdwUserService.findCsSdRefuses(appId);
-		//回退
-		JnpadCsSdModel htyj=SdwUserService.findCsSdBlacks(appId);
-		*/
 		JRadModelAndView mv = new JRadModelAndView("/ryintopieces/input_decision", request);
 		mv.addObject("customerApplicationInfo", customerApplicationInfo);
 		mv.addObject("producAttribute", producAttribute);
@@ -237,9 +232,7 @@ public class ryIntopiecesDecisionController extends BaseController {
 		mv.addObject("appManagerAuditLog", appManagerAuditLog.get(0));
 		mv.addObject("custManagerId", customerInfor.getUserId());
 		mv.addObject("result", result);
-		mv.addObject("sdwinfo", sdwinfo);/*
-		mv.addObject("jjyj", jjyj);
-		mv.addObject("htyj", htyj);*/
+		mv.addObject("sdwinfo", sdwinfo);
 		return mv;
 	}
 	

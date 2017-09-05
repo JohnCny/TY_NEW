@@ -387,6 +387,7 @@
           product_attribute p,BASIC_CUSTOMER_INFORMATION b
           where c.id=t.capid
           and s.id=b.user_id and b.id=c.customer_id and c.product_id=p.id 
+             and t.status='0'
           and (t.SPUSERID=#{userId}) 
          <!--  and p.product_name!='融耀卡' -->
 		 <if test="cardId!=null and cardId!=''">
@@ -432,6 +433,7 @@
           product_attribute p,BASIC_CUSTOMER_INFORMATION b
           where c.id=t.capid
           and s.id=b.user_id and b.id=c.customer_id and c.product_id=p.id 
+            and t.status='0'
           and (t.SPUSERID=#{userId}) 
             <!-- and p.product_name!='融耀卡' -->
 		 <if test="cardId!=null and cardId!=''">

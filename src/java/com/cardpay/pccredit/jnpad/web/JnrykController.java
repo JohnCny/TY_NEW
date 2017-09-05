@@ -349,6 +349,7 @@ public String dqsp(@ModelAttribute CustomerSpUser CustomerSpUser,HttpServletRequ
 	Map<String,Object> map = new LinkedHashMap<String,Object>();
 	IntoPieces IntoPieces=new IntoPieces();
 	String userId=request.getParameter("userId");
+	CustomerSpUser.setId(IDGenerator.generateID());
 	CustomerSpUser.setSpje(request.getParameter("decisionAmount"));
 	CustomerSpUser.setSptime(new Date());
 	CustomerSpUser.setSpqx(request.getParameter("qx"));
@@ -364,180 +365,111 @@ public String dqsp(@ModelAttribute CustomerSpUser CustomerSpUser,HttpServletRequ
 	}else if(request.getParameter("status").equals("returnedToFirst")){
 		CustomerSpUser.setStatus("3");
 	}
-	System.out.println(CustomerSpUser.getStatus());
-	int a=UserService.addSpUser1(CustomerSpUser);
-	if(a>0){
-		map.put("message", "提交成功");
-		String capid=request.getParameter("id");
-		//判断如果三个sp中都有相关金额则说明三个审贷委都已经审批完成
-		List<CustomerSpUser>splists=UserService.findsplistsbycapid(capid);
-		String[]spje=new String[2];
-		String[]sysuserid=new String[2];
-		for (int i = 0; i < splists.size(); i++) {
-			spje[i]=splists.get(i).getSpje();
-			sysuserid[i]=splists.get(i).getSpuserid();
-		}
-		if(spje[0]!=null&&spje[0]!=""
-				&&spje[1]!=null&&spje[1]!=""){ 
-			
-			String sp1=splists.get(0).getStatus();
-			String sp2=splists.get(1).getStatus();
-			if("1".equals(sp1)&&
-					"1".equals(sp2)){ 
-				sp1=splists.get(0).getSpje();
-				sp2=splists.get(1).getSpje();
-					if(sp1.equals(sp2)){    //金额相同
-						sp1=splists.get(0).getSplv();
-						sp2=splists.get(1).getSplv();
-						if(sp1.equals(sp2)){   //利率相同
-							IntoPieces.setFinal_approval(request.getParameter("decisionAmount"));
-							IntoPieces.setStatus("approved");
-							IntoPieces.setId(request.getParameter("id"));
-							IntoPieces.setCreatime(new Date());
-							int b=SdwUserService.updateCustormerInfoSdwUser(IntoPieces);   //修改进件表信息
-							String applicationId=request.getParameter("id");
-							Date times=new Date();
-							String money=request.getParameter("decisionAmount");
-							SdwUserService.updateCSZTs(userId,times,money,applicationId);  //修改进件初审节点
-							if(b>0){
-								map.put("message", "提交成功");  //如果成功添加sp,修改进件结论,修改初审结论
-							}else{
-								map.put("message", "提交失败");
-							}
-						}else{
-							//利率不同删除三个人的审贷结论
-							//CustomerSpUser CustomerSpUser=new CustomerSpUser();
-							CustomerSpUser.setBeizhu("");
-							CustomerSpUser.setSptime(null);
-							CustomerSpUser.setJlyys("");
-							CustomerSpUser.setSpje("");
-							CustomerSpUser.setSplv("");
-							CustomerSpUser.setStatus("0");
-							CustomerSpUser.setSpqx("");
-							/*CustomerSpUser.setCapid(appId);
-							CustomerSpUser.setSpuserid(uId);*/
-							for (String sysuserid2 : sysuserid) {
-								CustomerSpUser.setSpuserid(sysuserid2);
-								UserService.addSpUser1(CustomerSpUser);
-							}
-							
-							IntoPieces.setFinal_approval("");
-							IntoPieces.setStatus("audit");
-							IntoPieces.setId(request.getParameter("id"));
-							IntoPieces.setCreatime(new Date());
-							SdwUserService.updateCustormerInfoSdwUser(IntoPieces);
-							map.put("message", "利率不同,删除二人的审贷结论重新审批!");
-						}
-					}else{
-						//金额不同删除三个人的审贷结论
-						CustomerSpUser.setBeizhu("");
-						CustomerSpUser.setSptime(null);
-						CustomerSpUser.setJlyys("");
-						CustomerSpUser.setSpje("");
-						CustomerSpUser.setSplv("");
-						CustomerSpUser.setStatus("0");
-						CustomerSpUser.setSpqx("");
-						/*CustomerSpUser.setCapid(appId);
-						CustomerSpUser.setSpuserid(uId);*/  
-						for (String sysuserid2 : sysuserid) {
-							CustomerSpUser.setSpuserid(sysuserid2);
-							UserService.addSpUser1(CustomerSpUser);
-						}
-						IntoPieces.setFinal_approval("");
-						IntoPieces.setStatus("audit");
-						IntoPieces.setId(request.getParameter("id"));
-						IntoPieces.setCreatime(new Date());
-						SdwUserService.updateCustormerInfoSdwUser(IntoPieces);
-						map.put("message", "金额不同,删除三个人的审贷结论重新审批!");
-					}  
-			}
-		}else  if("2".equals(CustomerSpUser.getStatus())){
-			//因为进件被拒绝之后不用重新审批 所以自己存一个再给其他两个审贷委修改一下 
-			//退回有所不同  确认有退回情况后自己存一个 三个审贷委必须都重新审贷所以包括自己也得算在其中
-			//修改sp，info表
-			IntoPieces.setStatus("refuse");
-			IntoPieces.setCreatime(new Date());
-			IntoPieces.setId(request.getParameter("id"));
-			IntoPieces.setUserId(userId);
-			IntoPieces.setREFUSAL_REASON(request.getParameter("decisionRefusereason"));
-			int c=SdwUserService.updateCustormerInfoSdwUser(IntoPieces);
-			//因为一人被拒绝则其他两位审贷委也不用审l 所以也要改其他两个审贷委的sp表
-			CustomerSpUser.setBeizhu("已经有审贷委审批拒绝");
-			CustomerSpUser.setSptime(null);
-			CustomerSpUser.setJlyys("已经有审贷委审批拒绝");
-			CustomerSpUser.setSpje("");
-			CustomerSpUser.setSplv("");
-			CustomerSpUser.setStatus("2");
-			CustomerSpUser.setSpqx("");
-			/*CustomerSpUser.setSpuserid(uId);*/
-			for (String sysuserid1 : sysuserid) {
-				if(!userId.equals(sysuserid1)){
-					CustomerSpUser.setSpuserid(sysuserid1);
-					UserService.addSpUser1(CustomerSpUser);
-				}
-			}
-			if(c>0){
-				int d=SdwUserService.updateCustormerProSdwUser(IntoPieces);
-				if(d>0){
-					RiskCustomer RiskCustomer=new RiskCustomer();
-					RiskCustomer.setCustomerId(request.getParameter("customerId"));
-					RiskCustomer.setProductId(request.getParameter("productId"));
-					RiskCustomer.setRiskCreateType("manual");
-					RiskCustomer.setRefuseReason(request.getParameter("decisionRefusereason"));
-					RiskCustomer.setCREATED_TIME(new Date());
-					RiskCustomer.setUserId(userId);
-					RiskCustomer.setCustManagerId(request.getParameter("custManagerId"));
-					String pid=null;
-					if(null==pid){
-						pid=UUID.randomUUID().toString();
-					}
-					RiskCustomer.setId(pid);
-					int e=SdwUserService.insertRiskSdwUser(RiskCustomer);
-					//拒绝时修改节点状态
-					String applicationId=request.getParameter("id");
-					Date times=new Date();
-					SdwUserService.updateHistorys(userId,times,applicationId);
-					if(e>0){
-						map.put("message", "提交成功");
-					}else{
-						map.put("message", "提交失败");
-					}
-				}
-			}
-		}else if("3".equals(CustomerSpUser.getStatus())){
-			CustomerSpUser.setBeizhu("已退回至客户经理处，请到查看进件处点击该客户补充资料并重新递交！");
-			CustomerSpUser.setSptime(null);
-			CustomerSpUser.setJlyys("已退回至客户经理处，请到查看进件处点击该客户补充资料并重新递交！");
-			CustomerSpUser.setSpje("");
-			CustomerSpUser.setSplv("");
-			CustomerSpUser.setStatus("0");
-			CustomerSpUser.setSpqx("");
-			for (String sysuserid2 : sysuserid) {
-				if(!userId.equals(sysuserid2)){
-					CustomerSpUser.setSpuserid(sysuserid2);
-					UserService.addSpUser1(CustomerSpUser);
-				}
-			}
-			IntoPieces.setStatus("returnedToFirst");
-			IntoPieces.setId(request.getParameter("id"));
-			IntoPieces.setFallBackReason(request.getParameter("decisionRefusereason"));
-			IntoPieces.setUserId(userId);
-			IntoPieces.setCreatime(new Date());
-			int e=SdwUserService.updateCustormerInfoSdwUser(IntoPieces);
-			//退回时修改节点状态
-			String applicationId=request.getParameter("id");
-			Date times=new Date();
-			SdwUserService.updateHistory(userId,times,applicationId);
-			if(e>0){
-				int f=SdwUserService.updateCustormerProSdwUser(IntoPieces);
-				if(f>0){
-					map.put("message", "提交成功");	
+	
+	//如果当前审贷委提出意见为拒绝
+	if(CustomerSpUser.getStatus().equals("2")){
+		int a=UserService.addSpUser1(CustomerSpUser);
+		UserService.updateSpBh("2", request.getParameter("id"));
+		IntoPieces.setStatus("refuse");
+		IntoPieces.setCreatime(new Date());
+		IntoPieces.setId(request.getParameter("id"));
+		IntoPieces.setUserId(request.getParameter(userId));
+		IntoPieces.setREFUSAL_REASON(request.getParameter("decisionRefusereason"));
+		int c=SdwUserService.updateCustormerInfoSdwUser(IntoPieces);
+		if(c>0){
+			int d=SdwUserService.updateCustormerProSdwUser(IntoPieces);
+			if(d>0){
+				RiskCustomer RiskCustomer=new RiskCustomer();
+				RiskCustomer.setCustomerId(request.getParameter("customerId"));
+				RiskCustomer.setProductId(request.getParameter("productId"));
+				RiskCustomer.setRiskCreateType("manual");
+				RiskCustomer.setRefuseReason(request.getParameter("decisionRefusereason"));
+				RiskCustomer.setCREATED_TIME(new Date());
+				RiskCustomer.setCustManagerId(request.getParameter("custManagerId"));
+				RiskCustomer.setId(IDGenerator.generateID());
+				int e=SdwUserService.insertRiskSdwUser(RiskCustomer);
+				if(e>0){
+					map.put("message", "提交成功,进件已被拒绝");
 				}else{
 					map.put("message", "提交失败");
 				}
+			}else{
+				map.put("message", "提交失败");
+			}
+		}else{
+			map.put("message", "提交失败");
+		}
+	}else if(CustomerSpUser.getStatus().equals("3")){
+		int a=UserService.addSpUser1(CustomerSpUser);
+		UserService.updateSpBh("3", request.getParameter("id"));
+		IntoPieces.setStatus("returnedToFirst");
+		IntoPieces.setId(request.getParameter("id"));
+		IntoPieces.setFallBackReason(request.getParameter("decisionRefusereason"));
+		IntoPieces.setUserId(userId);
+		IntoPieces.setCreatime(new Date());
+		int c=SdwUserService.updateCustormerInfoSdwUser(IntoPieces);
+		if(c>0){
+			int d=SdwUserService.updateCustormerProSdwUser(IntoPieces);
+			if(d>0){
+				map.put("message", "提交成功,进件已被退回");
+			}else{
+				map.put("message", "提交失败");
 			}
 		}
+	}else if(CustomerSpUser.getStatus().equals("1")){
+		//查询当前审贷委是否为第一个审贷的人
+		List<CustomerSpUser> splists=UserService.findsplistsbycapid(request.getParameter("id"),userId);
+		//如果不是，比较利息，金额，期限
+		if(splists.size()>0){
+			int a=UserService.addSpUser1(CustomerSpUser);
+		//如果都相同，进件直接通过
+			 if(splists.get(0).getSpje().equals(request.getParameter("decisionAmount")) && 
+					 splists.get(0).getSplv().equals(request.getParameter("decisionRate")) &&
+					 splists.get(0).getSpqx().equals(request.getParameter("qx"))){
+					IntoPieces.setFinal_approval(request.getParameter("decisionAmount"));
+					IntoPieces.setStatus("approved");
+					IntoPieces.setId(request.getParameter("id"));
+					IntoPieces.setCreatime(new Date());
+					int b=SdwUserService.updateCustormerInfoSdwUser(IntoPieces);
+					if(b>0){
+						SdwUserService.updateCSZTs(userId,new Date(),request.getParameter("decisionAmount"),request.getParameter("id"));  //修改进件初审节点
+						map.put("message", "提交成功,进件已经通过");
+					}else{
+						map.put("message", "提交失败");
+					}
+			 }else{
+				 //如果不同删除前面审贷委的审贷
+				 CustomerSpUser spuser=new CustomerSpUser();
+				 spuser.setCapid(request.getParameter("id"));
+				 spuser.setSpuserid(splists.get(0).getSpuserid());
+				 spuser.setBeizhu("");
+				 spuser.setSptime(null);
+				 spuser.setJlyys("");
+				 spuser.setSpje("");
+				 spuser.setSplv("");
+				 spuser.setStatus("0");
+				 spuser.setSpqx("");
+				 UserService.addSpUser1(spuser);
+				 map.put("message", "你的审批与前审贷委不同，需要重新审批");
+			 }
+		}else{
+			int a=UserService.addSpUser1(CustomerSpUser);
+			if(a>0){
+				map.put("message", "提交成功,等待下个审贷委审批");
+			}else{
+				map.put("message", "提交失败");
+			}
 		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	JsonConfig jsonConfig = new JsonConfig();
 	jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 	JSONObject json = JSONObject.fromObject(map, jsonConfig);

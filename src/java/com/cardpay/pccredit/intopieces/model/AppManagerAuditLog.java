@@ -2,6 +2,8 @@ package com.cardpay.pccredit.intopieces.model;
 
 import com.wicresoft.jrad.base.database.model.BusinessModel;
 import com.wicresoft.jrad.base.database.model.ModelParam;
+
+import oracle.sql.DATE;
 /*
  * 审批记录（审批客户经理、辅调客户经理记录）
  */
@@ -33,6 +35,13 @@ public class AppManagerAuditLog extends BusinessModel {
 	private String applyQuota;
 	private String PRODCREDITRANGE;
 	private String FINAL_APPROVAL;
+	private DATE time;
+	public DATE getTime() {
+		return time;
+	}
+	public void setTime(DATE time) {
+		this.time = time;
+	}
 	public String getFINAL_APPROVAL() {
 		return FINAL_APPROVAL;
 	}

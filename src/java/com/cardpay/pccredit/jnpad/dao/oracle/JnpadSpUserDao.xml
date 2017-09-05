@@ -28,6 +28,12 @@
 			where capid=#{capid} and spuserid=#{spuserid}
 </update>
 
+
+<update id="updateSpBh"  >
+			update  CUSTOMER_SP set status=#{status}
+			where capid=#{capid} 
+</update>
+
 <update id="deleteSpUser" >
 		update  CUSTOMER_SP set beizhu='',sptime='',jlyy='',spje='',splv='',status='0',spqx=''
 			where capid=#{capid} 
@@ -69,7 +75,7 @@ and cc.status='audit'
 </select>
 
 <select id="findSpHjy" resultMap="CustomerSpUser">
-select c.spuserid as spuserid, c.pid as pid ,c.cid as cid, c.beizhu as beizhu,c.sptime as sptime,c.jlyy as jlyys,c.time as time,c.spje as spje,c.splv as splv,c.status as status,c.spqx as spqx from CUSTOMER_SP c
+select c.spuserid as spuserid, c.pid as pid ,c.cid as cid, c.beizhu as beizhu,c.sptime as sptime,c.-jlyy as jlyys,c.time as time,c.spje as spje,c.splv as splv,c.status as status,c.spqx as spqx from CUSTOMER_SP c
 where c.sptime is not null
 and c.capid=#{capid}
 AND c.spuserid!=#{userid}
@@ -85,6 +91,9 @@ update WF_STATUS_QUEUE_RECORD SET EXAMINE_RESULT=#{examineResult} where ID= #{id
 </update>
 
 <select id="findsplistsbycapid" resultMap="CustomerSpUser">
-	select * from CUSTOMER_SP sp where sp.capid=#{capid}
+	select * from CUSTOMER_SP sp where sp.capid=#{capid} and sp.spuserid != #{userId} and sp.sptime is not null
+</select>
+<select id="findsplistsbycapid1" resultMap="CustomerSpUser">
+	select * from CUSTOMER_SP sp where sp.capid=#{capid} 
 </select>
 </mapper> 

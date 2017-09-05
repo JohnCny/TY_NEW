@@ -518,8 +518,33 @@ public class JnpadCustormerSdwUserController {
 }
 	
 	
-	
-	
+	/**
+	 * 查询荣耀卡审贷会纪要
+	 * @param JnpadCsSdModel
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/ipad/findRyCsSd.json", method = {RequestMethod.GET })
+	public String findRyCsSd(@ModelAttribute JnpadCsSdModel JnpadCsSdModel,HttpServletRequest request) {
+		Map<String,Object> map = new LinkedHashMap<String,Object>();
+		String id=request.getParameter("id");
+		AppManagerAuditLog log=SdwUserService.selectAppId(id);
+		if(log!=null){
+			map.put("count", "0");
+		}else{
+			map.put("count", "1");
+			map.put("AppManagerAuditLog", log);
+			
+			//查询复审岗位的审批
+			
+			
+		}
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+}
 	
 	
 	

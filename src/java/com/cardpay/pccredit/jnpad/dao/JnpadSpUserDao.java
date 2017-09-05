@@ -12,6 +12,7 @@ import com.wicresoft.util.annotation.Mapper;
 public interface JnpadSpUserDao {
 	int addSpUser(CustomerSpUser CustomerSpUser);
 	int addSpUser1(CustomerSpUser CustomerSpUser);
+	void updateSpBh(@Param("status") String status,@Param("capid") String capid);
 	List<CustomerSpUser>findspUser();
 	List<CustomerSpUser>findspUser2(@Param("capid") String capid);
 	List<CustomerSpUser>findspUser3(@Param("capid") String capid);
@@ -22,5 +23,6 @@ public interface JnpadSpUserDao {
 	List<CustomerSpUser>findSpHjy(@Param("capid") String capid,@Param("userid") String userid);
 	List<CustomerSpUser>findUserResult(@Param("spuserid") String spuserid);
 	List<CustomerSpUser>findUserResult1(@Param("capid") String capid);
-	List<CustomerSpUser> findsplistsbycapid(String capid);
+	List<CustomerSpUser> findsplistsbycapid(@Param("capid") String capid,@Param("userId") String userId);
+	List<CustomerSpUser>  findsplistsbycapid1(@Param("capid") String capid);
 }
