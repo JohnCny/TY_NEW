@@ -1575,33 +1575,27 @@ public class CustomerInforService {
 	 * @return
 	 * @throws Exception 
 	 */
-	public  void saveRyglDataFile(String fileName,String date) {
-		try {
+	public  void saveRyglDataFile(String fileName,String date) throws Exception {
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
 			// 解析数据文件配置
 			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/tyCustomerRygl.xml");
-
 			// 解析”帐单记录表“数据文件
 			List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList,date);
-			int count=0;
+			//int count=0;
 			for(Map<String, Object> map : datas){
-				count++;
-//				System.out.println(count);
+				//count++;
+				//System.out.println(count);
 				// 保存数据
 				//先查询人员管理参数表，存在则更新否则插入
-				String sql = "select * from ty_customer_rygl where dm='"+map.get("dm").toString().trim()+"'";
-				List<CustomerFirsthendRygl> list = commonDao.queryBySql(CustomerFirsthendRygl.class, sql, null);
-				if(list.size()>0){
-				}else{
-					customerInforDao.insertCustomerRygl(map);
-				}
-				
+				//String sql = "select count(*) from ty_customer_rygl where dm='"+map.get("dm").toString().trim()+"'";
+				//List<CustomerFirsthendRygl> list = commonDao.queryBySql(CustomerFirsthendRygl.class, sql, null);
+				//if(list.size()>0){
+				//}else{
+				customerInforDao.insertCustomerRygl(map);
+				//}
 			}
 			//释放空间
 			datas=null;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 	
 	
@@ -1647,21 +1641,27 @@ public class CustomerInforService {
 	 * @return
 	 * @throws Exception 
 	 */
-	public  void saveBaseDataFile(String fileName,String date) {
-		try {
+	public  void saveBaseDataFile(String fileName,String date) throws Exception{
+		    List<Map<String, Object>> insertdatas = new ArrayList<Map<String,Object>>();
+		   
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
 			// 解析数据文件配置
 			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/tyCustomerBase.xml");
 
 			// 解析”客户基础表“数据文件
 			List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList,date);
-			int count=0;
+			//int count=0;
 			for(Map<String, Object> map : datas){
-				count++;
-//				System.out.println(count);
+				// 增加判断是否是太原小微贷客户  1.签发机构  QFJG  2.主办机构 ZBJG
+				//System.out.println("=========================:"+map.get("zbjg"));
+				if(!"14010109200".equals(map.get("zbjg"))){
+					continue;
+				}
+				//count++;
+				// System.out.println(count);
 				// 保存数据
-				//先查询客户原始表，存在则更新否则插入(更新原始信息表)
-				String sql = "select * from ty_customer_base where khnm='"+map.get("khnm").toString()+"'";
+				// 先查询客户原始表，存在则更新否则插入(更新原始信息表)
+				String sql = "select id from ty_customer_base where khnm='"+map.get("khnm").toString()+"'";
 				List<CustomerFirsthendBase> list = commonDao.queryBySql(CustomerFirsthendBase.class, sql, null);
 				if(list.size()>0){
 					customerInforDao.updateCustomerBase(map);
@@ -1675,9 +1675,12 @@ public class CustomerInforService {
 					//所以采用kkh_tkmx的khjl字段 
 					String sql1 = "select Khjl from ty_repay_tkmx tkmx where tkmx.khh='"+map.get("khnm").toString()+"'";
 					List<TyRepayTkmx> list1 = commonDao.queryBySql(TyRepayTkmx.class, sql1, null);
-					String khjl = list1.get(0).getKhjl().toString();
+					String khjl = "";
+					if(list1!=null && list1.size()>0){
+					   khjl = list1.get(0).getKhjl().toString();
+					}
 					//先通过标识获取柜员号
-					List<CustomerFirsthendRygl> rygl = commonDao.queryBySql(CustomerFirsthendRygl.class, "select * from ty_customer_rygl where dm='"+khjl.trim()+"'", null);
+					List<CustomerFirsthendRygl> rygl = commonDao.queryBySql(CustomerFirsthendRygl.class, "select ddrq,dldm from ty_customer_rygl where dm='"+khjl.trim()+"'", null);
 					String gyh1 = "";
 					String gyh2 = "";
 					if(rygl.size()>0){
@@ -1692,12 +1695,12 @@ public class CustomerInforService {
 					}
 					//获取客户经理id(由于两个字段都有可能为柜员号，所以两次判断)
 					String user_id=null;
-					List<SystemUser> users = commonDao.queryBySql(SystemUser.class, "select * from sys_user where external_id='"+gyh1+"'", null);
+					List<SystemUser> users = commonDao.queryBySql(SystemUser.class, "select id from sys_user where external_id='"+gyh1+"'", null);
 					//银行工号匹配本系统uuid，存在则替换，不存在则插入银行工号
 					if(users.size()>0){
 						user_id = users.get(0).getId();
 					}else{
-						List<SystemUser> users1 = commonDao.queryBySql(SystemUser.class, "select * from sys_user where external_id='"+gyh2+"'", null);
+						List<SystemUser> users1 = commonDao.queryBySql(SystemUser.class, "select id from sys_user where external_id='"+gyh2+"'", null);
 						if(users1.size()>0){
 							user_id = users1.get(0).getId();
 						}else{
@@ -1716,7 +1719,8 @@ public class CustomerInforService {
 						commonDao.updateObject(info);
 					}
 				}else{
-					customerInforDao.insertCustomerBase(map);
+					//customerInforDao.insertCustomerBase(map);
+					insertdatas.add(map);
 					//同步系统客户主表
 					String card_id = map.get("zjhm").toString();
 					String name = map.get("khmc").toString();
@@ -1727,9 +1731,12 @@ public class CustomerInforService {
 					//所以采用kkh_tkmx的khjl字段 
 					String sql1 = "select Khjl from ty_repay_tkmx tkmx where tkmx.khh='"+map.get("khnm").toString()+"'";
 					List<TyRepayTkmx> list1 = commonDao.queryBySql(TyRepayTkmx.class, sql1, null);
-					String khjl = list1.get(0).getKhjl().toString();
+					String khjl = "";
+					if(list1!=null && list1.size()>0){
+					   khjl = list1.get(0).getKhjl().toString();
+					}
 					//先通过标识获取柜员号
-					List<CustomerFirsthendRygl> rygl = commonDao.queryBySql(CustomerFirsthendRygl.class, "select * from ty_customer_rygl where dm='"+khjl.trim()+"'", null);
+					List<CustomerFirsthendRygl> rygl = commonDao.queryBySql(CustomerFirsthendRygl.class, "select ddrq,dldm from ty_customer_rygl where dm='"+khjl.trim()+"'", null);
 					String gyh1 = "";
 					String gyh2 = "";
 					if(rygl.size()>0){
@@ -1744,12 +1751,12 @@ public class CustomerInforService {
 					}
 					//获取客户经理id(由于两个字段都有可能为柜员号，所以两次判断)
 					String user_id=null;
-					List<SystemUser> users = commonDao.queryBySql(SystemUser.class, "select * from sys_user where external_id='"+gyh1+"'", null);
+					List<SystemUser> users = commonDao.queryBySql(SystemUser.class, "select id from sys_user where external_id='"+gyh1+"'", null);
 					//银行工号匹配本系统uuid，存在则替换，不存在则插入银行工号
 					if(users.size()>0){
 						user_id = users.get(0).getId();
 					}else{
-						List<SystemUser> users1 = commonDao.queryBySql(SystemUser.class, "select * from sys_user where external_id='"+gyh2+"'", null);
+						List<SystemUser> users1 = commonDao.queryBySql(SystemUser.class, "select id from sys_user where external_id='"+gyh2+"'", null);
 						if(users1.size()>0){
 							user_id = users1.get(0).getId();
 						}else{
@@ -1787,11 +1794,228 @@ public class CustomerInforService {
 //				}
 				
 			}
+			insertCustomerBaseMap(insertdatas);
 			//释放空间
+			insertdatas = null;
 			datas=null;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	}
+	
+	// 提升 速度
+	public void insertCustomerBaseMap(List<Map<String, Object>> list){
+		final List<Map<String, Object>> shopsList = list;
+        String sql =    "  insert into ty_customer_base (   ID,"+
+                                                            "CREATE_TIME,"+
+                                                            "KHNM,"+
+                                                            "KHMC,"+
+                                                            "KHH,"+
+                                                            "RH,"+
+                                                            "KHLX,"+
+                                                            "ZJLX,"+
+                                                            "ZJHM,"+
+                                                            "QFJG,"+
+                                                            
+                                                            "SFCQ,"+
+                                                            "QFRQ,"+
+                                                            "DQRQ,"+
+                                                            "GLTX,"+
+                                                            "PQDZ,"+
+                                                            "CSRQ,"+
+                                                            "XB,"  +
+                                                            "GTSPMC,"+
+                                                            "GTYYZZHM,"+
+                                                            "ZXYZSJ,"+
+                                                            
+                                                            
+                                                            "YYDZ,"+
+                                                            "XXDZ,"+
+                                                            "YZBM,"+
+                                                            "HJDZ,"+
+                                                            "JTDH,"+
+                                                            "CZ,"+
+                                                            "SJ,"+
+                                                            "DZYX,"+
+                                                            "GJ,"+
+                                                            "MZ,"+
+                                                            
+                                                            "ZZMM,"+
+                                                            "XL,"+
+                                                            "XW,"+
+                                                            "JKZK,"+
+                                                            "HYZK,"+
+                                                            "XYDJ,"+
+                                                            "XYDJSXRQ,"+
+                                                            "XYDJDQRQ,"+
+                                                            "SFXYH,"+
+                                                            "SXED,"+
+                                                            
+                                                            "SXJZRQ,"+
+                                                            "YXYE,"+
+                                                            "BLDKYE,"+
+                                                            "NNJHSXED,"+
+                                                            "JHYSSXED,"+
+                                                            "ZYYW,"+
+                                                            "CSHY,"+
+                                                            "SFBHZG,"+
+                                                            "SFGD,"+
+                                                            "SFGJGZRY,"+
+                                                            
+                                                            "SFHZ,"+
+                                                            "POXM,"+
+                                                            "POSFZH,"+
+                                                            "PODH,"+
+                                                            "POGZDW,"+
+                                                            "GHJL,"+
+                                                            "ZBJG,"+
+                                                            "DJRY,"+
+                                                            "DJRQ,"+
+                                                            "ZHXGRY,"+
+                                                            
+                                                            "ZHXGSJ,"+
+                                                            "KHJL)"+
+                "    values    (?,        					    "+
+                                                            
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+				"    		    ?,                              "+
+				"    		    ?,                              "+
+				"    		    ?,                              "+
+				"    		    ?,                              "+
+				"    		    ?,                              "+
+				"    		    ?,                              "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+				"    		    ?,                              "+
+				"    		    ?,                              "+
+				"    		    ?,                              "+
+				"    		    ?,                              "+
+				"    		    ?,                              "+
+				"    		    ?,                              "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+				"    		    ?,                              "+
+				"    		    ?,                              "+
+				"    		    ?,                              "+
+				"    		    ?,                              "+
+				"    		    ?,                              "+
+				"    		    ?,                              "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+				"    		    ?,                              "+
+				"    		    ?,                              "+
+				"    		    ?,                              "+
+				"    		    ?,                              "+
+				"    		    ?,                              "+
+				"    		    ?,                              "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+				"    		    ?,                              "+
+				"    		    ?,                              "+
+				"    		    ?,                              "+
+				"    		    ?,                              "+
+				"    		    ?,                              "+
+				"    		    ?,                              "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+				"    		    ?,                              "+
+				"    		    ?,                              "+
+				"    		    ?,                              "+
+				"    		    ?,                              "+
+				"    		    ?,                              "+
+				
+				"    		    ?)                              ";
+				
+        
+        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
+            public void setValues(PreparedStatement ps,int i)throws SQLException
+            {
+                ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("id").toString());
+                ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
+                ps.setString(3, ((Map<String, Object>)shopsList.get(i)).get("khnm").toString());
+                ps.setString(4, ((Map<String, Object>)shopsList.get(i)).get("khmc").toString());
+                ps.setString(5, ((Map<String, Object>)shopsList.get(i)).get("khh").toString());
+                ps.setString(6, ((Map<String, Object>)shopsList.get(i)).get("rh").toString());
+                ps.setString(7, ((Map<String, Object>)shopsList.get(i)).get("khlx").toString());
+                ps.setString(8, ((Map<String, Object>)shopsList.get(i)).get("zjlx").toString());
+                ps.setString(9, ((Map<String, Object>)shopsList.get(i)).get("zjhm").toString());
+                ps.setString(10, ((Map<String, Object>)shopsList.get(i)).get("qfjg").toString());
+                
+                ps.setString(11, ((Map<String, Object>)shopsList.get(i)).get("sfcq").toString());
+                ps.setString(12, ((Map<String, Object>)shopsList.get(i)).get("qfrq").toString());
+                ps.setString(13, ((Map<String, Object>)shopsList.get(i)).get("dqrq").toString());
+                ps.setString(14, ((Map<String, Object>)shopsList.get(i)).get("gltx").toString());
+                ps.setString(15, ((Map<String, Object>)shopsList.get(i)).get("pqdz").toString());
+                ps.setString(16, ((Map<String, Object>)shopsList.get(i)).get("csrq").toString());
+                ps.setString(17, ((Map<String, Object>)shopsList.get(i)).get("xb").toString());
+                ps.setString(18, ((Map<String, Object>)shopsList.get(i)).get("gtspmc").toString());
+                ps.setString(19, ((Map<String, Object>)shopsList.get(i)).get("gtyyzzhm").toString());
+                ps.setString(20, ((Map<String, Object>)shopsList.get(i)).get("zxyzsj").toString());
+                
+                ps.setString(21, ((Map<String, Object>)shopsList.get(i)).get("yydz").toString());
+                ps.setString(22, ((Map<String, Object>)shopsList.get(i)).get("xxdz").toString());
+                ps.setString(23, ((Map<String, Object>)shopsList.get(i)).get("yzbm").toString());
+                ps.setString(24, ((Map<String, Object>)shopsList.get(i)).get("hjdz").toString());
+                ps.setString(25, ((Map<String, Object>)shopsList.get(i)).get("jtdh").toString());
+                ps.setString(26, ((Map<String, Object>)shopsList.get(i)).get("cz").toString());
+                ps.setString(27, ((Map<String, Object>)shopsList.get(i)).get("sj").toString());
+                ps.setString(28, ((Map<String, Object>)shopsList.get(i)).get("dzyx").toString());
+                ps.setString(29, ((Map<String, Object>)shopsList.get(i)).get("gj").toString());
+                ps.setString(30, ((Map<String, Object>)shopsList.get(i)).get("mz").toString());
+                
+                ps.setString(31, ((Map<String, Object>)shopsList.get(i)).get("zzmm").toString());
+                ps.setString(32, ((Map<String, Object>)shopsList.get(i)).get("xl").toString());
+                ps.setString(33, ((Map<String, Object>)shopsList.get(i)).get("xw").toString());
+                ps.setString(34, ((Map<String, Object>)shopsList.get(i)).get("jkzk").toString());
+                ps.setString(35, ((Map<String, Object>)shopsList.get(i)).get("hyzk").toString());
+                ps.setString(36, ((Map<String, Object>)shopsList.get(i)).get("xydj").toString());
+                ps.setString(37, ((Map<String, Object>)shopsList.get(i)).get("xydjsxrq").toString());
+                ps.setString(38, ((Map<String, Object>)shopsList.get(i)).get("xydjdqrq").toString());
+                ps.setString(39, ((Map<String, Object>)shopsList.get(i)).get("sfxyh").toString());
+                ps.setString(40, ((Map<String, Object>)shopsList.get(i)).get("sxed").toString());
+                
+                ps.setString(41, ((Map<String, Object>)shopsList.get(i)).get("sxjzrq").toString());
+                ps.setString(42, ((Map<String, Object>)shopsList.get(i)).get("yxye").toString());
+                ps.setString(43, ((Map<String, Object>)shopsList.get(i)).get("bldkye").toString());
+                ps.setString(44, ((Map<String, Object>)shopsList.get(i)).get("nnjhsxed").toString());
+                ps.setString(45, ((Map<String, Object>)shopsList.get(i)).get("jhyssxed").toString());
+                ps.setString(46, ((Map<String, Object>)shopsList.get(i)).get("zyyw").toString());
+                ps.setString(47, ((Map<String, Object>)shopsList.get(i)).get("cshy").toString());
+                ps.setString(48, ((Map<String, Object>)shopsList.get(i)).get("sfbhzg").toString());
+                ps.setString(49, ((Map<String, Object>)shopsList.get(i)).get("sfgd").toString());
+                ps.setString(50, ((Map<String, Object>)shopsList.get(i)).get("sfgjgzry").toString());
+                
+                ps.setString(51, ((Map<String, Object>)shopsList.get(i)).get("sfhz").toString());
+                ps.setString(52, ((Map<String, Object>)shopsList.get(i)).get("poxm").toString());
+                ps.setString(53, ((Map<String, Object>)shopsList.get(i)).get("posfzh").toString());
+                ps.setString(54, ((Map<String, Object>)shopsList.get(i)).get("podh").toString());
+                ps.setString(55, ((Map<String, Object>)shopsList.get(i)).get("pogzdw").toString());
+                ps.setString(56, ((Map<String, Object>)shopsList.get(i)).get("ghjl").toString());
+                ps.setString(57, ((Map<String, Object>)shopsList.get(i)).get("zbjg").toString());
+                ps.setString(58, ((Map<String, Object>)shopsList.get(i)).get("djry").toString());
+                ps.setString(59, ((Map<String, Object>)shopsList.get(i)).get("djrq").toString());
+                ps.setString(60, ((Map<String, Object>)shopsList.get(i)).get("zhxgry").toString());
+                
+                ps.setString(61, ((Map<String, Object>)shopsList.get(i)).get("zhxgsj").toString());
+                ps.setString(62, ((Map<String, Object>)shopsList.get(i)).get("khjl").toString());
+            }
+            public int getBatchSize()
+            {
+                return shopsList.size();
+            }
+        });
+        shopsList.clear();
 	}
 	
 	/**
@@ -1800,35 +2024,73 @@ public class CustomerInforService {
 	 * @return
 	 * @throws Exception 
 	 */
-	public  void saveCyDataFile(String fileName,String date) {
-		try {
+	public  void saveCyDataFile(String fileName,String date) throws Exception {
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
 			// 解析数据文件配置
 			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/tyCustomerFamilyCy.xml");
-
 			// 解析”帐单记录表“数据文件
 			List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList,date);
-			int count=0;
-			for(Map<String, Object> map : datas){
-				count++;
-//				System.out.println(count);
+			//int count=0;
+			//for(Map<String, Object> map : datas){
+				//count++;
+			//System.out.println(count);
 				// 保存数据
 				//先查询家庭关系表，存在则更新否则插入
-				String sql = "select * from ty_customer_family_cy where khnm='"+map.get("khnm").toString()+"'";
-				List<CustomerFirsthendFamilyCy> list = commonDao.queryBySql(CustomerFirsthendFamilyCy.class, sql, null);
-				if(list.size()>0){
-					customerInforDao.updateCustomerFamilyCy(map);
-				}else{
-					customerInforDao.insertCustomerFamilyCy(map);
-				}
-
-				
-			}
+				//String sql = "select count(*) from ty_customer_family_cy where khnm='"+map.get("khnm").toString()+"'";
+				//List<CustomerFirsthendFamilyCy> list = commonDao.queryBySql(CustomerFirsthendFamilyCy.class, sql, null);
+				//if(list.size()>0){
+					//customerInforDao.updateCustomerFamilyCy(map);
+				//}else{
+				//customerInforDao.insertCustomerFamilyCy(map);
+				//}
+			//}
+			insertCustomerFamilyCyMap(datas);
 			//释放空间
 			datas=null;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	}
+	
+	public void insertCustomerFamilyCyMap(List<Map<String, Object>> list){
+		final List<Map<String, Object>> shopsList = list;
+        String sql =    "  insert into ty_customer_family_cy (   ID,"+
+                                                            "CREATE_TIME,"+
+                                                            "KHNM,"+
+                                                            "CYXM,"+
+                                                            "YKHGX,"+
+                                                            "ZJLX,"+
+                                                            "ZJHM,"+
+                                                            "XB,"+
+                                                            "GXFL)"+
+                "    values    (?,        					    "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+				"    		    ?,                              "+
+				"    		    ?,                              "+
+				"    		    ?)                              ";
+				
+        
+        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
+            public void setValues(PreparedStatement ps,int i)throws SQLException
+            {
+                ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("id").toString());
+                ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
+                ps.setString(3, ((Map<String, Object>)shopsList.get(i)).get("khnm").toString());
+                ps.setString(4, ((Map<String, Object>)shopsList.get(i)).get("cyxm").toString());
+                ps.setString(5, ((Map<String, Object>)shopsList.get(i)).get("ykhgx").toString());
+                ps.setString(6, ((Map<String, Object>)shopsList.get(i)).get("zjlx").toString());
+                ps.setString(7, ((Map<String, Object>)shopsList.get(i)).get("zjhm").toString());
+                ps.setString(8, ((Map<String, Object>)shopsList.get(i)).get("xb").toString());
+                ps.setString(9, ((Map<String, Object>)shopsList.get(i)).get("gxfl").toString());
+                
+            }
+            public int getBatchSize()
+            {
+                return shopsList.size();
+            }
+        });
+        shopsList.clear();
 	}
 	
 	/**
@@ -1837,35 +2099,86 @@ public class CustomerInforService {
 	 * @return
 	 * @throws Exception 
 	 */
-	public  void saveCcDataFile(String fileName,String date) {
-		try {
+	public  void saveCcDataFile(String fileName,String date) throws Exception {
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
 			// 解析数据文件配置
 			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/tyCustomerFamilyCc.xml");
-
 			// 解析”帐单记录表“数据文件
 			List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList,date);
-			int count=0;
-			for(Map<String, Object> map : datas){
-				count++;
+			//int count=0;
+			//for(Map<String, Object> map : datas){
+				//count++;
 //				System.out.println(count);
 				// 保存数据
 				//先查询家庭关系表，存在则更新否则插入
-				String sql = "select * from ty_customer_family_cc where khnm='"+map.get("khnm").toString()+"'";
-				List<CustomerFirsthendFamilyCc> list = commonDao.queryBySql(CustomerFirsthendFamilyCc.class, sql, null);
-				if(list.size()>0){
-					customerInforDao.updateCustomerFamilyCc(map);
-				}else{
-					customerInforDao.insertCustomerFamilyCc(map);
-				}
-
-				
-			}
+				//String sql = "select count(*) from ty_customer_family_cc where khnm='"+map.get("khnm").toString()+"'";
+				//List<CustomerFirsthendFamilyCc> list = commonDao.queryBySql(CustomerFirsthendFamilyCc.class, sql, null);
+				//if(list.size()>0){
+				//	customerInforDao.updateCustomerFamilyCc(map);
+				//}else{
+				//customerInforDao.insertCustomerFamilyCc(map);
+				//}
+			//}
+			insertCustomerFamilyCcMap(datas);
 			//释放空间
 			datas=null;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	}
+	
+	
+	public void insertCustomerFamilyCcMap(List<Map<String, Object>> list){
+		
+		final List<Map<String, Object>> shopsList = list;
+        String sql =    "insert into ty_customer_family_cc (   ID,"+
+                                                            "CREATE_TIME,"+
+                                                            "KHNM,"+
+                                                            "TZH,"+
+                                                            "CCZL,"+
+                                                            "CCMC,"+
+                                                            "SL,"+
+                                                            "DW,"+
+                                                            "GZRQ,"+
+                                                            "ZCYZ,"+
+                                                            "PGJZ,"+
+                                                            "PGRQ,"+
+                                                            "ZL)"+
+                "    values    (?,        					    "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+				"    		    ?,                              "+
+				"    		    ?,                              "+
+				"    		    ?)                              ";
+				
+        
+        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
+            public void setValues(PreparedStatement ps,int i)throws SQLException
+            {
+                ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("id").toString());
+                ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
+                ps.setString(3, ((Map<String, Object>)shopsList.get(i)).get("khnm").toString());
+                ps.setString(4, ((Map<String, Object>)shopsList.get(i)).get("tzh").toString());
+                ps.setString(5, ((Map<String, Object>)shopsList.get(i)).get("cczl").toString());
+                ps.setString(6, ((Map<String, Object>)shopsList.get(i)).get("ccmc").toString());
+                ps.setString(7, ((Map<String, Object>)shopsList.get(i)).get("sl").toString());
+                ps.setString(8, ((Map<String, Object>)shopsList.get(i)).get("dw").toString());
+                ps.setString(9, ((Map<String, Object>)shopsList.get(i)).get("gzrq").toString());
+                ps.setString(10, ((Map<String, Object>)shopsList.get(i)).get("zcyz").toString());
+                ps.setString(11, ((Map<String, Object>)shopsList.get(i)).get("pgjz").toString());
+                ps.setString(12, ((Map<String, Object>)shopsList.get(i)).get("pgrq").toString());
+                ps.setString(13, ((Map<String, Object>)shopsList.get(i)).get("zl").toString());
+            }
+            public int getBatchSize()
+            {
+                return shopsList.size();
+            }
+        });
+        shopsList.clear();
 	}
 	
 	/**
@@ -1874,35 +2187,28 @@ public class CustomerInforService {
 	 * @return
 	 * @throws Exception 
 	 */
-	public  void saveStudyDataFile(String fileName,String date) {
-		try {
+	public  void saveStudyDataFile(String fileName,String date) throws Exception{
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
 			// 解析数据文件配置
 			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/tyCustomerStudy.xml");
-
 			// 解析”帐单记录表“数据文件
 			List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList,date);
-			int count=0;
+			//int count=0;
 			for(Map<String, Object> map : datas){
-				count++;
-//				System.out.println(count);
+				//count++;
+				//System.out.println(count);
 				// 保存数据
 				//先查询家庭关系表，存在则更新否则插入
-				String sql = "select * from ty_customer_study where khnm='"+map.get("khnm").toString()+"'";
-				List<CustomerFirsthendStudy> list = commonDao.queryBySql(CustomerFirsthendStudy.class, sql, null);
-				if(list.size()>0){
-					customerInforDao.updateCustomerStudy(map);
-				}else{
-					customerInforDao.insertCustomerStudy(map);
-				}
-
-				
+				//String sql = "select count(*) from ty_customer_study where khnm='"+map.get("khnm").toString()+"'";
+				//List<CustomerFirsthendStudy> list = commonDao.queryBySql(CustomerFirsthendStudy.class, sql, null);
+				//if(list.size()>0){
+				//	customerInforDao.updateCustomerStudy(map);
+				//}else{
+				customerInforDao.insertCustomerStudy(map);
+				//}
 			}
 			//释放空间
 			datas=null;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 	
 	/**
@@ -1911,36 +2217,92 @@ public class CustomerInforService {
 	 * @return
 	 * @throws Exception 
 	 */
-	public  void saveWorkDataFile(String fileName,String date) {
-		try {
+	public  void saveWorkDataFile(String fileName,String date) throws Exception{
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
 			// 解析数据文件配置
 			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/tyCustomerWork.xml");
-
 			// 解析”帐单记录表“数据文件
 			List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList,date);
-			int count=0;
-			for(Map<String, Object> map : datas){
-				count++;
-//				System.out.println(count);
+			//int count=0;
+			//for(Map<String, Object> map : datas){
+				//count++;
+				//System.out.println(count);
 				// 保存数据
 				//先查询工作履历表，存在则更新否则插入
-				String sql = "select * from ty_customer_work where khnm='"+map.get("khnm").toString()+"'";
-				List<CustomerFirsthendWork> list = commonDao.queryBySql(CustomerFirsthendWork.class, sql, null);
-				if(list.size()>0){
-					customerInforDao.updateCustomerWork(map);
-				}else{
-					customerInforDao.insertCustomerWork(map);
-				}
-
-				
-			}
+				//String sql = "select count(*) from ty_customer_work where khnm='"+map.get("khnm").toString()+"'";
+				//List<CustomerFirsthendWork> list = commonDao.queryBySql(CustomerFirsthendWork.class, sql, null);
+				//if(list.size()>0){
+				//	customerInforDao.updateCustomerWork(map);
+				//}else{
+				//customerInforDao.insertCustomerWork(map);
+				//}
+			//}
+			insertCustomerWorkMap(datas);
 			//释放空间
 			datas=null;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		
 	}
+	
+	// 客户工作履历 update 
+		public void insertCustomerWorkMap(List<Map<String, Object>> list){
+	        final List<Map<String, Object>> shopsList = list;
+	        String sql =    "  insert into ty_customer_work (   ID,"+
+	                                                            "KHNM,"+
+	                                                            "KSRQ,"+
+	                                                            "JSRQ,"+
+	                                                            "DWMC,"+
+	                                                            "DWXZ,"+
+	                                                            "DWDH,"+
+	                                                            "DWDZ,"+
+	                                                            "DWYZBM,"+
+	                                                            "SZBM,"+
+	                                                            "ZC,"+
+	                                                            "HYXZ,"+
+	                                                            "NSR,"+
+	                                                            "BZ)"+
+	                "    values    (?,        					    "+
+	                "    		    ?,                              "+
+	                "    		    ?,                              "+
+	                "    		    ?,                              "+
+	                "    		    ?,                              "+
+	                "    		    ?,                              "+
+					"    		    ?,                              "+
+					"    		    ?,                              "+
+					"    		    ?,                              "+
+					"    		    ?,                              "+
+	                "    		    ?,                              "+
+	                "    		    ?,                              "+
+	                "    		    ?,                              "+
+	                "    		    ?)                              ";
+	        
+	        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
+	            public void setValues(PreparedStatement ps,int i)throws SQLException
+	            {
+	                ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("id").toString());
+	                ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("khnm").toString());
+	                ps.setString(3, ((Map<String, Object>)shopsList.get(i)).get("ksrq").toString());
+	                ps.setString(4, ((Map<String, Object>)shopsList.get(i)).get("jsrq").toString());
+	                ps.setString(5, ((Map<String, Object>)shopsList.get(i)).get("dwmc").toString());
+	                ps.setString(6, ((Map<String, Object>)shopsList.get(i)).get("dwxz").toString());
+	                ps.setString(7, ((Map<String, Object>)shopsList.get(i)).get("dwdh").toString());
+	                ps.setString(8, ((Map<String, Object>)shopsList.get(i)).get("dwdz").toString());
+	                ps.setString(9, ((Map<String, Object>)shopsList.get(i)).get("dwyzbm").toString());
+	                ps.setString(10, ((Map<String, Object>)shopsList.get(i)).get("szbm").toString());
+	                ps.setString(11, ((Map<String, Object>)shopsList.get(i)).get("zc").toString());
+	                ps.setString(12, ((Map<String, Object>)shopsList.get(i)).get("hyxz").toString());
+	                ps.setString(13, ((Map<String, Object>)shopsList.get(i)).get("nsr").toString());
+	                ps.setString(14, ((Map<String, Object>)shopsList.get(i)).get("bz").toString());
+	                
+	            }
+	            public int getBatchSize()
+	            {
+	                return shopsList.size();
+	            }
+	        });
+	        shopsList.clear();
+		}
+	
+	
 	
 	/**
 	 * 保数据文件到”客户工作履历“表
@@ -1948,35 +2310,70 @@ public class CustomerInforService {
 	 * @return
 	 * @throws Exception 
 	 */
-	public  void saveManageDataFile(String fileName,String date) {
-		try {
+	public  void saveManageDataFile(String fileName,String date) throws Exception {
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
 			// 解析数据文件配置
 			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/tyCustomerManage.xml");
 
 			// 解析”帐单记录表“数据文件
 			List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList,date);
-			int count=0;
-			for(Map<String, Object> map : datas){
-				count++;
-//				System.out.println(count);
+			//int count=0;
+			//for(Map<String, Object> map : datas){
+				//count++;
+				//System.out.println(count);
 				// 保存数据
 				//先查询生产经营表，存在则更新否则插入
-				String sql = "select * from ty_customer_manage where khnm='"+map.get("khnm").toString()+"'";
-				List<CustomerFirsthendManage> list = commonDao.queryBySql(CustomerFirsthendManage.class, sql, null);
-				if(list.size()>0){
-					customerInforDao.updateCustomerManage(map);
-				}else{
-					customerInforDao.insertCustomerManage(map);
-				}
-
-				
-			}
+				//String sql = "select count(*) from ty_customer_manage where khnm='"+map.get("khnm").toString()+"'";
+				//List<CustomerFirsthendManage> list = commonDao.queryBySql(CustomerFirsthendManage.class, sql, null);
+				//if(list.size()>0){
+				//	customerInforDao.updateCustomerManage(map);
+				//}else{
+				//customerInforDao.insertCustomerManage(map);
+				//}
+			//}
+			insertCustomerManageMap(datas);
 			//释放空间
 			datas=null;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	}
+	
+	// 客户生产经营 update 
+	public void insertCustomerManageMap(List<Map<String, Object>> list){
+        final List<Map<String, Object>> shopsList = list;
+        String sql =    "  insert into ty_customer_manage ( ID,"+
+                                                            "CREATE_TIME,"+
+                                                            "KHNM,"+
+                                                            "ZYYWMC,"+
+                                                            "JYGM,"+
+                                                            "JYZK,"+
+                                                            "YJZSR,"+
+                                                            "YJCSR)"+
+                "    values    (?,        					    "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+                "    		    ?,                              "+
+                "    		    ?)                              ";
+        
+        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
+            public void setValues(PreparedStatement ps,int i)throws SQLException
+            {
+                ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("id").toString());
+                ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
+                ps.setString(3, ((Map<String, Object>)shopsList.get(i)).get("khnm").toString());
+                ps.setString(4, ((Map<String, Object>)shopsList.get(i)).get("zyywmc").toString());
+                ps.setString(5, ((Map<String, Object>)shopsList.get(i)).get("jygm").toString());
+                ps.setString(6, ((Map<String, Object>)shopsList.get(i)).get("jyzk").toString());
+                ps.setString(7, ((Map<String, Object>)shopsList.get(i)).get("yjzsr").toString());
+                ps.setString(8, ((Map<String, Object>)shopsList.get(i)).get("yjcsr").toString());
+            }
+            public int getBatchSize()
+            {
+                return shopsList.size();
+            }
+        });
+        shopsList.clear();
 	}
 	
 	/**
@@ -1985,33 +2382,26 @@ public class CustomerInforService {
 	 * @return
 	 * @throws Exception 
 	 */
-	public  void saveSafeDataFile(String fileName,String date) {
-		try {
+	public  void saveSafeDataFile(String fileName,String date) throws Exception{
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
 			// 解析数据文件配置
 			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/tyCustomerSafe.xml");
-
 			// 解析”帐单记录表“数据文件
 			List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList,date);
 			for(Map<String, Object> map : datas){
 				// 保存数据
 				//先查询生产经营表，存在则更新否则插入
-				String sql = "select * from ty_customer_safe where khnm='"+map.get("khnm").toString()+"'";
-				List<CustomerFirsthendSafe> list = commonDao.queryBySql(CustomerFirsthendSafe.class, sql, null);
-				if(list.size()>0){
-					customerInforDao.updateCustomerSafe(map);
-				}else{
-					customerInforDao.insertCustomerSafe((String)map.get("id"),(String)map.get("createTime"),(String)map.get("khnm"),(String)map.get("bxlx"),
+				//String sql = "select count(*) from ty_customer_safe where khnm='"+map.get("khnm").toString()+"'";
+				//List<CustomerFirsthendSafe> list = commonDao.queryBySql(CustomerFirsthendSafe.class, sql, null);
+				//if(list.size()>0){
+				//	customerInforDao.updateCustomerSafe(map);
+				//}else{
+				customerInforDao.insertCustomerSafe((String)map.get("id"),(String)map.get("createTime"),(String)map.get("khnm"),(String)map.get("bxlx"),
 							(String)map.get("bxmc"),(String)map.get("cbgs"),(String)map.get("bxnr"),(String)map.get("bz"));
-				}
-
-				
+				//}
 			}
 			//释放空间
 			datas=null;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 	
 	/**
@@ -2089,30 +2479,25 @@ public class CustomerInforService {
 	 * @return
 	 * @throws Exception 
 	 */
-	public void saveProductDataFile(String fileName,String date) {
-		try {
+	public void saveProductDataFile(String fileName,String date) throws Exception{
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
 			// 解析数据文件配置
 			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/tyRepayProduct.xml");
-			
 			// 解析”流水号“数据文件
 			List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList,date);
-			int count=0;
+			//int count=0;
 			for(Map<String, Object> map : datas){
-				count++;
-//				System.out.println(count);
+				//count++;
+				//System.out.println(count);
 				// 保存数据
-				String sql = "select * from ty_product_type where product_code='"+map.get("productCode").toString()+"'";
-				List<TyProductType> list = commonDao.queryBySql(TyProductType.class, sql, null);
-				if(list.size()==0){
-					customerInforDao.insertProduct(map);
-				}
+				//String sql = "select count(*) from ty_product_type where product_code='"+map.get("productCode").toString()+"'";
+				//List<TyProductType> list = commonDao.queryBySql(TyProductType.class, sql, null);
+				//if(list.size()==0){
+				customerInforDao.insertProduct(map);
+				//}
 			}
 			//释放空间
 			datas=null;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 	/**
 	 * 保数据文件到”黑名单“表
@@ -2120,30 +2505,24 @@ public class CustomerInforService {
 	 * @return
 	 * @throws Exception 
 	 */
-	public void saveHMDDataFile(String fileName,String date) {
-		try {
+	public void saveHMDDataFile(String fileName,String date) throws Exception{
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
 			// 解析数据文件配置
-			
 			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/tyRepayHMD.xml");
-
 			// 解析”黑名单“数据文件
 			List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList,date);
-			int count=0;
+			//int count=0;
 			//删除历史数据
-			String sql = "delete from f_agr_crd_xyk_cuneg where created_time !='"+date+"'";
-			commonDao.queryBySql(sql, null);
+			//String sql = "delete from f_agr_crd_xyk_cuneg where created_time !='"+date+"'";
+			//commonDao.queryBySql(sql, null);
 			for(Map<String, Object> map : datas){
-				count++;
-//				System.out.println(count);
+				//count++;
+				//System.out.println(count);
 				// 保存数据
 				customerInforDao.insertHmd(map);
 			}
 			//释放空间
 			datas=null;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 	
 /*	*//**

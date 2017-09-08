@@ -15,6 +15,7 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import com.cardpay.pccredit.customer.service.CustomerInforNewService;
 import com.cardpay.pccredit.manager.model.DailyAccountManager;
 import com.cardpay.pccredit.manager.model.WeeklyAccountManager;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
@@ -45,10 +46,9 @@ public class DailyReportScheduleService {
 	PlatformTransactionManager txManager;
 	
 	
-	
 	/**
-	 * 客户经理日报
 	 * 周六生成下周的日报
+	 * 客户经理日报
 	 * 系统自动生成
 	 */
 	public void insertWeekSchedule(){
@@ -102,7 +102,7 @@ public class DailyReportScheduleService {
 	
 	/**
 	 * 客户经理日报
-	 * 系统手动调度重跑
+	 * 手动调度重跑
 	 */
 	public void insertWeekScheduleByDate(String dateString){
 	    log.info("【客户经理日报生成start】"+dateString+"***********************************************");
@@ -182,21 +182,21 @@ public class DailyReportScheduleService {
 	
 	/**
 	 * 每日生成task,日终将数据移到历史表里
-	 * 
 	 */
 	public void doTransferData(){
 		log.info("【批处理task生成start】"+new Date()+"***********************************************");
-		//将[status=100]数据移到历史表t_batch_task_log 
-		//accountManagerParameterService.insertBatchTaskLogFlow();
-		//task
-		//日报批处理周六未执行 使用管理系统手工导入功能
-		accountManagerParameterService.insertBatchTaskFlow("downLoad","下载和解压数据");//初始
-		accountManagerParameterService.insertBatchTaskFlow("incre","增量数据");//初始
-		//accountManagerParameterService.insertBatchTaskFlow("whole","全量数据");//初始
+		
+		accountManagerParameterService.insertBatchTaskFlow("xj","每日下载和解压数据");//初始
+		accountManagerParameterService.insertBatchTaskFlow("jb","基本信息");//初始
+		accountManagerParameterService.insertBatchTaskFlow("dk","贷款信息");//初始
 		
 		log.info("【批处理task生成end】"+new Date()+"***********************************************");
 	}
 	
+	
+	
+	
+	/* 济南 服务器 密码查询*/
 	public String findServer1(){
 		String sql = "select * from dict where dict_type = '61.34.0.31' ";
 		String PARAM = (String) commonDao.queryBySql(sql, null).get(0).get("TYPE_CODE");
@@ -220,4 +220,5 @@ public class DailyReportScheduleService {
 		String PARAM = (String) commonDao.queryBySql(sql, null).get(0).get("TYPE_CODE");
 		return PARAM;
 	}
+	/* 济南 服务器 密码查询*/
 }
