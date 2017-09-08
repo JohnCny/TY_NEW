@@ -1661,7 +1661,7 @@ public class CustomerInforService {
 				// System.out.println(count);
 				// 保存数据
 				// 先查询客户原始表，存在则更新否则插入(更新原始信息表)
-				String sql = "select count(*) from ty_customer_base where khnm='"+map.get("khnm").toString()+"'";
+				String sql = "select id from ty_customer_base where khnm='"+map.get("khnm").toString()+"'";
 				List<CustomerFirsthendBase> list = commonDao.queryBySql(CustomerFirsthendBase.class, sql, null);
 				if(list.size()>0){
 					customerInforDao.updateCustomerBase(map);

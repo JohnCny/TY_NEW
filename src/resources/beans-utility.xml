@@ -124,7 +124,7 @@
 	<bean id="addbaseJob"
 		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject">
-			<ref bean="CustomerInforNewService" />
+			<ref bean="customerInforNewService" />
 		</property>
 		<property name="targetMethod">
 			<value>readFile</value>
@@ -144,7 +144,7 @@
 	<bean id="addRepayJob"
 		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject">
-			<ref bean="CustomerInforNewService" />
+			<ref bean="customerInforNewService" />
 		</property>
 		<property name="targetMethod">
 			<value>readFileRepay</value>
