@@ -37,7 +37,7 @@
 <result property="name1" column="name1" />
 <result property="name2" column="name2" />
 <result property="name3" column="name3" />
-
+<result property="time" column="time" />
 <result property="displayName" column="displayName" />
 <result property="pname" column="pname" />
 <result property="applyQuota" column="applyQuota" />

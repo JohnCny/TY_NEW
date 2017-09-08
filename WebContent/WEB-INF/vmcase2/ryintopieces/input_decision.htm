@@ -5,10 +5,9 @@
   <div class="content_main">
     <div class="contentinner">
       <div class="place">
-        <div class="title">填写审贷结论>报审岗结论</div>
+        <div class="title">填写终审结论>终审结论</div>
       </div>
        
-      <form id="id_module_form" action="${contextPath}/intopieces/intopiecesdecision/updateAll.json"/>
       <input type="hidden" name="customerId" id="customerId" value="$!customerApplicationInfo.customerId"/>
       <input type="hidden" name="id" id="id" value="$!customerApplicationInfo.id"/>
       <input type="hidden" name="serialNumber" value="$!customerApplicationInfo.serialNumber">
@@ -52,14 +51,24 @@
               <col width="10%" />
               <col width="30%" />
             </colgroup>
-              <tr>
+             <tr>
               	<td class="titlec" colspan="4" style="text-align: center;">受理岗初审结论</td>
               </tr>
               <tr>
               <td class="titlefc3"><label for="applyQuota">结论:</label></td>
-	          <td><input  type="text" class="rinpsty" name="applyQuota" id="applyQuota" 
+	          <td><input  type="text" class="rinpsty" name="applyQuota" 
 	              value="通过" disabled="disabled"/></td>
-	               <td></td> <td></td>
+	           <td class="titlefc3"><label for="applyQuota">审批人:</label></td>
+	          <td><input  type="text" class="rinpsty" name="applyQuota" 
+	              value="$!md.name" disabled="disabled"/></td>
+              </tr>
+                 <tr>
+              <td class="titlefc3"><label for="applyQuota">审批时间:</label></td>
+	          <td><input  type="text" class="rinpsty" name="applyQuota" 
+	              value="$!date.format('yyyy-MM-dd HH:mm:ss',$!md.time)" disabled="disabled"/></td>
+	           <td class="titlefc3"><label for="applyQuota">审批效率:</label></td>
+	          <td><input  type="text" class="rinpsty" name="applyQuota" 
+	              value="$!md.xtime 时(注:0时为距离进件提交用时不超1小时)" disabled="disabled"/></td>
               </tr>
           </table>
          </div>
@@ -75,19 +84,27 @@
               <tr><td class="titlec" colspan="4" style="text-align: center;">报审岗结论</td></tr>
             <tr>
 			  <td class="titlefc3"><label for="csAmount">报审岗额度(元):</label></td>
-              <td><input  type="text" class="rinpsty" name="csAmount" id="csAmount" value="$!appManagerAuditLog.examineAmount" disabled="disabled"/></td>
+              <td><input  type="text" class="rinpsty" name="csAmount" id="csAmount" value="$!model1.je" disabled="disabled"/></td>
               <td class="titlefc3"><label for="examineLv">利率:</label></td>
-              <td><input type="text" class="rinpsty" name="csexamineLv" id="csexamineLv" value="$!appManagerAuditLog.examineLv" disabled="disabled"/></td>
+              <td><input type="text" class="rinpsty" name="csexamineLv" id="csexamineLv" value="$!model1.lx" disabled="disabled"/></td>
             </tr>
             <tr>
-			  <td class="titlefc3"><label for="csAmount">参与审批客户经理:</label></td>
-              <td><input type="text" class="rinpsty" name="chu_cyUser1" id="chu_cyUser1" value="$!appManagerAuditLog.userId_1" disabled="disabled"/></td>
+			  <td class="titlefc3"><label for="csAmount">期限:</label></td>
+              <td><input type="text" class="rinpsty" name="chu_cyUser1" id="chu_cyUser1" value="$!model1.qx" disabled="disabled"/></td>
               <td class="titlefc3"><label for="decisionRate">参与审批客户经理：</label></td>
-              <td><input type="text" class="rinpsty" name="chu_cyUser2" id="chu_cyUser2" value="$!appManagerAuditLog.userId_2" disabled="disabled"/></td>
+              <td><input type="text" class="rinpsty" name="chu_cyUser2" id="chu_cyUser2" value="$!model1.name1" disabled="disabled"/></td>
             </tr>
             <tr>
+             <td class="titlefc3"><label for="decisionRate">参与审批客户经理：</label></td>
+              <td><input type="text" class="rinpsty" name="chu_cyUser2" id="chu_cyUser2" value="$!model1.name2" disabled="disabled"/></td>
 			  <td class="titlefc3"><label for="csAmount">辅调客户经理:</label></td>
-              <td><input  type="text" class="rinpsty" name="chu_fdUser" id="chu_fdUser" value="$!appManagerAuditLog.userId_3" disabled="disabled"/></td>
+              <td><input  type="text" class="rinpsty" name="chu_fdUser" id="chu_fdUser" value="$!model1.name3" disabled="disabled"/></td>
+            </tr>
+                 <tr>
+             <td class="titlefc3"><label for="decisionRate">审批时间：</label></td>
+              <td><input type="text" class="rinpsty" name="chu_cyUser2" id="chu_cyUser2" value="$!date.format('yyyy-MM-dd HH:mm:ss',$!md.time)" disabled="disabled"/></td>
+			  <td class="titlefc3"><label for="csAmount">审批效率:</label></td>
+              <td><input  type="text" class="rinpsty" name="chu_fdUser" id="chu_fdUser" value="$!model1.xtime 时(注:0时为距离进件初审用时不超1小时)" disabled="disabled"/></td>
             </tr>
           </table>
          </div>
@@ -99,91 +116,44 @@
               <col width="10%" />
               <col width="30%" />
             </colgroup>
-              <tr><td class="titlec" colspan="4" style="text-align: center;">审批岗结论</td></tr>
+              <tr><td class="titlec" colspan="4" style="text-align: center;">终审岗结论</td></tr>
             <tr>
-              <td  class="titlefc3"><label for="status">审批岗结论:</label></td>
-              <td><select id="status" name="status" onChange="changeDecisionRefusereason();">
+              <td  class="titlefc3"><label for="status">终审岗结论:</label></td>
+              <td><select id="status" name="status" ">
                   	#dict("intopieces_decision",$!sdwinfo.status)
                   </select> 
                   </td>
-               <td  class="titlefc3"><label for="prodId">产品名称:</label></td>
-               <td ><!-- <select id="prodId" name="prodId" disabled="disabled" >
-                    #dict("ProductName", $!producAttribute.id)
-                  </select> -->
-                  <input  type="text" class="rinpsty" name="prodName" id="prodName" 
-	              value="$!producAttribute.productName" disabled="disabled"/>
-               </td>
+
             </tr>
             <tr id="span1">
 			  <td class="titlefc3"><label for="decisionAmount">审贷额度(元):</label></td>
-              <td><input  type="text" class="rinpsty" name="sxed" id="decisionAmount" value="$!sdwinfo.SDJE" /></td>
+              <td><input  type="text" class="rinpsty" name="sxed" id="decisionAmount"  /></td>
               <td class="titlefc3"><label for="decisionRate">利率(%):</label></td>
-              <td><input type="text" class="rinpsty" name="decisionRate" id="decisionRate" value="$!sdwinfo.SDLV" /></td>
+              <td><input type="text" class="rinpsty" name="decisionRate" id="decisionRate"  /></td>
             </tr>
-            <tr>
-              <td class="titlefc3">审贷委:</td>
-              <td>
-                  <input type="text" class="rinpsty" name="cyUser1" id="cyUser1" value="$!result.name1" disabled="disabled"/>
-              </td>
-              
-              <td class="titlefc3">意见:</td>
-              <td>
-              <textarea name="SDWUSER1YJ" id="SDWUSER1YJ" >$!sdwinfo.SDWUSER1YJ</textarea>
-              </td>
-            </tr>
-            <!--  <tr>
-              <td class="titlefc3">审贷委二:</td>
-              <td>
-                  <input type="text" class="rinpsty" name="cyUser2" id="cyUser2" value="$!result.name2" disabled="disabled"/>
-              </td>
-              
-              <td class="titlefc3">意见:</td>
-              <td>
-              <textarea name="SDWUSER2YJ" id="SDWUSER2YJ" >$!sdwinfo.SDWUSER2YJ</textarea> 
-              </td>
-            </tr>
-             <tr>
-              <td class="titlefc3"><label for="decisionTerm">审贷委三:</label></td>
-              <td>
-                  <input type="text" class="rinpsty"  name="cyUser3" id="cyUser3" value="$!result.name3" disabled="disabled"/>
-              </td>
-              
-              <td class="titlefc3">意见:</td>
-              <td>
-              <textarea name="SDWUSER3YJ" id="SDWUSER3YJ" >$!sdwinfo.SDWUSER3YJ</textarea>
-              </td>
-            </tr> -->
             <tr id="span2">
               <td class="titlefc3"><label for="decisionTerm">期限:</label></td>
-              <td>
+              <td >
                <select  name="qx" id="qx">
                   	#dict("decision_term",$!sdwinfo.SDQX)
               </select> 
               </td>
-             <!--  <td class="titlefc3"><label for="decisionTerm">还款方式:</label></td>
-              <td><select  name="hkfs">
-                  	#dict("HKFS",$!customerApplicationInfo.hkfs)
-                  </select>
-              </td> -->
+            </tr>
+                <tr>
+              
+              <td class="titlefc3">意见:</td>
+              <td >
+              <textarea name="SDWUSER1YJ" id="SDWUSER1YJ" ></textarea>
+              </td>
             </tr>
             <tr id="span3" style="display :none">
               <td  class="titlefc3"><label id ="reason" for=reason>原因:</label></td>
-               #if($!customerApplicationInfo.status=='returnedToFirst')
-              <td><textarea name="decisionRefusereason" id="decisionRefusereason">$!sdwinfo.jlyys</textarea></td>
-              #else
-              <td><textarea name="decisionRefusereason" id="decisionRefusereason">$!sdwinfo.jlyys</textarea></td>
-              #end
+              <td><textarea name="decisionRefusereason" id="decisionRefusereason"></textarea></td>
             </tr>
           </table>
         </div>
-      </form>
-     <!--  <div class="submit">
-      	<a id="id_image_button" class="btn_g" href="javascript:void(0);" title=导入审贷会纪要">导入审贷会纪要</a>
-      </div> -->
       <div class="submit">
-      #if($!customerApplicationInfo.status=='audit')
         <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
-      #end
         <input type="button" onclick="javascript:history.go(-1);" value="返回" />
       </div>
     </div>
@@ -226,11 +196,11 @@
 			} 
 	
 		 if(info!='0'){
-			$("input[type='text']").attr("disabled",true);
+		/* 	$("input[type='text']").attr("disabled",true);
 			$("input[type='radio']").attr("disabled",true);
 			$("input[type='checkbox']").attr("disabled",true);
 			$("select").attr("disabled",true);
-			$("textarea").attr("disabled",true);
+			$("textarea").attr("disabled",true); */
 		} 
 		
 		$("#id_save_button").click(function() {
@@ -247,11 +217,6 @@
 					 $("#decisionRate").after("<label class='error myerror'generated='true' >利率不能为空</label>");  
 					 return;
 				}
-				/* var fdUser = $("#fdUser").val();
-				if(fdUser=="0"){
-					$("#fdUser").after("<label class='error myerror'generated='true' >辅调客户经理不能为空</label>");  
-					 return;
-				} */
 			}
 			if( status == "refuse"){
 				if($("#decisionRefusereason").val() == ""){

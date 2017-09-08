@@ -1,5 +1,7 @@
 package com.cardpay.pccredit.intopieces.model;
 
+import java.util.Date;
+
 import com.wicresoft.jrad.base.database.model.BusinessModel;
 import com.wicresoft.jrad.base.database.model.ModelParam;
 
@@ -35,11 +37,11 @@ public class AppManagerAuditLog extends BusinessModel {
 	private String applyQuota;
 	private String PRODCREDITRANGE;
 	private String FINAL_APPROVAL;
-	private DATE time;
-	public DATE getTime() {
+	private Date time;
+	public Date getTime() {
 		return time;
 	}
-	public void setTime(DATE time) {
+	public void setTime(Date time) {
 		this.time = time;
 	}
 	public String getFINAL_APPROVAL() {

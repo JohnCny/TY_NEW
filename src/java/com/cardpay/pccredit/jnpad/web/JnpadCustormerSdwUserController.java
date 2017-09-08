@@ -1,5 +1,6 @@
 package com.cardpay.pccredit.jnpad.web;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -31,6 +32,8 @@ import com.cardpay.pccredit.jnpad.model.JnpadCsSdModel;
 import com.cardpay.pccredit.jnpad.service.JnpadCustormerSdwUserService;
 import com.cardpay.pccredit.jnpad.service.JnpadSpUserService;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
+import com.cardpay.pccredit.rongyaoka.model.rymodel;
+import com.cardpay.pccredit.rongyaoka.service.ryServer;
 import com.cardpay.workflow.service.ProcessService;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
 
@@ -46,6 +49,8 @@ public class JnpadCustormerSdwUserController {
 	private JnpadCustormerSdwUserService SdwUserService;
 	@Autowired
 	private JnpadSpUserService UserService;
+	@Autowired
+	private ryServer ryserver;
 	/**
 	 * 添加审贷会成员
 	 * @param CustormerSdwUser
@@ -529,21 +534,148 @@ public class JnpadCustormerSdwUserController {
 	public String findRyCsSd(@ModelAttribute JnpadCsSdModel JnpadCsSdModel,HttpServletRequest request) {
 		Map<String,Object> map = new LinkedHashMap<String,Object>();
 		String id=request.getParameter("id");
-		AppManagerAuditLog log=SdwUserService.selectAppId(id);
-		if(log!=null){
-			map.put("count", "0");
-		}else{
-			map.put("count", "1");
-			map.put("AppManagerAuditLog", log);
-			
-			//查询复审岗位的审批
-			
-			
+		rymodel model=ryserver.selectryCs(id);
+		String td="";
+		Integer sfsp=0;
+		Integer sftg=0;
+		Integer fssfsp=0;
+		Integer sfzs=0;
+		Integer fssftg=0;
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		//查询初审是否审批,默认为没审批
+		if(model!=null){
+			sfsp=1;
+		//查询审批是否通过,默认为没通过
+			if(!model.getStatus().equals("1")){
+				map.put("model", model);
+			}else{
+				sftg=1;
+				map.put("model", model);
+				//查询是否复审批，默认没审批
+				rymodel model1=ryserver.selectryFs(id);
+				if(model1!=null){
+					fssfsp=1;
+				//查询审批是否通过,默认为没通过
+				if(!model.getStatus().equals("1")){
+					map.put("model1", model1);
+				}else{
+					fssftg=1;
+					map.put("model1", model1);
+					//查询终审结论
+					List<CustomerSpUser> result=UserService.selectSpJyB(id);
+					//查询是否有终身结论 默认没审批
+					if(result.size()>0){
+						sfzs=1;
+					for(int i=0;i<result.size();i++){
+						Date date=new Date();
+						long time=date.getTime()-result.get(i).getTime().getTime();
+						if(result.get(i).getStatus().equals("1")){
+							td=td+	"<table class='cpTable khjbxx' style='margin-top:5px;'>"+"<tr>"+
+									"<th colspan='4'>终审审批结论</th>"+ 
+									"</tr>"+
+									"<tr>"+
+									"<th>终审结论：</th>"+
+									"<td><input type ='text' value='通过' readonly = 'true'>"+
+									"</td>"+
+									"<th>终审人：</th>"+
+									"<td><input type ='text' value='"+result.get(i).getName1()+"' readonly = 'true'>"+
+									"</td>"+
+									"</tr>"+
+									"<tr>"+
+									"<th>终审金额：</th>"+
+									"<td><input type ='text' value='"+result.get(i).getSpje()+"' readonly = 'true'>"+
+									"</td>"+
+									"<th>终审利率：</th>"+
+									"<td><input type='text' id='sxqj' value='"+result.get(i).getSplv()+"' readonly = 'true'/>"+
+									"</td>"+
+									"</tr>"+
+									"<tr>"+
+									"<th>终审期限：</th>"+
+									"<td><input type = 'text' value='"+result.get(i).getSpqx()+"' readonly = 'true'></td>"+
+									"<th>终审备注：</th>"+
+									"<td><textarea name='decisionRefusereason' id='sdw1' readonly = 'true'>"+result.get(i).getBeizhu()+"</textarea>" +
+									"</td>" +
+									
+									"</tr>"+
+									"<tr>"+
+									"<th>终审时间：</th>"+
+									"<td ><input type='text' id='sxqj' value='"+sdf.format(result.get(i).getSptime())+"' readonly = 'true'/>"+
+									"</td>"+
+									"<th>审批效率：</th>"+
+									"<td><textarea name='decisionRefusereason' id='sdw1' readonly = 'true'>"+(int)time/(1000*60*60)+"时(注:0时为复审申请不到一小时后审批)</textarea>" +
+									"</td>" +
+									"</tr>"+"</table>";
+						}else if(result.get(i).getStatus().equals("2")){
+							td=td+	"<table class='cpTable khjbxx' style='margin-top:5px;'>"+"<tr>"+"<tr>"+
+									"<th colspan='4'>终审审批结论</th>"+ 
+									"</tr>"+
+									"<tr>"+
+									"<th>终审结论：</th>"+
+									"<td><input type ='text' value='拒绝' readonly = 'true'>"+
+									"</td>"+
+									"<th>终审人：</th>"+
+									"<td><input type ='text' value='"+result.get(i).getName1()+"' readonly = 'true'>"+
+									"</td>"+
+									"</tr>"+
+									"<tr>"+
+									"<th>拒绝原因：</th>"+
+									"<td><textarea name='decisionRefusereason' id='sdw1' readonly = 'true'>"+result.get(i).getJlyys()+"</textarea>" +
+									"</td>" +
+									"<th>终审备注：</th>"+
+									"<td><textarea name='decisionRefusereason' id='sdw1' readonly = 'true'>"+result.get(i).getBeizhu()+"</textarea>" +
+									"</tr>"+
+									"<tr>"+
+									"<th>终审时间：</th>"+
+									"<td ><input type='text' id='sxqj' value='"+sdf.format(result.get(i).getSptime())+"' readonly = 'true'/>"+
+									"</td>"+
+									"<th>审批效率：</th>"+
+									"<td><textarea name='decisionRefusereason' id='sdw1' readonly = 'true'>"+(int)time/(1000*60*60)+"时(注:0时为距离复审不到一小时后审批)</textarea>" +
+									"</td>" +
+									"</tr>"+"</table>";
+						}else if(result.get(i).getStatus().equals("3")){
+							td=td+	"<table class='cpTable khjbxx' style='margin-top:5px;'>"+"<tr>"+
+									"<th colspan='4'>终审审批结论</th>"+ 
+									"</tr>"+
+									"<tr>"+
+									"<th>终审结论：</th>"+
+									"<td><input type ='text' value='退回' readonly = 'true'>"+
+									"</td>"+
+									"<th>终审人：</th>"+
+									"<td><input type ='text' value='"+result.get(i).getName1()+"' readonly = 'true'>"+
+									"</td>"+
+									"</tr>"+
+									"<tr>"+
+									"<th>退回原因：</th>"+
+									"<td><textarea name='decisionRefusereason' id='sdw1' readonly = 'true'>"+result.get(i).getJlyys()+"</textarea>" +
+									"</td>" +
+									"<th>终审备注：</th>"+
+									"<td><textarea name='decisionRefusereason' id='sdw1' readonly = 'true'>"+result.get(i).getBeizhu()+"</textarea>" +
+									"</tr>"+
+									"<tr>"+
+									"<th>终审时间：</th>"+
+									"<td ><input type='text' id='sxqj' value='"+sdf.format(result.get(i).getSptime())+"' readonly = 'true'/>"+
+									"</td>"+
+									"<th>审批效率：</th>"+
+									"<td><textarea name='decisionRefusereason' id='sdw1' readonly = 'true'>"+(int)time/(1000*60*60)+"时(注:0时为距离复审不到一小时后审批)</textarea>" +
+									"</td>" +
+									"</tr>"+"</table>";
+						}
+					}
+					}
+					map.put("td", td);
+				}}
+			}
 		}
+		map.put("sfsp", sfsp);
+		map.put("sftg", sftg);
+		map.put("fssfsp", fssfsp);
+		map.put("sfzs", sfzs);
+		map.put("fssftg", fssftg);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);
 		return json.toString();
+	
 }
 	
 	

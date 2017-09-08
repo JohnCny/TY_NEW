@@ -80,4 +80,7 @@ public class JnpadSpUserService {
 		// TODO Auto-generated method stub
 		return UserDao.findsplistsbycapid1(capid);
 	}
+	public List<CustomerSpUser> selectSpJyB(@Param("capid") String capid){
+		return UserDao.selectSpJyB(capid);
+	}
 }

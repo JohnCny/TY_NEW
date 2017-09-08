@@ -141,7 +141,6 @@ public class ryIntoPiecesService {
 	public void updatecapnextnodeid(String nodeName, String applicationId) {
 		// TODO Auto-generated method stub
 		rpcdao.updatecapnextnodeid(nodeName,applicationId);
-		System.out.println(111);
 	}
 
 

@@ -8,7 +8,6 @@
         <div class="title">填写初审结论>报审结论</div>
       </div>
        
-      <form id="id_module_form" action="${contextPath}/intopieces/intopiecesdecision/updateAll.json"/>
       <input type="hidden" id="customerId" name="customerId" value="$!customerApplicationInfo.customerId"/>
       <input type="hidden" name="id" value="$!customerApplicationInfo.id"/>
       <input type="hidden" name="serialNumber" value="$!customerApplicationInfo.serialNumber">
@@ -16,6 +15,7 @@
       <input type="hidden" id ="productId" name="productId" value="$!producAttribute.id"/>
       <input type="hidden" name="auditType" id="auditType" value="1" />
       <input type="hidden" name="custManagerId" id="custManagerId" value="$!custManagerId" />
+           <input type="hidden" name="appId" id="appId" value="$!appId" />
       <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;"></div> 	 
        	 <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
           <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%;">
@@ -57,9 +57,19 @@
               </tr>
               <tr>
               <td class="titlefc3"><label for="applyQuota">结论:</label></td>
-	          <td><input  type="text" class="rinpsty" name="applyQuota" id="applyQuota" 
+	          <td><input  type="text" class="rinpsty" name="applyQuota" 
 	              value="通过" disabled="disabled"/></td>
-	               <td></td> <td></td>
+	           <td class="titlefc3"><label for="applyQuota">审批人:</label></td>
+	          <td><input  type="text" class="rinpsty" name="applyQuota" 
+	              value="$!md.name" disabled="disabled"/></td>
+              </tr>
+                 <tr>
+              <td class="titlefc3"><label for="applyQuota">审批时间:</label></td>
+	          <td><input  type="text" class="rinpsty" name="applyQuota" 
+	              value="$!date.format('yyyy-MM-dd HH:mm:ss',$!md.time)" disabled="disabled"/></td>
+	           <td class="titlefc3"><label for="applyQuota">审批效率:</label></td>
+	          <td><input  type="text" class="rinpsty" name="applyQuota" 
+	              value="$!md.xtime 时(注:0时为距离初审审批用时不超1小时)" disabled="disabled"/></td>
               </tr>
           </table>
          </div>
@@ -75,7 +85,7 @@
               <tr><td class="titlec" colspan="4" style="text-align: center;">报审结论</td></tr>
             <tr>
               <td  class="titlefc3"><label for="status">报审结论:</label></td>
-              <td><select id="status" name="status" onChange="changeDecisionRefusereason();">
+              <td><select id="status" name="status" >
                   	#dict("intopieces_decision_chusheng",$!customerApplicationInfo.status)
                   </select></td>
             </tr>
@@ -131,7 +141,6 @@
               <td class="titlefc3"><label for="qx">期限:</label></td>
               <td>
 					<select id="qx" name="qx">
-							  <option value=""></option>
                  			   <option value="1个月">1个月</option>
                  			   <option value="2个月">2个月</option>
                  			   <option value="3个月">3个月</option>
@@ -173,7 +182,6 @@
             </tr>
           </table>
         </div>
-      </form>
       <div class="submit">
       #if($!customerApplicationInfo.status=='audit')
         <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
@@ -208,47 +216,42 @@
 		}
 		
 		$("#id_save_button").click(function() {
-			$(".myerror").remove();
-			var status = $("select[name=status]").val();
-			
-			var user_Ids1=$("#user_Id1").val();
-			var user_Ids2=$("#user_Id2").val();
-	    	var user_Ids3=$("#user_Id3").val();
-	    	var cyUsers1=$("#cyUser1").val();
-	    	var cyUsers2=$("#cyUser2").val();
+			var status = "0";
+			if($("#status").val()=="APPROVE"){
+    			status="1";
+    		}else if($("#status").val()=="REJECTAPPROVE"){
+    			status="2";
+    		}else if($("#status").val()=="RETURNAPPROVE"){
+    			status="3";
+    		}
+			var user_Ids1=$("#cyUser1").val();
+			var user_Ids2=$("#cyUser2").val();
+	    	var user_Ids3=$("#fdUser").val();
 	    	
-			if( status == "APPROVE"){
-				/* $("#id_save_button").after(user_Ids1+'===='+user_Ids2+'===='+user_Ids3); */
+	    	var appId=$("#appId").val();
 	    	if(user_Ids1=='0'||user_Ids2=='0'||user_Ids3=='0'){
-	    		 $("#id_save_button").after("<label class='error myerror' generated='true' >审贷委不能为空</label>");  
-				 return;
+	    		window.top.Dialog.message("参与审批人不能为空"); 
+	    		 return;
 	    	}
 	    	if(user_Ids1==user_Ids2||user_Ids1==user_Ids3||user_Ids2==user_Ids3){
-	    		 $("#id_save_button").after("<label class='error myerror' generated='true' >审贷委不能重复</label>");  
-				 return;
+	    		window.top.Dialog.message("参与审批人不能重复"); 
+	    		 return;
 	    	}
-				if($("#decisionAmount").val() == ""){
-					 $("#decisionAmount").after("<label class='error myerror' generated='true' >金额不能为空</label>");  
+	    	if(status=="1"){
+	    		if($("#decisionAmount").val() == ""){
+					window.top.Dialog.message("金额不能为空"); 
 					 return;
 				}
 				if($("#decisionRate").val() == ""){
-					 $("#decisionRate").after("<label class='error myerror'generated='true' >利率不能为空</label>");  
+					window.top.Dialog.message("利率不能为空"); 
 					 return;
 				} 
-				//判断金额必须在产品的授信区间内
-				var decisionAmout = $("#decisionAmount").val();
-				var str = $("#prodCreditRange").val();
-				var strArray = str.split("-");
-				if(parseFloat(decisionAmout) < parseFloat(strArray[0]) 
-				 ||parseFloat(decisionAmout) > parseFloat(strArray[1])){
-					topWin.Dialog.message("金额必须在产品授信区间内"+str);
-					return;
-				}
-				var leng = 0;
-		    	leng = $(".myerror").length;
-		    	if(leng > 0){
-		    		return;
-		    	}else{
+	    	}else{
+	    		if($("#decisionRefusereason").val()==""){
+	    			window.top.Dialog.message("请填写原因"); 
+	    			 return;
+	    		}
+	    	}
 			    	var customerId=$("#customerId").val();
 			    	var productId=$("#productId").val();
 			    	var decisionRate=$("#decisionRate").val();
@@ -263,52 +266,20 @@
 			    	  $.ajax({
 							url : "${contextPath}/rongyaoka/ryCustormerSdwUserPcController/ryinsertcustomersp.json?customerId="+customerId+"&&productId="+productId
 							+"&&decisionRate="+decisionRate+"&&decisionAmount="+decisionAmount+"&&qx="+qx+"&&user_Id1="+user_Id1
-							+"&&user_Id2="+user_Id2+"&&user_Id3="+user_Id3+"&&cyUser1="+cyUser1+"&&cyUser2="+cyUser2+"&&fdUser="+fdUser,
+							+"&&user_Id2="+user_Id2+"&&user_Id3="+user_Id3+"&&cyUser1="+cyUser1+"&&cyUser2="+cyUser2+"&&fdUser="+fdUser+"&&appId="+appId+"&&status="+status+"&&decisionRefusereason="+$("#decisionRefusereason").val(),
 							
 							dataType : 'json',
 							type : "get",
 							success : function(data) {
 							if (data.success) {
 								topWin.Dialog.message("保存成功!");
-			 	            	window.location.href="${contextPath}/intopieces/intopiecesdecision/csBrowse.page";
+			 	            	window.location.href="${contextPath}/rongyaoka/ryIntopiecesDecisionController/bsBrowse.page";
 							 }else{
 									window.top.Dialog.message("系统出现异常,请联系管理员"); 
 						    	}
 							}
 				    });
-		    	}
-			}else{
-			
-				if( status == "REJECTAPPROVE"){
-					if($("#decisionRefusereason").val() == ""){
-						 $("#decisionRefusereason").after("<label class='error myerror' generated='true' >拒绝原因不能为空</label>");   
-						 return;
-					}
-				}
-				
-				if( status == "RETURNAPPROVE"){
-					if($("#decisionRefusereason").val() == ""){
-						 $("#decisionRefusereason").after("<label class='error myerror' generated='true' >退回原因不能为空</label>");   
-						 return;
-					}
-				}
-				
-				var leng = 0;
-		    	leng = $(".myerror").length;
-		    	if(leng > 0){
-		    		return;
-		    	}else{
-		    		if ($($formName).valid()) {
-						var formjson = $($formName).serialize();
-			 	          $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
-			 	            if (data.success) {
-			 	            	topWin.Dialog.message("保存成功!");
-			 	            	window.location.href="${contextPath}/intopieces/intopiecesdecision/csBrowse.page";
-			 	            }
-			 	          });
-					}
-		    	}
-				}
+		    	
 		});
 		
 		$("#status").change(function (){
@@ -317,10 +288,6 @@
 			var status = $("select[name=status]").val();
 			
 			if( status == "APPROVE"){
-				/* $("tr:eq(5)").show();
-				$("tr:eq(9)").show();
-				$("tr:eq(10)").show();
-				$("tr:eq(8)").hide(); */
 				span1.style.display="";
 				span2.style.display="none";
 				span3.style.display="";
@@ -334,10 +301,6 @@
 			}
 			
 			if( status == "REJECTAPPROVE"){
-				/* $("tr:eq(5)").hide();
-				$("tr:eq(9)").hide();
-				$("tr:eq(10)").hide();
-				$("tr:eq(8)").show(); */
 				span1.style.display="none";
 				span2.style.display="";
 				span3.style.display="none";
@@ -348,10 +311,6 @@
 			}
 			
 			if( status == "RETURNAPPROVE"){
-				/* $("tr:eq(5)").hide();
-				$("tr:eq(9)").hide();
-				$("tr:eq(10)").hide();
-				$("tr:eq(8)").show(); */
 				span1.style.display="none";
 				span2.style.display="";
 				span3.style.display="none";

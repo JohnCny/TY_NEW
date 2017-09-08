@@ -96,4 +96,9 @@ update WF_STATUS_QUEUE_RECORD SET EXAMINE_RESULT=#{examineResult} where ID= #{id
 <select id="findsplistsbycapid1" resultMap="CustomerSpUser">
 	select * from CUSTOMER_SP sp where sp.capid=#{capid} 
 </select>
+
+
+<select id="selectSpJyB" resultMap="CustomerSpUser">
+	select sp.*,sp.jlyy as jlyys,s.display_name as  name1 from CUSTOMER_SP sp,sys_user s where s.id=sp.spuserid and  sp.capid=#{capid}  and sp.sptime is not null order by sp.sptime asc
+</select>
 </mapper> 

@@ -25,4 +25,5 @@ public interface JnpadSpUserDao {
 	List<CustomerSpUser>findUserResult1(@Param("capid") String capid);
 	List<CustomerSpUser> findsplistsbycapid(@Param("capid") String capid,@Param("userId") String userId);
 	List<CustomerSpUser>  findsplistsbycapid1(@Param("capid") String capid);
+	List<CustomerSpUser> selectSpJyB(@Param("capid") String capid);
 }
