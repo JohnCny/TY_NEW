@@ -362,14 +362,18 @@
         </property>
     </bean>
     <!-- 定义触发时间 -->
+   <!--  org.springframework.scheduling.quartz.CronTriggerBean -->
+   <!-- org.springframework.scheduling.quartz.SimpleTriggerBean -->
     <bean id="addBaseTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
         <property name="jobDetail">
             <ref bean="addbaseJob"/>
         </property>
         <!-- cron表达式 每月1号1点执行 0 0 1 1 * ? -->
-        <property name="cronExpression">
-            <value>0 20 17 * * ?</value>
-        </property>
+         <!-- <property name="startDelay" value="0"/>
+        <property name="repeatInterval" value="60000" /> -->
+         <property name="cronExpression">
+            <value>0 10 09 * * ?</value>
+        </property> 
     </bean>
        <!--贷款信息 start -->
     <bean id="addRepayJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -388,9 +392,12 @@
             <ref bean="addRepayJob"/>
         </property>
         <!-- cron表达式 每月1号1点执行 0 0 1 1 * ? -->
+        <!-- <property name="cronExpression">
+            <value>0 30 16 * * ?</value>
+        </property> -->
         <property name="cronExpression">
-            <value>0 45 16 * * ?</value>
-        </property>
+            <value>0 50 08 * * ?</value>
+        </property> 
     </bean>
      <!--同步系统中的进件的status 每两个小时跑一次-->
     <bean id="updateCustomerAppInfoStatusJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -409,10 +416,38 @@
             <ref bean="updateCustomerAppInfoStatusJob"/>
         </property>
         <!-- cron表达式 每月1号1点执行 0 0 1 1 * ? -->
-        <property name="cronExpression">
+       <!--  <property name="cronExpression">
             <value>0 0 0/2 * * ?</value>
+        </property> -->
+        <!-- <property name="cronExpression">
+            <value>0 39 22 * * ?</value>
+        </property>  -->
+        <property name="cronExpression">
+            <value>0 58 16 * * ?</value>
+        </property> 
+    </bean>
+      <!-- 11.客户经理贷款信息更新-->
+    <bean id="readNewMonthly" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="customerInforService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>inserNewMonthlyStatistics</value>
         </property>
     </bean>
+    <!-- 定义触发时间 -->
+    <bean id="readNewMonthlyStatisticsTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="readNewMonthly"/>
+        </property>
+        <!-- cron表达式 -->
+        <property name="cronExpression">
+            <value>0 10 16 ? * *</value>
+        </property>
+    </bean>
+    <!-- 客户经理贷款信息更新  end -->
     
          <!--每月初统计客户经理绩效参数-->
     <bean id="updateCustomerSalaryJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -435,6 +470,102 @@
             <value>0 49 16 * * ?</value>
         </property>
     </bean>
+    
+    <!-- 每日下载和解压数据 -->
+	<bean id="downAndtargzJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+       <!--  调用的类 -->
+        <property name="targetObject">
+            <ref bean="odsTools_jn"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>downloadFiles</value>
+        </property>
+    </bean>
+   <!--  定义触发时间 -->
+    <bean id="downAndtargzScheduleTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="downAndtargzJob"/>
+        </property>
+       <!--  cron表达式 -->
+        <property name="cronExpression">
+            <!-- 0 10 18 ? * *  -->
+            <value>0 46 08 * * ?</value><!-- 下午3点 -->
+        </property>
+    </bean>
+	<!-- 每日下载和解压数据 end -->
+    
+    <!-- 每日加载tymibusidata数据 start-->
+       <bean id="addtymibusidataJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="customerInforService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>addmibusidata</value>
+        </property>
+    </bean>
+     <bean id="dailyaddtymibusidataTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="addtymibusidataJob"/>
+        </property>
+        <!-- cron表达式 每月1号1点执行 0 0 1 1 * ? -->
+         <!-- <property name="startDelay" value="0"/>
+        <property name="repeatInterval" value="60000" /> -->
+         <property name="cronExpression">
+            <value>0 27 15 * * ?</value>
+        </property> 
+    </bean>
+    <!-- 每日加载tymibusidata数据end-->
+    
+    
+     		<!--  跑批纸质档案归档 start -->
+        <bean id="addCustomerPigeonholeJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+       		<!--  调用的类 -->
+        <property name="targetObject">
+            <ref bean="customerParameterService"/>
+        </property>
+       		<!--  调用类中的方法 -->
+        <property name="targetMethod">
+            <value>addAllCustomerPigeonhole</value>
+        </property>
+    	</bean>
+     	<bean id="addCustomerPigeonholeTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="addCustomerPigeonholeJob"/>
+        </property>
+      <!--   cron表达式 每月1号1点执行 0 0 1 1 * ? -->
+          <property name="cronExpression">
+            <value>0 52 15 * * ?</value>
+        </property> 
+    	</bean>
+    		<!-- 跑批纸质档案归档end -->
+      
+      
+   <!-- 每日删除过期的日志 节省服务器空间 start-->
+       <bean id="dailyTestClearLogJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="customerInforService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>dailyTestClearLog</value>
+        </property>
+    </bean>
+     <bean id="dailyTestClearLogTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="dailyTestClearLogJob"/>
+        </property>
+        <!-- cron表达式 每月1号1点执行 0 0 1 1 * ? -->
+         <!-- <property name="startDelay" value="0"/>
+        <property name="repeatInterval" value="60000" /> -->
+         <property name="cronExpression">
+            <value>0 30 10 * * ?</value>
+        </property> 
+    </bean>
+    <!-- 每日删除过期的日志 节省服务器空间end-->
     <!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序  -->
    
     <bean id="scheduler" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
@@ -444,10 +575,16 @@
                  <ref bean="addRepayTigger"/>
                  <ref bean="updateCustomerAppInfoStatusTigger"/> 
                  <ref bean="updateCustomerSalaryTigger"/> 
-				<!-- <ref bean="addManagerAssessmentScoreTigger"/>
-				
-				<ref bean="addStatisticalTableTigger"/> -->
-            <!-- 	<ref bean="statisticsYearScheduleServicerTrigger"/>
+                  <ref bean="downAndtargzScheduleTigger"/>
+				<!-- <ref bean="addManagerAssessmentScoreTigger"/>-->
+				 <!-- 每日执行客户经理统计信息信息 start -->
+				<ref bean="addStatisticalTableTigger"/> 
+				<ref bean="readNewMonthlyStatisticsTigger"/> 
+         		<ref bean="dailyReportScheduleTigger"/>
+         		<ref bean="dailyaddtymibusidataTigger"/>   <!-- 添加mibusidata任务-->
+        		<ref bean="dailyTestClearLogTigger"/>    <!-- 每日删除过期的日志 节省服务器空间-->
+        <!--     
+         		<ref bean="addCustomerPigeonholeTigger"/>     纸质归档清零任务 
 
             	<ref bean="statisticsMonthScheduleServicerTrigger"/>
             	
@@ -462,12 +599,144 @@
                 <ref bean="addManagerAssessmentScoreTigger"/>
 				<ref bean="addDownLevelAdjustmentTigger"/> 
 				
-				<ref bean="addManagerAdjustmentTigger"/>-->
+				<ref bean="addManagerAdjustmentTigger"/>
 				
+				 -->
 			
             </list>
         </property>
     </bean>
+	
+	<!-- 
+	=========================================================== 系统定时触发器 ==================================================
+ --><!-- 	1.task
+	<bean id="taskJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        调用的类
+        <property name="targetObject">
+            <ref bean="dailyReportScheduleService"/>
+        </property>
+        调用类中的方法
+        <property name="targetMethod">
+            <value>doTransferData</value>
+        </property>
+    </bean>
+    定义触发时间
+    <bean id="taskTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="taskJob"/>
+        </property>
+        cron表达式
+        <property name="cronExpression">
+            <value>0 00 17 ? * *</value>时间定在第一个跑批前 
+        </property>
+    </bean>
+	task end
+	
+	2.每日下载和解压数据
+	<bean id="downAndtargzJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        调用的类
+        <property name="targetObject">
+            <ref bean="odsTools_jn"/>
+        </property>
+        调用类中的方法
+        <property name="targetMethod">
+            <value>downloadFiles</value>
+        </property>
+    </bean>
+    定义触发时间
+    <bean id="downAndtargzScheduleTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="downAndtargzJob"/>
+        </property>
+        cron表达式
+        <property name="cronExpression">
+            <value>0 10 18 ? * *</value>下午3点
+        </property>
+    </bean>
+	每日下载和解压数据 end -->
     
+ <!--    3.客户经理日报 -->
+    <bean id="dailyReportScheduleJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+     <!--    调用的类 -->
+        <property name="targetObject">
+            <ref bean="dailyReportScheduleService"/>
+        </property>
+       <!--  调用类中的方法 -->
+        <property name="targetMethod">
+            <value>insertWeekSchedule</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="dailyReportScheduleTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="dailyReportScheduleJob"/>
+        </property>
+        <!-- cron表达式 -->
+        <property name="cronExpression">
+           <value>0 30 10 ? * MON</value><!-- 时间定在周六  -->
+        </property>
+    </bean>
+   <!--  客户经理日报  end -->
+    
+   <!--  
+    4.ODS增量数据
+    <bean id="readWholeAndIncrementScheduleJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        调用的类
+        <property name="targetObject">
+            <ref bean="readWholeAndIncrementService"/>
+        </property>
+        调用类中的方法
+        <property name="targetMethod">
+            <value>doReadFileIncrement</value>
+        </property>
+    </bean>
+    定义触发时间
+    <bean id="readWholeAndIncrementScheduleTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="readWholeAndIncrementScheduleJob"/>
+        </property>
+        cron表达式
+        <property name="cronExpression">
+            <value>0 30 18 ? * *</value>时间定在周六 
+        </property>
+    </bean>
+    客户经理日报  end -->
+    
+    
+ <!--    5.同步系统中的进件的status
+    <bean id="updateCustomerAppInfoStatusJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        调用的类
+        <property name="targetObject">
+            <ref bean="customerApplicationInfoSynchScheduleService"/>
+        </property>
+        调用类中的方法
+        <property name="targetMethod">
+            <value>dosynchJnCustAppInfoMethod</value>
+        </property>
+    </bean>
+    定义触发时间
+    <bean id="updateCustomerAppInfoStatusTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="updateCustomerAppInfoStatusJob"/>
+        </property>
+        <property name="cronExpression">
+            <value>0 00 23 ? * *</value>
+        </property>
+    </bean>
+     -->
+<!--     
+  每月初统计客户经理绩效参数
+    总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序  -->
+<!--     <bean id="scheduler" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+            	 <ref bean="taskTigger"/>
+                 <ref bean="downAndtargzScheduleTigger"/>
+                 <ref bean="readWholeAndIncrementScheduleTigger"/>
+                 <ref bean="dailyReportScheduleTigger"/>
+                 <ref bean="updateCustomerAppInfoStatusTigger"/>
+            </list>
+        </property>
+    </bean>  -->
    
 </beans>

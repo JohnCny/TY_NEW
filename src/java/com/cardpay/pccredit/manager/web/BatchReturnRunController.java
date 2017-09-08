@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
+import com.cardpay.pccredit.customer.service.CustomerInforNewService;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.customer.service.ReadWholeAndIncrementService;
 import com.cardpay.pccredit.intopieces.filter.AddIntoPiecesFilter;
@@ -39,6 +40,7 @@ import com.cardpay.pccredit.manager.model.BatchTask;
 import com.cardpay.pccredit.manager.service.DailyReportScheduleService;
 import com.cardpay.pccredit.manager.service.ManagerLevelAdjustmentService;
 import com.cardpay.pccredit.toolsjn.OdsTools_jn;
+import com.cardpay.pccredit.toolsjn.OdsTools_ty;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.constant.JRadConstants;
@@ -79,6 +81,12 @@ public class BatchReturnRunController extends BaseController{
 	
 	@Autowired
 	OdsTools_jn  odsTools_jn;
+	
+	@Autowired
+	OdsTools_ty  odsTools_ty;
+	
+	@Autowired
+	private CustomerInforNewService customerInforNewService;
 	/**
 	 * 查看批处理信息
 	 * @param request
@@ -116,7 +124,7 @@ public class BatchReturnRunController extends BaseController{
 		JRadReturnMap returnMap = new JRadReturnMap();
 		String dateString = null;
 		try {
-			String param = RequestHelper.getStringValue(request, ID);
+			/*String param = RequestHelper.getStringValue(request, ID);
 			String batchCode = param.split("@")[1];
 			String status=param.split("@")[2];
 			String createtime = param.split("@")[3];
@@ -148,11 +156,25 @@ public class BatchReturnRunController extends BaseController{
 			}else if(batchCode.equals("incre")){
 				incrementService.doReadFileIncrementByDate(dateString,status);
 			//ODS全量数据(暂无)
-			}/*else if(batchCode.equals("whole")){
+			}else if(batchCode.equals("whole")){
 				incrementService.doReadFileWholeByDate(dateString);
-			}*/
+			}
 			//同步进件状态
 			//绩效
+			returnMap.addGlobalMessage(ManagerLevelAdjustmentConstant.IF_HANDLE_SUCCESS);*/
+			
+			String param = RequestHelper.getStringValue(request, ID);
+			String batchCode = param.split("@")[1];
+			String time = param.split("@")[2];
+			
+			dateString = time.substring(0, 10).replace("-", "");
+			if(batchCode.equals("xj")){// 下载和解压数据
+				odsTools_ty.downloadFilesbyDate(dateString);
+			}else if(batchCode.equals("jb")){// 基本信息
+				customerInforNewService.readFileByDate(dateString);
+			}else if(batchCode.equals("dk")){// 贷款信息
+				customerInforNewService.readFileRepayByDate(dateString);
+			}
 			
 			returnMap.addGlobalMessage(ManagerLevelAdjustmentConstant.IF_HANDLE_SUCCESS);
 		} catch (Exception e) {
