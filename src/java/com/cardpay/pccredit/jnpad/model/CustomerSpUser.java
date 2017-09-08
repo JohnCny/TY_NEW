@@ -79,14 +79,14 @@ public class CustomerSpUser {
 	public void setSptime(Date sptime) {
 		this.sptime = sptime;
 	}
+	public Date getTime() {
+		return time;
+	}
 	public String getJlyys() {
 		return jlyys;
 	}
 	public void setJlyys(String jlyys) {
 		this.jlyys = jlyys;
-	}
-	public Date getTime() {
-		return time;
 	}
 	public void setTime(Date time) {
 		this.time = time;

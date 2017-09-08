@@ -35,7 +35,9 @@ import com.cardpay.pccredit.jnpad.service.JnpadIntopiecesDecisionService;
 import com.cardpay.pccredit.jnpad.service.JnpadSpUserService;
 import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.service.ProductService;
+import com.cardpay.pccredit.rongyaoka.model.rymodel;
 import com.cardpay.pccredit.rongyaoka.service.ryIntoPiecesService;
+import com.cardpay.pccredit.rongyaoka.service.ryServer;
 import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.jrad.base.web.controller.BaseController;
@@ -47,6 +49,8 @@ import net.sf.json.JsonConfig;
 
 @Controller
 public class JnpadIntopiecesDecisionController extends BaseController{
+	@Autowired
+	private ryServer ryserver;
 	@Autowired
 	private JnpadCustormerSdwUserService SdwUserService;
 	@Autowired
@@ -240,30 +244,17 @@ public class JnpadIntopiecesDecisionController extends BaseController{
 	@RequestMapping(value = "/ipad/intopieces/sdjy.json", method = { RequestMethod.GET })
 	public String input_decision(HttpServletRequest request) {
 		
-//		List<ManagerInfoForm> result = jnpadIntopiecesDecisionService.findManagerInfo();
-//		StringBuffer s=new StringBuffer();
-//		Iterator<ManagerInfoForm> it = result.iterator(); 
-//        while(it.hasNext()){  
-//        ManagerInfoForm manager = it.next();
-//        s.append("<option value = '"+manager.getID()+"'>"+manager.getEXTERNAL_ID()+manager.getDISPLAY_NAME()+"</option>"); 
-//        } 
-//        String ss = s.toString();
-//		int size = result.size();
 		String appId = request.getParameter("appId");
-		List<ProductAttributes> productList = jnpadIntopiecesDecisionService.findProductList();
 		CustomerApplicationInfo customerApplicationInfo = intoPiecesService.findCustomerApplicationInfoById(appId);
-//		CustomerApplicationProcessForm  processForm  = intoPiecesService.findCustomerApplicationProcessById(appId);
 		ProductAttribute producAttribute =  productService.findProductAttributeById(customerApplicationInfo.getProductId());
-		AppManagerAuditLog appManagerAuditLog = jnpadIntopiecesDecisionService.findAppManagerAuditLog(appId,"1");
 		CustomerInfor  customerInfor  = intoPiecesService.findCustomerManager(customerApplicationInfo.getCustomerId());
+		rymodel md=ryserver.selectryCs(request.getParameter("appId"));
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
 		map.put("customerApplicationInfo", customerApplicationInfo);
 		map.put("producAttribute", producAttribute);
-//		map.put("customerApplicationProcess", processForm);
-		map.put("appManagerAuditLog", appManagerAuditLog);
 		map.put("custManagerId", customerInfor.getUserId());
 		map.put("prodCreditRange",producAttribute.getProdCreditRange());
-		map.put("productList",productList);
+		map.put("md",md);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);

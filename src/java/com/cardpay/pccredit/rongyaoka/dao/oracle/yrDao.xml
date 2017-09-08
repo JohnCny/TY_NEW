@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.rongyaoka.dao.ryDao">
+	
+	<resultMap id="rycustomerapplicationinfomap" type="com.cardpay.pccredit.rongyaoka.model.rymodel" >
+    <id column="id" property="id"  />
+    <result column="appid" property="appid"  />
+    <result column="userid" property="userid"  />
+    <result column="status" property="status"  />
+    <result column="reason" property="reason"  />
+    <result column="time" property="time"  />
+    <result column="xtime" property="xtime"  />
+    <result column="name" property="name"  />
+    
+    <result column="userid1" property="userid1"  />
+    <result column="userid2" property="userid2"  />
+        <result column="userid3" property="userid3"  />
+    <result column="je" property="je"  />
+    <result column="lx" property="lx"  />
+    <result column="qx" property="qx"  />
+   <result column="name1" property="name1"  />
+    <result column="name2" property="name2"  />
+    <result column="name3" property="name3"  />
+  </resultMap>
+  
+	
+<insert id="insertRyCs">
+    insert into RYCS  (id,appid,userid,status,reason,time,xtime) values (#{id},#{appid},#{userid},#{status},#{reason},#{time},#{xtime})
+</insert>
+<select id="selectTime" resultMap="rycustomerapplicationinfomap">
+    select CREATED_TIME as time from CUSTOMER_APPLICATION_INFO where id=#{id}
+</select>
+	<select id="selectTime1" resultMap="rycustomerapplicationinfomap">
+    select * from RYCS where appid=#{id} and time=(select max(time)from RYCS where appid=#{id})
+</select>  
+<select id="selectryCs" resultMap="rycustomerapplicationinfomap">
+  select r.*,s.display_name as name from RYCS r,sys_user s where r.appid=#{id}
+    and s.id=r.userid and time=(select max (time) from RYCS where appid=#{id})
+</select>
+
+
+<select id="selectryFs" resultMap="rycustomerapplicationinfomap">
+   select a.*,b.name1  as name1,c.name2 as name2,d.name3 as name3  from 
+    ( select r.*,s.display_name as name from RYFS r,sys_user s where r.appid=#{id}
+    and s.id=r.userid and time=(select max (time) from RYFS where appid=#{id})) a,
+      ( select r.*,s.display_name as name1 from RYFS r,sys_user s where r.appid=#{id}
+    and s.id=r.userid1 and time=(select max (time) from RYFS where appid=#{id})) b,
+      ( select r.*,s.display_name as name2 from RYFS r,sys_user s where r.appid=#{id}
+    and s.id=r.userid2 and time=(select max (time) from RYFS where appid=#{id})) c,
+      ( select r.*,s.display_name as name3 from RYFS r,sys_user s where r.appid=#{id}
+    and s.id=r.USERID3 and time=(select max (time) from RYFS where appid=#{id})) d
+    where 
+     a.appid=b.appid
+    and b.appid=c.appid
+    and c.appid=d.appid
+</select>
+
+
+<insert id="insertRyFs">
+    insert into RYFS  (id,appid,userid,status,reason,time,xtime,userid1,userid2,je,lx,qx,userid3) values (#{id},#{appid},#{userid},#{status},#{reason},#{time},#{xtime}
+    ,#{userid1},#{userid2},#{je},#{lx},#{qx},#{userid3})
+</insert>
+
+
+
+	
+</mapper>

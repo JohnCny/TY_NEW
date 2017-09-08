@@ -47,7 +47,9 @@ import com.cardpay.pccredit.jnpad.service.JnpadSpUserService;
 import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.service.ProductService;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
+import com.cardpay.pccredit.rongyaoka.model.rymodel;
 import com.cardpay.pccredit.rongyaoka.service.ryIntoPiecesService;
+import com.cardpay.pccredit.rongyaoka.service.ryServer;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.constant.JRadConstants;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
@@ -81,7 +83,8 @@ public class JnrykController {
 
 	@Autowired
 	private IntoPiecesService intoPiecesService;
-
+	@Autowired
+	private ryServer ryserver;
 
 	@Autowired
 	private CustomerApplicationInfoService customerApplicationInfoService;
@@ -141,27 +144,60 @@ public class JnrykController {
 	@ResponseBody
 	@RequestMapping(value="/ipad/customer/csryk.json" ,method = { RequestMethod.GET })
 	public String customerBrower(@ModelAttribute AppManagerAuditLog AppManagerAuditLog,HttpServletRequest request){
+		Map<String,Object> map = new LinkedHashMap<String,Object>();
 		String userId =request.getParameter("userId");
 		String cid=request.getParameter("cid");
 		String pid=request.getParameter("pid");
-		AppManagerAuditLog result=SdwUserService.selectaId(cid,pid);
-		AppManagerAuditLog.setId(IDGenerator.generateID());
-		AppManagerAuditLog.setApplicationId(result.getApplicationId());
-		AppManagerAuditLog.setAuditType("1");
-		AppManagerAuditLog.setUserId_4(userId);
-		//导入审批记录（审批客户经理、辅调客户经理记录）T_APP_MANAGER_AUDIT_LOG
-		SdwUserService.insertCsJl(AppManagerAuditLog);
-		//初审通过状态
-		String applicationId=result.getApplicationId();
-		Date times=new Date();
-		String money=request.getParameter("decisionAmount");
-		//导入初审使用表WF_STATUS_QUEUE_RECORD 
-		SdwUserService.updateCSZT(userId,times,money,applicationId);
-		//改变CUSTOMER_APPLICATION_PROCESS 的NEXT_NODE_ID字段
-		String nodeName="受理岗初审";
-		ryipseservice.updatecapnextnodeid(nodeName,applicationId);
-		Map<String,Object> map = new LinkedHashMap<String,Object>();
-		map.put("message", "进件已到复审阶段!!");
+		rymodel model=new rymodel();
+		model.setId(IDGenerator.generateID());
+		model.setAppid(request.getParameter("appId"));
+		model.setReason(request.getParameter("decisionRefusereason"));
+		model.setTime(new Date());
+		model.setUserid(userId);
+		rymodel md=ryserver.selectTime(request.getParameter("appId"));
+		Date date=new Date();
+		long time=date.getTime()-md.getTime().getTime();
+		model.setXtime((int)time/(1000*60*60));
+		model.setStatus(request.getParameter("status"));
+		ryserver.insertRyCs(model);
+		IntoPieces IntoPieces=new IntoPieces();
+		if(request.getParameter("status").equals("1")){
+			//初审通过状态
+			String applicationId=request.getParameter("appId");
+			Date times=new Date();
+			String money=request.getParameter("decisionAmount");
+			//导入初审使用表WF_STATUS_QUEUE_RECORD 
+			SdwUserService.updateCSZT(userId,times,money,applicationId);
+			//改变CUSTOMER_APPLICATION_PROCESS 的NEXT_NODE_ID字段
+			String nodeName="受理岗初审";
+			ryipseservice.updatecapnextnodeid(nodeName,applicationId);	
+			map.put("message", "提交成功,进件提交到复审岗");
+		}else if(request.getParameter("status").equals("2")){
+			IntoPieces.setStatus("refuse");
+			IntoPieces.setCreatime(new Date());
+			IntoPieces.setId(request.getParameter("appId"));
+			IntoPieces.setREFUSAL_REASON(request.getParameter("decisionRefusereason"));
+			int c=SdwUserService.updateCustormerInfoSdwUser(IntoPieces);
+				int d=SdwUserService.updateCustormerProSdwUser(IntoPieces);
+					RiskCustomer RiskCustomer=new RiskCustomer();
+					RiskCustomer.setCustomerId(request.getParameter("customerId"));
+					RiskCustomer.setProductId(request.getParameter("productId"));
+					RiskCustomer.setRiskCreateType("manual");
+					RiskCustomer.setRefuseReason(request.getParameter("decisionRefusereason"));
+					RiskCustomer.setCREATED_TIME(new Date());
+					RiskCustomer.setCustManagerId(request.getParameter("custManagerId"));
+					RiskCustomer.setId(IDGenerator.generateID());
+					int e=SdwUserService.insertRiskSdwUser(RiskCustomer);
+					map.put("message", "提交成功,进件已被拒绝");
+		}else if(request.getParameter("status").equals("3")){
+			IntoPieces.setStatus("returnedToFirst");
+			IntoPieces.setId(request.getParameter("appId"));
+			IntoPieces.setFallBackReason(request.getParameter("decisionRefusereason"));
+			IntoPieces.setCreatime(new Date());
+			int c=SdwUserService.updateCustormerInfoSdwUser(IntoPieces);
+				int d=SdwUserService.updateCustormerProSdwUser(IntoPieces);
+				map.put("message", "提交成功,进件已被退回");
+		}
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);
@@ -219,33 +255,42 @@ public class JnrykController {
 @ResponseBody
 @RequestMapping(value="/ipad/customer/fsrykadd.json" ,method = { RequestMethod.GET })
 public String fsrykadd(@ModelAttribute AppManagerAuditLog AppManagerAuditLog,@ModelAttribute CustomerSpUser CustomerSpUser,HttpServletRequest request){
+	Map<String,Object> map = new LinkedHashMap<String,Object>();
 	List<CustomerSpUser> list=new ArrayList<CustomerSpUser>();
 	String cid=request.getParameter("cid");
 	String pid=request.getParameter("pid");
 	String userId=request.getParameter("userId");
-	AppManagerAuditLog result=SdwUserService.selectaId(cid,pid);
-	AppManagerAuditLog.setId(IDGenerator.generateID());
-	AppManagerAuditLog.setApplicationId(result.getApplicationId());
-	AppManagerAuditLog.setAuditType("1");
-	AppManagerAuditLog.setExamineLv(request.getParameter("decisionRate"));
-	AppManagerAuditLog.setQx(request.getParameter("qx"));
-	AppManagerAuditLog.setExamineAmount(request.getParameter("decisionAmount"));
-	AppManagerAuditLog.setUserId_1(request.getParameter("cyUser1"));
-	AppManagerAuditLog.setUserId_2(request.getParameter("cyUser2"));
-	AppManagerAuditLog.setUserId_3(request.getParameter("fdUser"));
-	AppManagerAuditLog.setUserId_4(userId);
-	//SdwUserService.insertCsJl(AppManagerAuditLog);
-	ryipseservice.updateCsjl(AppManagerAuditLog);
+	rymodel model=new rymodel();
+	IntoPieces IntoPieces=new IntoPieces();
+	model.setId(IDGenerator.generateID());
+	model.setAppid(request.getParameter("appId"));
+	model.setReason(request.getParameter("decisionRefusereason"));
+	model.setTime(new Date());
+	model.setUserid(userId);
+	rymodel md=ryserver.selectTime1(request.getParameter("appId"));
+	Date date=new Date();
+	long time=date.getTime()-md.getTime().getTime();
+	model.setXtime((int)time/(1000*60*60));
+	model.setUserid1(request.getParameter("cyUser1"));
+	model.setUserid2(request.getParameter("cyUser2"));
+	model.setUserid3(request.getParameter("fdUser"));
+	model.setJe(request.getParameter("decisionAmount"));
+	model.setLx(request.getParameter("decisionRate"));
+	model.setStatus(request.getParameter("status"));
+	model.setQx(request.getParameter("qx"));
+	ryserver.insertRyFs(model);
+	
+	
+	if(request.getParameter("status").equals("1")){
 	//初审通过状态
-	String applicationId=result.getApplicationId();
+	String applicationId=request.getParameter("appId");
 	Date times=new Date();
 	String money=request.getParameter("decisionAmount");
-//	SdwUserService.updateCSZT(userId,times,money,applicationId);
 	ryipseservice.updateCSZT(userId,times,money,applicationId);
 		CustomerSpUser.setId(IDGenerator.generateID());
-		CustomerSpUser.setCid(cid);
-		CustomerSpUser.setPid(pid);
-		CustomerSpUser.setCapid(result.getApplicationId());
+		CustomerSpUser.setCid(request.getParameter("customerId"));
+		CustomerSpUser.setPid(request.getParameter("productId"));
+		CustomerSpUser.setCapid(request.getParameter("appId"));
 		CustomerSpUser.setTime(new Date());
 		CustomerSpUser.setStatus("0");
 		CustomerSpUser c=new CustomerSpUser();
@@ -255,16 +300,39 @@ public String fsrykadd(@ModelAttribute AppManagerAuditLog AppManagerAuditLog,@Mo
 		c1.setSpuserid(request.getParameter("user_Id2"));
 		list.add(1, c1);
 		CustomerSpUser c2=new CustomerSpUser();
-		/*c2.setSpuserid(request.getParameter("user_Id3"));
-		list.add(2, c2);*/
 		for(int sd=0;sd<list.size();sd++){
 			CustomerSpUser.setSpuserid(list.get(sd).getSpuserid());
 			UserService.addSpUser(CustomerSpUser);
 		}
 		String nodeName="报审岗复审";
 		ryipseservice.updatecapnextnodeid(nodeName,applicationId);
-	Map<String,Object> map = new LinkedHashMap<String,Object>();
-	map.put("message", "进件已经提交到审贷岗");
+		map.put("message", "提交成功,进件已提交到终审委");
+	}else if(request.getParameter("status").equals("2")){
+		IntoPieces.setStatus("refuse");
+		IntoPieces.setCreatime(new Date());
+		IntoPieces.setId(request.getParameter("appId"));
+		IntoPieces.setREFUSAL_REASON(request.getParameter("decisionRefusereason"));
+		int c=SdwUserService.updateCustormerInfoSdwUser(IntoPieces);
+			int d=SdwUserService.updateCustormerProSdwUser(IntoPieces);
+				RiskCustomer RiskCustomer=new RiskCustomer();
+				RiskCustomer.setCustomerId(request.getParameter("customerId"));
+				RiskCustomer.setProductId(request.getParameter("productId"));
+				RiskCustomer.setRiskCreateType("manual");
+				RiskCustomer.setRefuseReason(request.getParameter("decisionRefusereason"));
+				RiskCustomer.setCREATED_TIME(new Date());
+				RiskCustomer.setCustManagerId(request.getParameter("custManagerId"));
+				RiskCustomer.setId(IDGenerator.generateID());
+				int e=SdwUserService.insertRiskSdwUser(RiskCustomer);
+				map.put("message", "提交成功,进件已被拒绝");
+	}else if(request.getParameter("status").equals("3")){
+		IntoPieces.setStatus("returnedToFirst");
+		IntoPieces.setId(request.getParameter("appId"));
+		IntoPieces.setFallBackReason(request.getParameter("decisionRefusereason"));
+		IntoPieces.setCreatime(new Date());
+		int c=SdwUserService.updateCustormerInfoSdwUser(IntoPieces);
+			int d=SdwUserService.updateCustormerProSdwUser(IntoPieces);
+			map.put("message", "提交成功,进件已被退回");
+	}
 	JsonConfig jsonConfig = new JsonConfig();
 	jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 	JSONObject json = JSONObject.fromObject(map, jsonConfig);
@@ -314,21 +382,17 @@ public String zsjm(@ModelAttribute IntoPiecesFilters filter,HttpServletRequest r
 	ProductAttribute producAttribute =  productService.findProductAttributeById(customerApplicationInfo.getProductId());
 	List<AppManagerAuditLog> appManagerAuditLog = productService.findAppManagerAuditLog(appId,"1");
 	CustomerInfor  customerInfor  = intoPiecesService.findCustomerManager(customerApplicationInfo.getCustomerId());
-	AppManagerAuditLog result=SdwUserService.selectCSJLAPC(appId,uId);
-	JnpadCsSdModel sdwinfo=SdwUserService.findCsSds(appId,uId);
-	/*//拒绝
-	JnpadCsSdModel jjyj=SdwUserService.findCsSdRefuses(appId);
-	//回退
-	JnpadCsSdModel htyj=SdwUserService.findCsSdBlacks(appId);
-	*/
+/*		AppManagerAuditLog result=SdwUserService.selectCSJLAPC(appId,uId);
+	JnpadCsSdModel sdwinfo=SdwUserService.findCsSds(appId,uId);*/
+	rymodel md=ryserver.selectryCs(request.getParameter("appId"));
+	rymodel model1=ryserver.selectryFs(appId);
 	JRadModelAndView mv = new JRadModelAndView("/ryintopieces/input_decision", request);
 	map.put("customerApplicationInfo", customerApplicationInfo);
 	map.put("producAttribute", producAttribute);
 	map.put("customerApplicationProcess", processForm);
-	map.put("appManagerAuditLog", appManagerAuditLog.get(0));
 	map.put("custManagerId", customerInfor.getUserId());
-	map.put("result", result);
-	map.put("sdwinfo", sdwinfo);
+	map.put("md", md);
+	map.put("model1", model1);
 	JsonConfig jsonConfig = new JsonConfig();
 	jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 	JSONObject json = JSONObject.fromObject(map, jsonConfig);
@@ -369,7 +433,6 @@ public String dqsp(@ModelAttribute CustomerSpUser CustomerSpUser,HttpServletRequ
 	//如果当前审贷委提出意见为拒绝
 	if(CustomerSpUser.getStatus().equals("2")){
 		int a=UserService.addSpUser1(CustomerSpUser);
-		UserService.updateSpBh("2", request.getParameter("id"));
 		IntoPieces.setStatus("refuse");
 		IntoPieces.setCreatime(new Date());
 		IntoPieces.setId(request.getParameter("id"));
@@ -401,7 +464,6 @@ public String dqsp(@ModelAttribute CustomerSpUser CustomerSpUser,HttpServletRequ
 		}
 	}else if(CustomerSpUser.getStatus().equals("3")){
 		int a=UserService.addSpUser1(CustomerSpUser);
-		UserService.updateSpBh("3", request.getParameter("id"));
 		IntoPieces.setStatus("returnedToFirst");
 		IntoPieces.setId(request.getParameter("id"));
 		IntoPieces.setFallBackReason(request.getParameter("decisionRefusereason"));
@@ -421,7 +483,6 @@ public String dqsp(@ModelAttribute CustomerSpUser CustomerSpUser,HttpServletRequ
 		List<CustomerSpUser> splists=UserService.findsplistsbycapid(request.getParameter("id"),userId);
 		//如果不是，比较利息，金额，期限
 		if(splists.size()>0){
-			int a=UserService.addSpUser1(CustomerSpUser);
 		//如果都相同，进件直接通过
 			 if(splists.get(0).getSpje().equals(request.getParameter("decisionAmount")) && 
 					 splists.get(0).getSplv().equals(request.getParameter("decisionRate")) &&
@@ -432,6 +493,8 @@ public String dqsp(@ModelAttribute CustomerSpUser CustomerSpUser,HttpServletRequ
 					IntoPieces.setCreatime(new Date());
 					int b=SdwUserService.updateCustormerInfoSdwUser(IntoPieces);
 					if(b>0){
+						int a=UserService.addSpUser1(CustomerSpUser);
+
 						SdwUserService.updateCSZTs(userId,new Date(),request.getParameter("decisionAmount"),request.getParameter("id"));  //修改进件初审节点
 						map.put("message", "提交成功,进件已经通过");
 					}else{
